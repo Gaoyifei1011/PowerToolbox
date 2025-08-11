@@ -66,7 +66,7 @@
                         Padding="12"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
-                        Background="{ThemeResource AppThemeDisplayBrush}"
+                        Background="{ThemeResource MenuFlyoutPresenterBackground}"
                         BorderBrush="Transparent"
                         BorderThickness="1"
                         CornerRadius="4"
