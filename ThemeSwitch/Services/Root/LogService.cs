@@ -65,7 +65,7 @@ namespace ThemeSwitch.Services.Root
                             Directory.CreateDirectory(logDirectory.FullName);
                         }
 
-                        string logFileName = string.Format("Logs-{0}-{1}-{2}-{3:D2}-{4}.xml", nameSpaceName, className, methodName, index, DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss.fff"));
+                        string logFileName = string.Format("Logs-{0}-{1}-{2}-{3:D2}-{4}.xml", nameSpaceName, className, methodName, index, DateTimeOffset.Now.ToString("yyyy-MM-dd HH-mm-ss.fff"));
 
                         /*
                         <LogRecord>

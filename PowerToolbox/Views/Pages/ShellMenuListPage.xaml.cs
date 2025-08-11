@@ -29,7 +29,7 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class ShellMenuListPage : Page, INotifyPropertyChanged
     {
-        private DateTime lastUpdateTime;
+        private DateTimeOffset lastUpdateTime;
         private ShellMenuItemModel selectedItem;
 
         private bool _isLoading = false;

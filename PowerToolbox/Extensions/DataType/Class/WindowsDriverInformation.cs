@@ -46,6 +46,6 @@ namespace PowerToolbox.Extensions.DataType.Class
         /// <summary>
         /// Windows 驱动程序更新的驱动程序版本日期
         /// </summary>
-        public DateTime DriverVerDate { get; set; }
+        public DateTimeOffset DriverVerDate { get; set; }
     }
 }

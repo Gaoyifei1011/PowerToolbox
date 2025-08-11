@@ -279,7 +279,8 @@
                                 Grid.Column="2"
                                 VerticalAlignment="Center"
                                 Click="{x:Bind OnRecoveryClicked}"
-                                Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('Recovery')}">
+                                Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('Recovery')}"
+                                IsEnabled="{x:Bind IsRecoveryEnabled, Mode=OneWay}">
 
                                 <controls:SplitButton.Flyout>
                                     <MenuFlyout Placement="Bottom">

@@ -204,7 +204,7 @@ namespace ThemeSwitch.Views.Windows
         /// </summary>
         private void OnElapsed(object sender, ElapsedEventArgs args)
         {
-            TimeSpan currentTime = new(DateTime.Now.Hour, DateTime.Now.Minute, 0);
+            TimeSpan currentTime = new(DateTimeOffset.Now.Hour, DateTimeOffset.Now.Minute, 0);
 
             // 已启用自动切换主题
             if (AutoThemeSwitchService.AutoThemeSwitchEnableValue)

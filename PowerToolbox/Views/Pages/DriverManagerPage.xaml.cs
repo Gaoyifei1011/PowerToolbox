@@ -1162,7 +1162,7 @@ namespace PowerToolbox.Views.Pages
                     continue;
                 }
 
-                DateTime lastestDate = driverInfGroupInfo.Max(item => item.DriverDate);
+                DateTimeOffset lastestDate = driverInfGroupInfo.Max(item => item.DriverDate);
 
                 foreach (DriverModel driverItem in driverInfGroupInfo)
                 {
@@ -1603,7 +1603,7 @@ namespace PowerToolbox.Views.Pages
                                 DeviceGuid = deviceGuid is null ? Guid.NewGuid() : Guid.TryParse(Convert.ToString(deviceGuid), out Guid guid) ? guid : Guid.NewGuid(),
                                 Description = Convert.ToString(deviceDesc),
                                 InfPath = Convert.ToString(driverInfPath),
-                                Date = (DateTime)driverDate,
+                                Date = (DateTimeOffset)driverDate,
                                 Version = new Version(Convert.ToString(driverVersion))
                             });
                         }
@@ -1621,7 +1621,7 @@ namespace PowerToolbox.Views.Pages
                         DriverInfName = pnpDriverInformationItem.OriginalName,
                         DriverOEMInfName = pnpDriverInformationItem.DriverName,
                         DriverManufacturer = pnpDriverInformationItem.ProviderName,
-                        DriverDate = DateTime.Parse(pnpDriverInformationItem.DriverDate),
+                        DriverDate = DateTimeOffset.Parse(pnpDriverInformationItem.DriverDate),
                         DriverVersion = new Version(pnpDriverInformationItem.DriverVersion),
                         DriverSize = string.IsNullOrEmpty(driverLocation) ? "0B" : VolumeSizeHelper.ConvertVolumeSizeToString(GetFolderSize(Path.GetDirectoryName(driverLocation))),
                         DriverLocation = driverLocation,
@@ -1772,13 +1772,13 @@ namespace PowerToolbox.Views.Pages
                                     byteBuffer[index] = Marshal.ReadByte(propertyBufferPtr + index);
                                 }
 
-                                value = DateTime.FromOADate(BitConverter.ToDouble(byteBuffer, 0)).Date;
+                                value = DateTimeOffset.FromUnixTimeSeconds(BitConverter.ToInt64(byteBuffer, 0));
                                 break;
                             }
                         case DEVPROP_TYPE.DEVPROP_TYPE_FILETIME:
                             {
                                 long fileTime = Marshal.ReadInt64(propertyBufferPtr);
-                                value = DateTime.FromFileTime(fileTime).Date;
+                                value = DateTimeOffset.FromFileTime(fileTime);
                                 break;
                             }
                         case DEVPROP_TYPE.DEVPROP_TYPE_BOOLEAN:

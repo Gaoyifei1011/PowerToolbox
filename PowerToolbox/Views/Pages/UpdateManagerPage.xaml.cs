@@ -2551,7 +2551,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取更新的安装状态
         /// </summary>
-        private string GetUpdateResult(OperationResultCode operationResultCode, DateTime date, int hResult)
+        private string GetUpdateResult(OperationResultCode operationResultCode, DateTimeOffset date, int hResult)
         {
             switch (operationResultCode)
             {

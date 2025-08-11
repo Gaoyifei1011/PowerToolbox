@@ -43,7 +43,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string SelectIconString = ResourceService.ShellMenuEditResource.GetString("SelectIcon");
         private readonly string SelectProgramString = ResourceService.ShellMenuEditResource.GetString("SelectProgram");
         private readonly InMemoryRandomAccessStream emptyStream = new();
-        private DateTime lastUpdateTime = ShellMenuService.GetLastUpdateTime();
+        private DateTimeOffset lastUpdateTime = ShellMenuService.GetLastUpdateTime();
         private string selectedDefaultIconPath = string.Empty;
         private string selectedLightThemeIconPath = string.Empty;
         private string selectedDarkThemeIconPath = string.Empty;

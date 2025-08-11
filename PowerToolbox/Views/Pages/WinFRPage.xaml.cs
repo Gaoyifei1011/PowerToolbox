@@ -86,6 +86,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isRecoveryEnabled;
+
+        public bool IsRecoveryEnabled
+        {
+            get { return _isRecoveryEnabled; }
+
+            set
+            {
+                if (!Equals(_isRecoveryEnabled, value))
+                {
+                    _isRecoveryEnabled = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRecoveryEnabled)));
+                }
+            }
+        }
+
         private string _restoreContent;
 
         public string RestoreContent
@@ -604,6 +620,7 @@ namespace PowerToolbox.Views.Pages
             if (sender is GridView gridView && gridView.SelectedItem is DriveModel driveItem)
             {
                 SelectedItem = driveItem;
+                IsRecoveryEnabled = true;
             }
         }
 
@@ -624,14 +641,101 @@ namespace PowerToolbox.Views.Pages
         /// TODO：未完成
         private void OnRecoveryClicked(Microsoft.UI.Xaml.Controls.SplitButton sender, Microsoft.UI.Xaml.Controls.SplitButtonClickEventArgs args)
         {
+            if (string.IsNullOrEmpty(RestoreContent))
+            {
+                // 显示恢复内容为空通知
+                return;
+            }
+
+            if (string.IsNullOrEmpty(SaveFolder))
+            {
+                // 显示未选择文件夹通知
+                return;
+            }
+
+            if (string.Equals(Path.GetPathRoot(SaveFolder), SelectedItem.DriverInfo.RootDirectory.FullName, StringComparison.OrdinalIgnoreCase))
+            {
+                // 显示选择文件夹与驱动器同目录通知
+                return;
+            }
+
+            if (UseCustomLogFolder && string.IsNullOrEmpty(LogSaveFolder))
+            {
+                // 显示自定义日志目录未选择通知
+                return;
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[2]) && NTFSUseCustomFileFilterType && string.IsNullOrEmpty(NTFSCustomFileFilterType))
+            {
+                // 显示未设置自定义筛选文件类型通知
+                return;
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[3]) && SegmentUseCustomFileFilterType && string.IsNullOrEmpty(SegmentCustomFileFilterType))
+            {
+                // 显示未设置自定义筛选文件类型通知
+                return;
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[4]) && SignatureUseRestoreSpecificExtensionGroups && string.IsNullOrEmpty(SignatureRestoreSpecificExtensionGroupsType))
+            {
+                // 显示未设置恢复特定扩展组通知
+                return;
+            }
         }
 
         /// <summary>
         /// 复制恢复命令
         /// </summary>
         /// TODO：未完成
-        private void OnCopyWinFRCommandClicked(object sender, RoutedEventArgs args)
+        private async void OnCopyWinFRCommandClicked(object sender, RoutedEventArgs args)
         {
+            if (string.IsNullOrEmpty(RestoreContent))
+            {
+                // 显示恢复内容为空通知
+                return;
+            }
+
+            if (string.IsNullOrEmpty(SaveFolder))
+            {
+                // 显示未选择文件夹通知
+                return;
+            }
+
+            if (string.Equals(Path.GetPathRoot(SaveFolder), SelectedItem.DriverInfo.RootDirectory.FullName, StringComparison.OrdinalIgnoreCase))
+            {
+                // 显示选择文件夹与驱动器同目录通知
+                return;
+            }
+
+            if (UseCustomLogFolder && string.IsNullOrEmpty(LogSaveFolder))
+            {
+                // 显示自定义日志目录未选择通知
+                return;
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[2]) && NTFSUseCustomFileFilterType && string.IsNullOrEmpty(NTFSCustomFileFilterType))
+            {
+                // 显示未设置自定义筛选文件类型通知
+                return;
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[3]) && SegmentUseCustomFileFilterType && string.IsNullOrEmpty(SegmentCustomFileFilterType))
+            {
+                // 显示未设置自定义筛选文件类型通知
+                return;
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[4]) && SignatureUseRestoreSpecificExtensionGroups && string.IsNullOrEmpty(SignatureRestoreSpecificExtensionGroupsType))
+            {
+                // 显示未设置恢复特定扩展组通知
+                return;
+            }
+
+            bool result = await Task.Run(() =>
+            {
+                return true;
+            });
         }
 
         /// <summary>
@@ -1005,6 +1109,7 @@ namespace PowerToolbox.Views.Pages
             });
 
             SelectedItem = null;
+            IsRecoveryEnabled = false;
             DriveCollection.Clear();
             foreach (DriveModel driveItem in driveList)
             {

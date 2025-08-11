@@ -719,7 +719,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             if (tempFileName.Contains("<$>"))
                             {
-                                tempFileName = tempFileName.Replace("<$>", DateTime.Now.ToString("yyyy-MM-dd"));
+                                tempFileName = tempFileName.Replace("<$>", DateTimeOffset.Now.ToString("yyyy-MM-dd"));
                             }
                             if (tempFileName.Contains("<&>"))
                             {

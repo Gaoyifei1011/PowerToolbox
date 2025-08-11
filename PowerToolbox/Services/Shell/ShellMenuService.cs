@@ -304,10 +304,10 @@ namespace PowerToolbox.Services.Shell
         /// <summary>
         /// 获取上次更新的时间
         /// </summary>
-        public static DateTime GetLastUpdateTime()
+        public static DateTimeOffset GetLastUpdateTime()
         {
             int? lastUpdateTime = RegistryHelper.ReadRegistryKey<int?>(Registry.CurrentUser, "ShellMenu", "LastUpdateTime");
-            return lastUpdateTime.HasValue ? DateTimeOffset.FromUnixTimeSeconds(lastUpdateTime.Value).DateTime : DateTimeOffset.FromUnixTimeSeconds(0).DateTime;
+            return lastUpdateTime.HasValue ? DateTimeOffset.FromUnixTimeSeconds(lastUpdateTime.Value) : DateTimeOffset.FromUnixTimeSeconds(0);
         }
 
         /// <summary>

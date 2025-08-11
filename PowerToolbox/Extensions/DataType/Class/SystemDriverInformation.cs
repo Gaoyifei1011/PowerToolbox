@@ -25,7 +25,7 @@ namespace PowerToolbox.Extensions.DataType.Class
         /// <summary>
         /// 驱动日期
         /// </summary>
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
 
         /// <summary>
         /// 驱动版本

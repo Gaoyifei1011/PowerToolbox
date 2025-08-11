@@ -60,7 +60,7 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 驱动日期
         /// </summary>
-        public DateTime DriverDate { get; set; }
+        public DateTimeOffset DriverDate { get; set; }
 
         /// <summary>
         /// 驱动大小

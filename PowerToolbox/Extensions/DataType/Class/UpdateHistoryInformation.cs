@@ -21,7 +21,7 @@ namespace PowerToolbox.Extensions.DataType.Class
         /// <summary>
         /// 更新的日期和时间
         /// </summary>
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
 
         /// <summary>
         /// 更新返回的 HRESULT 值
