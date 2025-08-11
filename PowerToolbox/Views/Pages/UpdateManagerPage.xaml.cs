@@ -2127,10 +2127,10 @@ namespace PowerToolbox.Views.Pages
             });
 
             IsCleaning = false;
-            MainWindow.Current.BeginInvoke(async () =>
+            synchronizationContext.Send(async (_) =>
             {
                 await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CleanUpdateHistory, result));
-            });
+            }, null);
 
             if (true)
             {

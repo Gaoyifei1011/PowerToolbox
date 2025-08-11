@@ -59,6 +59,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string SelectFileString = ResourceService.DriverManagerResource.GetString("SelectFile");
         private readonly string UnknownDeviceNameString = ResourceService.DriverManagerResource.GetString("UnknownDeviceName");
         private readonly string UnknownString = ResourceService.DriverManagerResource.GetString("Unknown");
+        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private bool isInitialized;
 
         private static Dictionary<string, DEVPROPKEY> DevPropKeyDict { get; } = new()
@@ -452,10 +453,10 @@ namespace PowerToolbox.Views.Pages
 
                 if (operationResult)
                 {
-                    MainWindow.Current.BeginInvoke(async () =>
+                    synchronizationContext.Send(async (_) =>
                     {
                         await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DeleteDriverSuccessfully));
-                    });
+                    }, null);
 
                     await GetDriverAsync();
                 }
@@ -504,14 +505,14 @@ namespace PowerToolbox.Views.Pages
 
                 if (operationResult)
                 {
-                    MainWindow.Current.BeginInvoke(async () =>
+                    synchronizationContext.Send(async (_) =>
                     {
                         await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ForceDeleteDriverSuccessfully));
-                    });
+                    }, null);
 
                     if (needReboot)
                     {
-                        MainWindow.Current.BeginInvoke(async () =>
+                        synchronizationContext.Send(async (_) =>
                         {
                             ContentDialogResult contentDialogResult = await MainWindow.Current.ShowDialogAsync(new RebootDialog(DriverInstallKind.UnInstallDriver));
 
@@ -522,7 +523,7 @@ namespace PowerToolbox.Views.Pages
                                     ShutdownHelper.Restart(RestartPCString, TimeSpan.FromSeconds(120));
                                 }
                             });
-                        });
+                        }, null);
                     }
 
                     await GetDriverAsync();
@@ -798,7 +799,7 @@ namespace PowerToolbox.Views.Pages
                                 addDriverResultDict.Add(driverOperationGuid, ValueTuple.Create(fileName, result, driverOperation));
                             }
 
-                            MainWindow.Current.BeginInvoke(() =>
+                            synchronizationContext.Send((_) =>
                             {
                                 foreach (DriverOperationModel driverOperationItem in DriverOperationCollection)
                                 {
@@ -809,7 +810,7 @@ namespace PowerToolbox.Views.Pages
                                         break;
                                     }
                                 }
-                            });
+                            }, null);
                         }));
                     }
 
@@ -819,17 +820,17 @@ namespace PowerToolbox.Views.Pages
                     {
                         if (addDriverResultDict.Values.All(item => item.result))
                         {
-                            MainWindow.Current.BeginInvoke(async () =>
+                            synchronizationContext.Send(async (_) =>
                             {
                                 await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.AddDriverAllSuccessfully));
-                            });
+                            }, null);
                         }
                         else
                         {
-                            MainWindow.Current.BeginInvoke(async () =>
+                            synchronizationContext.Send(async (_) =>
                             {
                                 await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.AddDriverPartialSuccessfully));
-                            });
+                            }, null);
                         }
 
                         await GetDriverAsync();
@@ -890,7 +891,7 @@ namespace PowerToolbox.Views.Pages
                                 addInstallDriverResultDict.Add(driverOperationGuid, ValueTuple.Create(fileName, result, driverOperation));
                             }
 
-                            MainWindow.Current.BeginInvoke(() =>
+                            synchronizationContext.Send((_) =>
                             {
                                 foreach (DriverOperationModel driverOperationItem in DriverOperationCollection)
                                 {
@@ -901,7 +902,7 @@ namespace PowerToolbox.Views.Pages
                                         break;
                                     }
                                 }
-                            });
+                            }, null);
                         }));
                     }
 
@@ -911,22 +912,22 @@ namespace PowerToolbox.Views.Pages
                     {
                         if (addInstallDriverResultDict.Values.All(item => item.result))
                         {
-                            MainWindow.Current.BeginInvoke(async () =>
+                            synchronizationContext.Send(async (_) =>
                             {
                                 await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.AddInstallDriverAllSuccessfully));
-                            });
+                            }, null);
                         }
                         else
                         {
-                            MainWindow.Current.BeginInvoke(async () =>
+                            synchronizationContext.Send(async (_) =>
                             {
                                 await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.AddInstallDriverPartialSuccessfully));
-                            });
+                            }, null);
                         }
 
                         if (needReboot)
                         {
-                            MainWindow.Current.BeginInvoke(async () =>
+                            synchronizationContext.Send(async (_) =>
                             {
                                 ContentDialogResult contentDialogResult = await MainWindow.Current.ShowDialogAsync(new RebootDialog(DriverInstallKind.InstallDriver));
 
@@ -937,7 +938,7 @@ namespace PowerToolbox.Views.Pages
                                         ShutdownHelper.Restart(RestartPCString, TimeSpan.FromSeconds(120));
                                     }
                                 });
-                            });
+                            }, null);
                         }
 
                         await GetDriverAsync();
@@ -993,7 +994,7 @@ namespace PowerToolbox.Views.Pages
                             deleteDriverResultDict.Add(driverOperationGuid, ValueTuple.Create(driverItem.DriverInfName, result, driverOperation));
                         }
 
-                        MainWindow.Current.BeginInvoke(() =>
+                        synchronizationContext.Send((_) =>
                         {
                             foreach (DriverOperationModel driverOperationItem in DriverOperationCollection)
                             {
@@ -1004,7 +1005,7 @@ namespace PowerToolbox.Views.Pages
                                     break;
                                 }
                             }
-                        });
+                        }, null);
                     }));
                 }
 
@@ -1014,17 +1015,17 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (deleteDriverResultDict.Values.All(item => item.result))
                     {
-                        MainWindow.Current.BeginInvoke(async () =>
+                        synchronizationContext.Send(async (_) =>
                         {
                             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DeleteDriverAllSuccessfully));
-                        });
+                        }, null);
                     }
                     else
                     {
-                        MainWindow.Current.BeginInvoke(async () =>
+                        synchronizationContext.Send(async (_) =>
                         {
                             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DeleteDriverPartialSuccessfully));
-                        });
+                        }, null);
                     }
 
                     await GetDriverAsync();
@@ -1086,7 +1087,7 @@ namespace PowerToolbox.Views.Pages
                             needReboot = NeedReboot;
                         }
 
-                        MainWindow.Current.BeginInvoke(() =>
+                        synchronizationContext.Send((_) =>
                         {
                             foreach (DriverOperationModel driverOperationItem in DriverOperationCollection)
                             {
@@ -1097,7 +1098,7 @@ namespace PowerToolbox.Views.Pages
                                     break;
                                 }
                             }
-                        });
+                        }, null);
                     }));
                 }
 
@@ -1107,23 +1108,23 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (forceDeleteDriverResultDict.Values.All(item => item.result))
                     {
-                        MainWindow.Current.BeginInvoke(async () =>
+                        synchronizationContext.Send(async (_) =>
                         {
                             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ForceDeleteDriverAllSuccessfully));
-                        });
+                        }, null);
                     }
                     else
                     {
-                        MainWindow.Current.BeginInvoke(async () =>
+                        synchronizationContext.Send(async (_) =>
                         {
                             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ForceDeleteDriverPartialSuccessfully));
-                        });
+                        }, null);
                     }
 
                     // 添加重启提示
                     if (needReboot)
                     {
-                        MainWindow.Current.BeginInvoke(async () =>
+                        synchronizationContext.Send(async (_) =>
                         {
                             ContentDialogResult contentDialogResult = await MainWindow.Current.ShowDialogAsync(new RebootDialog(DriverInstallKind.UnInstallDriver));
 
@@ -1134,7 +1135,7 @@ namespace PowerToolbox.Views.Pages
                                     ShutdownHelper.Restart(RestartPCString, TimeSpan.FromSeconds(120));
                                 }
                             });
-                        });
+                        }, null);
                     }
 
                     await GetDriverAsync();
