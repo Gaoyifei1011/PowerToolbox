@@ -60,7 +60,7 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 驱动器信息
         /// </summary>
-        public DriveInfo DriverInfo { get; set; }
+        public DriveInfo DriveInfo { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }
