@@ -78,6 +78,11 @@ namespace PowerToolbox.Views.NotificationTips
                 IsSuccessOperation = true;
                 OperationContent = ResourceService.NotificationTipResource.GetString("AddInstallDriverPartialSuccessfully");
             }
+            else if (operationKind is OperationKind.CustomFileFilterTypeEmpty)
+            {
+                IsSuccessOperation = false;
+                OperationContent = ResourceService.NotificationTipResource.GetString("CustomFileFilterTypeEmpty");
+            }
             else if (operationKind is OperationKind.DeleteDriverAllSuccessfully)
             {
                 IsSuccessOperation = true;
@@ -178,10 +183,35 @@ namespace PowerToolbox.Views.NotificationTips
                 IsSuccessOperation = false;
                 OperationContent = ResourceService.NotificationTipResource.GetString("NoOperation");
             }
+            else if (operationKind is OperationKind.RestoreContentEmpty)
+            {
+                IsSuccessOperation = false;
+                OperationContent = ResourceService.NotificationTipResource.GetString("RestoreContentEmpty");
+            }
+            else if (operationKind is OperationKind.RestoreSpecificExtensionGroupsTypeEmpty)
+            {
+                IsSuccessOperation = false;
+                OperationContent = ResourceService.NotificationTipResource.GetString("RestoreSpecificExtensionGroupsTypeEmpty");
+            }
+            else if (operationKind is OperationKind.SameDriveAndSelectFolder)
+            {
+                IsSuccessOperation = false;
+                OperationContent = ResourceService.NotificationTipResource.GetString("SameDriveAndSelectFolder");
+            }
             else if (operationKind is OperationKind.SelectDriverEmpty)
             {
                 IsSuccessOperation = false;
                 OperationContent = ResourceService.NotificationTipResource.GetString("SelectDriverEmpty");
+            }
+            else if (operationKind is OperationKind.SelectFolderEmpty)
+            {
+                IsSuccessOperation = false;
+                OperationContent = ResourceService.NotificationTipResource.GetString("SelectFolderEmpty");
+            }
+            else if (operationKind is OperationKind.SelectLogFolderEmpty)
+            {
+                IsSuccessOperation = false;
+                OperationContent = ResourceService.NotificationTipResource.GetString("SelectLogFolderEmpty");
             }
             else if (operationKind is OperationKind.ShellMenuNeedToRefreshData)
             {
