@@ -1,7 +1,10 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
+using PowerToolbox.Views.NotificationTips;
+using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
@@ -13,6 +16,7 @@ using System.Diagnostics.Tracing;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows.UI.Xaml;
@@ -102,22 +106,6 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _restoreContent;
-
-        public string RestoreContent
-        {
-            get { return _restoreContent; }
-
-            set
-            {
-                if (!string.Equals(_restoreContent, value))
-                {
-                    _restoreContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RestoreContent)));
-                }
-            }
-        }
-
         private string _saveFolder;
 
         public string SaveFolder
@@ -178,6 +166,86 @@ namespace PowerToolbox.Views.Pages
                 {
                     _logSaveFolder = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LogSaveFolder)));
+                }
+            }
+        }
+
+        private string _regularRestoreContent;
+
+        public string RegularRestoreContent
+        {
+            get { return _regularRestoreContent; }
+
+            set
+            {
+                if (!string.Equals(_regularRestoreContent, value))
+                {
+                    _regularRestoreContent = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RegularRestoreContent)));
+                }
+            }
+        }
+
+        private KeyValuePair<string, string> _selectedRegularDuplicatedFileOption;
+
+        public KeyValuePair<string, string> SelectedRegularDuplicatedFileOption
+        {
+            get { return _selectedRegularDuplicatedFileOption; }
+
+            set
+            {
+                if (!Equals(_selectedRegularDuplicatedFileOption, value))
+                {
+                    _selectedRegularDuplicatedFileOption = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedRegularDuplicatedFileOption)));
+                }
+            }
+        }
+
+        private string _extensiveRestoreContent;
+
+        public string ExtensiveRestoreContent
+        {
+            get { return _extensiveRestoreContent; }
+
+            set
+            {
+                if (!string.Equals(_extensiveRestoreContent, value))
+                {
+                    _extensiveRestoreContent = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ExtensiveRestoreContent)));
+                }
+            }
+        }
+
+        private KeyValuePair<string, string> _selectedExtensiveDuplicatedFileOption;
+
+        public KeyValuePair<string, string> SelectedExtensiveDuplicatedFileOption
+        {
+            get { return _selectedExtensiveDuplicatedFileOption; }
+
+            set
+            {
+                if (!Equals(_selectedExtensiveDuplicatedFileOption, value))
+                {
+                    _selectedExtensiveDuplicatedFileOption = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedExtensiveDuplicatedFileOption)));
+                }
+            }
+        }
+
+        private string _ntfsRestoreContent;
+
+        public string NTFSRestoreContent
+        {
+            get { return _ntfsRestoreContent; }
+
+            set
+            {
+                if (!string.Equals(_ntfsRestoreContent, value))
+                {
+                    _ntfsRestoreContent = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NTFSRestoreContent)));
                 }
             }
         }
@@ -274,6 +342,22 @@ namespace PowerToolbox.Views.Pages
                 {
                     _ntfsCustomFileFilterType = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NTFSCustomFileFilterType)));
+                }
+            }
+        }
+
+        private string _segmentRestoreContent;
+
+        public string SegmentRestoreContent
+        {
+            get { return _segmentRestoreContent; }
+
+            set
+            {
+                if (!string.Equals(_segmentRestoreContent, value))
+                {
+                    _segmentRestoreContent = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SegmentRestoreContent)));
                 }
             }
         }
@@ -472,6 +556,10 @@ namespace PowerToolbox.Views.Pages
 
         private List<KeyValuePair<string, string>> RecoveryModeList { get; } = [];
 
+        private List<KeyValuePair<string, string>> RegularDuplicatedFileOptionList { get; } = [];
+
+        private List<KeyValuePair<string, string>> ExtensiveDuplicatedFileOptionList { get; } = [];
+
         private List<KeyValuePair<string, string>> NTFSDuplicatedFileOptionList { get; } = [];
 
         private List<KeyValuePair<string, string>> SegmentDuplicatedFileOptionList { get; } = [];
@@ -492,6 +580,16 @@ namespace PowerToolbox.Views.Pages
             RecoveryModeList.Add(new KeyValuePair<string, string>("SegmentMode", SegmentModeString));
             RecoveryModeList.Add(new KeyValuePair<string, string>("Signature", SignatureModeString));
             SelectedRecoveryMode = RecoveryModeList[0];
+
+            RegularDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("Override", OverrideString));
+            RegularDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("NeverOverride", NeverOverrideString));
+            RegularDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("KeepBoth", KeepBothString));
+            SelectedRegularDuplicatedFileOption = RegularDuplicatedFileOptionList[0];
+
+            ExtensiveDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("Override", OverrideString));
+            ExtensiveDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("NeverOverride", NeverOverrideString));
+            ExtensiveDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("KeepBoth", KeepBothString));
+            SelectedExtensiveDuplicatedFileOption = ExtensiveDuplicatedFileOptionList[0];
 
             NTFSDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("Override", OverrideString));
             NTFSDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("NeverOverride", NeverOverrideString));
@@ -625,61 +723,117 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 恢复文件内容
+        /// 常规模式恢复文件内容
         /// </summary>
-        private void OnRestoreContentTextChanged(object sender, RoutedEventArgs args)
+        private void OnRegularRestoreContentTextChanged(object sender, RoutedEventArgs args)
         {
             if (sender is global::Windows.UI.Xaml.Controls.TextBox textBox)
             {
-                RestoreContent = textBox.Text;
+                RegularRestoreContent = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// 广泛模式恢复文件内容
+        /// </summary>
+        private void OnExtensiveRestoreContentTextChanged(object sender, RoutedEventArgs args)
+        {
+            if (sender is global::Windows.UI.Xaml.Controls.TextBox textBox)
+            {
+                ExtensiveRestoreContent = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// NTFS 模式恢复文件内容
+        /// </summary>
+        private void OnNTFSRestoreContentTextChanged(object sender, RoutedEventArgs args)
+        {
+            if (sender is global::Windows.UI.Xaml.Controls.TextBox textBox)
+            {
+                NTFSRestoreContent = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// 段模式恢复文件内容
+        /// </summary>
+        private void OnSegmentRestoreContentTextChanged(object sender, RoutedEventArgs args)
+        {
+            if (sender is global::Windows.UI.Xaml.Controls.TextBox textBox)
+            {
+                SegmentRestoreContent = textBox.Text;
             }
         }
 
         /// <summary>
         /// 开始恢复
         /// </summary>
-        /// TODO：未完成
-        private void OnRecoveryClicked(Microsoft.UI.Xaml.Controls.SplitButton sender, Microsoft.UI.Xaml.Controls.SplitButtonClickEventArgs args)
+        private async void OnRecoveryClicked(Microsoft.UI.Xaml.Controls.SplitButton sender, Microsoft.UI.Xaml.Controls.SplitButtonClickEventArgs args)
         {
-            if (string.IsNullOrEmpty(RestoreContent))
-            {
-                // 显示恢复内容为空通知
-                return;
-            }
-
             if (string.IsNullOrEmpty(SaveFolder))
             {
-                // 显示未选择文件夹通知
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectFolderEmpty));
                 return;
             }
 
-            if (string.Equals(Path.GetPathRoot(SaveFolder), SelectedItem.DriverInfo.RootDirectory.FullName, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(Path.GetPathRoot(SaveFolder), SelectedItem.DriveInfo.RootDirectory.FullName, StringComparison.OrdinalIgnoreCase))
             {
-                // 显示选择文件夹与驱动器同目录通知
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SameDriveAndSelectFolder));
                 return;
             }
 
             if (UseCustomLogFolder && string.IsNullOrEmpty(LogSaveFolder))
             {
-                // 显示自定义日志目录未选择通知
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectLogFolderEmpty));
                 return;
             }
 
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[2]) && NTFSUseCustomFileFilterType && string.IsNullOrEmpty(NTFSCustomFileFilterType))
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[0]) && string.IsNullOrEmpty(RegularRestoreContent))
             {
-                // 显示未设置自定义筛选文件类型通知
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
                 return;
             }
 
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[3]) && SegmentUseCustomFileFilterType && string.IsNullOrEmpty(SegmentCustomFileFilterType))
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[1]) && string.IsNullOrEmpty(ExtensiveRestoreContent))
             {
-                // 显示未设置自定义筛选文件类型通知
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
                 return;
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[2]) && string.IsNullOrEmpty(NTFSRestoreContent))
+            {
+                if (string.IsNullOrEmpty(NTFSRestoreContent))
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
+                    return;
+                }
+
+                if (NTFSUseCustomFileFilterType && string.IsNullOrEmpty(NTFSCustomFileFilterType))
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CustomFileFilterTypeEmpty));
+                    return;
+                }
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[3]))
+            {
+                if (string.IsNullOrEmpty(SegmentRestoreContent))
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
+                    return;
+                }
+
+                if (SegmentUseCustomFileFilterType && string.IsNullOrEmpty(SegmentCustomFileFilterType))
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CustomFileFilterTypeEmpty));
+                    return;
+                }
             }
 
             if (Equals(SelectedRecoveryMode, RecoveryModeList[4]) && SignatureUseRestoreSpecificExtensionGroups && string.IsNullOrEmpty(SignatureRestoreSpecificExtensionGroupsType))
             {
-                // 显示未设置恢复特定扩展组通知
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreSpecificExtensionGroupsTypeEmpty));
                 return;
             }
         }
@@ -690,50 +844,121 @@ namespace PowerToolbox.Views.Pages
         /// TODO：未完成
         private async void OnCopyWinFRCommandClicked(object sender, RoutedEventArgs args)
         {
-            if (string.IsNullOrEmpty(RestoreContent))
-            {
-                // 显示恢复内容为空通知
-                return;
-            }
-
             if (string.IsNullOrEmpty(SaveFolder))
             {
-                // 显示未选择文件夹通知
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectFolderEmpty));
                 return;
             }
 
-            if (string.Equals(Path.GetPathRoot(SaveFolder), SelectedItem.DriverInfo.RootDirectory.FullName, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(Path.GetPathRoot(SaveFolder), SelectedItem.DriveInfo.RootDirectory.FullName, StringComparison.OrdinalIgnoreCase))
             {
-                // 显示选择文件夹与驱动器同目录通知
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SameDriveAndSelectFolder));
                 return;
             }
 
             if (UseCustomLogFolder && string.IsNullOrEmpty(LogSaveFolder))
             {
-                // 显示自定义日志目录未选择通知
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectLogFolderEmpty));
                 return;
             }
 
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[2]) && NTFSUseCustomFileFilterType && string.IsNullOrEmpty(NTFSCustomFileFilterType))
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[0]) && string.IsNullOrEmpty(RegularRestoreContent))
             {
-                // 显示未设置自定义筛选文件类型通知
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
                 return;
             }
 
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[3]) && SegmentUseCustomFileFilterType && string.IsNullOrEmpty(SegmentCustomFileFilterType))
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[1]) && string.IsNullOrEmpty(ExtensiveRestoreContent))
             {
-                // 显示未设置自定义筛选文件类型通知
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
                 return;
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[2]) && string.IsNullOrEmpty(NTFSRestoreContent))
+            {
+                if (string.IsNullOrEmpty(NTFSRestoreContent))
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
+                    return;
+                }
+
+                if (NTFSUseCustomFileFilterType && string.IsNullOrEmpty(NTFSCustomFileFilterType))
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CustomFileFilterTypeEmpty));
+                    return;
+                }
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[3]))
+            {
+                if (string.IsNullOrEmpty(SegmentRestoreContent))
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
+                    return;
+                }
+
+                if (SegmentUseCustomFileFilterType && string.IsNullOrEmpty(SegmentCustomFileFilterType))
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CustomFileFilterTypeEmpty));
+                    return;
+                }
             }
 
             if (Equals(SelectedRecoveryMode, RecoveryModeList[4]) && SignatureUseRestoreSpecificExtensionGroups && string.IsNullOrEmpty(SignatureRestoreSpecificExtensionGroupsType))
             {
-                // 显示未设置恢复特定扩展组通知
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreSpecificExtensionGroupsTypeEmpty));
                 return;
             }
 
             bool result = await Task.Run(() =>
             {
+                StringBuilder winFRCommandBuilder = new("WinFR.exe");
+                winFRCommandBuilder.Append(' ');
+
+                if (Equals(SelectedRecoveryMode, RecoveryModeList[0]))
+                {
+                    winFRCommandBuilder.Append("/regular");
+                    winFRCommandBuilder.Append(' ');
+                    winFRCommandBuilder.Append(SelectedItem.DriveInfo.VolumeLabel);
+                    winFRCommandBuilder.Append(' ');
+                    winFRCommandBuilder.Append(SaveFolder);
+                    winFRCommandBuilder.Append(' ');
+
+                    string[] restoreContentArray = RegularRestoreContent.Split(';');
+                    foreach (string restoreContent in restoreContentArray)
+                    {
+                        winFRCommandBuilder.Append("/n");
+                        winFRCommandBuilder.Append(restoreContent);
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (UseCustomLogFolder)
+                    {
+                        winFRCommandBuilder.Append("/p:");
+                        winFRCommandBuilder.Append(LogSaveFolder);
+                    }
+                }
+                else if (Equals(SelectedRecoveryMode, RecoveryModeList[1]))
+                {
+                    winFRCommandBuilder.Append("/extensive");
+                    winFRCommandBuilder.Append(' ');
+                }
+                else if (Equals(SelectedRecoveryMode, RecoveryModeList[2]))
+                {
+                    winFRCommandBuilder.Append("/extensive");
+                    winFRCommandBuilder.Append(' ');
+                }
+                else if (Equals(SelectedRecoveryMode, RecoveryModeList[3]))
+                {
+                    winFRCommandBuilder.Append("/segment");
+                    winFRCommandBuilder.Append(' ');
+                }
+                else if (Equals(SelectedRecoveryMode, RecoveryModeList[4]))
+                {
+                    winFRCommandBuilder.Append("/signature");
+                    winFRCommandBuilder.Append(' ');
+                }
+
                 return true;
             });
         }
@@ -815,6 +1040,28 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 重复文件选项
+        /// </summary>
+        private void OnRegularDuplicatedFileOptionClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> ntfsDuplicatedFileOption)
+            {
+                SelectedRegularDuplicatedFileOption = ntfsDuplicatedFileOption;
+            }
+        }
+
+        /// <summary>
+        /// 重复文件选项
+        /// </summary>
+        private void OnExtensiveDuplicatedFileOptionClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> ntfsDuplicatedFileOption)
+            {
+                SelectedExtensiveDuplicatedFileOption = ntfsDuplicatedFileOption;
+            }
+        }
+
+        /// <summary>
         /// 是否从回收站中恢复未删除的文件
         /// </summary>
         private void OnNTFSRestoreFromRecyclebinToggled(object sender, RoutedEventArgs args)
@@ -841,9 +1088,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNTFSDuplicatedFileOptionClicked(object sender, RoutedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> ntfsDuplicatedFileOption)
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> regularDuplicatedFileOption)
             {
-                SelectedNTFSDuplicatedFileOption = ntfsDuplicatedFileOption;
+                SelectedNTFSDuplicatedFileOption = regularDuplicatedFileOption;
             }
         }
 
@@ -1086,7 +1333,7 @@ namespace PowerToolbox.Views.Pages
                         DriveUsedPercentage = driveUsedPercentage,
                         IsAvailableSpaceWarning = driveUsedPercentage > 90,
                         IsAvailableSpaceError = driveUsedPercentage > 95,
-                        DriverInfo = driveInfo
+                        DriveInfo = driveInfo
                     };
 
                     bool isSystemDrive = string.Equals(driveInfo.RootDirectory.FullName, Path.GetPathRoot(Environment.SystemDirectory));
