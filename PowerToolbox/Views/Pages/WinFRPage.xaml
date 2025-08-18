@@ -500,7 +500,7 @@
 
                                 <Button
                                     Grid.Column="1"
-                                    Click="{x:Bind OnSelectFolderClicked}"
+                                    Click="{x:Bind OnLogSelectFolderClicked}"
                                     Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SelectFolder')}" />
                             </Grid>
                         </StackPanel>

@@ -769,198 +769,30 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 开始恢复
         /// </summary>
+        // TODO：未完成
         private async void OnRecoveryClicked(Microsoft.UI.Xaml.Controls.SplitButton sender, Microsoft.UI.Xaml.Controls.SplitButtonClickEventArgs args)
         {
-            if (string.IsNullOrEmpty(SaveFolder))
+            bool checkState = await CheckWinFRCommandContentAsync();
+
+            if (checkState)
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectFolderEmpty));
-                return;
-            }
-
-            if (string.Equals(Path.GetPathRoot(SaveFolder), SelectedItem.DriveInfo.RootDirectory.FullName, StringComparison.OrdinalIgnoreCase))
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SameDriveAndSelectFolder));
-                return;
-            }
-
-            if (UseCustomLogFolder && string.IsNullOrEmpty(LogSaveFolder))
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectLogFolderEmpty));
-                return;
-            }
-
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[0]) && string.IsNullOrEmpty(RegularRestoreContent))
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
-                return;
-            }
-
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[1]) && string.IsNullOrEmpty(ExtensiveRestoreContent))
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
-                return;
-            }
-
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[2]) && string.IsNullOrEmpty(NTFSRestoreContent))
-            {
-                if (string.IsNullOrEmpty(NTFSRestoreContent))
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
-                    return;
-                }
-
-                if (NTFSUseCustomFileFilterType && string.IsNullOrEmpty(NTFSCustomFileFilterType))
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CustomFileFilterTypeEmpty));
-                    return;
-                }
-            }
-
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[3]))
-            {
-                if (string.IsNullOrEmpty(SegmentRestoreContent))
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
-                    return;
-                }
-
-                if (SegmentUseCustomFileFilterType && string.IsNullOrEmpty(SegmentCustomFileFilterType))
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CustomFileFilterTypeEmpty));
-                    return;
-                }
-            }
-
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[4]) && SignatureUseRestoreSpecificExtensionGroups && string.IsNullOrEmpty(SignatureRestoreSpecificExtensionGroupsType))
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreSpecificExtensionGroupsTypeEmpty));
-                return;
+                string winFRCommand = await GetWinFRCommandAsync();
             }
         }
 
         /// <summary>
         /// 复制恢复命令
         /// </summary>
-        /// TODO：未完成
         private async void OnCopyWinFRCommandClicked(object sender, RoutedEventArgs args)
         {
-            if (string.IsNullOrEmpty(SaveFolder))
+            bool checkState = await CheckWinFRCommandContentAsync();
+
+            if (checkState)
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectFolderEmpty));
-                return;
+                string winFRCommand = await GetWinFRCommandAsync();
+                bool copyResult = CopyPasteHelper.CopyToClipboard(winFRCommand);
+                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
             }
-
-            if (string.Equals(Path.GetPathRoot(SaveFolder), SelectedItem.DriveInfo.RootDirectory.FullName, StringComparison.OrdinalIgnoreCase))
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SameDriveAndSelectFolder));
-                return;
-            }
-
-            if (UseCustomLogFolder && string.IsNullOrEmpty(LogSaveFolder))
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectLogFolderEmpty));
-                return;
-            }
-
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[0]) && string.IsNullOrEmpty(RegularRestoreContent))
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
-                return;
-            }
-
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[1]) && string.IsNullOrEmpty(ExtensiveRestoreContent))
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
-                return;
-            }
-
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[2]) && string.IsNullOrEmpty(NTFSRestoreContent))
-            {
-                if (string.IsNullOrEmpty(NTFSRestoreContent))
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
-                    return;
-                }
-
-                if (NTFSUseCustomFileFilterType && string.IsNullOrEmpty(NTFSCustomFileFilterType))
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CustomFileFilterTypeEmpty));
-                    return;
-                }
-            }
-
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[3]))
-            {
-                if (string.IsNullOrEmpty(SegmentRestoreContent))
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
-                    return;
-                }
-
-                if (SegmentUseCustomFileFilterType && string.IsNullOrEmpty(SegmentCustomFileFilterType))
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CustomFileFilterTypeEmpty));
-                    return;
-                }
-            }
-
-            if (Equals(SelectedRecoveryMode, RecoveryModeList[4]) && SignatureUseRestoreSpecificExtensionGroups && string.IsNullOrEmpty(SignatureRestoreSpecificExtensionGroupsType))
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreSpecificExtensionGroupsTypeEmpty));
-                return;
-            }
-
-            bool result = await Task.Run(() =>
-            {
-                StringBuilder winFRCommandBuilder = new("WinFR.exe");
-                winFRCommandBuilder.Append(' ');
-
-                if (Equals(SelectedRecoveryMode, RecoveryModeList[0]))
-                {
-                    winFRCommandBuilder.Append("/regular");
-                    winFRCommandBuilder.Append(' ');
-                    winFRCommandBuilder.Append(SelectedItem.DriveInfo.VolumeLabel);
-                    winFRCommandBuilder.Append(' ');
-                    winFRCommandBuilder.Append(SaveFolder);
-                    winFRCommandBuilder.Append(' ');
-
-                    string[] restoreContentArray = RegularRestoreContent.Split(';');
-                    foreach (string restoreContent in restoreContentArray)
-                    {
-                        winFRCommandBuilder.Append("/n");
-                        winFRCommandBuilder.Append(restoreContent);
-                        winFRCommandBuilder.Append(' ');
-                    }
-
-                    if (UseCustomLogFolder)
-                    {
-                        winFRCommandBuilder.Append("/p:");
-                        winFRCommandBuilder.Append(LogSaveFolder);
-                    }
-                }
-                else if (Equals(SelectedRecoveryMode, RecoveryModeList[1]))
-                {
-                    winFRCommandBuilder.Append("/extensive");
-                    winFRCommandBuilder.Append(' ');
-                }
-                else if (Equals(SelectedRecoveryMode, RecoveryModeList[2]))
-                {
-                    winFRCommandBuilder.Append("/extensive");
-                    winFRCommandBuilder.Append(' ');
-                }
-                else if (Equals(SelectedRecoveryMode, RecoveryModeList[3]))
-                {
-                    winFRCommandBuilder.Append("/segment");
-                    winFRCommandBuilder.Append(' ');
-                }
-                else if (Equals(SelectedRecoveryMode, RecoveryModeList[4]))
-                {
-                    winFRCommandBuilder.Append("/signature");
-                    winFRCommandBuilder.Append(' ');
-                }
-
-                return true;
-            });
         }
 
         /// <summary>
@@ -1008,13 +840,31 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
-                    Process.Start(SaveFolder);
+                    Process.Start(LogSaveFolder);
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnLearnWinFRClicked), 1, e);
+                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnOpenSaveFolderClicked), 1, e);
                 }
             });
+        }
+
+        /// <summary>
+        /// 选择日志目录
+        /// </summary>
+        private void OnLogSelectFolderClicked(object sender, RoutedEventArgs args)
+        {
+            OpenFolderDialog openFolderDialog = new()
+            {
+                Description = SelectFolderString,
+                RootFolder = Environment.SpecialFolder.Desktop
+            };
+            DialogResult dialogResult = openFolderDialog.ShowDialog();
+            if (dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes)
+            {
+                LogSaveFolder = openFolderDialog.SelectedPath;
+            }
+            openFolderDialog.Dispose();
         }
 
         /// <summary>
@@ -1364,6 +1214,395 @@ namespace PowerToolbox.Views.Pages
             }
 
             IsDriveLoadCompleted = true;
+        }
+
+        /// <summary>
+        /// 检查 WinFR 命令内容
+        /// </summary>
+        private async Task<bool> CheckWinFRCommandContentAsync()
+        {
+            if (string.IsNullOrEmpty(SaveFolder))
+            {
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectFolderEmpty));
+                return false;
+            }
+
+            if (string.Equals(Path.GetPathRoot(SaveFolder), SelectedItem.DriveInfo.RootDirectory.FullName, StringComparison.OrdinalIgnoreCase))
+            {
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SameDriveAndSelectFolder));
+                return false;
+            }
+
+            if (UseCustomLogFolder && string.IsNullOrEmpty(LogSaveFolder))
+            {
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectLogFolderEmpty));
+                return false;
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[0]) && string.IsNullOrEmpty(RegularRestoreContent))
+            {
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
+                return false;
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[1]) && string.IsNullOrEmpty(ExtensiveRestoreContent))
+            {
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
+                return false;
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[2]) && string.IsNullOrEmpty(NTFSRestoreContent))
+            {
+                if (string.IsNullOrEmpty(NTFSRestoreContent))
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
+                    return false;
+                }
+
+                if (NTFSUseCustomFileFilterType && string.IsNullOrEmpty(NTFSCustomFileFilterType))
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CustomFileFilterTypeEmpty));
+                    return false;
+                }
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[3]))
+            {
+                if (string.IsNullOrEmpty(SegmentRestoreContent))
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
+                    return false;
+                }
+
+                if (SegmentUseCustomFileFilterType && string.IsNullOrEmpty(SegmentCustomFileFilterType))
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CustomFileFilterTypeEmpty));
+                    return false;
+                }
+            }
+
+            if (Equals(SelectedRecoveryMode, RecoveryModeList[4]) && SignatureUseRestoreSpecificExtensionGroups && string.IsNullOrEmpty(SignatureRestoreSpecificExtensionGroupsType))
+            {
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreSpecificExtensionGroupsTypeEmpty));
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 获取 WinFR 命令
+        /// </summary>
+        private async Task<string> GetWinFRCommandAsync()
+        {
+            return await Task.Run(() =>
+            {
+                StringBuilder winFRCommandBuilder = new("WinFR.exe");
+                winFRCommandBuilder.Append(' ');
+
+                // 常规模式
+                if (Equals(SelectedRecoveryMode, RecoveryModeList[0]))
+                {
+                    winFRCommandBuilder.Append("/regular");
+                    winFRCommandBuilder.Append(' ');
+                    winFRCommandBuilder.Append(SelectedItem.DriveInfo.Name.TrimEnd('\\'));
+                    winFRCommandBuilder.Append(' ');
+                    winFRCommandBuilder.Append(SaveFolder);
+                    winFRCommandBuilder.Append(' ');
+
+                    if (UseCustomLogFolder)
+                    {
+                        winFRCommandBuilder.Append("/p:");
+                        winFRCommandBuilder.Append(LogSaveFolder);
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    string[] restoreContentArray = RegularRestoreContent.Split(';');
+                    foreach (string restoreContent in restoreContentArray)
+                    {
+                        winFRCommandBuilder.Append("/n ");
+                        winFRCommandBuilder.Append(restoreContent);
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (Equals(SelectedRegularDuplicatedFileOption, RegularDuplicatedFileOptionList[0]))
+                    {
+                        winFRCommandBuilder.Append("/o:");
+                        winFRCommandBuilder.Append('a');
+                        winFRCommandBuilder.Append(' ');
+                    }
+                    else if (Equals(SelectedRegularDuplicatedFileOption, RegularDuplicatedFileOptionList[1]))
+                    {
+                        winFRCommandBuilder.Append("/o:");
+                        winFRCommandBuilder.Append('n');
+                        winFRCommandBuilder.Append(' ');
+                    }
+                    else if (Equals(SelectedRegularDuplicatedFileOption, RegularDuplicatedFileOptionList[2]))
+                    {
+                        winFRCommandBuilder.Append("/o:");
+                        winFRCommandBuilder.Append('b');
+                        winFRCommandBuilder.Append(' ');
+                    }
+                }
+                // 广泛模式
+                else if (Equals(SelectedRecoveryMode, RecoveryModeList[1]))
+                {
+                    winFRCommandBuilder.Append("/extensive");
+                    winFRCommandBuilder.Append(' ');
+                    winFRCommandBuilder.Append(SelectedItem.DriveInfo.Name.TrimEnd('\\'));
+                    winFRCommandBuilder.Append(' ');
+                    winFRCommandBuilder.Append(SaveFolder);
+                    winFRCommandBuilder.Append(' ');
+
+                    if (UseCustomLogFolder)
+                    {
+                        winFRCommandBuilder.Append("/p:");
+                        winFRCommandBuilder.Append(LogSaveFolder);
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    string[] restoreContentArray = ExtensiveRestoreContent.Split(';');
+                    foreach (string restoreContent in restoreContentArray)
+                    {
+                        winFRCommandBuilder.Append("/n ");
+                        winFRCommandBuilder.Append(restoreContent);
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (Equals(SelectedExtensiveDuplicatedFileOption, ExtensiveDuplicatedFileOptionList[0]))
+                    {
+                        winFRCommandBuilder.Append("/o:");
+                        winFRCommandBuilder.Append('a');
+                        winFRCommandBuilder.Append(' ');
+                    }
+                    else if (Equals(SelectedExtensiveDuplicatedFileOption, ExtensiveDuplicatedFileOptionList[1]))
+                    {
+                        winFRCommandBuilder.Append("/o:");
+                        winFRCommandBuilder.Append('n');
+                        winFRCommandBuilder.Append(' ');
+                    }
+                    else if (Equals(SelectedExtensiveDuplicatedFileOption, ExtensiveDuplicatedFileOptionList[2]))
+                    {
+                        winFRCommandBuilder.Append("/o:");
+                        winFRCommandBuilder.Append('b');
+                        winFRCommandBuilder.Append(' ');
+                    }
+                }
+                // NTFS 模式
+                else if (Equals(SelectedRecoveryMode, RecoveryModeList[2]))
+                {
+                    winFRCommandBuilder.Append("/ntfs");
+                    winFRCommandBuilder.Append(' ');
+                    winFRCommandBuilder.Append(SelectedItem.DriveInfo.Name.TrimEnd('\\'));
+                    winFRCommandBuilder.Append(' ');
+                    winFRCommandBuilder.Append(SaveFolder);
+                    winFRCommandBuilder.Append(' ');
+
+                    if (UseCustomLogFolder)
+                    {
+                        winFRCommandBuilder.Append("/p:");
+                        winFRCommandBuilder.Append(LogSaveFolder);
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    string[] restoreContentArray = NTFSRestoreContent.Split(';');
+                    foreach (string restoreContent in restoreContentArray)
+                    {
+                        winFRCommandBuilder.Append("/n ");
+                        winFRCommandBuilder.Append(restoreContent);
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (NTFSRestoreFromRecyclebin)
+                    {
+                        winFRCommandBuilder.Append("/u");
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (NTFSRestoreSystemFile)
+                    {
+                        winFRCommandBuilder.Append("/k");
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (Equals(SelectedNTFSDuplicatedFileOption, NTFSDuplicatedFileOptionList[0]))
+                    {
+                        winFRCommandBuilder.Append("/o:");
+                        winFRCommandBuilder.Append('a');
+                        winFRCommandBuilder.Append(' ');
+                    }
+                    else if (Equals(SelectedNTFSDuplicatedFileOption, NTFSDuplicatedFileOptionList[1]))
+                    {
+                        winFRCommandBuilder.Append("/o:");
+                        winFRCommandBuilder.Append('n');
+                        winFRCommandBuilder.Append(' ');
+                    }
+                    else if (Equals(SelectedNTFSDuplicatedFileOption, NTFSDuplicatedFileOptionList[2]))
+                    {
+                        winFRCommandBuilder.Append("/o:");
+                        winFRCommandBuilder.Append('b');
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (NTFSRestoreNonMainDataStream)
+                    {
+                        winFRCommandBuilder.Append("/g");
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (NTFSUseCustomFileFilterType)
+                    {
+                        winFRCommandBuilder.Append("/e:");
+                        string[] ntfsCustomFileFilterTypeArray = NTFSCustomFileFilterType.Split(';');
+                        for (int index = 0; index < ntfsCustomFileFilterTypeArray.Length; index++)
+                        {
+                            string ntfsCustomFileFilterType = ntfsCustomFileFilterTypeArray[index];
+                            winFRCommandBuilder.Append(ntfsCustomFileFilterType);
+                            if (index < ntfsCustomFileFilterTypeArray.Length - 1)
+                            {
+                                winFRCommandBuilder.Append(';');
+                            }
+                        }
+                    }
+                }
+                // 段模式
+                else if (Equals(SelectedRecoveryMode, RecoveryModeList[3]))
+                {
+                    winFRCommandBuilder.Append("/segment");
+                    winFRCommandBuilder.Append(' ');
+                    winFRCommandBuilder.Append(SelectedItem.DriveInfo.Name.TrimEnd('\\'));
+                    winFRCommandBuilder.Append(' ');
+                    winFRCommandBuilder.Append(SaveFolder);
+                    winFRCommandBuilder.Append(' ');
+
+                    if (UseCustomLogFolder)
+                    {
+                        winFRCommandBuilder.Append("/p:");
+                        winFRCommandBuilder.Append(LogSaveFolder);
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    string[] restoreContentArray = SegmentRestoreContent.Split(';');
+                    foreach (string restoreContent in restoreContentArray)
+                    {
+                        winFRCommandBuilder.Append("/n ");
+                        winFRCommandBuilder.Append(restoreContent);
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (NTFSRestoreFromRecyclebin)
+                    {
+                        winFRCommandBuilder.Append("/u");
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (NTFSRestoreSystemFile)
+                    {
+                        winFRCommandBuilder.Append("/k");
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (Equals(SelectedSegmentDuplicatedFileOption, SegmentDuplicatedFileOptionList[0]))
+                    {
+                        winFRCommandBuilder.Append("/o:");
+                        winFRCommandBuilder.Append('a');
+                        winFRCommandBuilder.Append(' ');
+                    }
+                    else if (Equals(SelectedSegmentDuplicatedFileOption, SegmentDuplicatedFileOptionList[1]))
+                    {
+                        winFRCommandBuilder.Append("/o:");
+                        winFRCommandBuilder.Append('n');
+                        winFRCommandBuilder.Append(' ');
+                    }
+                    else if (Equals(SelectedSegmentDuplicatedFileOption, SegmentDuplicatedFileOptionList[2]))
+                    {
+                        winFRCommandBuilder.Append("/o:");
+                        winFRCommandBuilder.Append('b');
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (SegmentRestoreNonMainDataStream)
+                    {
+                        winFRCommandBuilder.Append("/g");
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (SegmentUseCustomFileFilterType)
+                    {
+                        winFRCommandBuilder.Append("/e:");
+                        string[] segmentCustomFileFilterTypeArray = SegmentCustomFileFilterType.Split(';');
+                        for (int index = 0; index < segmentCustomFileFilterTypeArray.Length; index++)
+                        {
+                            string segmentCustomFileFilterType = segmentCustomFileFilterTypeArray[index];
+                            winFRCommandBuilder.Append(segmentCustomFileFilterType);
+                            if (index < segmentCustomFileFilterTypeArray.Length - 1)
+                            {
+                                winFRCommandBuilder.Append(';');
+                            }
+                        }
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (!Equals(SegmentSourceDeviceNumberSectors, 0))
+                    {
+                        winFRCommandBuilder.Append(string.Format("/s:{0}", SegmentSourceDeviceNumberSectors));
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (!Equals(SegmentSourceDeviceClusterSize, 0))
+                    {
+                        winFRCommandBuilder.Append(string.Format("/b:{0}", SegmentSourceDeviceClusterSize));
+                        winFRCommandBuilder.Append(' ');
+                    }
+                }
+                // 签名模式
+                else if (Equals(SelectedRecoveryMode, RecoveryModeList[4]))
+                {
+                    winFRCommandBuilder.Append("/signature");
+                    winFRCommandBuilder.Append(' ');
+                    winFRCommandBuilder.Append(SelectedItem.DriveInfo.Name.TrimEnd('\\'));
+                    winFRCommandBuilder.Append(' ');
+                    winFRCommandBuilder.Append(SaveFolder);
+                    winFRCommandBuilder.Append(' ');
+
+                    if (UseCustomLogFolder)
+                    {
+                        winFRCommandBuilder.Append("/p:");
+                        winFRCommandBuilder.Append(LogSaveFolder);
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (SignatureUseRestoreSpecificExtensionGroups)
+                    {
+                        winFRCommandBuilder.Append("/y:");
+                        string[] signatureRestoreSpecificExtensionGroupsTypArray = SignatureRestoreSpecificExtensionGroupsType.Split(';');
+                        for (int index = 0; index < signatureRestoreSpecificExtensionGroupsTypArray.Length; index++)
+                        {
+                            string signatureRestoreSpecificExtensionGroupsType = signatureRestoreSpecificExtensionGroupsTypArray[index];
+                            winFRCommandBuilder.Append(signatureRestoreSpecificExtensionGroupsType);
+                            if (index < signatureRestoreSpecificExtensionGroupsTypArray.Length - 1)
+                            {
+                                winFRCommandBuilder.Append(',');
+                            }
+                        }
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (!Equals(SignatureSourceDeviceNumberSectors, 0))
+                    {
+                        winFRCommandBuilder.Append(string.Format("/s:{0}", SignatureSourceDeviceNumberSectors));
+                        winFRCommandBuilder.Append(' ');
+                    }
+
+                    if (!Equals(SignatureSourceDeviceClusterSize, 0))
+                    {
+                        winFRCommandBuilder.Append(string.Format("/b:{0}", SignatureSourceDeviceClusterSize));
+                        winFRCommandBuilder.Append(' ');
+                    }
+                }
+
+                return winFRCommandBuilder.ToString();
+            });
         }
 
         /// <summary>
