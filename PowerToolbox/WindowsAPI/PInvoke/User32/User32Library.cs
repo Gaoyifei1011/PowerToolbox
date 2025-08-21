@@ -126,6 +126,15 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         public static extern bool EndPaint(IntPtr hWnd, [In] ref PAINTSTRUCT lpPaint);
 
         /// <summary>
+        /// 指向应用程序定义的回调函数的指针。 有关详细信息，请参阅 EnumWindowsProc。
+        /// </summary>
+        /// <param name="lpEnumFunc">指向应用程序定义的回调函数的指针。 有关详细信息，请参阅 EnumWindowsProc。</param>
+        /// <param name="lParam">要传递给回调函数的应用程序定义值。</param>
+        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。 </returns>
+        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "EndPaint", PreserveSig = true, SetLastError = false)]
+        public static extern bool EnumWindows(WNDENUMPROC lpEnumFunc, IntPtr lParam);
+
+        /// <summary>
         /// FillRect 函数使用指定的画笔填充矩形。 此函数包括左边框和上边框，但不包括矩形的右边框和下边框。
         /// </summary>
         /// <param name="hdc">设备上下文的句柄。</param>
@@ -134,6 +143,17 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
         [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "FillRect", PreserveSig = true, SetLastError = false)]
         public static extern int FillRect(IntPtr hdc, RECT lprc, IntPtr hbr);
+
+        /// <summary>
+        /// 检索一个窗口的句柄，该窗口的类名和窗口名称与指定的字符串匹配。 该函数搜索子窗口，从指定子窗口后面的子窗口开始。 此函数不执行区分大小写的搜索。
+        /// </summary>
+        /// <param name="hWndParent">要搜索其子窗口的父窗口的句柄。如果 hwndParent 为 NULL，则该函数使用桌面窗口作为父窗口。 函数在桌面的子窗口之间搜索。 如果 hwndParent 为HWND_MESSAGE，则函数将搜索所有 仅消息窗口。</param>
+        /// <param name="hWndChildAfter">子窗口的句柄。 搜索从 Z 顺序中的下一个子窗口开始。 子窗口必须是 hwndParent 的直接子窗口，而不仅仅是子窗口。 如果 hwndChildAfter 为 NULL，则搜索从 hwndParent 的第一个子窗口开始。请注意，如果 hwndParent 和 hwndChildAfter 均为 NULL，则该函数将搜索所有顶级窗口和仅消息窗口。</param>
+        /// <param name="lpszClass">类名或上一次对 RegisterClass 或 RegisterClassEx 函数的调用创建的类名或类原子。 原子必须置于 lpszClass 的低序单词中;高阶单词必须为零。如果 lpszClass 是字符串，则指定窗口类名。 类名可以是注册到 RegisterClass 或 RegisterClassEx 的任何名称，也可以是预定义的控件类名称，也可以是 MAKEINTATOM(0x8000)。 在此后一种情况下，0x8000是菜单类的原子。 </param>
+        /// <param name="lpszWindow">窗口名称 (窗口的标题) 。 如果此参数为 NULL，则所有窗口名称都匹配。</param>
+        /// <returns>如果函数成功，则返回值是具有指定类和窗口名称的窗口的句柄。如果函数失败，则返回值为 NULL。 要获得更多的错误信息，请调用 GetLastError。</returns>
+        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "FindWindowExW", PreserveSig = true, SetLastError = false)]
+        public static extern IntPtr FindWindowEx(IntPtr hWndParent, IntPtr hWndChildAfter, string lpszClass, string lpszWindow);
 
         /// <summary>
         /// 检索窗口工作区的坐标。 客户端坐标指定工作区的左上角和右下角。 由于客户端坐标相对于窗口工作区的左上角，因此左上角的坐标 (0,0) 。
@@ -197,6 +217,15 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         /// <returns>如果函数成功，则返回值是请求的值。如果函数失败，则返回值为零。</returns>
         [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "GetWindowLongPtrW", PreserveSig = true, SetLastError = false)]
         public static extern int GetWindowLongPtr(IntPtr hWnd, WindowLongIndexFlags nIndex);
+
+        /// <summary>
+        /// 检索创建指定窗口的线程的标识符，以及创建该窗口的进程（可选）的标识符。
+        /// </summary>
+        /// <param name="hWnd">窗口的句柄。</param>
+        /// <param name="processId">指向接收进程标识符的变量的指针。 如果此参数不为 NULL， 则 GetWindowThreadProcessId 会将进程的标识符复制到变量;否则，它不会。 如果函数失败，则变量的值保持不变。</param>
+        /// <returns>如果函数成功，则返回值是创建窗口的线程的标识符。 如果窗口句柄无效，则返回值为零。</returns>
+        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "GetWindowThreadProcessId", PreserveSig = true, SetLastError = false)]
+        public static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
         /// <summary>
         /// 确定指定窗口的可见性状态。
