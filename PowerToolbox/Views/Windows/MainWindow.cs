@@ -277,6 +277,7 @@ namespace PowerToolbox.Views.Windows
                         ThemeService.PropertyChanged -= OnServicePropertyChanged;
                         BackdropService.PropertyChanged -= OnServicePropertyChanged;
                         TopMostService.PropertyChanged -= OnServicePropertyChanged;
+                        Comctl32Library.RemoveWindowSubclass(Handle, windowClassProc, 0);
 
                         Current = null;
                         desktopWindowXamlSource.Dispose();
@@ -303,6 +304,7 @@ namespace PowerToolbox.Views.Windows
                     ThemeService.PropertyChanged -= OnServicePropertyChanged;
                     BackdropService.PropertyChanged -= OnServicePropertyChanged;
                     TopMostService.PropertyChanged -= OnServicePropertyChanged;
+                    Comctl32Library.RemoveWindowSubclass(Handle, windowClassProc, 0);
 
                     Current = null;
                     desktopWindowXamlSource.Dispose();
@@ -567,12 +569,20 @@ namespace PowerToolbox.Views.Windows
                         SetWindowTheme();
                         SetClassicMenuTheme();
 
-                        if ((Content as MainPage).GetFrameContent() is ThemeSwitchPage themeSwitchPage)
+                        if (Content is MainPage mainPage)
                         {
-                            BeginInvoke(async () =>
+                            BeginInvoke(() =>
                             {
-                                await themeSwitchPage.InitializeSystemThemeSettingsAsync();
+                                SetPopupControlTheme(mainPage.WindowTheme);
                             });
+
+                            if (mainPage.GetFrameContent() is ThemeSwitchPage themeSwitchPage)
+                            {
+                                BeginInvoke(async () =>
+                                {
+                                    await themeSwitchPage.InitializeSystemThemeSettingsAsync();
+                                });
+                            }
                         }
                         break;
                     }
@@ -1206,6 +1216,27 @@ namespace PowerToolbox.Views.Windows
             {
                 UxthemeLibrary.SetPreferredAppMode(PreferredAppMode.ForceDark);
                 UxthemeLibrary.FlushMenuThemes();
+            }
+        }
+
+        /// <summary>
+        /// 设置所有弹出控件主题
+        /// </summary>
+        private void SetPopupControlTheme(ElementTheme elementTheme)
+        {
+            foreach (Popup popup in VisualTreeHelper.GetOpenPopupsForXamlRoot(Content.XamlRoot))
+            {
+                popup.RequestedTheme = elementTheme;
+
+                if (popup.Child is FlyoutPresenter flyoutPresenter)
+                {
+                    flyoutPresenter.RequestedTheme = elementTheme;
+                }
+
+                if (popup.Child is Grid grid && grid.Name is "OuterOverflowContentRootV2")
+                {
+                    grid.RequestedTheme = elementTheme;
+                }
             }
         }
 
