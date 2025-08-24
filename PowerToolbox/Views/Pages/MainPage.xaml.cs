@@ -379,8 +379,8 @@ namespace PowerToolbox.Views.Pages
                     }
                 }
 
-                // 如果导航到更新页面或 Hosts 文件编辑器页面，而且是非管理员模式，显示提示对话框
-                if ((Equals(currentPageType, typeof(UpdateManagerPage)) || Equals(currentPageType, typeof(HostsPage))) && !RuntimeHelper.IsElevated)
+                // 如果导航到更新页面、 Hosts 文件编辑器页面、文件恢复页面，而且是非管理员模式，显示提示对话框
+                if ((Equals(currentPageType, typeof(UpdateManagerPage)) || Equals(currentPageType, typeof(HostsPage))) || Equals(currentPageType, typeof(WinFRPage)) && !RuntimeHelper.IsElevated)
                 {
                     await MainWindow.Current.ShowDialogAsync(new NeedElevatedDialog());
                     NavigationFrom();
