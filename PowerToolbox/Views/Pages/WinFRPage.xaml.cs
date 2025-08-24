@@ -16,8 +16,14 @@ using System.Diagnostics.Tracing;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
+using System.Management;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -49,14 +55,28 @@ namespace PowerToolbox.Views.Pages
         private readonly string NTFSString = ResourceService.WinFRResource.GetString("NTFS");
         private readonly string NTFSModeString = ResourceService.WinFRResource.GetString("NTFSMode");
         private readonly string OverrideString = ResourceService.WinFRResource.GetString("Override");
+        private readonly string PrepareScanString = ResourceService.WinFRResource.GetString("PrepareScan");
         private readonly string RecentDeleteString = ResourceService.WinFRResource.GetString("RecentDelete");
+        private readonly string RecoverDeletedFileString = ResourceService.WinFRResource.GetString("RecoverDeletedFile");
+        private readonly string RecoverFileString = ResourceService.WinFRResource.GetString("RecoverFile");
+        private readonly string RecoveringDeletedFileString = ResourceService.WinFRResource.GetString("RecoveringDeletedFile");
         private readonly string RegularModeString = ResourceService.WinFRResource.GetString("RegularMode");
+        private readonly string ScanDeletedFileString = ResourceService.WinFRResource.GetString("ScanDeletedFile");
+        private readonly string ScanningDeletedFileString = ResourceService.WinFRResource.GetString("ScanningDeletedFile");
         private readonly string SegmentModeString = ResourceService.WinFRResource.GetString("SegmentMode");
         private readonly string SelectFolderString = ResourceService.WinFRResource.GetString("SelectFolder");
         private readonly string SignatureModeString = ResourceService.WinFRResource.GetString("SignatureMode");
-
+        private readonly Guid CLSID_ProgressDialog = new("F8383852-FCD3-11d1-A6B9-006097DF5BD4");
+        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
+        private readonly char[] trimCharsArray = ['\b', '\r', '\n'];
+        private readonly Regex scanRegex = new(@"(\d{2})%");
+        private readonly Regex recoverRegex = new(@"Files recovered: (\d+), total files: (\d+), current filename: ([\w\W]+)");
         private ImageSource SystemDriveSource;
         private ImageSource StandardDriveSource;
+        private IProgressDialog progressDialog;
+        private Process winFRProcess;
+        private IntPtr winFRProcessHandle;
+        private System.Timers.Timer winFRTimer = new();
 
         private bool _isDriveLoadCompleted;
 
@@ -653,7 +673,7 @@ namespace PowerToolbox.Views.Pages
                 try
                 {
                     int iconsNum = User32Library.PrivateExtractIcons(DriveImagePath, 0, 0, 0, null, null, 0, 0);
-                    IntPtr[] phicon = new IntPtr[iconsNum];
+                    nint[] phicon = new nint[iconsNum];
                     int[] piconid = new int[iconsNum];
                     int nIcons = User32Library.PrivateExtractIcons(DriveImagePath, 31, 256, 256, phicon, piconid, 1, 0);
 
@@ -675,7 +695,7 @@ namespace PowerToolbox.Views.Pages
                 try
                 {
                     int iconsNum = User32Library.PrivateExtractIcons(DriveImagePath, 0, 0, 0, null, null, 0, 0);
-                    IntPtr[] phicon = new IntPtr[iconsNum];
+                    nint[] phicon = new nint[iconsNum];
                     int[] piconid = new int[iconsNum];
                     int nIcons = User32Library.PrivateExtractIcons(DriveImagePath, 30, 256, 256, phicon, piconid, 1, 0);
 
@@ -691,9 +711,11 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnNavigatedTo), 1, e);
+                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnNavigatedTo), 2, e);
                 }
 
+                System.Windows.Forms.Application.ApplicationExit += OnApplicationExit;
+                winFRTimer.Elapsed += OnElapsed;
                 await GetDriverInfoAsync();
             }
         }
@@ -777,6 +799,237 @@ namespace PowerToolbox.Views.Pages
             if (checkState)
             {
                 string winFRCommand = await GetWinFRCommandAsync();
+
+                try
+                {
+                    IsRecoveryEnabled = false;
+                    progressDialog = (IProgressDialog)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_ProgressDialog));
+
+                    if (progressDialog is not null)
+                    {
+                        // 准备扫描
+                        progressDialog.SetTitle(PrepareScanString);
+                        progressDialog.SetLine(1, PrepareScanString, false, IntPtr.Zero);
+                        progressDialog.StartProgressDialog(MainWindow.Current.Handle, null, PROGDLG.PROGDLG_MODAL | PROGDLG.PROGDLG_NOMINIMIZE, IntPtr.Zero);
+
+                        await Task.Run(() =>
+                        {
+                            try
+                            {
+                                if (!winFRTimer.Enabled)
+                                {
+                                    winFRTimer.Start();
+                                }
+
+                                if (winFRProcess is null)
+                                {
+                                    winFRProcess = new()
+                                    {
+                                        StartInfo =
+                                        {
+                                            FileName = "cmd.exe",
+                                            Arguments = string.Format(@"/C chcp 65001>nul && {0}\{1}",Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),winFRCommand),
+                                            RedirectStandardInput = true,
+                                            RedirectStandardOutput = true,
+                                            RedirectStandardError = true,
+                                            UseShellExecute = false,
+                                            CreateNoWindow = false,
+                                            StandardErrorEncoding = Encoding.Unicode,
+                                            StandardOutputEncoding = Encoding.Unicode,
+                                            WindowStyle = ProcessWindowStyle.Minimized,
+                                        },
+                                    };
+
+                                    winFRProcess.Start();
+                                    StreamReader outputReader = winFRProcess.StandardOutput;
+                                    char[] buffer = new char[1024];
+                                    bool scanningSection = false;
+                                    bool recoverSection = false;
+
+                                    while (!winFRProcess.HasExited)
+                                    {
+                                        int charLength = outputReader.Read(buffer, 0, buffer.Length);
+                                        if (charLength > 0)
+                                        {
+                                            string content = new(buffer, 0, charLength);
+
+                                            if (!string.IsNullOrEmpty(content))
+                                            {
+                                                content = content.Trim(trimCharsArray);
+
+                                                // 开始恢复文件
+                                                if (content.Contains("Continue? (y/n)"))
+                                                {
+                                                    if (winFRProcessHandle == IntPtr.Zero)
+                                                    {
+                                                        winFRProcessHandle = FindWindowHandleByProcess(winFRProcess);
+                                                        User32Library.ShowWindow(winFRProcessHandle, WindowShowStyle.SW_HIDE);
+                                                    }
+                                                    User32Library.PostMessage(winFRProcessHandle, WindowMessage.WM_KEYDOWN, new UIntPtr(Convert.ToUInt32(Keys.Y)), IntPtr.Zero);
+                                                }
+
+                                                // 第一阶段
+                                                if (content.Contains("Pass 1"))
+                                                {
+                                                    scanningSection = true;
+                                                    recoverSection = false;
+                                                }
+
+                                                // 进入第一阶段（扫描阶段）
+                                                if (scanningSection)
+                                                {
+                                                    if (scanRegex.Matches(content) is MatchCollection scanCollection && scanCollection.Count > 0 && scanCollection[scanCollection.Count - 1].Groups is GroupCollection groupCollection && groupCollection.Count is 2)
+                                                    {
+                                                        uint scanPercentage = Convert.ToUInt32(groupCollection[1].Value);
+
+                                                        synchronizationContext.Post((_) =>
+                                                        {
+                                                            if (progressDialog is not null && !progressDialog.HasUserCanceled())
+                                                            {
+                                                                progressDialog.SetTitle(ScanDeletedFileString);
+                                                                progressDialog.SetLine(1, ScanDeletedFileString, false, IntPtr.Zero);
+                                                                progressDialog.SetLine(2, string.Format(ScanningDeletedFileString, scanPercentage), false, IntPtr.Zero);
+                                                                progressDialog.SetProgress(scanPercentage, 200);
+                                                            }
+                                                        }, null);
+                                                    }
+                                                }
+
+                                                if (content.Contains("Pass 2"))
+                                                {
+                                                    scanningSection = false;
+                                                    recoverSection = true;
+                                                }
+
+                                                // 进入第二阶段（恢复阶段）
+                                                if (recoverSection)
+                                                {
+                                                    if (recoverRegex.Matches(content) is MatchCollection recoverCollection && recoverCollection.Count > 0 && recoverCollection[recoverCollection.Count - 1].Groups is GroupCollection groupCollection && groupCollection.Count is 4)
+                                                    {
+                                                        uint currentItemIndex = Convert.ToUInt32(groupCollection[1].Value);
+                                                        uint totalItemIndex = Convert.ToUInt32(groupCollection[2].Value);
+                                                        string fileName = groupCollection[3].Value;
+                                                        uint finishedPercentage = Convert.ToUInt32(currentItemIndex * 100 / totalItemIndex);
+
+                                                        synchronizationContext.Post((_) =>
+                                                        {
+                                                            if (progressDialog is not null && !progressDialog.HasUserCanceled())
+                                                            {
+                                                                progressDialog.SetTitle(RecoverDeletedFileString);
+                                                                progressDialog.SetLine(1, RecoverDeletedFileString, false, IntPtr.Zero);
+                                                                progressDialog.SetLine(2, string.Format(RecoveringDeletedFileString, finishedPercentage), false, IntPtr.Zero);
+                                                                progressDialog.SetLine(3, string.Format(RecoverFileString, currentItemIndex, totalItemIndex, fileName), false, IntPtr.Zero);
+                                                                progressDialog.SetProgress(finishedPercentage + 100, 200);
+                                                            }
+                                                        }, null);
+                                                    }
+                                                }
+
+                                                // 恢复完成，查看文件目录
+                                                if (content.Contains("View recovered files? (y/n)"))
+                                                {
+                                                    synchronizationContext.Post((_) =>
+                                                    {
+                                                        if (progressDialog is not null && !progressDialog.HasUserCanceled())
+                                                        {
+                                                            progressDialog.StopProgressDialog();
+                                                            Marshal.ReleaseComObject(progressDialog);
+                                                            progressDialog = null;
+                                                        }
+                                                    }, null);
+
+                                                    if (winFRTimer.Enabled)
+                                                    {
+                                                        winFRTimer.Stop();
+                                                    }
+                                                    User32Library.PostMessage(winFRProcessHandle, WindowMessage.WM_KEYDOWN, new UIntPtr(Convert.ToUInt32(Keys.Y)), IntPtr.Zero);
+                                                    winFRProcessHandle = IntPtr.Zero;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    // 防止意外发生
+                                    synchronizationContext.Post((_) =>
+                                    {
+                                        try
+                                        {
+                                            if (progressDialog is not null)
+                                            {
+                                                progressDialog.StopProgressDialog();
+                                                Marshal.ReleaseComObject(progressDialog);
+                                                progressDialog = null;
+                                            }
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnRecoveryClicked), 1, e);
+                                        }
+                                    }, null);
+
+                                    if (winFRTimer.Enabled)
+                                    {
+                                        winFRTimer.Stop();
+                                    }
+
+                                    winFRProcessHandle = IntPtr.Zero;
+
+                                    if (winFRProcess is not null)
+                                    {
+                                        winFRProcess.Dispose();
+                                        winFRProcess = null;
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnRecoveryClicked), 2, e);
+
+                                synchronizationContext.Post((_) =>
+                                {
+                                    try
+                                    {
+                                        if (progressDialog is not null)
+                                        {
+                                            progressDialog.StopProgressDialog();
+                                            Marshal.ReleaseComObject(progressDialog);
+                                            progressDialog = null;
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                    }
+                                }, null);
+                                if (winFRTimer.Enabled)
+                                {
+                                    winFRTimer.Stop();
+                                }
+                                winFRProcessHandle = IntPtr.Zero;
+                                winFRProcess = null;
+                            }
+                        });
+
+                        IsRecoveryEnabled = true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    IsRecoveryEnabled = true;
+                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnRecoveryClicked), 3, e);
+                    try
+                    {
+                        if (progressDialog is not null)
+                        {
+                            progressDialog.StopProgressDialog();
+                            Marshal.ReleaseComObject(progressDialog);
+                            progressDialog = null;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnRecoveryClicked), 4, e);
+                    }
+                }
             }
         }
 
@@ -1158,6 +1411,68 @@ namespace PowerToolbox.Views.Pages
         }
 
         #endregion 第二部分：文件恢复页面——挂载的事件
+
+        #region 第三部分：文件恢复页面——自定义事件
+
+        /// <summary>
+        /// 应用程序即将关闭时发生的事件
+        /// </summary>
+        private void OnApplicationExit(object sender, EventArgs args)
+        {
+            try
+            {
+                System.Windows.Forms.Application.ApplicationExit -= OnApplicationExit;
+                winFRTimer.Elapsed -= OnElapsed;
+                winFRTimer.Dispose();
+                winFRTimer = null;
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnApplicationExit), 1, e);
+            }
+        }
+
+        /// <summary>
+        /// 达到时间间隔触发的事件
+        /// </summary>
+        private void OnElapsed(object sender, ElapsedEventArgs args)
+        {
+            synchronizationContext.Post((_) =>
+            {
+                try
+                {
+                    // 用户手动取消操作
+                    if (progressDialog is not null && progressDialog.HasUserCanceled())
+                    {
+                        progressDialog.StopProgressDialog();
+                        Marshal.ReleaseComObject(progressDialog);
+                        progressDialog = null;
+                        if (winFRTimer.Enabled)
+                        {
+                            winFRTimer.Stop();
+                        }
+                        winFRProcessHandle = IntPtr.Zero;
+
+                        if (winFRProcess is not null)
+                        {
+                            if (!winFRProcess.HasExited)
+                            {
+                                KillProcessAndChildren(winFRProcess.Id);
+                            }
+
+                            winFRProcess.Dispose();
+                            winFRProcess = null;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnElapsed), 1, e);
+                }
+            }, null);
+        }
+
+        #endregion 第三部分：文件恢复页面——自定义事件
 
         /// <summary>
         /// 获取驱动器信息
@@ -1603,6 +1918,54 @@ namespace PowerToolbox.Views.Pages
 
                 return winFRCommandBuilder.ToString();
             });
+        }
+
+        /// <summary>
+        /// 寻找与当前窗口关联的主窗口句柄
+        /// </summary>
+        private IntPtr FindWindowHandleByProcess(Process process)
+        {
+            IntPtr handle = IntPtr.Zero;
+
+            User32Library.EnumWindows(delegate (IntPtr hWnd, IntPtr param)
+            {
+                User32Library.GetWindowThreadProcessId(hWnd, out uint windowProcessId);
+
+                if (windowProcessId == process.Id)
+                {
+                    handle = hWnd;
+                    return false;
+                }
+
+                return true;
+            }, IntPtr.Zero);
+
+            return handle;
+        }
+
+        /// <summary>
+        /// 终止进程树
+        /// </summary>
+        private static void KillProcessAndChildren(int pid)
+        {
+            if (pid is not 0)
+            {
+                ManagementObjectSearcher managementObjectSearcher = new("Select * From Win32_Process Where ParentProcessID=" + pid);
+                ManagementObjectCollection managementObjectCollection = managementObjectSearcher.Get();
+                foreach (ManagementObject managementObject in managementObjectCollection.Cast<ManagementObject>())
+                {
+                    KillProcessAndChildren(Convert.ToInt32(managementObject["ProcessID"]));
+                }
+                try
+                {
+                    Process process = Process.GetProcessById(pid);
+                    process.Kill();
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(KillProcessAndChildren), 1, e);
+                }
+            }
         }
 
         /// <summary>
