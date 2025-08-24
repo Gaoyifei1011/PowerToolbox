@@ -482,18 +482,18 @@ namespace PowerToolbox.Views.Pages
             string name = string.Empty;
 
             SelectQuery selectQuery = new("select * from Win32_Process where processID=" + processId);
-            ManagementObjectSearcher searcher = new(selectQuery);
+            ManagementObjectSearcher managementObjectSearcher = new(selectQuery);
             try
             {
-                foreach (ManagementObject manageObject in searcher.Get().Cast<ManagementObject>())
+                foreach (ManagementObject managementObject in managementObjectSearcher.Get().Cast<ManagementObject>())
                 {
-                    ManagementBaseObject inPar = null;
-                    ManagementBaseObject outPar = null;
+                    ManagementBaseObject inManagementBaseObject = null;
+                    ManagementBaseObject outManagementBaseObject = null;
 
-                    inPar = manageObject.GetMethodParameters("GetOwner");
-                    outPar = manageObject.InvokeMethod("GetOwner", inPar, null);
+                    inManagementBaseObject = managementObject.GetMethodParameters("GetOwner");
+                    outManagementBaseObject = managementObject.InvokeMethod("GetOwner", inManagementBaseObject, null);
 
-                    name = Convert.ToString(outPar["User"]);
+                    name = Convert.ToString(outManagementBaseObject["User"]);
                     break;
                 }
             }
