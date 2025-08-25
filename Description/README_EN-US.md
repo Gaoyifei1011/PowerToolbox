@@ -111,6 +111,7 @@ A toolbox that integrates multiple gadgets
 | Hosts file editor                                         | Developing                                                           |
 | Update manager                                            | Finished                                                             |
 | Loopback manager                                          | Finished                                                             |
+| Windows file recovery                                     | Finished                                                             |
 | Windows system assessment tool                            | Finished                                                             |
 | To be continued                                           | ......                                                               |
 
