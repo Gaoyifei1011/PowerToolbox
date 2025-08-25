@@ -75,7 +75,6 @@ namespace PowerToolbox.Views.Pages
         private ImageSource StandardDriveSource;
         private IProgressDialog progressDialog;
         private Process winFRProcess;
-        private IntPtr winFRProcessHandle;
         private System.Timers.Timer winFRTimer = new();
 
         private bool _isDriveLoadCompleted;
@@ -791,14 +790,13 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 开始恢复
         /// </summary>
-        // TODO：未完成
         private async void OnRecoveryClicked(Microsoft.UI.Xaml.Controls.SplitButton sender, Microsoft.UI.Xaml.Controls.SplitButtonClickEventArgs args)
         {
             bool checkState = await CheckWinFRCommandContentAsync();
 
             if (checkState)
             {
-                string winFRCommand = await GetWinFRCommandAsync();
+                string winFRCommand = await GetWinFRCommandAsync(true);
 
                 try
                 {
@@ -828,16 +826,15 @@ namespace PowerToolbox.Views.Pages
                                         StartInfo =
                                         {
                                             FileName = "cmd.exe",
-                                            Arguments = string.Format(@"/C chcp 65001>nul && {0}\{1}",Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),winFRCommand),
+                                            Arguments = string.Format(@"/C chcp 65001>nul && {0} {1}", Path.Combine(Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),"WinFR.exe"),winFRCommand),
                                             RedirectStandardInput = true,
                                             RedirectStandardOutput = true,
                                             RedirectStandardError = true,
                                             UseShellExecute = false,
-                                            CreateNoWindow = false,
+                                            CreateNoWindow = true,
                                             StandardErrorEncoding = Encoding.Unicode,
-                                            StandardOutputEncoding = Encoding.Unicode,
-                                            WindowStyle = ProcessWindowStyle.Minimized,
-                                        },
+                                            StandardOutputEncoding = Encoding.Unicode
+                                        }
                                     };
 
                                     winFRProcess.Start();
@@ -856,17 +853,6 @@ namespace PowerToolbox.Views.Pages
                                             if (!string.IsNullOrEmpty(content))
                                             {
                                                 content = content.Trim(trimCharsArray);
-
-                                                // 开始恢复文件
-                                                if (content.Contains("Continue? (y/n)"))
-                                                {
-                                                    if (winFRProcessHandle == IntPtr.Zero)
-                                                    {
-                                                        winFRProcessHandle = FindWindowHandleByProcess(winFRProcess);
-                                                        User32Library.ShowWindow(winFRProcessHandle, WindowShowStyle.SW_HIDE);
-                                                    }
-                                                    User32Library.PostMessage(winFRProcessHandle, WindowMessage.WM_KEYDOWN, new UIntPtr(Convert.ToUInt32(Keys.Y)), IntPtr.Zero);
-                                                }
 
                                                 // 第一阶段
                                                 if (content.Contains("Pass 1"))
@@ -926,7 +912,7 @@ namespace PowerToolbox.Views.Pages
                                                 }
 
                                                 // 恢复完成，查看文件目录
-                                                if (content.Contains("View recovered files? (y/n)"))
+                                                if (content.Contains("Progress: 100%"))
                                                 {
                                                     synchronizationContext.Post((_) =>
                                                     {
@@ -942,8 +928,7 @@ namespace PowerToolbox.Views.Pages
                                                     {
                                                         winFRTimer.Stop();
                                                     }
-                                                    User32Library.PostMessage(winFRProcessHandle, WindowMessage.WM_KEYDOWN, new UIntPtr(Convert.ToUInt32(Keys.Y)), IntPtr.Zero);
-                                                    winFRProcessHandle = IntPtr.Zero;
+                                                    Process.Start(SaveFolder);
                                                 }
                                             }
                                         }
@@ -971,8 +956,6 @@ namespace PowerToolbox.Views.Pages
                                     {
                                         winFRTimer.Stop();
                                     }
-
-                                    winFRProcessHandle = IntPtr.Zero;
 
                                     if (winFRProcess is not null)
                                     {
@@ -1004,7 +987,6 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     winFRTimer.Stop();
                                 }
-                                winFRProcessHandle = IntPtr.Zero;
                                 winFRProcess = null;
                             }
                         });
@@ -1042,7 +1024,7 @@ namespace PowerToolbox.Views.Pages
 
             if (checkState)
             {
-                string winFRCommand = await GetWinFRCommandAsync();
+                string winFRCommand = await GetWinFRCommandAsync(false);
                 bool copyResult = CopyPasteHelper.CopyToClipboard(winFRCommand);
                 await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
             }
@@ -1451,7 +1433,6 @@ namespace PowerToolbox.Views.Pages
                         {
                             winFRTimer.Stop();
                         }
-                        winFRProcessHandle = IntPtr.Zero;
 
                         if (winFRProcess is not null)
                         {
@@ -1488,7 +1469,7 @@ namespace PowerToolbox.Views.Pages
 
                 foreach (DriveInfo driveInfo in driverInfoArray)
                 {
-                    double driveUsedPercentage = (driveInfo.TotalFreeSpace * 100 / driveInfo.TotalSize);
+                    double driveUsedPercentage = ((driveInfo.TotalSize - driveInfo.TotalFreeSpace) * 100 / driveInfo.TotalSize);
 
                     DriveModel driveItem = new()
                     {
@@ -1608,12 +1589,17 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取 WinFR 命令
         /// </summary>
-        private async Task<string> GetWinFRCommandAsync()
+        private async Task<string> GetWinFRCommandAsync(bool isExecute)
         {
             return await Task.Run(() =>
             {
-                StringBuilder winFRCommandBuilder = new("WinFR.exe");
-                winFRCommandBuilder.Append(' ');
+                StringBuilder winFRCommandBuilder = new();
+
+                if (!isExecute)
+                {
+                    winFRCommandBuilder.Append("WinFR.exe");
+                    winFRCommandBuilder.Append(' ');
+                }
 
                 // 常规模式
                 if (Equals(SelectedRecoveryMode, RecoveryModeList[0]))
@@ -1916,31 +1902,13 @@ namespace PowerToolbox.Views.Pages
                     }
                 }
 
-                return winFRCommandBuilder.ToString();
-            });
-        }
-
-        /// <summary>
-        /// 寻找与当前窗口关联的主窗口句柄
-        /// </summary>
-        private IntPtr FindWindowHandleByProcess(Process process)
-        {
-            IntPtr handle = IntPtr.Zero;
-
-            User32Library.EnumWindows(delegate (IntPtr hWnd, IntPtr param)
-            {
-                User32Library.GetWindowThreadProcessId(hWnd, out uint windowProcessId);
-
-                if (windowProcessId == process.Id)
+                if (isExecute)
                 {
-                    handle = hWnd;
-                    return false;
+                    winFRCommandBuilder.Append("/a");
                 }
 
-                return true;
-            }, IntPtr.Zero);
-
-            return handle;
+                return winFRCommandBuilder.ToString();
+            });
         }
 
         /// <summary>
@@ -1960,6 +1928,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     Process process = Process.GetProcessById(pid);
                     process.Kill();
+                    process.Dispose();
                 }
                 catch (Exception e)
                 {
