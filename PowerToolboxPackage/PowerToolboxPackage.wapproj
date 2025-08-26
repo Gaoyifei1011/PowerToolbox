@@ -71,7 +71,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="$(ProjectDir)\WinFR.exe" CopyToOutputDirectory="Always" />
     <PackageReference Include="Microsoft.UI.Xaml" Version="2.8.7" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4948" />
     <ProjectReference Include="..\PowerToolbox\PowerToolbox.csproj" />
@@ -90,9 +89,6 @@
         <SourceProject />
       </_FilteredNonWapProjProjectOutput>
     </ItemGroup>
-  </Target>
-  <Target Name="CopyFilesToTargetDir" BeforeTargets="BeforeBuild">
-    <Copy SourceFiles="$(ProjectDir)\Platforms\$(Platform)\WinFR.exe" DestinationFolder="$(ProjectDir)" />
   </Target>
   <!--
     Workaround for bug https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1149545
