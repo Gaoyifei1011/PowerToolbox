@@ -826,7 +826,7 @@ namespace PowerToolbox.Views.Pages
                                         StartInfo =
                                         {
                                             FileName = "cmd.exe",
-                                            Arguments = string.Format(@"/C chcp 65001>nul && {0} {1}", Path.Combine(Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath),"WinFR.exe"),winFRCommand),
+                                            Arguments = string.Format(@"/C chcp 65001>nul && {0}",winFRCommand),
                                             RedirectStandardInput = true,
                                             RedirectStandardOutput = true,
                                             RedirectStandardError = true,
@@ -1593,13 +1593,8 @@ namespace PowerToolbox.Views.Pages
         {
             return await Task.Run(() =>
             {
-                StringBuilder winFRCommandBuilder = new();
-
-                if (!isExecute)
-                {
-                    winFRCommandBuilder.Append("WinFR.exe");
-                    winFRCommandBuilder.Append(' ');
-                }
+                StringBuilder winFRCommandBuilder = new("WinFR.exe");
+                winFRCommandBuilder.Append(' ');
 
                 // 常规模式
                 if (Equals(SelectedRecoveryMode, RecoveryModeList[0]))
