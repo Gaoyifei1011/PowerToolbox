@@ -44,6 +44,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid
@@ -245,9 +246,29 @@
                     </GridView>
                 </Grid>
 
+                <!--  Windows 文件恢复未安装提示  -->
+                <controls:InfoBar
+                    Grid.Row="2"
+                    Height="50"
+                    Margin="30,0,30,3"
+                    CloseButtonClick="{x:Bind OnCloseInfoBarClicked}"
+                    IsOpen="True"
+                    Message="{x:Bind rootservice:ResourceService.WinFRResource.GetString('WinFRNotInstalled')}"
+                    Severity="Warning"
+                    Style="{StaticResource InfoBarStyle}"
+                    Visibility="{x:Bind GetInfoBarState(IsManualCloseInfoBar, IsWinFRInstalled), Mode=OneWay}">
+
+                    <controls:InfoBar.ActionButton>
+                        <Button
+                            HorizontalAlignment="Right"
+                            Click="{x:Bind OnInstallWinFRClicked}"
+                            Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('InstallWinFR')}" />
+                    </controls:InfoBar.ActionButton>
+                </controls:InfoBar>
+
                 <!--  驱动器恢复设置  -->
                 <controls:Expander
-                    Grid.Row="2"
+                    Grid.Row="3"
                     Margin="30,0,30,3"
                     Padding="0"
                     HorizontalAlignment="Stretch"
@@ -279,8 +300,7 @@
                                 Grid.Column="2"
                                 VerticalAlignment="Center"
                                 Click="{x:Bind OnRecoveryClicked}"
-                                Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('Recovery')}"
-                                IsEnabled="{x:Bind IsRecoveryEnabled, Mode=OneWay}">
+                                Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('Recovery')}">
 
                                 <controls:SplitButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
@@ -509,7 +529,7 @@
 
                 <!--  常规模式恢复选项  -->
                 <controls:Expander
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Margin="30,0,30,3"
                     Padding="0"
                     HorizontalAlignment="Stretch"
@@ -664,7 +684,7 @@
 
                 <!--  广泛模式恢复选项  -->
                 <controls:Expander
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Margin="30,0,30,3"
                     Padding="0"
                     HorizontalAlignment="Stretch"
@@ -819,7 +839,7 @@
 
                 <!--  NTFS 模式恢复选项  -->
                 <controls:Expander
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Margin="30,0,30,3"
                     Padding="0"
                     HorizontalAlignment="Stretch"
@@ -1149,7 +1169,7 @@
 
                 <!--  段模式恢复选项  -->
                 <controls:Expander
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Margin="30,0,30,3"
                     Padding="0"
                     HorizontalAlignment="Stretch"
@@ -1583,7 +1603,7 @@
 
                 <!--  签名模式恢复选项  -->
                 <controls:Expander
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Margin="30,0,30,3"
                     Padding="0"
                     HorizontalAlignment="Stretch"
@@ -1804,7 +1824,7 @@
 
                 <!--  模式选择建议  -->
                 <controls:Expander
-                    Grid.Row="4"
+                    Grid.Row="5"
                     Margin="30,0,30,3"
                     Padding="0"
                     HorizontalAlignment="Stretch"
@@ -2002,7 +2022,7 @@
 
                 <!--  其他选项说明  -->
                 <controls:Expander
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Margin="30,0,30,3"
                     Padding="0"
                     HorizontalAlignment="Stretch"

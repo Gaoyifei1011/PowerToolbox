@@ -6,6 +6,7 @@ using PowerToolbox.Services.Root;
 using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
+using PowerToolbox.WindowsAPI.PInvoke.FirewallAPI;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
@@ -31,8 +32,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
-// 抑制 CA1822，IDE0060 警告
-#pragma warning disable CA1822,IDE0060
+// 抑制 CA1806，CA1822，IDE0060 警告
+#pragma warning disable CA1806,CA1822,IDE0060
 
 namespace PowerToolbox.Views.Pages
 {
@@ -71,11 +72,12 @@ namespace PowerToolbox.Views.Pages
         private readonly char[] trimCharsArray = ['\b', '\r', '\n'];
         private readonly Regex scanRegex = new(@"(\d{2})%");
         private readonly Regex recoverRegex = new(@"Files recovered: (\d+), total files: (\d+), current filename: ([\w\W]+)");
+        private System.Timers.Timer winFRTimer = new();
         private ImageSource SystemDriveSource;
         private ImageSource StandardDriveSource;
         private IProgressDialog progressDialog;
         private Process winFRProcess;
-        private System.Timers.Timer winFRTimer = new();
+        private bool isRecovering;
 
         private bool _isDriveLoadCompleted;
 
@@ -109,18 +111,34 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isRecoveryEnabled;
+        private bool _isManualCloseInfoBar;
 
-        public bool IsRecoveryEnabled
+        public bool IsManualCloseInfoBar
         {
-            get { return _isRecoveryEnabled; }
+            get { return _isManualCloseInfoBar; }
 
             set
             {
-                if (!Equals(_isRecoveryEnabled, value))
+                if (!Equals(_isManualCloseInfoBar, value))
                 {
-                    _isRecoveryEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRecoveryEnabled)));
+                    _isManualCloseInfoBar = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsManualCloseInfoBar)));
+                }
+            }
+        }
+
+        private bool _isWinFRInstalled;
+
+        public bool IsWinFRInstalled
+        {
+            get { return _isWinFRInstalled; }
+
+            set
+            {
+                if (!Equals(_isWinFRInstalled, value))
+                {
+                    _isWinFRInstalled = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsWinFRInstalled)));
                 }
             }
         }
@@ -665,6 +683,8 @@ namespace PowerToolbox.Views.Pages
         {
             base.OnNavigatedTo(args);
 
+            IsWinFRInstalled = await GetWinFRInstalledAsync();
+
             if (!isInitialized)
             {
                 isInitialized = true;
@@ -739,8 +759,33 @@ namespace PowerToolbox.Views.Pages
             if (sender is GridView gridView && gridView.SelectedItem is DriveModel driveItem)
             {
                 SelectedItem = driveItem;
-                IsRecoveryEnabled = true;
             }
+        }
+
+        /// <summary>
+        /// 手动关闭信息栏提示
+        /// </summary>
+        private void OnCloseInfoBarClicked(InfoBar sender, object args)
+        {
+            IsManualCloseInfoBar = true;
+        }
+
+        /// <summary>
+        /// 安装 Windows 文件恢复
+        /// </summary>
+        private void OnInstallWinFRClicked(object sender, RoutedEventArgs args)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("https://apps.microsoft.com/detail/9N26S50LN705");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnInstallWinFRClicked), 1, e);
+                }
+            });
         }
 
         /// <summary>
@@ -792,7 +837,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnRecoveryClicked(Microsoft.UI.Xaml.Controls.SplitButton sender, Microsoft.UI.Xaml.Controls.SplitButtonClickEventArgs args)
         {
-            bool checkState = await CheckWinFRCommandContentAsync();
+            bool checkState = await CheckWinFRStateAsync(true);
 
             if (checkState)
             {
@@ -800,7 +845,7 @@ namespace PowerToolbox.Views.Pages
 
                 try
                 {
-                    IsRecoveryEnabled = false;
+                    isRecovering = true;
                     progressDialog = (IProgressDialog)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_ProgressDialog));
 
                     if (progressDialog is not null)
@@ -991,12 +1036,12 @@ namespace PowerToolbox.Views.Pages
                             }
                         });
 
-                        IsRecoveryEnabled = true;
+                        isRecovering = false;
                     }
                 }
                 catch (Exception e)
                 {
-                    IsRecoveryEnabled = true;
+                    isRecovering = false;
                     LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnRecoveryClicked), 3, e);
                     try
                     {
@@ -1020,7 +1065,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnCopyWinFRCommandClicked(object sender, RoutedEventArgs args)
         {
-            bool checkState = await CheckWinFRCommandContentAsync();
+            bool checkState = await CheckWinFRStateAsync(false);
 
             if (checkState)
             {
@@ -1502,7 +1547,6 @@ namespace PowerToolbox.Views.Pages
             });
 
             SelectedItem = null;
-            IsRecoveryEnabled = false;
             DriveCollection.Clear();
             foreach (DriveModel driveItem in driveList)
             {
@@ -1513,10 +1557,32 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 检查 WinFR 命令内容
+        /// 检查 WinFR 状态
         /// </summary>
-        private async Task<bool> CheckWinFRCommandContentAsync()
+        private async Task<bool> CheckWinFRStateAsync(bool isExecute)
         {
+            if (isExecute)
+            {
+                if (isRecovering)
+                {
+                    return false;
+                }
+
+                IsWinFRInstalled = await GetWinFRInstalledAsync();
+
+                if (isExecute && !IsWinFRInstalled)
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.WinFRNotInstalled));
+                    return false;
+                }
+            }
+
+            if (SelectedItem is null)
+            {
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DriveEmpty));
+                return false;
+            }
+
             if (string.IsNullOrEmpty(SaveFolder))
             {
                 await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectFolderEmpty));
@@ -1584,6 +1650,27 @@ namespace PowerToolbox.Views.Pages
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// 获取 Windows 文件恢复安装状态
+        /// </summary>
+        private async Task<bool> GetWinFRInstalledAsync()
+        {
+            return await Task.Run(() =>
+            {
+                List<INET_FIREWALL_APP_CONTAINER> inetLoopbackList = GetAppContainerList();
+
+                foreach (INET_FIREWALL_APP_CONTAINER inetContainerItem in inetLoopbackList)
+                {
+                    if (!string.IsNullOrEmpty(inetContainerItem.packageFullName) && string.Equals(inetContainerItem.packageFullName, "Microsoft.WindowsFileRecovery_8wekyb3d8bbwe", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
         }
 
         /// <summary>
@@ -1907,6 +1994,37 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 获取设备所有应用容器数据列表
+        /// </summary>
+        private List<INET_FIREWALL_APP_CONTAINER> GetAppContainerList()
+        {
+            IntPtr arrayValue = IntPtr.Zero;
+            uint size = 0;
+            List<INET_FIREWALL_APP_CONTAINER> inetContainerList = [];
+
+            GCHandle handle_pdwCntPublicACs = GCHandle.Alloc(size, GCHandleType.Pinned);
+            GCHandle handle_ppACs = GCHandle.Alloc(arrayValue, GCHandleType.Pinned);
+            FirewallAPILibrary.NetworkIsolationEnumAppContainers(NETISO_FLAG.NETISO_FLAG_MAX, out size, out arrayValue);
+
+            IntPtr pACs = arrayValue;
+
+            int structSize = Marshal.SizeOf<INET_FIREWALL_APP_CONTAINER>();
+
+            for (int index = 0; index < size; index++)
+            {
+                INET_FIREWALL_APP_CONTAINER container = Marshal.PtrToStructure<INET_FIREWALL_APP_CONTAINER>(arrayValue);
+
+                inetContainerList.Add(container);
+                arrayValue = new IntPtr((long)arrayValue + structSize);
+            }
+
+            handle_pdwCntPublicACs.Free();
+            handle_ppACs.Free();
+            FirewallAPILibrary.NetworkIsolationFreeAppContainers(pACs);
+            return inetContainerList;
+        }
+
+        /// <summary>
         /// 终止进程树
         /// </summary>
         private static void KillProcessAndChildren(int pid)
@@ -1930,6 +2048,14 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(KillProcessAndChildren), 1, e);
                 }
             }
+        }
+
+        /// <summary>
+        /// 获取信息栏显示状态
+        /// </summary>
+        private Visibility GetInfoBarState(bool isManualCloseInfoBar, bool isWinFRInstalled)
+        {
+            return !isManualCloseInfoBar && !isWinFRInstalled ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
