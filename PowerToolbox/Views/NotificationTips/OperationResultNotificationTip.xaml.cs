@@ -108,6 +108,11 @@ namespace PowerToolbox.Views.NotificationTips
                 IsSuccessOperation = false;
                 OperationContent = ResourceService.NotificationTipResource.GetString("FileDeleteFailed");
             }
+            else if (operationKind is OperationKind.DriveEmpty)
+            {
+                IsSuccessOperation = false;
+                OperationContent = ResourceService.NotificationTipResource.GetString("DriveEmpty");
+            }
             else if (operationKind is OperationKind.FileLost)
             {
                 IsSuccessOperation = false;
@@ -232,6 +237,11 @@ namespace PowerToolbox.Views.NotificationTips
             {
                 IsSuccessOperation = true;
                 OperationContent = ResourceService.NotificationTipResource.GetString("ThemeSwitchRestoreResult");
+            }
+            else if (operationKind is OperationKind.WinFRNotInstalled)
+            {
+                IsSuccessOperation = false;
+                OperationContent = ResourceService.NotificationTipResource.GetString("WinFRNotInstalled");
             }
         }
 
