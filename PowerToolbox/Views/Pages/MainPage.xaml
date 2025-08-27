@@ -664,7 +664,7 @@
                             </ToolTipService.ToolTip>
                         </controls:NavigationViewItem>
 
-                        <controls:NavigationViewItem Tag="Hosts">
+                        <controls:NavigationViewItem Tag="Hosts" Visibility="Collapsed">
 
                             <controls:NavigationViewItem.Icon>
                                 <controls:ImageIcon Source="ms-appx:///Assets/ControlIcon/Hosts.png" />

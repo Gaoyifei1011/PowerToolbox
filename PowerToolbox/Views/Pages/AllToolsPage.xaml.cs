@@ -114,13 +114,13 @@ namespace PowerToolbox.Views.Pages
                 ImagePath = "ms-appx:///Assets/ControlIcon/LoopbackManager.png",
                 Tag = "LoopbackManager"
             },
-            new ControlItemModel()
-            {
-                Title = ResourceService.AllToolsResource.GetString("Hosts"),
-                Description = ResourceService.AllToolsResource.GetString("HostsDescription"),
-                ImagePath = "ms-appx:///Assets/ControlIcon/Hosts.png",
-                Tag = "Hosts"
-            },
+            //new ControlItemModel()
+            //{
+            //    Title = ResourceService.AllToolsResource.GetString("Hosts"),
+            //    Description = ResourceService.AllToolsResource.GetString("HostsDescription"),
+            //    ImagePath = "ms-appx:///Assets/ControlIcon/Hosts.png",
+            //    Tag = "Hosts"
+            //},
             new ControlItemModel()
             {
                 Title = ResourceService.AllToolsResource.GetString("DriverManager"),

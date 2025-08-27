@@ -5,11 +5,11 @@ using System.Resources;
 [assembly: AssemblyCompany("高怡飞")]
 [assembly: AssemblyCopyright("Copyright 2022-2025 高怡飞 版权所有")]
 [assembly: AssemblyDescription("PowerToolbox")]
-[assembly: AssemblyFileVersion("4.1.703.0")]
-[assembly: AssemblyInformationalVersion("4.1.703.0")]
+[assembly: AssemblyFileVersion("4.2.828.0")]
+[assembly: AssemblyInformationalVersion("4.2.828.0")]
 [assembly: AssemblyProduct("PowerToolbox")]
 [assembly: AssemblyTitle("PowerToolbox")]
-[assembly: AssemblyVersion("4.1.703.0")]
+[assembly: AssemblyVersion("4.2.828.0")]
 
 // 应用程序默认区域性的资源控制器设置
 [assembly: NeutralResourcesLanguage("en-us")]
