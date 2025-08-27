@@ -117,11 +117,12 @@
                     Grid.Row="1"
                     Height="50"
                     Margin="30,0,30,3"
-                    IsOpen="{x:Bind IsThemeSwitchNotificationEnabled, Mode=OneWay}"
+                    CloseButtonClick="{x:Bind OnCloseInfoBarClicked}"
+                    IsOpen="True"
                     Message="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('StartupTaskNotEnabled')}"
                     Severity="Warning"
                     Style="{StaticResource InfoBarStyle}"
-                    Visibility="{x:Bind IsThemeSwitchNotificationEnabled, Mode=OneWay}">
+                    Visibility="{x:Bind GetInfoBarState(IsManualCloseInfoBar, IsThemeSwitchNotificationEnabled), Mode=OneWay}">
 
                     <controls:InfoBar.ActionButton>
                         <Button

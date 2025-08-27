@@ -93,6 +93,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isManualCloseInfoBar;
+
+        public bool IsManualCloseInfoBar
+        {
+            get { return _isManualCloseInfoBar; }
+
+            set
+            {
+                if (!Equals(_isManualCloseInfoBar, value))
+                {
+                    _isManualCloseInfoBar = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsManualCloseInfoBar)));
+                }
+            }
+        }
+
         private bool _isThemeSwitchNotificationEnabled;
 
         public bool IsThemeSwitchNotificationEnabled
@@ -398,6 +414,14 @@ namespace PowerToolbox.Views.Pages
         private async void OnRefreshClicked(Microsoft.UI.Xaml.Controls.SplitButton sender, Microsoft.UI.Xaml.Controls.SplitButtonClickEventArgs args)
         {
             await InitializeSystemThemeSettingsAsync();
+        }
+
+        /// <summary>
+        /// 手动关闭信息栏提示
+        /// </summary>
+        private void OnCloseInfoBarClicked(InfoBar sender, object args)
+        {
+            IsManualCloseInfoBar = true;
         }
 
         /// <summary>
@@ -910,6 +934,14 @@ namespace PowerToolbox.Views.Pages
         private bool GetShowThemeColorInStartAndTaskbar()
         {
             return RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence");
+        }
+
+        /// <summary>
+        /// 获取信息栏显示状态
+        /// </summary>
+        private Visibility GetInfoBarState(bool isManualCloseInfoBar, bool isThemeSwitchNotificationEnabled)
+        {
+            return !isManualCloseInfoBar && isThemeSwitchNotificationEnabled ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
