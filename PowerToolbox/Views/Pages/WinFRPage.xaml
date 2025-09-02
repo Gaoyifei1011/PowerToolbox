@@ -220,26 +220,6 @@
                                             </Grid>
                                         </ToolTip>
                                     </ToolTipService.ToolTip>
-
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="LayoutVisualStates">
-                                            <VisualState x:Name="WideLayout">
-                                                <VisualState.StateTriggers>
-                                                    <AdaptiveTrigger MinWindowWidth="641" />
-                                                </VisualState.StateTriggers>
-                                                <VisualState.Setters />
-                                            </VisualState>
-                                            <VisualState x:Name="NarrowLayout">
-                                                <VisualState.StateTriggers>
-                                                    <AdaptiveTrigger MinWindowWidth="0" />
-                                                </VisualState.StateTriggers>
-                                                <VisualState.Setters>
-                                                    <Setter Target="controlRoot.Width" Value="Auto" />
-                                                    <Setter Target="controlRoot.Height" Value="120" />
-                                                </VisualState.Setters>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
                                 </Grid>
                             </DataTemplate>
                         </GridView.ItemTemplate>
