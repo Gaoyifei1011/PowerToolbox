@@ -441,15 +441,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         public static extern IntPtr SetWindowsHookEx(HOOKTYPE idHook, HOOKPROC lpfn, IntPtr hMod, int dwThreadId);
 
         /// <summary>
-        /// 设置指定窗口的显示状态。
-        /// </summary>
-        /// <param name="hWnd">窗口的句柄。</param>
-        /// <param name="nCmdShow">控制窗口的显示方式。 如果启动应用程序的程序提供 STARTUPINFO 结构，则应用程序首次调用 ShowWindow 时将忽略此参数。 否则，首次调用 ShowWindow 时，该值应为 WinMain 函数在其 nCmdShow 参数中获取的值。 </param>
-        /// <returns>如果窗口以前可见，则返回值为非零值。如果以前隐藏窗口，则返回值为零。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "ShowWindow", PreserveSig = true, SetLastError = false)]
-        public static extern bool ShowWindow(IntPtr hWnd, WindowShowStyle nCmdShow);
-
-        /// <summary>
         /// 当在指定时间内鼠标指针离开窗口或将鼠标悬停在窗口上时，发布消息。
         /// </summary>
         /// <param name="lpEventTrack">指向包含跟踪信息的 TRACKMOUSEEVENT 结构的指针。</param>
