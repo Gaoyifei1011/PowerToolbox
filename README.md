@@ -181,7 +181,6 @@
 > * [AndromedaMelody](https://github.com/AndromedaMelody)&emsp;
 > * [Blinue](https://github.com/Blinue)&emsp;
 > * [cnbluefire](https://github.com/cnbluefire)&emsp;
-> * [MicaApps](https://github.com/MicaApps)&emsp;
 > * [MouriNaruto](https://github.com/MouriNaruto)&emsp;
 > * [Osirisoo0O](https://github.com/Osirisoo0O)&emsp;
 
@@ -191,4 +190,3 @@
 
 > * 该项目是基于MIT协议许可的开源项目，您可以修改、分发该项目或将副本与新副本合并。如果您使用了该项目，请勿用于非法用途，本开发者不会承担任何责任。
 > * [部分工具原型](https://github.com/Gaoyifei1011/PowerToolbox/blob/main/Description/RawApplicationDescription.md)&emsp;
-

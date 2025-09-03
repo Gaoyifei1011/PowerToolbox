@@ -174,7 +174,6 @@ A toolbox that integrates multiple gadgets
 > * [AndromedaMelody](https://github.com/AndromedaMelody)&emsp;
 > * [Blinue](https://github.com/Blinue)&emsp;
 > * [cnbluefire](https://github.com/cnbluefire)&emsp;
-> * [MicaApps](https://github.com/MicaApps)&emsp;
 > * [MouriNaruto](https://github.com/MouriNaruto)&emsp;
 > * [Osirisoo0O](https://github.com/Osirisoo0O)&emsp;
 

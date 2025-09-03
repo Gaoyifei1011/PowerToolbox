@@ -59,7 +59,6 @@ namespace PowerToolbox.Views.Pages
             { "AndromedaMelody", new Uri("https://github.com/AndromedaMelody") },
             { "Blinue", new Uri("https://github.com/Blinue") },
             { "cnbluefire", new Uri("https://github.com/cnbluefire") },
-            { "MicaApps", new Uri("https://github.com/MicaApps") },
             { "MouriNaruto" , new Uri("https://github.com/MouriNaruto") },
             { "Osirisoo0O" , new Uri("https://github.com/Osirisoo0O") }
         };
