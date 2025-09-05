@@ -395,7 +395,49 @@ namespace PowerToolbox.Views.Pages
 
         #endregion 第一部分：重写父类事件
 
-        #region 第二部分：文件属性页面——挂载的事件
+        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+
+        /// <summary>
+        /// 向下移动
+        /// </summary>
+        private void OnMoveDownExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is OldAndNewPropertiesModel oldAndNewProperties)
+            {
+                int index = FilePropertiesCollection.IndexOf(oldAndNewProperties);
+
+                if (index >= 0 && index < FilePropertiesCollection.Count - 1)
+                {
+                    OldAndNewPropertiesModel upOldAndNewProperties = FilePropertiesCollection[index];
+                    OldAndNewPropertiesModel downOldAndNewProperties = FilePropertiesCollection[index + 1];
+                    FilePropertiesCollection[index] = downOldAndNewProperties;
+                    FilePropertiesCollection[index + 1] = upOldAndNewProperties;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 向上移动
+        /// </summary>
+        private void OnMoveUpExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is OldAndNewPropertiesModel oldAndNewProperties)
+            {
+                int index = FilePropertiesCollection.IndexOf(oldAndNewProperties);
+
+                if (index > 0)
+                {
+                    OldAndNewPropertiesModel upOldAndNewProperties = FilePropertiesCollection[index - 1];
+                    OldAndNewPropertiesModel downOldAndNewProperties = FilePropertiesCollection[index];
+                    FilePropertiesCollection[index - 1] = downOldAndNewProperties;
+                    FilePropertiesCollection[index] = upOldAndNewProperties;
+                }
+            }
+        }
+
+        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+
+        #region 第三部分：文件属性页面——挂载的事件
 
         /// <summary>
         /// 清空列表
@@ -668,7 +710,7 @@ namespace PowerToolbox.Views.Pages
             await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList));
         }
 
-        #endregion 第二部分：文件属性页面——挂载的事件
+        #endregion 第三部分：文件属性页面——挂载的事件
 
         /// <summary>
         /// 添加到文件属性页面

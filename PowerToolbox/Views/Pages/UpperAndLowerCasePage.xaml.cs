@@ -244,7 +244,49 @@ namespace PowerToolbox.Views.Pages
 
         #endregion 第一部分：重写父类事件
 
-        #region 第二部分：大写小写页面——挂载的事件
+        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+
+        /// <summary>
+        /// 向下移动
+        /// </summary>
+        private void OnMoveDownExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is OldAndNewNameModel oldAndNewName)
+            {
+                int index = UpperAndLowerCaseCollection.IndexOf(oldAndNewName);
+
+                if (index >= 0 && index < UpperAndLowerCaseCollection.Count - 1)
+                {
+                    OldAndNewNameModel upOldAndNewName = UpperAndLowerCaseCollection[index];
+                    OldAndNewNameModel downOldAndNewName = UpperAndLowerCaseCollection[index + 1];
+                    UpperAndLowerCaseCollection[index] = downOldAndNewName;
+                    UpperAndLowerCaseCollection[index + 1] = upOldAndNewName;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 向上移动
+        /// </summary>
+        private void OnMoveUpExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is OldAndNewNameModel oldAndNewName)
+            {
+                int index = UpperAndLowerCaseCollection.IndexOf(oldAndNewName);
+
+                if (index > 0)
+                {
+                    OldAndNewNameModel upOldAndNewName = UpperAndLowerCaseCollection[index - 1];
+                    OldAndNewNameModel downOldAndNewName = UpperAndLowerCaseCollection[index];
+                    UpperAndLowerCaseCollection[index - 1] = downOldAndNewName;
+                    UpperAndLowerCaseCollection[index] = upOldAndNewName;
+                }
+            }
+        }
+
+        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+
+        #region 第三部分：大写小写页面——挂载的事件
 
         /// <summary>
         /// 选中时触发的事件
@@ -486,7 +528,7 @@ namespace PowerToolbox.Views.Pages
             await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList));
         }
 
-        #endregion 第二部分：大写小写页面——挂载的事件
+        #endregion 第三部分：大写小写页面——挂载的事件
 
         /// <summary>
         /// 添加到大写小写页面

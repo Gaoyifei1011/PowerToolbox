@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
@@ -353,7 +354,49 @@ namespace PowerToolbox.Views.Pages
 
         #endregion 第一部分：重写父类事件
 
-        #region 第二部分：文件名称页面——挂载的事件
+        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+
+        /// <summary>
+        /// 向下移动
+        /// </summary>
+        private void OnMoveDownExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is OldAndNewNameModel oldAndNewName)
+            {
+                int index = FileNameCollection.IndexOf(oldAndNewName);
+
+                if (index >= 0 && index < FileNameCollection.Count - 1)
+                {
+                    OldAndNewNameModel upOldAndNewName = FileNameCollection[index];
+                    OldAndNewNameModel downOldAndNewName = FileNameCollection[index + 1];
+                    FileNameCollection[index] = downOldAndNewName;
+                    FileNameCollection[index + 1] = upOldAndNewName;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 向上移动
+        /// </summary>
+        private void OnMoveUpExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is OldAndNewNameModel oldAndNewName)
+            {
+                int index = FileNameCollection.IndexOf(oldAndNewName);
+
+                if (index > 0)
+                {
+                    OldAndNewNameModel upOldAndNewName = FileNameCollection[index - 1];
+                    OldAndNewNameModel downOldAndNewName = FileNameCollection[index];
+                    FileNameCollection[index - 1] = downOldAndNewName;
+                    FileNameCollection[index] = upOldAndNewName;
+                }
+            }
+        }
+
+        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+
+        #region 第三部分：文件名称页面——挂载的事件
 
         /// <summary>
         /// 当文本框中的内容发生更改时发生的事件。
@@ -629,7 +672,7 @@ namespace PowerToolbox.Views.Pages
             await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList));
         }
 
-        #endregion 第二部分：文件名称页面——挂载的事件
+        #endregion 第三部分：文件名称页面——挂载的事件
 
         /// <summary>
         /// 添加到文件名称页面

@@ -295,7 +295,49 @@ namespace PowerToolbox.Views.Pages
 
         #endregion 第一部分：重写父类事件
 
-        #region 第二部分：扩展名称页面——挂载的事件
+        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+
+        /// <summary>
+        /// 向下移动
+        /// </summary>
+        private void OnMoveDownExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is OldAndNewNameModel oldAndNewName)
+            {
+                int index = ExtensionNameCollection.IndexOf(oldAndNewName);
+
+                if (index >= 0 && index < ExtensionNameCollection.Count - 1)
+                {
+                    OldAndNewNameModel upOldAndNewName = ExtensionNameCollection[index];
+                    OldAndNewNameModel downOldAndNewName = ExtensionNameCollection[index + 1];
+                    ExtensionNameCollection[index] = downOldAndNewName;
+                    ExtensionNameCollection[index + 1] = upOldAndNewName;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 向上移动
+        /// </summary>
+        private void OnMoveUpExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is OldAndNewNameModel oldAndNewName)
+            {
+                int index = ExtensionNameCollection.IndexOf(oldAndNewName);
+
+                if (index > 0)
+                {
+                    OldAndNewNameModel upOldAndNewName = ExtensionNameCollection[index - 1];
+                    OldAndNewNameModel downOldAndNewName = ExtensionNameCollection[index];
+                    ExtensionNameCollection[index - 1] = downOldAndNewName;
+                    ExtensionNameCollection[index] = upOldAndNewName;
+                }
+            }
+        }
+
+        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+
+        #region 第三部分：扩展名称页面——挂载的事件
 
         /// <summary>
         /// 当文本框中的内容发生更改时发生的事件。
@@ -549,7 +591,7 @@ namespace PowerToolbox.Views.Pages
             await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList));
         }
 
-        #endregion 第二部分：扩展名称页面——挂载的事件
+        #endregion 第三部分：扩展名称页面——挂载的事件
 
         /// <summary>
         /// 添加到扩展名称页面
