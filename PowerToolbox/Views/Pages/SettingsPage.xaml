@@ -2,15 +2,12 @@
     x:Class="PowerToolbox.Views.Pages.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:backdrop="using:PowerToolbox.Views.Backdrop"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="using:PowerToolbox.Models"
     xmlns:roothelper="using:PowerToolbox.Helpers.Root"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
-    xmlns:system="using:System"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
@@ -89,24 +86,6 @@
                                     MaxWidth="9999"
                                     Content="{x:Bind rootservice:ResourceService.SettingsResource.GetString('General')}"
                                     Visibility="{x:Bind GeneralText.IsTextTrimmed, Mode=OneWay}" />
-                            </ToolTipService.ToolTip>
-                        </controls:NavigationViewItem>
-
-                        <controls:NavigationViewItem Tag="Download">
-                            <controls:NavigationViewItem.Content>
-                                <TextBlock
-                                    x:Name="DownloadText"
-                                    FontSize="16"
-                                    Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('Download')}"
-                                    TextTrimming="CharacterEllipsis"
-                                    TextWrapping="NoWrap" />
-                            </controls:NavigationViewItem.Content>
-
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Content="{x:Bind rootservice:ResourceService.SettingsResource.GetString('Download')}"
-                                    Visibility="{x:Bind DownloadText.IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </controls:NavigationViewItem>
 
@@ -318,11 +297,6 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <TextBlock
@@ -353,64 +327,6 @@
                                     NavigateUri="ms-settings:appsfeatures-app"
                                     UnderlineStyle="None">
                                     <Run Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('AppSettings')}" />
-                                </Hyperlink>
-                            </TextBlock>
-                        </StackPanel>
-
-                        <MenuFlyoutSeparator Grid.Row="3" />
-
-                        <TextBlock
-                            Grid.Row="4"
-                            Margin="16,10,16,10"
-                            FontSize="15"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('DownloadInstruction')}"
-                            TextAlignment="Left" />
-
-                        <TextBlock
-                            Grid.Row="5"
-                            Margin="16,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('DownloadDescription1')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
-
-                        <TextBlock
-                            Grid.Row="6"
-                            Margin="16,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('DownloadDescription2')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
-
-                        <StackPanel
-                            Grid.Row="7"
-                            Margin="16,0,16,5"
-                            Spacing="5">
-
-                            <TextBlock>
-                                <Hyperlink
-                                    Click="{x:Bind OnLearnDeliveryOptimizationClicked}"
-                                    NavigateUri="https://learn.microsoft.com/windows/deployment/do/waas-delivery-optimization"
-                                    UnderlineStyle="None">
-                                    <Run Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('LearnDeliveryOptimization')}" />
-                                </Hyperlink>
-                            </TextBlock>
-
-                            <TextBlock>
-                                <Hyperlink
-                                    Click="{x:Bind OnLearnBitsClicked}"
-                                    NavigateUri="https://learn.microsoft.com/windows/win32/bits/background-intelligent-transfer-service-portal"
-                                    UnderlineStyle="None">
-                                    <Run Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('LearnBits')}" />
-                                </Hyperlink>
-                            </TextBlock>
-
-                            <TextBlock HorizontalAlignment="Left">
-                                <Hyperlink Click="{x:Bind OnTroubleShootClicked}" UnderlineStyle="None">
-                                    <Run Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('TroubleShoot')}" />
                                 </Hyperlink>
                             </TextBlock>
                         </StackPanel>

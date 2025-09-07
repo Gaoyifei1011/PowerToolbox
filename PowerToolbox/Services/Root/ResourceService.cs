@@ -50,8 +50,6 @@ namespace PowerToolbox.Services.Root
 
         public static ResourceManager SettingsAdvancedResource { get; } = new("PowerToolbox.Strings.SettingsAdvanced", CurrentAssembly);
 
-        public static ResourceManager SettingsDownloadResource { get; } = new("PowerToolbox.Strings.SettingsDownload", CurrentAssembly);
-
         public static ResourceManager SettingsGeneralResource { get; } = new("PowerToolbox.Strings.SettingsGeneral", CurrentAssembly);
 
         public static ResourceManager ShellMenuResource { get; } = new("PowerToolbox.Strings.ShellMenu", CurrentAssembly);

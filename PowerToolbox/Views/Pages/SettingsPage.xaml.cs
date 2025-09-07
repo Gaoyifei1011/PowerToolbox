@@ -59,7 +59,6 @@ namespace PowerToolbox.Views.Pages
         private List<KeyValuePair<string, Type>> PageList { get; } =
         [
             new KeyValuePair<string, Type>("General",typeof(SettingsGeneralPage)),
-            new KeyValuePair<string, Type>("Download", typeof(SettingsDownloadPage)),
             new KeyValuePair<string, Type>("Advanced", typeof(SettingsAdvancedPage)),
             new KeyValuePair<string, Type>("About", typeof(SettingsAboutPage)),
         ];

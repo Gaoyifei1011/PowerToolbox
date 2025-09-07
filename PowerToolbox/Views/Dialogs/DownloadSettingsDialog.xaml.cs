@@ -2,6 +2,7 @@
 using PowerToolbox.Services.Download;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
+using PowerToolbox.Views.Pages;
 using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
@@ -17,20 +18,17 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 
-// 抑制 CA1806，IDE0060 警告
-#pragma warning disable CA1806,IDE0060
-
-namespace PowerToolbox.Views.Pages
+namespace PowerToolbox.Views.Dialogs
 {
     /// <summary>
-    /// 设置下载管理页面
+    /// 下载设置对话框
     /// </summary>
-    public sealed partial class SettingsDownloadPage : Page, INotifyPropertyChanged
+    public sealed partial class DownloadSettingsDialog : ContentDialog, INotifyPropertyChanged
     {
-        private readonly string DoEngineAria2String = ResourceService.SettingsDownloadResource.GetString("DoEngineAria2");
-        private readonly string DoEngineBitsString = ResourceService.SettingsDownloadResource.GetString("DoEngineBits");
-        private readonly string DoEngineDoString = ResourceService.SettingsDownloadResource.GetString("DoEngineDo");
-        private readonly string SelectFolderString = ResourceService.SettingsDownloadResource.GetString("SelectFolder");
+        private readonly string DoEngineAria2String = ResourceService.DialogResource.GetString("DoEngineAria2");
+        private readonly string DoEngineBitsString = ResourceService.DialogResource.GetString("DoEngineBits");
+        private readonly string DoEngineDoString = ResourceService.DialogResource.GetString("DoEngineDo");
+        private readonly string SelectFolderString = ResourceService.DialogResource.GetString("SelectFolder");
 
         private string _downloadFolder = DownloadOptionsService.DownloadFolder;
 
@@ -68,7 +66,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public SettingsDownloadPage()
+        public DownloadSettingsDialog()
         {
             InitializeComponent();
             DoEngineModeList.Add(new KeyValuePair<string, string>(DownloadOptionsService.DoEngineModeList[0], DoEngineDoString));
@@ -77,7 +75,15 @@ namespace PowerToolbox.Views.Pages
             DoEngineMode = DoEngineModeList.Find(item => string.Equals(item.Key, DownloadOptionsService.DoEngineMode, StringComparison.OrdinalIgnoreCase));
         }
 
-        #region 第一部分：设置下载管理页面——挂载的事件
+        #region 第一部分：下载设置对话框——挂载的事件
+
+        /// <summary>
+        /// 关闭对话框
+        /// </summary>
+        private void OnCloseClicked(object sender, RoutedEventArgs args)
+        {
+            Hide();
+        }
 
         /// <summary>
         /// 打开下载文件存放目录
@@ -211,6 +217,24 @@ namespace PowerToolbox.Views.Pages
             });
         }
 
-        #endregion 第一部分：设置下载管理页面——挂载的事件
+        /// <summary>
+        /// 疑难解答
+        /// </summary>
+        private void OnTroubleShootClicked(Hyperlink sender, HyperlinkClickEventArgs args)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("ms-settings:troubleshoot");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnTroubleShootClicked), 1, e);
+                }
+            });
+        }
+
+        #endregion 第一部分：下载设置对话框——挂载的事件
     }
 }

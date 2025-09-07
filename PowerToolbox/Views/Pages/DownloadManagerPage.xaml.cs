@@ -435,9 +435,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 打开下载设置
         /// </summary>
-        private void OnDownloadSettingsClicked(object sender, RoutedEventArgs args)
+        private async void OnDownloadSettingsClicked(object sender, RoutedEventArgs args)
         {
-            (MainWindow.Current.Content as MainPage).NavigateTo(typeof(SettingsPage));
+            await MainWindow.Current.ShowDialogAsync(new DownloadSettingsDialog());
         }
 
         /// <summary>

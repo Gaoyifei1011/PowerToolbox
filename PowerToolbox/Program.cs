@@ -36,17 +36,7 @@ namespace PowerToolbox
         [STAThread]
         public static void Main(string[] args)
         {
-            if (!RuntimeHelper.IsMSIX)
-            {
-                try
-                {
-                    Process.Start("powertoolbox:");
-                }
-                catch (Exception)
-                { }
-                return;
-            }
-            else
+            if (RuntimeHelper.IsMSIX)
             {
                 if (RuntimeHelper.IsElevated && args.Length is 1 && args[0] is "--elevated")
                 {
@@ -56,6 +46,16 @@ namespace PowerToolbox
                     applicationActivationManager.ActivateApplication(Convert.ToString(aumidBuilder), string.Empty, ACTIVATEOPTIONS.AO_NONE, out uint _);
                     return;
                 }
+            }
+            else
+            {
+                try
+                {
+                    Process.Start("powertoolbox:");
+                }
+                catch (Exception)
+                { }
+                return;
             }
 
             InitializeProgramResources();

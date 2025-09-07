@@ -232,9 +232,6 @@
     <EmbeddedResource Include="Strings\SettingsAdvanced.en-us.restext" />
     <EmbeddedResource Include="Strings\SettingsAdvanced.restext" />
     <EmbeddedResource Include="Strings\SettingsAdvanced.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\SettingsDownload.en-us.restext" />
-    <EmbeddedResource Include="Strings\SettingsDownload.restext" />
-    <EmbeddedResource Include="Strings\SettingsDownload.zh-hans.restext" />
     <EmbeddedResource Include="Strings\SettingsGeneral.en-us.restext" />
     <EmbeddedResource Include="Strings\SettingsGeneral.restext" />
     <EmbeddedResource Include="Strings\SettingsGeneral.zh-hans.restext" />
@@ -280,6 +277,7 @@
     <None Remove="Styles\XamlIslands\TimePicker.xaml" />
     <None Remove="Views\Dialogs\AppInformationDialog.xaml" />
     <None Remove="Views\Dialogs\ClosingWindowDialog.xaml" />
+    <None Remove="Views\Dialogs\DownloadSettingsDialog.xaml" />
     <None Remove="Views\Dialogs\FileCheckDialog.xaml" />
     <None Remove="Views\Dialogs\LicenseDialog.xaml" />
     <None Remove="Views\Dialogs\NeedElevatedDialog.xaml" />
@@ -307,7 +305,6 @@
     <None Remove="Views\Pages\PriExtractPage.xaml" />
     <None Remove="Views\Pages\SettingsAboutPage.xaml" />
     <None Remove="Views\Pages\SettingsAdvancedPage.xaml" />
-    <None Remove="Views\Pages\SettingsDownloadPage.xaml" />
     <None Remove="Views\Pages\SettingsGeneralPage.xaml" />
     <None Remove="Views\Pages\SettingsPage.xaml" />
     <None Remove="Views\Pages\ShellMenuEditPage.xaml" />
@@ -334,6 +331,7 @@
     <Page Include="Styles\XamlIslands\TimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\AppInformationDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\ClosingWindowDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Views\Dialogs\DownloadSettingsDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\FileCheckDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\LicenseDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\NeedElevatedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
@@ -345,7 +343,6 @@
     <Page Include="Views\NotificationTips\OperationResultNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\HostsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\SettingsAdvancedPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\SettingsDownloadPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\SettingsGeneralPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\ShellMenuEditPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\ShellMenuListPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />

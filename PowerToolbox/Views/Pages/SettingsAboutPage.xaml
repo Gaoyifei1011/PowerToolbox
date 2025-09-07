@@ -373,27 +373,31 @@
 
                         <GridView.ItemTemplate>
                             <DataTemplate x:DataType="collection:DictionaryEntry">
-                                <TextBlock
+                                <StackPanel
                                     Width="320"
                                     Padding="0,8"
-                                    HorizontalAlignment="Center"
-                                    TextTrimming="CharacterEllipsis"
-                                    TextWrapping="NoWrap">
+                                    HorizontalAlignment="Left"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap">
 
-                                    <Hyperlink NavigateUri="{x:Bind (system:Uri)Value}" UnderlineStyle="None">
-                                        <Run Text="{x:Bind system:Convert.ToString(Key)}" />
-                                    </Hyperlink>
+                                        <Hyperlink NavigateUri="{x:Bind (system:Uri)Value}" UnderlineStyle="None">
+                                            <Run Text="{x:Bind system:Convert.ToString(Key)}" />
+                                        </Hyperlink>
 
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip MaxWidth="9999">
-                                            <TextBlock>
-                                                <Run Text="{x:Bind system:Convert.ToString(Key)}" />
-                                                <LineBreak />
-                                                <Run Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ReferenceToolTip')}" />
-                                            </TextBlock>
-                                        </ToolTip>
-                                    </ToolTipService.ToolTip>
-                                </TextBlock>
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip MaxWidth="9999">
+                                                <TextBlock>
+                                                    <Run Text="{x:Bind system:Convert.ToString(Key)}" />
+                                                    <LineBreak />
+                                                    <Run Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ReferenceToolTip')}" />
+                                                </TextBlock>
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </TextBlock>
+                                </StackPanel>
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
@@ -450,27 +454,31 @@
 
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="collection:DictionaryEntry">
-                                    <TextBlock
-                                        Width="320"
+                                    <StackPanel
+                                        Width="150"
                                         Padding="0,8"
-                                        HorizontalAlignment="Center"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap">
+                                        HorizontalAlignment="Left"
+                                        Orientation="Horizontal">
+                                        <TextBlock
+                                            HorizontalAlignment="Left"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="NoWrap">
 
-                                        <Hyperlink NavigateUri="{x:Bind (system:Uri)Value}" UnderlineStyle="None">
-                                            <Run Text="{x:Bind system:Convert.ToString(Key)}" />
-                                        </Hyperlink>
+                                            <Hyperlink NavigateUri="{x:Bind (system:Uri)Value}" UnderlineStyle="None">
+                                                <Run Text="{x:Bind system:Convert.ToString(Key)}" />
+                                            </Hyperlink>
 
-                                        <ToolTipService.ToolTip>
-                                            <ToolTip MaxWidth="9999">
-                                                <TextBlock>
-                                                    <Run Text="{x:Bind system:Convert.ToString(Key)}" />
-                                                    <LineBreak />
-                                                    <Run Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ThanksToolTip')}" />
-                                                </TextBlock>
-                                            </ToolTip>
-                                        </ToolTipService.ToolTip>
-                                    </TextBlock>
+                                            <ToolTipService.ToolTip>
+                                                <ToolTip MaxWidth="9999">
+                                                    <TextBlock>
+                                                        <Run Text="{x:Bind system:Convert.ToString(Key)}" />
+                                                        <LineBreak />
+                                                        <Run Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ThanksToolTip')}" />
+                                                    </TextBlock>
+                                                </ToolTip>
+                                            </ToolTipService.ToolTip>
+                                        </TextBlock>
+                                    </StackPanel>
                                 </DataTemplate>
                             </GridView.ItemTemplate>
                         </GridView>
