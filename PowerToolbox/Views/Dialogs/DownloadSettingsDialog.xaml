@@ -37,16 +37,9 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <FontIcon
-                Grid.Column="0"
-                Margin="2,2,0,0"
-                VerticalAlignment="Center"
-                FontSize="16"
-                Glyph="&#xE713;" />
-
             <TextBlock
                 Grid.Column="1"
-                Margin="6,0,0,0"
+                Margin="3,0,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="14"
