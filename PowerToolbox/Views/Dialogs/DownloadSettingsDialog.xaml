@@ -23,7 +23,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!--  WinGet 应用版本信息标题栏  -->
+        <!--  下载设置标题栏  -->
         <Grid
             Grid.Row="0"
             Margin="3,0,3,0"
@@ -66,6 +66,7 @@
             </Button>
         </Grid>
 
+        <!--  下载设置内容  -->
         <ScrollViewer
             Grid.Row="1"
             Margin="0,5,0,0"
