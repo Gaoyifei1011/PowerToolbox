@@ -37,6 +37,7 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class PriExtractPage : Page, INotifyPropertyChanged
     {
+        private readonly string AllLanguageString = ResourceService.PriExtractResource.GetString("AllLanguage");
         private readonly string DragOverContentString = ResourceService.PriExtractResource.GetString("DragOverContent");
         private readonly string EmbeddedDataString = ResourceService.PriExtractResource.GetString("EmbeddedData");
         private readonly string FilePathString = ResourceService.PriExtractResource.GetString("FilePath");
@@ -184,22 +185,6 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _searchText;
-
-        public string SearchText
-        {
-            get { return _searchText; }
-
-            set
-            {
-                if (!string.Equals(_searchText, value))
-                {
-                    _searchText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SearchText)));
-                }
-            }
-        }
-
         private KeyValuePair<string, string> _selectedResourceCandidateKind;
 
         public KeyValuePair<string, string> SelectedResourceCandidateKind
@@ -216,11 +201,109 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private readonly List<StringModel> stringList = [];
-        private readonly List<FilePathModel> filePathList = [];
-        private readonly List<EmbeddedDataModel> embeddedDataList = [];
+        private bool _hasStringResource;
+
+        public bool HasStringResource
+        {
+            get { return _hasStringResource; }
+
+            set
+            {
+                if (!Equals(_hasStringResource, value))
+                {
+                    _hasStringResource = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasStringResource)));
+                }
+            }
+        }
+
+        private string _stringSearchText;
+
+        public string StringSearchText
+        {
+            get { return _stringSearchText; }
+
+            set
+            {
+                if (!string.Equals(_stringSearchText, value))
+                {
+                    _stringSearchText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StringSearchText)));
+                }
+            }
+        }
+
+        private bool _hasFilePathResource;
+
+        public bool HasFilePathResource
+        {
+            get { return _hasFilePathResource; }
+
+            set
+            {
+                if (!Equals(_hasFilePathResource, value))
+                {
+                    _hasFilePathResource = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasFilePathResource)));
+                }
+            }
+        }
+
+        private string _filePathSearchText;
+
+        public string FilePathSearchText
+        {
+            get { return _filePathSearchText; }
+
+            set
+            {
+                if (!string.Equals(_filePathSearchText, value))
+                {
+                    _filePathSearchText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FilePathSearchText)));
+                }
+            }
+        }
+
+        private bool _hasEmbeddedDataResource;
+
+        public bool HasEmbeddedDataResource
+        {
+            get { return _hasEmbeddedDataResource; }
+
+            set
+            {
+                if (!Equals(_hasEmbeddedDataResource, value))
+                {
+                    _hasEmbeddedDataResource = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasEmbeddedDataResource)));
+                }
+            }
+        }
+
+        private string _embeddedDataSearchText;
+
+        public string EmbeddedDataSearchText
+        {
+            get { return _embeddedDataSearchText; }
+
+            set
+            {
+                if (!string.Equals(_embeddedDataSearchText, value))
+                {
+                    _embeddedDataSearchText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EmbeddedDataSearchText)));
+                }
+            }
+        }
 
         private List<KeyValuePair<string, string>> ResourceCandidateKindList { get; } = [];
+
+        private List<StringModel> StringList { get; } = [];
+
+        private List<FilePathModel> FilePathList { get; } = [];
+
+        private List<EmbeddedDataModel> EmbeddedDataList { get; } = [];
 
         private ObservableCollection<LanguageModel> LanguageCollection { get; } = [];
 
@@ -379,32 +462,7 @@ namespace PowerToolbox.Views.Pages
                     }
                 }
 
-                StringCollection.Clear();
-
-                if (Equals(SelectedLanguage, LanguageCollection[0]))
-                {
-                    foreach (StringModel stringItem in stringList)
-                    {
-                        StringCollection.Add(stringItem);
-                    }
-                }
-                else
-                {
-                    List<StringModel> coincidentStringList = await Task.Run(() =>
-                    {
-                        return stringList.Where(item => string.Equals(item.Language, SelectedLanguage.Key, StringComparison.OrdinalIgnoreCase)).ToList();
-                    });
-
-                    foreach (StringModel stringItem in coincidentStringList)
-                    {
-                        StringCollection.Add(stringItem);
-                    }
-                }
-
-                foreach (StringModel stringItem in stringList)
-                {
-                    stringItem.IsSelected = false;
-                }
+                await GetFilteredStringAsync();
             }
         }
 
@@ -668,6 +726,66 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 搜索字符串
+        /// </summary>
+        private async void OnStringQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            await GetFilteredStringAsync();
+        }
+
+        /// <summary>
+        /// 字符串内容发生变化时触发的事件
+        /// </summary>
+        private async void OnStringTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            StringSearchText = sender.Text;
+            if (string.IsNullOrEmpty(StringSearchText))
+            {
+                await GetFilteredStringAsync();
+            }
+        }
+
+        /// <summary>
+        /// 搜索文件路径
+        /// </summary>
+        private async void OnFilePathQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            await GetFilteredFilePathAsync();
+        }
+
+        /// <summary>
+        /// 文件内容发生变化时触发的事件
+        /// </summary>
+        private async void OnFilePathTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            FilePathSearchText = sender.Text;
+            if (string.IsNullOrEmpty(FilePathSearchText))
+            {
+                await GetFilteredFilePathAsync();
+            }
+        }
+
+        /// <summary>
+        /// 搜索嵌入的数据
+        /// </summary>
+        private async void OnEmbeddedDataQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            await GetFilteredEmbeddedDataAsync();
+        }
+
+        /// <summary>
+        /// 嵌入的数据发生变化时触发的事件
+        /// </summary>
+        private async void OnEmbeddedDataTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            EmbeddedDataSearchText = sender.Text;
+            if (string.IsNullOrEmpty(EmbeddedDataSearchText))
+            {
+                await GetFilteredEmbeddedDataAsync();
+            }
+        }
+
+        /// <summary>
         /// 复制选中的字符串
         /// </summary>
         private async void OnCopySelectedStringClicked(object sender, RoutedEventArgs args)
@@ -863,6 +981,15 @@ namespace PowerToolbox.Views.Pages
         {
             isLoadCompleted = false;
             IsProcessing = true;
+            StringSearchText = string.Empty;
+            FilePathSearchText = string.Empty;
+            EmbeddedDataSearchText = string.Empty;
+            HasStringResource = false;
+            HasFilePathResource = false;
+            HasEmbeddedDataResource = false;
+            StringList.Clear();
+            FilePathList.Clear();
+            EmbeddedDataList.Clear();
             LanguageCollection.Clear();
             StringCollection.Clear();
             FilePathCollection.Clear();
@@ -873,10 +1000,6 @@ namespace PowerToolbox.Views.Pages
             {
                 stringFileName = string.Format("{0} - {1}.txt", Path.GetFileName(filePath), "Strings");
                 filePathFileName = string.Format("{0} - {1}.txt", Path.GetFileName(filePath), "FilePath");
-
-                stringList.Clear();
-                filePathList.Clear();
-                embeddedDataList.Clear();
 
                 try
                 {
@@ -1077,11 +1200,11 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                filePathList.Add(new FilePathModel()
+                                                                FilePathList.Add(new FilePathModel()
                                                                 {
                                                                     Key = key,
                                                                     IsSelected = false,
-                                                                    AbsolutePath = absolutePath,
+                                                                    AbsolutePath = string.IsNullOrEmpty(absolutePath) ? string.Empty : absolutePath,
                                                                 });
                                                                 break;
                                                             }
@@ -1103,10 +1226,10 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                stringList.Add(new StringModel()
+                                                                StringList.Add(new StringModel()
                                                                 {
                                                                     Key = key,
-                                                                    Content = content,
+                                                                    Content = string.IsNullOrEmpty(content) ? string.Empty : content,
                                                                     Language = decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList.Count > 0 ? decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList[0].Value : string.Empty,
                                                                     IsSelected = false
                                                                 });
@@ -1130,11 +1253,11 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                filePathList.Add(new FilePathModel()
+                                                                FilePathList.Add(new FilePathModel()
                                                                 {
                                                                     Key = key,
                                                                     IsSelected = false,
-                                                                    AbsolutePath = absolutePath,
+                                                                    AbsolutePath = string.IsNullOrEmpty(absolutePath) ? string.Empty : absolutePath,
                                                                 });
                                                                 break;
                                                             }
@@ -1156,10 +1279,10 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                stringList.Add(new StringModel()
+                                                                StringList.Add(new StringModel()
                                                                 {
                                                                     Key = key,
-                                                                    Content = content,
+                                                                    Content = string.IsNullOrEmpty(content) ? string.Empty : content,
                                                                     Language = decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList.Count > 0 ? decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList[0].Value : string.Empty,
                                                                     IsSelected = false
                                                                 });
@@ -1183,11 +1306,11 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                filePathList.Add(new FilePathModel()
+                                                                FilePathList.Add(new FilePathModel()
                                                                 {
                                                                     Key = key,
                                                                     IsSelected = false,
-                                                                    AbsolutePath = absolutePath,
+                                                                    AbsolutePath = string.IsNullOrEmpty(absolutePath) ? string.Empty : absolutePath,
                                                                 });
                                                                 break;
                                                             }
@@ -1209,10 +1332,10 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                stringList.Add(new StringModel()
+                                                                StringList.Add(new StringModel()
                                                                 {
                                                                     Key = key,
-                                                                    Content = content,
+                                                                    Content = string.IsNullOrEmpty(content) ? string.Empty : content,
                                                                     Language = decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList.Count > 0 ? decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList[0].Value : string.Empty,
                                                                     IsSelected = false
                                                                 });
@@ -1233,7 +1356,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                embeddedDataList.Add(new EmbeddedDataModel()
+                                                                EmbeddedDataList.Add(new EmbeddedDataModel()
                                                                 {
                                                                     Key = key,
                                                                     EmbeddedData = data,
@@ -1252,11 +1375,11 @@ namespace PowerToolbox.Views.Pages
                     }
 
                     // 根据分段列表得到的内容进行归纳分类
-                    languageList.AddRange(stringList.Select(item => item.Language).Distinct());
+                    languageList.AddRange(StringList.Select(item => item.Language).Distinct());
                     languageList.Sort();
-                    stringList.Sort();
-                    filePathList.Sort((item1, item2) => item1.Key.CompareTo(item2.Key));
-                    embeddedDataList.Sort((item1, item2) => item1.Key.CompareTo(item2.Key));
+                    StringList.Sort();
+                    FilePathList.Sort((item1, item2) => item1.Key.CompareTo(item2.Key));
+                    EmbeddedDataList.Sort((item1, item2) => item1.Key.CompareTo(item2.Key));
 
                     priBinaryReader.Dispose();
                     priFileStream.Dispose();
@@ -1271,13 +1394,13 @@ namespace PowerToolbox.Views.Pages
 
             if (result)
             {
-                // 显示获取到的所有内容
                 LanguageCollection.Add(new LanguageModel()
                 {
                     IsChecked = true,
-                    LangaugeInfo = new KeyValuePair<string, string>("AllLanguage", ResourceService.PriExtractResource.GetString("AllLanguage"))
+                    LangaugeInfo = new KeyValuePair<string, string>("AllLanguage", AllLanguageString)
                 });
 
+                // 显示获取到的所有内容
                 foreach (string languageItem in languageList)
                 {
                     CultureInfo cultureInfo = CultureInfo.GetCultureInfo(languageItem);
@@ -1289,24 +1412,14 @@ namespace PowerToolbox.Views.Pages
                 }
 
                 SelectedLanguage = LanguageCollection[0].LangaugeInfo;
-
-                foreach (StringModel stringItem in stringList)
-                {
-                    StringCollection.Add(stringItem);
-                }
-
-                foreach (FilePathModel filePathItem in filePathList)
-                {
-                    FilePathCollection.Add(filePathItem);
-                }
-
-                foreach (EmbeddedDataModel embeddedDataItem in embeddedDataList)
-                {
-                    EmbeddedDataCollection.Add(embeddedDataItem);
-                }
-
+                HasStringResource = StringList.Count > 0;
+                HasFilePathResource = FilePathList.Count > 0;
+                HasEmbeddedDataResource = EmbeddedDataList.Count > 0;
+                await GetFilteredStringAsync();
+                await GetFilteredFilePathAsync();
+                await GetFilteredEmbeddedDataAsync();
                 IsProcessing = false;
-                GetResults = string.Format(GetResultsString, Path.GetFileName(filePath), stringList.Count + filePathList.Count + embeddedDataList.Count);
+                GetResults = string.Format(GetResultsString, Path.GetFileName(filePath), StringList.Count + FilePathList.Count + EmbeddedDataList.Count);
                 isLoadCompleted = true;
             }
             else
@@ -1314,6 +1427,162 @@ namespace PowerToolbox.Views.Pages
                 IsProcessing = false;
                 GetResults = string.Format(GetResultsString, Path.GetFileName(filePath), 0);
                 isLoadCompleted = true;
+            }
+        }
+
+        /// <summary>
+        /// 获取过滤后符合条件的字符串
+        /// </summary>
+        private async Task GetFilteredStringAsync()
+        {
+            isStringAllSelect = false;
+            foreach (StringModel stringItem in StringList)
+            {
+                stringItem.IsSelected = false;
+            }
+
+            // 所有语言
+            List<StringModel> filteredStringList = await Task.Run(() =>
+            {
+                List<StringModel> filteredStringList = [];
+
+                if (Equals(SelectedLanguage, LanguageCollection[0].LangaugeInfo))
+                {
+                    if (string.IsNullOrEmpty(StringSearchText))
+                    {
+                        foreach (StringModel stringItem in StringList)
+                        {
+                            filteredStringList.Add(stringItem);
+                        }
+                    }
+                    else
+                    {
+                        foreach (StringModel stringItem in StringList)
+                        {
+                            if (stringItem.Key.Contains(StringSearchText) || stringItem.Content.Contains(StringSearchText))
+                            {
+                                filteredStringList.Add(stringItem);
+                            }
+                        }
+                    }
+                }
+                // 某一语言
+                else
+                {
+                    List<StringModel> coincidentStringList = [.. StringList.Where(item => string.Equals(item.Language, SelectedLanguage.Key, StringComparison.OrdinalIgnoreCase))];
+
+                    if (string.IsNullOrEmpty(StringSearchText))
+                    {
+                        foreach (StringModel stringItem in coincidentStringList)
+                        {
+                            filteredStringList.Add(stringItem);
+                        }
+                    }
+                    else
+                    {
+                        foreach (StringModel stringItem in coincidentStringList)
+                        {
+                            if (stringItem.Key.Contains(StringSearchText) || stringItem.Content.Contains(StringSearchText))
+                            {
+                                filteredStringList.Add(stringItem);
+                            }
+                        }
+                    }
+                }
+
+                return filteredStringList;
+            });
+
+            StringCollection.Clear();
+            foreach (StringModel stringItem in filteredStringList)
+            {
+                StringCollection.Add(stringItem);
+            }
+        }
+
+        /// <summary>
+        /// 获取过滤后符合条件的文件路径
+        /// </summary>
+        private async Task GetFilteredFilePathAsync()
+        {
+            isFilePathAllSelect = false;
+            foreach (FilePathModel filePathItem in FilePathList)
+            {
+                filePathItem.IsSelected = false;
+            }
+
+            List<FilePathModel> filteredFilePathList = await Task.Run(() =>
+            {
+                List<FilePathModel> filteredFilePathList = [];
+
+                if (string.IsNullOrEmpty(FilePathSearchText))
+                {
+                    foreach (FilePathModel filePathItem in FilePathList)
+                    {
+                        filteredFilePathList.Add(filePathItem);
+                    }
+                }
+                else
+                {
+                    foreach (FilePathModel filePathItem in FilePathList)
+                    {
+                        if (filePathItem.Key.Contains(FilePathSearchText) || filePathItem.AbsolutePath.Contains(FilePathSearchText))
+                        {
+                            filteredFilePathList.Add(filePathItem);
+                        }
+                    }
+                }
+
+                return filteredFilePathList;
+            });
+
+            FilePathCollection.Clear();
+            foreach (FilePathModel filePathItem in filteredFilePathList)
+            {
+                FilePathCollection.Add(filePathItem);
+            }
+        }
+
+        /// <summary>
+        /// 获取过滤后符合条件的嵌入的数据
+        /// </summary>
+        private async Task GetFilteredEmbeddedDataAsync()
+        {
+            isEmbeddedDataAllSelect = false;
+            foreach (EmbeddedDataModel embeddedDataItem in EmbeddedDataList)
+            {
+                embeddedDataItem.IsSelected = false;
+            }
+
+            List<EmbeddedDataModel> filteredEmbeddedDataList = await Task.Run(() =>
+            {
+                List<EmbeddedDataModel> filteredEmbeddedDataList = [];
+
+                if (string.IsNullOrEmpty(EmbeddedDataSearchText))
+                {
+                    foreach (EmbeddedDataModel embeddedDataItem in EmbeddedDataList)
+                    {
+                        filteredEmbeddedDataList.Add(embeddedDataItem);
+                    }
+                }
+                else
+                {
+                    foreach (EmbeddedDataModel embeddedDataItem in EmbeddedDataList)
+                    {
+                        if (embeddedDataItem.Key.Contains(EmbeddedDataSearchText))
+                        {
+                            filteredEmbeddedDataList.Add(embeddedDataItem);
+                        }
+                    }
+                }
+
+                return filteredEmbeddedDataList;
+            });
+
+            EmbeddedDataCollection.Clear();
+            foreach (EmbeddedDataModel embeddedDataItem in filteredEmbeddedDataList)
+            {
+                EmbeddedDataCollection.Add(embeddedDataItem);
             }
         }
     }

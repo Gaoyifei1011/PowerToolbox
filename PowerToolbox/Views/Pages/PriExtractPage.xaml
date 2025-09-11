@@ -593,7 +593,6 @@
 
                 <ListView
                     Grid.Row="1"
-                    Margin="0,0,0,3"
                     IsItemClickEnabled="True"
                     ItemClick="{x:Bind OnEmbeddedDataItemClicked}"
                     ItemsSource="{x:Bind EmbeddedDataCollection, Mode=OneWay}"
@@ -693,10 +692,13 @@
                 </Grid>
             </Grid>
 
-            <AppBarSeparator Grid.Column="1" Margin="10,0" />
+            <AppBarSeparator Grid.Column="1" Margin="10,-6" />
 
             <!--  包资源索引控制栏  -->
-            <Grid Grid.Column="2" Width="260">
+            <Grid
+                Grid.Column="2"
+                Width="260"
+                Margin="0,-4,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -752,6 +754,7 @@
 
                     <controls:DropDownButton
                         x:Name="LanguageButton"
+                        MinHeight="32"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         Content="{x:Bind system:Convert.ToString(SelectedLanguage.Value), Mode=OneWay}"
@@ -849,6 +852,36 @@
                             </MenuFlyout>
                         </controls:DropDownButton.Flyout>
                     </controls:DropDownButton>
+
+                    <AutoSuggestBox
+                        Margin="0,0,0,3"
+                        IsEnabled="{x:Bind HasStringResource, Mode=OneWay}"
+                        PlaceholderText="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('StringPlaceHolderText')}"
+                        QueryIcon="Find"
+                        QuerySubmitted="{x:Bind OnStringQuerySubmitted}"
+                        Text="{x:Bind StringSearchText, Mode=OneWay}"
+                        TextChanged="{x:Bind OnStringTextChanged}"
+                        Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[0].Key), Mode=OneWay}" />
+
+                    <AutoSuggestBox
+                        Margin="0,0,0,3"
+                        IsEnabled="{x:Bind HasFilePathResource, Mode=OneWay}"
+                        PlaceholderText="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('FilePathPlaceHolderText')}"
+                        QueryIcon="Find"
+                        QuerySubmitted="{x:Bind OnFilePathQuerySubmitted}"
+                        Text="{x:Bind FilePathSearchText, Mode=OneWay}"
+                        TextChanged="{x:Bind OnFilePathTextChanged}"
+                        Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[1].Key), Mode=OneWay}" />
+
+                    <AutoSuggestBox
+                        Margin="0,0,0,3"
+                        IsEnabled="{x:Bind HasEmbeddedDataResource, Mode=OneWay}"
+                        PlaceholderText="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('EmbeddedDataPlaceHolderText')}"
+                        QueryIcon="Find"
+                        QuerySubmitted="{x:Bind OnEmbeddedDataQuerySubmitted}"
+                        Text="{x:Bind EmbeddedDataSearchText, Mode=OneWay}"
+                        TextChanged="{x:Bind OnEmbeddedDataTextChanged}"
+                        Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[2].Key), Mode=OneWay}" />
 
                     <Button
                         Margin="0,0,0,3"
