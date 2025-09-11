@@ -47,6 +47,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string FileShareString = ResourceService.DownloadManagerResource.GetString("FileShare");
         private readonly string SelectFolderString = ResourceService.DownloadManagerResource.GetString("SelectFolder");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
+        private readonly IDataTransferManagerInterop dataTransferManagerInterop = (IDataTransferManagerInterop)WindowsRuntimeMarshal.GetActivationFactory(typeof(DataTransferManager));
         private bool isInitialized = false;
         private bool isAllowClosed = false;
 
@@ -294,7 +295,6 @@ namespace PowerToolbox.Views.Pages
                     try
                     {
                         List<StorageFile> fileList = [await StorageFile.GetFileFromPathAsync(filePath)];
-                        IDataTransferManagerInterop dataTransferManagerInterop = (IDataTransferManagerInterop)WindowsRuntimeMarshal.GetActivationFactory(typeof(DataTransferManager));
                         dataTransferManagerInterop.GetForWindow(MainWindow.Current.Handle, new("A5CAEE9B-8708-49D1-8D36-67D25A8DA00C"), out DataTransferManager dataTransferManager);
                         dataTransferManager.DataRequested += (sender, args) => OnDataRequested(sender, args, fileList);
                         dataTransferManagerInterop.ShowShareUIForWindow(MainWindow.Current.Handle);
