@@ -75,6 +75,7 @@
                         VerticalAlignment="Center"
                         IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
                         PlaceholderText="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SearchDriverNamePHText')}"
+                        QueryIcon="Find"
                         QuerySubmitted="{x:Bind OnQuerySubmitted}"
                         Text="{x:Bind SearchText, Mode=OneWay}"
                         TextChanged="{x:Bind OnTextChanged}" />
