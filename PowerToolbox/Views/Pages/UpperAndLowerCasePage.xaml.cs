@@ -401,6 +401,8 @@ namespace PowerToolbox.Views.Pages
             };
             if (openFileDialog.ShowDialog() is DialogResult.OK)
             {
+                IsOperationFailed = false;
+                OperationFailedList.Clear();
                 List<OldAndNewNameModel> upperAndLowerCaseList = await Task.Run(() =>
                 {
                     List<OldAndNewNameModel> upperAndLowerCaseList = [];

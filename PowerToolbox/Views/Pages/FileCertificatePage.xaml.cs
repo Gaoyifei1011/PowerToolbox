@@ -254,6 +254,8 @@ namespace PowerToolbox.Views.Pages
             };
             if (openFileDialog.ShowDialog() is DialogResult.OK)
             {
+                IsOperationFailed = false;
+                OperationFailedList.Clear();
                 List<CertificateResultModel> fileCertificateList = await Task.Run(() =>
                 {
                     List<CertificateResultModel> fileCertificateList = [];

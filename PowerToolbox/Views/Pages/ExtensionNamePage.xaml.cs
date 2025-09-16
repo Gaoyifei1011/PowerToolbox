@@ -474,6 +474,8 @@ namespace PowerToolbox.Views.Pages
             };
             if (openFileDialog.ShowDialog() is DialogResult.OK)
             {
+                IsOperationFailed = false;
+                OperationFailedList.Clear();
                 List<OldAndNewNameModel> extensionNameList = await Task.Run(() =>
                 {
                     List<OldAndNewNameModel> extensionNameList = [];

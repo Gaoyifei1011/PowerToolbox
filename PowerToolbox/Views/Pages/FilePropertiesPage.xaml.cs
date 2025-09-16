@@ -559,6 +559,8 @@ namespace PowerToolbox.Views.Pages
             };
             if (openFileDialog.ShowDialog() is DialogResult.OK)
             {
+                IsOperationFailed = false;
+                OperationFailedList.Clear();
                 List<OldAndNewPropertiesModel> filePropertiesList = await Task.Run(() =>
                 {
                     List<OldAndNewPropertiesModel> filePropertiesList = [];
