@@ -184,7 +184,7 @@
                     Margin="0,0,0,3"
                     IsItemClickEnabled="True"
                     ItemClick="{x:Bind OnStringItemClicked}"
-                    ItemsSource="{x:Bind StringCollection, Mode=OneWay}"
+                    ItemsSource="{x:Bind StringCollection}"
                     SelectionMode="None"
                     Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Value, ResourceCandidateKindList[0].Value), Mode=OneWay}">
 
@@ -409,7 +409,7 @@
                     Margin="0,0,0,3"
                     IsItemClickEnabled="True"
                     ItemClick="{x:Bind OnFilePathItemClicked}"
-                    ItemsSource="{x:Bind FilePathCollection, Mode=OneWay}"
+                    ItemsSource="{x:Bind FilePathCollection}"
                     SelectionMode="None"
                     Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Value, ResourceCandidateKindList[1].Value), Mode=OneWay}">
 
@@ -595,7 +595,7 @@
                     Grid.Row="1"
                     IsItemClickEnabled="True"
                     ItemClick="{x:Bind OnEmbeddedDataItemClicked}"
-                    ItemsSource="{x:Bind EmbeddedDataCollection, Mode=OneWay}"
+                    ItemsSource="{x:Bind EmbeddedDataCollection}"
                     SelectionMode="None"
                     Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Value, ResourceCandidateKindList[2].Value), Mode=OneWay}">
 
@@ -781,7 +781,7 @@
                                     x:Name="LanguageListView"
                                     MaxHeight="300"
                                     Background="Transparent"
-                                    ItemsSource="{x:Bind LanguageCollection, Mode=OneWay}"
+                                    ItemsSource="{x:Bind LanguageCollection}"
                                     SelectionMode="None">
 
                                     <ListView.ItemContainerStyle>

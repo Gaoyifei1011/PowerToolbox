@@ -65,7 +65,7 @@
                     Margin="0,0,0,5"
                     Padding="5"
                     IsSwipeEnabled="False"
-                    ItemsSource="{x:Bind IconCollection, Mode=OneWay}"
+                    ItemsSource="{x:Bind IconCollection}"
                     SelectionChanged="{x:Bind OnSelectionChanged}"
                     SelectionMode="Extended"
                     TabIndex="1"

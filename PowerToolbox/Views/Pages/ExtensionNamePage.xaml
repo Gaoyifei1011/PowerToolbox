@@ -222,7 +222,7 @@
                 Grid.Row="1"
                 Margin="0,0,0,3"
                 IsItemClickEnabled="True"
-                ItemsSource="{x:Bind ExtensionNameCollection, Mode=OneWay}"
+                ItemsSource="{x:Bind ExtensionNameCollection}"
                 SelectionMode="None">
 
                 <ListView.ItemContainerStyle>

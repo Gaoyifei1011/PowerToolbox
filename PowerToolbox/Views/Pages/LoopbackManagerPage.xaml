@@ -202,7 +202,7 @@
         <ListView
             Grid.Row="3"
             Padding="30,0,30,30"
-            ItemsSource="{x:Bind LoopbackCollection, Mode=OneWay}"
+            ItemsSource="{x:Bind LoopbackCollection}"
             SelectionMode="None"
             Visibility="{x:Bind GetLoopbackSuccessfullyState(LoopbackResultKind, x:True), Mode=OneWay}">
 

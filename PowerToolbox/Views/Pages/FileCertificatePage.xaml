@@ -104,7 +104,7 @@
                 Grid.Row="1"
                 Margin="0,0,0,3"
                 IsItemClickEnabled="True"
-                ItemsSource="{x:Bind FileCertificateCollection, Mode=OneWay}"
+                ItemsSource="{x:Bind FileCertificateCollection}"
                 SelectionMode="None">
 
                 <ListView.ItemContainerStyle>

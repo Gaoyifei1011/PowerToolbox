@@ -53,7 +53,7 @@
             Margin="30,0,30,0"
             VerticalAlignment="Center"
             ItemClicked="{x:Bind OnItemClicked}"
-            ItemsSource="{x:Bind BreadCollection, Mode=OneWay}">
+            ItemsSource="{x:Bind BreadCollection}">
 
             <controls:BreadcrumbBar.ItemTemplate>
                 <DataTemplate x:DataType="collection:DictionaryEntry">

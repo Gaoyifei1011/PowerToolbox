@@ -172,7 +172,7 @@
                 <ListView
                     Grid.Row="3"
                     Padding="30,0,30,30"
-                    ItemsSource="{x:Bind ContextMenuCollection, Mode=OneWay}"
+                    ItemsSource="{x:Bind ContextMenuCollection}"
                     SelectionMode="None"
                     Visibility="{x:Bind GetContextMenuSuccessfullyState(ContextMenuResultKind, x:True), Mode=OneWay}">
 
@@ -284,7 +284,7 @@
                                 </controls:Expander.Header>
 
                                 <controls:Expander.Content>
-                                    <ListView ItemsSource="{x:Bind ContextMenuItemCollection, Mode=OneWay}" SelectionMode="None">
+                                    <ListView ItemsSource="{x:Bind ContextMenuItemCollection}" SelectionMode="None">
 
                                         <ListView.ItemContainerStyle>
                                             <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">

@@ -74,7 +74,7 @@
 
                         <controls:TreeView
                             ItemInvoked="{x:Bind OnItemInvoked}"
-                            ItemsSource="{x:Bind ShellMenuItemCollection, Mode=OneWay}"
+                            ItemsSource="{x:Bind ShellMenuItemCollection}"
                             SelectionMode="Single">
 
                             <controls:TreeView.ItemTemplate>

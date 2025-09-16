@@ -394,7 +394,7 @@
                                 x:Name="LanguageListView"
                                 MaxHeight="300"
                                 Background="Transparent"
-                                ItemsSource="{x:Bind LanguageCollection, Mode=OneWay}"
+                                ItemsSource="{x:Bind LanguageCollection}"
                                 SelectionMode="None">
 
                                 <ListView.ItemContainerStyle>

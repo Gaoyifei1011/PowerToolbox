@@ -218,7 +218,7 @@
                 Grid.Row="1"
                 Margin="0,0,0,3"
                 IsItemClickEnabled="True"
-                ItemsSource="{x:Bind UpperAndLowerCaseCollection, Mode=OneWay}"
+                ItemsSource="{x:Bind UpperAndLowerCaseCollection}"
                 SelectionMode="None">
 
                 <ListView.ItemContainerStyle>

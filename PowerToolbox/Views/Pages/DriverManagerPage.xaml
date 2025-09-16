@@ -369,7 +369,7 @@
                     Grid.Row="3"
                     Padding="30,0,30,30"
                     IsEnabled="{x:Bind GetIsOperating(DriverResultKind), Mode=OneWay}"
-                    ItemsSource="{x:Bind DriverCollection, Mode=OneWay}"
+                    ItemsSource="{x:Bind DriverCollection}"
                     SelectionMode="None"
                     Visibility="{x:Bind GetDriverSuccessfullyState(DriverResultKind, x:True), Mode=OneWay}">
 

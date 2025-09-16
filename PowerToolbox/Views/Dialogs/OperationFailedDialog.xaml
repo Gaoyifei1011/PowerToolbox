@@ -35,7 +35,7 @@
         Width="520"
         Height="300"
         Margin="0"
-        ItemsSource="{x:Bind OperationFailedCollection, Mode=OneWay}"
+        ItemsSource="{x:Bind OperationFailedCollection}"
         SelectionMode="None">
 
         <ListView.ItemContainerStyle>
