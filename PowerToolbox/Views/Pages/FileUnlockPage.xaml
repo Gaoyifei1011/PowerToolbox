@@ -15,304 +15,331 @@
 
     <Page.Resources>
         <ResourceDictionary>
+            <CornerRadius x:Key="ListViewItemCornerRadius">0</CornerRadius>
+            <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
+            <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
+
             <SolidColorBrush x:Key="HyperlinkButtonBackgroundPointerOver" Color="Transparent" />
             <SolidColorBrush x:Key="HyperlinkButtonBackgroundPressed" Color="Transparent" />
-
-            <class:ExecuteCommand x:Name="TerminateProcessCommand" ExecuteRequested="{x:Bind OnTerminateProcessExecuteRequested}" />
-            <class:ExecuteCommand x:Name="OpenProcessPathCommand" ExecuteRequested="{x:Bind OnOpenProcessPathExecuteRequested}" />
         </ResourceDictionary>
     </Page.Resources>
 
-    <ScrollViewer
-        HorizontalScrollBarVisibility="Disabled"
-        HorizontalScrollMode="Disabled"
-        VerticalScrollBarVisibility="Auto"
-        VerticalScrollMode="Enabled">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <StackPanel>
-            <Grid Grid.Row="0" Margin="30,15,30,0">
+        <TextBlock
+            Grid.Row="0"
+            Margin="30,15,30,0"
+            FontSize="22"
+            Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileUnlock')}" />
+
+        <TextBlock
+            Grid.Row="1"
+            Margin="32,3,32,3"
+            FontSize="14"
+            Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileUnlockDescription')}" />
+
+        <!--  文件解锁结果控件  -->
+        <Grid
+            Grid.Row="2"
+            Margin="30,0,30,3"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="{ThemeResource ControlCornerRadius}">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid
+                Grid.Row="0"
+                Height="35"
+                Padding="6,0,0,0"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="0,0,0,1">
 
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
+                    x:Name="FileFolderNameHeaderText"
                     Grid.Column="0"
-                    FontSize="22"
-                    Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileUnlock')}" />
-
-                <Button
-                    Grid.Column="1"
-                    Width="34"
-                    Height="34"
-                    Padding="0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center">
-
-                    <Button.Content>
-                        <FontIcon FontSize="16" Glyph="&#xE712;" />
-                    </Button.Content>
-
-                    <Button.Flyout>
-                        <MenuFlyout Placement="Bottom">
-                            <MenuFlyoutItem Click="{x:Bind OnOpenTaskManagerClicked}" Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('OpenTaskManager')}">
-
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE9D9;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-                        </MenuFlyout>
-                    </Button.Flyout>
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderName')}"
+                    TextTrimming="CharacterEllipsis"
+                    TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('ViewMore')}" />
+                        <ToolTip
+                            MaxWidth="9999"
+                            Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderName')}"
+                            Visibility="{x:Bind FileFolderNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
-                </Button>
-            </Grid>
+                </TextBlock>
 
-            <!--  文件解锁文件粘贴框  -->
-            <Grid
-                Margin="30,5,30,3"
-                BorderBrush="{ThemeResource TextFillColorSecondaryBrush}"
-                BorderThickness="1"
-                CornerRadius="{StaticResource ControlCornerRadius}">
-
-                <StackPanel
-                    Margin="0,15"
-                    HorizontalAlignment="Center"
+                <TextBlock
+                    x:Name="FileFolderTypeHeaderText"
+                    Grid.Column="1"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Spacing="3">
+                    Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderType')}"
+                    TextTrimming="CharacterEllipsis"
+                    TextWrapping="NoWrap">
 
-                    <FontIcon
-                        HorizontalAlignment="Center"
-                        FontSize="26"
-                        Glyph="&#xE710;" />
+                    <ToolTipService.ToolTip>
+                        <ToolTip
+                            MaxWidth="9999"
+                            Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderType')}"
+                            Visibility="{x:Bind FileFolderTypeHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                    </ToolTipService.ToolTip>
+                </TextBlock>
 
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="16"
-                        Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('DragAndDrop')}" />
+                <TextBlock
+                    x:Name="FileFolderAmountHeaderText"
+                    Grid.Column="2"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderAmount')}"
+                    TextTrimming="CharacterEllipsis"
+                    TextWrapping="NoWrap">
 
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('DragAndDropDescription')}" />
-
-                    <Button
-                        HorizontalAlignment="Center"
-                        Click="{x:Bind OnOpenLocalFileClicked}"
-                        Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('OpenLocalFile')}" />
-                </StackPanel>
-            </Grid>
-
-            <!--  文件解锁文件信息栏  -->
-            <controls:InfoBar
-                Height="50"
-                Margin="30,0,30,3"
-                IsClosable="False"
-                IsOpen="True"
-                Message="{x:Bind StateInfoText, Mode=OneWay}"
-                Severity="{x:Bind ResultSeverity, Mode=OneWay}"
-                Style="{StaticResource InfoBarStyle}">
-
-                <controls:InfoBar.ActionButton>
-                    <Button
-                        Margin="0"
-                        Padding="0"
-                        HorizontalAlignment="Right"
-                        Background="Transparent"
-                        BorderBrush="Transparent"
-                        IsHitTestVisible="False"
-                        Visibility="{x:Bind IsRingActive, Mode=OneWay}">
-
-                        <controls:ProgressRing IsActive="{x:Bind IsRingActive, Mode=OneWay}" IsIndeterminate="True" />
-                    </Button>
-                </controls:InfoBar.ActionButton>
-            </controls:InfoBar>
-
-            <!--  文件解锁结果列表控件  -->
-            <Grid Visibility="{x:Bind ResultControlVisable, Mode=OneWay}">
-                <Grid
-                    Height="60"
-                    Margin="30,0,30,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="{StaticResource ControlCornerRadius}"
-                    Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(ProcessInfoCollection.Count), Mode=OneWay}">
-
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        Text="{x:Bind x:String.Format(FileNotUseString, FileName), Mode=OneWay}"
-                        TextAlignment="Center" />
-                </Grid>
-
-                <ListView
-                    Padding="30,0,30,30"
-                    ItemsSource="{x:Bind ProcessInfoCollection, Mode=OneWay}"
-                    SelectionMode="None"
-                    Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(ProcessInfoCollection.Count), Mode=OneWay}">
-
-                    <ListView.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="MinHeight" Value="0 " />
-                        </Style>
-                    </ListView.ItemContainerStyle>
-
-                    <ItemsControl.ItemContainerTransitions>
-                        <TransitionCollection />
-                    </ItemsControl.ItemContainerTransitions>
-
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="model:ProcessInfoModel">
-                            <Grid
-                                Height="60"
-                                Margin="0,0,0,2"
-                                Padding="16,0"
-                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                BorderThickness="1"
-                                CornerRadius="{StaticResource ControlCornerRadius}">
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="70" />
-                                    <ColumnDefinition Width="90" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <controls:ImageIcon
-                                    Grid.Column="0"
-                                    Width="24"
-                                    Height="24"
-                                    Margin="0,0,12,0"
-                                    Source="{x:Bind ProcessIcon}" />
-
-                                <StackPanel
-                                    Grid.Column="1"
-                                    Margin="0,0,15,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    Orientation="Vertical">
-
-                                    <TextBlock
-                                        x:Name="ProcessNameText"
-                                        HorizontalAlignment="Left"
-                                        IsTextSelectionEnabled="True"
-                                        Style="{StaticResource BodyTextBlockStyle}"
-                                        Text="{x:Bind ProcessName}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap">
-
-                                        <ToolTipService.ToolTip>
-                                            <ToolTip MaxWidth="9999">
-                                                <TextBlock>
-                                                    <Run Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('ProcessName')}" />
-                                                    <Run Text="{x:Bind ProcessName}" />
-                                                </TextBlock>
-                                            </ToolTip>
-                                        </ToolTipService.ToolTip>
-                                    </TextBlock>
-
-                                    <HyperlinkButton
-                                        x:Name="ProcessPathText"
-                                        Padding="0"
-                                        HorizontalAlignment="Left"
-                                        Command="{StaticResource OpenProcessPathCommand}"
-                                        CommandParameter="{x:Bind ProcessPath}">
-
-                                        <HyperlinkButton.Content>
-                                            <TextBlock
-                                                Text="{x:Bind ProcessPath}"
-                                                TextTrimming="CharacterEllipsis"
-                                                TextWrapping="NoWrap" />
-                                        </HyperlinkButton.Content>
-
-                                        <ToolTipService.ToolTip>
-                                            <ToolTip MaxWidth="9999">
-                                                <StackPanel>
-                                                    <TextBlock>
-                                                        <Run Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('ProcessPath')}" />
-                                                        <Run Text="{x:Bind ProcessPath}" />
-                                                    </TextBlock>
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('OpenLocalFolder')}" />
-                                                </StackPanel>
-                                            </ToolTip>
-                                        </ToolTipService.ToolTip>
-                                    </HyperlinkButton>
+                    <ToolTipService.ToolTip>
+                        <ToolTip MaxWidth="9999">
+                            <ToolTip.Content>
+                                <StackPanel>
+                                    <TextBlock Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderAmount')}" />
+                                    <TextBlock Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileAmount')}" />
+                                    <TextBlock Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FolderAmount')}" />
                                 </StackPanel>
+                            </ToolTip.Content>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                </TextBlock>
 
-                                <TextBlock
-                                    x:Name="ProcessIdText"
-                                    Grid.Column="2"
-                                    Margin="0,0,5,0"
-                                    VerticalAlignment="Center"
-                                    FontSize="14"
-                                    Text="{x:Bind ProcessId}"
-                                    TextTrimming="CharacterEllipsis"
-                                    TextWrapping="NoWrap">
+                <TextBlock
+                    x:Name="FileFolderStatusHeaderText"
+                    Grid.Column="3"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderStatus')}"
+                    TextTrimming="CharacterEllipsis"
+                    TextWrapping="NoWrap">
 
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip MaxWidth="9999">
-                                            <TextBlock>
-                                                <Run Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('ProcessId')}" />
-                                                <Run Text="{x:Bind ProcessId}" />
-                                            </TextBlock>
-                                        </ToolTip>
-                                    </ToolTipService.ToolTip>
-                                </TextBlock>
-
-                                <TextBlock
-                                    x:Name="ProcessUserText"
-                                    Grid.Column="3"
-                                    Margin="0,0,5,0"
-                                    VerticalAlignment="Center"
-                                    FontSize="14"
-                                    Text="{x:Bind ProcessUser}"
-                                    TextTrimming="CharacterEllipsis"
-                                    TextWrapping="NoWrap">
-
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip MaxWidth="9999">
-                                            <TextBlock>
-                                                <Run Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('ProcessUser')}" />
-                                                <Run Text="{x:Bind ProcessUser}" />
-                                            </TextBlock>
-                                        </ToolTip>
-                                    </ToolTipService.ToolTip>
-                                </TextBlock>
-
-                                <Button
-                                    Grid.Column="4"
-                                    Command="{StaticResource TerminateProcessCommand}"
-                                    CommandParameter="{x:Bind ProcessId}">
-
-                                    <Button.Content>
-                                        <Grid ColumnSpacing="3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-
-                                            <FontIcon
-                                                Grid.Column="0"
-                                                FontSize="16"
-                                                Glyph="&#xE711;" />
-
-                                            <TextBlock Grid.Column="1" Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('TerminateProcess')}" />
-                                        </Grid>
-                                    </Button.Content>
-                                </Button>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    <ToolTipService.ToolTip>
+                        <ToolTip
+                            MaxWidth="9999"
+                            Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderStatus')}"
+                            Visibility="{x:Bind FileFolderStatusHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                    </ToolTipService.ToolTip>
+                </TextBlock>
             </Grid>
-        </StackPanel>
-    </ScrollViewer>
+
+            <ListView
+                Grid.Row="1"
+                Margin="0,0,0,3"
+                IsItemClickEnabled="True"
+                ItemsSource="{x:Bind FileUnlockCollection}"
+                SelectionMode="None">
+
+                <ListView.ItemContainerStyle>
+                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="MinHeight" Value="0" />
+                        <Setter Property="Padding" Value="0" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ItemsControl.ItemContainerTransitions>
+                    <TransitionCollection />
+                </ItemsControl.ItemContainerTransitions>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:FileUnlockModel">
+                        <Grid
+                            Height="35"
+                            Padding="6,0,0,0"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="0,0,0,1">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="2*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                x:Name="FileFolderNameText"
+                                Grid.Column="0"
+                                MinWidth="50"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Text="{x:Bind FileFolderName}"
+                                TextAlignment="Left"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind FileFolderPath, Mode=OneWay}"
+                                        Placement="Mouse"
+                                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(FileFolderPath), Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+
+                            <TextBlock
+                                x:Name="FileFolderTypeText"
+                                Grid.Column="1"
+                                MinWidth="50"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Text="{x:Bind FileFolderType}"
+                                TextAlignment="Left"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind FileFolderType}"
+                                        Placement="Mouse"
+                                        Visibility="{Binding ElementName=FileFolderTypeText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+
+                            <TextBlock
+                                x:Name="FileFolderAmountText"
+                                Grid.Column="2"
+                                MinWidth="50"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Text="{x:Bind FileFolderAmount}"
+                                TextAlignment="Left"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind FileFolderAmount}"
+                                        Placement="Mouse"
+                                        Visibility="{Binding ElementName=FileFolderAmountText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <TextBlock
+                Grid.Row="1"
+                Margin="0,10,0,0"
+                VerticalAlignment="Top"
+                Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('EmptyList')}"
+                TextAlignment="Center"
+                Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(FileUnlockCollection.Count), Mode=OneWay}" />
+        </Grid>
+
+        <!--  文件解锁控制栏  -->
+        <Grid
+            Grid.Row="3"
+            Margin="30,0,30,3"
+            ColumnSpacing="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Grid.Column="0"
+                Click="{x:Bind OnSelectFileClicked}"
+                Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('SelectFile')}"
+                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}" />
+
+            <Button
+                Grid.Column="1"
+                Click="{x:Bind OnSelectFolderClicked}"
+                Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('SelectFolder')}"
+                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}" />
+
+            <Button
+                Grid.Column="2"
+                Click="{x:Bind OnClearListClicked}"
+                Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('ClearList')}"
+                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}" />
+
+            <Button
+                Grid.Column="3"
+                Click="{x:Bind OnOpenTaskManagerClicked}"
+                Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('OpenTaskManager')}" />
+
+            <TextBlock
+                Grid.Column="4"
+                VerticalAlignment="Center"
+                Text="{x:Bind x:String.Format(TotalString, FileUnlockCollection.Count), Mode=OneWay}"
+                TextAlignment="Center" />
+
+            <HyperlinkButton
+                Grid.Column="5"
+                Margin="0,0,10,0"
+                Click="{x:Bind OnViewErrorInformationClicked}"
+                Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('ViewErrorInformation')}"
+                Visibility="{x:Bind IsOperationFailed, Mode=OneWay}" />
+
+            <controls:ProgressRing
+                Grid.Column="6"
+                Width="25"
+                Height="25"
+                Margin="0,0,5,0"
+                VerticalAlignment="Center"
+                IsActive="True"
+                IsIndeterminate="True"
+                Visibility="{x:Bind IsModifyingNow, Mode=OneWay}" />
+
+            <TextBlock
+                Grid.Column="7"
+                Margin="0,0,5,0"
+                VerticalAlignment="Center"
+                Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('ModifyingNow')}"
+                Visibility="{x:Bind IsModifyingNow, Mode=OneWay}" />
+
+            <Button
+                Grid.Column="8"
+                Click="{x:Bind OnUnlockClicked}"
+                Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('Unlock')}"
+                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}"
+                Style="{StaticResource AccentButtonStyle}" />
+        </Grid>
+    </Grid>
 </Page>
