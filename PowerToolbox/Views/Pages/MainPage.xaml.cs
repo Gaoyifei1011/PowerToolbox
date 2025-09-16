@@ -675,10 +675,41 @@ namespace PowerToolbox.Views.Pages
             else if (Equals(currentPageType, typeof(FileUnlockPage)))
             {
                 FileUnlockPage fileUnlockPage = GetFrameContent() as FileUnlockPage;
-                if (filesList.Count is 1)
+                List<FileUnlockModel> fileUnlockList = await Task.Run(() =>
                 {
-                    await fileUnlockPage.ParseFileAsync(filesList[0]);
-                }
+                    List<FileUnlockModel> fileUnlockList = [];
+
+                    foreach (string file in filesList)
+                    {
+                        FileInfo fileInfo = new(file);
+                        FileUnlockModel fileUnlock = new()
+                        {
+                            FileFolderName = fileInfo.Name,
+                            FileFolderPath = fileInfo.FullName,
+                        };
+
+                        // 选择的是目录
+                        if ((fileInfo.Attributes & FileAttributes.Directory) is FileAttributes.Directory)
+                        {
+                            fileUnlock.FileFolderType = fileUnlockPage.FolderString;
+                            string[] subFileArray = Directory.GetFiles(fileInfo.FullName, "*", SearchOption.AllDirectories);
+                            fileUnlock.SubFileList.AddRange(subFileArray);
+                        }
+                        // 选择的是文件
+                        else
+                        {
+                            fileUnlock.FileFolderType = fileUnlockPage.FileString;
+                            fileUnlock.SubFileList.Add(fileInfo.FullName);
+                        }
+
+                        fileUnlock.FileFolderAmount = Convert.ToString(fileUnlock.SubFileList.Count);
+                        fileUnlockList.Add(fileUnlock);
+                    }
+
+                    return fileUnlockList;
+                });
+
+                fileUnlockPage.AddToFileUnlockPage(fileUnlockList);
             }
         }
 
