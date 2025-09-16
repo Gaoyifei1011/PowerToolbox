@@ -43,7 +43,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string TotalString = ResourceService.FilePropertiesResource.GetString("Total");
         private readonly object filePropertiesLock = new();
 
-        private bool _isReadOnlyChecked = false;
+        private bool _isReadOnlyChecked;
 
         public bool IsReadOnlyChecked
         {
@@ -59,7 +59,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isArchiveChecked = false;
+        private bool _isArchiveChecked;
 
         public bool IsArchiveChecked
         {
@@ -75,7 +75,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isCreateDateChecked = false;
+        private bool _isCreateDateChecked;
 
         public bool IsCreateDateChecked
         {
@@ -91,7 +91,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isHideChecked = false;
+        private bool _isHideChecked;
 
         public bool IsHideChecked
         {
@@ -107,7 +107,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isSystemChecked = false;
+        private bool _isSystemChecked;
 
         public bool IsSystemChecked
         {
@@ -123,7 +123,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isModifyDateChecked = false;
+        private bool _isModifyDateChecked;
 
         public bool IsModifyDateChecked
         {
@@ -139,7 +139,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isModifyingNow = false;
+        private bool _isModifyingNow;
 
         public bool IsModifyingNow
         {

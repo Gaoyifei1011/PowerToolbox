@@ -31,7 +31,7 @@ namespace PowerToolbox.Views.Pages
         private bool isInitialized;
         private bool isLoadWallpaperFailed;
 
-        private bool _loadImageCompleted = false;
+        private bool _loadImageCompleted;
 
         public bool LoadImageCompleted
         {

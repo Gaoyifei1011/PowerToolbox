@@ -49,7 +49,7 @@ namespace PowerToolbox.Views.Windows
         private readonly WNDPROC TitleBarWndProc;
         private readonly SUBCLASSPROC windowClassProc;
 
-        private readonly bool isDarkTheme = false;
+        private readonly bool isDarkTheme;
         private bool trackingMouse = false;
         private int nativeTopBorderHeight = 1;
         private bool isDialogOpening = false;

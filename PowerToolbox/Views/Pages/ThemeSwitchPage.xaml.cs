@@ -157,7 +157,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isShowThemeColorInStartAndTaskbar = false;
+        private bool _isShowThemeColorInStartAndTaskbar;
 
         public bool IsShowThemeColorInStartAndTaskbar
         {
@@ -173,7 +173,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isShowThemeColorInStartAndTaskbarEnabled = false;
+        private bool _isShowThemeColorInStartAndTaskbarEnabled;
 
         public bool IsShowThemeColorInStartAndTaskbarEnabled
         {

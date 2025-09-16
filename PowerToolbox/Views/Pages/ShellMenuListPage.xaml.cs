@@ -32,7 +32,7 @@ namespace PowerToolbox.Views.Pages
         private DateTimeOffset lastUpdateTime;
         private ShellMenuItemModel selectedItem;
 
-        private bool _isLoading = false;
+        private bool _isLoading;
 
         public bool IsLoading
         {

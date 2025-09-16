@@ -36,7 +36,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string TotalString = ResourceService.UpperAndLowerCaseResource.GetString("Total");
         private readonly object upperAndLowerCaseLock = new();
 
-        private bool _isModifyingNow = false;
+        private bool _isModifyingNow;
 
         public bool IsModifyingNow
         {

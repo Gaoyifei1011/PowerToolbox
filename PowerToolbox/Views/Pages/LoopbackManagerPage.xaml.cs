@@ -105,7 +105,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isSaved = false;
+        private bool _isSaved;
 
         public bool IsSaved
         {

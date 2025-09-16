@@ -54,7 +54,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isModifyingNow = false;
+        private bool _isModifyingNow;
 
         public bool IsModifyingNow
         {
