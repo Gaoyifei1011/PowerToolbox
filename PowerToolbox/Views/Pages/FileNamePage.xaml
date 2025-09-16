@@ -275,6 +275,7 @@
                     x:Name="OriginalFileNameHeaderText"
                     Grid.Column="0"
                     Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Text="{x:Bind rootservice:ResourceService.FileNameResource.GetString('OriginalFileName')}"
                     TextTrimming="CharacterEllipsis"
@@ -292,6 +293,7 @@
                     x:Name="NewFileNameHeaderText"
                     Grid.Column="1"
                     Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Text="{x:Bind rootservice:ResourceService.FileNameResource.GetString('NewFileName')}"
                     TextTrimming="CharacterEllipsis"
@@ -316,6 +318,7 @@
                 Grid.Row="1"
                 Margin="0,0,0,3"
                 IsItemClickEnabled="True"
+                ItemsSource="{x:Bind FileNameCollection}"
                 SelectionMode="None">
 
                 <ListView.ItemContainerStyle>
@@ -349,6 +352,7 @@
                                 Grid.Column="0"
                                 MinWidth="50"
                                 Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 FontSize="14"
                                 Text="{x:Bind OriginalFileName, Mode=OneWay}"
@@ -369,6 +373,7 @@
                                 Grid.Column="1"
                                 MinWidth="50"
                                 Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 FontSize="14"
                                 Text="{x:Bind NewFileName, Mode=OneWay}"

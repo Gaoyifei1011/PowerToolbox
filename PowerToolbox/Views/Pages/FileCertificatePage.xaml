@@ -86,6 +86,7 @@
                 <TextBlock
                     x:Name="FileNameHeaderText"
                     Margin="10,0,0,0"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Text="{x:Bind rootservice:ResourceService.FileCertificateResource.GetString('FileName')}"
                     TextTrimming="CharacterEllipsis"
@@ -131,6 +132,7 @@
                             <TextBlock
                                 MinWidth="50"
                                 Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 FontSize="14"
                                 Text="{x:Bind FileName, Mode=OneWay}"
