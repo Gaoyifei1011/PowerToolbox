@@ -339,7 +339,8 @@
                     Margin="0,0,0,3"
                     HorizontalAlignment="Stretch"
                     Click="{x:Bind OnSelectFileClicked}"
-                    Content="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('SelectFile')}" />
+                    Content="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('SelectFile')}"
+                    IsEnabled="{x:Bind GetIsParsingOrSaving(IconExtractResultKind, IsSaving), Mode=OneWay}" />
 
                 <Button
                     Grid.Row="5"

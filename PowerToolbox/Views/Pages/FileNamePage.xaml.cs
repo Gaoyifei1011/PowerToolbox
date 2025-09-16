@@ -33,6 +33,7 @@ namespace PowerToolbox.Views.Pages
     {
         private readonly string AutoString = ResourceService.FileNameResource.GetString("Auto");
         private readonly string DragOverContentString = ResourceService.FileNameResource.GetString("DragOverContent");
+        private readonly string ModifyingNowString = ResourceService.FileNameResource.GetString("ModifyingNow");
         private readonly string SelectFileString = ResourceService.FileNameResource.GetString("SelectFile");
         private readonly string SelectFolderString = ResourceService.FileNameResource.GetString("SelectFolder");
         private readonly string TotalString = ResourceService.FileNameResource.GetString("Total");
@@ -212,11 +213,22 @@ namespace PowerToolbox.Views.Pages
         protected override void OnDragOver(global::Windows.UI.Xaml.DragEventArgs args)
         {
             base.OnDragOver(args);
-            args.AcceptedOperation = DataPackageOperation.Copy;
-            args.DragUIOverride.IsCaptionVisible = true;
-            args.DragUIOverride.IsContentVisible = false;
-            args.DragUIOverride.IsGlyphVisible = true;
-            args.DragUIOverride.Caption = DragOverContentString;
+            if (IsModifyingNow)
+            {
+                args.AcceptedOperation = DataPackageOperation.None;
+                args.DragUIOverride.IsCaptionVisible = true;
+                args.DragUIOverride.IsContentVisible = false;
+                args.DragUIOverride.IsGlyphVisible = true;
+                args.DragUIOverride.Caption = ModifyingNowString;
+            }
+            else
+            {
+                args.AcceptedOperation = DataPackageOperation.Copy;
+                args.DragUIOverride.IsCaptionVisible = true;
+                args.DragUIOverride.IsContentVisible = false;
+                args.DragUIOverride.IsGlyphVisible = true;
+                args.DragUIOverride.Caption = DragOverContentString;
+            }
             args.Handled = true;
         }
 

@@ -770,181 +770,189 @@
                         Click="{x:Bind OnSelectFileClicked}"
                         Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectFile')}" />
 
-                    <controls:DropDownButton
-                        x:Name="LanguageButton"
-                        MinHeight="32"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center"
-                        Content="{x:Bind system:Convert.ToString(SelectedLanguage.Value), Mode=OneWay}"
-                        IsEnabled="{x:Bind system:Convert.ToBoolean(LanguageCollection.Count), Mode=OneWay}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind, ResourceCandidateKindList[0]), Mode=OneWay}">
+                    <ContentControl
+                        Grid.Column="2"
+                        HorizontalContentAlignment="Stretch"
+                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsProcessing), Mode=OneWay}">
 
-                        <controls:DropDownButton.Flyout>
-                            <Flyout
-                                x:Name="LanguageFlyout"
-                                Opened="{x:Bind OnOpened}"
-                                Placement="Bottom"
-                                ShouldConstrainToRootBounds="False">
+                        <StackPanel>
+                            <controls:DropDownButton
+                                x:Name="LanguageButton"
+                                MinHeight="32"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Content="{x:Bind system:Convert.ToString(SelectedLanguage.Value), Mode=OneWay}"
+                                IsEnabled="{x:Bind system:Convert.ToBoolean(LanguageCollection.Count), Mode=OneWay}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind, ResourceCandidateKindList[0]), Mode=OneWay}">
 
-                                <Flyout.FlyoutPresenterStyle>
-                                    <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
-                                        <Setter Property="Padding" Value="0" />
-                                        <Setter Property="MinHeight" Value="0" />
-                                        <Setter Property="MinWidth" Value="260" />
-                                        <Setter Property="Background" Value="{ThemeResource MenuFlyoutPresenterBackground}" />
-                                    </Style>
-                                </Flyout.FlyoutPresenterStyle>
+                                <controls:DropDownButton.Flyout>
+                                    <Flyout
+                                        x:Name="LanguageFlyout"
+                                        Opened="{x:Bind OnOpened}"
+                                        Placement="Bottom"
+                                        ShouldConstrainToRootBounds="False">
 
-                                <ListView
-                                    x:Name="LanguageListView"
-                                    MaxHeight="300"
-                                    Background="Transparent"
-                                    ItemsSource="{x:Bind LanguageCollection}"
-                                    SelectionMode="None">
+                                        <Flyout.FlyoutPresenterStyle>
+                                            <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                                <Setter Property="Padding" Value="0" />
+                                                <Setter Property="MinHeight" Value="0" />
+                                                <Setter Property="MinWidth" Value="260" />
+                                                <Setter Property="Background" Value="{ThemeResource MenuFlyoutPresenterBackground}" />
+                                            </Style>
+                                        </Flyout.FlyoutPresenterStyle>
 
-                                    <ListView.ItemContainerStyle>
-                                        <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                                            <Setter Property="Padding" Value="0" />
-                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                            <Setter Property="Margin" Value="0,1" />
-                                            <Setter Property="MinHeight" Value="0 " />
-                                        </Style>
-                                    </ListView.ItemContainerStyle>
+                                        <ListView
+                                            x:Name="LanguageListView"
+                                            MaxHeight="300"
+                                            Background="Transparent"
+                                            ItemsSource="{x:Bind LanguageCollection}"
+                                            SelectionMode="None">
 
-                                    <ItemsControl.ItemContainerTransitions>
-                                        <TransitionCollection />
-                                    </ItemsControl.ItemContainerTransitions>
+                                            <ListView.ItemContainerStyle>
+                                                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                                    <Setter Property="Padding" Value="0" />
+                                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                                    <Setter Property="Margin" Value="0,1" />
+                                                    <Setter Property="MinHeight" Value="0 " />
+                                                </Style>
+                                            </ListView.ItemContainerStyle>
 
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate x:DataType="model:LanguageModel">
-                                            <controls:RadioMenuFlyoutItem
-                                                Height="32"
-                                                Padding="11,0"
-                                                Command="{StaticResource LanguageCommand}"
-                                                CommandParameter="{x:Bind}"
-                                                GroupName="LanguageRadioGroup"
-                                                IsChecked="{x:Bind IsChecked, Mode=OneWay}"
-                                                Text="{x:Bind system:Convert.ToString(LangaugeInfo.Value)}" />
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </Flyout>
-                        </controls:DropDownButton.Flyout>
-                    </controls:DropDownButton>
+                                            <ItemsControl.ItemContainerTransitions>
+                                                <TransitionCollection />
+                                            </ItemsControl.ItemContainerTransitions>
 
-                    <MenuFlyoutSeparator Margin="5,3,5,3" />
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate x:DataType="model:LanguageModel">
+                                                    <controls:RadioMenuFlyoutItem
+                                                        Height="32"
+                                                        Padding="11,0"
+                                                        Command="{StaticResource LanguageCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        GroupName="LanguageRadioGroup"
+                                                        IsChecked="{x:Bind IsChecked, Mode=OneWay}"
+                                                        Text="{x:Bind system:Convert.ToString(LangaugeInfo.Value)}" />
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </Flyout>
+                                </controls:DropDownButton.Flyout>
+                            </controls:DropDownButton>
 
-                    <controls:DropDownButton
-                        Margin="0,0,0,3"
-                        HorizontalAlignment="Stretch"
-                        Content="{x:Bind SelectedResourceCandidateKind.Value, Mode=OneWay}">
+                            <MenuFlyoutSeparator Margin="5,3,5,3" />
 
-                        <controls:DropDownButton.Flyout>
-                            <MenuFlyout Placement="Bottom">
-                                <MenuFlyout.MenuFlyoutPresenterStyle>
-                                    <Style BasedOn="{StaticResource DefaultMenuFlyoutPresenterStyle}" TargetType="MenuFlyoutPresenter">
-                                        <Setter Property="MinWidth" Value="260" />
-                                    </Style>
-                                </MenuFlyout.MenuFlyoutPresenterStyle>
+                            <controls:DropDownButton
+                                Margin="0,0,0,3"
+                                HorizontalAlignment="Stretch"
+                                Content="{x:Bind SelectedResourceCandidateKind.Value, Mode=OneWay}">
 
-                                <controls:RadioMenuFlyoutItem
-                                    Click="{x:Bind OnSelectedResourceCandidateKindClicked}"
-                                    GroupName="ResourceCandidateKindRadioGroup"
-                                    IsChecked="{x:Bind x:Object.Equals(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[0].Key), Mode=OneWay}"
-                                    Tag="{x:Bind ResourceCandidateKindList[0]}"
-                                    Text="{x:Bind system:Convert.ToString(ResourceCandidateKindList[0].Value)}" />
+                                <controls:DropDownButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <MenuFlyout.MenuFlyoutPresenterStyle>
+                                            <Style BasedOn="{StaticResource DefaultMenuFlyoutPresenterStyle}" TargetType="MenuFlyoutPresenter">
+                                                <Setter Property="MinWidth" Value="260" />
+                                            </Style>
+                                        </MenuFlyout.MenuFlyoutPresenterStyle>
 
-                                <controls:RadioMenuFlyoutItem
-                                    Click="{x:Bind OnSelectedResourceCandidateKindClicked}"
-                                    GroupName="ResourceCandidateKindRadioGroup"
-                                    IsChecked="{x:Bind x:Object.Equals(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[1].Key), Mode=OneWay}"
-                                    Tag="{x:Bind ResourceCandidateKindList[1]}"
-                                    Text="{x:Bind system:Convert.ToString(ResourceCandidateKindList[1].Value)}" />
+                                        <controls:RadioMenuFlyoutItem
+                                            Click="{x:Bind OnSelectedResourceCandidateKindClicked}"
+                                            GroupName="ResourceCandidateKindRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[0].Key), Mode=OneWay}"
+                                            Tag="{x:Bind ResourceCandidateKindList[0]}"
+                                            Text="{x:Bind system:Convert.ToString(ResourceCandidateKindList[0].Value)}" />
 
-                                <controls:RadioMenuFlyoutItem
-                                    Click="{x:Bind OnSelectedResourceCandidateKindClicked}"
-                                    GroupName="ResourceCandidateKindRadioGroup"
-                                    IsChecked="{x:Bind x:Object.Equals(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[2].Key), Mode=OneWay}"
-                                    Tag="{x:Bind ResourceCandidateKindList[2]}"
-                                    Text="{x:Bind system:Convert.ToString(ResourceCandidateKindList[2].Value)}" />
-                            </MenuFlyout>
-                        </controls:DropDownButton.Flyout>
-                    </controls:DropDownButton>
+                                        <controls:RadioMenuFlyoutItem
+                                            Click="{x:Bind OnSelectedResourceCandidateKindClicked}"
+                                            GroupName="ResourceCandidateKindRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[1].Key), Mode=OneWay}"
+                                            Tag="{x:Bind ResourceCandidateKindList[1]}"
+                                            Text="{x:Bind system:Convert.ToString(ResourceCandidateKindList[1].Value)}" />
 
-                    <AutoSuggestBox
-                        Margin="0,0,0,3"
-                        IsEnabled="{x:Bind HasStringResource, Mode=OneWay}"
-                        PlaceholderText="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('StringPlaceHolderText')}"
-                        QueryIcon="Find"
-                        QuerySubmitted="{x:Bind OnStringQuerySubmitted}"
-                        Text="{x:Bind StringSearchText, Mode=OneWay}"
-                        TextChanged="{x:Bind OnStringTextChanged}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[0].Key), Mode=OneWay}" />
+                                        <controls:RadioMenuFlyoutItem
+                                            Click="{x:Bind OnSelectedResourceCandidateKindClicked}"
+                                            GroupName="ResourceCandidateKindRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[2].Key), Mode=OneWay}"
+                                            Tag="{x:Bind ResourceCandidateKindList[2]}"
+                                            Text="{x:Bind system:Convert.ToString(ResourceCandidateKindList[2].Value)}" />
+                                    </MenuFlyout>
+                                </controls:DropDownButton.Flyout>
+                            </controls:DropDownButton>
 
-                    <AutoSuggestBox
-                        Margin="0,0,0,3"
-                        IsEnabled="{x:Bind HasFilePathResource, Mode=OneWay}"
-                        PlaceholderText="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('FilePathPlaceHolderText')}"
-                        QueryIcon="Find"
-                        QuerySubmitted="{x:Bind OnFilePathQuerySubmitted}"
-                        Text="{x:Bind FilePathSearchText, Mode=OneWay}"
-                        TextChanged="{x:Bind OnFilePathTextChanged}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[1].Key), Mode=OneWay}" />
+                            <AutoSuggestBox
+                                Margin="0,0,0,3"
+                                IsEnabled="{x:Bind HasStringResource, Mode=OneWay}"
+                                PlaceholderText="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('StringPlaceHolderText')}"
+                                QueryIcon="Find"
+                                QuerySubmitted="{x:Bind OnStringQuerySubmitted}"
+                                Text="{x:Bind StringSearchText, Mode=OneWay}"
+                                TextChanged="{x:Bind OnStringTextChanged}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[0].Key), Mode=OneWay}" />
 
-                    <AutoSuggestBox
-                        Margin="0,0,0,3"
-                        IsEnabled="{x:Bind HasEmbeddedDataResource, Mode=OneWay}"
-                        PlaceholderText="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('EmbeddedDataPlaceHolderText')}"
-                        QueryIcon="Find"
-                        QuerySubmitted="{x:Bind OnEmbeddedDataQuerySubmitted}"
-                        Text="{x:Bind EmbeddedDataSearchText, Mode=OneWay}"
-                        TextChanged="{x:Bind OnEmbeddedDataTextChanged}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[2].Key), Mode=OneWay}" />
+                            <AutoSuggestBox
+                                Margin="0,0,0,3"
+                                IsEnabled="{x:Bind HasFilePathResource, Mode=OneWay}"
+                                PlaceholderText="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('FilePathPlaceHolderText')}"
+                                QueryIcon="Find"
+                                QuerySubmitted="{x:Bind OnFilePathQuerySubmitted}"
+                                Text="{x:Bind FilePathSearchText, Mode=OneWay}"
+                                TextChanged="{x:Bind OnFilePathTextChanged}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[1].Key), Mode=OneWay}" />
 
-                    <Button
-                        Margin="0,0,0,3"
-                        HorizontalAlignment="Stretch"
-                        Click="{x:Bind OnCopySelectedStringClicked}"
-                        Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('CopySelectedString')}"
-                        IsEnabled="{x:Bind system:Convert.ToBoolean(StringCollection.Count), Mode=OneWay}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[0].Key), Mode=OneWay}" />
+                            <AutoSuggestBox
+                                Margin="0,0,0,3"
+                                IsEnabled="{x:Bind HasEmbeddedDataResource, Mode=OneWay}"
+                                PlaceholderText="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('EmbeddedDataPlaceHolderText')}"
+                                QueryIcon="Find"
+                                QuerySubmitted="{x:Bind OnEmbeddedDataQuerySubmitted}"
+                                Text="{x:Bind EmbeddedDataSearchText, Mode=OneWay}"
+                                TextChanged="{x:Bind OnEmbeddedDataTextChanged}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[2].Key), Mode=OneWay}" />
 
-                    <Button
-                        Margin="0,0,0,3"
-                        HorizontalAlignment="Stretch"
-                        Click="{x:Bind OnCopySelectedFilePathClicked}"
-                        Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('CopySelectedFilePath')}"
-                        IsEnabled="{x:Bind system:Convert.ToBoolean(FilePathCollection.Count), Mode=OneWay}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[1].Key), Mode=OneWay}" />
+                            <Button
+                                Margin="0,0,0,3"
+                                HorizontalAlignment="Stretch"
+                                Click="{x:Bind OnCopySelectedStringClicked}"
+                                Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('CopySelectedString')}"
+                                IsEnabled="{x:Bind system:Convert.ToBoolean(StringCollection.Count), Mode=OneWay}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[0].Key), Mode=OneWay}" />
 
-                    <Button
-                        Margin="0,0,0,3"
-                        HorizontalAlignment="Stretch"
-                        Click="{x:Bind OnExportSelectedEmbeddedDataClicked}"
-                        Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('ExportSelectedEmbeddedData')}"
-                        IsEnabled="{x:Bind system:Convert.ToBoolean(EmbeddedDataCollection.Count), Mode=OneWay}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[2].Key), Mode=OneWay}" />
+                            <Button
+                                Margin="0,0,0,3"
+                                HorizontalAlignment="Stretch"
+                                Click="{x:Bind OnCopySelectedFilePathClicked}"
+                                Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('CopySelectedFilePath')}"
+                                IsEnabled="{x:Bind system:Convert.ToBoolean(FilePathCollection.Count), Mode=OneWay}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[1].Key), Mode=OneWay}" />
 
-                    <Button
-                        HorizontalAlignment="Stretch"
-                        Click="{x:Bind OnCopyAllStringClicked}"
-                        Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('CopyAllString')}"
-                        IsEnabled="{x:Bind system:Convert.ToBoolean(StringCollection.Count), Mode=OneWay}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[0].Key), Mode=OneWay}" />
+                            <Button
+                                Margin="0,0,0,3"
+                                HorizontalAlignment="Stretch"
+                                Click="{x:Bind OnExportSelectedEmbeddedDataClicked}"
+                                Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('ExportSelectedEmbeddedData')}"
+                                IsEnabled="{x:Bind system:Convert.ToBoolean(EmbeddedDataCollection.Count), Mode=OneWay}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[2].Key), Mode=OneWay}" />
 
-                    <Button
-                        HorizontalAlignment="Stretch"
-                        Click="{x:Bind OnCopyAllFilePathClicked}"
-                        Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('CopyAllFilePath')}"
-                        IsEnabled="{x:Bind system:Convert.ToBoolean(FilePathCollection.Count), Mode=OneWay}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[1].Key), Mode=OneWay}" />
+                            <Button
+                                HorizontalAlignment="Stretch"
+                                Click="{x:Bind OnCopyAllStringClicked}"
+                                Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('CopyAllString')}"
+                                IsEnabled="{x:Bind system:Convert.ToBoolean(StringCollection.Count), Mode=OneWay}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[0].Key), Mode=OneWay}" />
 
-                    <Button
-                        HorizontalAlignment="Stretch"
-                        Click="{x:Bind OnExportAllEmbeddedDataClicked}"
-                        Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('ExportAllEmbeddedData')}"
-                        IsEnabled="{x:Bind system:Convert.ToBoolean(EmbeddedDataCollection.Count), Mode=OneWay}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[2].Key), Mode=OneWay}" />
+                            <Button
+                                HorizontalAlignment="Stretch"
+                                Click="{x:Bind OnCopyAllFilePathClicked}"
+                                Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('CopyAllFilePath')}"
+                                IsEnabled="{x:Bind system:Convert.ToBoolean(FilePathCollection.Count), Mode=OneWay}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[1].Key), Mode=OneWay}" />
+
+                            <Button
+                                HorizontalAlignment="Stretch"
+                                Click="{x:Bind OnExportAllEmbeddedDataClicked}"
+                                Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('ExportAllEmbeddedData')}"
+                                IsEnabled="{x:Bind system:Convert.ToBoolean(EmbeddedDataCollection.Count), Mode=OneWay}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.Key, ResourceCandidateKindList[2].Key), Mode=OneWay}" />
+                        </StackPanel>
+                    </ContentControl>
                 </StackPanel>
 
                 <StackPanel

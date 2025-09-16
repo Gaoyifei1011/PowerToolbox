@@ -46,6 +46,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string NoMultiFileString = ResourceService.PriExtractResource.GetString("NoMultiFile");
         private readonly string NoOtherExtensionNameFileString = ResourceService.PriExtractResource.GetString("NoOtherExtensionNameFile");
         private readonly string NoSelectedFileString = ResourceService.PriExtractResource.GetString("NoSelectedFile");
+        private readonly string ProcessingNowString = ResourceService.PriExtractResource.GetString("ProcessNowString");
         private readonly string SelectedFolderString = ResourceService.PriExtractResource.GetString("SelectedFolder");
         private readonly string SelectFileString = ResourceService.PriExtractResource.GetString("SelectFile");
         private readonly string SelectFolderString = ResourceService.PriExtractResource.GetString("SelectFolder");
@@ -339,19 +340,38 @@ namespace PowerToolbox.Views.Pages
 
             try
             {
-                IReadOnlyList<IStorageItem> dragItemsList = await args.DataView.GetStorageItemsAsync();
-
-                if (dragItemsList.Count is 1)
+                if (IsProcessing)
                 {
-                    string extensionName = Path.GetExtension(dragItemsList[0].Name);
+                    args.AcceptedOperation = DataPackageOperation.None;
+                    args.DragUIOverride.IsCaptionVisible = true;
+                    args.DragUIOverride.IsContentVisible = false;
+                    args.DragUIOverride.IsGlyphVisible = true;
+                    args.DragUIOverride.Caption = NoOtherExtensionNameFileString;
+                }
+                else
+                {
+                    IReadOnlyList<IStorageItem> dragItemsList = await args.DataView.GetStorageItemsAsync();
 
-                    if (string.Equals(extensionName, ".pri", StringComparison.OrdinalIgnoreCase))
+                    if (dragItemsList.Count is 1)
                     {
-                        args.AcceptedOperation = DataPackageOperation.Copy;
-                        args.DragUIOverride.IsCaptionVisible = true;
-                        args.DragUIOverride.IsContentVisible = false;
-                        args.DragUIOverride.IsGlyphVisible = true;
-                        args.DragUIOverride.Caption = DragOverContentString;
+                        string extensionName = Path.GetExtension(dragItemsList[0].Name);
+
+                        if (string.Equals(extensionName, ".pri", StringComparison.OrdinalIgnoreCase))
+                        {
+                            args.AcceptedOperation = DataPackageOperation.Copy;
+                            args.DragUIOverride.IsCaptionVisible = true;
+                            args.DragUIOverride.IsContentVisible = false;
+                            args.DragUIOverride.IsGlyphVisible = true;
+                            args.DragUIOverride.Caption = DragOverContentString;
+                        }
+                        else
+                        {
+                            args.AcceptedOperation = DataPackageOperation.None;
+                            args.DragUIOverride.IsCaptionVisible = true;
+                            args.DragUIOverride.IsContentVisible = false;
+                            args.DragUIOverride.IsGlyphVisible = true;
+                            args.DragUIOverride.Caption = NoOtherExtensionNameFileString;
+                        }
                     }
                     else
                     {
@@ -359,16 +379,8 @@ namespace PowerToolbox.Views.Pages
                         args.DragUIOverride.IsCaptionVisible = true;
                         args.DragUIOverride.IsContentVisible = false;
                         args.DragUIOverride.IsGlyphVisible = true;
-                        args.DragUIOverride.Caption = NoOtherExtensionNameFileString;
+                        args.DragUIOverride.Caption = NoMultiFileString;
                     }
-                }
-                else
-                {
-                    args.AcceptedOperation = DataPackageOperation.None;
-                    args.DragUIOverride.IsCaptionVisible = true;
-                    args.DragUIOverride.IsContentVisible = false;
-                    args.DragUIOverride.IsGlyphVisible = true;
-                    args.DragUIOverride.Caption = NoMultiFileString;
                 }
             }
             catch (Exception e)

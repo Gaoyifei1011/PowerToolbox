@@ -41,8 +41,10 @@ namespace PowerToolbox.Views.Pages
         private readonly string NoMultiFileString = ResourceService.IconExtractResource.GetString("NoMultiFile");
         private readonly string NoResourcesString = ResourceService.IconExtractResource.GetString("NoResources");
         private readonly string NoSelectedFileString = ResourceService.IconExtractResource.GetString("NoSelectedFile");
+        private readonly string ParsingIconString = ResourceService.IconExtractResource.GetString("ParsingIcon");
         private readonly string SelectFileString = ResourceService.IconExtractResource.GetString("SelectFile");
         private readonly string SelectFolderString = ResourceService.IconExtractResource.GetString("SelectFolder");
+        private readonly string SavingNowString = ResourceService.IconExtractResource.GetString("SavingNow");
         private readonly object iconExtractLock = new();
 
         private string filePath;
@@ -235,42 +237,63 @@ namespace PowerToolbox.Views.Pages
 
             try
             {
-                IReadOnlyList<IStorageItem> dragItemsList = await args.DataView.GetStorageItemsAsync();
-
-                if (dragItemsList.Count is 1)
-                {
-                    string extensionName = Path.GetExtension(dragItemsList[0].Name);
-
-                    if (string.Equals(extensionName, ".exe", StringComparison.OrdinalIgnoreCase) || string.Equals(extensionName, ".dll", StringComparison.OrdinalIgnoreCase))
-                    {
-                        args.AcceptedOperation = DataPackageOperation.Copy;
-                        args.DragUIOverride.IsCaptionVisible = true;
-                        args.DragUIOverride.IsContentVisible = false;
-                        args.DragUIOverride.IsGlyphVisible = true;
-                        args.DragUIOverride.Caption = DragOverContentString;
-                    }
-                    else
-                    {
-                        args.AcceptedOperation = DataPackageOperation.None;
-                        args.DragUIOverride.IsCaptionVisible = true;
-                        args.DragUIOverride.IsContentVisible = false;
-                        args.DragUIOverride.IsGlyphVisible = true;
-                        args.DragUIOverride.Caption = NoOtherExtensionNameFileString;
-                    }
-                }
-                else
+                if (IconExtractResultKind is IconExtractResultKind.Parsing)
                 {
                     args.AcceptedOperation = DataPackageOperation.None;
                     args.DragUIOverride.IsCaptionVisible = true;
                     args.DragUIOverride.IsContentVisible = false;
                     args.DragUIOverride.IsGlyphVisible = true;
-                    args.DragUIOverride.Caption = NoMultiFileString;
+                    args.DragUIOverride.Caption = ParsingIconString;
+                }
+                else
+                {
+                    if (IsSaving)
+                    {
+                        args.AcceptedOperation = DataPackageOperation.None;
+                        args.DragUIOverride.IsCaptionVisible = true;
+                        args.DragUIOverride.IsContentVisible = false;
+                        args.DragUIOverride.IsGlyphVisible = true;
+                        args.DragUIOverride.Caption = SavingNowString;
+                    }
+                    else
+                    {
+                        IReadOnlyList<IStorageItem> dragItemsList = await args.DataView.GetStorageItemsAsync();
+
+                        if (dragItemsList.Count is 1)
+                        {
+                            string extensionName = Path.GetExtension(dragItemsList[0].Name);
+
+                            if (string.Equals(extensionName, ".exe", StringComparison.OrdinalIgnoreCase) || string.Equals(extensionName, ".dll", StringComparison.OrdinalIgnoreCase))
+                            {
+                                args.AcceptedOperation = DataPackageOperation.Copy;
+                                args.DragUIOverride.IsCaptionVisible = true;
+                                args.DragUIOverride.IsContentVisible = false;
+                                args.DragUIOverride.IsGlyphVisible = true;
+                                args.DragUIOverride.Caption = DragOverContentString;
+                            }
+                            else
+                            {
+                                args.AcceptedOperation = DataPackageOperation.None;
+                                args.DragUIOverride.IsCaptionVisible = true;
+                                args.DragUIOverride.IsContentVisible = false;
+                                args.DragUIOverride.IsGlyphVisible = true;
+                                args.DragUIOverride.Caption = NoOtherExtensionNameFileString;
+                            }
+                        }
+                        else
+                        {
+                            args.AcceptedOperation = DataPackageOperation.None;
+                            args.DragUIOverride.IsCaptionVisible = true;
+                            args.DragUIOverride.IsContentVisible = false;
+                            args.DragUIOverride.IsGlyphVisible = true;
+                            args.DragUIOverride.Caption = NoMultiFileString;
+                        }
+                    }
                 }
             }
             catch (Exception e)
             {
                 LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnDragOver), 1, e);
-                return;
             }
             finally
             {
@@ -745,6 +768,14 @@ namespace PowerToolbox.Views.Pages
         private Visibility CheckIconExtractState(IconExtractResultKind iconResultResultKind, IconExtractResultKind comparedIconExtractResultKind)
         {
             return Equals(iconResultResultKind, comparedIconExtractResultKind) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 检查是否正在解析中或保存中
+        /// </summary>
+        private bool GetIsParsingOrSaving(IconExtractResultKind iconExtractResultKind, bool isSaving)
+        {
+            return iconExtractResultKind is IconExtractResultKind.Parsing ? false : !isSaving;
         }
     }
 }

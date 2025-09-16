@@ -31,6 +31,7 @@ namespace PowerToolbox.Views.Pages
     public sealed partial class UpperAndLowerCasePage : Page, INotifyPropertyChanged
     {
         private readonly string DragOverContentString = ResourceService.UpperAndLowerCaseResource.GetString("DragOverContent");
+        private readonly string ModifyingNowString = ResourceService.UpperAndLowerCaseResource.GetString("ModifyingNow");
         private readonly string SelectFileString = ResourceService.UpperAndLowerCaseResource.GetString("SelectFile");
         private readonly string SelectFolderString = ResourceService.UpperAndLowerCaseResource.GetString("SelectFolder");
         private readonly string TotalString = ResourceService.UpperAndLowerCaseResource.GetString("Total");
@@ -103,11 +104,22 @@ namespace PowerToolbox.Views.Pages
         protected override void OnDragOver(global::Windows.UI.Xaml.DragEventArgs args)
         {
             base.OnDragOver(args);
-            args.AcceptedOperation = DataPackageOperation.Copy;
-            args.DragUIOverride.IsCaptionVisible = true;
-            args.DragUIOverride.IsContentVisible = false;
-            args.DragUIOverride.IsGlyphVisible = true;
-            args.DragUIOverride.Caption = DragOverContentString;
+            if (IsModifyingNow)
+            {
+                args.AcceptedOperation = DataPackageOperation.None;
+                args.DragUIOverride.IsCaptionVisible = true;
+                args.DragUIOverride.IsContentVisible = false;
+                args.DragUIOverride.IsGlyphVisible = true;
+                args.DragUIOverride.Caption = ModifyingNowString;
+            }
+            else
+            {
+                args.AcceptedOperation = DataPackageOperation.Copy;
+                args.DragUIOverride.IsCaptionVisible = true;
+                args.DragUIOverride.IsContentVisible = false;
+                args.DragUIOverride.IsGlyphVisible = true;
+                args.DragUIOverride.Caption = DragOverContentString;
+            }
             args.Handled = true;
         }
 

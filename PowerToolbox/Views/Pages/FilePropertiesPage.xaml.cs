@@ -36,6 +36,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string DragOverContentString = ResourceService.FilePropertiesResource.GetString("DragOverContent");
         private readonly string HideString = ResourceService.FilePropertiesResource.GetString("Hide");
         private readonly string ModifyDateString = ResourceService.FilePropertiesResource.GetString("ModifyDate");
+        private readonly string ModifyingNowString = ResourceService.FilePropertiesResource.GetString("ModifyingNow");
         private readonly string ReadOnlyString = ResourceService.FilePropertiesResource.GetString("ReadOnly");
         private readonly string SelectFileString = ResourceService.FilePropertiesResource.GetString("SelectFile");
         private readonly string SelectFolderString = ResourceService.FilePropertiesResource.GetString("SelectFolder");
@@ -254,11 +255,22 @@ namespace PowerToolbox.Views.Pages
         protected override void OnDragOver(global::Windows.UI.Xaml.DragEventArgs args)
         {
             base.OnDragOver(args);
-            args.AcceptedOperation = DataPackageOperation.Copy;
-            args.DragUIOverride.IsCaptionVisible = true;
-            args.DragUIOverride.IsContentVisible = false;
-            args.DragUIOverride.IsGlyphVisible = true;
-            args.DragUIOverride.Caption = DragOverContentString;
+            if (IsModifyingNow)
+            {
+                args.AcceptedOperation = DataPackageOperation.None;
+                args.DragUIOverride.IsCaptionVisible = true;
+                args.DragUIOverride.IsContentVisible = false;
+                args.DragUIOverride.IsGlyphVisible = true;
+                args.DragUIOverride.Caption = ModifyingNowString;
+            }
+            else
+            {
+                args.AcceptedOperation = DataPackageOperation.Copy;
+                args.DragUIOverride.IsCaptionVisible = true;
+                args.DragUIOverride.IsContentVisible = false;
+                args.DragUIOverride.IsGlyphVisible = true;
+                args.DragUIOverride.Caption = DragOverContentString;
+            }
             args.Handled = true;
         }
 
