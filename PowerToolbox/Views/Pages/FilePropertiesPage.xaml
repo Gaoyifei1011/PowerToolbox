@@ -409,17 +409,20 @@
             <Button
                 Grid.Column="0"
                 Click="{x:Bind OnSelectFileClicked}"
-                Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('SelectFile')}" />
+                Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('SelectFile')}"
+                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}" />
 
             <Button
                 Grid.Column="1"
                 Click="{x:Bind OnSelectFolderClicked}"
-                Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('SelectFolder')}" />
+                Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('SelectFolder')}"
+                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}" />
 
             <Button
                 Grid.Column="2"
                 Click="{x:Bind OnClearListClicked}"
-                Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('ClearList')}" />
+                Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('ClearList')}"
+                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}" />
 
             <TextBlock
                 Grid.Column="3"
