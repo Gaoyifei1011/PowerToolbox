@@ -173,7 +173,6 @@ namespace PowerToolbox.Views.Pages
 
         /// <summary>
         /// 按下 Enter 键发生的事件（预览修改内容）
-        /// 按下 Ctrl + Enter 键发生的事件（修改内容）
         /// </summary>
         protected override async void OnKeyDown(KeyRoutedEventArgs args)
         {
