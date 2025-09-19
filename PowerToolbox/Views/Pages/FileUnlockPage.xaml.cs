@@ -333,38 +333,6 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnViewErrorInformationClicked(object sender, RoutedEventArgs args)
         {
-            FileUnlockFailedList.Clear();
-
-            FileUnlockFailedList.Add(new FileUnlockFailedModel()
-            {
-                FileName = "AppVDllSurrogate.exe",
-                FilePath = @"C:\Windows\System32\AppVDllSurrogate.exe",
-                ProcessName = "appverif.exe",
-                ProcessId = "12345",
-                ProcessPath = @"C:\Windows\System32\appverif.exe",
-                Exception = new UnauthorizedAccessException()
-            });
-
-            FileUnlockFailedList.Add(new FileUnlockFailedModel()
-            {
-                FileName = "AppVDllSurrogate.exe",
-                FilePath = @"C:\Windows\System32\AppVDllSurrogate.exe",
-                ProcessName = "appverif.exe",
-                ProcessId = "12345",
-                ProcessPath = @"C:\Windows\System32\appverif.exe",
-                Exception = new UnauthorizedAccessException()
-            });
-
-            FileUnlockFailedList.Add(new FileUnlockFailedModel()
-            {
-                FileName = "AppVDllSurrogate.exe",
-                FilePath = @"C:\Windows\System32\AppVDllSurrogate.exe",
-                ProcessName = "appverif.exe",
-                ProcessId = "12345",
-                ProcessPath = @"C:\Windows\System32\appverif.exe",
-                Exception = new UnauthorizedAccessException()
-            });
-
             await MainWindow.Current.ShowDialogAsync(new FileUnlockFailedDialog(FileUnlockFailedList));
         }
 

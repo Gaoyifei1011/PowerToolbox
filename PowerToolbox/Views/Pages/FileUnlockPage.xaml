@@ -452,8 +452,9 @@
                 Grid.Column="5"
                 Margin="0,0,10,0"
                 Click="{x:Bind OnViewErrorInformationClicked}"
-                Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('ViewErrorInformation')}" />
-            <!--  Visibility="{x:Bind IsOperationFailed, Mode=OneWay}"  -->
+                Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('ViewErrorInformation')}"
+                Visibility="{x:Bind IsOperationFailed, Mode=OneWay}" />
+
             <controls:ProgressRing
                 Grid.Column="6"
                 Width="25"
