@@ -279,6 +279,7 @@
     <None Remove="Views\Dialogs\ClosingWindowDialog.xaml" />
     <None Remove="Views\Dialogs\DownloadSettingsDialog.xaml" />
     <None Remove="Views\Dialogs\FileCheckDialog.xaml" />
+    <None Remove="Views\Dialogs\FileUnlockFailedDialog.xaml" />
     <None Remove="Views\Dialogs\LicenseDialog.xaml" />
     <None Remove="Views\Dialogs\NeedElevatedDialog.xaml" />
     <None Remove="Views\Dialogs\OpenStartupTaskFailedDialog.xaml" />
@@ -333,6 +334,7 @@
     <Page Include="Views\Dialogs\ClosingWindowDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\DownloadSettingsDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\FileCheckDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Views\Dialogs\FileUnlockFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\LicenseDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\NeedElevatedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\OpenStartupTaskFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
