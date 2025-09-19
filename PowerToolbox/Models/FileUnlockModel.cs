@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using PowerToolbox.Extensions.DataType.Enums;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace PowerToolbox.Models
@@ -8,6 +9,11 @@ namespace PowerToolbox.Models
     /// </summary>
     public class FileUnlockModel : INotifyPropertyChanged
     {
+        /// <summary>
+        /// 是否为目录
+        /// </summary>
+        public bool IsDirectory { get; set; }
+
         /// <summary>
         /// 文件 / 文件夹名称
         /// </summary>
@@ -29,20 +35,52 @@ namespace PowerToolbox.Models
         public string FileFolderAmount { get; set; }
 
         /// <summary>
-        /// 操作状态
+        /// 文件解锁状态
         /// </summary>
-        private string _fileFolderStatus;
+        private FileUnlockState _fileUnlockState;
 
-        public string FileFolderStatus
+        public FileUnlockState FileUnlockState
         {
-            get { return _fileFolderStatus; }
+            get { return _fileUnlockState; }
 
             set
             {
-                if (!string.Equals(_fileFolderStatus, value))
+                if (!Equals(_fileUnlockState, value))
                 {
-                    _fileFolderStatus = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileFolderStatus)));
+                    _fileUnlockState = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileUnlockState)));
+                }
+            }
+        }
+
+        private int _fileUnlockFinishedCount;
+
+        public int FileUnlockFinishedCount
+        {
+            get { return _fileUnlockFinishedCount; }
+
+            set
+            {
+                if (!Equals(_fileUnlockFinishedCount, value))
+                {
+                    _fileUnlockFinishedCount = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileUnlockFinishedCount)));
+                }
+            }
+        }
+
+        private int _fileUnlockProcessingPercentage;
+
+        public int FileUnlockProgressingPercentage
+        {
+            get { return _fileUnlockProcessingPercentage; }
+
+            set
+            {
+                if (!Equals(_fileUnlockProcessingPercentage, value))
+                {
+                    _fileUnlockProcessingPercentage = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileUnlockProgressingPercentage)));
                 }
             }
         }
