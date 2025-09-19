@@ -28,5 +28,13 @@ namespace PowerToolbox.Helpers.Converters
         {
             return downloadProgressState is DownloadProgressState.Queued || downloadProgressState is DownloadProgressState.Downloading ? Visibility.Visible : Visibility.Collapsed;
         }
+
+        /// <summary>
+        /// 检查文件解锁状态
+        /// </summary>
+        public static Visibility CheckFileUnlockState(FileUnlockState fileUnlockState, FileUnlockState comparedFileUnlockState)
+        {
+            return Equals(fileUnlockState, comparedFileUnlockState) ? Visibility.Visible : Visibility.Collapsed;
+        }
     }
 }
