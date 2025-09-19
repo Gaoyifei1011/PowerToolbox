@@ -6,9 +6,11 @@
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:enum="using:PowerToolbox.Extensions.DataType.Enums"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:PowerToolbox.Models"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
+    xmlns:sys="using:System"
     AllowDrop="True"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
@@ -250,6 +252,142 @@
                                         Visibility="{Binding ElementName=FileFolderAmountText, Path=IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
+
+                            <TextBlock
+                                x:Name="FileFolderNotStartedText"
+                                Grid.Column="3"
+                                MinWidth="50"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderNotStarted')}"
+                                TextAlignment="Left"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap"
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockState(FileUnlockState, enum:FileUnlockState.NotStarted), Mode=OneWay}">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderNotStarted')}"
+                                        Placement="Mouse"
+                                        Visibility="{Binding ElementName=FileFolderNotStartedText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+
+                            <StackPanel
+                                Grid.Column="3"
+                                Margin="10,0,0,0"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockState(FileUnlockState, enum:FileUnlockState.Processing), Mode=OneWay}">
+
+                                <controls:ProgressRing
+                                    Width="14"
+                                    Height="14"
+                                    Margin="0,0,6,0"
+                                    IsActive="{x:Bind x:Object.Equals(FileUnlockState, enum:FileUnlockState.Processing), Mode=OneWay}"
+                                    IsIndeterminate="False"
+                                    Value="{x:Bind FileUnlockProgressingPercentage, Mode=OneWay}" />
+
+                                <TextBlock
+                                    x:Name="FileFolderProcessingText"
+                                    Grid.Column="3"
+                                    MinWidth="50"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    TextAlignment="Left"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap">
+
+                                    <Run Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderProcessing')}" />
+                                    <Run Text="{x:Bind sys:Convert.ToString(FileUnlockFinishedCount), Mode=OneWay}" />
+                                    <Run Text="/" />
+                                    <Run Text="{x:Bind sys:Convert.ToString(SubFileList.Count)}" />
+
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip MaxWidth="9999" Placement="Mouse">
+                                            <TextBlock>
+                                                <Run Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderProcessing')}" />
+                                                <Run Text="{x:Bind sys:Convert.ToString(FileUnlockFinishedCount), Mode=OneWay}" />
+                                                <Run Text="/" />
+                                                <Run Text="{x:Bind sys:Convert.ToString(SubFileList.Count)}" />
+                                            </TextBlock>
+                                        </ToolTip>
+                                    </ToolTipService.ToolTip>
+                                </TextBlock>
+                            </StackPanel>
+
+                            <TextBlock
+                                x:Name="FileFolderCancelledText"
+                                Grid.Column="3"
+                                MinWidth="50"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderCancelled')}"
+                                TextAlignment="Left"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap"
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockState(FileUnlockState, enum:FileUnlockState.Cancelled), Mode=OneWay}">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderCancelled')}"
+                                        Placement="Mouse"
+                                        Visibility="{Binding ElementName=FileFolderCancelledText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+
+                            <TextBlock
+                                x:Name="FileFolderFailedText"
+                                Grid.Column="3"
+                                MinWidth="50"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderFailed')}"
+                                TextAlignment="Left"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap"
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockState(FileUnlockState, enum:FileUnlockState.Failed), Mode=OneWay}">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderFailed')}"
+                                        Placement="Mouse"
+                                        Visibility="{Binding ElementName=FileFolderFailedText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+
+                            <TextBlock
+                                x:Name="FileFolderSuccessfullyText"
+                                Grid.Column="3"
+                                MinWidth="50"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderSuccessfully')}"
+                                TextAlignment="Left"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap"
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockState(FileUnlockState, enum:FileUnlockState.Successfully), Mode=OneWay}">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderSuccessfully')}"
+                                        Placement="Mouse"
+                                        Visibility="{Binding ElementName=FileFolderSuccessfullyText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -314,9 +452,8 @@
                 Grid.Column="5"
                 Margin="0,0,10,0"
                 Click="{x:Bind OnViewErrorInformationClicked}"
-                Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('ViewErrorInformation')}"
-                Visibility="{x:Bind IsOperationFailed, Mode=OneWay}" />
-
+                Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('ViewErrorInformation')}" />
+            <!--  Visibility="{x:Bind IsOperationFailed, Mode=OneWay}"  -->
             <controls:ProgressRing
                 Grid.Column="6"
                 Width="25"
@@ -339,7 +476,23 @@
                 Click="{x:Bind OnUnlockClicked}"
                 Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('Unlock')}"
                 IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}"
-                Style="{StaticResource AccentButtonStyle}" />
+                Style="{StaticResource AccentButtonStyle}"
+                Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsModifyingNow), Mode=OneWay}" />
+
+            <Button
+                Grid.Column="8"
+                Click="{x:Bind OnCancelUnlockClicked}"
+                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsOperationCancelling), Mode=OneWay}"
+                Style="{StaticResource AccentButtonStyle}"
+                Visibility="{x:Bind IsModifyingNow, Mode=OneWay}">
+
+                <Button.Content>
+                    <Grid>
+                        <TextBlock Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('CancelUnlock')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsOperationCancelling), Mode=OneWay}" />
+                        <TextBlock Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('Cancelling')}" Visibility="{x:Bind IsOperationCancelling, Mode=OneWay}" />
+                    </Grid>
+                </Button.Content>
+            </Button>
         </Grid>
     </Grid>
 </Page>

@@ -1,8 +1,10 @@
+using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Dialogs;
 using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
+using PowerToolbox.WindowsAPI.PInvoke.Rstrtmgr;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,6 +12,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows.ApplicationModel.DataTransfer;
@@ -30,13 +33,13 @@ namespace PowerToolbox.Views.Pages
     public sealed partial class FileUnlockPage : Page, INotifyPropertyChanged
     {
         private readonly string DragOverContentString = ResourceService.FileUnlockResource.GetString("DragOverContent");
-        public readonly string FileString = ResourceService.FileUnlockResource.GetString("File");
-        public readonly string FolderString = ResourceService.FileUnlockResource.GetString("Folder");
+        private readonly string FileString = ResourceService.FileUnlockResource.GetString("File");
+        private readonly string FolderString = ResourceService.FileUnlockResource.GetString("Folder");
         private readonly string ModifyingNowString = ResourceService.FileUnlockResource.GetString("ModifyingNow");
         private readonly string SelectFileString = ResourceService.FileUnlockResource.GetString("SelectFile");
         private readonly string SelectFolderString = ResourceService.FileUnlockResource.GetString("SelectFolder");
         private readonly string TotalString = ResourceService.FileUnlockResource.GetString("Total");
-        private readonly object fileUnlockLock = new();
+        private CancellationTokenSource cancellationTokenSource;
 
         private bool _isModifyingNow;
 
@@ -50,6 +53,22 @@ namespace PowerToolbox.Views.Pages
                 {
                     _isModifyingNow = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsModifyingNow)));
+                }
+            }
+        }
+
+        private bool _isOperationCancelling;
+
+        public bool IsOperationCancelling
+        {
+            get { return _isOperationCancelling; }
+
+            set
+            {
+                if (!Equals(_isOperationCancelling, value))
+                {
+                    _isOperationCancelling = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsOperationCancelling)));
                 }
             }
         }
@@ -70,11 +89,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<OperationFailedModel> OperationFailedList { get; } = [];
+        private List<FileUnlockFailedModel> FileUnlockFailedList { get; } = [];
 
         private ObservableCollection<FileUnlockModel> FileUnlockCollection { get; } = [];
-
-        private ObservableCollection<ProcessInfoModel> ProcessInfoCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -149,25 +166,11 @@ namespace PowerToolbox.Views.Pages
                         FileInfo fileInfo = new(storageItem.Path);
                         FileUnlockModel fileUnlock = new()
                         {
-                            FileFolderName = storageItem.Name,
-                            FileFolderPath = storageItem.Path,
+                            FileFolderName = fileInfo.Name,
+                            FileFolderPath = fileInfo.FullName,
+                            IsDirectory = (fileInfo.Attributes & System.IO.FileAttributes.Directory) is System.IO.FileAttributes.Directory
                         };
 
-                        // 选择的是目录
-                        if ((fileInfo.Attributes & System.IO.FileAttributes.Directory) is System.IO.FileAttributes.Directory)
-                        {
-                            fileUnlock.FileFolderType = FolderString;
-                            string[] subFileArray = Directory.GetFiles(storageItem.Path, "*", SearchOption.AllDirectories);
-                            fileUnlock.SubFileList.AddRange(subFileArray);
-                        }
-                        // 选择的是文件
-                        else
-                        {
-                            fileUnlock.FileFolderType = FileString;
-                            fileUnlock.SubFileList.Add(storageItem.Path);
-                        }
-
-                        fileUnlock.FileFolderAmount = Convert.ToString(fileUnlock.SubFileList.Count);
                         fileUnlockList.Add(fileUnlock);
                     }
                     catch (Exception e)
@@ -179,23 +182,23 @@ namespace PowerToolbox.Views.Pages
                 return fileUnlockList;
             });
 
-            AddToFileUnlockPage(fileUnlockList);
+            await AddToFileUnlockPageAsync(fileUnlockList);
             IsOperationFailed = false;
-            OperationFailedList.Clear();
+            FileUnlockFailedList.Clear();
         }
 
         /// <summary>
         /// 按下 Enter 键发生的事件（预览修改内容）
         /// </summary>
-        protected override void OnKeyDown(KeyRoutedEventArgs args)
+        protected override async void OnKeyDown(KeyRoutedEventArgs args)
         {
             base.OnKeyDown(args);
-            if (args.Key is VirtualKey.Enter)
+            if (args.Key is VirtualKey.Enter && !IsModifyingNow)
             {
                 args.Handled = true;
                 IsOperationFailed = false;
-                OperationFailedList.Clear();
-                // TODO：未完成
+                FileUnlockFailedList.Clear();
+                await RemoveUnlockAsync();
             }
         }
 
@@ -216,7 +219,7 @@ namespace PowerToolbox.Views.Pages
             if (openFileDialog.ShowDialog() is DialogResult.OK)
             {
                 IsOperationFailed = false;
-                OperationFailedList.Clear();
+                FileUnlockFailedList.Clear();
                 List<FileUnlockModel> fileUnlockList = await Task.Run(() =>
                 {
                     List<FileUnlockModel> fileUnlockList = [];
@@ -230,23 +233,9 @@ namespace PowerToolbox.Views.Pages
                             {
                                 FileFolderName = fileInfo.Name,
                                 FileFolderPath = fileInfo.FullName,
+                                IsDirectory = (fileInfo.Attributes & System.IO.FileAttributes.Directory) is System.IO.FileAttributes.Directory
                             };
 
-                            // 选择的是目录
-                            if ((fileInfo.Attributes & System.IO.FileAttributes.Directory) is System.IO.FileAttributes.Directory)
-                            {
-                                fileUnlock.FileFolderType = FolderString;
-                                string[] subFileArray = Directory.GetFiles(fileInfo.FullName, "*", SearchOption.AllDirectories);
-                                fileUnlock.SubFileList.AddRange(subFileArray);
-                            }
-                            // 选择的是文件
-                            else
-                            {
-                                fileUnlock.FileFolderType = FileString;
-                                fileUnlock.SubFileList.Add(fileInfo.FullName);
-                            }
-
-                            fileUnlock.FileFolderAmount = Convert.ToString(fileUnlock.SubFileList.Count);
                             fileUnlockList.Add(fileUnlock);
                         }
                         catch (Exception e)
@@ -259,7 +248,7 @@ namespace PowerToolbox.Views.Pages
                 });
 
                 openFileDialog.Dispose();
-                AddToFileUnlockPage(fileUnlockList);
+                await AddToFileUnlockPageAsync(fileUnlockList);
             }
             else
             {
@@ -281,7 +270,7 @@ namespace PowerToolbox.Views.Pages
             if (dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes)
             {
                 IsOperationFailed = false;
-                OperationFailedList.Clear();
+                FileUnlockFailedList.Clear();
                 if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath))
                 {
                     List<FileUnlockModel> fileUnlockList = await Task.Run(() =>
@@ -295,23 +284,9 @@ namespace PowerToolbox.Views.Pages
                             {
                                 FileFolderName = fileInfo.Name,
                                 FileFolderPath = fileInfo.FullName,
+                                IsDirectory = (fileInfo.Attributes & System.IO.FileAttributes.Directory) is System.IO.FileAttributes.Directory
                             };
 
-                            // 选择的是目录
-                            if ((fileInfo.Attributes & System.IO.FileAttributes.Directory) is System.IO.FileAttributes.Directory)
-                            {
-                                fileUnlock.FileFolderType = FolderString;
-                                string[] subFileArray = Directory.GetFiles(fileInfo.FullName, "*", SearchOption.AllDirectories);
-                                fileUnlock.SubFileList.AddRange(subFileArray);
-                            }
-                            // 选择的是文件
-                            else
-                            {
-                                fileUnlock.FileFolderType = FileString;
-                                fileUnlock.SubFileList.Add(fileInfo.FullName);
-                            }
-
-                            fileUnlock.FileFolderAmount = Convert.ToString(fileUnlock.SubFileList.Count);
                             fileUnlockList.Add(fileUnlock);
                         }
                         catch (Exception e)
@@ -330,12 +305,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnClearListClicked(object sender, RoutedEventArgs args)
         {
-            lock (fileUnlockLock)
-            {
-                IsOperationFailed = false;
-                FileUnlockCollection.Clear();
-                OperationFailedList.Clear();
-            }
+            IsOperationFailed = false;
+            FileUnlockCollection.Clear();
+            FileUnlockFailedList.Clear();
         }
 
         /// <summary>
@@ -361,14 +333,63 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnViewErrorInformationClicked(object sender, RoutedEventArgs args)
         {
-            await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList));
+            FileUnlockFailedList.Clear();
+
+            FileUnlockFailedList.Add(new FileUnlockFailedModel()
+            {
+                FileName = "AppVDllSurrogate.exe",
+                FilePath = @"C:\Windows\System32\AppVDllSurrogate.exe",
+                ProcessName = "appverif.exe",
+                ProcessId = "12345",
+                ProcessPath = @"C:\Windows\System32\appverif.exe",
+                Exception = new UnauthorizedAccessException()
+            });
+
+            FileUnlockFailedList.Add(new FileUnlockFailedModel()
+            {
+                FileName = "AppVDllSurrogate.exe",
+                FilePath = @"C:\Windows\System32\AppVDllSurrogate.exe",
+                ProcessName = "appverif.exe",
+                ProcessId = "12345",
+                ProcessPath = @"C:\Windows\System32\appverif.exe",
+                Exception = new UnauthorizedAccessException()
+            });
+
+            FileUnlockFailedList.Add(new FileUnlockFailedModel()
+            {
+                FileName = "AppVDllSurrogate.exe",
+                FilePath = @"C:\Windows\System32\AppVDllSurrogate.exe",
+                ProcessName = "appverif.exe",
+                ProcessId = "12345",
+                ProcessPath = @"C:\Windows\System32\appverif.exe",
+                Exception = new UnauthorizedAccessException()
+            });
+
+            await MainWindow.Current.ShowDialogAsync(new FileUnlockFailedDialog(FileUnlockFailedList));
         }
 
         /// <summary>
         /// 解除文件占用
         /// </summary>
-        private void OnUnlockClicked(object sender, RoutedEventArgs args)
+        private async void OnUnlockClicked(object sender, RoutedEventArgs args)
         {
+            await RemoveUnlockAsync();
+        }
+
+        /// <summary>
+        /// 取消解除文件占用
+        /// </summary>
+        private void OnCancelUnlockClicked(object sender, RoutedEventArgs args)
+        {
+            try
+            {
+                cancellationTokenSource?.Cancel();
+                IsOperationCancelling = true;
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnCancelUnlockClicked), 1, e);
+            }
         }
 
         #endregion 第三部分：文件解锁页面——挂载的事件
@@ -376,15 +397,185 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 添加到文件解锁页面
         /// </summary>
-        public void AddToFileUnlockPage(List<FileUnlockModel> fileUnlockList)
+        public async Task AddToFileUnlockPageAsync(List<FileUnlockModel> fileUnlockList)
         {
-            lock (fileUnlockLock)
+            await Task.Run(() =>
             {
                 foreach (FileUnlockModel fileUnlockItem in fileUnlockList)
                 {
-                    FileUnlockCollection.Add(fileUnlockItem);
+                    // 选择的是目录
+                    if (fileUnlockItem.IsDirectory)
+                    {
+                        fileUnlockItem.FileFolderType = FolderString;
+
+                        try
+                        {
+                            string[] subFileArray = Directory.GetFiles(fileUnlockItem.FileFolderPath, "*", SearchOption.AllDirectories);
+                            fileUnlockItem.SubFileList.AddRange(subFileArray);
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(AddToFileUnlockPageAsync), 1, e);
+                        }
+                    }
+                    // 选择的是文件
+                    else
+                    {
+                        fileUnlockItem.FileFolderType = FileString;
+                        fileUnlockItem.SubFileList.Add(fileUnlockItem.FileFolderPath);
+                    }
+
+                    fileUnlockItem.FileUnlockState = FileUnlockState.NotStarted;
+                    fileUnlockItem.FileUnlockFinishedCount = 0;
+                    fileUnlockItem.FileUnlockProgressingPercentage = 0;
+                    fileUnlockItem.FileFolderAmount = Convert.ToString(fileUnlockItem.SubFileList.Count);
+                }
+            });
+
+            foreach (FileUnlockModel fileUnlockItem in fileUnlockList)
+            {
+                FileUnlockCollection.Add(fileUnlockItem);
+            }
+        }
+
+        /// <summary>
+        /// 解除占用
+        /// </summary>
+        private async Task RemoveUnlockAsync()
+        {
+            IsModifyingNow = true;
+
+            try
+            {
+                cancellationTokenSource = new();
+
+                foreach (FileUnlockModel fileUnlockItem in FileUnlockCollection)
+                {
+                    // 用户取消任务后自动触发取消任务异常
+                    cancellationTokenSource.Token.ThrowIfCancellationRequested();
+
+                    // 已经解锁成功的就不要重复进行了
+                    if (fileUnlockItem.FileUnlockState is FileUnlockState.Successfully)
+                    {
+                        continue;
+                    }
+
+                    // 开始解锁
+                    fileUnlockItem.FileUnlockState = FileUnlockState.Processing;
+                    bool unlockSuccessfully = true;
+
+                    foreach (string subFile in fileUnlockItem.SubFileList)
+                    {
+                        // 查找进程并结束进程
+                        await Task.Run(() =>
+                        {
+                            // 查找进程
+                            List<Process> processList = [];
+                            uint handle = 0;
+                            try
+                            {
+                                Guid keyGuid = Guid.NewGuid();
+                                int result = RstrtmgrLibrary.RmStartSession(out handle, 0, Convert.ToString(keyGuid));
+
+                                if (result is 0)
+                                {
+                                    uint pnProcInfo = 0;
+                                    string[] resources = [subFile];
+
+                                    result = RstrtmgrLibrary.RmRegisterResources(handle, (uint)resources.Length, resources, 0, null, 0, null);
+
+                                    if (result is 0)
+                                    {
+                                        result = RstrtmgrLibrary.RmGetList(handle, out uint pnProcInfoNeeded, ref pnProcInfo, null, out uint lpdwRebootReasons);
+
+                                        if (result is 234)
+                                        {
+                                            RM_PROCESS_INFO[] processInfo = new RM_PROCESS_INFO[pnProcInfoNeeded];
+                                            pnProcInfo = pnProcInfoNeeded;
+                                            result = RstrtmgrLibrary.RmGetList(handle, out pnProcInfoNeeded, ref pnProcInfo, processInfo, out lpdwRebootReasons);
+
+                                            if (result is 0)
+                                            {
+                                                for (int index = 0; index < pnProcInfo; index++)
+                                                {
+                                                    try
+                                                    {
+                                                        Process process = Process.GetProcessById(processInfo[index].Process.dwProcessId);
+                                                        processList.Add(process);
+                                                    }
+                                                    catch (Exception e)
+                                                    {
+                                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(RemoveUnlockAsync), 1, e);
+                                                        continue;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(RemoveUnlockAsync), 2, e);
+                            }
+                            finally
+                            {
+                                RstrtmgrLibrary.RmEndSession(handle);
+                            }
+
+                            // 结束进程
+                            foreach (Process process in processList)
+                            {
+                                try
+                                {
+                                    process?.Kill();
+                                }
+                                catch (Exception e)
+                                {
+                                    unlockSuccessfully = false;
+                                    FileUnlockFailedList.Add(new FileUnlockFailedModel()
+                                    {
+                                        Exception = e,
+                                        FileName = subFile,
+                                        FilePath = subFile,
+                                    });
+                                }
+                                finally
+                                {
+                                    process?.Dispose();
+                                }
+                            }
+                        });
+
+                        fileUnlockItem.FileUnlockFinishedCount++;
+                        fileUnlockItem.FileUnlockProgressingPercentage = fileUnlockItem.SubFileList.Count is 0 ? 0 : Convert.ToInt32((double)fileUnlockItem.FileUnlockFinishedCount * 100 / fileUnlockItem.SubFileList.Count);
+                    }
+
+                    fileUnlockItem.FileUnlockState = unlockSuccessfully ? FileUnlockState.Successfully : FileUnlockState.Failed;
                 }
             }
+            // 任务已取消
+            catch (OperationCanceledException)
+            {
+                foreach (FileUnlockModel fileUnlockItem in FileUnlockCollection)
+                {
+                    if (fileUnlockItem.FileUnlockState is FileUnlockState.Processing)
+                    {
+                        fileUnlockItem.FileUnlockState = FileUnlockState.Cancelled;
+                    }
+                    fileUnlockItem.FileUnlockProgressingPercentage = 0;
+                    fileUnlockItem.FileUnlockFinishedCount = 0;
+                }
+            }
+            finally
+            {
+                IsOperationFailed = FileUnlockFailedList.Count is not 0;
+                IsOperationCancelling = false;
+                cancellationTokenSource?.Dispose();
+                cancellationTokenSource = null;
+            }
+
+            IsModifyingNow = false;
         }
     }
 }
