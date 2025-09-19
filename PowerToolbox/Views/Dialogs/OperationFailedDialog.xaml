@@ -150,20 +150,19 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock
-                        x:Name="FilePathText"
+                        x:Name="FileNameText"
                         Grid.Column="0"
                         Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="14"
+                        IsTextSelectionEnabled="True"
                         Text="{x:Bind FileName}"
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Content="{x:Bind FileName}"
-                                Visibility="{Binding ElementName=FilePathText, Path=IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip MaxWidth="9999" Content="{x:Bind FilePath}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
@@ -171,8 +170,10 @@
                         x:Name="MessageText"
                         Grid.Column="1"
                         Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="14"
+                        IsTextSelectionEnabled="True"
                         Text="{x:Bind Exception.Message}"
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="NoWrap">
@@ -189,8 +190,10 @@
                         x:Name="HResultText"
                         Grid.Column="2"
                         Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="14"
+                        IsTextSelectionEnabled="True"
                         Text="{x:Bind system:Convert.ToString(Exception.HResult)}"
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="NoWrap">
@@ -213,6 +216,7 @@
                         <HyperlinkButton.Content>
                             <TextBlock
                                 x:Name="CopyText"
+                                HorizontalAlignment="Left"
                                 Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('Copy')}"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="NoWrap">
