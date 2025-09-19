@@ -681,35 +681,28 @@ namespace PowerToolbox.Views.Pages
 
                     foreach (string file in filesList)
                     {
-                        FileInfo fileInfo = new(file);
-                        FileUnlockModel fileUnlock = new()
+                        try
                         {
-                            FileFolderName = fileInfo.Name,
-                            FileFolderPath = fileInfo.FullName,
-                        };
+                            FileInfo fileInfo = new(file);
+                            FileUnlockModel fileUnlock = new()
+                            {
+                                FileFolderName = fileInfo.Name,
+                                FileFolderPath = fileInfo.FullName,
+                                IsDirectory = (fileInfo.Attributes & FileAttributes.Directory) is FileAttributes.Directory
+                            };
 
-                        // 选择的是目录
-                        if ((fileInfo.Attributes & FileAttributes.Directory) is FileAttributes.Directory)
-                        {
-                            fileUnlock.FileFolderType = fileUnlockPage.FolderString;
-                            string[] subFileArray = Directory.GetFiles(fileInfo.FullName, "*", SearchOption.AllDirectories);
-                            fileUnlock.SubFileList.AddRange(subFileArray);
+                            fileUnlockList.Add(fileUnlock);
                         }
-                        // 选择的是文件
-                        else
+                        catch (Exception e)
                         {
-                            fileUnlock.FileFolderType = fileUnlockPage.FileString;
-                            fileUnlock.SubFileList.Add(fileInfo.FullName);
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(MainPage), nameof(SendReceivedFilesListAsync), 1, e);
                         }
-
-                        fileUnlock.FileFolderAmount = Convert.ToString(fileUnlock.SubFileList.Count);
-                        fileUnlockList.Add(fileUnlock);
                     }
 
                     return fileUnlockList;
                 });
 
-                fileUnlockPage.AddToFileUnlockPage(fileUnlockList);
+                await fileUnlockPage.AddToFileUnlockPageAsync(fileUnlockList);
             }
         }
 
