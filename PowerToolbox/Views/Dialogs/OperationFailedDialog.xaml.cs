@@ -29,11 +29,11 @@ namespace PowerToolbox.Views.Dialogs
 
         private ObservableCollection<OperationFailedModel> OperationFailedCollection { get; } = [];
 
-        public OperationFailedDialog(List<OperationFailedModel> operationFailedCollection)
+        public OperationFailedDialog(List<OperationFailedModel> operationFailedList)
         {
             InitializeComponent();
 
-            foreach (OperationFailedModel operationFailedItem in operationFailedCollection)
+            foreach (OperationFailedModel operationFailedItem in operationFailedList)
             {
                 OperationFailedCollection.Add(operationFailedItem);
             }
