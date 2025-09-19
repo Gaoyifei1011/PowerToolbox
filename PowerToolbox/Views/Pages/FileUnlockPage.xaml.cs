@@ -501,12 +501,22 @@ namespace PowerToolbox.Views.Pages
                                 catch (Exception e)
                                 {
                                     unlockSuccessfully = false;
-                                    FileUnlockFailedList.Add(new FileUnlockFailedModel()
+                                    try
                                     {
-                                        Exception = e,
-                                        FileName = subFile,
-                                        FilePath = subFile,
-                                    });
+                                        FileUnlockFailedList.Add(new FileUnlockFailedModel()
+                                        {
+                                            Exception = e,
+                                            FileName = subFile,
+                                            FilePath = subFile,
+                                            ProcessName = Path.GetFileName(process.MainModule.FileVersionInfo.FileName),
+                                            ProcessId = Convert.ToString(process.Id),
+                                            ProcessPath = process.MainModule.FileName,
+                                        });
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(RemoveUnlockAsync), 3, e);
+                                    }
                                 }
                                 finally
                                 {
