@@ -3,18 +3,21 @@ using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.NotificationTips;
+using PowerToolbox.Views.Pages;
 using PowerToolbox.Views.Windows;
+using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
-// 抑制 CA1822，IDE0060 警告
-#pragma warning disable CA1822,IDE0060
+// 抑制 CA1806，CA1822，IDE0060 警告
+#pragma warning disable CA1806,CA1822,IDE0060
 
 namespace PowerToolbox.Views.Dialogs
 {
@@ -79,6 +82,41 @@ namespace PowerToolbox.Views.Dialogs
         {
             if (args.Parameter is string filePath)
             {
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(filePath))
+                        {
+                            if (File.Exists(filePath))
+                            {
+                                IntPtr pidlList = Shell32Library.ILCreateFromPath(filePath);
+                                if (!pidlList.Equals(IntPtr.Zero))
+                                {
+                                    Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, IntPtr.Zero, 0);
+                                    Shell32Library.ILFree(pidlList);
+                                }
+                            }
+                            else
+                            {
+                                string directoryPath = Path.GetDirectoryName(filePath);
+
+                                if (Directory.Exists(directoryPath))
+                                {
+                                    Process.Start(directoryPath);
+                                }
+                                else
+                                {
+                                    Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnOpenFilePathExecuteRequested), 1, e);
+                    }
+                });
             }
         }
 
@@ -89,6 +127,41 @@ namespace PowerToolbox.Views.Dialogs
         {
             if (args.Parameter is string processPath)
             {
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(processPath))
+                        {
+                            if (File.Exists(processPath))
+                            {
+                                IntPtr pidlList = Shell32Library.ILCreateFromPath(processPath);
+                                if (!pidlList.Equals(IntPtr.Zero))
+                                {
+                                    Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, IntPtr.Zero, 0);
+                                    Shell32Library.ILFree(pidlList);
+                                }
+                            }
+                            else
+                            {
+                                string directoryPath = Path.GetDirectoryName(processPath);
+
+                                if (Directory.Exists(directoryPath))
+                                {
+                                    Process.Start(directoryPath);
+                                }
+                                else
+                                {
+                                    Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnOpenProcessPathExecuteRequested), 1, e);
+                    }
+                });
             }
         }
 
