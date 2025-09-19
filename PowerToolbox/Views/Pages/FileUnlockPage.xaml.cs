@@ -513,9 +513,9 @@ namespace PowerToolbox.Views.Pages
                                             ProcessPath = process.MainModule.FileName,
                                         });
                                     }
-                                    catch (Exception e)
+                                    catch (Exception sube)
                                     {
-                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(RemoveUnlockAsync), 3, e);
+                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(RemoveUnlockAsync), 3, sube);
                                     }
                                 }
                                 finally
