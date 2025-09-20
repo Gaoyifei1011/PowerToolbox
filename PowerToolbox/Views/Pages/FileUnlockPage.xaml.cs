@@ -296,6 +296,8 @@ namespace PowerToolbox.Views.Pages
 
                         return fileUnlockList;
                     });
+
+                    await AddToFileUnlockPageAsync(fileUnlockList);
                 }
             }
         }
