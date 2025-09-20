@@ -18,6 +18,7 @@ FileUnlock=File unlock
 FileUnlockDescription=Remove the app's occupation of local files or directories
 Folder=Folder
 FolderAmount=Folder amount: The total number of subfiles contained in the current folder
+ModifyingNow=Unlocking now,please wait......
 OpenTaskManager=Open task manager
 SelectFile=Select file
 SelectFolder=Select folder

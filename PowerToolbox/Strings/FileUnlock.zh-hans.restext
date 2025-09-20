@@ -18,6 +18,7 @@ FileUnlock=文件解锁
 FileUnlockDescription=解除应用程序对本地文件或目录的占用
 Folder=文件夹
 FolderAmount=文件夹数量：当前文件夹包含的所有子文件数量
+ModifyingNow=正在解除中，请稍候...
 OpenTaskManager=打开任务管理器
 SelectFile=选择文件
 SelectFolder=选择文件夹
