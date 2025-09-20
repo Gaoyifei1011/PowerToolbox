@@ -343,9 +343,10 @@ namespace PowerToolbox.Views.Pages
                         return fileNameList;
                     });
 
-                    openFolderDialog.Dispose();
                     AddToFileCertificatePage(fileNameList);
                 }
+
+                openFolderDialog.Dispose();
             }
             else
             {

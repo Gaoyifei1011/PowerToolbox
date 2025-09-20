@@ -299,6 +299,12 @@ namespace PowerToolbox.Views.Pages
 
                     await AddToFileUnlockPageAsync(fileUnlockList);
                 }
+
+                openFolderDialog.Dispose();
+            }
+            else
+            {
+                openFolderDialog.Dispose();
             }
         }
 

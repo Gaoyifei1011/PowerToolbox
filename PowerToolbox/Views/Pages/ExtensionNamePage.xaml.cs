@@ -563,9 +563,10 @@ namespace PowerToolbox.Views.Pages
                         }
                     });
 
-                    openFolderDialog.Dispose();
                     AddToExtensionNamePage(fileNameList);
                 }
+
+                openFolderDialog.Dispose();
             }
             else
             {

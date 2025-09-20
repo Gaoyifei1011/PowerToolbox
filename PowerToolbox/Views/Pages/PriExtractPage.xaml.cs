@@ -877,10 +877,9 @@ namespace PowerToolbox.Views.Pages
                         {
                             LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnExportSelectedEmbeddedDataClicked), 1, e);
                         }
-
-                        openFolderDialog.Dispose();
                     });
 
+                    openFolderDialog.Dispose();
                     IsProcessing = false;
                 }
                 else

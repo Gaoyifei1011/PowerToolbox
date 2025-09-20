@@ -509,10 +509,11 @@ namespace PowerToolbox.Views.Pages
                         }
                     });
 
-                    openFolderDialog.Dispose();
                     AddtoUpperAndLowerCasePage(directoryNameList);
                     AddtoUpperAndLowerCasePage(fileNameList);
                 }
+
+                openFolderDialog.Dispose();
             }
             else
             {

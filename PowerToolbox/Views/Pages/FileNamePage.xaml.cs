@@ -658,10 +658,11 @@ namespace PowerToolbox.Views.Pages
                         }
                     });
 
-                    openFolderDialog.Dispose();
                     AddToFileNamePage(directoryNameList);
                     AddToFileNamePage(fileNameList);
                 }
+
+                openFolderDialog.Dispose();
             }
             else
             {
