@@ -204,6 +204,21 @@ namespace PowerToolbox.Views.Pages
 
         #endregion 第一部分：第一部分：重写父类事件
 
+        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+
+        /// <summary>
+        /// 删除当前项
+        /// </summary>
+        private void OnDeleteExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is FileUnlockModel fileUnlock)
+            {
+                FileUnlockCollection.Remove(fileUnlock);
+            }
+        }
+
+        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+
         #region 第三部分：文件解锁页面——挂载的事件
 
         /// <summary>
@@ -420,6 +435,10 @@ namespace PowerToolbox.Views.Pages
         private async Task RemoveUnlockAsync()
         {
             IsModifyingNow = true;
+            foreach (FileUnlockModel fileUnlockItem in FileUnlockCollection)
+            {
+                fileUnlockItem.IsModifyingNow = true;
+            }
 
             try
             {
@@ -562,6 +581,10 @@ namespace PowerToolbox.Views.Pages
             }
 
             IsModifyingNow = false;
+            foreach (FileUnlockModel fileUnlockItem in FileUnlockCollection)
+            {
+                fileUnlockItem.IsModifyingNow = false;
+            }
         }
     }
 }

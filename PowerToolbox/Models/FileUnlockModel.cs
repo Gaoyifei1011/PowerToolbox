@@ -35,6 +35,25 @@ namespace PowerToolbox.Models
         public string FileFolderAmount { get; set; }
 
         /// <summary>
+        /// 是否处于修改状态中
+        /// </summary>
+        private bool _isModifyingNow;
+
+        public bool IsModifyingNow
+        {
+            get { return _isModifyingNow; }
+
+            set
+            {
+                if (!Equals(_isModifyingNow, value))
+                {
+                    _isModifyingNow = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsModifyingNow)));
+                }
+            }
+        }
+
+        /// <summary>
         /// 文件解锁状态
         /// </summary>
         private FileUnlockState _fileUnlockState;

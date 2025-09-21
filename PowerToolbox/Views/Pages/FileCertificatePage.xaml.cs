@@ -202,7 +202,22 @@ namespace PowerToolbox.Views.Pages
 
         #endregion 第一部分：重写父类事件
 
-        #region 第二部分：文件证书页面——挂载的事件
+        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+
+        /// <summary>
+        /// 删除当前项
+        /// </summary>
+        private void OnDeleteExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is CertificateResultModel certificateResult)
+            {
+                FileCertificateCollection.Remove(certificateResult);
+            }
+        }
+
+        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+
+        #region 第三部分：文件证书页面——挂载的事件
 
         /// <summary>
         /// 清空列表
@@ -362,7 +377,7 @@ namespace PowerToolbox.Views.Pages
             await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList));
         }
 
-        #endregion 第二部分：文件证书页面——挂载的事件
+        #endregion 第三部分：文件证书页面——挂载的事件
 
         /// <summary>
         /// 添加到数字签名页面
@@ -384,6 +399,11 @@ namespace PowerToolbox.Views.Pages
         private async Task RemoveFileCertificatesAsync()
         {
             IsModifyingNow = true;
+            foreach (CertificateResultModel certificateResult in FileCertificateCollection)
+            {
+                certificateResult.IsModifyingNow = true;
+            }
+
             List<OperationFailedModel> operationFailedList = await Task.Run(() =>
             {
                 List<OperationFailedModel> operationFailedList = [];
@@ -426,6 +446,10 @@ namespace PowerToolbox.Views.Pages
             });
 
             IsModifyingNow = false;
+            foreach (CertificateResultModel certificateResult in FileCertificateCollection)
+            {
+                certificateResult.IsModifyingNow = false;
+            }
             foreach (OperationFailedModel operationFailedItem in operationFailedList)
             {
                 OperationFailedList.Add(operationFailedItem);

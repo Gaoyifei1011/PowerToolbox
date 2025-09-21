@@ -2,6 +2,7 @@ Archive=Archive
 ChangedProperties=Changed file (folder) properties
 ClearList=Clear list
 CreateDate=Create date
+Delete=Delete
 DragOverContent=Add to the File Properties page
 EmptyList=There is no content
 FileName=File (folder) name

@@ -1,10 +1,12 @@
 ClearList=Clear list
+Delete=Delete
 Description=This tool can help you remove digital signatures of files that cannot be signed with one click
 DragOverContent=Add to the File Certificate page
 EmptyList=There is no content
 FileName=File name
 Modify=Modify
 ModifyingNow=Modifying now,please wait......
+Operation=Operation
 SelectFile=Select file
 SelectFolder=Select folder
 FileCertificate=File certificate

@@ -65,7 +65,6 @@
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="1.5*" />
-                    <ColumnDefinition Width="70" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
@@ -135,23 +134,6 @@
                             Visibility="{x:Bind ErrorCodeText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
-
-                <TextBlock
-                    x:Name="OperationText"
-                    Grid.Column="4"
-                    Margin="10,0,0,0"
-                    VerticalAlignment="Center"
-                    Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('Operation')}"
-                    TextTrimming="CharacterEllipsis"
-                    TextWrapping="NoWrap">
-
-                    <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('Operation')}"
-                            Visibility="{x:Bind OperationText.IsTextTrimmed, Mode=OneWay}" />
-                    </ToolTipService.ToolTip>
-                </TextBlock>
             </Grid>
         </ListView.Header>
 
@@ -160,6 +142,7 @@
                 <Grid
                     Height="35"
                     Padding="6,0,0,0"
+                    Background="Transparent"
                     BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
                     BorderThickness="1,0,1,1">
 
@@ -168,7 +151,6 @@
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="1.5*" />
-                        <ColumnDefinition Width="70" />
                     </Grid.ColumnDefinitions>
 
                     <TextBlock
@@ -254,7 +236,7 @@
                         VerticalAlignment="Center"
                         FontSize="14"
                         IsTextSelectionEnabled="True"
-                        Text="{x:Bind system:Convert.ToString(Exception.HResult)}"
+                        Text="{x:Bind system:String.Format('0x{0:X8}', Exception.HResult)}"
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="NoWrap">
 
@@ -266,58 +248,39 @@
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
-                    <Button
-                        Grid.Column="4"
-                        Padding="8"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource AlternateCloseButtonStyle}">
+                    <Grid.ContextFlyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuFlyoutItem
+                                Command="{StaticResource CopyCommand}"
+                                CommandParameter="{x:Bind}"
+                                Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('Copy')}">
 
-                        <Button.Content>
-                            <FontIcon
-                                Margin="4"
-                                FontSize="16"
-                                Glyph="&#xE712;" />
-                        </Button.Content>
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE8C8;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
 
-                        <ToolTipService.ToolTip>
-                            <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ViewMore')}" />
-                        </ToolTipService.ToolTip>
+                            <MenuFlyoutItem
+                                Command="{StaticResource OpenFilePathCommand}"
+                                CommandParameter="{x:Bind FilePath}"
+                                Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('OpenFilePath')}">
 
-                        <Button.Flyout>
-                            <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem
-                                    Command="{StaticResource CopyCommand}"
-                                    CommandParameter="{x:Bind}"
-                                    Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('Copy')}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE8A5;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
 
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE8C8;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
+                            <MenuFlyoutItem
+                                Command="{StaticResource OpenProcessPathCommand}"
+                                CommandParameter="{x:Bind ProcessPath}"
+                                Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('OpenProcessPath')}">
 
-                                <MenuFlyoutItem
-                                    Command="{StaticResource OpenFilePathCommand}"
-                                    CommandParameter="{x:Bind FilePath}"
-                                    Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('OpenFilePath')}">
-
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE8A5;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-
-                                <MenuFlyoutItem
-                                    Command="{StaticResource OpenProcessPathCommand}"
-                                    CommandParameter="{x:Bind ProcessPath}"
-                                    Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('OpenProcessPath')}">
-
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE9D9;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-                            </MenuFlyout>
-                        </Button.Flyout>
-                    </Button>
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE9D9;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Grid.ContextFlyout>
                 </Grid>
             </DataTemplate>
         </ListView.ItemTemplate>

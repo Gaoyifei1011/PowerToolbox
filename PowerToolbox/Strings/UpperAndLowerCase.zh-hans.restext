@@ -1,6 +1,7 @@
 AllLowercase=全部小写
 AllUppercase=全部大写
 ClearList=清空列表
+Delete=删除
 DeleteSpace=删除文件名中空格
 DragOverContent=复制到“大写小写”页面中
 EmptyList=没有任何内容

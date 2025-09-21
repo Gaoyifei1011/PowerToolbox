@@ -23,6 +23,8 @@
 
             <SolidColorBrush x:Key="HyperlinkButtonBackgroundPointerOver" Color="Transparent" />
             <SolidColorBrush x:Key="HyperlinkButtonBackgroundPressed" Color="Transparent" />
+
+            <class:ExecuteCommand x:Name="DeleteCommand" ExecuteRequested="{x:Bind OnDeleteExecuteRequested}" />
         </ResourceDictionary>
     </Page.Resources>
 
@@ -72,6 +74,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="65" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
@@ -177,6 +180,7 @@
                         <Grid
                             Height="35"
                             Padding="6,0,0,0"
+                            Background="Transparent"
                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                             BorderThickness="0,0,0,1">
 
@@ -185,6 +189,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="65" />
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
@@ -388,6 +393,35 @@
                                         Visibility="{Binding ElementName=FileFolderSuccessfullyText, Path=IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
+
+                            <StackPanel
+                                Grid.Column="4"
+                                Margin="10,0,0,0"
+                                Orientation="Horizontal">
+
+                                <Button
+                                    Width="30"
+                                    Height="30"
+                                    Padding="2"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Command="{StaticResource DeleteCommand}"
+                                    CommandParameter="{x:Bind}"
+                                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}"
+                                    Style="{StaticResource AlternateCloseButtonStyle}">
+
+                                    <Button.Content>
+                                        <FontIcon
+                                            Margin="4"
+                                            FontSize="16"
+                                            Glyph="&#xE711;" />
+                                    </Button.Content>
+
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('Delete')}" />
+                                    </ToolTipService.ToolTip>
+                                </Button>
+                            </StackPanel>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

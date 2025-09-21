@@ -61,7 +61,6 @@
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="1.5*" />
-                    <ColumnDefinition Width="70" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
@@ -114,23 +113,6 @@
                             Visibility="{x:Bind ErrorCodeText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
-
-                <TextBlock
-                    x:Name="OperationText"
-                    Grid.Column="3"
-                    Margin="10,0,0,0"
-                    VerticalAlignment="Center"
-                    Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('Operation')}"
-                    TextTrimming="CharacterEllipsis"
-                    TextWrapping="NoWrap">
-
-                    <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('Operation')}"
-                            Visibility="{x:Bind OperationText.IsTextTrimmed, Mode=OneWay}" />
-                    </ToolTipService.ToolTip>
-                </TextBlock>
             </Grid>
         </ListView.Header>
 
@@ -139,6 +121,7 @@
                 <Grid
                     Height="35"
                     Padding="6,0,0,0"
+                    Background="Transparent"
                     BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
                     BorderThickness="1,0,1,1">
 
@@ -146,7 +129,6 @@
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="1.5*" />
-                        <ColumnDefinition Width="70" />
                     </Grid.ColumnDefinitions>
 
                     <TextBlock
@@ -194,7 +176,7 @@
                         VerticalAlignment="Center"
                         FontSize="14"
                         IsTextSelectionEnabled="True"
-                        Text="{x:Bind system:Convert.ToString(Exception.HResult)}"
+                        Text="{x:Bind system:String.Format('0x{0:X8}', Exception.HResult)}"
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="NoWrap">
 
@@ -206,30 +188,14 @@
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
-                    <HyperlinkButton
-                        Grid.Column="3"
-                        Margin="10,0,0,0"
-                        Padding="0"
-                        Command="{StaticResource CopyCommand}"
-                        CommandParameter="{x:Bind}">
-
-                        <HyperlinkButton.Content>
-                            <TextBlock
-                                x:Name="CopyText"
-                                HorizontalAlignment="Left"
-                                Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('Copy')}"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap">
-
-                                <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        MaxWidth="9999"
-                                        Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('Copy')}"
-                                        Visibility="{Binding ElementName=CopyText, Path=IsTextTrimmed, Mode=OneWay}" />
-                                </ToolTipService.ToolTip>
-                            </TextBlock>
-                        </HyperlinkButton.Content>
-                    </HyperlinkButton>
+                    <Grid.ContextFlyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuFlyoutItem
+                                Command="{StaticResource CopyCommand}"
+                                CommandParameter="{x:Bind}"
+                                Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('Copy')}" />
+                        </MenuFlyout>
+                    </Grid.ContextFlyout>
                 </Grid>
             </DataTemplate>
         </ListView.ItemTemplate>

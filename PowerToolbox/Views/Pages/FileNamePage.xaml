@@ -40,6 +40,7 @@
                         </ResourceDictionary>
                     </ResourceDictionary.ThemeDictionaries>
 
+                    <class:ExecuteCommand x:Name="DeleteCommand" ExecuteRequested="{x:Bind OnDeleteExecuteRequested}" />
                     <class:ExecuteCommand x:Name="MoveDownCommand" ExecuteRequested="{x:Bind OnMoveDownExecuteRequested}" />
                     <class:ExecuteCommand x:Name="MoveUpCommand" ExecuteRequested="{x:Bind OnMoveUpExecuteRequested}" />
                 </ResourceDictionary>
@@ -268,7 +269,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="75" />
+                    <ColumnDefinition Width="105" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
@@ -345,7 +346,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="75" />
+                                <ColumnDefinition Width="105" />
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
@@ -403,6 +404,7 @@
                                     VerticalAlignment="Center"
                                     Command="{StaticResource MoveUpCommand}"
                                     CommandParameter="{x:Bind}"
+                                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}"
                                     Style="{StaticResource AlternateCloseButtonStyle}">
 
                                     <Button.Content>
@@ -420,12 +422,12 @@
                                 <Button
                                     Width="30"
                                     Height="30"
-                                    Margin="0"
                                     Padding="2"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Command="{StaticResource MoveDownCommand}"
                                     CommandParameter="{x:Bind}"
+                                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}"
                                     Style="{StaticResource AlternateCloseButtonStyle}">
 
                                     <Button.Content>
@@ -437,6 +439,29 @@
 
                                     <ToolTipService.ToolTip>
                                         <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.FileNameResource.GetString('MoveDown')}" />
+                                    </ToolTipService.ToolTip>
+                                </Button>
+
+                                <Button
+                                    Width="30"
+                                    Height="30"
+                                    Padding="2"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Command="{StaticResource DeleteCommand}"
+                                    CommandParameter="{x:Bind}"
+                                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}"
+                                    Style="{StaticResource AlternateCloseButtonStyle}">
+
+                                    <Button.Content>
+                                        <FontIcon
+                                            Margin="4"
+                                            FontSize="16"
+                                            Glyph="&#xE711;" />
+                                    </Button.Content>
+
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.FileNameResource.GetString('Delete')}" />
                                     </ToolTipService.ToolTip>
                                 </Button>
                             </StackPanel>

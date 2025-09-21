@@ -410,6 +410,17 @@ namespace PowerToolbox.Views.Pages
         #region 第二部分：ExecuteCommand 命令调用时挂载的事件
 
         /// <summary>
+        /// 删除当前项
+        /// </summary>
+        private void OnDeleteExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is OldAndNewPropertiesModel oldAndNewProperties)
+            {
+                FilePropertiesCollection.Remove(oldAndNewProperties);
+            }
+        }
+
+        /// <summary>
         /// 向下移动
         /// </summary>
         private void OnMoveDownExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
@@ -801,6 +812,11 @@ namespace PowerToolbox.Views.Pages
         private async Task ChangeFileAttributesAsync()
         {
             IsModifyingNow = true;
+            foreach (OldAndNewPropertiesModel oldAndNewProperties in FilePropertiesCollection)
+            {
+                oldAndNewProperties.IsModifyingNow = true;
+            }
+
             List<OperationFailedModel> operationFailedList = await Task.Run(() =>
             {
                 List<OperationFailedModel> operationFailedList = [];
@@ -846,6 +862,10 @@ namespace PowerToolbox.Views.Pages
             });
 
             IsModifyingNow = false;
+            foreach (OldAndNewPropertiesModel oldAndNewProperties in FilePropertiesCollection)
+            {
+                oldAndNewProperties.IsModifyingNow = false;
+            }
             foreach (OperationFailedModel operationFailedItem in operationFailedList)
             {
                 OperationFailedList.Add(operationFailedItem);

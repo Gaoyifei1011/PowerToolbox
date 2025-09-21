@@ -1,6 +1,7 @@
 Cancelling=Cancelling...
 CancelUnlock=Cancel operation
 ClearList=Clear list
+Delete=Delete
 DragOverContent=Add to File Unlock page
 EmptyList=There is no content
 File=File
@@ -20,6 +21,7 @@ Folder=Folder
 FolderAmount=Folder amount: The total number of subfiles contained in the current folder
 ModifyingNow=Unlocking now,please wait......
 OpenTaskManager=Open task manager
+Operation=Operation
 SelectFile=Select file
 SelectFolder=Select folder
 Total=Total£º{0}
