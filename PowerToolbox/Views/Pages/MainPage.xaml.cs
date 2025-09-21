@@ -515,35 +515,135 @@ namespace PowerToolbox.Views.Pages
                 if (Equals(currentFileManagerPageType, typeof(FileNamePage)))
                 {
                     FileNamePage fileNamePage = fileManagerPage.GetFrameContent() as FileNamePage;
-                    List<OldAndNewNameModel> fileNameList = [];
-
-                    await Task.Run(() =>
+                    if (!fileNamePage.IsModifyingNow)
                     {
-                        foreach (string file in filesList)
+                        List<OldAndNewNameModel> fileNameList = await Task.Run(() =>
                         {
-                            FileInfo fileInfo = new(file);
-                            if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
+                            List<OldAndNewNameModel> fileNameList = [];
+
+                            foreach (string file in filesList)
                             {
-                                continue;
+                                FileInfo fileInfo = new(file);
+                                if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
+                                {
+                                    continue;
+                                }
+
+                                fileNameList.Add(new()
+                                {
+                                    OriginalFileName = Path.GetFileName(file),
+                                    OriginalFilePath = file,
+                                });
                             }
 
-                            fileNameList.Add(new()
-                            {
-                                OriginalFileName = Path.GetFileName(file),
-                                OriginalFilePath = file,
-                            });
-                        }
-                    });
+                            return fileNameList;
+                        });
 
-                    fileNamePage.AddToFileNamePage(fileNameList);
+                        fileNamePage.AddToFileNamePage(fileNameList);
+                    }
                 }
                 else if (Equals(currentFileManagerPageType, typeof(ExtensionNamePage)))
                 {
                     ExtensionNamePage extensionNamePage = fileManagerPage.GetFrameContent() as ExtensionNamePage;
-
-                    List<OldAndNewNameModel> extensionNameList = await Task.Run(() =>
+                    if (!extensionNamePage.IsModifyingNow)
                     {
-                        List<OldAndNewNameModel> extensionNameList = [];
+                        List<OldAndNewNameModel> extensionNameList = await Task.Run(() =>
+                        {
+                            List<OldAndNewNameModel> extensionNameList = [];
+
+                            foreach (string file in filesList)
+                            {
+                                FileInfo fileInfo = new(file);
+                                if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
+                                {
+                                    continue;
+                                }
+
+                                if ((new FileInfo(fileInfo.FullName).Attributes & FileAttributes.Directory) is 0)
+                                {
+                                    extensionNameList.Add(new()
+                                    {
+                                        OriginalFileName = fileInfo.Name,
+                                        OriginalFilePath = fileInfo.FullName
+                                    });
+                                }
+                            }
+
+                            return extensionNameList;
+                        });
+
+                        extensionNamePage.AddToExtensionNamePage(extensionNameList);
+                    }
+                }
+                else if (Equals(currentFileManagerPageType, typeof(UpperAndLowerCasePage)))
+                {
+                    UpperAndLowerCasePage upperAndLowerCasePage = fileManagerPage.GetFrameContent() as UpperAndLowerCasePage;
+                    if (!upperAndLowerCasePage.IsModifyingNow)
+                    {
+                        List<OldAndNewNameModel> upperAndLowerCaseList = await Task.Run(() =>
+                        {
+                            List<OldAndNewNameModel> upperAndLowerCaseList = [];
+
+                            foreach (string file in filesList)
+                            {
+                                FileInfo fileInfo = new(file);
+                                if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
+                                {
+                                    continue;
+                                }
+
+                                upperAndLowerCaseList.Add(new()
+                                {
+                                    OriginalFileName = Path.GetFileName(file),
+                                    OriginalFilePath = file,
+                                });
+                            }
+
+                            return upperAndLowerCaseList;
+                        });
+
+                        upperAndLowerCasePage.AddtoUpperAndLowerCasePage(upperAndLowerCaseList);
+                    }
+                }
+                else if (Equals(currentFileManagerPageType, typeof(FilePropertiesPage)))
+                {
+                    FilePropertiesPage filePropertiesPage = fileManagerPage.GetFrameContent() as FilePropertiesPage;
+                    if (!filePropertiesPage.IsModifyingNow)
+                    {
+                        List<OldAndNewPropertiesModel> filePropertiesList = await Task.Run(() =>
+                        {
+                            List<OldAndNewPropertiesModel> filePropertiesList = [];
+
+                            foreach (string file in filesList)
+                            {
+                                FileInfo fileInfo = new(file);
+                                if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
+                                {
+                                    continue;
+                                }
+
+                                filePropertiesList.Add(new OldAndNewPropertiesModel()
+                                {
+                                    FileName = Path.GetFileName(file),
+                                    FilePath = file,
+                                });
+                            }
+
+                            return filePropertiesList;
+                        });
+
+                        filePropertiesPage.AddToFilePropertiesPage(filePropertiesList);
+                    }
+                }
+            }
+            else if (Equals(currentPageType, typeof(FileCertificatePage)))
+            {
+                FileCertificatePage fileCertificatePage = GetFrameContent() as FileCertificatePage;
+                if (!fileCertificatePage.IsModifyingNow)
+                {
+                    List<CertificateResultModel> fileCertificateList = await Task.Run(() =>
+                    {
+                        List<CertificateResultModel> fileCertificateList = [];
 
                         foreach (string file in filesList)
                         {
@@ -555,111 +655,24 @@ namespace PowerToolbox.Views.Pages
 
                             if ((new FileInfo(fileInfo.FullName).Attributes & FileAttributes.Directory) is 0)
                             {
-                                extensionNameList.Add(new()
+                                fileCertificateList.Add(new CertificateResultModel()
                                 {
-                                    OriginalFileName = fileInfo.Name,
-                                    OriginalFilePath = fileInfo.FullName
+                                    FileName = fileInfo.Name,
+                                    FilePath = fileInfo.FullName
                                 });
                             }
                         }
 
-                        return extensionNameList;
+                        return fileCertificateList;
                     });
 
-                    extensionNamePage.AddToExtensionNamePage(extensionNameList);
+                    fileCertificatePage.AddToFileCertificatePage(fileCertificateList);
                 }
-                else if (Equals(currentFileManagerPageType, typeof(UpperAndLowerCasePage)))
-                {
-                    UpperAndLowerCasePage upperAndLowerCasePage = fileManagerPage.GetFrameContent() as UpperAndLowerCasePage;
-
-                    List<OldAndNewNameModel> upperAndLowerCaseList = await Task.Run(() =>
-                    {
-                        List<OldAndNewNameModel> upperAndLowerCaseList = [];
-
-                        foreach (string file in filesList)
-                        {
-                            FileInfo fileInfo = new(file);
-                            if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
-                            {
-                                continue;
-                            }
-
-                            upperAndLowerCaseList.Add(new()
-                            {
-                                OriginalFileName = Path.GetFileName(file),
-                                OriginalFilePath = file,
-                            });
-                        }
-
-                        return upperAndLowerCaseList;
-                    });
-
-                    upperAndLowerCasePage.AddtoUpperAndLowerCasePage(upperAndLowerCaseList);
-                }
-                else if (Equals(currentFileManagerPageType, typeof(FilePropertiesPage)))
-                {
-                    FilePropertiesPage filePropertiesPage = fileManagerPage.GetFrameContent() as FilePropertiesPage;
-
-                    List<OldAndNewPropertiesModel> filePropertiesList = await Task.Run(() =>
-                    {
-                        List<OldAndNewPropertiesModel> filePropertiesList = [];
-
-                        foreach (string file in filesList)
-                        {
-                            FileInfo fileInfo = new(file);
-                            if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
-                            {
-                                continue;
-                            }
-
-                            filePropertiesList.Add(new OldAndNewPropertiesModel()
-                            {
-                                FileName = Path.GetFileName(file),
-                                FilePath = file,
-                            });
-                        }
-
-                        return filePropertiesList;
-                    });
-
-                    filePropertiesPage.AddToFilePropertiesPage(filePropertiesList);
-                }
-            }
-            else if (Equals(currentPageType, typeof(FileCertificatePage)))
-            {
-                FileCertificatePage fileCertificatePage = GetFrameContent() as FileCertificatePage;
-
-                List<CertificateResultModel> fileCertificateList = await Task.Run(() =>
-                {
-                    List<CertificateResultModel> fileCertificateList = [];
-
-                    foreach (string file in filesList)
-                    {
-                        FileInfo fileInfo = new(file);
-                        if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
-                        {
-                            continue;
-                        }
-
-                        if ((new FileInfo(fileInfo.FullName).Attributes & FileAttributes.Directory) is 0)
-                        {
-                            fileCertificateList.Add(new CertificateResultModel()
-                            {
-                                FileName = fileInfo.Name,
-                                FilePath = fileInfo.FullName
-                            });
-                        }
-                    }
-
-                    return fileCertificateList;
-                });
-
-                fileCertificatePage.AddToFileCertificatePage(fileCertificateList);
             }
             else if (Equals(currentPageType, typeof(IconExtractPage)))
             {
                 IconExtractPage iconExtractPage = GetFrameContent() as IconExtractPage;
-                if (filesList.Count is 1 && (string.Equals(Path.GetExtension(filesList[0]), ".exe") || string.Equals(Path.GetExtension(filesList[0]), ".dll")))
+                if (iconExtractPage.GetIsNotParsingOrSaving(iconExtractPage.IconExtractResultKind, iconExtractPage.IsSaving) && filesList.Count is 1 && (string.Equals(Path.GetExtension(filesList[0]), ".exe") || string.Equals(Path.GetExtension(filesList[0]), ".dll")))
                 {
                     await iconExtractPage.ParseIconFileAsync(filesList[0]);
                 }
@@ -667,7 +680,7 @@ namespace PowerToolbox.Views.Pages
             else if (Equals(currentPageType, typeof(PriExtractPage)))
             {
                 PriExtractPage priExtractPage = GetFrameContent() as PriExtractPage;
-                if (filesList.Count is 1 && string.Equals(Path.GetExtension(filesList[0]), ".pri"))
+                if (!priExtractPage.IsProcessing && filesList.Count is 1 && string.Equals(Path.GetExtension(filesList[0]), ".pri"))
                 {
                     await priExtractPage.ParseResourceFileAsync(filesList[0]);
                 }
@@ -675,34 +688,37 @@ namespace PowerToolbox.Views.Pages
             else if (Equals(currentPageType, typeof(FileUnlockPage)))
             {
                 FileUnlockPage fileUnlockPage = GetFrameContent() as FileUnlockPage;
-                List<FileUnlockModel> fileUnlockList = await Task.Run(() =>
+                if (!fileUnlockPage.IsModifyingNow)
                 {
-                    List<FileUnlockModel> fileUnlockList = [];
-
-                    foreach (string file in filesList)
+                    List<FileUnlockModel> fileUnlockList = await Task.Run(() =>
                     {
-                        try
+                        List<FileUnlockModel> fileUnlockList = [];
+
+                        foreach (string file in filesList)
                         {
-                            FileInfo fileInfo = new(file);
-                            FileUnlockModel fileUnlock = new()
+                            try
                             {
-                                FileFolderName = fileInfo.Name,
-                                FileFolderPath = fileInfo.FullName,
-                                IsDirectory = (fileInfo.Attributes & FileAttributes.Directory) is FileAttributes.Directory
-                            };
+                                FileInfo fileInfo = new(file);
+                                FileUnlockModel fileUnlock = new()
+                                {
+                                    FileFolderName = fileInfo.Name,
+                                    FileFolderPath = fileInfo.FullName,
+                                    IsDirectory = (fileInfo.Attributes & FileAttributes.Directory) is FileAttributes.Directory
+                                };
 
-                            fileUnlockList.Add(fileUnlock);
+                                fileUnlockList.Add(fileUnlock);
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(MainPage), nameof(SendReceivedFilesListAsync), 1, e);
+                            }
                         }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(MainPage), nameof(SendReceivedFilesListAsync), 1, e);
-                        }
-                    }
 
-                    return fileUnlockList;
-                });
+                        return fileUnlockList;
+                    });
 
-                await fileUnlockPage.AddToFileUnlockPageAsync(fileUnlockList);
+                    await fileUnlockPage.AddToFileUnlockPageAsync(fileUnlockList);
+                }
             }
         }
 

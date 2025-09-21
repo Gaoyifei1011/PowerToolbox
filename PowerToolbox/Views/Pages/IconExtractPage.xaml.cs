@@ -716,6 +716,14 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 检查是否正在解析中或保存中
+        /// </summary>
+        public bool GetIsNotParsingOrSaving(IconExtractResultKind iconExtractResultKind, bool isSaving)
+        {
+            return iconExtractResultKind is not IconExtractResultKind.Parsing && !isSaving;
+        }
+
+        /// <summary>
         /// 保存获取到的 ico 图片到 Icon 文件
         /// </summary>
         private bool SaveIcon(Icon rawIcon, string destination)
@@ -768,14 +776,6 @@ namespace PowerToolbox.Views.Pages
         private Visibility CheckIconExtractState(IconExtractResultKind iconResultResultKind, IconExtractResultKind comparedIconExtractResultKind)
         {
             return Equals(iconResultResultKind, comparedIconExtractResultKind) ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        /// <summary>
-        /// 检查是否正在解析中或保存中
-        /// </summary>
-        private bool GetIsParsingOrSaving(IconExtractResultKind iconExtractResultKind, bool isSaving)
-        {
-            return iconExtractResultKind is IconExtractResultKind.Parsing ? false : !isSaving;
         }
     }
 }
