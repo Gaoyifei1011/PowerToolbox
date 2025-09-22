@@ -764,19 +764,14 @@
 
                     <MenuFlyoutSeparator Margin="5,3" />
 
-                    <Button
-                        Margin="0,0,0,3"
-                        HorizontalAlignment="Stretch"
-                        Click="{x:Bind OnSelectFileClicked}"
-                        Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectFile')}"
-                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsProcessing), Mode=OneWay}" />
-
-                    <ContentControl
-                        Grid.Column="2"
-                        HorizontalContentAlignment="Stretch"
-                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsProcessing), Mode=OneWay}">
-
+                    <ContentControl HorizontalContentAlignment="Stretch" IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsProcessing), Mode=OneWay}">
                         <StackPanel>
+                            <Button
+                                Margin="0,0,0,3"
+                                HorizontalAlignment="Stretch"
+                                Click="{x:Bind OnSelectFileClicked}"
+                                Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectFile')}" />
+
                             <controls:DropDownButton
                                 x:Name="LanguageButton"
                                 MinHeight="32"
