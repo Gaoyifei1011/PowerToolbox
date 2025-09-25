@@ -110,6 +110,7 @@
     <Content Include="Assets\ControlIcon\PriExtract.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\Relaxation.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\Resource.png" CopyToOutputDirectory="Always" />
+    <Content Include="Assets\ControlIcon\ScheduledTask.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\Settings.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\ShellMenu.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\System.png" CopyToOutputDirectory="Always" />
