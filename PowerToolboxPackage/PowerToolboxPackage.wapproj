@@ -72,7 +72,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <PackageReference Include="Microsoft.UI.Xaml" Version="2.8.7" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4948" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6584" />
     <ProjectReference Include="..\PowerToolbox\PowerToolbox.csproj" />
     <ProjectReference Include="..\PowerToolboxShellExtension\PowerToolboxShellExtension.csproj" />
     <ProjectReference Include="..\ThemeSwitch\ThemeSwitch.csproj" />
