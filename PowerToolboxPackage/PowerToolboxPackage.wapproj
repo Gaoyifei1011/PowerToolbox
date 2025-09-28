@@ -30,7 +30,7 @@
     <AppInstallerUpdateFrequency>0</AppInstallerUpdateFrequency>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundleAutoResourcePackageQualifiers>DXFeatureLevel</AppxBundleAutoResourcePackageQualifiers>
-    <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86|x64|arm64</AppxBundlePlatforms>
     <AppxDefaultResourceQualifiers>Language=EN-US;ZH-HANS</AppxDefaultResourceQualifiers>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
     <DefaultLanguage>en-US</DefaultLanguage>
@@ -71,6 +71,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+		<None Include="Package.StoreAssociation.xml" />
     <PackageReference Include="Microsoft.UI.Xaml" Version="2.8.7" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6584" />
     <ProjectReference Include="..\PowerToolbox\PowerToolbox.csproj" />
