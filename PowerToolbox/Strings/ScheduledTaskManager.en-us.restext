@@ -1,0 +1,11 @@
+﻿AddScheduledTask=Add scheduled task
+DeleteScheduledTask=Delete scheduled task
+OpenScheduledTaskProgram=Open scheduled task program
+Refresh=Refresh
+ScheduledTaskManager=Scheduled task manager
+ScheduledTaskInformation=There are {0} scheduled tasks and {1} selected
+SearchScheduledTaskPHText=Search scheduled task
+SelectAll=Select all
+SelectNone=Select none
+UseInstruction=Use instruction
+ViewMore=View More

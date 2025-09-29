@@ -110,8 +110,8 @@
     <Content Include="Assets\ControlIcon\PriExtract.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\Relaxation.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\Resource.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\ScheduledTask.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\Settings.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\ScheduledTaskManager.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\Settings.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\ShellMenu.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\System.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\ThemeSwitch.png" CopyToOutputDirectory="Always" />
@@ -224,6 +224,9 @@
     <EmbeddedResource Include="Strings\PriExtract.restext" />
     <EmbeddedResource Include="Strings\PriExtract.zh-hans.restext" />
     <EmbeddedResource Include="Strings\Resources.resx" Generator="PublicResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
+		<EmbeddedResource Include="Strings\ScheduledTaskManager.en-us.restext" />
+		<EmbeddedResource Include="Strings\ScheduledTaskManager.restext" />
+		<EmbeddedResource Include="Strings\ScheduledTaskManager.zh-hans.restext" />
     <EmbeddedResource Include="Strings\Settings.en-us.restext" />
     <EmbeddedResource Include="Strings\Settings.restext" />
     <EmbeddedResource Include="Strings\Settings.zh-hans.restext" />
@@ -305,6 +308,7 @@
     <None Remove="Views\Pages\LoopbackManagerPage.xaml" />
     <None Remove="Views\Pages\MainPage.xaml" />
     <None Remove="Views\Pages\PriExtractPage.xaml" />
+		<None Remove="Views\Pages\ScheduledTaskManagerPage.xaml" />
     <None Remove="Views\Pages\SettingsAboutPage.xaml" />
     <None Remove="Views\Pages\SettingsAdvancedPage.xaml" />
     <None Remove="Views\Pages\SettingsGeneralPage.xaml" />
@@ -345,6 +349,7 @@
     <Page Include="Views\NotificationTips\CopyPasteNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\NotificationTips\OperationResultNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\HostsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Views\Pages\ScheduledTaskManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\SettingsAdvancedPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\SettingsGeneralPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\ShellMenuEditPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />

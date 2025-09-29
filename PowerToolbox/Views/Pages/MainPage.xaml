@@ -664,6 +664,28 @@
                             </ToolTipService.ToolTip>
                         </controls:NavigationViewItem>
 
+                        <controls:NavigationViewItem Tag="ScheduledTaskManager" Visibility="Collapsed">
+
+                            <controls:NavigationViewItem.Icon>
+                                <controls:ImageIcon Source="ms-appx:///Assets/ControlIcon/ScheduledTaskManager.png" />
+                            </controls:NavigationViewItem.Icon>
+
+                            <controls:NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowScheduledTaskManagerText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ScheduledTaskManager')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
+                            </controls:NavigationViewItem.Content>
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip
+                                    MaxWidth="9999"
+                                    Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('ScheduledTaskManager')}"
+                                    Visibility="{x:Bind WindowScheduledTaskManagerText.IsTextTrimmed, Mode=OneWay}" />
+                            </ToolTipService.ToolTip>
+                        </controls:NavigationViewItem>
+
                         <controls:NavigationViewItem Tag="Hosts" Visibility="Collapsed">
 
                             <controls:NavigationViewItem.Icon>

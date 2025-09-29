@@ -1,0 +1,11 @@
+﻿AddScheduledTask=添加计划任务
+DeleteScheduledTask=删除计划任务
+OpenScheduledTaskProgram=打开任务计划程序
+Refresh=刷新
+ScheduledTaskManager=计划任务管理
+ScheduledTaskInformation=共有 {0} 个计划任务，已选择 {1} 个
+SearchScheduledTaskPHText=搜索计划任务
+SelectAll=全选
+SelectNone=全部不选
+UseInstruction=使用说明
+ViewMore=查看更多

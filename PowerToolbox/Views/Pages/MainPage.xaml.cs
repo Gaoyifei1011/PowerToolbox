@@ -150,6 +150,7 @@ namespace PowerToolbox.Views.Pages
             new KeyValuePair<string, Type>("ContextMenuManager",typeof(ContextMenuManagerPage)),
             new KeyValuePair<string, Type>("System",null),
             new KeyValuePair<string, Type>("LoopbackManager",typeof(LoopbackManagerPage)),
+            new KeyValuePair<string, Type>("ScheduledTaskManager",typeof(ScheduledTaskManagerPage)),
             new KeyValuePair<string, Type>("Hosts",typeof(HostsPage)),
             new KeyValuePair<string, Type>("DriverManager",typeof(DriverManagerPage)),
             new KeyValuePair<string, Type>("UpdateManager",typeof(UpdateManagerPage)),

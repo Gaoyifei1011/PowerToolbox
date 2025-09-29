@@ -21,6 +21,7 @@ Relaxation=Relax tools
 Resource=Resource tools
 Restore=Restore
 RunningAdministrator=(Administrator)
+ScheduledTaskManager=Scheduled task manager
 Settings=Settings
 ShellMenu=Custom shell menu
 Size=Size

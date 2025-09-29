@@ -44,6 +44,8 @@ namespace PowerToolbox.Services.Root
 
         public static ResourceManager PriExtractResource { get; } = new("PowerToolbox.Strings.PriExtract", CurrentAssembly);
 
+        public static ResourceManager ScheduledTaskManagerResource { get; } = new("PowerToolbox.Strings.ScheduledTaskManager", CurrentAssembly);
+
         public static ResourceManager SettingsResource { get; } = new("PowerToolbox.Strings.Settings", CurrentAssembly);
 
         public static ResourceManager SettingsAboutResource { get; } = new("PowerToolbox.Strings.SettingsAbout", CurrentAssembly);

@@ -116,6 +116,13 @@ namespace PowerToolbox.Views.Pages
             },
             //new ControlItemModel()
             //{
+            //    Title = ResourceService.AllToolsResource.GetString("ScheduledTaskManager"),
+            //    Description = ResourceService.AllToolsResource.GetString("ScheduledTaskManagerDescription"),
+            //    ImagePath = "ms-appx:///Assets/ControlIcon/ScheduledTaskManager.png",
+            //    Tag = "ScheduledTaskManager"
+            //},
+            //new ControlItemModel()
+            //{
             //    Title = ResourceService.AllToolsResource.GetString("Hosts"),
             //    Description = ResourceService.AllToolsResource.GetString("HostsDescription"),
             //    ImagePath = "ms-appx:///Assets/ControlIcon/Hosts.png",
