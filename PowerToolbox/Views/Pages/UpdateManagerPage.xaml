@@ -5,7 +5,6 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
-    xmlns:controlshelper="using:PowerToolbox.Helpers.Controls"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -99,7 +98,7 @@
                         <MenuFlyoutItem Click="{x:Bind OnWIPSettingsClicked}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('WIPSettings')}">
 
                             <MenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE8A1;" />
+                                <FontIcon Glyph="&#xF1AD;" />
                             </MenuFlyoutItem.Icon>
 
                             <ToolTipService.ToolTip>
