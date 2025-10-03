@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
-    xmlns:controlshelper="using:PowerToolbox.Helpers.Controls"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:enum="using:PowerToolbox.Extensions.DataType.Enums"
