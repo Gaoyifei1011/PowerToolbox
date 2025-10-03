@@ -43,7 +43,7 @@ namespace PowerToolbox.Services.Download
                         deliveryOptimization.Value.doDownload.Abort();
                     }
                 }
-            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace PowerToolbox.Services.Download
                 {
                     LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DeliveryOptimizationService), nameof(CreateDownload), 1, e);
                 }
-            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace PowerToolbox.Services.Download
                         }
                     }
                 }
-            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace PowerToolbox.Services.Download
                         }
                     }
                 }
-            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace PowerToolbox.Services.Download
                         }
                     }
                 }
-            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
         }
 
         /// <summary>

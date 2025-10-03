@@ -44,7 +44,7 @@ namespace PowerToolbox.Services.Download
                     {
                         LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(BitsService), nameof(Initialize), 1, e);
                     }
-                }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+                }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
             }
         }
 
@@ -62,7 +62,7 @@ namespace PowerToolbox.Services.Download
                         bits.Value.backgroundCopyJob.Cancel();
                     }
                 }
-            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace PowerToolbox.Services.Download
                 {
                     LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(BitsService), nameof(CreateDownload), 1, e);
                 }
-            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace PowerToolbox.Services.Download
                         }
                     }
                 }
-            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace PowerToolbox.Services.Download
                         }
                     }
                 }
-            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace PowerToolbox.Services.Download
                         }
                     }
                 }
-            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
         }
 
         /// <summary>
