@@ -664,7 +664,7 @@
                             </ToolTipService.ToolTip>
                         </controls:NavigationViewItem>
 
-                        <controls:NavigationViewItem Tag="ScheduledTaskManager" Visibility="Collapsed">
+                        <controls:NavigationViewItem Tag="ScheduledTaskManager">
 
                             <controls:NavigationViewItem.Icon>
                                 <controls:ImageIcon Source="ms-appx:///Assets/ControlIcon/ScheduledTaskManager.png" />

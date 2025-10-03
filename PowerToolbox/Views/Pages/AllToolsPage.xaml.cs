@@ -114,13 +114,13 @@ namespace PowerToolbox.Views.Pages
                 ImagePath = "ms-appx:///Assets/ControlIcon/LoopbackManager.png",
                 Tag = "LoopbackManager"
             },
-            //new ControlItemModel()
-            //{
-            //    Title = ResourceService.AllToolsResource.GetString("ScheduledTaskManager"),
-            //    Description = ResourceService.AllToolsResource.GetString("ScheduledTaskManagerDescription"),
-            //    ImagePath = "ms-appx:///Assets/ControlIcon/ScheduledTaskManager.png",
-            //    Tag = "ScheduledTaskManager"
-            //},
+            new ControlItemModel()
+            {
+                Title = ResourceService.AllToolsResource.GetString("ScheduledTaskManager"),
+                Description = ResourceService.AllToolsResource.GetString("ScheduledTaskManagerDescription"),
+                ImagePath = "ms-appx:///Assets/ControlIcon/ScheduledTaskManager.png",
+                Tag = "ScheduledTaskManager"
+            },
             //new ControlItemModel()
             //{
             //    Title = ResourceService.AllToolsResource.GetString("Hosts"),
