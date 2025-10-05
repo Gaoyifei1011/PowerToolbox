@@ -48,6 +48,25 @@ namespace PowerToolbox.Models
         }
 
         /// <summary>
+        /// 计划任务是否正在处理中
+        /// </summary>
+        private bool _isProcessing;
+
+        public bool IsProcessing
+        {
+            get { return _isProcessing; }
+
+            set
+            {
+                if (!Equals(_isProcessing, value))
+                {
+                    _isProcessing = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsProcessing)));
+                }
+            }
+        }
+
+        /// <summary>
         /// 计划任务图标
         /// </summary>
         public ImageSource TaskIcon { get; set; }
