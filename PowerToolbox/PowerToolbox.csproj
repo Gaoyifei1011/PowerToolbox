@@ -300,6 +300,7 @@
     <None Remove="Views\Dialogs\OperationFailedDialog.xaml" />
     <None Remove="Views\Dialogs\RebootDialog.xaml" />
     <None Remove="Views\Dialogs\RestartAppsDialog.xaml" />
+    <None Remove="Views\Dialogs\ScheduledTaskFailedDialog.xaml" />
     <None Remove="Views\NotificationTips\CopyPasteNotificationTip.xaml" />
     <None Remove="Views\NotificationTips\OperationResultNotificationTip.xaml" />
     <None Remove="Views\Pages\AllToolsPage.xaml" />
@@ -356,6 +357,7 @@
     <Page Include="Views\Dialogs\OperationFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\RebootDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\RestartAppsDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Views\Dialogs\ScheduledTaskFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\NotificationTips\CopyPasteNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\NotificationTips\OperationResultNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\HostsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
