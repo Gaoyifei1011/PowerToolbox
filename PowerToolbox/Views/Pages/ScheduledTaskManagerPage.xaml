@@ -10,11 +10,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:PowerToolbox.Models"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
     <Page.Resources>
         <class:ExecuteCommand x:Name="CheckBoxClickCommand" ExecuteRequested="{x:Bind OnCheckBoxExecuteRequested}" />
-        <class:ExecuteCommand x:Name="ScheduledTaskEnableStateCommand" ExecuteRequested="{x:Bind OnScheduledTaskEnableStateExecuteRequested}" />
+        <class:ExecuteCommand x:Name="DisableScheduledTaskCommand" ExecuteRequested="{x:Bind OnDisableScheduledTaskExecuteRequested}" />
+        <class:ExecuteCommand x:Name="EnableScheduledTaskCommand" ExecuteRequested="{x:Bind OnEnableScheduledTaskExecuteRequested}" />
+        <class:ExecuteCommand x:Name="RunScheduledTaskCommand" ExecuteRequested="{x:Bind OnRunScheduledTaskExecuteRequested}" />
+        <class:ExecuteCommand x:Name="StopScheduledTaskCommand" ExecuteRequested="{x:Bind OnStopScheduledTaskExecuteRequested}" />
+        <class:ExecuteCommand x:Name="ExportScheduledTaskCommand" ExecuteRequested="{x:Bind OnExportScheduledTaskExecuteRequested}" />
         <class:ExecuteCommand x:Name="DeleteScheduledTaskCommand" ExecuteRequested="{x:Bind OnDeleteScheduledTaskExecuteRequested}" />
         <class:ExecuteCommand x:Name="OpenProcessPathCommand" ExecuteRequested="{x:Bind OnOpenProcessPathExecuteRequested}" />
     </Page.Resources>
@@ -125,9 +130,9 @@
                         <Button.Flyout>
                             <MenuFlyout Placement="Bottom">
                                 <MenuFlyoutItem
-                                    Click="{x:Bind OnEnableScheduledTaskClicked}"
+                                    Click="{x:Bind OnRunScheduledTaskClicked}"
                                     IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('EnableScheduledTask')}">
+                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('RunScheduledTask')}">
 
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon Glyph="&#xE768;" />
@@ -135,9 +140,9 @@
                                 </MenuFlyoutItem>
 
                                 <MenuFlyoutItem
-                                    Click="{x:Bind OnDisableScheduledTaskClicked}"
+                                    Click="{x:Bind OnStopScheduledTaskClicked}"
                                     IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('DisableScheduledTask')}">
+                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('StopScheduledTask')}">
 
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon Glyph="&#xE71A;" />
@@ -145,12 +150,12 @@
                                 </MenuFlyoutItem>
 
                                 <MenuFlyoutItem
-                                    Click="{x:Bind OnDeleteScheduledTaskClicked}"
+                                    Click="{x:Bind OnExportScheduledTaskClicked}"
                                     IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('DeleteScheduledTask')}">
+                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ExportScheduledTask')}">
 
                                     <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE711;" />
+                                        <FontIcon Glyph="&#xE74E;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
 
@@ -163,6 +168,18 @@
 
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon Glyph="&#xE72C;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+
+                                <MenuFlyoutSeparator />
+
+                                <MenuFlyoutItem
+                                    Click="{x:Bind OnViewErrorInformationClicked}"
+                                    IsEnabled="{x:Bind IsModifiedFailed, Mode=OneWay}"
+                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ViewErrorInformation')}">
+
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xEA39;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
 
@@ -336,39 +353,59 @@
                                             </TextBlock>
                                         </StackPanel>
 
-                                        <controls:ToggleSplitButton
+                                        <controls:SplitButton
                                             Grid.Column="3"
                                             Margin="5,0,0,0"
-                                            Command="{StaticResource ScheduledTaskEnableStateCommand}"
+                                            Command="{StaticResource DisableScheduledTaskCommand}"
                                             CommandParameter="{x:Bind}"
+                                            Content="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Disable')}"
                                             CornerRadius="{StaticResource ControlCornerRadius}"
-                                            IsChecked="{x:Bind IsEnabled, Mode=OneWay}">
-
-                                            <controls:ToggleSplitButton.Content>
-                                                <Grid>
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Disable')}" Visibility="{x:Bind IsEnabled, Mode=OneWay}" />
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Enable')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsEnabled), Mode=OneWay}" />
-                                                </Grid>
-                                            </controls:ToggleSplitButton.Content>
+                                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsProcessing), Mode=OneWay}"
+                                            Visibility="{x:Bind IsEnabled, Mode=OneWay}">
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip MaxWidth="9999">
-                                                    <Grid>
-                                                        <TextBlock Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Disable')}" Visibility="{x:Bind IsEnabled, Mode=OneWay}" />
-                                                        <TextBlock Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Enable')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsEnabled), Mode=OneWay}" />
-                                                    </Grid>
-                                                </ToolTip>
+                                                <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Disable')}" />
                                             </ToolTipService.ToolTip>
 
-                                            <controls:ToggleSplitButton.Flyout>
+                                            <controls:SplitButton.Flyout>
                                                 <MenuFlyout Placement="Bottom">
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource RunScheduledTaskCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('RunScheduledTask')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE768;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource StopScheduledTaskCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('StopScheduledTask')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE71A;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource ExportScheduledTaskCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ExportScheduledTask')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE74E;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
                                                     <MenuFlyoutItem
                                                         Command="{StaticResource DeleteScheduledTaskCommand}"
                                                         CommandParameter="{x:Bind}"
                                                         Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('DeleteScheduledTask')}">
 
                                                         <MenuFlyoutItem.Icon>
-                                                            <FontIcon Glyph="&#xE711;" />
+                                                            <FontIcon Glyph="&#xE74D;" />
                                                         </MenuFlyoutItem.Icon>
                                                     </MenuFlyoutItem>
 
@@ -384,8 +421,59 @@
                                                         </MenuFlyoutItem.Icon>
                                                     </MenuFlyoutItem>
                                                 </MenuFlyout>
-                                            </controls:ToggleSplitButton.Flyout>
-                                        </controls:ToggleSplitButton>
+                                            </controls:SplitButton.Flyout>
+                                        </controls:SplitButton>
+
+                                        <controls:SplitButton
+                                            Grid.Column="3"
+                                            Margin="5,0,0,0"
+                                            Command="{StaticResource EnableScheduledTaskCommand}"
+                                            CommandParameter="{x:Bind}"
+                                            Content="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Enable')}"
+                                            CornerRadius="{StaticResource ControlCornerRadius}"
+                                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsProcessing), Mode=OneWay}"
+                                            Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsEnabled), Mode=OneWay}">
+
+                                            <ToolTipService.ToolTip>
+                                                <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Enable')}" />
+                                            </ToolTipService.ToolTip>
+
+                                            <controls:SplitButton.Flyout>
+                                                <MenuFlyout Placement="Bottom">
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource ExportScheduledTaskCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ExportScheduledTask')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE74E;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource DeleteScheduledTaskCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('DeleteScheduledTask')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE74D;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutSeparator />
+
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource OpenProcessPathCommand}"
+                                                        CommandParameter="{x:Bind ProcessPath}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('OpenProcessPath')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE7AC;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+                                                </MenuFlyout>
+                                            </controls:SplitButton.Flyout>
+                                        </controls:SplitButton>
                                     </Grid>
                                 </controls:Expander.Header>
 
@@ -571,5 +659,123 @@
                 </ListView>
             </Grid>
         </SplitView.Content>
+
+        <SplitView.Pane>
+            <!--  使用说明  -->
+            <Grid
+                Margin="0,10,0,0"
+                Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                CornerRadius="4,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid
+                    Grid.Row="0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="0,0,0,1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <FontIcon
+                        Grid.Column="0"
+                        Margin="16,2,6,0"
+                        VerticalAlignment="Center"
+                        FontSize="16"
+                        Glyph="&#xE946;" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('UseInstruction')}" />
+
+                    <Button
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Click="{x:Bind OnCloseClicked}"
+                        Style="{StaticResource AlternateCloseButtonStyle}">
+
+                        <Button.Content>
+                            <FontIcon
+                                Margin="4"
+                                FontSize="16"
+                                Glyph="&#xE711;" />
+                        </Button.Content>
+
+                        <ToolTipService.ToolTip>
+                            <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Close')}" />
+                        </ToolTipService.ToolTip>
+                    </Button>
+                </Grid>
+
+                <ScrollViewer
+                    Grid.Row="1"
+                    HorizontalScrollBarVisibility="Disabled"
+                    HorizontalScrollMode="Disabled"
+                    VerticalScrollBarVisibility="Visible"
+                    VerticalScrollMode="Enabled">
+
+                    <Grid Margin="0,0,0,30">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Grid.Row="0"
+                            Margin="16,10,16,10"
+                            FontSize="15"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ScheduledTaskInstruction')}"
+                            TextAlignment="Left" />
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Margin="16,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ScheduledTaskInstructionContent1')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="2"
+                            Margin="16,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ScheduledTaskInstructionContent2')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <StackPanel
+                            Grid.Row="3"
+                            Margin="16,0,16,5"
+                            Spacing="5">
+
+                            <TextBlock HorizontalAlignment="Left">
+                                <Hyperlink NavigateUri="https://learn.microsoft.com/windows/win32/taskschd/using-the-task-scheduler" UnderlineStyle="None">
+                                    <Run Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('LearnScheduledTask')}" />
+                                </Hyperlink>
+                            </TextBlock>
+
+                            <TextBlock HorizontalAlignment="Left">
+                                <Hyperlink Click="{x:Bind OnRunAsAdministratorClicked}" UnderlineStyle="None">
+                                    <Run Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('RunAsAdministrator')}" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
+        </SplitView.Pane>
     </SplitView>
 </Page>
