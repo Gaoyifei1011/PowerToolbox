@@ -24,5 +24,4 @@
 > * [UWP-Loopback-Exemption-Manager](https://github.com/themerror/UWP-Loopback-Exemption-Manager)&emsp;
 > * [Xaml-Islands-Cpp](https://github.com/Blinue/Xaml-Islands-Cpp)&emsp;
 > * [Wice](https://github.com/aelyo-softworks/Wice)&emsp;
-> * [WinUI3_PinToTaskbar](https://github.com/castorix/WinUI3_PinToTaskbar)&emsp;
 > * [wumgr](https://github.com/DavidXanatos/wumgr)&emsp;
