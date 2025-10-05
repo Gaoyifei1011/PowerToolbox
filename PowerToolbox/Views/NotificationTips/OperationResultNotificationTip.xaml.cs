@@ -374,13 +374,43 @@ namespace PowerToolbox.Views.NotificationTips
 
             if (operationKind is OperationKind.File)
             {
-                IsSuccessOperation = true;
+                IsSuccessOperation = failedItems is 0 && successItems is not 0; ;
                 OperationContent = failedItems is 0 ? string.Format(ResourceService.NotificationTipResource.GetString("FileResultSuccessfully"), successItems) : string.Format(ResourceService.NotificationTipResource.GetString("FileResultFailed"), successItems, failedItems);
             }
             else if (operationKind is OperationKind.IconExtract)
             {
-                IsSuccessOperation = true;
-                OperationContent = failedItems is 0 ? string.Format(ResourceService.NotificationTipResource.GetString("IconExtractSuccessfully"), successItems) : string.Format(ResourceService.NotificationTipResource.GetString("IconExtractFailed"), successItems, failedItems);
+                IsSuccessOperation = failedItems is 0 && successItems is not 0;
+                OperationContent = failedItems is 0 && successItems is not 0 ? string.Format(ResourceService.NotificationTipResource.GetString("IconExtractSuccessfully"), successItems) : string.Format(ResourceService.NotificationTipResource.GetString("IconExtractFailed"), successItems, failedItems);
+            }
+            else if (operationKind is OperationKind.ScheduledTaskDelete)
+            {
+                IsSuccessOperation = failedItems is 0 && successItems is not 0;
+                OperationContent = failedItems is 0 && successItems is not 0 ? string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskDeleteSuccessfully"), successItems) : string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskDeleteFailed"), successItems, failedItems);
+            }
+            else if (operationKind is OperationKind.ScheduledTaskDisable)
+            {
+                IsSuccessOperation = failedItems is 0 && successItems is not 0;
+                OperationContent = failedItems is 0 && successItems is not 0 ? string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskDisableSuccessfully"), successItems) : string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskDisableFailed"), successItems, failedItems);
+            }
+            else if (operationKind is OperationKind.ScheduledTaskEnable)
+            {
+                IsSuccessOperation = failedItems is 0 && successItems is not 0;
+                OperationContent = failedItems is 0 && successItems is not 0 ? string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskEnableSuccessfully"), successItems) : string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskEnableFailed"), successItems, failedItems);
+            }
+            else if (operationKind is OperationKind.ScheduledTaskExport)
+            {
+                IsSuccessOperation = failedItems is 0 && successItems is not 0;
+                OperationContent = failedItems is 0 && successItems is not 0 ? string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskExportSuccessfully"), successItems) : string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskExportFailed"), successItems, failedItems);
+            }
+            else if (operationKind is OperationKind.ScheduledTaskRun)
+            {
+                IsSuccessOperation = failedItems is 0 && successItems is not 0;
+                OperationContent = failedItems is 0 && successItems is not 0 ? string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskRunSuccessfully"), successItems) : string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskRunFailed"), successItems, failedItems);
+            }
+            else if (operationKind is OperationKind.ScheduledTaskStop)
+            {
+                IsSuccessOperation = failedItems is 0 && successItems is not 0;
+                OperationContent = failedItems is 0 && successItems is not 0 ? string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskStopSuccessfully"), successItems) : string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskStopFailed"), successItems, failedItems);
             }
         }
     }
