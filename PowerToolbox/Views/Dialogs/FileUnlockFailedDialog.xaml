@@ -19,7 +19,8 @@
     RequestedTheme="{x:Bind ((FrameworkElement)window:MainWindow.Current.Content).RequestedTheme, Mode=OneWay}"
     SecondaryButtonClick="{x:Bind OnOpenTaskManagerClicked}"
     SecondaryButtonText="{x:Bind rootservice:ResourceService.DialogResource.GetString('OpenTaskManager')}"
-    Style="{StaticResource DefaultContentDialogStyle}">
+    Style="{StaticResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
 
     <ContentDialog.Resources>
         <x:Double x:Key="ContentDialogMaxWidth">1300</x:Double>
@@ -68,7 +69,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
-                    x:Name="FileNameText"
+                    x:Name="FileNameHeaderText"
                     Grid.Column="0"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -80,12 +81,12 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('FileName')}"
-                            Visibility="{x:Bind FileNameText.IsTextTrimmed, Mode=OneWay}" />
+                            Visibility="{x:Bind FileNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="ProcessNameText"
+                    x:Name="ProcessNameHeaderText"
                     Grid.Column="1"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -97,12 +98,12 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ProcessName')}"
-                            Visibility="{x:Bind ProcessNameText.IsTextTrimmed, Mode=OneWay}" />
+                            Visibility="{x:Bind ProcessNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="ErrorMessageText"
+                    x:Name="ErrorMessageHeaderText"
                     Grid.Column="2"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -114,12 +115,12 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ErrorMessage')}"
-                            Visibility="{x:Bind ErrorMessageText.IsTextTrimmed, Mode=OneWay}" />
+                            Visibility="{x:Bind ErrorMessageHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="ErrorCodeText"
+                    x:Name="ErrorCodeHeaderText"
                     Grid.Column="3"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -131,7 +132,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ErrorCode')}"
-                            Visibility="{x:Bind ErrorCodeText.IsTextTrimmed, Mode=OneWay}" />
+                            Visibility="{x:Bind ErrorCodeHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -209,7 +210,7 @@
                     </TextBlock>
 
                     <TextBlock
-                        x:Name="MessageText"
+                        x:Name="ErrorMessageText"
                         Grid.Column="2"
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
@@ -229,7 +230,7 @@
                     </TextBlock>
 
                     <TextBlock
-                        x:Name="HResultText"
+                        x:Name="ErrorCodeText"
                         Grid.Column="3"
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
