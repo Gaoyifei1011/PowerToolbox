@@ -1,5 +1,5 @@
 Close=关闭
-ContextMenu=右键菜单管理
+ContextMenuManager=右键菜单管理
 LearnCustomRightClickMenu=了解自定义右键菜单
 LoadingContextMenuInformation=正在加载右键菜单信息中，请稍候...
 MenuEmptyDescription=该设备没有任何新版的右键菜单项

@@ -39,7 +39,7 @@
                     Margin="30,15,30,0"
                     HorizontalAlignment="Left"
                     FontSize="22"
-                    Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('ContextMenu')}" />
+                    Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('ContextMenuManager')}" />
 
                 <!--  右键菜单管理控制栏  -->
                 <Grid

@@ -1,5 +1,5 @@
 Close=Close
-ContextMenu=Context menu manager
+ContextMenuManager=Context menu manager
 LearnCustomRightClickMenu=Learn to custom right-click menu
 LoadingContextMenuInformation=Loading right-click menu information, please wait...
 MenuEmptyDescription=The device does not have any new right-click menu items
