@@ -198,6 +198,9 @@
     <EmbeddedResource Include="Strings\DriverManager.en-us.restext" />
     <EmbeddedResource Include="Strings\DriverManager.restext" />
     <EmbeddedResource Include="Strings\DriverManager.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\ExperimentalFeatureManager.en-us.restext" />
+		<EmbeddedResource Include="Strings\ExperimentalFeatureManager.restext" />
+		<EmbeddedResource Include="Strings\ExperimentalFeatureManager.zh-hans.restext" />
     <EmbeddedResource Include="Strings\ExtensionName.en-us.restext" />
     <EmbeddedResource Include="Strings\ExtensionName.restext" />
     <EmbeddedResource Include="Strings\ExtensionName.zh-hans.restext" />
@@ -361,31 +364,32 @@
     <Page Include="Views\Dialogs\ScheduledTaskFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\NotificationTips\CopyPasteNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\NotificationTips\OperationResultNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\HostsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\ScheduledTaskManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\SettingsAdvancedPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\SettingsGeneralPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\ShellMenuEditPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\ShellMenuListPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\AllToolsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\ContextMenuManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\DownloadManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\DriverManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\ExperimentalFeatureManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\ExtensionNamePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\FileCertificatePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\FileManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\FileNamePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\FilePropertiesPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\FileUnlockPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\IconExtractPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\HostsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\IconExtractPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\LoafPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\LoopbackManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\MainPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\PriExtractPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\SettingsAboutPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\SettingsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\ScheduledTaskManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\SettingsAboutPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\SettingsAdvancedPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\SettingsGeneralPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\SettingsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\ShellMenuPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\SimulateUpdatePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\ShellMenuEditPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\ShellMenuListPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\SimulateUpdatePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\ThemeSwitchPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\UpdateManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\UpperAndLowerCasePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />

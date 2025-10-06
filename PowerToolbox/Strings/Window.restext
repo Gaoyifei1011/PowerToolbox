@@ -3,6 +3,7 @@ Close=Close
 ContextMenuManager=Context menu manager
 DownloadManager=Download manager
 DriverManager=Driver manager
+ExperimentalFeatureManager=Experimental feature manager
 File=File tools
 FileCertificate=File certificate
 FileManager=File manager

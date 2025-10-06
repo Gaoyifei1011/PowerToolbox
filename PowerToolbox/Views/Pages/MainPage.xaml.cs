@@ -148,6 +148,7 @@ namespace PowerToolbox.Views.Pages
             new KeyValuePair<string, Type>("ThemeSwitch",typeof(ThemeSwitchPage)),
             new KeyValuePair<string, Type>("ShellMenu",typeof(ShellMenuPage)),
             new KeyValuePair<string, Type>("ContextMenuManager",typeof(ContextMenuManagerPage)),
+            new KeyValuePair<string, Type>("ExperimentalFeatureManager",typeof(ExperimentalFeatureManagerPage)),
             new KeyValuePair<string, Type>("System",null),
             new KeyValuePair<string, Type>("LoopbackManager",typeof(LoopbackManagerPage)),
             new KeyValuePair<string, Type>("ScheduledTaskManager",typeof(ScheduledTaskManagerPage)),

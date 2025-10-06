@@ -3,6 +3,7 @@ Close=关闭
 ContextMenuManager=右键菜单管理
 DownloadManager=下载管理
 DriverManager=驱动管理
+ExperimentalFeatureManager=预览功能管理
 File=文件工具
 FileCertificate=文件证书
 FileManager=文件管理

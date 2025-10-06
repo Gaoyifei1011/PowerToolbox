@@ -101,6 +101,13 @@ namespace PowerToolbox.Views.Pages
                 Description = ResourceService.AllToolsResource.GetString("ContextMenuManagerDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/ContextMenuManager.png",
                 Tag = "ContextMenuManager"
+            },
+            new ControlItemModel()
+            {
+                Title = ResourceService.AllToolsResource.GetString("ExperimentalFeatureManager"),
+                Description = ResourceService.AllToolsResource.GetString("ExperimentalFeatureManagerDescription"),
+                ImagePath = "ms-appx:///Assets/ControlIcon/ExperimentalFeatureManager.png",
+                Tag = "ExperimentalFeatureManager"
             }
         ];
 

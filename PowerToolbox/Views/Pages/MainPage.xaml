@@ -616,6 +616,28 @@
                                     Visibility="{x:Bind WindowContextMenuManagerText.IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </controls:NavigationViewItem>
+
+                        <controls:NavigationViewItem Tag="ExperimentalFeatureManager">
+
+                            <controls:NavigationViewItem.Icon>
+                                <controls:ImageIcon Source="ms-appx:///Assets/ControlIcon/ExperimentalFeatureManager.png" />
+                            </controls:NavigationViewItem.Icon>
+
+                            <controls:NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowExperimentalFeatureManagerText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ExperimentalFeatureManager')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
+                            </controls:NavigationViewItem.Content>
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip
+                                    MaxWidth="9999"
+                                    Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('ExperimentalFeatureManager')}"
+                                    Visibility="{x:Bind WindowExperimentalFeatureManagerText.IsTextTrimmed, Mode=OneWay}" />
+                            </ToolTipService.ToolTip>
+                        </controls:NavigationViewItem>
                     </controls:NavigationViewItem.MenuItems>
                 </controls:NavigationViewItem>
 
