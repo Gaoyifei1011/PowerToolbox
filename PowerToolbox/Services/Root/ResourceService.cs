@@ -20,6 +20,8 @@ namespace PowerToolbox.Services.Root
 
         public static ResourceManager DriverManagerResource { get; } = new("PowerToolbox.Strings.DriverManager", CurrentAssembly);
 
+        public static ResourceManager ExperimentalFeatureManagerResource { get; } = new("PowerToolbox.Strings.ExperimentalFeatureManager", CurrentAssembly);
+
         public static ResourceManager ExtensionNameResource { get; } = new("PowerToolbox.Strings.ExtensionName", CurrentAssembly);
 
         public static ResourceManager FileCertificateResource { get; } = new("PowerToolbox.Strings.FileCertificate", CurrentAssembly);
