@@ -108,6 +108,7 @@
     <Content Include="Assets\ControlIcon\ContextMenuManager.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\DownloadManager.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\DriverManager.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\ExperimentalFeatureManager.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\File.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\FileCertificate.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\FileManager.png" CopyToOutputDirectory="Always" />
