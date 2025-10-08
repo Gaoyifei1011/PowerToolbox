@@ -36,5 +36,13 @@ namespace PowerToolbox.Helpers.Converters
         {
             return Equals(fileUnlockState, comparedFileUnlockState) ? Visibility.Visible : Visibility.Collapsed;
         }
+
+        /// <summary>
+        /// 检查更新应用状态
+        /// </summary>
+        public static Visibility CheckUpdateAppResultKind(UpdateAppResultKind updateAppReusltKind, UpdateAppResultKind comparedUpdateAppReusltKind)
+        {
+            return Equals(updateAppReusltKind, comparedUpdateAppReusltKind) ? Visibility.Visible : Visibility.Collapsed;
+        }
     }
 }

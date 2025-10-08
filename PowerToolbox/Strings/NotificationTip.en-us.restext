@@ -72,4 +72,5 @@ TerminateProcessSuccessfully=Process terminated successfully
 ThemeChangeSameTime=Switching time cannot be the same time
 ThemeSwitchRestoreResult=Automatically switch theme settings restore default successfully
 ThemeSwitchSaveResult=Automatically switch theme settings saved successfully
+UpdateCheckFailed=Update check failed
 WinFRNotInstalled=Windows file recovery has not been installed yet

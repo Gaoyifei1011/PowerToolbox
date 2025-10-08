@@ -72,4 +72,5 @@ TerminateProcessSuccessfully=进程终止成功
 ThemeChangeSameTime=主题切换时间不能是同一个时间
 ThemeSwitchRestoreResult=自动切换主题设置恢复默认成功
 ThemeSwitchSaveResult=自动切换主题设置保存成功
+UpdateCheckFailed=更新检测失败
 WinFRNotInstalled=Windows 文件恢复尚未安装

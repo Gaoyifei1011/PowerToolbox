@@ -1,18 +1,17 @@
 ﻿using PowerToolbox.Extensions.DataType.Enums;
-using PowerToolbox.Helpers.Root;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Dialogs;
 using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
-using System.Net.Http;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+using Windows.Services.Store;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -26,6 +25,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class SettingsAboutPage : Page, INotifyPropertyChanged
     {
+        private SynchronizationContext synchronizationContext = SynchronizationContext.Current;
+
         private bool _isChecking;
 
         public bool IsChecking
@@ -185,70 +186,31 @@ namespace PowerToolbox.Views.Pages
         {
             if (!IsChecking)
             {
-                IsChecking = true;
+                bool isNewest = false;
 
-                bool? isNewest = await Task.Run<bool?>(async () =>
+                try
                 {
-                    bool isNewest = false;
-
-                    try
+                    IsChecking = true;
+                    StoreContext storeContext = StoreContext.GetDefault();
+                    IReadOnlyList<StorePackageUpdate> packageUpdateList = await storeContext.GetAppAndOptionalStorePackageUpdatesAsync();
+                    isNewest = packageUpdateList.Count is 0;
+                    IsChecking = false;
+                    synchronizationContext.Post(async (_) =>
                     {
-                        HttpClient httpClient = new();
-                        httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36");
-                        httpClient.Timeout = new TimeSpan(0, 0, 30);
-                        HttpResponseMessage responseMessage = await httpClient.GetAsync(new Uri("https://api.github.com/repos/Gaoyifei1011/PowerToolbox/releases/latest"));
+                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CheckUpdate, Convert.ToInt32(isNewest)));
+                    }, null);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnCheckUpdateClicked), 1, e);
+                    IsChecking = false;
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CheckUpdate, 2));
+                }
 
-                        // 请求成功
-                        if (responseMessage.IsSuccessStatusCode)
-                        {
-                            string responseString = await responseMessage.Content.ReadAsStringAsync();
-                            httpClient.Dispose();
-                            responseMessage.Dispose();
-                            Regex tagRegex = new(@"""tag_name"":[\s]*""v(\d.\d.\d{3,}.\d)""", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-                            MatchCollection tagCollection = tagRegex.Matches(responseString);
-
-                            if (tagCollection.Count > 0)
-                            {
-                                GroupCollection tagGroups = tagCollection[0].Groups;
-
-                                if (tagGroups.Count > 0 && new Version(tagGroups[1].Value) is Version tagVersion)
-                                {
-                                    isNewest = InfoHelper.AppVersion >= tagVersion;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            httpClient.Dispose();
-                            responseMessage.Dispose();
-                        }
-
-                        return isNewest;
-                    }
-                    // 捕捉因为网络失去链接获取信息时引发的异常
-                    catch (COMException e)
-                    {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnCheckUpdateClicked), 1, e);
-                        return null;
-                    }
-
-                    // 捕捉因访问超时引发的异常
-                    catch (TaskCanceledException e)
-                    {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnCheckUpdateClicked), 2, e);
-                        return null;
-                    }
-
-                    // 其他异常
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnCheckUpdateClicked), 3, e);
-                        return null;
-                    }
-                });
-
-                IsChecking = false;
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CheckUpdate, isNewest.Value));
+                if (!isNewest)
+                {
+                    await MainWindow.Current.ShowDialogAsync(new UpdateAppDialog());
+                }
             }
         }
 

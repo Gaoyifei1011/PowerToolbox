@@ -262,19 +262,6 @@ namespace PowerToolbox.Views.NotificationTips
                     OperationContent = ResourceService.NotificationTipResource.GetString("CleanUpdateHistoryFailed");
                 }
             }
-            else if (operationKind is OperationKind.CheckUpdate)
-            {
-                if (operationResult)
-                {
-                    IsSuccessOperation = true;
-                    OperationContent = ResourceService.NotificationTipResource.GetString("NewestVersion");
-                }
-                else
-                {
-                    IsSuccessOperation = false;
-                    OperationContent = ResourceService.NotificationTipResource.GetString("NotNewestVersion");
-                }
-            }
             else if (operationKind is OperationKind.ContextMenuUpdate)
             {
                 if (operationResult)
@@ -411,6 +398,30 @@ namespace PowerToolbox.Views.NotificationTips
             {
                 IsSuccessOperation = failedItems is 0 && successItems is not 0;
                 OperationContent = failedItems is 0 && successItems is not 0 ? string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskStopSuccessfully"), successItems) : string.Format(ResourceService.NotificationTipResource.GetString("ScheduledTaskStopFailed"), successItems, failedItems);
+            }
+        }
+
+        public OperationResultNotificationTip(OperationKind operationKind, int statusKind)
+        {
+            InitializeComponent();
+
+            if (operationKind is OperationKind.CheckUpdate)
+            {
+                if (statusKind is 0)
+                {
+                    IsSuccessOperation = false;
+                    OperationContent = ResourceService.NotificationTipResource.GetString("NotNewestVersion");
+                }
+                else if (statusKind is 1)
+                {
+                    IsSuccessOperation = true;
+                    OperationContent = ResourceService.NotificationTipResource.GetString("NewestVersion");
+                }
+                else if (statusKind is 2)
+                {
+                    IsSuccessOperation = false;
+                    OperationContent = ResourceService.NotificationTipResource.GetString("UpdateCheckFailed");
+                }
             }
         }
     }
