@@ -275,7 +275,6 @@ namespace PowerToolbox.Views.Dialogs
                                 UpdateAppResultKind = UpdateAppResultKind.Successfully;
                                 PrimaryText = CloseAppString;
                             }
-                            UpdateAppResultKind = updateFailed ? UpdateAppResultKind.Failed : UpdateAppResultKind.Successfully;
                         }
                     }
                 }
