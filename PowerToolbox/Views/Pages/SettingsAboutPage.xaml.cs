@@ -25,7 +25,7 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class SettingsAboutPage : Page, INotifyPropertyChanged
     {
-        private SynchronizationContext synchronizationContext = SynchronizationContext.Current;
+        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
 
         private bool _isChecking;
 
@@ -82,7 +82,7 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
-                    Process.Start("https://github.com/Gaoyifei1011/PowerToolbox/releases");
+                    Process.Start("https://apps.microsoft.com/detail/9MV67V21H386");
                 }
                 catch (Exception e)
                 {
@@ -102,9 +102,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 系统信息
         /// </summary>
-        private void OnSystemInformationClicked(object sender, RoutedEventArgs args)
+        private async void OnSystemInformationClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
+            await Task.Run(async () =>
             {
                 try
                 {
@@ -134,7 +134,7 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
-                    Process.Start("https://github.com/Gaoyifei1011/PowerToolbox/releases");
+                    Process.Start("https://github.com/Gaoyifei1011/PowerToolbox/issues");
                 }
                 catch (Exception e)
                 {
@@ -152,7 +152,7 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
-                    Process.Start("https://github.com/Gaoyifei1011/PowerToolbox/releases");
+                    Process.Start("https://github.com/Gaoyifei1011/PowerToolbox");
                 }
                 catch (Exception e)
                 {
@@ -170,7 +170,7 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
-                    Process.Start("https://github.com/Gaoyifei1011/PowerToolbox/releases");
+                    Process.Start("https://github.com/Gaoyifei1011/PowerToolbox/issues");
                 }
                 catch (Exception e)
                 {
