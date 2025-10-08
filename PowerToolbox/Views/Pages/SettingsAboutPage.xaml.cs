@@ -9,6 +9,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
+using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Services.Store;
@@ -186,34 +187,61 @@ namespace PowerToolbox.Views.Pages
         {
             if (!IsChecking)
             {
-                bool isNewest = false;
+                IsChecking = true;
 
-                try
+                if (IsNetworkConnected())
                 {
-                    IsChecking = true;
-                    StoreContext storeContext = StoreContext.GetDefault();
-                    IReadOnlyList<StorePackageUpdate> packageUpdateList = await storeContext.GetAppAndOptionalStorePackageUpdatesAsync();
-                    isNewest = packageUpdateList.Count is 0;
-                    IsChecking = false;
-                    synchronizationContext.Post(async (_) =>
+                    bool isNewest = false;
+
+                    try
                     {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CheckUpdate, Convert.ToInt32(isNewest)));
-                    }, null);
+                        StoreContext storeContext = StoreContext.GetDefault();
+                        IReadOnlyList<StorePackageUpdate> packageUpdateList = await storeContext.GetAppAndOptionalStorePackageUpdatesAsync();
+                        isNewest = packageUpdateList.Count is 0;
+                        IsChecking = false;
+                        synchronizationContext.Post(async (_) =>
+                        {
+                            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CheckUpdate, Convert.ToInt32(isNewest)));
+                        }, null);
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnCheckUpdateClicked), 1, e);
+                        IsChecking = false;
+                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CheckUpdate, 2));
+                    }
+
+                    if (!isNewest)
+                    {
+                        await MainWindow.Current.ShowDialogAsync(new UpdateAppDialog());
+                    }
                 }
-                catch (Exception e)
+                else
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnCheckUpdateClicked), 1, e);
                     IsChecking = false;
                     await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CheckUpdate, 2));
-                }
-
-                if (!isNewest)
-                {
-                    await MainWindow.Current.ShowDialogAsync(new UpdateAppDialog());
                 }
             }
         }
 
         #endregion 第一部分：关于页面——挂载的事件
+
+        /// <summary>
+        /// 检测网络是否已经连接
+        /// </summary>
+        private static bool IsNetworkConnected()
+        {
+            try
+            {
+                using Ping ping = new();
+                PingReply pingRelpy = ping.Send("8.8.8.8", 1000);
+                return pingRelpy.Status == IPStatus.Success;
+            }
+            catch (PingException e)
+            {
+                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(IsNetworkConnected), 1, e);
+                return false;
+            }
+        }
     }
 }
