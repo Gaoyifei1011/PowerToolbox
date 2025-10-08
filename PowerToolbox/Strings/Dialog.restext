@@ -91,6 +91,6 @@ UpdateFailed=Update failed. You can try to update again or update from the Micro
 UpdateFromMicrosoftStore=Update from Microsoft Store
 UpdateInitialize=The update is waiting to be downloaded and installed. Click "Update" to complete the application update. The application may need to be restarted when updated
 UpdatePending=Waiting to update...
-UpdateSuccessfully=Update completed. Please close the application to finish the remaining updates
+UpdateSuccessfully=Update completed. Please close the app to enable the new version
 WinUI2Version=WinUI 2 Version:
 WindowsUIVersion=Windows UI version:
