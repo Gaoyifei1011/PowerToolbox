@@ -460,6 +460,28 @@
                     </ToolTipService.ToolTip>
 
                     <controls:NavigationViewItem.MenuItems>
+                        <controls:NavigationViewItem Tag="DataEncryptVertify">
+
+                            <controls:NavigationViewItem.Icon>
+                                <controls:ImageIcon Source="ms-appx:///Assets/ControlIcon/DataEncryptVertify.png" />
+                            </controls:NavigationViewItem.Icon>
+
+                            <controls:NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowDataEncryptVertifyText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataEncryptVertify')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
+                            </controls:NavigationViewItem.Content>
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip
+                                    MaxWidth="9999"
+                                    Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataEncryptVertify')}"
+                                    Visibility="{x:Bind WindowDataEncryptVertifyText.IsTextTrimmed, Mode=OneWay}" />
+                            </ToolTipService.ToolTip>
+                        </controls:NavigationViewItem>
+
                         <controls:NavigationViewItem Tag="DownloadManager">
 
                             <controls:NavigationViewItem.Icon>

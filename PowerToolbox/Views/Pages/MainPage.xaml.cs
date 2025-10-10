@@ -141,6 +141,7 @@ namespace PowerToolbox.Views.Pages
             new KeyValuePair<string, Type>("FileCertificate",typeof(FileCertificatePage)),
             new KeyValuePair<string, Type>("FileUnlock",typeof(FileUnlockPage)),
             new KeyValuePair<string, Type>("Resource",null),
+            new KeyValuePair<string, Type>("DataEncryptVertify",typeof(DataEncryptVertifyPage)),
             new KeyValuePair<string, Type>("DownloadManager",typeof(DownloadManagerPage)),
             new KeyValuePair<string, Type>("IconExtract",typeof(IconExtractPage)),
             new KeyValuePair<string, Type>("PriExtract",typeof(PriExtractPage)),
