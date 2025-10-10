@@ -190,6 +190,15 @@
     <EmbeddedResource Include="Strings\ContextMenuManager.en-us.restext" />
     <EmbeddedResource Include="Strings\ContextMenuManager.restext" />
     <EmbeddedResource Include="Strings\ContextMenuManager.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\DataEncrypt.en-us.restext" />
+		<EmbeddedResource Include="Strings\DataEncrypt.restext" />
+		<EmbeddedResource Include="Strings\DataEncrypt.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\DataEncryptVertify.en-us.restext" />
+		<EmbeddedResource Include="Strings\DataEncryptVertify.restext" />
+		<EmbeddedResource Include="Strings\DataEncryptVertify.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\DataVertify.en-us.restext" />
+		<EmbeddedResource Include="Strings\DataVertify.restext" />
+		<EmbeddedResource Include="Strings\DataVertify.zh-hans.restext" />
     <EmbeddedResource Include="Strings\Dialog.en-us.restext" />
     <EmbeddedResource Include="Strings\Dialog.restext" />
     <EmbeddedResource Include="Strings\Dialog.zh-hans.restext" />
@@ -311,6 +320,9 @@
     <None Remove="Views\NotificationTips\OperationResultNotificationTip.xaml" />
     <None Remove="Views\Pages\AllToolsPage.xaml" />
     <None Remove="Views\Pages\ContextMenuManagerPage.xaml" />
+    <None Remove="Views\Pages\DataEncryptPage.xaml" />
+    <None Remove="Views\Pages\DataEncryptVertifyPage.xaml" />
+    <None Remove="Views\Pages\DataVertifyPage.xaml" />
     <None Remove="Views\Pages\DownloadManagerPage.xaml" />
     <None Remove="Views\Pages\DriverManagerPage.xaml" />
     <None Remove="Views\Pages\ExtensionNamePage.xaml" />
@@ -369,6 +381,9 @@
     <Page Include="Views\NotificationTips\OperationResultNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\AllToolsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\ContextMenuManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Views\Pages\DataEncryptPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Views\Pages\DataEncryptVertifyPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Views\Pages\DataVertifyPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\DownloadManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\DriverManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\ExperimentalFeatureManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
