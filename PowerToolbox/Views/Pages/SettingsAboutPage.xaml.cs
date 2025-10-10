@@ -103,9 +103,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 系统信息
         /// </summary>
-        private async void OnSystemInformationClicked(object sender, RoutedEventArgs args)
+        private void OnSystemInformationClicked(object sender, RoutedEventArgs args)
         {
-            await Task.Run(async () =>
+            Task.Run(() =>
             {
                 try
                 {

@@ -164,7 +164,6 @@ namespace PowerToolbox.Views.Pages
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs args)
         {
             args.Handled = true;
-            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(OnNavigationFailed), 1, args.Exception);
 
             try
             {
