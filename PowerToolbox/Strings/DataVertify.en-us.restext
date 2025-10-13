@@ -1,0 +1,14 @@
+Content=Content
+ContentInitialize=Please enter the text content for vertification
+ContentVertifyFailed=Text content vertified failed
+ContentVertifyPartSuccessfully=Out of the text content, {0} types were successfully vertified, {1} types failed to vertify
+ContentVertifyWholeSuccessfully=Text content vertified successfully
+DragAndDrop=Drag and drop files
+DragAndDropDescription=Drag and drop to vertify file data
+File=File
+FileInitialize=Please select a file for vertification
+FileVertifyFailed=File vertified failed
+FileVertifyPartSuccessfully=Out of the file, {0} types were successfully vertified, {1} types failed to vertify
+FileVertifyWholeSuccessfully=File vertified successfully
+OpenLocalFile=OpenLocalFile
+VertifyPHText=Please input the content to be verified

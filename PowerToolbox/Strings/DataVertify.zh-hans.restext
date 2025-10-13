@@ -1,0 +1,14 @@
+﻿Content=内容
+ContentInitialize=请输入文本内容进行校验
+ContentVertifyFailed=文本内容校验失败
+ContentVertifyPartSuccessfully=文本内容共有{0}个类型校验成功，{1}个类型校验失败
+ContentVertifyWholeSuccessfully=文本内容校验成功
+DragAndDrop=拖放文件
+DragAndDropDescription=拖放来校验文件的数据
+File=文件
+FileInitialize=请选择文件进行校验
+FileVertifyFailed=文件校验失败
+FileVertifyPartSuccessfully=文件共有{0}个类型校验成功，{1}个类型校验失败
+FileVertifyWholeSuccessfully=文件校验成功
+OpenLocalFile=打开本地文件
+VertifyPHText=请输入要校验的内容
