@@ -2,9 +2,101 @@
     x:Class="PowerToolbox.Views.Pages.DataEncryptPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rootservice="using:PowerToolbox.Services.Root"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
-    <Grid />
+    <StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <controls:RadioButtons
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                MaxColumns="2"
+                SelectedIndex="{x:Bind SelectedIndex, Mode=OneWay}"
+                SelectionChanged="{x:Bind OnSelectionChanged}">
+
+                <RadioButton
+                    MinWidth="0"
+                    Margin="0,0,20,0"
+                    Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('File')}" />
+
+                <RadioButton
+                    MinWidth="0"
+                    Margin="20,0,0,0"
+                    Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('Content')}" />
+            </controls:RadioButtons>
+
+            <!--  数据加密文件  -->
+            <Grid
+                Grid.Row="1"
+                Height="140"
+                Margin="0,5,0,3"
+                BorderBrush="{ThemeResource TextFillColorSecondaryBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}"
+                Visibility="{x:Bind GetDataEncryptType(SelectedIndex, 0), Mode=OneWay}">
+
+                <StackPanel
+                    Margin="0,15"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="3">
+
+                    <FontIcon
+                        HorizontalAlignment="Center"
+                        FontSize="26"
+                        Glyph="&#xE710;" />
+
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="16"
+                        Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('DragAndDrop')}" />
+
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('DragAndDropDescription')}" />
+
+                    <Button
+                        HorizontalAlignment="Center"
+                        Click="{x:Bind OnOpenLocalFileClicked}"
+                        Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('OpenLocalFile')}" />
+                </StackPanel>
+            </Grid>
+
+            <!--  数据加密内容  -->
+            <TextBox
+                Grid.Row="1"
+                Height="140"
+                Margin="0,5,0,3"
+                PlaceholderText="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptPHText')}"
+                Style="{StaticResource TextBoxStyle}"
+                Text="{x:Bind EncryptContent, Mode=OneWay}"
+                TextChanged="{x:Bind OnTextChanged}"
+                Visibility="{x:Bind GetDataEncryptType(SelectedIndex, 1), Mode=OneWay}" />
+
+            <!--  数据加密验证栏  -->
+            <controls:InfoBar
+                Grid.Row="2"
+                Height="50"
+                Margin="0,0,0,3"
+                IsClosable="False"
+                IsIconVisible="True"
+                IsOpen="True"
+                Message="{x:Bind ResultMessage, Mode=OneWay}"
+                Severity="{x:Bind ResultServerity, Mode=OneWay}"
+                Style="{StaticResource InfoBarStyle}" />
+
+            <!--  数据加密类型  -->
+        </Grid>
+    </StackPanel>
 </Page>
