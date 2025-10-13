@@ -302,6 +302,7 @@
     <None Remove="Styles\XamlIslands\DateTimePicker.xaml" />
     <None Remove="Styles\XamlIslands\InfoBar.xaml" />
     <None Remove="Styles\XamlIslands\NavigationView.xaml" />
+    <None Remove="Styles\XamlIslands\TextBlock.xaml" />
     <None Remove="Styles\XamlIslands\TimePicker.xaml" />
     <None Remove="Views\Dialogs\AppInformationDialog.xaml" />
     <None Remove="Views\Dialogs\ClosingWindowDialog.xaml" />
@@ -363,6 +364,7 @@
     <Page Include="Styles\XamlIslands\DateTimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\XamlIslands\InfoBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\XamlIslands\NavigationView.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Styles\XamlIslands\TextBlock.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\XamlIslands\TimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\AppInformationDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\ClosingWindowDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
