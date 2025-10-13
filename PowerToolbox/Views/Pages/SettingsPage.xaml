@@ -53,7 +53,7 @@
 
                 <TextBlock
                     Grid.Row="0"
-                    Margin="30,0,30,0"
+                    Margin="30,15,30,0"
                     FontSize="22"
                     Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('Settings')}" />
 
