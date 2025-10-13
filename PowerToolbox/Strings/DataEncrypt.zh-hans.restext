@@ -1,0 +1,14 @@
+﻿Content=内容
+ContentInitialize=请输入文本内容进行加密
+ContentEncryptFailed=文本内容加密失败
+ContentEncryptPartSuccessfully=文本内容共有{0}个类型加密成功，{1}个类型加密失败
+ContentEncryptWholeSuccessfully=文本内容加密成功
+DragAndDrop=拖放文件
+DragAndDropDescription=拖放来加密文件的数据
+File=文件
+FileInitialize=请选择文件进行加密
+FileEncryptFailed=文件加密失败
+FileEncryptPartSuccessfully=文件共有{0}个类型加密成功，{1}个类型加密失败
+FileEncryptWholeSuccessfully=文件加密成功
+OpenLocalFile=打开本地文件
+EncryptPHText=请输入要加密的内容

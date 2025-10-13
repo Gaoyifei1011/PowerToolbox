@@ -1,0 +1,14 @@
+Content=Content
+ContentInitialize=Please enter the text content for encryption
+ContentEncryptFailed=Text content encrypted failed
+ContentEncryptPartSuccessfully=Out of the text content, {0} types were successfully encrypted, {1} types failed to encrypt
+ContentEncryptWholeSuccessfully=Text content encrypted successfully
+DragAndDrop=Drag and drop files
+DragAndDropDescription=Drag and drop to encrypt file data
+File=File
+FileInitialize=Please select a file for encryption
+FileEncryptFailed=File encrypted failed
+FileEncryptPartSuccessfully=Out of the file, {0} types were successfully encrypted, {1} types failed to encrypt
+FileEncryptWholeSuccessfully=File encrypted successfully
+OpenLocalFile=OpenLocalFile
+VertifyPHText=Please input the content to be encrypted
