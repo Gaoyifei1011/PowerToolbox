@@ -95,7 +95,7 @@
 
                 <Frame
                     x:Name="DataEncryptVertifyFrame"
-                    Margin="16,0,30,0"
+                    Margin="16,0,0,0"
                     Navigated="{x:Bind OnNavigated}"
                     NavigationFailed="{x:Bind OnNavigationFailed}" />
             </controls:NavigationView>

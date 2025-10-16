@@ -1,11 +1,14 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Extensions.DataType.Enums;
+using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-// 抑制 IDE0060 警告
-#pragma warning disable IDE0060
+// 抑制 CA1822，IDE0060 警告
+#pragma warning disable CA1822,IDE0060
 
 namespace PowerToolbox.Views.Pages
 {
@@ -14,14 +17,31 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class DataEncryptPage : Page, INotifyPropertyChanged
     {
+        private readonly string AESString = ResourceService.DataEncryptResource.GetString("AES");
+        private readonly string BlowfishString = ResourceService.DataEncryptResource.GetString("Blowfish");
+        private readonly string CaesarCipherString = ResourceService.DataEncryptResource.GetString("CaesarCipher");
+        private readonly string ChaCha20String = ResourceService.DataEncryptResource.GetString("ChaCha20");
         private readonly string ContentInitializeString = ResourceService.DataEncryptResource.GetString("ContentInitialize");
         private readonly string ContentEncryptFailedString = ResourceService.DataEncryptResource.GetString("ContentEncryptFailed");
         private readonly string ContentEncryptPartSuccessfullyString = ResourceService.DataEncryptResource.GetString("ContentEncryptPartSuccessfully");
         private readonly string ContentEncryptWholeSuccessfullyString = ResourceService.DataEncryptResource.GetString("ContentEncryptWholeSuccessfully");
+        private readonly string DESString = ResourceService.DataEncryptResource.GetString("DES");
+        private readonly string ECCString = ResourceService.DataEncryptResource.GetString("ECC");
         private readonly string FileInitializeString = ResourceService.DataEncryptResource.GetString("FileInitialize");
         private readonly string FileEncryptFailedString = ResourceService.DataEncryptResource.GetString("FileEncryptFailed");
         private readonly string FileEncryptPartSuccessfullyString = ResourceService.DataEncryptResource.GetString("FileEncryptPartSuccessfully");
         private readonly string FileEncryptWholeSuccessfullyString = ResourceService.DataEncryptResource.GetString("FileEncryptWholeSuccessfully");
+        private readonly string MorseCodeString = ResourceService.DataEncryptResource.GetString("MorseCode");
+        private readonly string RabbitString = ResourceService.DataEncryptResource.GetString("Rabbit");
+        private readonly string RC2String = ResourceService.DataEncryptResource.GetString("RC2");
+        private readonly string RC4String = ResourceService.DataEncryptResource.GetString("RC4");
+        private readonly string RC5String = ResourceService.DataEncryptResource.GetString("RC5");
+        private readonly string RC6String = ResourceService.DataEncryptResource.GetString("RC6");
+        private readonly string RSAString = ResourceService.DataEncryptResource.GetString("RSA");
+        private readonly string SM2String = ResourceService.DataEncryptResource.GetString("SM2");
+        private readonly string SM4String = ResourceService.DataEncryptResource.GetString("SM4");
+        private readonly string TripleDESString = ResourceService.DataEncryptResource.GetString("TripleDES");
+        private readonly string XORString = ResourceService.DataEncryptResource.GetString("XOR");
 
         private int _selectedIndex = 0;
 
@@ -103,11 +123,114 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isRunningEncrypt = true;
+
+        public bool IsRunningEncrypt
+        {
+            get { return _isRunningEncrypt; }
+
+            set
+            {
+                if (!Equals(_isRunningEncrypt, value))
+                {
+                    _isRunningEncrypt = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRunningEncrypt)));
+                }
+            }
+        }
+
+        public List<DataEncryptTypeModel> DataEncryptTypeList = [];
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public DataEncryptPage()
         {
             InitializeComponent();
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.AES,
+                Name = AESString
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.Blowfish,
+                Name = BlowfishString
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.CaesarCipher,
+                Name = CaesarCipherString
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.ChaCha20,
+                Name = ChaCha20String
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.DES,
+                Name = DESString
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.ECC,
+                Name = ECCString
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.MorseCode,
+                Name = MorseCodeString
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.Rabbit,
+                Name = RabbitString
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.RC2,
+                Name = RC2String
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.RC4,
+                Name = RC4String
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.RC5,
+                Name = RC5String
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.RC6,
+                Name = RC6String
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.RSA,
+                Name = RSAString
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.SM2,
+                Name = SM2String
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.SM4,
+                Name = SM4String
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.TripleDES,
+                Name = TripleDESString
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
+                DataEncryptType = DataEncryptType.XOR,
+                Name = XORString
+            });
         }
 
         /// <summary>
@@ -146,6 +269,14 @@ namespace PowerToolbox.Views.Pages
             {
                 EncryptContent = textBox.Text;
             }
+        }
+
+        /// <summary>
+        /// 开始数据加密
+        /// </summary>
+        /// TODO：未完成
+        private void OnStartEncryptClicked(object sender, RoutedEventArgs args)
+        {
         }
 
         /// <summary>

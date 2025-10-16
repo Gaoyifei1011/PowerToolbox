@@ -5,13 +5,21 @@
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:PowerToolbox.Models"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
-    <StackPanel>
-        <Grid>
+    <ScrollViewer
+        HorizontalScrollBarVisibility="Disabled"
+        HorizontalScrollMode="Disabled"
+        VerticalScrollBarVisibility="Auto"
+        VerticalScrollMode="Enabled">
+
+        <Grid Margin="0,0,30,0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -97,6 +105,97 @@
                 Style="{StaticResource InfoBarStyle}" />
 
             <!--  数据加密类型  -->
+            <controls:Expander
+                Grid.Row="3"
+                Margin="0,0,0,3"
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                IsExpanded="True">
+
+                <controls:Expander.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <FontIcon
+                            Grid.Column="0"
+                            Margin="0,0,12,0"
+                            FontSize="16"
+                            Glyph="&#xE97C;" />
+
+                        <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('DataEncryptType')}" />
+                    </Grid>
+                </controls:Expander.Header>
+
+                <controls:Expander.Content>
+                    <GridView
+                        Padding="12,10,0,10"
+                        ItemsSource="{x:Bind DataEncryptTypeList}"
+                        SelectionMode="None">
+
+                        <GridView.ItemContainerStyle>
+                            <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
+                                <Setter Property="MinHeight" Value="0" />
+                                <Setter Property="Margin" Value="5,5,0,5" />
+                            </Style>
+                        </GridView.ItemContainerStyle>
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate x:DataType="model:DataEncryptTypeModel">
+                                <CheckBox
+                                    MinWidth="120"
+                                    MinHeight="0"
+                                    Padding="8,0,0,0"
+                                    Content="{x:Bind Name}"
+                                    IsChecked="{x:Bind IsSelected, Mode=TwoWay}" />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+                </controls:Expander.Content>
+            </controls:Expander>
+
+            <!--  数据加密控制栏  -->
+            <Grid
+                Grid.Row="4"
+                Height="60"
+                Margin="0,0,0,3"
+                Padding="16,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <FontIcon
+                    Grid.Column="0"
+                    Margin="0,0,12,0"
+                    FontSize="16"
+                    Glyph="&#xE74C;" />
+
+                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('Operation')}" />
+
+                <Button
+                    Grid.Column="2"
+                    Click="{x:Bind OnStartEncryptClicked}"
+                    Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('StartEncrypt')}"
+                    IsEnabled="{x:Bind IsRunningEncrypt, Mode=OneWay}"
+                    Style="{StaticResource AccentButtonStyle}" />
+            </Grid>
         </Grid>
-    </StackPanel>
+    </ScrollViewer>
 </Page>
