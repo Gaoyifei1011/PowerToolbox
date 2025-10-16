@@ -5,96 +5,197 @@
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:PowerToolbox.Models"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <ScrollViewer
+        HorizontalScrollBarVisibility="Disabled"
+        HorizontalScrollMode="Disabled"
+        VerticalScrollBarVisibility="Auto"
+        VerticalScrollMode="Enabled">
 
-        <controls:RadioButtons
-            Grid.Row="0"
-            HorizontalAlignment="Center"
-            MaxColumns="3"
-            SelectedIndex="{x:Bind SelectedIndex, Mode=OneWay}"
-            SelectionChanged="{x:Bind OnSelectionChanged}">
+        <Grid Margin="0,0,30,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-            <RadioButton
-                MinWidth="0"
-                Margin="0,0,20,0"
-                Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('File')}" />
-
-            <RadioButton
-                MinWidth="0"
-                Margin="20,0,0,0"
-                Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('Content')}" />
-        </controls:RadioButtons>
-
-        <!--  数据验证文件  -->
-        <Grid
-            Grid.Row="1"
-            Height="140"
-            Margin="0,5,0,3"
-            BorderBrush="{ThemeResource TextFillColorSecondaryBrush}"
-            BorderThickness="1"
-            CornerRadius="{StaticResource ControlCornerRadius}"
-            Visibility="{x:Bind GetDataVertifyType(SelectedIndex, 0), Mode=OneWay}">
-
-            <StackPanel
-                Margin="0,15"
+            <controls:RadioButtons
+                Grid.Row="0"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Spacing="3">
+                MaxColumns="3"
+                SelectedIndex="{x:Bind SelectedIndex, Mode=OneWay}"
+                SelectionChanged="{x:Bind OnSelectionChanged}">
+
+                <RadioButton
+                    MinWidth="0"
+                    Margin="0,0,20,0"
+                    Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('File')}" />
+
+                <RadioButton
+                    MinWidth="0"
+                    Margin="20,0,0,0"
+                    Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('Content')}" />
+            </controls:RadioButtons>
+
+            <!--  数据验证文件  -->
+            <Grid
+                Grid.Row="1"
+                Height="140"
+                Margin="0,5,0,3"
+                BorderBrush="{ThemeResource TextFillColorSecondaryBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}"
+                Visibility="{x:Bind GetDataVertifyType(SelectedIndex, 0), Mode=OneWay}">
+
+                <StackPanel
+                    Margin="0,15"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="3">
+
+                    <FontIcon
+                        HorizontalAlignment="Center"
+                        FontSize="26"
+                        Glyph="&#xE710;" />
+
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="16"
+                        Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('DragAndDrop')}" />
+
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('DragAndDropDescription')}" />
+
+                    <Button
+                        HorizontalAlignment="Center"
+                        Click="{x:Bind OnOpenLocalFileClicked}"
+                        Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('OpenLocalFile')}" />
+                </StackPanel>
+            </Grid>
+
+            <!--  数据校验内容  -->
+            <TextBox
+                Grid.Row="1"
+                Height="140"
+                Margin="0,5,0,3"
+                PlaceholderText="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('VertifyPHText')}"
+                Style="{StaticResource TextBoxStyle}"
+                Text="{x:Bind VertifyContent, Mode=OneWay}"
+                TextChanged="{x:Bind OnTextChanged}"
+                Visibility="{x:Bind GetDataVertifyType(SelectedIndex, 1), Mode=OneWay}" />
+
+            <!--  数据校验验证栏  -->
+            <controls:InfoBar
+                Grid.Row="2"
+                Height="50"
+                Margin="0,0,0,3"
+                IsClosable="False"
+                IsIconVisible="True"
+                IsOpen="True"
+                Message="{x:Bind ResultMessage, Mode=OneWay}"
+                Severity="{x:Bind ResultServerity, Mode=OneWay}"
+                Style="{StaticResource InfoBarStyle}" />
+
+            <!--  数据校验类型  -->
+            <controls:Expander
+                Grid.Row="3"
+                Margin="0,0,0,3"
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                IsExpanded="True">
+
+                <controls:Expander.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <FontIcon
+                            Grid.Column="0"
+                            Margin="0,0,12,0"
+                            FontSize="16"
+                            Glyph="&#xE97C;" />
+
+                        <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('DataVertifyType')}" />
+                    </Grid>
+                </controls:Expander.Header>
+
+                <controls:Expander.Content>
+                    <GridView
+                        Padding="12,10,0,10"
+                        ItemsSource="{x:Bind DataVertifyTypeList}"
+                        SelectionMode="None">
+
+                        <GridView.ItemContainerStyle>
+                            <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
+                                <Setter Property="MinHeight" Value="0" />
+                                <Setter Property="Margin" Value="5,5,0,5" />
+                            </Style>
+                        </GridView.ItemContainerStyle>
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate x:DataType="model:DataVertifyTypeModel">
+                                <CheckBox
+                                    MinWidth="120"
+                                    MinHeight="0"
+                                    Padding="8,0,0,0"
+                                    Content="{x:Bind Name}"
+                                    IsChecked="{x:Bind IsSelected, Mode=TwoWay}" />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+                </controls:Expander.Content>
+            </controls:Expander>
+
+            <!--  数据加密控制栏  -->
+            <Grid
+                Grid.Row="4"
+                Height="60"
+                Margin="0,0,0,3"
+                Padding="16,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
                 <FontIcon
-                    HorizontalAlignment="Center"
-                    FontSize="26"
-                    Glyph="&#xE710;" />
-
-                <TextBlock
-                    HorizontalAlignment="Center"
+                    Grid.Column="0"
+                    Margin="0,0,12,0"
                     FontSize="16"
-                    Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('DragAndDrop')}" />
+                    Glyph="&#xE74C;" />
 
                 <TextBlock
-                    HorizontalAlignment="Center"
-                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                    Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('DragAndDropDescription')}" />
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('Operation')}" />
 
                 <Button
-                    HorizontalAlignment="Center"
-                    Click="{x:Bind OnOpenLocalFileClicked}"
-                    Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('OpenLocalFile')}" />
-            </StackPanel>
+                    Grid.Column="2"
+                    Click="{x:Bind OnStartVertifyClicked}"
+                    Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('StartVertify')}"
+                    IsEnabled="{x:Bind IsRunningVertify, Mode=OneWay}"
+                    Style="{StaticResource AccentButtonStyle}" />
+            </Grid>
         </Grid>
-
-        <!--  数据校验内容  -->
-        <TextBox
-            Grid.Row="1"
-            Height="140"
-            Margin="0,5,0,3"
-            PlaceholderText="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('VertifyPHText')}"
-            Style="{StaticResource TextBoxStyle}"
-            Text="{x:Bind VertifyContent, Mode=OneWay}"
-            TextChanged="{x:Bind OnTextChanged}"
-            Visibility="{x:Bind GetDataVertifyType(SelectedIndex, 1), Mode=OneWay}" />
-
-        <!--  数据校验验证栏  -->
-        <controls:InfoBar
-            Grid.Row="2"
-            Height="50"
-            Margin="0,0,0,3"
-            IsClosable="False"
-            IsIconVisible="True"
-            IsOpen="True"
-            Message="{x:Bind ResultMessage, Mode=OneWay}"
-            Severity="{x:Bind ResultServerity, Mode=OneWay}"
-            Style="{StaticResource InfoBarStyle}" />
-
-        <!--  数据校验类型  -->
-    </Grid>
+    </ScrollViewer>
 </Page>
