@@ -27,6 +27,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string ContentEncryptWholeSuccessfullyString = ResourceService.DataEncryptResource.GetString("ContentEncryptWholeSuccessfully");
         private readonly string DESString = ResourceService.DataEncryptResource.GetString("DES");
         private readonly string ECCString = ResourceService.DataEncryptResource.GetString("ECC");
+        private readonly string EncryptingString = ResourceService.DataEncryptResource.GetString("Encrypting");
         private readonly string FileInitializeString = ResourceService.DataEncryptResource.GetString("FileInitialize");
         private readonly string FileEncryptFailedString = ResourceService.DataEncryptResource.GetString("FileEncryptFailed");
         private readonly string FileEncryptPartSuccessfullyString = ResourceService.DataEncryptResource.GetString("FileEncryptPartSuccessfully");
@@ -123,23 +124,25 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isRunningEncrypt = true;
+        private bool _isEncrypting = false;
 
-        public bool IsRunningEncrypt
+        public bool IsEncrypting
         {
-            get { return _isRunningEncrypt; }
+            get { return _isEncrypting; }
 
             set
             {
-                if (!Equals(_isRunningEncrypt, value))
+                if (!Equals(_isEncrypting, value))
                 {
-                    _isRunningEncrypt = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRunningEncrypt)));
+                    _isEncrypting = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsEncrypting)));
                 }
             }
         }
 
-        public List<DataEncryptTypeModel> DataEncryptTypeList = [];
+        private List<DataEncryptTypeModel> DataEncryptTypeList { get; } = [];
+
+        private List<DataEncryptVertifyResultModel> DataEncryptResultCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -285,6 +288,14 @@ namespace PowerToolbox.Views.Pages
         private Visibility GetDataEncryptType(int selectedIndex, int comparedSelectedIndex)
         {
             return Equals(selectedIndex, comparedSelectedIndex) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 获取校验结果列表显示类型
+        /// </summary>
+        private Visibility GetEncryptResult(bool isEncrypting, int encryptCount)
+        {
+            return isEncrypting ? Visibility.Collapsed : encryptCount > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

@@ -3,7 +3,9 @@ using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -60,6 +62,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string TIGERString = ResourceService.DataVertifyResource.GetString("TIGER");
         private readonly string TIGER2String = ResourceService.DataVertifyResource.GetString("TIGER2");
         private readonly string TTHSString = ResourceService.DataVertifyResource.GetString("TTHS");
+        private readonly string VertifyingString = ResourceService.DataVertifyResource.GetString("Vertifying");
         private readonly string WHIRLPOOLString = ResourceService.DataVertifyResource.GetString("WHIRLPOOL");
         private readonly string XXH128String = ResourceService.DataVertifyResource.GetString("XXH128");
         private readonly string XXH3String = ResourceService.DataVertifyResource.GetString("XXH3");
@@ -146,23 +149,25 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isRunningVertify = true;
+        private bool _isVertifying;
 
-        public bool IsRunningVertify
+        public bool IsVertifying
         {
-            get { return _isRunningVertify; }
+            get { return _isVertifying; }
 
             set
             {
-                if (!Equals(_isRunningVertify, value))
+                if (!Equals(_isVertifying, value))
                 {
-                    _isRunningVertify = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRunningVertify)));
+                    _isVertifying = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsVertifying)));
                 }
             }
         }
 
-        public List<DataVertifyTypeModel> DataVertifyTypeList = [];
+        private List<DataVertifyTypeModel> DataVertifyTypeList { get; } = [];
+
+        private ObservableCollection<DataEncryptVertifyResultModel> DataVertifyResultCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -423,6 +428,14 @@ namespace PowerToolbox.Views.Pages
         private Visibility GetDataVertifyType(int selectedIndex, int comparedSelectedIndex)
         {
             return Equals(selectedIndex, comparedSelectedIndex) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 获取校验结果列表显示类型
+        /// </summary>
+        private Visibility GetVertifyResult(bool isVertifying, int vertifyCount)
+        {
+            return isVertifying ? Visibility.Collapsed : vertifyCount > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }
