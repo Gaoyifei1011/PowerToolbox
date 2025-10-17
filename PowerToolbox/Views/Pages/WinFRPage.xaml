@@ -125,6 +125,7 @@
                         SelectionChanged="{x:Bind OnSelectionChanged}"
                         SelectionMode="Single"
                         Visibility="{x:Bind IsDriveLoadCompleted, Mode=OneWay}">
+
                         <GridView.ItemTemplate>
                             <DataTemplate x:DataType="model:DriveModel">
                                 <Grid

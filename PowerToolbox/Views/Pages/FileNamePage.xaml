@@ -17,8 +17,6 @@
     <Page.Resources>
         <ResourceDictionary>
             <CornerRadius x:Key="ListViewItemCornerRadius">0</CornerRadius>
-            <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
-            <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
@@ -318,7 +316,6 @@
             <ListView
                 Grid.Row="1"
                 Margin="0,0,0,3"
-                IsItemClickEnabled="True"
                 ItemsSource="{x:Bind FileNameCollection}"
                 SelectionMode="None">
 

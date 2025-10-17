@@ -18,8 +18,6 @@
     <Page.Resources>
         <ResourceDictionary>
             <CornerRadius x:Key="ListViewItemCornerRadius">0</CornerRadius>
-            <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
-            <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
 
             <SolidColorBrush x:Key="HyperlinkButtonBackgroundPointerOver" Color="Transparent" />
             <SolidColorBrush x:Key="HyperlinkButtonBackgroundPressed" Color="Transparent" />
@@ -158,7 +156,6 @@
             <ListView
                 Grid.Row="1"
                 Margin="0,0,0,3"
-                IsItemClickEnabled="True"
                 ItemsSource="{x:Bind FileUnlockCollection}"
                 SelectionMode="None">
 
