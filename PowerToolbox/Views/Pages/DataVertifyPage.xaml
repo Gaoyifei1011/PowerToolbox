@@ -75,15 +75,22 @@
                         FontSize="16"
                         Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('DragAndDrop')}" />
 
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('DragAndDropDescription')}" />
-
                     <Button
                         HorizontalAlignment="Center"
                         Click="{x:Bind OnOpenLocalFileClicked}"
                         Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('OpenLocalFile')}" />
+
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('FileNotSelected')}"
+                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityReverseConvert(VertifyFile), Mode=OneWay}" />
+
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="{x:Bind VertifyFile, Mode=OneWay}"
+                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(VertifyFile), Mode=OneWay}" />
                 </StackPanel>
             </Grid>
 

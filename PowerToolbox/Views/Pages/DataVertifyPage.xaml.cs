@@ -2,9 +2,15 @@
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.Tracing;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -23,6 +29,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string BLAKE2spString = ResourceService.DataVertifyResource.GetString("BLAKE2sp");
         private readonly string BLAKE3String = ResourceService.DataVertifyResource.GetString("BLAKE3");
         private readonly string BTIHString = ResourceService.DataVertifyResource.GetString("BTIH");
+        private readonly string ContentEmptyString = ResourceService.DataVertifyResource.GetString("ContentEmpty");
         private readonly string ContentInitializeString = ResourceService.DataVertifyResource.GetString("ContentInitialize");
         private readonly string ContentVertifyFailedString = ResourceService.DataVertifyResource.GetString("ContentVertifyFailed");
         private readonly string ContentVertifyPartSuccessfullyString = ResourceService.DataVertifyResource.GetString("ContentVertifyPartSuccessfully");
@@ -35,6 +42,8 @@ namespace PowerToolbox.Views.Pages
         private readonly string EDONR384String = ResourceService.DataVertifyResource.GetString("EDONR384");
         private readonly string EDONR512String = ResourceService.DataVertifyResource.GetString("EDONR512");
         private readonly string FileInitializeString = ResourceService.DataVertifyResource.GetString("FileInitialize");
+        private readonly string FileNotExistedString = ResourceService.DataVertifyResource.GetString("FileNotExisted");
+        private readonly string FileNotSelectedString = ResourceService.DataVertifyResource.GetString("FileNotSelected");
         private readonly string FileVertifyFailedString = ResourceService.DataVertifyResource.GetString("FileVertifyFailed");
         private readonly string FileVertifyPartSuccessfullyString = ResourceService.DataVertifyResource.GetString("FileVertifyPartSuccessfully");
         private readonly string FileVertifyWholeSuccessfullyString = ResourceService.DataVertifyResource.GetString("FileVertifyWholeSuccessfully");
@@ -63,11 +72,15 @@ namespace PowerToolbox.Views.Pages
         private readonly string TIGER2String = ResourceService.DataVertifyResource.GetString("TIGER2");
         private readonly string TTHSString = ResourceService.DataVertifyResource.GetString("TTHS");
         private readonly string VertifyingString = ResourceService.DataVertifyResource.GetString("Vertifying");
+        private readonly string VertifyTypeNotSelectedString = ResourceService.DataVertifyResource.GetString("VertifyTypeNotSelected");
         private readonly string WHIRLPOOLString = ResourceService.DataVertifyResource.GetString("WHIRLPOOL");
         private readonly string XXH128String = ResourceService.DataVertifyResource.GetString("XXH128");
         private readonly string XXH3String = ResourceService.DataVertifyResource.GetString("XXH3");
         private readonly string XXH32String = ResourceService.DataVertifyResource.GetString("XXH32");
         private readonly string XXH64String = ResourceService.DataVertifyResource.GetString("XXH64");
+        private int selectVertifyIndex = -1;
+        private string selectedVertifyFile = string.Empty;
+        private string selectedVertifyContent = string.Empty;
 
         private int _selectedIndex = 0;
 
@@ -418,8 +431,493 @@ namespace PowerToolbox.Views.Pages
         /// 开始数据校验
         /// </summary>
         /// TODO：未完成
-        private void OnStartVertifyClicked(object sender, RoutedEventArgs args)
+        private async void OnStartVertifyClicked(object sender, RoutedEventArgs args)
         {
+            selectVertifyIndex = SelectedIndex;
+            selectedVertifyFile = VertifyFile;
+            selectedVertifyContent = VertifyContent;
+            if (selectVertifyIndex is 0 && string.IsNullOrEmpty(selectedVertifyFile))
+            {
+                ResultServerity = InfoBarSeverity.Error;
+                if (string.IsNullOrEmpty(selectedVertifyFile))
+                {
+                    ResultMessage = FileNotSelectedString;
+                    return;
+                }
+                else if (!File.Exists(selectedVertifyFile))
+                {
+                    ResultMessage = FileNotExistedString;
+                    return;
+                }
+                return;
+            }
+            else if (selectVertifyIndex is 1 && string.IsNullOrEmpty(selectedVertifyContent))
+            {
+                ResultServerity = InfoBarSeverity.Error;
+                ResultMessage = ContentEmptyString;
+            }
+
+            List<DataVertifyTypeModel> selectedDataVertifyTpyeList = [.. DataVertifyTypeList.Where(item => item.IsSelected)];
+            if (selectedDataVertifyTpyeList.Count is 0)
+            {
+                ResultServerity = InfoBarSeverity.Error;
+                ResultMessage = VertifyTypeNotSelectedString;
+                return;
+            }
+            IsVertifying = true;
+            ResultServerity = InfoBarSeverity.Informational;
+            ResultMessage = VertifyingString;
+            DataVertifyResultCollection.Clear();
+            List<DataEncryptVertifyResultModel> dataVertifyResultList = await Task.Run(async () =>
+            {
+                byte[] contentData = null;
+                FileStream fileStream = null;
+                List<DataEncryptVertifyResultModel> dataVertifyResultList = [];
+
+                try
+                {
+                    if (selectVertifyIndex is 0)
+                    {
+                        fileStream = File.OpenRead(selectedVertifyFile);
+                    }
+                    else if (selectVertifyIndex is 1)
+                    {
+                        contentData = Encoding.UTF8.GetBytes(selectedVertifyContent);
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnStartVertifyClicked), 1, e);
+                }
+
+                if ((selectVertifyIndex is 0 && fileStream is not null) || (selectVertifyIndex is 1 && contentData is not null))
+                {
+                    List<Task> vertifyingTaskList = [];
+                    object vertifyingLock = new();
+                    foreach (DataVertifyTypeModel dataVertifyTypeItem in selectedDataVertifyTpyeList)
+                    {
+                        vertifyingTaskList.Add(Task.Run(() =>
+                        {
+                            string vertifyResultContent = GetVertifiedData(dataVertifyTypeItem.DataVertifyType, selectVertifyIndex, contentData, fileStream);
+                            if (!string.IsNullOrEmpty(vertifyResultContent))
+                            {
+                                lock (vertifyingLock)
+                                {
+                                    dataVertifyResultList.Add(new DataEncryptVertifyResultModel()
+                                    {
+                                        Name = dataVertifyTypeItem.Name,
+                                        Result = vertifyResultContent
+                                    });
+                                }
+                            }
+                        }));
+                    }
+
+                    await Task.WhenAll(vertifyingTaskList);
+                }
+
+                if (fileStream is not null)
+                {
+                    try
+                    {
+                        fileStream.Dispose();
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnStartVertifyClicked), 2, e);
+                    }
+                }
+
+                dataVertifyResultList.Sort((item1, item2) => item1.Name.CompareTo(item2.Name));
+                return dataVertifyResultList;
+            });
+
+            foreach (DataEncryptVertifyResultModel dataEncryptVertifyResultItem in dataVertifyResultList)
+            {
+                DataVertifyResultCollection.Add(dataEncryptVertifyResultItem);
+            }
+
+            if (DataVertifyResultCollection.Count > 0)
+            {
+                ResultServerity = InfoBarSeverity.Success;
+                if (Equals(selectedDataVertifyTpyeList.Count, DataVertifyResultCollection.Count))
+                {
+                    if (selectVertifyIndex is 0)
+                    {
+                        ResultMessage = string.Format(FileVertifyWholeSuccessfullyString, DataVertifyResultCollection.Count);
+                    }
+                    else if (selectVertifyIndex is 1)
+                    {
+                        ResultMessage = string.Format(ContentVertifyWholeSuccessfullyString, DataVertifyResultCollection.Count);
+                    }
+                }
+                else
+                {
+                    if (selectVertifyIndex is 0)
+                    {
+                        ResultMessage = string.Format(FileVertifyPartSuccessfullyString, DataVertifyResultCollection.Count, selectedDataVertifyTpyeList.Count - DataVertifyResultCollection.Count);
+                    }
+                    else if (selectVertifyIndex is 1)
+                    {
+                        ResultMessage = string.Format(ContentVertifyPartSuccessfullyString, DataVertifyResultCollection.Count, selectedDataVertifyTpyeList.Count - DataVertifyResultCollection.Count);
+                    }
+                }
+            }
+            else
+            {
+                ResultServerity = InfoBarSeverity.Error;
+                if (selectVertifyIndex is 0)
+                {
+                    ResultMessage = FileVertifyFailedString;
+                }
+                else if (selectVertifyIndex is 1)
+                {
+                    ResultMessage = ContentVertifyFailedString;
+                }
+            }
+            IsVertifying = false;
+        }
+
+        /// <summary>
+        /// 获取校验后的数据
+        /// </summary>
+        private string GetVertifiedData(DataVertifyType dataVertifyType, int selectedVertifyIndex, byte[] contentData, FileStream fileStream)
+        {
+            string vertifiedData = string.Empty;
+
+            switch (dataVertifyType)
+            {
+                case DataVertifyType.AICH:
+                    {
+                        break;
+                    }
+                case DataVertifyType.BLAKE2sp:
+                    {
+                        break;
+                    }
+                case DataVertifyType.BLAKE3:
+                    {
+                        break;
+                    }
+                case DataVertifyType.BTIH:
+                    {
+                        break;
+                    }
+                case DataVertifyType.CRC_32:
+                    {
+                        break;
+                    }
+                case DataVertifyType.CRC_64:
+                    {
+                        break;
+                    }
+                case DataVertifyType.ED2K:
+                    {
+                        break;
+                    }
+                case DataVertifyType.EDON_R_224:
+                    {
+                        break;
+                    }
+                case DataVertifyType.EDON_R_256:
+                    {
+                        break;
+                    }
+                case DataVertifyType.EDON_R_384:
+                    {
+                        break;
+                    }
+                case DataVertifyType.EDON_R_512:
+                    {
+                        break;
+                    }
+                case DataVertifyType.GOST12_256:
+                    {
+                        break;
+                    }
+                case DataVertifyType.GOST12_512:
+                    {
+                        break;
+                    }
+                case DataVertifyType.GOST94:
+                    {
+                        break;
+                    }
+                case DataVertifyType.GOST94CryptoPro:
+                    {
+                        break;
+                    }
+                case DataVertifyType.HAS_160:
+                    {
+                        break;
+                    }
+                case DataVertifyType.MD2:
+                    {
+                        break;
+                    }
+                case DataVertifyType.MD4:
+                    {
+                        break;
+                    }
+                case DataVertifyType.MD5:
+                    {
+                        try
+                        {
+                            MD5 md5 = MD5.Create();
+                            byte[] hashBytes = null;
+                            if (selectVertifyIndex is 0 && fileStream is not null)
+                            {
+                                hashBytes = md5.ComputeHash(fileStream);
+                            }
+                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            {
+                                hashBytes = md5.ComputeHash(contentData);
+                            }
+                            md5.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), 20, e);
+                        }
+                        break;
+                    }
+                case DataVertifyType.RIPEMD_160:
+                    {
+                        try
+                        {
+                            RIPEMD160 ripemd160 = RIPEMD160.Create();
+                            byte[] hashBytes = null;
+                            if (selectVertifyIndex is 0 && fileStream is not null)
+                            {
+                                hashBytes = ripemd160.ComputeHash(fileStream);
+                            }
+                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            {
+                                hashBytes = ripemd160.ComputeHash(contentData);
+                            }
+                            ripemd160.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), 26, e);
+                        }
+                        break;
+                    }
+                case DataVertifyType.SHA_1:
+                    {
+                        try
+                        {
+                            SHA1 sha1 = SHA1.Create();
+                            byte[] hashBytes = null;
+                            if (selectVertifyIndex is 0 && fileStream is not null)
+                            {
+                                hashBytes = sha1.ComputeHash(fileStream);
+                            }
+                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            {
+                                hashBytes = sha1.ComputeHash(contentData);
+                            }
+                            sha1.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), 22, e);
+                        }
+                        break;
+                    }
+                case DataVertifyType.SHA_224:
+                    {
+                        break;
+                    }
+                case DataVertifyType.SHA_256:
+                    {
+                        try
+                        {
+                            SHA256 sha256 = SHA256.Create();
+                            byte[] hashBytes = null;
+                            if (selectVertifyIndex is 0 && fileStream is not null)
+                            {
+                                hashBytes = sha256.ComputeHash(fileStream);
+                            }
+                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            {
+                                hashBytes = sha256.ComputeHash(contentData);
+                            }
+                            sha256.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), 24, e);
+                        }
+                        break;
+                    }
+                case DataVertifyType.SHA_384:
+                    {
+                        try
+                        {
+                            SHA384 sha384 = SHA384.Create();
+                            byte[] hashBytes = null;
+                            if (selectVertifyIndex is 0 && fileStream is not null)
+                            {
+                                hashBytes = sha384.ComputeHash(fileStream);
+                            }
+                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            {
+                                hashBytes = sha384.ComputeHash(contentData);
+                            }
+                            sha384.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), 25, e);
+                        }
+                        break;
+                    }
+                case DataVertifyType.SHA_512:
+                    {
+                        try
+                        {
+                            SHA512 sha512 = SHA512.Create();
+                            byte[] hashBytes = null;
+                            if (selectVertifyIndex is 0 && fileStream is not null)
+                            {
+                                hashBytes = sha512.ComputeHash(fileStream);
+                            }
+                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            {
+                                hashBytes = sha512.ComputeHash(contentData);
+                            }
+                            sha512.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), 26, e);
+                        }
+                        break;
+                    }
+                case DataVertifyType.SHA3_224:
+                    {
+                        break;
+                    }
+                case DataVertifyType.SHA3_256:
+                    {
+                        break;
+                    }
+                case DataVertifyType.SHA3_384:
+                    {
+                        break;
+                    }
+                case DataVertifyType.SHA3_512:
+                    {
+                        break;
+                    }
+                case DataVertifyType.SM3:
+                    {
+                        break;
+                    }
+                case DataVertifyType.SNEFRU_128:
+                    {
+                        break;
+                    }
+                case DataVertifyType.SNEFRU_256:
+                    {
+                        break;
+                    }
+                case DataVertifyType.TIGER:
+                    {
+                        break;
+                    }
+                case DataVertifyType.TIGER2:
+                    {
+                        break;
+                    }
+                case DataVertifyType.TTH:
+                    {
+                        break;
+                    }
+                case DataVertifyType.WHIRLPOOL:
+                    {
+                        break;
+                    }
+                case DataVertifyType.XXH32:
+                    {
+                        break;
+                    }
+                case DataVertifyType.XXH64:
+                    {
+                        break;
+                    }
+                case DataVertifyType.XXH3:
+                    {
+                        break;
+                    }
+                case DataVertifyType.XXH128:
+                    {
+                        break;
+                    }
+            }
+
+            return vertifiedData;
         }
 
         /// <summary>

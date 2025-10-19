@@ -70,6 +70,14 @@ namespace PowerToolbox.Helpers.Converters
         }
 
         /// <summary>
+        /// 字符串与控件显示值转换（判断结果相反）
+        /// </summary>
+        public static Visibility StringToVisibilityReverseConvert(string value)
+        {
+            return string.IsNullOrEmpty(value) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        /// <summary>
         /// 对象值与控件显示值转换
         /// </summary>
         public static Visibility ObjectToVisibilityConvert(object value, object comparedValue)
