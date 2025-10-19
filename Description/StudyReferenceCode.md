@@ -7,6 +7,7 @@
 > * [BlueFire.Toolkit.WinUI3](https://github.com/cnbluefire/BlueFire.Toolkit.WinUI3)&emsp;
 > * [ChangeWindowsTheme](https://github.com/ghost1372/ChangeWindowsTheme)&emsp;
 > * [ContextMenuForWindows11](https://github.com/ikas-mc/ContextMenuForWindows11)&emsp;
+> * [DevWinUI](https://github.com/ghost1372/DevWinUI)&emsp;
 > * [DirectN](https://github.com/smourier/DirectN)&emsp;
 > * [DODownloaderDotNet](https://github.com/shishirb-MSFT/DODownloaderDotNet)&emsp;
 > * [ExplorerExtensions.Sample](https://github.com/cnbluefire/ExplorerExtensions.Sample)&emsp;
