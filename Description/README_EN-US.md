@@ -18,6 +18,7 @@ A toolbox that integrates multiple gadgets
 
 ### The basic functionality of the app
 
+> * Loaf
 > * Batch change file names
 > * Batch change file extension names
 > * Batch change the upper and lower case names of files
@@ -31,8 +32,10 @@ A toolbox that integrates multiple gadgets
 > *	Right-click menu items manager     
 > *	Driver manager  
 > *	Update manager 
+> *	Scheduled task manager 
+> *	Windows file recovery 
 > *	Loopback manager
-> * Windows system Performance Evaluation
+> * Windows system performance evaluation
 
 ------
 
