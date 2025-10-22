@@ -1,4 +1,6 @@
-﻿using PowerToolbox.Extensions.DataType.Enums;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Services.Root;
 using System;
@@ -7,8 +9,6 @@ using System.ComponentModel;
 using System.Diagnostics.Tracing;
 using System.Threading;
 using Windows.Services.Store;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 // 抑制 CA1822，IDE0060 警告
 #pragma warning disable CA1822,IDE0060
@@ -147,7 +147,7 @@ namespace PowerToolbox.Views.Dialogs
                 args.Cancel = true;
                 if (UpdateAppResultKind is UpdateAppResultKind.Successfully)
                 {
-                    (Application.Current as XamlIslandsApp).Dispose();
+                    (Application.Current as MainApp).Dispose();
                 }
                 else
                 {

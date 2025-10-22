@@ -1,5 +1,7 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.Win32;
+using PowerToolbox.Extensions.Collections;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
@@ -10,14 +12,11 @@ using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 // 抑制 CA1822，IDE0060 警告
 #pragma warning disable CA1822,IDE0060
@@ -158,7 +157,7 @@ namespace PowerToolbox.Views.Pages
 
         private List<KeyValuePair<string, string>> BackdropList { get; } = [];
 
-        private ObservableCollection<LanguageModel> LanguageCollection { get; } = [];
+        private WinRTObservableCollection<LanguageModel> LanguageCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -203,7 +202,7 @@ namespace PowerToolbox.Views.Pages
 
             AlwaysShowBackdropEnabled = IsAdvancedEffectsEnabled() && !string.Equals(Backdrop.Key, BackdropList[0].Key);
             SystemEvents.UserPreferenceChanged += OnUserPreferenceChanged;
-            System.Windows.Forms.Application.ApplicationExit += OnApplicationExit;
+            GlobalNotificationService.ApplicationExit += OnApplicationExit;
         }
 
         #region 第一部分：ExecuteCommand 命令调用时挂载的事件
@@ -383,11 +382,11 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 应用程序即将关闭时发生的事件
         /// </summary>
-        private void OnApplicationExit(object sender, EventArgs args)
+        private void OnApplicationExit()
         {
             try
             {
-                System.Windows.Forms.Application.ApplicationExit -= OnApplicationExit;
+                GlobalNotificationService.ApplicationExit -= OnApplicationExit;
                 SystemEvents.UserPreferenceChanged -= OnUserPreferenceChanged;
             }
             catch (Exception e)

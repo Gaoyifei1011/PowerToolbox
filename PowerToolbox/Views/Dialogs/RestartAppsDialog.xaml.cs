@@ -1,5 +1,5 @@
-﻿using System.Windows.Forms;
-using Windows.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
+using System.Windows.Forms;
 
 // 抑制 CA1822，IDE0060 警告
 #pragma warning disable CA1822,IDE0060
@@ -22,7 +22,7 @@ namespace PowerToolbox.Views.Dialogs
         private void OnRestartAppsClicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             Application.Restart();
-            Application.Exit();
+            (Microsoft.UI.Xaml.Application.Current as MainApp).Dispose();
         }
     }
 }

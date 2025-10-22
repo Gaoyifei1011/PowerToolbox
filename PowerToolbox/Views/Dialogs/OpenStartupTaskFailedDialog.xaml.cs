@@ -1,9 +1,9 @@
-﻿using PowerToolbox.Services.Root;
+﻿using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Services.Root;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Controls;
 
 // 抑制 CA1822，IDE0060 警告
 #pragma warning disable CA1822,IDE0060

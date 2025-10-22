@@ -16,29 +16,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         private const string User32 = "user32.dll";
 
         /// <summary>
-        /// 根据所需的客户端矩形大小和提供的 DPI 计算窗口矩形的所需大小。 然后，可以将此窗口矩形传递给 CreateWindowEx 函数，以创建具有所需大小的工作区的窗口。
-        /// </summary>
-        /// <param name="lpRect">指向 RECT 结构的指针，该结构包含所需工作区的左上角和右下角的坐标。 函数返回时，结构包含窗口左上角和右下角的坐标，以适应所需的工作区。</param>
-        /// <param name="dwStyle">要计算其所需大小的窗口的窗口 样式 。 请注意，不能指定 WS_OVERLAPPED 样式。</param>
-        /// <param name="bMenu">指示窗口是否具有菜单。</param>
-        /// <param name="dwExStyle">要计算其所需大小的窗口的 扩展窗口样式 。</param>
-        /// <param name="dpi">用于缩放的 DPI。</param>
-        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "AdjustWindowRectExForDpi", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool AdjustWindowRectExForDpi(ref RECT lpRect, WindowStyle dwStyle, bool bMenu, uint dwExStyle, uint dpi);
-
-        /// <summary>
-        /// BeginPaint 函数准备用于绘制的指定窗口，并使用有关绘制的信息填充 PAINTSTRUCT 结构。
-        /// </summary>
-        /// <param name="hwnd">要重新绘制的窗口的句柄。</param>
-        /// <param name="lpPaint">指向将接收绘制信息的 PAINTSTRUCT 结构的指针。</param>
-        /// <returns>如果函数成功，则返回值是指定窗口的显示设备上下文的句柄。如果函数失败，则返回值为 NULL，指示没有可用的显示设备上下文。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "BeginPaint", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern IntPtr BeginPaint(IntPtr hwnd, out PAINTSTRUCT lpPaint);
-
-        /// <summary>
         /// 将挂钩信息传递给当前挂钩链中的下一个挂钩过程。 挂钩过程可以在处理挂钩信息之前或之后调用此函数。
         /// </summary>
         /// <param name="idHook">传递给当前挂钩过程的类型。</param>
@@ -60,90 +37,12 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         public static extern bool ChangeWindowMessageFilter(WindowMessage message, ChangeFilterFlags dwFlag);
 
         /// <summary>
-        /// 创建具有扩展窗口样式的重叠、弹出窗口或子窗口;否则，此函数与 InitializeWindow 函数相同。
-        /// 有关创建窗口以及 CreateWindowEx 的其他参数的完整说明的详细信息，请参阅 InitializeWindow。
+        /// 返回指定窗口的每英寸点数 (dpi) 值。
         /// </summary>
-        /// <param name="dwExStyle">正在创建的窗口的扩展窗口样式。 </param>
-        /// <param name="lpClassName">
-        /// 由上一次对 RegisterClass 或 RegisterClassEx 函数的调用创建的空终止字符串或类原子。 原子必须位于 <param  name="lpClassName"> 的低序单词中;高序单词必须为零。 如果 <param  name="lpClassName"> 是字符串，则指定窗口类名称。 类名可以是注册到 RegisterClass 或 RegisterClassEx 的任何名称，前提是注册该类的模块也是创建窗口的模块。 类名也可以是任何预定义的系统类名称。
-        /// </param>
-        /// <param name="lpWindowName">
-        /// 窗口名称。 如果窗口样式指定标题栏，则 lpWindowName 指向的窗口标题将显示在标题栏中。 使用 InitializeWindow 创建控件（如按钮、复选框和静态控件）时，请使用 lpWindowName 指定控件的文本。 使用 SS_ICON 样式创建静态控件时，请使用 lpWindowName 指定图标名称或标识符。 若要指定标识符，请使用语法“#num”。
-        /// </param>
-        /// <param name="dwStyle">正在创建的窗口的样式。</param>
-        /// <param name="x">
-        /// 窗口的初始水平位置。 对于重叠或弹出窗口， x 参数是窗口左上角的初始 x 坐标，以屏幕坐标表示。
-        /// 对于子窗口， x 是窗口左上角相对于父窗口工作区左上角的 x 坐标。 如果 x 设置为 CW_USEDEFAULT，系统将选择窗口左上角的默认位置，并忽略 y 参数。
-        /// CW_USEDEFAULT 仅适用于重叠窗口;如果为弹出窗口或子窗口指定， 则 x 和 y 参数设置为零。
-        /// </param>
-        /// <param name="y">
-        /// 窗口的初始垂直位置。 对于重叠或弹出窗口， y 参数是窗口左上角的初始 y 坐标，以屏幕坐标表示。
-        /// 对于子窗口， y 是子窗口左上角相对于父窗口工作区左上角的初始 y 坐标。 对于列表框 y ，是列表框工作区左上角相对于父窗口工作区左上角的初始 y 坐标。
-        /// </param>
-        /// <param name="nWidth">
-        /// 窗口的宽度（以设备单位为单位）。 对于重叠的窗口， nWidth 是窗口的宽度、屏幕坐标或 CW_USEDEFAULT。
-        /// 如果 nWidth 是CW_USEDEFAULT，则系统会为窗口选择默认宽度和高度;默认宽度从初始 x 坐标扩展到屏幕的右边缘;默认高度从初始 y 坐标扩展到图标区域的顶部。 CW_USEDEFAULT 仅适用于重叠窗口;如果为弹出窗口或子窗口指定 了CW_USEDEFAULT ， 则 nWidth 和 nHeight 参数设置为零。
-        /// </param>
-        /// <param name="nHeight">
-        /// 窗口的高度（以设备单位为单位）。 对于重叠窗口， nHeight 是窗口的高度（以屏幕坐标为单位）。
-        /// 如果 nWidth 参数设置为 CW_USEDEFAULT，则系统将忽略 nHeight。
-        /// </param>
-        /// <param name="hWndParent">
-        /// 正在创建的窗口的父窗口或所有者窗口的句柄。 若要创建子窗口或拥有的窗口，请提供有效的窗口句柄。 对于弹出窗口，此参数是可选的。
-        /// </param>
-        /// <param name="hMenu">
-        /// 菜单的句柄，或指定子窗口标识符，具体取决于窗口样式。 对于重叠或弹出窗口， hMenu 标识要与窗口一起使用的菜单；如果使用类菜单，则为 NULL 。
-        /// 对于子窗口， hMenu 指定子窗口标识符，即对话框控件用来通知其父级事件的整数值。
-        /// 应用程序确定子窗口标识符;对于具有相同父窗口的所有子窗口，它必须是唯一的。
-        /// </param>
-        /// <param name="hInstance">要与窗口关联的模块实例的句柄。</param>
-        /// <param name="lpParam">
-        /// 指向通过 CREATESTRUCT 结构传递给窗口的值的指针， (lpCreateParams 成员) WM_CREATE 消息的 lpParam 参数所指向的值。 此消息在返回之前由此函数发送到创建的窗口。
-        /// </param>
-        /// <returns>如果函数成功，则返回值是新窗口的句柄。如果函数失败，则返回值为 NULL。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "CreateWindowExW", PreserveSig = true, SetLastError = false)]
-        public static extern IntPtr CreateWindowEx(WindowExStyle dwExStyle, [MarshalAs(UnmanagedType.LPWStr)] string lpClassName, [MarshalAs(UnmanagedType.LPWStr)] string lpWindowName, WindowStyle dwStyle, int x, int y, int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lpParam);
-
-        /// <summary>
-        /// 调用默认窗口过程，为应用程序未处理的任何窗口消息提供默认处理。 此函数可确保处理每个消息。 DefWindowProc 使用窗口过程接收的相同参数调用。
-        /// </summary>
-        /// <param name="hWnd">接收消息的窗口过程的句柄。</param>
-        /// <param name="uMsg">消息。</param>
-        /// <param name="wParam">其他消息信息。 此参数的内容取决于 Msg 参数的值。</param>
-        /// <param name="lParam">其他消息信息。 此参数的内容取决于 Msg 参数的值。</param>
-        /// <returns>返回值是消息处理的结果，取决于消息。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "DefWindowProcW", PreserveSig = true, SetLastError = false)]
-        public static extern IntPtr DefWindowProc(IntPtr hWnd, WindowMessage uMsg, UIntPtr wParam, IntPtr lParam);
-
-        /// <summary>
-        /// EndPaint 函数在指定窗口中标记绘制的结束。 每次调用 BeginPaint 函数都需要此函数，但仅在绘制完成后。
-        /// </summary>
-        /// <param name="hWnd">已重新绘制的窗口的句柄。</param>
-        /// <param name="lpPaint">指向 PAINTSTRUCT 结构的指针，该结构包含 BeginPaint 检索的绘画信息。</param>
-        /// <returns>返回值始终为非零值。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "EndPaint", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool EndPaint(IntPtr hWnd, [In] ref PAINTSTRUCT lpPaint);
-
-        /// <summary>
-        /// FillRect 函数使用指定的画笔填充矩形。 此函数包括左边框和上边框，但不包括矩形的右边框和下边框。
-        /// </summary>
-        /// <param name="hdc">设备上下文的句柄。</param>
-        /// <param name="lprc">指向 RECT 结构的指针，该结构包含要填充的矩形的逻辑坐标。</param>
-        /// <param name="hbr">用于填充矩形的画笔的句柄。</param>
-        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "FillRect", PreserveSig = true, SetLastError = false)]
-        public static extern int FillRect(IntPtr hdc, RECT lprc, IntPtr hbr);
-
-        /// <summary>
-        /// 检索窗口工作区的坐标。 客户端坐标指定工作区的左上角和右下角。 由于客户端坐标相对于窗口工作区的左上角，因此左上角的坐标 (0,0) 。
-        /// </summary>
-        /// <param name="hWnd">要检索其客户端坐标的窗口的句柄。</param>
-        /// <param name="lpRect">指向接收客户端坐标的 RECT 结构的指针。 左侧成员和顶部成员为零。 右侧和底部成员包含窗口的宽度和高度。</param>
-        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "GetClientRect", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+        /// <param name="hwnd">要获取其相关信息的窗口。</param>
+        /// <returns>窗口的 DPI，取决于窗口 DPI_AWARENESS 。</returns>
+        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "GetDpiForWindow", PreserveSig = true, SetLastError = false)]
+        public static extern int GetDpiForWindow(IntPtr hwnd);
 
         /// <summary>
         /// 检索指定虚拟键的状态。 状态指定键是向上、向下还是切换， (打开、关闭—每次按下键时交替) 。
@@ -158,15 +57,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         /// </returns>
         [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "GetKeyState", PreserveSig = true, SetLastError = false)]
         public static extern short GetKeyState(Keys nVirtKey);
-
-        /// <summary>
-        /// 检索指定的系统指标或系统配置设置，同时考虑提供的 DPI。
-        /// </summary>
-        /// <param name="nIndex">要检索的系统指标或配置设置。</param>
-        /// <param name="dpi">用于缩放指标的 DPI。</param>
-        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "GetSystemMetricsForDpi", PreserveSig = true, SetLastError = false)]
-        public static extern int GetSystemMetricsForDpi(SM nIndex, int dpi);
 
         /// <summary>
         /// 检索指定窗口的边框的尺寸。 尺寸以相对于屏幕左上角的屏幕坐标提供。
@@ -199,27 +89,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         public static extern int GetWindowLongPtr(IntPtr hWnd, WindowLongIndexFlags nIndex);
 
         /// <summary>
-        /// 确定指定窗口的可见性状态。
-        /// </summary>
-        /// <param name="hWnd">要测试的窗口的句柄。</param>
-        /// <returns>
-        /// 如果指定的窗口、其父窗口、其父窗口等具有 WS_VISIBLE 样式，则返回值为非零。 否则返回值为零。
-        /// 由于返回值指定窗口是否具有 WS_VISIBLE 样式，因此即使窗口被其他窗口完全遮挡，也可能为非零。
-        /// </returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "IsWindowVisible", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool IsWindowVisible(IntPtr hWnd);
-
-        /// <summary>
-        /// 确定窗口是否最大化。
-        /// </summary>
-        /// <param name="hWnd">要测试的窗口的句柄。</param>
-        /// <returns>如果窗口已缩放，则返回值为非零值。如果未缩放窗口，则返回值为零。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "IsZoomed", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool IsZoomed(IntPtr hWnd);
-
-        /// <summary>
         /// 合成键击。 系统可以使用这种合成的击键来生成 WM_KEYUP 或 WM_KEYDOWN 消息。 键盘驱动程序的中断处理程序调用 keybd_event 函数。
         /// </summary>
         /// <param name="bVk">虚拟密钥代码。 代码必须是 1 到 254 范围内的值。</param>
@@ -250,43 +119,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         public static extern int MapWindowPoints(IntPtr hWndFrom, IntPtr hWndTo, ref Point lpPoints, uint cPoints);
 
         /// <summary>
-        /// 更改指定窗口的位置和尺寸。 对于顶级窗口，位置和尺寸是相对于屏幕左上角的。 对于子窗口，它们相对于父窗口工作区的左上角。
-        /// </summary>
-        /// <param name="hWnd">窗口的句柄。</param>
-        /// <param name="x">窗口左侧的新位置。</param>
-        /// <param name="y">窗口顶部的新位置。</param>
-        /// <param name="width">窗口的新宽度。</param>
-        /// <param name="height">窗口的新高度。</param>
-        /// <param name="bRepaint">指示是否重新绘制窗口。 如果此参数为 TRUE，则窗口将收到消息。 如果参数为 FALSE，则不会进行任何类型的重新绘制。 这适用于工作区、非工作区 (包括标题栏和滚动条) ，以及由于移动子窗口而发现父窗口的任何部分。</param>
-        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "MoveWindow", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool bRepaint);
-
-        /// <summary>
-        /// Places (在与创建指定窗口的线程关联的消息队列中发布) 消息，并在不等待线程处理消息的情况下返回 。
-        /// 若要在与线程关联的消息队列中发布消息，请使用 PostThreadMessage 函数。
-        /// </summary>
-        /// <param name="hWnd">窗口的句柄，窗口过程是接收消息。从 Windows Vista 开始，消息发布受 UIPI 的约束。 进程的线程只能将消息发布到完整性级别较低或相等的进程中线程的消息队列。</param>
-        /// <param name="Msg">要发布的消息。</param>
-        /// <param name="wparam">其他的消息特定信息。</param>
-        /// <param name="lparam">其他的消息特定信息。</param>
-        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "PostMessage", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool PostMessage(IntPtr hWnd, WindowMessage Msg, UIntPtr wparam, IntPtr lparam);
-
-        /// <summary>
-        /// PtInRect 函数确定指定的点是否位于指定的矩形内。 如果点位于左侧或顶部，或者位于所有四个边内，则点位于矩形内。 右侧或底部的点被视为矩形外部的点。
-        /// </summary>
-        /// <param name="lprc">指向包含指定矩形的 RECT 结构的指针。</param>
-        /// <param name="pt">包含指定点的 POINT 结构。</param>
-        /// <returns>如果指定的点位于矩形内，则返回值为非零值。如果指定的点不在矩形内，则返回值为零。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "PtInRect", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool PtInRect(ref RECT lprc, Point pt);
-
-        /// <summary>
         /// 创建从指定文件中提取的图标的句柄数组。
         /// </summary>
         /// <param name="lpszFile">要从中提取图标的文件的路径和名称。</param>
@@ -302,38 +134,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         /// </returns>
         [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "PrivateExtractIconsW", PreserveSig = true, SetLastError = false)]
         public static extern int PrivateExtractIcons([MarshalAs(UnmanagedType.LPWStr)] string lpszFile, int nIconIndex, int cxIcon, int cyIcon, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] phicon, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] int[] piconid, int nIcons, int flags);
-
-        /// <summary>
-        /// 注册一个窗口类，以便在调用 CreateWindow 或 CreateWindowEx 函数时使用。
-        /// </summary>
-        /// <param name="lpwcx">指向 WNDCLASSEX 结构的指针。 在将结构传递给函数之前，必须用相应的类属性填充结构。</param>
-        /// <returns>
-        /// 如果函数成功，则返回值为唯一标识要注册的类的类原子。 此原子只能由 CreateWindow、CreateWindowEx、GetClassInfo、GetClassInfoEx使用， FindWindow、FindWindowEx和 UnregisterClass 函数和 IActiveIMMap：：FilterClientWindows 方法。
-        /// 如果函数失败，则返回值为零。
-        /// </returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "RegisterClassExW", PreserveSig = true, SetLastError = false)]
-        public static extern int RegisterClassEx(ref WNDCLASSEX lpwcx);
-
-        /// <summary>
-        /// 从当前线程中的窗口释放鼠标捕获，并还原正常鼠标输入处理。 捕获鼠标的窗口接收所有鼠标输入，而不考虑光标的位置，但当光标热点位于另一个线程的窗口中时单击鼠标按钮除外。
-        /// </summary>
-        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。 </returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "ReleaseCapture", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool ReleaseCapture();
-
-        /// <summary>
-        /// 注册应用程序以接收特定电源设置事件的电源设置通知。
-        /// </summary>
-        /// <param name="hRecipient">指示电源设置通知的发送位置的句柄。 对于交互式应用程序， dwFlags 参数应为零， hRecipient 参数应为窗口句柄。 对于服务，dwFlags 参数应为 1，hRecipient 参数应为从 RegisterServiceCtrlHandlerEx 返回的SERVICE_STATUS_HANDLE。</param>
-        /// <param name="PowerSettingGuid">要为其发送通知的电源设置的 GUID 。</param>
-        /// <param name="Flags">
-        /// DEVICE_NOTIFY_WINDOW_HANDLE：使用 wParam 参数为 PBT_POWERSETTINGCHANGE 的WM_POWERBROADCAST消息发送通知。
-        /// DEVICE_NOTIFY_SERVICE_HANDLE：通知发送到 HandlerEx 回调函数，其中 dwControl 参数 为 SERVICE_CONTROL_POWEREVENT ， dwEventType为 PBT_POWERSETTINGCHANGE。
-        /// </param>
-        /// <returns>返回用于取消注册电源通知的通知句柄。 如果函数失败，则返回值为 NULL。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "RegisterPowerSettingNotification", PreserveSig = true, SetLastError = false)]
-        public static extern IntPtr RegisterPowerSettingNotification(IntPtr hRecipient, in Guid PowerSettingGuid, uint Flags);
 
         /// <summary>
         /// 将指定的消息发送到一个或多个窗口。
@@ -356,21 +156,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         public static extern int SendMessageTimeout(IntPtr hWnd, WindowMessage Msg, UIntPtr wParam, IntPtr lParam, SMTO fuFlags, uint uTimeout, out IntPtr result);
 
         /// <summary>
-        /// 设置分层窗口的不透明度和透明度颜色键。
-        /// </summary>
-        /// <param name="hWnd">
-        /// 分层窗口的句柄。 通过使用 CreateWindowEx 函数创建窗口时指定WS_EX_LAYERED，或者在创建窗口后通过 SetWindowLong 设置WS_EX_LAYERED来创建分层窗口。
-        /// Windows 8：顶级窗口和子窗口支持WS_EX_LAYERED样式。 以前的 Windows 版本仅对顶级窗口支持 WS_EX_LAYERED 。
-        /// </param>
-        /// <param name="crKey">COLORREF 结构，指定组合分层窗口时要使用的透明度颜色键。 窗口以这种颜色绘制的所有像素都是透明的。 若要生成 COLORREF，请使用 RGB 宏。</param>
-        /// <param name="alpha">用于描述分层窗口的不透明度的 Alpha 值。 类似于 BLENDFUNCTION 结构的 SourceConstantAlpha 成员。 当 bAlpha 为 0 时，窗口是完全透明的。 当 bAlpha 为 255 时，窗口是不透明的。</param>
-        /// <param name="dwFlags">要执行的操作。 </param>
-        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。 要获得更多的错误信息，请调用 GetLastError。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "SetLayeredWindowAttributes", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetLayeredWindowAttributes(IntPtr hWnd, int crKey, int alpha, LWA dwFlags);
-
-        /// <summary>
         /// 将指定的消息发送到窗口或窗口。SendMessage 函数调用指定窗口的窗口过程，在窗口过程处理消息之前不会返回。
         /// </summary>
         /// <param name="hWnd">
@@ -386,13 +171,13 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         public static extern IntPtr SendMessage(IntPtr hWnd, WindowMessage wMsg, UIntPtr wParam, IntPtr lParam);
 
         /// <summary>
-        /// 将鼠标捕获设置为属于当前线程的指定窗口。 当鼠标悬停在捕获窗口上时，或者在鼠标悬停在捕获窗口上且按钮仍然向下的情况下按下鼠标按钮时，SetCapture 将捕获鼠标输入。 一次只会有一个窗口捕获鼠标。
-        /// 如果鼠标光标位于另一个线程创建的窗口上，则仅当鼠标按钮按下时，系统才会将鼠标输入定向到指定的窗口。
+        /// 当仅针对当前正在运行的进程创建没有父级或所有者的窗口时，更改默认布局。
         /// </summary>
-        /// <param name="hWnd">当前线程中窗口的句柄，用于捕获鼠标。</param>
-        /// <returns>返回值是以前捕获了鼠标的窗口的句柄。 如果没有此类窗口，则返回值为 NULL。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "SetCapture", PreserveSig = true, SetLastError = false)]
-        public static extern IntPtr SetCapture(IntPtr hWnd);
+        /// <param name="dwDefaultLayout">默认进程布局。</param>
+        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
+        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "SetProcessDefaultLayout", PreserveSig = true, SetLastError = false)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetProcessDefaultLayout(uint dwDefaultLayout);
 
         /// <summary>
         /// 更改指定窗口的属性。 该函数还将指定偏移量处的32位（long类型）值设置到额外的窗口内存中。
@@ -441,15 +226,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         public static extern IntPtr SetWindowsHookEx(HOOKTYPE idHook, HOOKPROC lpfn, IntPtr hMod, int dwThreadId);
 
         /// <summary>
-        /// 当在指定时间内鼠标指针离开窗口或将鼠标悬停在窗口上时，发布消息。
-        /// </summary>
-        /// <param name="lpEventTrack">指向包含跟踪信息的 TRACKMOUSEEVENT 结构的指针。</param>
-        /// <returns>如果函数成功，则返回值为非零 。如果函数失败，则返回值为零。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "TrackMouseEvent", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool TrackMouseEvent(TRACKMOUSEEVENT lpEventTrack);
-
-        /// <summary>
         /// 删除 SetWindowsHookEx 函数安装在挂钩链中的挂钩过程。
         /// </summary>
         /// <param name="idHook">要移除的挂钩的句柄。 此参数是由先前调用 SetWindowsHookEx 获取的挂钩句柄。</param>
@@ -457,22 +233,5 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "UnhookWindowsHookEx", PreserveSig = true, SetLastError = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool UnhookWindowsHookEx(IntPtr idHook);
-
-        /// <summary>
-        /// 检索包含指定点的窗口的句柄。
-        /// </summary>
-        /// <param name="Point">要检查的点。</param>
-        /// <returns>返回值是包含点的窗口的句柄。 如果给定点不存在窗口，则返回值为 NULL。 如果点位于静态文本控件上，则返回值是静态文本控件下窗口的句柄。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "WindowFromPoint", PreserveSig = true, SetLastError = false)]
-        public static extern IntPtr WindowFromPoint(Point Point);
-
-        /// <summary>
-        /// 取消注册电源设置通知。
-        /// </summary>
-        /// <param name="handle">从 RegisterPowerSettingNotification 函数返回的句柄。</param>
-        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
-        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "UnregisterPowerSettingNotification", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool UnregisterPowerSettingNotification(IntPtr handle);
     }
 }

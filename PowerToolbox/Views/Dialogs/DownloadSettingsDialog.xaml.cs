@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Documents;
 using PowerToolbox.Services.Download;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
@@ -14,9 +16,6 @@ using System.Diagnostics.Tracing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Documents;
 
 namespace PowerToolbox.Views.Dialogs
 {
@@ -98,7 +97,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAdvancedPage), nameof(OnDownloadOpenFolderClicked), 1, e);
+                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnDownloadOpenFolderClicked), 1, e);
                 }
             });
         }
@@ -165,7 +164,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAdvancedPage), nameof(OnOpenDeliveryOptimizationClicked), 1, e);
+                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnOpenDeliveryOptimizationClicked), 1, e);
                 }
             });
         }
@@ -175,7 +174,7 @@ namespace PowerToolbox.Views.Dialogs
         /// </summary>
         private void OnLearnDoEngineClicked(object sender, RoutedEventArgs args)
         {
-            if (MainWindow.Current.Content is MainPage mainPage && mainPage.GetFrameContent() is SettingsPage settingsPage)
+            if (MainWindow.Current.GetFrameContent() is SettingsPage settingsPage)
             {
                 settingsPage.ShowSettingsInstruction();
             }
@@ -212,7 +211,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAdvancedPage), nameof(OnConfigurationClicked), 1, e);
+                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnConfigurationClicked), 1, e);
                 }
             });
         }
@@ -230,7 +229,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnTroubleShootClicked), 1, e);
+                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnTroubleShootClicked), 1, e);
                 }
             });
         }

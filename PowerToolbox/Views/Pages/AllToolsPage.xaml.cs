@@ -1,9 +1,9 @@
+using Microsoft.UI.Xaml.Controls;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Windows;
 using System;
 using System.Collections.Generic;
-using Windows.UI.Xaml.Controls;
 
 // 抑制 IDE0060 警告
 #pragma warning disable IDE0060
@@ -184,15 +184,15 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnItemClick(object sender, ItemClickEventArgs args)
         {
-            if (args.ClickedItem is ControlItemModel controlItem && (MainWindow.Current.Content as MainPage).NavigationItemList.Find(item => string.Equals(item.NavigationTag, controlItem.Tag, StringComparison.OrdinalIgnoreCase)) is NavigationModel navigationItem)
+            if (args.ClickedItem is ControlItemModel controlItem && MainWindow.Current.NavigationItemList.Find(item => string.Equals(item.NavigationTag, controlItem.Tag, StringComparison.OrdinalIgnoreCase)) is NavigationModel navigationItem)
             {
                 if (Equals(navigationItem.NavigationPage, typeof(ShellMenuPage)))
                 {
-                    (MainWindow.Current.Content as MainPage).NavigateTo(navigationItem.NavigationPage, "ShellMenu");
+                    MainWindow.Current.NavigateTo(navigationItem.NavigationPage, "ShellMenu");
                 }
                 else
                 {
-                    (MainWindow.Current.Content as MainPage).NavigateTo(navigationItem.NavigationPage);
+                    MainWindow.Current.NavigateTo(navigationItem.NavigationPage);
                 }
             }
         }

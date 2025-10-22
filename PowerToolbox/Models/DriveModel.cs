@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.UI.Xaml.Media;
+using System.ComponentModel;
 using System.IO;
-using Windows.UI.Xaml.Media;
 
 namespace PowerToolbox.Models
 {

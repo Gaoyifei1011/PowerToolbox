@@ -2,8 +2,8 @@
     x:Class="PowerToolbox.Views.Pages.FilePropertiesPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
     xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -182,7 +182,7 @@
         <Grid
             Grid.Row="1"
             Margin="0,0,0,3"
-            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            Background="{ThemeResource LayerFillColorDefaultBrush}"
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
             BorderThickness="1"
             CornerRadius="{ThemeResource ControlCornerRadius}">
@@ -196,6 +196,7 @@
                 Grid.Row="0"
                 Height="35"
                 Padding="6,0,0,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="0,0,0,1">
 
@@ -219,6 +220,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('FileName')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind FileNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -237,6 +239,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('ChangedProperties')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind FilePropertiesHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -272,6 +275,7 @@
                         <Grid
                             Height="35"
                             Padding="6,0,0,0"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                             BorderThickness="0,0,0,1">
 
@@ -297,6 +301,7 @@
                                     <ToolTip
                                         MaxWidth="9999"
                                         Content="{x:Bind FilePath, Mode=OneWay}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                         Placement="Mouse"
                                         Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(FilePath), Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
@@ -318,6 +323,7 @@
                                     <ToolTip
                                         MaxWidth="9999"
                                         Content="{x:Bind FileProperties, Mode=OneWay}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                         Placement="Mouse"
                                         Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(FileProperties), Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
@@ -347,7 +353,10 @@
                                     </Button.Content>
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('MoveUp')}" />
+                                        <ToolTip
+                                            MaxWidth="9999"
+                                            Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('MoveUp')}"
+                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                                     </ToolTipService.ToolTip>
                                 </Button>
 
@@ -370,7 +379,10 @@
                                     </Button.Content>
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('MoveDown')}" />
+                                        <ToolTip
+                                            MaxWidth="9999"
+                                            Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('MoveDown')}"
+                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                                     </ToolTipService.ToolTip>
                                 </Button>
 
@@ -393,7 +405,10 @@
                                     </Button.Content>
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('Delete')}" />
+                                        <ToolTip
+                                            MaxWidth="9999"
+                                            Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('Delete')}"
+                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                                     </ToolTipService.ToolTip>
                                 </Button>
                             </StackPanel>
@@ -459,7 +474,7 @@
                 Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('ViewErrorInformation')}"
                 Visibility="{x:Bind IsOperationFailed, Mode=OneWay}" />
 
-            <controls:ProgressRing
+            <ProgressRing
                 Grid.Column="5"
                 Width="25"
                 Height="25"

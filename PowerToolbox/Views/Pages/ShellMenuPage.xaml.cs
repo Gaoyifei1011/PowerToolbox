@@ -1,12 +1,11 @@
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
+using PowerToolbox.Extensions.Collections;
 using PowerToolbox.Services.Root;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics.Tracing;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
 // 抑制 IDE0060 警告
 #pragma warning disable IDE0060
@@ -23,7 +22,7 @@ namespace PowerToolbox.Views.Pages
 
         public List<Type> PageList { get; } = [typeof(ShellMenuListPage), typeof(ShellMenuEditPage)];
 
-        public ObservableCollection<DictionaryEntry> BreadCollection { get; } = [];
+        public WinRTObservableCollection<DictionaryEntry> BreadCollection { get; } = [];
 
         public ShellMenuPage()
         {

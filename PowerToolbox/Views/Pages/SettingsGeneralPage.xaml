@@ -2,15 +2,15 @@
     x:Class="PowerToolbox.Views.Pages.SettingsGeneralPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:backdrop="using:PowerToolbox.Views.Backdrop"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
     xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:PowerToolbox.Models"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
     xmlns:system="using:System"
+    xmlns:systembackdrop="using:Microsoft.UI.Composition.SystemBackdrops"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
@@ -76,6 +76,7 @@
                             <ToolTip
                                 MaxWidth="9999"
                                 Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('ThemeModeDescription')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                 Visibility="{x:Bind ThemeModeDescription.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
@@ -87,36 +88,36 @@
                     Click="{x:Bind OnSystemThemeSettingsClicked}"
                     Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('SystemThemeSettings')}" />
 
-                <controls:DropDownButton
+                <DropDownButton
                     Grid.Column="3"
                     VerticalAlignment="Center"
                     Content="{x:Bind Theme.Value, Mode=OneWay}">
 
-                    <controls:DropDownButton.Flyout>
+                    <DropDownButton.Flyout>
                         <MenuFlyout Placement="Bottom">
-                            <controls:RadioMenuFlyoutItem
+                            <RadioMenuFlyoutItem
                                 Click="{x:Bind OnThemeSelectClicked}"
                                 GroupName="ThemeRadioGroup"
                                 IsChecked="{x:Bind x:Object.Equals(Theme.Key, ThemeList[0].Key), Mode=OneWay}"
                                 Tag="{x:Bind ThemeList[0]}"
                                 Text="{x:Bind system:Convert.ToString(ThemeList[0].Value)}" />
 
-                            <controls:RadioMenuFlyoutItem
+                            <RadioMenuFlyoutItem
                                 Click="{x:Bind OnThemeSelectClicked}"
                                 GroupName="ThemeRadioGroup"
                                 IsChecked="{x:Bind x:Object.Equals(Theme.Key, ThemeList[1].Key), Mode=OneWay}"
                                 Tag="{x:Bind ThemeList[1]}"
                                 Text="{x:Bind system:Convert.ToString(ThemeList[1].Value)}" />
 
-                            <controls:RadioMenuFlyoutItem
+                            <RadioMenuFlyoutItem
                                 Click="{x:Bind OnThemeSelectClicked}"
                                 GroupName="ThemeRadioGroup"
                                 IsChecked="{x:Bind x:Object.Equals(Theme.Key, ThemeList[2].Key), Mode=OneWay}"
                                 Tag="{x:Bind ThemeList[2]}"
                                 Text="{x:Bind system:Convert.ToString(ThemeList[2].Value)}" />
                         </MenuFlyout>
-                    </controls:DropDownButton.Flyout>
-                </controls:DropDownButton>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
             </Grid>
 
             <!--  窗口背景材质设置  -->
@@ -162,6 +163,7 @@
                             <ToolTip
                                 MaxWidth="9999"
                                 Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('BackdropDescription')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                 Visibility="{x:Bind BackdropDescription.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
@@ -173,15 +175,15 @@
                     Click="{x:Bind OnSystemBackdropSettingsClicked}"
                     Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('SystemBackdropSettings')}" />
 
-                <controls:DropDownButton
+                <DropDownButton
                     Grid.Column="3"
                     VerticalAlignment="Center"
                     Content="{x:Bind LocalizeDisplayNumber(Backdrop), Mode=OneWay}"
                     IsEnabled="{x:Bind AdvancedEffectsEnabled, Mode=OneWay}">
 
-                    <controls:DropDownButton.Flyout>
+                    <DropDownButton.Flyout>
                         <MenuFlyout Placement="Bottom">
-                            <controls:RadioMenuFlyoutItem
+                            <RadioMenuFlyoutItem
                                 Click="{x:Bind OnBackdropSelectClicked}"
                                 GroupName="BackdropRadioGroup"
                                 IsChecked="{x:Bind x:Object.Equals(Backdrop.Key, BackdropList[0].Key), Mode=OneWay}"
@@ -190,17 +192,17 @@
 
                             <MenuFlyoutSubItem
                                 x:Name="MicaFlyoutItem"
-                                x:Load="{x:Bind backdrop:MicaBrush.IsSupported}"
+                                x:Load="{x:Bind systembackdrop:MicaController.IsSupported()}"
                                 Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('Mica')}">
 
-                                <controls:RadioMenuFlyoutItem
+                                <RadioMenuFlyoutItem
                                     Click="{x:Bind OnBackdropSelectClicked}"
                                     GroupName="BackdropRadioGroup"
                                     IsChecked="{x:Bind x:Object.Equals(Backdrop.Key, BackdropList[1].Key), Mode=OneWay}"
                                     Tag="{x:Bind BackdropList[1]}"
                                     Text="{x:Bind system:Convert.ToString(BackdropList[1].Value)}" />
 
-                                <controls:RadioMenuFlyoutItem
+                                <RadioMenuFlyoutItem
                                     Click="{x:Bind OnBackdropSelectClicked}"
                                     GroupName="BackdropRadioGroup"
                                     IsChecked="{x:Bind x:Object.Equals(Backdrop.Key, BackdropList[2].Key), Mode=OneWay}"
@@ -210,24 +212,24 @@
 
                             <MenuFlyoutSubItem
                                 x:Name="DesktopAcrylicFlyoutItem"
-                                x:Load="{x:Bind backdrop:DesktopAcrylicBrush.IsSupported}"
+                                x:Load="{x:Bind systembackdrop:DesktopAcrylicController.IsSupported()}"
                                 Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('DesktopAcrylic')}">
 
-                                <controls:RadioMenuFlyoutItem
+                                <RadioMenuFlyoutItem
                                     Click="{x:Bind OnBackdropSelectClicked}"
                                     GroupName="BackdropRadioGroup"
                                     IsChecked="{x:Bind x:Object.Equals(Backdrop.Key, BackdropList[3].Key), Mode=OneWay}"
                                     Tag="{x:Bind BackdropList[3]}"
                                     Text="{x:Bind system:Convert.ToString(BackdropList[3].Value)}" />
 
-                                <controls:RadioMenuFlyoutItem
+                                <RadioMenuFlyoutItem
                                     Click="{x:Bind OnBackdropSelectClicked}"
                                     GroupName="BackdropRadioGroup"
                                     IsChecked="{x:Bind x:Object.Equals(Backdrop.Key, BackdropList[4].Key), Mode=OneWay}"
                                     Tag="{x:Bind BackdropList[4]}"
                                     Text="{x:Bind system:Convert.ToString(BackdropList[4].Value)}" />
 
-                                <controls:RadioMenuFlyoutItem
+                                <RadioMenuFlyoutItem
                                     Click="{x:Bind OnBackdropSelectClicked}"
                                     GroupName="BackdropRadioGroup"
                                     IsChecked="{x:Bind x:Object.Equals(Backdrop.Key, BackdropList[5].Key), Mode=OneWay}"
@@ -235,8 +237,8 @@
                                     Text="{x:Bind system:Convert.ToString(BackdropList[5].Value)}" />
                             </MenuFlyoutSubItem>
                         </MenuFlyout>
-                    </controls:DropDownButton.Flyout>
-                </controls:DropDownButton>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
             </Grid>
 
             <!--  始终显示背景色设置  -->
@@ -282,6 +284,7 @@
                             <ToolTip
                                 MaxWidth="9999"
                                 Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('AlwaysShowBackdropDescription')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                 Visibility="{x:Bind AlwaysShowBackdropDescription.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
@@ -358,6 +361,7 @@
                             <ToolTip
                                 MaxWidth="9999"
                                 Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('LanguageDescription')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                 Visibility="{x:Bind LanguageDescription.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
@@ -370,23 +374,24 @@
                     Click="{x:Bind OnSystemLanguageSettingsClicked}"
                     Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('SystemLanguageSettings')}" />
 
-                <controls:DropDownButton
+                <DropDownButton
                     Grid.Column="3"
                     VerticalAlignment="Center"
                     Content="{x:Bind AppLanguage.Value, Mode=OneWay}">
 
-                    <controls:DropDownButton.Flyout>
+                    <DropDownButton.Flyout>
                         <Flyout
                             x:Name="LanguageFlyout"
                             Opened="{x:Bind OnOpened}"
                             Placement="Bottom"
-                            ShouldConstrainToRootBounds="False">
+                            ShouldConstrainToRootBounds="False"
+                            SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}">
 
                             <Flyout.FlyoutPresenterStyle>
                                 <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
                                     <Setter Property="Padding" Value="0" />
                                     <Setter Property="MinHeight" Value="0" />
-                                    <Setter Property="Background" Value="{ThemeResource MenuFlyoutPresenterBackground}" />
+                                    <Setter Property="Background" Value="Transparent" />
                                 </Style>
                             </Flyout.FlyoutPresenterStyle>
 
@@ -412,7 +417,7 @@
 
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="model:LanguageModel">
-                                        <controls:RadioMenuFlyoutItem
+                                        <RadioMenuFlyoutItem
                                             Height="32"
                                             Padding="11,0"
                                             Command="{StaticResource LanguageCommand}"
@@ -424,8 +429,8 @@
                                 </ListView.ItemTemplate>
                             </ListView>
                         </Flyout>
-                    </controls:DropDownButton.Flyout>
-                </controls:DropDownButton>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
             </Grid>
 
             <!--  窗口置顶设置  -->
@@ -470,6 +475,7 @@
                             <ToolTip
                                 MaxWidth="9999"
                                 Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('TopMostDescription')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                 Visibility="{x:Bind TopMostDescription.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
@@ -495,7 +501,6 @@
                     <ToggleSwitch
                         MinWidth="0"
                         Margin="10,-2,-10,0"
-                        IsEnabled="{x:Bind converter:ValueConverterHelper.ObjectCompareReverseConvert(Backdrop.Key, BackdropList[0].Key), Mode=OneWay}"
                         IsOn="{x:Bind TopMostValue, Mode=OneWay}"
                         OffContent=""
                         OnContent=""

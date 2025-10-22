@@ -2,8 +2,6 @@
     x:Class="PowerToolbox.Views.Pages.ShellMenuEditPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
-    xmlns:controlshelper="using:PowerToolbox.Helpers.Controls"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -112,7 +110,7 @@
                 </Grid>
 
                 <!--  菜单图标设置  -->
-                <controls:Expander
+                <Expander
                     Margin="0,0,0,2"
                     Padding="0"
                     HorizontalAlignment="Stretch"
@@ -120,7 +118,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -140,9 +138,9 @@
                                 Style="{StaticResource BodyTextBlockStyle}"
                                 Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('MenuIcon')}" />
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel Padding="0" HorizontalAlignment="Stretch">
                             <!--  使用图标  -->
                             <Grid
@@ -315,7 +313,7 @@
                                             HorizontalAlignment="Right"
                                             Orientation="Horizontal">
 
-                                            <controls:ImageIcon
+                                            <ImageIcon
                                                 Width="28"
                                                 Height="28"
                                                 VerticalAlignment="Center"
@@ -366,7 +364,7 @@
                                                 HorizontalAlignment="Right"
                                                 Orientation="Horizontal">
 
-                                                <controls:ImageIcon
+                                                <ImageIcon
                                                     Width="28"
                                                     Height="28"
                                                     VerticalAlignment="Center"
@@ -417,7 +415,7 @@
                                                 HorizontalAlignment="Right"
                                                 Orientation="Horizontal">
 
-                                                <controls:ImageIcon
+                                                <ImageIcon
                                                     Width="28"
                                                     Height="28"
                                                     VerticalAlignment="Center"
@@ -444,8 +442,8 @@
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
 
                 <!--  程序路径  -->
                 <Grid
@@ -646,7 +644,7 @@
                 </Grid>
 
                 <!--  文件匹配类型  -->
-                <controls:Expander
+                <Expander
                     Margin="0,0,0,2"
                     Padding="0"
                     HorizontalAlignment="Stretch"
@@ -654,7 +652,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -674,9 +672,9 @@
                                 Style="{StaticResource BodyTextBlockStyle}"
                                 Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('MenuFileMatch')}" />
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel Padding="0" HorizontalAlignment="Stretch">
                             <!--  文件匹配规则选择  -->
                             <Grid
@@ -696,46 +694,46 @@
                                     Style="{StaticResource BodyTextBlockStyle}"
                                     Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('MenuFileMatchRule')}" />
 
-                                <controls:DropDownButton Grid.Column="1" Content="{x:Bind SelectedFileMatchRule.Value, Mode=OneWay}">
-                                    <controls:DropDownButton.Flyout>
+                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedFileMatchRule.Value, Mode=OneWay}">
+                                    <DropDownButton.Flyout>
                                         <MenuFlyout Placement="Bottom">
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnFileMatchRuleClicked}"
                                                 GroupName="FileMatchRuleRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[0].Key), Mode=OneWay}"
                                                 Tag="{x:Bind FileMatchRuleList[0]}"
                                                 Text="{x:Bind system:Convert.ToString(FileMatchRuleList[0].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnFileMatchRuleClicked}"
                                                 GroupName="FileMatchRuleRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[1].Key), Mode=OneWay}"
                                                 Tag="{x:Bind FileMatchRuleList[1]}"
                                                 Text="{x:Bind system:Convert.ToString(FileMatchRuleList[1].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnFileMatchRuleClicked}"
                                                 GroupName="FileMatchRuleRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[2].Key), Mode=OneWay}"
                                                 Tag="{x:Bind FileMatchRuleList[2]}"
                                                 Text="{x:Bind system:Convert.ToString(FileMatchRuleList[2].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnFileMatchRuleClicked}"
                                                 GroupName="FileMatchRuleRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[3].Key), Mode=OneWay}"
                                                 Tag="{x:Bind FileMatchRuleList[3]}"
                                                 Text="{x:Bind system:Convert.ToString(FileMatchRuleList[3].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnFileMatchRuleClicked}"
                                                 GroupName="FileMatchRuleRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[4].Key), Mode=OneWay}"
                                                 Tag="{x:Bind FileMatchRuleList[4]}"
                                                 Text="{x:Bind system:Convert.ToString(FileMatchRuleList[4].Value)}" />
                                         </MenuFlyout>
-                                    </controls:DropDownButton.Flyout>
-                                </controls:DropDownButton>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
                             </Grid>
 
                             <StackPanel Visibility="{x:Bind NeedInputMatchFormat, Mode=OneWay}">
@@ -773,11 +771,11 @@
                                 </Grid>
                             </StackPanel>
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
 
                 <!--  菜单设置说明  -->
-                <controls:Expander
+                <Expander
                     Margin="0,0,0,2"
                     Padding="0"
                     HorizontalAlignment="Stretch"
@@ -785,7 +783,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -805,9 +803,9 @@
                                 Style="{StaticResource BodyTextBlockStyle}"
                                 Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('EditMenuInstruction')}" />
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel Margin="0">
                             <TextBlock
                                 Margin="44,10,16,5"
@@ -838,8 +836,8 @@
                                 TextAlignment="Justify"
                                 TextWrapping="Wrap" />
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
             </StackPanel>
         </ScrollViewer>
     </Grid>

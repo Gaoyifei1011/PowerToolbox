@@ -1,4 +1,6 @@
-﻿using PowerToolbox.Extensions.DataType.Class;
+﻿using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Extensions.Collections;
+using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
@@ -6,12 +8,10 @@ using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Controls;
 
 // 抑制 IDE0060 警告
 #pragma warning disable IDE0060
@@ -28,7 +28,7 @@ namespace PowerToolbox.Views.Dialogs
         private readonly string ScheduledTaskNameCopyString = ResourceService.DialogResource.GetString("ScheduledTaskNameCopy");
         private readonly string ScheduledTaskPathCopyString = ResourceService.DialogResource.GetString("ScheduledTaskPathCopy");
 
-        private ObservableCollection<ScheduledTaskFailedModel> ScheduledTaskFailedCollection { get; } = [];
+        private WinRTObservableCollection<ScheduledTaskFailedModel> ScheduledTaskFailedCollection { get; } = [];
 
         public ScheduledTaskFailedDialog(List<ScheduledTaskFailedModel> scheduledTaskFailedList)
         {

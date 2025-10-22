@@ -1,4 +1,6 @@
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Extensions.Collections;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Extensions.DataType.Methods;
@@ -24,8 +26,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
 #pragma warning disable CA1806,CA1822,IDE0060
@@ -306,13 +306,13 @@ namespace PowerToolbox.Views.Pages
 
         private List<EmbeddedDataModel> EmbeddedDataList { get; } = [];
 
-        private ObservableCollection<LanguageModel> LanguageCollection { get; } = [];
+        private WinRTObservableCollection<LanguageModel> LanguageCollection { get; } = [];
 
-        private ObservableCollection<StringModel> StringCollection { get; } = [];
+        private WinRTObservableCollection<StringModel> StringCollection { get; } = [];
 
-        private ObservableCollection<FilePathModel> FilePathCollection { get; } = [];
+        private WinRTObservableCollection<FilePathModel> FilePathCollection { get; } = [];
 
-        private ObservableCollection<EmbeddedDataModel> EmbeddedDataCollection { get; } = [];
+        private WinRTObservableCollection<EmbeddedDataModel> EmbeddedDataCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -333,7 +333,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 设置拖动的数据的可视表示形式
         /// </summary>
-        protected override async void OnDragOver(global::Windows.UI.Xaml.DragEventArgs args)
+        protected override async void OnDragOver(Microsoft.UI.Xaml.DragEventArgs args)
         {
             base.OnDragOver(args);
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
@@ -398,7 +398,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 拖动文件完成后获取文件信息
         /// </summary>
-        protected override async void OnDrop(global::Windows.UI.Xaml.DragEventArgs args)
+        protected override async void OnDrop(Microsoft.UI.Xaml.DragEventArgs args)
         {
             base.OnDrop(args);
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
@@ -589,7 +589,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 字符串列表全选和全部不选
         /// </summary>
-        private void OnStringSelectTapped(object sender, global::Windows.UI.Xaml.Input.TappedRoutedEventArgs args)
+        private void OnStringSelectTapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs args)
         {
             if (!isStringAllSelect)
             {
@@ -614,7 +614,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 文件路径列表全选和全部不选
         /// </summary>
-        private void OnFilePathSelectTapped(object sender, global::Windows.UI.Xaml.Input.TappedRoutedEventArgs args)
+        private void OnFilePathSelectTapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs args)
         {
             if (!isFilePathAllSelect)
             {
@@ -639,7 +639,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 嵌入数据列表全选和全部不选
         /// </summary>
-        private void OnEmbeddedDataSelectTapped(object sender, global::Windows.UI.Xaml.Input.TappedRoutedEventArgs args)
+        private void OnEmbeddedDataSelectTapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs args)
         {
             if (!isEmbeddedDataAllSelect)
             {
@@ -803,7 +803,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnCopySelectedStringClicked(object sender, RoutedEventArgs args)
         {
             IsProcessing = true;
-            List<StringModel> selectedStringList = [.. StringCollection.Where(item => item.IsSelected)];
+            List<StringModel> selectedStringList = [.. (StringCollection as ObservableCollection<StringModel>).Where(item => item.IsSelected)];
             if (selectedStringList.Count > 0)
             {
                 StringBuilder copyStringBuilder = new();
@@ -827,7 +827,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnCopySelectedFilePathClicked(object sender, RoutedEventArgs args)
         {
             IsProcessing = true;
-            List<FilePathModel> selectedFilePathList = [.. FilePathCollection.Where(item => item.IsSelected)];
+            List<FilePathModel> selectedFilePathList = [.. (FilePathCollection as ObservableCollection<FilePathModel>).Where(item => item.IsSelected)];
             if (selectedFilePathList.Count > 0)
             {
                 StringBuilder copyFilePathBuilder = new();
@@ -850,7 +850,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnExportSelectedEmbeddedDataClicked(object sender, RoutedEventArgs args)
         {
-            List<EmbeddedDataModel> selectedEmbeddedDataList = [.. EmbeddedDataCollection.Where(item => item.IsSelected)];
+            List<EmbeddedDataModel> selectedEmbeddedDataList = [.. (EmbeddedDataCollection as ObservableCollection<EmbeddedDataModel>).Where(item => item.IsSelected)];
             if (selectedEmbeddedDataList.Count > 0)
             {
                 IsProcessing = true;

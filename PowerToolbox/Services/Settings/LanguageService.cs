@@ -1,7 +1,9 @@
-﻿using PowerToolbox.Extensions.DataType.Constant;
+﻿using Microsoft.UI.Xaml;
+using PowerToolbox.Extensions.DataType.Constant;
 using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Shlwapi;
+using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
@@ -9,7 +11,6 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Windows.Forms;
 using Windows.Globalization;
 
 namespace PowerToolbox.Services.Settings
@@ -26,7 +27,7 @@ namespace PowerToolbox.Services.Settings
 
         public static KeyValuePair<string, string> AppLanguage { get; private set; }
 
-        public static RightToLeft RightToLeft { get; private set; }
+        public static FlowDirection FlowDirection { get; private set; }
 
         private static readonly List<string> AppLanguagesList = [];
 
@@ -130,7 +131,8 @@ namespace PowerToolbox.Services.Settings
                 if (existResult)
                 {
                     SetLanguage(currentLanguage);
-                    RightToLeft = currentCultureInfo.TextInfo.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+                    FlowDirection = currentCultureInfo.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+                    User32Library.SetProcessDefaultLayout(Convert.ToUInt32(currentCultureInfo.TextInfo.IsRightToLeft));
                     return currentLanguage;
                 }
                 else
@@ -141,7 +143,8 @@ namespace PowerToolbox.Services.Settings
                     if (existResult)
                     {
                         SetLanguage(currentParentLanguage);
-                        RightToLeft = currentParentCultureInfo.TextInfo.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+                        FlowDirection = currentParentCultureInfo.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+                        User32Library.SetProcessDefaultLayout(Convert.ToUInt32(currentParentCultureInfo.TextInfo.IsRightToLeft));
                         return currentParentLanguage;
                     }
 
@@ -150,14 +153,15 @@ namespace PowerToolbox.Services.Settings
                     {
                         SetLanguage(defaultAppLanguage);
                         CultureInfo defaultCultureInfo = CultureInfo.GetCultureInfo(defaultAppLanguage.Key);
-                        RightToLeft = defaultCultureInfo.TextInfo.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+                        FlowDirection = defaultCultureInfo.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+                        User32Library.SetProcessDefaultLayout(Convert.ToUInt32(defaultCultureInfo.TextInfo.IsRightToLeft));
                         return defaultAppLanguage;
                     }
                 }
             }
 
             CultureInfo savedCultureInfo = CultureInfo.GetCultureInfo(language);
-            RightToLeft = savedCultureInfo.TextInfo.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+            FlowDirection = savedCultureInfo.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
             return LanguageList.Find(item => string.Equals(language, item.Key, StringComparison.OrdinalIgnoreCase));
         }
 

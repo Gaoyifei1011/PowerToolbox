@@ -73,15 +73,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         public static extern void ILFree(IntPtr pidl);
 
         /// <summary>
-        /// 向系统发送应用栏消息。
-        /// </summary>
-        /// <param name="dwMessage">要发送的应用栏消息值。</param>
-        /// <param name="pData">指向 APPBARDATA 结构的指针。 进入和退出时结构的内容取决于 dwMessage 参数中设置的值。</param>
-        /// <returns>此函数返回一个依赖于消息的值。 </returns>
-        [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "SHAppBarMessage", PreserveSig = true, SetLastError = false)]
-        public static extern IntPtr SHAppBarMessage(ABM dwMessage, ref APPBARDATA pData);
-
-        /// <summary>
         /// 对指定文件执行操作。
         /// </summary>
         /// <param name="lpExecInfo">指向 SHELLEXECUTEINFO 结构的指针，该结构包含并接收有关正在执行的应用程序的信息。</param>

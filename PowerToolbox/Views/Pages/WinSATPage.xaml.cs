@@ -1,4 +1,6 @@
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
@@ -9,9 +11,6 @@ using System.Diagnostics.Tracing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 using WINSATLib;
 
 // 抑制 IDE0060 警告
@@ -246,7 +245,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     progressDialog.SetTitle(WEIString);
                     progressDialog.SetLine(2, WEIContentString, false, IntPtr.Zero);
-                    progressDialog.StartProgressDialog(MainWindow.Current.Handle, null, PROGDLG.PROGDLG_MODAL | PROGDLG.PROGDLG_NOMINIMIZE, IntPtr.Zero);
+                    progressDialog.StartProgressDialog((IntPtr)MainWindow.Current.AppWindow.Id.Value, null, PROGDLG.PROGDLG_MODAL | PROGDLG.PROGDLG_NOMINIMIZE, IntPtr.Zero);
                 }
             }
             catch (Exception e)

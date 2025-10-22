@@ -1,4 +1,9 @@
-﻿using PowerToolbox.Extensions.DataType.Class;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Navigation;
+using PowerToolbox.Extensions.Collections;
+using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
@@ -7,7 +12,6 @@ using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.PInvoke.Dnsapi;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
@@ -16,10 +20,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.System;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Navigation;
 
 // 抑制 CA1822，IDE0060 警告
 #pragma warning disable CA1822,IDE0060
@@ -180,7 +180,7 @@ namespace PowerToolbox.Views.Pages
 
         private List<HostsModel> HostsList { get; } = [];
 
-        private ObservableCollection<HostsModel> HostsCollection { get; } = [];
+        private WinRTObservableCollection<HostsModel> HostsCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -316,7 +316,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 浮出控件接受屏幕按键触发的事件
         /// </summary>
-        private void OnFlyoutKeyDown(object sender, global::Windows.UI.Xaml.Input.KeyRoutedEventArgs args)
+        private void OnFlyoutKeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs args)
         {
             if (args.Key is VirtualKey.Escape && sender is Grid grid && grid.Tag is Flyout flyout)
             {

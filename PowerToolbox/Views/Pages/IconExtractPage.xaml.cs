@@ -1,4 +1,8 @@
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
+using PowerToolbox.Extensions.Collections;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
@@ -8,7 +12,6 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.Tracing;
 using System.Drawing;
@@ -19,10 +22,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 
 // 抑制 CA1822，IDE0060 警告
 #pragma warning disable CA1822,IDE0060
@@ -211,7 +210,7 @@ namespace PowerToolbox.Views.Pages
             new KeyValuePair<int,string>(256, "256 * 256" )
         ];
 
-        private ObservableCollection<IconModel> IconCollection { get; } = [];
+        private WinRTObservableCollection<IconModel> IconCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -230,7 +229,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 设置拖动的数据的可视表示形式
         /// </summary>
-        protected override async void OnDragOver(global::Windows.UI.Xaml.DragEventArgs args)
+        protected override async void OnDragOver(Microsoft.UI.Xaml.DragEventArgs args)
         {
             base.OnDragOver(args);
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
@@ -305,7 +304,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 拖动文件完成后获取文件信息
         /// </summary>
-        protected override async void OnDrop(global::Windows.UI.Xaml.DragEventArgs args)
+        protected override async void OnDrop(Microsoft.UI.Xaml.DragEventArgs args)
         {
             base.OnDrop(args);
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();

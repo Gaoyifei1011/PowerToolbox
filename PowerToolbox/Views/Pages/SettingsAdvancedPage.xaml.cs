@@ -1,4 +1,6 @@
-﻿using PowerToolbox.Extensions.DataType.Enums;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
 using PowerToolbox.Views.NotificationTips;
@@ -10,8 +12,6 @@ using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 // 抑制 IDE0060 警告
 #pragma warning disable IDE0060

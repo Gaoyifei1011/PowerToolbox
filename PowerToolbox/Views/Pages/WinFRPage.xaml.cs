@@ -1,4 +1,9 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Navigation;
+using PowerToolbox.Extensions.Collections;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
@@ -10,7 +15,6 @@ using PowerToolbox.WindowsAPI.PInvoke.FirewallAPI;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
@@ -26,11 +30,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
 #pragma warning disable CA1806,CA1822,IDE0060
@@ -603,7 +602,7 @@ namespace PowerToolbox.Views.Pages
 
         public List<RecoveryModeSuggestionModel> RecoveryModeSuggestionList { get; } = [];
 
-        public ObservableCollection<DriveModel> DriveCollection { get; } = [];
+        public WinRTObservableCollection<DriveModel> DriveCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -733,7 +732,7 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnNavigatedTo), 2, e);
                 }
 
-                System.Windows.Forms.Application.ApplicationExit += OnApplicationExit;
+                GlobalNotificationService.ApplicationExit += OnApplicationExit;
                 winFRTimer.Elapsed += OnElapsed;
                 await GetDriverInfoAsync();
             }
@@ -793,7 +792,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnRegularRestoreContentTextChanged(object sender, RoutedEventArgs args)
         {
-            if (sender is global::Windows.UI.Xaml.Controls.TextBox textBox)
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
                 RegularRestoreContent = textBox.Text;
             }
@@ -804,7 +803,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnExtensiveRestoreContentTextChanged(object sender, RoutedEventArgs args)
         {
-            if (sender is global::Windows.UI.Xaml.Controls.TextBox textBox)
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
                 ExtensiveRestoreContent = textBox.Text;
             }
@@ -815,7 +814,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNTFSRestoreContentTextChanged(object sender, RoutedEventArgs args)
         {
-            if (sender is global::Windows.UI.Xaml.Controls.TextBox textBox)
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
                 NTFSRestoreContent = textBox.Text;
             }
@@ -826,7 +825,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSegmentRestoreContentTextChanged(object sender, RoutedEventArgs args)
         {
-            if (sender is global::Windows.UI.Xaml.Controls.TextBox textBox)
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
                 SegmentRestoreContent = textBox.Text;
             }
@@ -835,7 +834,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 开始恢复
         /// </summary>
-        private async void OnRecoveryClicked(Microsoft.UI.Xaml.Controls.SplitButton sender, Microsoft.UI.Xaml.Controls.SplitButtonClickEventArgs args)
+        private async void OnRecoveryClicked(SplitButton sender, SplitButtonClickEventArgs args)
         {
             bool checkState = await CheckWinFRStateAsync(true);
 
@@ -853,7 +852,7 @@ namespace PowerToolbox.Views.Pages
                         // 准备扫描
                         progressDialog.SetTitle(PrepareScanString);
                         progressDialog.SetLine(1, PrepareScanString, false, IntPtr.Zero);
-                        progressDialog.StartProgressDialog(MainWindow.Current.Handle, null, PROGDLG.PROGDLG_MODAL | PROGDLG.PROGDLG_NOMINIMIZE, IntPtr.Zero);
+                        progressDialog.StartProgressDialog((IntPtr)MainWindow.Current.AppWindow.Id.Value, null, PROGDLG.PROGDLG_MODAL | PROGDLG.PROGDLG_NOMINIMIZE, IntPtr.Zero);
 
                         await Task.Run(() =>
                         {
@@ -1251,7 +1250,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNTFSCustomFileFilterTypeTextChanged(object sender, TextChangedEventArgs args)
         {
-            if (sender is global::Windows.UI.Xaml.Controls.TextBox textBox)
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
                 NTFSCustomFileFilterType = textBox.Text;
             }
@@ -1317,7 +1316,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSegmentCustomFileFilterTypeTextChanged(object sender, TextChangedEventArgs args)
         {
-            if (sender is global::Windows.UI.Xaml.Controls.TextBox textBox)
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
                 SegmentCustomFileFilterType = textBox.Text;
             }
@@ -1385,7 +1384,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSignatureRestoreSpecificExtensionGroupsTypeTextChanged(object sender, TextChangedEventArgs args)
         {
-            if (sender is global::Windows.UI.Xaml.Controls.TextBox textBox)
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
                 SignatureRestoreSpecificExtensionGroupsType = textBox.Text;
             }
@@ -1444,11 +1443,11 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 应用程序即将关闭时发生的事件
         /// </summary>
-        private void OnApplicationExit(object sender, EventArgs args)
+        private void OnApplicationExit()
         {
             try
             {
-                System.Windows.Forms.Application.ApplicationExit -= OnApplicationExit;
+                GlobalNotificationService.ApplicationExit -= OnApplicationExit;
                 winFRTimer.Elapsed -= OnElapsed;
                 winFRTimer.Dispose();
                 winFRTimer = null;

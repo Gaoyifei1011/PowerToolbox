@@ -2,8 +2,8 @@
     x:Class="PowerToolbox.Views.Pages.LoopbackManagerPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
     xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:enum="using:PowerToolbox.Extensions.DataType.Enums"
@@ -156,7 +156,10 @@
                 </Button.Flyout>
 
                 <ToolTipService.ToolTip>
-                    <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('ViewMore')}" />
+                    <ToolTip
+                        MaxWidth="9999"
+                        Content="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('ViewMore')}"
+                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                 </ToolTipService.ToolTip>
             </Button>
         </Grid>
@@ -180,7 +183,7 @@
                 Spacing="10"
                 Visibility="{x:Bind CheckLoopbackState(LoopbackResultKind, enum:LoopbackResultKind.Loading), Mode=OneWay}">
 
-                <controls:ProgressRing IsActive="True" IsEnabled="True" />
+                <ProgressRing IsActive="True" IsEnabled="True" />
 
                 <TextBlock
                     VerticalAlignment="Center"
@@ -220,14 +223,14 @@
 
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:LoopbackModel">
-                    <controls:Expander
+                    <Expander
                         Margin="0,0,0,2"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Stretch"
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         IsExpanded="False">
 
-                        <controls:Expander.Header>
+                        <Expander.Header>
                             <Grid Height="60">
 
                                 <Grid.ColumnDefinitions>
@@ -245,7 +248,7 @@
                                     IsChecked="{x:Bind IsSelected, Mode=TwoWay}">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip MaxWidth="9999">
+                                        <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
                                             <Grid>
                                                 <TextBlock Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
                                                 <TextBlock Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
@@ -264,7 +267,7 @@
                                     BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
                                     BorderThickness="1"
                                     CornerRadius="{StaticResource ControlCornerRadius}">
-                                    <controls:ImageIcon Source="{x:Bind AppIcon}" />
+                                    <ImageIcon Source="{x:Bind AppIcon}" />
                                 </Grid>
 
                                 <StackPanel
@@ -286,6 +289,7 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind DisplayName}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{Binding ElementName=DisplayNameText, Path=IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
@@ -304,6 +308,7 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind PackageFullName}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{Binding ElementName=PackageFullNameText, Path=IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
@@ -324,13 +329,16 @@
                                     </Button.Content>
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('OpenWorkingDirectory')}" />
+                                        <ToolTip
+                                            MaxWidth="9999"
+                                            Content="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('OpenWorkingDirectory')}"
+                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                                     </ToolTipService.ToolTip>
                                 </Button>
                             </Grid>
-                        </controls:Expander.Header>
+                        </Expander.Header>
 
-                        <controls:Expander.Content>
+                        <Expander.Content>
                             <Grid
                                 Margin="40,0,0,0"
                                 ColumnSpacing="15"
@@ -451,8 +459,8 @@
                                     Text="{x:Bind AppBinariesPath}"
                                     TextWrapping="Wrap" />
                             </Grid>
-                        </controls:Expander.Content>
-                    </controls:Expander>
+                        </Expander.Content>
+                    </Expander>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

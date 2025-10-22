@@ -1,4 +1,9 @@
-﻿using PowerToolbox.Extensions.DataType.Class;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Navigation;
+using PowerToolbox.Extensions.Collections;
+using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
@@ -23,10 +28,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using TaskScheduler;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
 #pragma warning disable CA1806,CA1822,IDE0060
@@ -51,6 +52,10 @@ namespace PowerToolbox.Views.Pages
         private readonly BitmapImage emptyImage = new();
         private ITaskService taskService;
         private bool isInitialized;
+
+        public ExecuteCommand DisableScheduledTaskCommand { get; } = new();
+
+        public ExecuteCommand EnableScheduledTaskCommand { get; } = new();
 
         private string _scheduledTaskDescription;
 
@@ -136,7 +141,7 @@ namespace PowerToolbox.Views.Pages
 
         private List<ScheduledTaskFailedModel> ScheduledTaskFailedList { get; } = [];
 
-        public ObservableCollection<ScheduledTaskModel> ScheduledTaskCollection { get; } = [];
+        public WinRTObservableCollection<ScheduledTaskModel> ScheduledTaskCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -157,6 +162,9 @@ namespace PowerToolbox.Views.Pages
             if (!isInitialized)
             {
                 isInitialized = true;
+                GlobalNotificationService.ApplicationExit += OnApplicationExit;
+                DisableScheduledTaskCommand.ExecuteRequested += OnDisableScheduledTaskExecuteRequested;
+                EnableScheduledTaskCommand.ExecuteRequested += OnEnableScheduledTaskExecuteRequested;
                 await Task.Factory.StartNew((param) =>
                 {
                     try
@@ -181,7 +189,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnCheckBoxExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskCollection.Count(item => item.IsSelected));
+            ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Count(item => item.IsSelected));
         }
 
         /// <summary>
@@ -608,7 +616,7 @@ namespace PowerToolbox.Views.Pages
 
                 ScheduledTaskResultKind = ScheduledTaskCollection.Count is 0 ? ScheduledTaskResultKind.Failed : ScheduledTaskResultKind.Successfully;
                 ScheduledTaskFailedContent = ScheduledTaskCollection.Count is 0 ? ScheduledTaskEmptyWithConditionDescriptionString : string.Empty;
-                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskCollection.Count(item => item.IsSelected));
+                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Count(item => item.IsSelected));
             }
         }
 
@@ -633,7 +641,7 @@ namespace PowerToolbox.Views.Pages
 
                 ScheduledTaskResultKind = ScheduledTaskCollection.Count is 0 ? ScheduledTaskResultKind.Failed : ScheduledTaskResultKind.Successfully;
                 ScheduledTaskFailedContent = ScheduledTaskCollection.Count is 0 ? ScheduledTaskEmptyWithConditionDescriptionString : string.Empty;
-                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskCollection.Count(item => item.IsSelected));
+                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Count(item => item.IsSelected));
             }
         }
 
@@ -647,7 +655,7 @@ namespace PowerToolbox.Views.Pages
                 scheduledTaskItem.IsSelected = true;
             }
 
-            ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskCollection.Count(item => item.IsSelected));
+            ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Count(item => item.IsSelected));
         }
 
         /// <summary>
@@ -660,7 +668,7 @@ namespace PowerToolbox.Views.Pages
                 scheduledTaskItem.IsSelected = false;
             }
 
-            ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskCollection.Count(item => item.IsSelected));
+            ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Count(item => item.IsSelected));
         }
 
         /// <summary>
@@ -668,7 +676,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnRunScheduledTaskClicked(object sender, RoutedEventArgs args)
         {
-            List<ScheduledTaskModel> selectedScheduledTaskList = [.. ScheduledTaskCollection.Where(item => item.IsSelected)];
+            List<ScheduledTaskModel> selectedScheduledTaskList = [.. (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Where(item => item.IsSelected)];
             if (selectedScheduledTaskList.Count > 0)
             {
                 List<ScheduledTaskModel> newScheduledTaskList = [];
@@ -679,7 +687,7 @@ namespace PowerToolbox.Views.Pages
                     scheduledTaskItem.IsSelected = false;
                     scheduledTaskItem.IsProcessing = true;
                 }
-                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskCollection.Count(item => item.IsSelected));
+                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Count(item => item.IsSelected));
 
                 await Task.Factory.StartNew((param) =>
                 {
@@ -750,7 +758,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnStopScheduledTaskClicked(object sender, RoutedEventArgs args)
         {
-            List<ScheduledTaskModel> selectedScheduledTaskList = [.. ScheduledTaskCollection.Where(item => item.IsSelected)];
+            List<ScheduledTaskModel> selectedScheduledTaskList = [.. (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Where(item => item.IsSelected)];
             if (selectedScheduledTaskList.Count > 0)
             {
                 List<ScheduledTaskModel> newScheduledTaskList = [];
@@ -761,7 +769,7 @@ namespace PowerToolbox.Views.Pages
                     scheduledTaskItem.IsSelected = false;
                     scheduledTaskItem.IsProcessing = true;
                 }
-                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskCollection.Count(item => item.IsSelected));
+                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Count(item => item.IsSelected));
 
                 await Task.Factory.StartNew((param) =>
                 {
@@ -832,7 +840,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnExportScheduledTaskClicked(object sender, RoutedEventArgs args)
         {
-            List<ScheduledTaskModel> selectedScheduledTaskList = [.. ScheduledTaskCollection.Where(item => item.IsSelected)];
+            List<ScheduledTaskModel> selectedScheduledTaskList = [.. (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Where(item => item.IsSelected)];
             if (selectedScheduledTaskList.Count > 0)
             {
                 OpenFolderDialog openFolderDialog = new()
@@ -927,6 +935,27 @@ namespace PowerToolbox.Views.Pages
 
         #endregion 第三部分：计划任务管理页面——挂载的事件
 
+        #region 第四部分：计划任务管理页面——自定义事件
+
+        /// <summary>
+        /// 应用程序即将关闭时发生的事件
+        /// </summary>
+        private void OnApplicationExit()
+        {
+            try
+            {
+                GlobalNotificationService.ApplicationExit -= OnApplicationExit;
+                DisableScheduledTaskCommand.ExecuteRequested -= OnDisableScheduledTaskExecuteRequested;
+                EnableScheduledTaskCommand.ExecuteRequested -= OnEnableScheduledTaskExecuteRequested;
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnApplicationExit), 1, e);
+            }
+        }
+
+        #endregion 第四部分：计划任务管理页面——自定义事件
+
         /// <summary>
         /// 获取计划任务
         /// </summary>
@@ -935,7 +964,7 @@ namespace PowerToolbox.Views.Pages
             ScheduledTaskResultKind = ScheduledTaskResultKind.Loading;
             ScheduledTaskList.Clear();
             ScheduledTaskCollection.Clear();
-            ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskCollection.Count(item => item.IsSelected));
+            ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Count(item => item.IsSelected));
 
             List<ScheduledTaskModel> scheduledTaskList = await Task.Factory.StartNew((param) =>
             {
@@ -1080,7 +1109,7 @@ namespace PowerToolbox.Views.Pages
 
                 ScheduledTaskResultKind = ScheduledTaskCollection.Count is 0 ? ScheduledTaskResultKind.Failed : ScheduledTaskResultKind.Successfully;
                 ScheduledTaskFailedContent = ScheduledTaskCollection.Count is 0 ? ScheduledTaskEmptyWithConditionDescriptionString : string.Empty;
-                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskCollection.Count(item => item.IsSelected));
+                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Count(item => item.IsSelected));
             }
         }
 

@@ -6,14 +6,15 @@
     <ApplicationManifest>ThemeSwitch.manifest</ApplicationManifest>
     <AssemblyName>ThemeSwitch</AssemblyName>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <CustomAfterMicrosoftCommonTargets>$(SolutionDir)Configuration\UAPXamlFrameworkCompiler.targets</CustomAfterMicrosoftCommonTargets>
-    <DefaultXamlRuntime>UAP</DefaultXamlRuntime>
-    <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+		<CustomAfterMicrosoftCommonTargets>$(SolutionDir)Configuration\XamlCompiler.targets</CustomAfterMicrosoftCommonTargets>
+		<DefaultXamlRuntime>WinUI</DefaultXamlRuntime>
+		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
     <Deterministic>true</Deterministic>
     <DesktopCompatible>true</DesktopCompatible>
     <DisableXbfLineInfo>false</DisableXbfLineInfo>
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
     <EnableDefaultPageItems>false</EnableDefaultPageItems>
+		<EnablePriGenTooling>true</EnablePriGenTooling>
     <EnableTypeInfoReflection>false</EnableTypeInfoReflection>
     <_EnableWindowsDesktopGlobbing>true</_EnableWindowsDesktopGlobbing>
     <_EnableWindowsDesktopNETFrameworkImplicitReference>true</_EnableWindowsDesktopNETFrameworkImplicitReference>
@@ -32,8 +33,9 @@
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>
     <TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
-    <UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
+		<UsingMicrosoftNETSdk>false</UsingMicrosoftNETSdk>
+		<WindowsAppSDKVerifyCsWinRtVersions>false</WindowsAppSDKVerifyCsWinRtVersions>
+	</PropertyGroup>
 
   <PropertyGroup Condition="'$(Platform)'=='x86'">
     <RuntimeIdentifier>win-x86</RuntimeIdentifier>
@@ -57,21 +59,27 @@
 
   <ItemGroup>
     <ApplicationDefinition Include="ThemeSwitchApp.xaml" />
-    <None Remove="ThemeSwitchApp.xaml" />
-    <None Remove="ThemeSwitchTrayPage.xaml" />
-    
+   
+		<None Remove="ThemeSwitchApp.xaml" />
+    <None Remove="Views\Windows\ThemeSwitchTrayWindow.xaml" />
     <None Update="Assets\ThemeSwitch.ico" CopyToOutputDirectory="Never" />
 
-    <PackageReference Include="Microsoft.UI.Xaml" Version="2.8.7" GeneratePathProperty="true" IncludeAssets="none" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools.MSIX" Version="1.7.20250829.1" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
-    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.6584" />
-    <PackageReference Include="System.Private.Uri" Version="4.3.2" />
-
-    <Page Include="Views\Pages\ThemeSwitchTrayPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6584" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools.MSIX" Version="1.7.20250829.1" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+		<PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.6584" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.Base" Version="1.8.250831001" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.Foundation" Version="1.8.250906002" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="1.8.250906004" GeneratePathProperty="True" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="1.8.251003001" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="1.8.250906003" GeneratePathProperty="True" IncludeAssets="None" PrivateAssets="all" />
+		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
+    <Page Include="Views\Windows\ThemeSwitchTrayWindow.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 
     <ProjectCapability Include="Uwp" />
 
-    <Reference Include="Microsoft.UI.Xaml" HintPath="$(PkgMicrosoft_UI_Xaml)\lib\uap10.0\Microsoft.UI.Xaml.winmd" IsWinMDFile="true" />
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
+		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_InteractiveExperiences)\metadata\10.0.18362.0\Microsoft.UI.winmd" />
+		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Text.winmd" />
+		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Xaml.winmd" />
+		<Reference Include="System.Windows.Forms" />
+	</ItemGroup>
 </Project>

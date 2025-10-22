@@ -2,6 +2,7 @@
     x:Class="PowerToolbox.Views.Dialogs.FileUnlockFailedDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
     xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -81,6 +82,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('FileName')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind FileNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -98,6 +100,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ProcessName')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind ProcessNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -115,6 +118,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ErrorMessage')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind ErrorMessageHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -132,6 +136,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ErrorCode')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind ErrorCodeHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -167,7 +172,10 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip MaxWidth="9999" Content="{x:Bind FilePath}" />
+                            <ToolTip
+                                MaxWidth="9999"
+                                Content="{x:Bind FilePath}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
@@ -188,7 +196,7 @@
                         <Run FontSize="14" Text=")" />
 
                         <ToolTipService.ToolTip>
-                            <ToolTip MaxWidth="9999">
+                            <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
                                 <StackPanel>
                                     <TextBlock>
                                         <Run Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('ProcessNameToolTip')}" />
@@ -225,6 +233,7 @@
                             <ToolTip
                                 MaxWidth="9999"
                                 Content="{x:Bind Exception.Message}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                 Visibility="{Binding ElementName=MessageText, Path=IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
@@ -245,6 +254,7 @@
                             <ToolTip
                                 MaxWidth="9999"
                                 Content="{x:Bind system:Convert.ToString(Exception.HResult)}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                 Visibility="{Binding ElementName=HResultText, Path=IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>

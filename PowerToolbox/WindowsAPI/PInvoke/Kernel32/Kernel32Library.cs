@@ -74,14 +74,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Kernel32
         public static extern int GetPackagePathByFullName([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, ref int pathLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
 
         /// <summary>
-        /// 检索系统的电源状态。 状态指示系统是使用交流还是直流电源运行，电池当前是否正在充电，剩余的电池使用时间，以及节电模式是打开还是关闭。
-        /// </summary>
-        /// <param name="systemPowerStatus">指向接收状态信息的 SYSTEM_POWER_STATUS 结构的指针。</param>
-        [DllImport(Kernel32, CharSet = CharSet.Unicode, EntryPoint = "GetSystemPowerStatus", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetSystemPowerStatus(out SYSTEM_POWER_STATUS lpSystemPowerStatus);
-
-        /// <summary>
         /// 使应用程序能够通知系统它正在使用中，从而防止系统在应用程序运行时进入睡眠状态或关闭显示器。
         /// </summary>
         /// <param name="esFlags">线程的执行要求。</param>

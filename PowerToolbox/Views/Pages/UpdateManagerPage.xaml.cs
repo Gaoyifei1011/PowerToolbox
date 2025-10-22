@@ -1,4 +1,9 @@
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Win32;
+using PowerToolbox.Extensions.Collections;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
@@ -21,10 +26,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Navigation;
 using WUApiLib;
 
 // 抑制 CA1822，IDE0060 警告
@@ -116,9 +117,9 @@ namespace PowerToolbox.Views.Pages
         private bool isInitialized;
         private UpdateSearcher updateSearcher;
 
-        private Microsoft.UI.Xaml.Controls.NavigationViewItem _selectedItem;
+        private SelectorBarItem _selectedItem;
 
-        public Microsoft.UI.Xaml.Controls.NavigationViewItem SelectedItem
+        public SelectorBarItem SelectedItem
         {
             get { return _selectedItem; }
 
@@ -390,20 +391,20 @@ namespace PowerToolbox.Views.Pages
 
         private List<KeyValuePair<string, string>> UpdateSourceList { get; } = [];
 
-        private ObservableCollection<UpdateModel> AvailableUpdateCollection { get; } = [];
+        private WinRTObservableCollection<UpdateModel> AvailableUpdateCollection { get; } = [];
 
-        private ObservableCollection<UpdateModel> InstalledUpdateCollection { get; } = [];
+        private WinRTObservableCollection<UpdateModel> InstalledUpdateCollection { get; } = [];
 
-        private ObservableCollection<UpdateModel> HiddenUpdateCollection { get; } = [];
+        private WinRTObservableCollection<UpdateModel> HiddenUpdateCollection { get; } = [];
 
-        private ObservableCollection<UpdateModel> UpdateHistoryCollection { get; } = [];
+        private WinRTObservableCollection<UpdateModel> UpdateHistoryCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public UpdateManagerPage()
         {
             InitializeComponent();
-            SelectedItem = UpdateManagerNavigationView.MenuItems[0] as Microsoft.UI.Xaml.Controls.NavigationViewItem;
+            SelectedItem = UpdateManagerSelctorBar.Items[0];
             UpdateSourceList.Add(new KeyValuePair<string, string>("Microsoft Update", MicrosoftUpdateString));
             UpdateSourceList.Add(new KeyValuePair<string, string>("DCat Flighting Prod", DCatFlightingProdString));
             UpdateSourceList.Add(new KeyValuePair<string, string>("Windows Store(DCat Prod)", WindowsStoreString));
@@ -499,9 +500,9 @@ namespace PowerToolbox.Views.Pages
                 {
                     availableUpdate.UpdateProgress = UpdateCancelingString;
                     availableUpdate.IsUpdateCanceled = true;
-                    IsAvailableHideEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
-                    IsAvailableInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating);
-                    IsAvailableCancelInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
+                    IsAvailableHideEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
+                    IsAvailableInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating);
+                    IsAvailableCancelInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
 
                     Task.Run(() =>
                     {
@@ -536,9 +537,9 @@ namespace PowerToolbox.Views.Pages
             if (args.Parameter as UpdateModel is UpdateModel availableUpdate)
             {
                 availableUpdate.IsSelected = !availableUpdate.IsSelected;
-                IsAvailableHideEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
-                IsAvailableInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating);
-                IsAvailableCancelInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
+                IsAvailableHideEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
+                IsAvailableInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating);
+                IsAvailableCancelInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
             }
         }
 
@@ -587,10 +588,10 @@ namespace PowerToolbox.Views.Pages
                         LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableHideExecuteRequested), 2, e);
                     }
 
-                    IsAvailableHideEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
-                    IsAvailableInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating);
-                    IsAvailableCancelInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
-                    IsHiddenShowEnabled = HiddenUpdateCollection.Any(item => item.IsSelected && item.UpdateInformation.IsHidden);
+                    IsAvailableHideEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
+                    IsAvailableInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating);
+                    IsAvailableCancelInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
+                    IsHiddenShowEnabled = (HiddenUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.UpdateInformation.IsHidden);
                 }
             }
         }
@@ -772,9 +773,9 @@ namespace PowerToolbox.Views.Pages
                         }
 
                         // 当前更新的下载和安装所有步骤都已完成
-                        IsAvailableHideEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
-                        IsAvailableInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating);
-                        IsAvailableCancelInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
+                        IsAvailableHideEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
+                        IsAvailableInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating);
+                        IsAvailableCancelInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
 
                         // 所有更新下载、安装和卸载完成，恢复检查更新功能
                         if (downloadJobDict.Count is 0 && installationJobDict.Count is 0 && uninstallationJobDict.Count is 0)
@@ -859,7 +860,7 @@ namespace PowerToolbox.Views.Pages
             if (args.Parameter as UpdateModel is UpdateModel hiddenUpdate)
             {
                 hiddenUpdate.IsSelected = !hiddenUpdate.IsSelected;
-                IsHiddenShowEnabled = HiddenUpdateCollection.Any(item => item.IsSelected && item.UpdateInformation.IsHidden);
+                IsHiddenShowEnabled = (HiddenUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.UpdateInformation.IsHidden);
             }
         }
 
@@ -908,10 +909,10 @@ namespace PowerToolbox.Views.Pages
                         LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnHiddenShowExecuteRequested), 2, e);
                     }
 
-                    IsAvailableHideEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
-                    IsAvailableInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating);
-                    IsAvailableCancelInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
-                    IsHiddenShowEnabled = HiddenUpdateCollection.Any(item => item.IsSelected && item.UpdateInformation.IsHidden);
+                    IsAvailableHideEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
+                    IsAvailableInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating);
+                    IsAvailableCancelInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
+                    IsHiddenShowEnabled = (HiddenUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.UpdateInformation.IsHidden);
                 }
             }
         }
@@ -925,8 +926,8 @@ namespace PowerToolbox.Views.Pages
             {
                 installedUpdate.UpdateProgress = UpdateCancelingString;
                 installedUpdate.IsUpdateCanceled = true;
-                IsInstalledUninstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-                IsInstalledCancelInstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+                IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
+                IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
 
                 Task.Run(() =>
                 {
@@ -954,8 +955,8 @@ namespace PowerToolbox.Views.Pages
             if (args.Parameter as UpdateModel is UpdateModel installedUpdate)
             {
                 installedUpdate.IsSelected = !installedUpdate.IsSelected;
-                IsInstalledUninstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-                IsInstalledCancelInstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+                IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
+                IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
             }
         }
 
@@ -1059,8 +1060,8 @@ namespace PowerToolbox.Views.Pages
 
                         // 移除更新卸载任务
                         uninstallationJobDict.Remove(installedUpdate.UpdateID);
-                        IsInstalledUninstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-                        IsInstalledCancelInstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+                        IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
+                        IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
 
                         // 所有更新下载、安装和卸载完成，恢复检查更新功能
                         if (downloadJobDict.Count is 0 && installationJobDict.Count is 0 && uninstallationJobDict.Count is 0)
@@ -1232,12 +1233,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 当菜单中的项收到交互（如单击或点击）时发生
         /// </summary>
-        private void OnItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
+        private void OnSelectorBarTapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs args)
         {
-            if (args.InvokedItemContainer is Microsoft.UI.Xaml.Controls.NavigationViewItem navigationViewItem && !Equals(navigationViewItem, SelectedItem))
-            {
-                SelectedItem = navigationViewItem;
-            }
+            SelectedItem = sender as SelectorBarItem;
         }
 
         /// <summary>
@@ -1250,9 +1248,9 @@ namespace PowerToolbox.Views.Pages
                 availableUpdateItem.IsSelected = true;
             }
 
-            IsAvailableHideEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
-            IsAvailableInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating);
-            IsAvailableCancelInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
+            IsAvailableHideEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
+            IsAvailableInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating);
+            IsAvailableCancelInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
         }
 
         /// <summary>
@@ -1275,7 +1273,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAvailableInstallClicked(object sender, RoutedEventArgs args)
         {
-            List<UpdateModel> installList = [.. AvailableUpdateCollection.Where(item => item.IsSelected)];
+            List<UpdateModel> installList = [.. (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Where(item => item.IsSelected)];
 
             foreach (UpdateModel availableUpdateItem in AvailableUpdateCollection)
             {
@@ -1520,9 +1518,9 @@ namespace PowerToolbox.Views.Pages
                         // 当前更新的下载和安装所有步骤都已完成
                         synchronizationContext.Post(_ =>
                         {
-                            IsAvailableHideEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
-                            IsAvailableInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating);
-                            IsAvailableCancelInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
+                            IsAvailableHideEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
+                            IsAvailableInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating);
+                            IsAvailableCancelInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
 
                             // 所有更新下载、安装和卸载完成，恢复检查更新功能
                             if (downloadJobDict.Count is 0 && installationJobDict.Count is 0 && uninstallationJobDict.Count is 0)
@@ -1534,9 +1532,9 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            IsAvailableHideEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
-            IsAvailableInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating);
-            IsAvailableCancelInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
+            IsAvailableHideEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
+            IsAvailableInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating);
+            IsAvailableCancelInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
         }
 
         /// <summary>
@@ -1544,7 +1542,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnAvailableHideClicked(object sender, RoutedEventArgs args)
         {
-            List<UpdateModel> hideList = [.. AvailableUpdateCollection.Where(item => item.IsSelected)];
+            List<UpdateModel> hideList = [.. (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Where(item => item.IsSelected)];
 
             foreach (UpdateModel availableUpdateItem in AvailableUpdateCollection)
             {
@@ -1614,10 +1612,10 @@ namespace PowerToolbox.Views.Pages
                     }
                 }
 
-                IsAvailableHideEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
-                IsAvailableInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating);
-                IsAvailableCancelInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
-                IsHiddenShowEnabled = HiddenUpdateCollection.Any(item => item.IsSelected && item.UpdateInformation.IsHidden);
+                IsAvailableHideEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
+                IsAvailableInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating);
+                IsAvailableCancelInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
+                IsHiddenShowEnabled = (HiddenUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.UpdateInformation.IsHidden);
             }
         }
 
@@ -1626,7 +1624,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAvailableCancelInstallClicked(object sender, RoutedEventArgs args)
         {
-            List<UpdateModel> cancelList = [.. AvailableUpdateCollection.Where(item => item.IsSelected)];
+            List<UpdateModel> cancelList = [.. (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Where(item => item.IsSelected)];
 
             foreach (UpdateModel availableUpdateItem in AvailableUpdateCollection)
             {
@@ -1668,9 +1666,9 @@ namespace PowerToolbox.Views.Pages
                 });
             }
 
-            IsAvailableHideEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
-            IsAvailableInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating);
-            IsAvailableCancelInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
+            IsAvailableHideEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
+            IsAvailableInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating);
+            IsAvailableCancelInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
         }
 
         /// <summary>
@@ -1683,8 +1681,8 @@ namespace PowerToolbox.Views.Pages
                 installedUpdateItem.IsSelected = true;
             }
 
-            IsInstalledUninstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-            IsInstalledCancelInstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+            IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
+            IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
         }
 
         /// <summary>
@@ -1706,7 +1704,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnInstalledUninstallClicked(object sender, RoutedEventArgs args)
         {
-            List<UpdateModel> uninstallList = [.. InstalledUpdateCollection.Where(item => item.IsSelected)];
+            List<UpdateModel> uninstallList = [.. (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Where(item => item.IsSelected)];
 
             foreach (UpdateModel installedUpdateItem in InstalledUpdateCollection)
             {
@@ -1848,8 +1846,8 @@ namespace PowerToolbox.Views.Pages
                         // 当前更新的卸载所有步骤都已完成
                         synchronizationContext.Post(_ =>
                         {
-                            IsInstalledUninstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-                            IsInstalledCancelInstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+                            IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
+                            IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
 
                             // 所有更新下载、安装和卸载完成，恢复检查更新功能
                             if (downloadJobDict.Count is 0 && installationJobDict.Count is 0 && uninstallationJobDict.Count is 0)
@@ -1861,8 +1859,8 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            IsInstalledUninstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-            IsInstalledCancelInstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+            IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
+            IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
         }
 
         /// <summary>
@@ -1870,7 +1868,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnInstalledCancelUninstallClicked(object sender, RoutedEventArgs args)
         {
-            List<UpdateModel> cancelList = [.. InstalledUpdateCollection.Where(item => item.IsSelected)];
+            List<UpdateModel> cancelList = [.. (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Where(item => item.IsSelected)];
 
             foreach (UpdateModel installedUpdateItem in InstalledUpdateCollection)
             {
@@ -1906,8 +1904,8 @@ namespace PowerToolbox.Views.Pages
                 });
             }
 
-            IsInstalledUninstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-            IsInstalledCancelInstallEnabled = InstalledUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+            IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
+            IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
         }
 
         /// <summary>
@@ -1920,7 +1918,7 @@ namespace PowerToolbox.Views.Pages
                 hiddenUpdateItem.IsSelected = true;
             }
 
-            IsHiddenShowEnabled = HiddenUpdateCollection.Any(item => item.IsSelected && item.UpdateInformation.IsHidden);
+            IsHiddenShowEnabled = (HiddenUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.UpdateInformation.IsHidden);
         }
 
         /// <summary>
@@ -1941,7 +1939,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnHiddenShowClicked(object sender, RoutedEventArgs args)
         {
-            List<UpdateModel> showList = [.. HiddenUpdateCollection.Where(item => item.IsSelected)];
+            List<UpdateModel> showList = [.. (HiddenUpdateCollection as ObservableCollection<UpdateModel>).Where(item => item.IsSelected)];
 
             foreach (UpdateModel hiddenUpdateItem in HiddenUpdateCollection)
             {
@@ -2011,10 +2009,10 @@ namespace PowerToolbox.Views.Pages
                     }
                 }
 
-                IsAvailableHideEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
-                IsAvailableInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && !item.IsUpdating);
-                IsAvailableCancelInstallEnabled = AvailableUpdateCollection.Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
-                IsHiddenShowEnabled = HiddenUpdateCollection.Any(item => item.IsSelected && item.UpdateInformation.IsHidden);
+                IsAvailableHideEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
+                IsAvailableInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating);
+                IsAvailableCancelInstallEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled);
+                IsHiddenShowEnabled = (HiddenUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.UpdateInformation.IsHidden);
             }
         }
 

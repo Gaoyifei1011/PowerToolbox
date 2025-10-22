@@ -1,3 +1,6 @@
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Extensions.Collections;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.NotificationTips;
@@ -6,7 +9,6 @@ using PowerToolbox.WindowsAPI.PInvoke.KernelAppCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
@@ -14,8 +16,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 // 抑制 CA1806，IDE0060 警告
 #pragma warning disable CA1806,IDE0060
@@ -27,8 +27,8 @@ namespace PowerToolbox.Views.Dialogs
     /// </summary>
     public sealed partial class AppInformationDialog : ContentDialog, INotifyPropertyChanged
     {
-        private readonly string WinUI2VersionString = ResourceService.DialogResource.GetString("WinUI2Version");
-        private readonly string WindowsUIVersionString = ResourceService.DialogResource.GetString("WindowsUIVersion");
+        private readonly string WindowsAppSDKVersionString = ResourceService.DialogResource.GetString("WindowsAppSDKVersion");
+        private readonly string WinUIVersionString = ResourceService.DialogResource.GetString("WinUIVersion");
         private readonly string DoNetVersionString = ResourceService.DialogResource.GetString("DoNetVersion");
 
         private bool _isLoadCompleted = false;
@@ -47,7 +47,7 @@ namespace PowerToolbox.Views.Dialogs
             }
         }
 
-        private ObservableCollection<DictionaryEntry> AppInformationCollection { get; } = [];
+        private WinRTObservableCollection<DictionaryEntry> AppInformationCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -86,17 +86,16 @@ namespace PowerToolbox.Views.Dialogs
 
                     foreach (PACKAGE_INFO packageInfo in packageInfoList)
                     {
-                        // WinUI 2 版本信息
-                        if (packageInfo.packageFullName.Contains("Microsoft.UI.Xaml"))
+                        // WinUI 3 版本信息
+                        if (packageInfo.packageFullName.Contains("Microsoft.WindowsAppRuntime"))
                         {
-                            FileVersionInfo winUI2File = FileVersionInfo.GetVersionInfo(Path.Combine(packageInfo.path, "Microsoft.UI.Xaml.dll"));
-                            dependencyInformationList.Add(new KeyValuePair<string, Version>(WinUI2VersionString, new Version(winUI2File.ProductMajorPart, winUI2File.ProductMinorPart, winUI2File.ProductBuildPart, winUI2File.ProductPrivatePart)));
+                            dependencyInformationList.Add(new KeyValuePair<string, Version>(WindowsAppSDKVersionString, new Version(packageInfo.packageId.version.Parts.Major, packageInfo.packageId.version.Parts.Minor, packageInfo.packageId.version.Parts.Build, packageInfo.packageId.version.Parts.Revision)));
+
+                            FileVersionInfo winUI3File = FileVersionInfo.GetVersionInfo(Path.Combine(packageInfo.path, "Microsoft.UI.Xaml.Controls.dll"));
+                            dependencyInformationList.Add(new KeyValuePair<string, Version>(WinUIVersionString, new Version(winUI3File.FileMajorPart, winUI3File.FileMinorPart, winUI3File.FileBuildPart, winUI3File.FilePrivatePart)));
+                            break;
                         }
                     }
-
-                    // Windows UI 版本信息
-                    FileVersionInfo windowsUIFile = FileVersionInfo.GetVersionInfo(Path.Combine(Environment.SystemDirectory, "Windows.UI.Xaml.dll"));
-                    dependencyInformationList.Add(new KeyValuePair<string, Version>(WindowsUIVersionString, new Version(windowsUIFile.ProductMajorPart, windowsUIFile.ProductMinorPart, windowsUIFile.ProductBuildPart, windowsUIFile.ProductPrivatePart)));
 
                     // .NET 版本信息
                     dependencyInformationList.Add(new KeyValuePair<string, Version>(DoNetVersionString, new Version(RuntimeInformation.FrameworkDescription.Remove(0, 15))));

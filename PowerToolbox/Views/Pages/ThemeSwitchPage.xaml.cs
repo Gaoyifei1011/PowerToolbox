@@ -1,4 +1,9 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Win32;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
@@ -21,12 +26,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.UI;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
 #pragma warning disable CA1806,CA1822,IDE0060
@@ -411,7 +410,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 刷新主题样式设置值
         /// </summary>
-        private async void OnRefreshClicked(Microsoft.UI.Xaml.Controls.SplitButton sender, Microsoft.UI.Xaml.Controls.SplitButtonClickEventArgs args)
+        private async void OnRefreshClicked(SplitButton sender, SplitButtonClickEventArgs args)
         {
             await InitializeSystemThemeSettingsAsync();
         }
@@ -502,7 +501,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 保存自动修改主题设置值
         /// </summary>
-        private async void OnSaveClicked(Microsoft.UI.Xaml.Controls.SplitButton sender, Microsoft.UI.Xaml.Controls.SplitButtonClickEventArgs args)
+        private async void OnSaveClicked(SplitButton sender, SplitButtonClickEventArgs args)
         {
             if (IsAutoSwitchSystemThemeValue && Equals(SystemThemeLightTime, SystemThemeDarkTime))
             {

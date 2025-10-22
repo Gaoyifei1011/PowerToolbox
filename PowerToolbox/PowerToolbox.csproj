@@ -1,195 +1,197 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <ApplicationIcon>Assets\PowerToolbox.ico</ApplicationIcon>
-    <ApplicationManifest>PowerToolbox.manifest</ApplicationManifest>
-    <AssemblyName>PowerToolbox</AssemblyName>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <CustomAfterMicrosoftCommonTargets>$(SolutionDir)Configuration\UAPXamlFrameworkCompiler.targets</CustomAfterMicrosoftCommonTargets>
-    <DefaultXamlRuntime>UAP</DefaultXamlRuntime>
-    <DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
-    <Deterministic>true</Deterministic>
-    <DesktopCompatible>true</DesktopCompatible>
-    <DisableXbfLineInfo>false</DisableXbfLineInfo>
-    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
-    <EnableDefaultPageItems>false</EnableDefaultPageItems>
-    <EnableTypeInfoReflection>false</EnableTypeInfoReflection>
-    <_EnableWindowsDesktopGlobbing>true</_EnableWindowsDesktopGlobbing>
-    <_EnableWindowsDesktopNETFrameworkImplicitReference>true</_EnableWindowsDesktopNETFrameworkImplicitReference>
-    <ImportWindowsDesktopTargets>false</ImportWindowsDesktopTargets>
-    <ImportFrameworkWinFXTargets>false</ImportFrameworkWinFXTargets>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <IncludeSymbols>false</IncludeSymbols>
-    <LangVersion>latest</LangVersion>
-    <Optimize>false</Optimize>
-    <OutputType>WinExe</OutputType>
-    <Platforms>x86;x64;ARM64</Platforms>
-    <ResolveComReferenceSilent>true</ResolveComReferenceSilent>
-    <RootNamespace>PowerToolbox</RootNamespace>
-    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
-    <TargetFramework>net481</TargetFramework>
-    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
-    <TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>
-    <TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
-    <UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
+	<PropertyGroup>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<ApplicationIcon>Assets\PowerToolbox.ico</ApplicationIcon>
+		<ApplicationManifest>PowerToolbox.manifest</ApplicationManifest>
+		<AssemblyName>PowerToolbox</AssemblyName>
+		<CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+		<CustomAfterMicrosoftCommonTargets>$(SolutionDir)Configuration\XamlCompiler.targets</CustomAfterMicrosoftCommonTargets>
+		<DefaultXamlRuntime>WinUI</DefaultXamlRuntime>
+		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+		<Deterministic>true</Deterministic>
+		<DesktopCompatible>true</DesktopCompatible>
+		<DisableXbfLineInfo>false</DisableXbfLineInfo>
+		<EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+		<EnableDefaultPageItems>false</EnableDefaultPageItems>
+		<EnablePriGenTooling>true</EnablePriGenTooling>
+		<EnableTypeInfoReflection>false</EnableTypeInfoReflection>
+		<_EnableWindowsDesktopGlobbing>true</_EnableWindowsDesktopGlobbing>
+		<_EnableWindowsDesktopNETFrameworkImplicitReference>true</_EnableWindowsDesktopNETFrameworkImplicitReference>
+		<ImportWindowsDesktopTargets>false</ImportWindowsDesktopTargets>
+		<ImportFrameworkWinFXTargets>false</ImportFrameworkWinFXTargets>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<IncludeSymbols>false</IncludeSymbols>
+		<LangVersion>latest</LangVersion>
+		<Optimize>false</Optimize>
+		<OutputType>WinExe</OutputType>
+		<Platforms>x86;x64;ARM64</Platforms>
+		<ResolveComReferenceSilent>true</ResolveComReferenceSilent>
+		<RootNamespace>PowerToolbox</RootNamespace>
+		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+		<TargetFramework>net481</TargetFramework>
+		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+		<TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>
+		<TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+		<UsingMicrosoftNETSdk>false</UsingMicrosoftNETSdk>
+		<WindowsAppSDKVerifyCsWinRtVersions>false</WindowsAppSDKVerifyCsWinRtVersions>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Platform)'=='x86'">
-    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Platform)'=='x64'">
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Platform)'=='ARM64'">
-    <RuntimeIdentifier>win-arm64</RuntimeIdentifier>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Platform)'=='x86'">
+		<RuntimeIdentifier>win-x86</RuntimeIdentifier>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Platform)'=='x64'">
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Platform)'=='ARM64'">
+		<RuntimeIdentifier>win-arm64</RuntimeIdentifier>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <DebuggerSupport>true</DebuggerSupport>
-    <DebugType>pdbonly</DebugType>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<DebuggerSupport>true</DebuggerSupport>
+		<DebugType>pdbonly</DebugType>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <DebuggerSupport>false</DebuggerSupport>
-    <DebugType>none</DebugType>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<DebuggerSupport>false</DebuggerSupport>
+		<DebugType>none</DebugType>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ApplicationDefinition Include="XamlIslandsApp.xaml" />
+	<ItemGroup>
+		<ApplicationDefinition Include="MainApp.xaml" />
 
-    <COMReference Include="IWshRuntimeLibrary">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>0</VersionMinor>
-      <VersionMajor>1</VersionMajor>
-      <Guid>f935dc20-1cf0-11d0-adb9-00c04fd58a0b</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
+		<COMReference Include="IWshRuntimeLibrary">
+			<WrapperTool>tlbimp</WrapperTool>
+			<VersionMinor>0</VersionMinor>
+			<VersionMajor>1</VersionMajor>
+			<Guid>f935dc20-1cf0-11d0-adb9-00c04fd58a0b</Guid>
+			<Lcid>0</Lcid>
+			<Isolated>false</Isolated>
+			<EmbedInteropTypes>true</EmbedInteropTypes>
+		</COMReference>
 
-    <COMReference Include="WINSATLib">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>0</VersionMinor>
-      <VersionMajor>1</VersionMajor>
-      <Guid>15ae3a36-e53b-454d-a816-a7c61cbab8a4</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
+		<COMReference Include="WINSATLib">
+			<WrapperTool>tlbimp</WrapperTool>
+			<VersionMinor>0</VersionMinor>
+			<VersionMajor>1</VersionMajor>
+			<Guid>15ae3a36-e53b-454d-a816-a7c61cbab8a4</Guid>
+			<Lcid>0</Lcid>
+			<Isolated>false</Isolated>
+			<EmbedInteropTypes>true</EmbedInteropTypes>
+		</COMReference>
 
-    <COMReference Include="WUApiLib">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>0</VersionMinor>
-      <VersionMajor>2</VersionMajor>
-      <Guid>b596cc9f-56e5-419e-a622-e01bb457431e</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
+		<COMReference Include="WUApiLib">
+			<WrapperTool>tlbimp</WrapperTool>
+			<VersionMinor>0</VersionMinor>
+			<VersionMajor>2</VersionMajor>
+			<Guid>b596cc9f-56e5-419e-a622-e01bb457431e</Guid>
+			<Lcid>0</Lcid>
+			<Isolated>false</Isolated>
+			<EmbedInteropTypes>true</EmbedInteropTypes>
+		</COMReference>
 
-    <COMReference Include="TaskScheduler">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>0</VersionMinor>
-      <VersionMajor>1</VersionMajor>
-      <Guid>e34cb9f1-c7f7-424c-be29-027dcc09363a</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
+		<COMReference Include="TaskScheduler">
+			<WrapperTool>tlbimp</WrapperTool>
+			<VersionMinor>0</VersionMinor>
+			<VersionMajor>1</VersionMajor>
+			<Guid>e34cb9f1-c7f7-424c-be29-027dcc09363a</Guid>
+			<Lcid>0</Lcid>
+			<Isolated>false</Isolated>
+			<EmbedInteropTypes>true</EmbedInteropTypes>
+		</COMReference>
 
-    <Compile Update="Strings\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
+		<Compile Update="Strings\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
 
-    <Content Include="Assets\ControlIcon\AllTools.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\ContextMenuManager.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\AllTools.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\ContextMenuManager.png" CopyToOutputDirectory="Always" />
 		<Content Include="Assets\ControlIcon\DataEncryptVertify.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\DownloadManager.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\DriverManager.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\DownloadManager.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\DriverManager.png" CopyToOutputDirectory="Always" />
 		<Content Include="Assets\ControlIcon\ExperimentalFeatureManager.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\File.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\FileCertificate.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\FileManager.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\FileUnlock.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\Hosts.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\IconExtract.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\Loaf.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\LoopbackManager.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\Personalize.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\PriExtract.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\Relaxation.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\Resource.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\File.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\FileCertificate.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\FileManager.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\FileUnlock.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\Hosts.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\IconExtract.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\Loaf.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\LoopbackManager.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\Personalize.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\PriExtract.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\Relaxation.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\Resource.png" CopyToOutputDirectory="Always" />
 		<Content Include="Assets\ControlIcon\ScheduledTaskManager.png" CopyToOutputDirectory="Always" />
 		<Content Include="Assets\ControlIcon\Settings.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\ShellMenu.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\System.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\ThemeSwitch.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\UpdateManager.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\WinFR.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\WinSAT.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Cover.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Images\LoafDarkWallpaper.jpg" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Images\LoafLightWallpaper.jpg" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\LargeTile.scale-100.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\LargeTile.scale-125.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\LargeTile.scale-150.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\LargeTile.scale-200.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\LargeTile.scale-400.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\SmallTile.scale-100.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\SmallTile.scale-125.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\SmallTile.scale-150.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\SmallTile.scale-200.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\SmallTile.scale-400.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\SplashScreen.scale-100.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\SplashScreen.scale-125.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\SplashScreen.scale-150.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\SplashScreen.scale-200.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\SplashScreen.scale-400.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-32.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-16.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-24.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-256.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-32.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-48.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.scale-100.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.scale-125.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.scale-150.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.scale-400.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.targetsize-16.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.targetsize-256.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.targetsize-32.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square44x44Logo.targetsize-48.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square150x150Logo.scale-100.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square150x150Logo.scale-125.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square150x150Logo.scale-150.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Square150x150Logo.scale-400.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\StoreLogo.scale-100.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\StoreLogo.scale-125.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\StoreLogo.scale-150.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\StoreLogo.scale-200.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\StoreLogo.scale-400.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Wide310x150Logo.scale-100.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Wide310x150Logo.scale-125.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Wide310x150Logo.scale-150.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Wide310x150Logo.scale-200.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Wide310x150Logo.scale-400.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\ShellMenu.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\System.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\ThemeSwitch.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\UpdateManager.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\WinFR.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\ControlIcon\WinSAT.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Cover.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Images\LoafDarkWallpaper.jpg" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Images\LoafLightWallpaper.jpg" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\LargeTile.scale-100.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\LargeTile.scale-125.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\LargeTile.scale-150.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\LargeTile.scale-200.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\LargeTile.scale-400.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\SmallTile.scale-100.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\SmallTile.scale-125.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\SmallTile.scale-150.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\SmallTile.scale-200.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\SmallTile.scale-400.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\SplashScreen.scale-100.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\SplashScreen.scale-125.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\SplashScreen.scale-150.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\SplashScreen.scale-200.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\SplashScreen.scale-400.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-32.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-16.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-24.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-256.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-32.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.altform-unplated_targetsize-48.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.scale-100.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.scale-125.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.scale-150.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.scale-200.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.scale-400.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.targetsize-16.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.targetsize-24.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.targetsize-256.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.targetsize-32.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square44x44Logo.targetsize-48.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square150x150Logo.scale-100.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square150x150Logo.scale-125.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square150x150Logo.scale-150.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square150x150Logo.scale-200.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Square150x150Logo.scale-400.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\StoreLogo.scale-100.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\StoreLogo.scale-125.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\StoreLogo.scale-150.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\StoreLogo.scale-200.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\StoreLogo.scale-400.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Wide310x150Logo.scale-100.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Wide310x150Logo.scale-125.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Wide310x150Logo.scale-150.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Wide310x150Logo.scale-200.png" CopyToOutputDirectory="Always" />
+		<Content Include="Assets\Wide310x150Logo.scale-400.png" CopyToOutputDirectory="Always" />
 
-    <EmbeddedResource Include="Strings\AllTools.en-us.restext" />
-    <EmbeddedResource Include="Strings\AllTools.restext" />
-    <EmbeddedResource Include="Strings\AllTools.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\ContextMenuManager.en-us.restext" />
-    <EmbeddedResource Include="Strings\ContextMenuManager.restext" />
-    <EmbeddedResource Include="Strings\ContextMenuManager.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\AllTools.en-us.restext" />
+		<EmbeddedResource Include="Strings\AllTools.restext" />
+		<EmbeddedResource Include="Strings\AllTools.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\ContextMenuManager.en-us.restext" />
+		<EmbeddedResource Include="Strings\ContextMenuManager.restext" />
+		<EmbeddedResource Include="Strings\ContextMenuManager.zh-hans.restext" />
 		<EmbeddedResource Include="Strings\DataEncrypt.en-us.restext" />
 		<EmbeddedResource Include="Strings\DataEncrypt.restext" />
 		<EmbeddedResource Include="Strings\DataEncrypt.zh-hans.restext" />
@@ -199,233 +201,244 @@
 		<EmbeddedResource Include="Strings\DataVertify.en-us.restext" />
 		<EmbeddedResource Include="Strings\DataVertify.restext" />
 		<EmbeddedResource Include="Strings\DataVertify.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\Dialog.en-us.restext" />
-    <EmbeddedResource Include="Strings\Dialog.restext" />
-    <EmbeddedResource Include="Strings\Dialog.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\DownloadManager.en-us.restext" />
-    <EmbeddedResource Include="Strings\DownloadManager.restext" />
-    <EmbeddedResource Include="Strings\DownloadManager.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\DriverManager.en-us.restext" />
-    <EmbeddedResource Include="Strings\DriverManager.restext" />
-    <EmbeddedResource Include="Strings\DriverManager.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\Dialog.en-us.restext" />
+		<EmbeddedResource Include="Strings\Dialog.restext" />
+		<EmbeddedResource Include="Strings\Dialog.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\DownloadManager.en-us.restext" />
+		<EmbeddedResource Include="Strings\DownloadManager.restext" />
+		<EmbeddedResource Include="Strings\DownloadManager.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\DriverManager.en-us.restext" />
+		<EmbeddedResource Include="Strings\DriverManager.restext" />
+		<EmbeddedResource Include="Strings\DriverManager.zh-hans.restext" />
 		<EmbeddedResource Include="Strings\ExperimentalFeatureManager.en-us.restext" />
 		<EmbeddedResource Include="Strings\ExperimentalFeatureManager.restext" />
 		<EmbeddedResource Include="Strings\ExperimentalFeatureManager.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\ExtensionName.en-us.restext" />
-    <EmbeddedResource Include="Strings\ExtensionName.restext" />
-    <EmbeddedResource Include="Strings\ExtensionName.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\FileCertificate.en-us.restext" />
-    <EmbeddedResource Include="Strings\FileCertificate.restext" />
-    <EmbeddedResource Include="Strings\FileCertificate.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\FileManager.en-us.restext" />
-    <EmbeddedResource Include="Strings\FileManager.restext" />
-    <EmbeddedResource Include="Strings\FileManager.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\FileName.en-us.restext" />
-    <EmbeddedResource Include="Strings\FileName.restext" />
-    <EmbeddedResource Include="Strings\FileName.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\FileProperties.en-us.restext" />
-    <EmbeddedResource Include="Strings\FileProperties.restext" />
-    <EmbeddedResource Include="Strings\FileProperties.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\FileUnlock.en-us.restext" />
-    <EmbeddedResource Include="Strings\FileUnlock.restext" />
-    <EmbeddedResource Include="Strings\FileUnlock.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\Hosts.en-us.restext" />
-    <EmbeddedResource Include="Strings\Hosts.restext" />
-    <EmbeddedResource Include="Strings\Hosts.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\IconExtract.en-us.restext" />
-    <EmbeddedResource Include="Strings\IconExtract.restext" />
-    <EmbeddedResource Include="Strings\IconExtract.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\Loaf.en-us.restext" />
-    <EmbeddedResource Include="Strings\Loaf.restext" />
-    <EmbeddedResource Include="Strings\Loaf.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\LoopbackManager.en-us.restext" />
-    <EmbeddedResource Include="Strings\LoopbackManager.restext" />
-    <EmbeddedResource Include="Strings\LoopbackManager.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\NotificationTip.en-us.restext" />
-    <EmbeddedResource Include="Strings\NotificationTip.restext" />
-    <EmbeddedResource Include="Strings\NotificationTip.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\PriExtract.en-us.restext" />
-    <EmbeddedResource Include="Strings\PriExtract.restext" />
-    <EmbeddedResource Include="Strings\PriExtract.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\Resources.resx" Generator="PublicResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
+		<EmbeddedResource Include="Strings\ExtensionName.en-us.restext" />
+		<EmbeddedResource Include="Strings\ExtensionName.restext" />
+		<EmbeddedResource Include="Strings\ExtensionName.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\FileCertificate.en-us.restext" />
+		<EmbeddedResource Include="Strings\FileCertificate.restext" />
+		<EmbeddedResource Include="Strings\FileCertificate.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\FileManager.en-us.restext" />
+		<EmbeddedResource Include="Strings\FileManager.restext" />
+		<EmbeddedResource Include="Strings\FileManager.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\FileName.en-us.restext" />
+		<EmbeddedResource Include="Strings\FileName.restext" />
+		<EmbeddedResource Include="Strings\FileName.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\FileProperties.en-us.restext" />
+		<EmbeddedResource Include="Strings\FileProperties.restext" />
+		<EmbeddedResource Include="Strings\FileProperties.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\FileUnlock.en-us.restext" />
+		<EmbeddedResource Include="Strings\FileUnlock.restext" />
+		<EmbeddedResource Include="Strings\FileUnlock.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\Hosts.en-us.restext" />
+		<EmbeddedResource Include="Strings\Hosts.restext" />
+		<EmbeddedResource Include="Strings\Hosts.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\IconExtract.en-us.restext" />
+		<EmbeddedResource Include="Strings\IconExtract.restext" />
+		<EmbeddedResource Include="Strings\IconExtract.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\Loaf.en-us.restext" />
+		<EmbeddedResource Include="Strings\Loaf.restext" />
+		<EmbeddedResource Include="Strings\Loaf.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\LoopbackManager.en-us.restext" />
+		<EmbeddedResource Include="Strings\LoopbackManager.restext" />
+		<EmbeddedResource Include="Strings\LoopbackManager.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\NotificationTip.en-us.restext" />
+		<EmbeddedResource Include="Strings\NotificationTip.restext" />
+		<EmbeddedResource Include="Strings\NotificationTip.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\PriExtract.en-us.restext" />
+		<EmbeddedResource Include="Strings\PriExtract.restext" />
+		<EmbeddedResource Include="Strings\PriExtract.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\Resources.resx" Generator="PublicResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
 		<EmbeddedResource Include="Strings\ScheduledTaskManager.en-us.restext" />
 		<EmbeddedResource Include="Strings\ScheduledTaskManager.restext" />
 		<EmbeddedResource Include="Strings\ScheduledTaskManager.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\Settings.en-us.restext" />
-    <EmbeddedResource Include="Strings\Settings.restext" />
-    <EmbeddedResource Include="Strings\Settings.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\SettingsAbout.en-us.restext" />
-    <EmbeddedResource Include="Strings\SettingsAbout.restext" />
-    <EmbeddedResource Include="Strings\SettingsAbout.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\SettingsAdvanced.en-us.restext" />
-    <EmbeddedResource Include="Strings\SettingsAdvanced.restext" />
-    <EmbeddedResource Include="Strings\SettingsAdvanced.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\SettingsGeneral.en-us.restext" />
-    <EmbeddedResource Include="Strings\SettingsGeneral.restext" />
-    <EmbeddedResource Include="Strings\SettingsGeneral.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\ShellMenu.en-us.restext" />
-    <EmbeddedResource Include="Strings\ShellMenu.restext" />
-    <EmbeddedResource Include="Strings\ShellMenu.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\ShellMenuEdit.en-us.restext" />
-    <EmbeddedResource Include="Strings\ShellMenuEdit.restext" />
-    <EmbeddedResource Include="Strings\ShellMenuEdit.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\ShellMenuList.en-us.restext" />
-    <EmbeddedResource Include="Strings\ShellMenuList.restext" />
-    <EmbeddedResource Include="Strings\ShellMenuList.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\SimulateUpdate.en-us.restext" />
-    <EmbeddedResource Include="Strings\SimulateUpdate.restext" />
-    <EmbeddedResource Include="Strings\SimulateUpdate.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\ThemeSwitch.en-us.restext" />
-    <EmbeddedResource Include="Strings\ThemeSwitch.restext" />
-    <EmbeddedResource Include="Strings\ThemeSwitch.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\ThemeSwitchTray.en-us.restext" />
-    <EmbeddedResource Include="Strings\ThemeSwitchTray.restext" />
-    <EmbeddedResource Include="Strings\ThemeSwitchTray.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\UpdateManager.en-us.restext" />
-    <EmbeddedResource Include="Strings\UpdateManager.restext" />
-    <EmbeddedResource Include="Strings\UpdateManager.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\UpperAndLowerCase.en-us.restext" />
-    <EmbeddedResource Include="Strings\UpperAndLowerCase.restext" />
-    <EmbeddedResource Include="Strings\UpperAndLowerCase.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\Window.en-us.restext" />
-    <EmbeddedResource Include="Strings\Window.restext" />
-    <EmbeddedResource Include="Strings\Window.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\WinFR.en-us.restext" />
-    <EmbeddedResource Include="Strings\WinFR.restext" />
-    <EmbeddedResource Include="Strings\WinFR.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\WinSAT.en-us.restext" />
-    <EmbeddedResource Include="Strings\WinSAT.restext" />
-    <EmbeddedResource Include="Strings\WinSAT.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\Settings.en-us.restext" />
+		<EmbeddedResource Include="Strings\Settings.restext" />
+		<EmbeddedResource Include="Strings\Settings.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\SettingsAbout.en-us.restext" />
+		<EmbeddedResource Include="Strings\SettingsAbout.restext" />
+		<EmbeddedResource Include="Strings\SettingsAbout.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\SettingsAdvanced.en-us.restext" />
+		<EmbeddedResource Include="Strings\SettingsAdvanced.restext" />
+		<EmbeddedResource Include="Strings\SettingsAdvanced.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\SettingsGeneral.en-us.restext" />
+		<EmbeddedResource Include="Strings\SettingsGeneral.restext" />
+		<EmbeddedResource Include="Strings\SettingsGeneral.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\ShellMenu.en-us.restext" />
+		<EmbeddedResource Include="Strings\ShellMenu.restext" />
+		<EmbeddedResource Include="Strings\ShellMenu.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\ShellMenuEdit.en-us.restext" />
+		<EmbeddedResource Include="Strings\ShellMenuEdit.restext" />
+		<EmbeddedResource Include="Strings\ShellMenuEdit.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\ShellMenuList.en-us.restext" />
+		<EmbeddedResource Include="Strings\ShellMenuList.restext" />
+		<EmbeddedResource Include="Strings\ShellMenuList.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\SimulateUpdate.en-us.restext" />
+		<EmbeddedResource Include="Strings\SimulateUpdate.restext" />
+		<EmbeddedResource Include="Strings\SimulateUpdate.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\ThemeSwitch.en-us.restext" />
+		<EmbeddedResource Include="Strings\ThemeSwitch.restext" />
+		<EmbeddedResource Include="Strings\ThemeSwitch.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\ThemeSwitchTray.en-us.restext" />
+		<EmbeddedResource Include="Strings\ThemeSwitchTray.restext" />
+		<EmbeddedResource Include="Strings\ThemeSwitchTray.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\UpdateManager.en-us.restext" />
+		<EmbeddedResource Include="Strings\UpdateManager.restext" />
+		<EmbeddedResource Include="Strings\UpdateManager.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\UpperAndLowerCase.en-us.restext" />
+		<EmbeddedResource Include="Strings\UpperAndLowerCase.restext" />
+		<EmbeddedResource Include="Strings\UpperAndLowerCase.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\Window.en-us.restext" />
+		<EmbeddedResource Include="Strings\Window.restext" />
+		<EmbeddedResource Include="Strings\Window.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\WinFR.en-us.restext" />
+		<EmbeddedResource Include="Strings\WinFR.restext" />
+		<EmbeddedResource Include="Strings\WinFR.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\WinSAT.en-us.restext" />
+		<EmbeddedResource Include="Strings\WinSAT.restext" />
+		<EmbeddedResource Include="Strings\WinSAT.zh-hans.restext" />
 
-    <None Remove="Assets\PowerToolbox.ico" CopyToOutputDirectory="Never" />
-    <None Remove="Styles\XamlIslands\Button.xaml" />
-    <None Remove="Styles\XamlIslands\DateTimePicker.xaml" />
-    <None Remove="Styles\XamlIslands\InfoBar.xaml" />
-    <None Remove="Styles\XamlIslands\NavigationView.xaml" />
-    <None Remove="Styles\XamlIslands\TextBlock.xaml" />
-    <None Remove="Styles\XamlIslands\TimePicker.xaml" />
-    <None Remove="Views\Dialogs\AppInformationDialog.xaml" />
-    <None Remove="Views\Dialogs\ClosingWindowDialog.xaml" />
-    <None Remove="Views\Dialogs\DownloadSettingsDialog.xaml" />
-    <None Remove="Views\Dialogs\FileCheckDialog.xaml" />
-    <None Remove="Views\Dialogs\FileUnlockFailedDialog.xaml" />
-    <None Remove="Views\Dialogs\LicenseDialog.xaml" />
-    <None Remove="Views\Dialogs\NeedElevatedDialog.xaml" />
-    <None Remove="Views\Dialogs\OpenStartupTaskFailedDialog.xaml" />
-    <None Remove="Views\Dialogs\OperationFailedDialog.xaml" />
-    <None Remove="Views\Dialogs\RebootDialog.xaml" />
-    <None Remove="Views\Dialogs\RestartAppsDialog.xaml" />
-    <None Remove="Views\Dialogs\ScheduledTaskFailedDialog.xaml" />
+		<None Remove="Assets\PowerToolbox.ico" CopyToOutputDirectory="Never" />
+		<None Remove="Styles\Main\DateTimePicker.xaml" />
+		<None Remove="Styles\Main\InfoBar.xaml" />
+		<None Remove="Styles\Main\NavigationView.xaml" />
+		<None Remove="Styles\Main\ProgressRing.xaml" />
+		<None Remove="Styles\Main\TextBlock.xaml" />
+		<None Remove="Styles\Main\TimePicker.xaml" />
+		<None Remove="Views\Dialogs\AddDownloadTaskDialog.xaml" />
+		<None Remove="Views\Dialogs\AppInformationDialog.xaml" />
+		<None Remove="Views\Dialogs\ClosingWindowDialog.xaml" />
+		<None Remove="Views\Dialogs\DownloadSettingsDialog.xaml" />
+		<None Remove="Views\Dialogs\FileCheckDialog.xaml" />
+		<None Remove="Views\Dialogs\FileUnlockFailedDialog.xaml" />
+		<None Remove="Views\Dialogs\LicenseDialog.xaml" />
+		<None Remove="Views\Dialogs\NeedElevatedDialog.xaml" />
+		<None Remove="Views\Dialogs\OpenStartupTaskFailedDialog.xaml" />
+		<None Remove="Views\Dialogs\OperationFailedDialog.xaml" />
+		<None Remove="Views\Dialogs\RebootDialog.xaml" />
+		<None Remove="Views\Dialogs\RestartAppsDialog.xaml" />
+		<None Remove="Views\Dialogs\ScheduledTaskFailedDialog.xaml" />
 		<None Remove="Views\Dialogs\UpdateAppDialog.xaml" />
-    <None Remove="Views\NotificationTips\CopyPasteNotificationTip.xaml" />
-    <None Remove="Views\NotificationTips\OperationResultNotificationTip.xaml" />
-    <None Remove="Views\Pages\AllToolsPage.xaml" />
-    <None Remove="Views\Pages\ContextMenuManagerPage.xaml" />
-    <None Remove="Views\Pages\DataEncryptPage.xaml" />
-    <None Remove="Views\Pages\DataEncryptVertifyPage.xaml" />
-    <None Remove="Views\Pages\DataVertifyPage.xaml" />
-    <None Remove="Views\Pages\DownloadManagerPage.xaml" />
-    <None Remove="Views\Pages\DriverManagerPage.xaml" />
-    <None Remove="Views\Pages\ExtensionNamePage.xaml" />
-    <None Remove="Views\Pages\FileCertificatePage.xaml" />
-    <None Remove="Views\Pages\FileManagerPage.xaml" />
-    <None Remove="Views\Pages\FileNamePage.xaml" />
-    <None Remove="Views\Pages\FilePropertiesPage.xaml" />
-    <None Remove="Views\Pages\FileUnlockPage.xaml" />
-    <None Remove="Views\Pages\HostsPage.xaml" />
-    <None Remove="Views\Pages\IconExtractPage.xaml" />
-    <None Remove="Views\Pages\LoafPage.xaml" />
-    <None Remove="Views\Pages\LoopbackManagerPage.xaml" />
-    <None Remove="Views\Pages\MainPage.xaml" />
-    <None Remove="Views\Pages\PriExtractPage.xaml" />
+		<None Remove="Views\NotificationTips\CopyPasteNotificationTip.xaml" />
+		<None Remove="Views\NotificationTips\OperationResultNotificationTip.xaml" />
+		<None Remove="Views\Pages\AllToolsPage.xaml" />
+		<None Remove="Views\Pages\ContextMenuManagerPage.xaml" />
+		<None Remove="Views\Pages\DataEncryptPage.xaml" />
+		<None Remove="Views\Pages\DataEncryptVertifyPage.xaml" />
+		<None Remove="Views\Pages\DataVertifyPage.xaml" />
+		<None Remove="Views\Pages\DownloadManagerPage.xaml" />
+		<None Remove="Views\Pages\DriverManagerPage.xaml" />
+		<None Remove="Views\Pages\ExtensionNamePage.xaml" />
+		<None Remove="Views\Pages\FileCertificatePage.xaml" />
+		<None Remove="Views\Pages\FileManagerPage.xaml" />
+		<None Remove="Views\Pages\FileNamePage.xaml" />
+		<None Remove="Views\Pages\FilePropertiesPage.xaml" />
+		<None Remove="Views\Pages\FileUnlockPage.xaml" />
+		<None Remove="Views\Pages\HostsPage.xaml" />
+		<None Remove="Views\Pages\IconExtractPage.xaml" />
+		<None Remove="Views\Pages\LoafPage.xaml" />
+		<None Remove="Views\Pages\LoopbackManagerPage.xaml" />
+		<None Remove="Views\Pages\MainPage.xaml" />
+		<None Remove="Views\Pages\PriExtractPage.xaml" />
 		<None Remove="Views\Pages\ScheduledTaskManagerPage.xaml" />
-    <None Remove="Views\Pages\SettingsAboutPage.xaml" />
-    <None Remove="Views\Pages\SettingsAdvancedPage.xaml" />
-    <None Remove="Views\Pages\SettingsGeneralPage.xaml" />
-    <None Remove="Views\Pages\SettingsPage.xaml" />
-    <None Remove="Views\Pages\ShellMenuEditPage.xaml" />
-    <None Remove="Views\Pages\ShellMenuListPage.xaml" />
-    <None Remove="Views\Pages\ShellMenuPage.xaml" />
-    <None Remove="Views\Pages\SimulateUpdatePage.xaml" />
-    <None Remove="Views\Pages\ThemeSwitch.xaml" />
-    <None Remove="Views\Pages\UpdateManagerPage.xaml" />
-    <None Remove="Views\Pages\UpperAndLowerCasePage.xaml" />
-    <None Remove="Views\Pages\WinFRPage.xaml" />
-    <None Remove="Views\Pages\WinSATPage.xaml" />
-    <None Remove="XamlIslandsApp.xaml" />
-
-    <PackageReference Include="Microsoft.UI.Xaml" Version="2.8.7" GeneratePathProperty="true" IncludeAssets="none" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools.MSIX" Version="1.7.20250829.1" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
-    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.6584" />
-    <PackageReference Include="Mile.Aria2" Version="1.0.230" />
-    <PackageReference Include="System.Private.Uri" Version="4.3.2" />
-
-    <Page Include="Styles\XamlIslands\Button.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Styles\XamlIslands\DateTimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Styles\XamlIslands\InfoBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Styles\XamlIslands\NavigationView.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Styles\XamlIslands\TextBlock.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Styles\XamlIslands\TimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Dialogs\AppInformationDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Dialogs\ClosingWindowDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Dialogs\DownloadSettingsDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Dialogs\FileCheckDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Dialogs\FileUnlockFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Dialogs\LicenseDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Dialogs\NeedElevatedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Dialogs\OpenStartupTaskFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Dialogs\OperationFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Dialogs\RebootDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Dialogs\RestartAppsDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Dialogs\ScheduledTaskFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<None Remove="Views\Pages\SettingsAboutPage.xaml" />
+		<None Remove="Views\Pages\SettingsAdvancedPage.xaml" />
+		<None Remove="Views\Pages\SettingsGeneralPage.xaml" />
+		<None Remove="Views\Pages\SettingsPage.xaml" />
+		<None Remove="Views\Pages\ShellMenuEditPage.xaml" />
+		<None Remove="Views\Pages\ShellMenuListPage.xaml" />
+		<None Remove="Views\Pages\ShellMenuPage.xaml" />
+		<None Remove="Views\Pages\ThemeSwitch.xaml" />
+		<None Remove="Views\Pages\UpdateManagerPage.xaml" />
+		<None Remove="Views\Pages\UpperAndLowerCasePage.xaml" />
+		<None Remove="Views\Pages\WinFRPage.xaml" />
+		<None Remove="Views\Pages\WinSATPage.xaml" />
+		<None Remove="Views\Windows\MainWindow.xaml" />
+		<None Remove="Views\Windows\SimulateUpdateWindow.xaml" />
+		<None Remove="MainApp.xaml" />
+		
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6584" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools.MSIX" Version="1.7.20250829.1" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+		<PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.6584" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.Base" Version="1.8.250831001" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.Foundation" Version="1.8.250906002" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="1.8.250906004" GeneratePathProperty="True" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="1.8.251003001" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="1.8.250906003" GeneratePathProperty="True" IncludeAssets="None" PrivateAssets="all" />
+		<PackageReference Include="Mile.Aria2" Version="1.0.230" />
+		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
+		
+		<Page Include="Styles\Main\DateTimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Styles\Main\InfoBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Styles\Main\NavigationView.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Styles\Main\ProgressRing.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Styles\Main\TextBlock.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Styles\Main\TimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\AddDownloadTaskDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\AppInformationDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\ClosingWindowDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\DownloadSettingsDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\FileCheckDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\FileUnlockFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\LicenseDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\NeedElevatedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\OpenStartupTaskFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\OperationFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\RebootDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\RestartAppsDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\ScheduledTaskFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Dialogs\UpdateAppDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\NotificationTips\CopyPasteNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\NotificationTips\OperationResultNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\AllToolsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\ContextMenuManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\DataEncryptPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\DataEncryptVertifyPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\DataVertifyPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\DownloadManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\DriverManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\NotificationTips\CopyPasteNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\NotificationTips\OperationResultNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\AllToolsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\ContextMenuManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\DataEncryptPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\DataEncryptVertifyPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\DataVertifyPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\DownloadManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\DriverManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\ExperimentalFeatureManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\ExtensionNamePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\FileCertificatePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\FileManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\FileNamePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\FilePropertiesPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\FileUnlockPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\ExtensionNamePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\FileCertificatePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\FileManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\FileNamePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\FilePropertiesPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\FileUnlockPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\HostsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\IconExtractPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\LoafPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\LoopbackManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\MainPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\PriExtractPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\LoafPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\LoopbackManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\PriExtractPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\ScheduledTaskManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\SettingsAboutPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\SettingsAdvancedPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\SettingsGeneralPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\SettingsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\ShellMenuPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\ShellMenuPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\ShellMenuEditPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\ShellMenuListPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-		<Page Include="Views\Pages\SimulateUpdatePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\ThemeSwitchPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\UpdateManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\UpperAndLowerCasePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\WinFRPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\WinSATPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\ThemeSwitchPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\UpdateManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\UpperAndLowerCasePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\WinFRPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Pages\WinSATPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Windows\SimulateUpdateWindow.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Windows\MainWindow.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 
-    <ProjectCapability Include="Uwp" />
+		<ProjectCapability Include="Uwp" />
 
-    <PRIResource Include="Strings\en-us\Resources.resjson" />
-    <PRIResource Include="Strings\zh-hans\Resources.resjson" />
-
-    <Reference Include="Microsoft.UI.Xaml" HintPath="$(PkgMicrosoft_UI_Xaml)\lib\uap10.0\Microsoft.UI.Xaml.winmd" IsWinMDFile="true" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.ServiceProcess" />
-  </ItemGroup>
+		<PRIResource Include="Strings\en-us\Resources.resjson" />
+		<PRIResource Include="Strings\zh-hans\Resources.resjson" />
+		
+		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_InteractiveExperiences)\metadata\10.0.18362.0\Microsoft.UI.winmd" />
+		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Text.winmd" />
+		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Xaml.winmd" />
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="System.Device" />
+		<Reference Include="System.Management" />
+		<Reference Include="System.Net.Http" />
+		<Reference Include="System.ServiceProcess" />
+		<Reference Include="System.Windows.Forms" />
+	</ItemGroup>
 </Project>

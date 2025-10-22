@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:collection="using:System.Collections"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -48,19 +47,19 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <controls:BreadcrumbBar
+        <BreadcrumbBar
             Grid.Row="0"
             Margin="30,0,30,0"
             VerticalAlignment="Center"
             ItemClicked="{x:Bind OnItemClicked}"
             ItemsSource="{x:Bind BreadCollection}">
 
-            <controls:BreadcrumbBar.ItemTemplate>
+            <BreadcrumbBar.ItemTemplate>
                 <DataTemplate x:DataType="collection:DictionaryEntry">
                     <TextBlock FontSize="22" Text="{x:Bind system:Convert.ToString(Value)}" />
                 </DataTemplate>
-            </controls:BreadcrumbBar.ItemTemplate>
-        </controls:BreadcrumbBar>
+            </BreadcrumbBar.ItemTemplate>
+        </BreadcrumbBar>
 
         <Frame
             x:Name="ShellMenuFrame"

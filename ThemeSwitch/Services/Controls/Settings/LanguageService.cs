@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Windows.Forms;
 using ThemeSwitch.Extensions.DataType.Constant;
 using ThemeSwitch.Services.Root;
 using ThemeSwitch.WindowsAPI.ComTypes;
 using ThemeSwitch.WindowsAPI.PInvoke.Shlwapi;
+using ThemeSwitch.WindowsAPI.PInvoke.User32;
 using Windows.Globalization;
 
 namespace ThemeSwitch.Services.Controls.Settings
@@ -26,7 +27,7 @@ namespace ThemeSwitch.Services.Controls.Settings
 
         public static KeyValuePair<string, string> AppLanguage { get; private set; }
 
-        public static RightToLeft RightToLeft { get; private set; }
+        public static FlowDirection FlowDirection { get; private set; }
 
         private static readonly List<string> AppLanguagesList = [];
 
@@ -132,7 +133,8 @@ namespace ThemeSwitch.Services.Controls.Settings
                 if (existResult)
                 {
                     SetLanguage(currentLanguage);
-                    RightToLeft = currentCultureInfo.TextInfo.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+                    FlowDirection = currentCultureInfo.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+                    User32Library.SetProcessDefaultLayout(Convert.ToUInt32(currentCultureInfo.TextInfo.IsRightToLeft));
                     return currentLanguage;
                 }
                 else
@@ -143,7 +145,8 @@ namespace ThemeSwitch.Services.Controls.Settings
                     if (existResult)
                     {
                         SetLanguage(currentParentLanguage);
-                        RightToLeft = currentParentCultureInfo.TextInfo.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+                        FlowDirection = currentParentCultureInfo.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+                        User32Library.SetProcessDefaultLayout(Convert.ToUInt32(currentParentCultureInfo.TextInfo.IsRightToLeft));
                         return currentParentLanguage;
                     }
 
@@ -152,14 +155,15 @@ namespace ThemeSwitch.Services.Controls.Settings
                     {
                         SetLanguage(defaultAppLanguage);
                         CultureInfo defaultCultureInfo = CultureInfo.GetCultureInfo(defaultAppLanguage.Key);
-                        RightToLeft = defaultCultureInfo.TextInfo.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+                        FlowDirection = defaultCultureInfo.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+                        User32Library.SetProcessDefaultLayout(Convert.ToUInt32(defaultCultureInfo.TextInfo.IsRightToLeft));
                         return defaultAppLanguage;
                     }
                 }
             }
 
             CultureInfo savedCultureInfo = CultureInfo.GetCultureInfo(language);
-            RightToLeft = savedCultureInfo.TextInfo.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+            FlowDirection = savedCultureInfo.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
             return LanguageList.Find(item => string.Equals(language, item.Key, StringComparison.OrdinalIgnoreCase));
         }
 

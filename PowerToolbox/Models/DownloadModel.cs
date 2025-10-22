@@ -1,6 +1,6 @@
-﻿using PowerToolbox.Extensions.DataType.Enums;
+﻿using Microsoft.UI.Xaml.Media;
+using PowerToolbox.Extensions.DataType.Enums;
 using System.ComponentModel;
-using Windows.UI.Xaml.Media;
 
 // 抑制 CA1822 警告
 #pragma warning disable CA1822

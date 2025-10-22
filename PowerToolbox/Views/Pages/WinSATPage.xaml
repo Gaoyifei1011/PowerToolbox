@@ -2,7 +2,7 @@
     x:Class="PowerToolbox.Views.Pages.WinSATPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -75,6 +75,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Component')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind ComponentHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -92,6 +93,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('AssessmentItems')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind AssessmentItemsHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -109,6 +111,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('SubScore')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind SubScoreHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -126,6 +129,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('BasicScore')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind BasicScoreHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -157,6 +161,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Processor')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind ProcessorText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -174,6 +179,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('ProcessorItem')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind ProcessorItemText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -191,6 +197,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind ProcessorSubScore, Mode=OneWay}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind ProcessorSubScoreText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -222,6 +229,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Memory')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind MemoryText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -239,6 +247,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('MemoryItem')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind MemoryItemText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -256,6 +265,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind MemorySubScore, Mode=OneWay}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind MemorySubScoreText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -287,6 +297,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Graphics')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind GraphicsText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -304,6 +315,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GraphicsItem')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind GraphicsItemText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -321,6 +333,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind GraphicsSubScore, Mode=OneWay}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind GraphicsSubScoreText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -352,6 +365,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GamingGraphics')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind GamingGraphicsText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -369,6 +383,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GamingGraphicsItem')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind GamingGraphicsItemText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -386,6 +401,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind GamingGraphicsSubScore, Mode=OneWay}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind GamingGraphicsSubScoreText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -417,6 +433,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('PrimaryDisk')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind PrimaryDiskText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -434,6 +451,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('PrimaryDiskItem')}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind PrimaryDiskItemText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -451,6 +469,7 @@
                         <ToolTip
                             MaxWidth="9999"
                             Content="{x:Bind PrimaryDiskSubScore, Mode=OneWay}"
+                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                             Visibility="{x:Bind PrimaryDiskSubScoreText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -500,7 +519,7 @@
         </Grid>
 
         <!--  系统评估状态信息栏  -->
-        <controls:InfoBar
+        <InfoBar
             Grid.Row="3"
             Height="50"
             Margin="30,0,30,3"
@@ -556,7 +575,7 @@
         </Grid>
 
         <!--  小提示  -->
-        <controls:Expander
+        <Expander
             Grid.Row="5"
             Margin="30,0,30,3"
             Padding="0"
@@ -565,7 +584,7 @@
             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
             IsExpanded="True">
 
-            <controls:Expander.Header>
+            <Expander.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -583,9 +602,9 @@
                         VerticalAlignment="Center"
                         Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Tips')}" />
                 </Grid>
-            </controls:Expander.Header>
+            </Expander.Header>
 
-            <controls:Expander.Content>
+            <Expander.Content>
                 <StackPanel Margin="0">
                     <TextBlock
                         Margin="44,10,16,5"
@@ -602,7 +621,7 @@
                         TextAlignment="Justify"
                         TextWrapping="Wrap" />
                 </StackPanel>
-            </controls:Expander.Content>
-        </controls:Expander>
+            </Expander.Content>
+        </Expander>
     </Grid>
 </Page>

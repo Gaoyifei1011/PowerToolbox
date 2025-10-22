@@ -1,10 +1,10 @@
-﻿using PowerToolbox.Extensions.DataType.Constant;
+﻿using Microsoft.UI.Composition.SystemBackdrops;
+using Microsoft.UI.Xaml;
+using PowerToolbox.Extensions.DataType.Constant;
 using PowerToolbox.Services.Root;
-using PowerToolbox.Views.Backdrop;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Windows.UI.Xaml;
 
 namespace PowerToolbox.Services.Settings
 {

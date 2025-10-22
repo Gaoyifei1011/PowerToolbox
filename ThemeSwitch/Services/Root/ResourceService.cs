@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 using System.Resources;
+using System.Windows.Forms;
 
 namespace ThemeSwitch.Services.Root
 {
@@ -9,7 +10,7 @@ namespace ThemeSwitch.Services.Root
     /// </summary>
     public static class ResourceService
     {
-        private static Assembly CurrentAssembly { get; } = Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath), "PowerToolbox.exe"));
+        private static Assembly CurrentAssembly { get; } = Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "PowerToolbox.exe"));
 
         public static ResourceManager ThemeSwitchTrayResource { get; } = new("PowerToolbox.Strings.ThemeSwitchTray", CurrentAssembly);
     }

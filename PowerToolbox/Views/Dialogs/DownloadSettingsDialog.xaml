@@ -2,7 +2,7 @@
     x:Class="PowerToolbox.Views.Dialogs.DownloadSettingsDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
@@ -61,7 +61,10 @@
                 </Button.Content>
 
                 <ToolTipService.ToolTip>
-                    <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('Close')}" />
+                    <ToolTip
+                        MaxWidth="9999"
+                        Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('Close')}"
+                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                 </ToolTipService.ToolTip>
             </Button>
         </Grid>
@@ -132,7 +135,7 @@
                             </Hyperlink>
 
                             <ToolTipService.ToolTip>
-                                <ToolTip MaxWidth="9999">
+                                <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
                                     <StackPanel HorizontalAlignment="Stretch">
                                         <TextBlock Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('FileStoragePath')}" />
                                         <TextBlock Text="{x:Bind DownloadFolder, Mode=OneWay}" />
@@ -144,12 +147,12 @@
                         </TextBlock>
                     </StackPanel>
 
-                    <controls:DropDownButton
+                    <DropDownButton
                         Grid.Column="2"
                         Margin="6,0,0,0"
                         Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ChangeFolder')}">
 
-                        <controls:DropDownButton.Flyout>
+                        <DropDownButton.Flyout>
                             <MenuFlyout Placement="Bottom">
                                 <MenuFlyoutItem
                                     Click="{x:Bind OnDownloadChangeFolderClicked}"
@@ -188,8 +191,8 @@
                                     Tag="Custom"
                                     Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('Custom')}" />
                             </MenuFlyout>
-                        </controls:DropDownButton.Flyout>
-                    </controls:DropDownButton>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
                 </Grid>
 
                 <!--  下载引擎方式设置  -->
@@ -238,41 +241,42 @@
                                 <ToolTip
                                     MaxWidth="9999"
                                     Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('DoEngineModeDescription')}"
+                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                     Visibility="{x:Bind DoEngineModeDescription.IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </TextBlock>
                     </StackPanel>
 
-                    <controls:DropDownButton
+                    <DropDownButton
                         Grid.Column="2"
                         VerticalAlignment="Center"
                         Content="{x:Bind DoEngineMode.Value, Mode=OneWay}">
 
-                        <controls:DropDownButton.Flyout>
+                        <DropDownButton.Flyout>
                             <MenuFlyout Placement="Bottom">
-                                <controls:RadioMenuFlyoutItem
+                                <RadioMenuFlyoutItem
                                     Click="{x:Bind OnDoEngineModeSelectClicked}"
                                     GroupName="DoEngineModeModeRadioGroup"
                                     IsChecked="{x:Bind x:Object.Equals(DoEngineMode.Key, DoEngineModeList[0].Key), Mode=OneWay}"
                                     Tag="{x:Bind DoEngineModeList[0]}"
                                     Text="{x:Bind DoEngineModeList[0].Value}" />
 
-                                <controls:RadioMenuFlyoutItem
+                                <RadioMenuFlyoutItem
                                     Click="{x:Bind OnDoEngineModeSelectClicked}"
                                     GroupName="DoEngineModeModeRadioGroup"
                                     IsChecked="{x:Bind x:Object.Equals(DoEngineMode.Key, DoEngineModeList[1].Key), Mode=OneWay}"
                                     Tag="{x:Bind DoEngineModeList[1]}"
                                     Text="{x:Bind DoEngineModeList[1].Value}" />
 
-                                <controls:RadioMenuFlyoutItem
+                                <RadioMenuFlyoutItem
                                     Click="{x:Bind OnDoEngineModeSelectClicked}"
                                     GroupName="DoEngineModeModeRadioGroup"
                                     IsChecked="{x:Bind x:Object.Equals(DoEngineMode.Key, DoEngineModeList[2].Key), Mode=OneWay}"
                                     Tag="{x:Bind DoEngineModeList[2]}"
                                     Text="{x:Bind DoEngineModeList[2].Value}" />
                             </MenuFlyout>
-                        </controls:DropDownButton.Flyout>
-                    </controls:DropDownButton>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
                 </Grid>
 
                 <!--  传递优化设置  -->
@@ -321,6 +325,7 @@
                                 <ToolTip
                                     MaxWidth="9999"
                                     Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('DeliveryOptimizationDescription')}"
+                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                     Visibility="{x:Bind DeliveryOptimizationDescription.IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </TextBlock>
@@ -379,6 +384,7 @@
                                 <ToolTip
                                     MaxWidth="9999"
                                     Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('Aria2ConfigurationDescription')}"
+                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                     Visibility="{x:Bind Aria2ConfigurationDescription.IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </TextBlock>

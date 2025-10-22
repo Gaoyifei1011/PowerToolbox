@@ -1,3 +1,8 @@
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Navigation;
+using PowerToolbox.Extensions.Collections;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Models;
@@ -19,10 +24,6 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
 #pragma warning disable CA1806,CA1822,IDE0060
@@ -123,7 +124,7 @@ namespace PowerToolbox.Views.Pages
 
         private List<LoopbackModel> LoopbackList { get; } = [];
 
-        private ObservableCollection<LoopbackModel> LoopbackCollection { get; } = [];
+        private WinRTObservableCollection<LoopbackModel> LoopbackCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -162,7 +163,7 @@ namespace PowerToolbox.Views.Pages
                 IsSaved = true;
             }
 
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackCollection.Count(item => item.IsSelected));
+            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, (LoopbackCollection as ObservableCollection<LoopbackModel>).Count(item => item.IsSelected));
         }
 
         /// <summary>
@@ -264,7 +265,7 @@ namespace PowerToolbox.Views.Pages
 
                 LoopbackResultKind = LoopbackCollection.Count is 0 ? LoopbackResultKind.Failed : LoopbackResultKind.Successfully;
                 LoopbackFailedContent = LoopbackCollection.Count is 0 ? LoopbackEmptyWithConditionDescriptionString : string.Empty;
-                LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackCollection.Count(item => item.IsSelected));
+                LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, (LoopbackCollection as ObservableCollection<LoopbackModel>).Count(item => item.IsSelected));
             }
         }
 
@@ -286,7 +287,7 @@ namespace PowerToolbox.Views.Pages
 
                 LoopbackResultKind = LoopbackCollection.Count is 0 ? LoopbackResultKind.Failed : LoopbackResultKind.Successfully;
                 LoopbackFailedContent = LoopbackCollection.Count is 0 ? LoopbackEmptyWithConditionDescriptionString : string.Empty;
-                LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackCollection.Count(item => item.IsSelected));
+                LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, (LoopbackCollection as ObservableCollection<LoopbackModel>).Count(item => item.IsSelected));
             }
         }
 
@@ -301,7 +302,7 @@ namespace PowerToolbox.Views.Pages
                 loopbackItem.IsSelected = true;
             }
 
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackCollection.Count(item => item.IsSelected));
+            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, (LoopbackCollection as ObservableCollection<LoopbackModel>).Count(item => item.IsSelected));
         }
 
         /// <summary>
@@ -315,7 +316,7 @@ namespace PowerToolbox.Views.Pages
                 loopbackItem.IsSelected = false;
             }
 
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackCollection.Count(item => item.IsSelected));
+            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, (LoopbackCollection as ObservableCollection<LoopbackModel>).Count(item => item.IsSelected));
         }
 
         /// <summary>
@@ -334,7 +335,7 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackCollection.Count(item => item.IsSelected));
+            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, (LoopbackCollection as ObservableCollection<LoopbackModel>).Count(item => item.IsSelected));
             await SetLoopbackStateAsync(selectedLoopbackList);
         }
 
@@ -353,7 +354,7 @@ namespace PowerToolbox.Views.Pages
                 loopbackItem.IsSelected = loopbackItem.IsOldChecked;
             }
 
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackCollection.Count(item => item.IsSelected));
+            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, (LoopbackCollection as ObservableCollection<LoopbackModel>).Count(item => item.IsSelected));
         }
 
         /// <summary>
@@ -375,7 +376,7 @@ namespace PowerToolbox.Views.Pages
             IsSaved = false;
             LoopbackList.Clear();
             LoopbackCollection.Clear();
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackCollection.Count(item => item.IsSelected));
+            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, (LoopbackCollection as ObservableCollection<LoopbackModel>).Count(item => item.IsSelected));
 
             List<LoopbackModel> loopbackList = await Task.Run(() =>
             {
@@ -550,7 +551,7 @@ namespace PowerToolbox.Views.Pages
 
                 LoopbackResultKind = LoopbackCollection.Count is 0 ? LoopbackResultKind.Failed : LoopbackResultKind.Successfully;
                 LoopbackFailedContent = LoopbackCollection.Count is 0 ? LoopbackEmptyWithConditionDescriptionString : string.Empty;
-                LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackCollection.Count(item => item.IsSelected));
+                LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, (LoopbackCollection as ObservableCollection<LoopbackModel>).Count(item => item.IsSelected));
             }
         }
 

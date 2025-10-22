@@ -2,7 +2,7 @@
     x:Class="PowerToolbox.Views.Pages.WinFRPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -107,7 +107,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <controls:ProgressRing
+                        <ProgressRing
                             Grid.Column="0"
                             VerticalAlignment="Center"
                             IsActive="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDriveLoadCompleted), Mode=OneWay}" />
@@ -169,7 +169,7 @@
                                             TextLineBounds="TrimToCapHeight"
                                             TextWrapping="NoWrap" />
 
-                                        <controls:ProgressBar
+                                        <ProgressBar
                                             Grid.ColumnSpan="2"
                                             MinHeight="8"
                                             Margin="0,2,4,2"
@@ -192,13 +192,14 @@
                                                 <ToolTip
                                                     MaxWidth="9999"
                                                     Content="{x:Bind Space}"
+                                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                     Visibility="{Binding ElementName=SpaceText, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
                                     </StackPanel>
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip MaxWidth="9999">
+                                        <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
@@ -228,7 +229,7 @@
                 </Grid>
 
                 <!--  Windows 文件恢复未安装提示  -->
-                <controls:InfoBar
+                <InfoBar
                     Grid.Row="2"
                     Height="50"
                     Margin="30,0,30,3"
@@ -239,16 +240,16 @@
                     Style="{StaticResource InfoBarStyle}"
                     Visibility="{x:Bind GetInfoBarState(IsManualCloseInfoBar, IsWinFRInstalled), Mode=OneWay}">
 
-                    <controls:InfoBar.ActionButton>
+                    <InfoBar.ActionButton>
                         <Button
                             HorizontalAlignment="Right"
                             Click="{x:Bind OnInstallWinFRClicked}"
                             Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('InstallWinFR')}" />
-                    </controls:InfoBar.ActionButton>
-                </controls:InfoBar>
+                    </InfoBar.ActionButton>
+                </InfoBar>
 
                 <!--  驱动器恢复设置  -->
-                <controls:Expander
+                <Expander
                     Grid.Row="3"
                     Margin="30,0,30,3"
                     Padding="0"
@@ -257,7 +258,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -277,13 +278,13 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RecoverySettings')}" />
 
-                            <controls:SplitButton
+                            <SplitButton
                                 Grid.Column="2"
                                 VerticalAlignment="Center"
                                 Click="{x:Bind OnRecoveryClicked}"
                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('Recovery')}">
 
-                                <controls:SplitButton.Flyout>
+                                <SplitButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
                                         <MenuFlyoutItem Click="{x:Bind OnCopyWinFRCommandClicked}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('CopyWinFRCommand')}">
                                             <MenuFlyoutItem.Icon>
@@ -297,12 +298,12 @@
                                             </MenuFlyoutItem.Icon>
                                         </MenuFlyoutItem>
                                     </MenuFlyout>
-                                </controls:SplitButton.Flyout>
-                            </controls:SplitButton>
+                                </SplitButton.Flyout>
+                            </SplitButton>
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel Padding="0">
                             <!--  保存的文件夹  -->
                             <Grid
@@ -337,7 +338,7 @@
                                         </Hyperlink>
 
                                         <ToolTipService.ToolTip>
-                                            <ToolTip MaxWidth="9999">
+                                            <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
                                                 <StackPanel HorizontalAlignment="Stretch">
                                                     <TextBlock Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('FileStoragePath')}" />
                                                     <TextBlock Text="{x:Bind SaveFolder, Mode=OneWay}" />
@@ -375,18 +376,18 @@
                                     VerticalAlignment="Center"
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RecoveryMode')}" />
 
-                                <controls:DropDownButton Grid.Column="1" Content="{x:Bind SelectedRecoveryMode.Value, Mode=OneWay}">
+                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedRecoveryMode.Value, Mode=OneWay}">
 
-                                    <controls:DropDownButton.Flyout>
+                                    <DropDownButton.Flyout>
                                         <MenuFlyout Placement="Bottom">
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnRecoveryModeClicked}"
                                                 GroupName="RecoveryModeRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedRecoveryMode.Key, RecoveryModeList[0].Key), Mode=OneWay}"
                                                 Tag="{x:Bind RecoveryModeList[0]}"
                                                 Text="{x:Bind system:Convert.ToString(RecoveryModeList[0].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnRecoveryModeClicked}"
                                                 GroupName="RecoveryModeRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedRecoveryMode.Key, RecoveryModeList[1].Key), Mode=OneWay}"
@@ -395,29 +396,29 @@
 
                                             <MenuFlyoutSeparator />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnRecoveryModeClicked}"
                                                 GroupName="RecoveryModeRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedRecoveryMode.Key, RecoveryModeList[2].Key), Mode=OneWay}"
                                                 Tag="{x:Bind RecoveryModeList[2]}"
                                                 Text="{x:Bind system:Convert.ToString(RecoveryModeList[2].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnRecoveryModeClicked}"
                                                 GroupName="RecoveryModeRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedRecoveryMode.Key, RecoveryModeList[3].Key), Mode=OneWay}"
                                                 Tag="{x:Bind RecoveryModeList[3]}"
                                                 Text="{x:Bind system:Convert.ToString(RecoveryModeList[3].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnRecoveryModeClicked}"
                                                 GroupName="RecoveryModeRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedRecoveryMode.Key, RecoveryModeList[4].Key), Mode=OneWay}"
                                                 Tag="{x:Bind RecoveryModeList[4]}"
                                                 Text="{x:Bind system:Convert.ToString(RecoveryModeList[4].Value)}" />
                                         </MenuFlyout>
-                                    </controls:DropDownButton.Flyout>
-                                </controls:DropDownButton>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
                             </Grid>
 
                             <MenuFlyoutSeparator />
@@ -487,7 +488,7 @@
                                         </Hyperlink>
 
                                         <ToolTipService.ToolTip>
-                                            <ToolTip MaxWidth="9999">
+                                            <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
                                                 <StackPanel HorizontalAlignment="Stretch">
                                                     <TextBlock Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('FileStoragePath')}" />
                                                     <TextBlock Text="{x:Bind LogSaveFolder, Mode=OneWay}" />
@@ -505,11 +506,11 @@
                                     Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SelectFolder')}" />
                             </Grid>
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
 
                 <!--  常规模式恢复选项  -->
-                <controls:Expander
+                <Expander
                     Grid.Row="4"
                     Margin="30,0,30,3"
                     Padding="0"
@@ -519,7 +520,7 @@
                     IsExpanded="True"
                     Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.Key, RecoveryModeList[0].Key), Mode=OneWay}">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -538,9 +539,9 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularModeRecoveryOptions')}" />
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel Padding="0">
                             <!--  恢复内容  -->
                             <Grid
@@ -576,6 +577,7 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularRestoreContentDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind RegularRestoreContentDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
@@ -626,45 +628,46 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularDuplicatedFileOptionDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind RegularDuplicatedFileOptionDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
                                 </StackPanel>
 
-                                <controls:DropDownButton Grid.Column="1" Content="{x:Bind SelectedRegularDuplicatedFileOption.Value, Mode=OneWay}">
+                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedRegularDuplicatedFileOption.Value, Mode=OneWay}">
 
-                                    <controls:DropDownButton.Flyout>
+                                    <DropDownButton.Flyout>
                                         <MenuFlyout Placement="Bottom">
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnRegularDuplicatedFileOptionClicked}"
                                                 GroupName="RegularDuplicatedFileOptionRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedRegularDuplicatedFileOption.Key, RegularDuplicatedFileOptionList[0].Key), Mode=OneWay}"
                                                 Tag="{x:Bind RegularDuplicatedFileOptionList[0]}"
                                                 Text="{x:Bind system:Convert.ToString(RegularDuplicatedFileOptionList[0].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnRegularDuplicatedFileOptionClicked}"
                                                 GroupName="RegularDuplicatedFileOptionRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedRegularDuplicatedFileOption.Key, RegularDuplicatedFileOptionList[1].Key), Mode=OneWay}"
                                                 Tag="{x:Bind RegularDuplicatedFileOptionList[1]}"
                                                 Text="{x:Bind system:Convert.ToString(RegularDuplicatedFileOptionList[1].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnRegularDuplicatedFileOptionClicked}"
                                                 GroupName="RegularDuplicatedFileOptionRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedRegularDuplicatedFileOption.Key, RegularDuplicatedFileOptionList[2].Key), Mode=OneWay}"
                                                 Tag="{x:Bind RegularDuplicatedFileOptionList[2]}"
                                                 Text="{x:Bind system:Convert.ToString(RegularDuplicatedFileOptionList[2].Value)}" />
                                         </MenuFlyout>
-                                    </controls:DropDownButton.Flyout>
-                                </controls:DropDownButton>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
                             </Grid>
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
 
                 <!--  广泛模式恢复选项  -->
-                <controls:Expander
+                <Expander
                     Grid.Row="4"
                     Margin="30,0,30,3"
                     Padding="0"
@@ -674,7 +677,7 @@
                     IsExpanded="True"
                     Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.Key, RecoveryModeList[1].Key), Mode=OneWay}">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -693,9 +696,9 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveModeRecoveryOptions')}" />
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel Padding="0">
                             <!--  恢复内容  -->
                             <Grid
@@ -731,6 +734,7 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveRestoreContentDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind ExtensiveRestoreContentDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
@@ -781,45 +785,46 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveDuplicatedFileOptionDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind ExtensiveDuplicatedFileOptionDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
                                 </StackPanel>
 
-                                <controls:DropDownButton Grid.Column="1" Content="{x:Bind SelectedExtensiveDuplicatedFileOption.Value, Mode=OneWay}">
+                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedExtensiveDuplicatedFileOption.Value, Mode=OneWay}">
 
-                                    <controls:DropDownButton.Flyout>
+                                    <DropDownButton.Flyout>
                                         <MenuFlyout Placement="Bottom">
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnExtensiveDuplicatedFileOptionClicked}"
                                                 GroupName="ExtensiveDuplicatedFileOptionRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedExtensiveDuplicatedFileOption.Key, ExtensiveDuplicatedFileOptionList[0].Key), Mode=OneWay}"
                                                 Tag="{x:Bind ExtensiveDuplicatedFileOptionList[0]}"
                                                 Text="{x:Bind system:Convert.ToString(ExtensiveDuplicatedFileOptionList[0].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnExtensiveDuplicatedFileOptionClicked}"
                                                 GroupName="ExtensiveDuplicatedFileOptionRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedExtensiveDuplicatedFileOption.Key, ExtensiveDuplicatedFileOptionList[1].Key), Mode=OneWay}"
                                                 Tag="{x:Bind ExtensiveDuplicatedFileOptionList[1]}"
                                                 Text="{x:Bind system:Convert.ToString(ExtensiveDuplicatedFileOptionList[1].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnExtensiveDuplicatedFileOptionClicked}"
                                                 GroupName="ExtensiveDuplicatedFileOptionRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedExtensiveDuplicatedFileOption.Key, ExtensiveDuplicatedFileOptionList[2].Key), Mode=OneWay}"
                                                 Tag="{x:Bind ExtensiveDuplicatedFileOptionList[2]}"
                                                 Text="{x:Bind system:Convert.ToString(ExtensiveDuplicatedFileOptionList[2].Value)}" />
                                         </MenuFlyout>
-                                    </controls:DropDownButton.Flyout>
-                                </controls:DropDownButton>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
                             </Grid>
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
 
                 <!--  NTFS 模式恢复选项  -->
-                <controls:Expander
+                <Expander
                     Grid.Row="4"
                     Margin="30,0,30,3"
                     Padding="0"
@@ -829,7 +834,7 @@
                     IsExpanded="True"
                     Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.Key, RecoveryModeList[2].Key), Mode=OneWay}">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -848,9 +853,9 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSModeRecoveryOptions')}" />
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel Padding="0">
                             <!--  恢复内容  -->
                             <Grid
@@ -886,6 +891,7 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSRestoreContentDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind NTFSRestoreContentDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
@@ -998,38 +1004,39 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSDuplicatedFileOptionDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind NTFSDuplicatedFileOptionDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
                                 </StackPanel>
 
-                                <controls:DropDownButton Grid.Column="1" Content="{x:Bind SelectedNTFSDuplicatedFileOption.Value, Mode=OneWay}">
+                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedNTFSDuplicatedFileOption.Value, Mode=OneWay}">
 
-                                    <controls:DropDownButton.Flyout>
+                                    <DropDownButton.Flyout>
                                         <MenuFlyout Placement="Bottom">
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnNTFSDuplicatedFileOptionClicked}"
                                                 GroupName="NTFSDuplicatedFileOptionRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedNTFSDuplicatedFileOption.Key, NTFSDuplicatedFileOptionList[0].Key), Mode=OneWay}"
                                                 Tag="{x:Bind NTFSDuplicatedFileOptionList[0]}"
                                                 Text="{x:Bind system:Convert.ToString(NTFSDuplicatedFileOptionList[0].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnNTFSDuplicatedFileOptionClicked}"
                                                 GroupName="NTFSDuplicatedFileOptionRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedNTFSDuplicatedFileOption.Key, NTFSDuplicatedFileOptionList[1].Key), Mode=OneWay}"
                                                 Tag="{x:Bind NTFSDuplicatedFileOptionList[1]}"
                                                 Text="{x:Bind system:Convert.ToString(NTFSDuplicatedFileOptionList[1].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnNTFSDuplicatedFileOptionClicked}"
                                                 GroupName="NTFSDuplicatedFileOptionRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedNTFSDuplicatedFileOption.Key, NTFSDuplicatedFileOptionList[2].Key), Mode=OneWay}"
                                                 Tag="{x:Bind NTFSDuplicatedFileOptionList[2]}"
                                                 Text="{x:Bind system:Convert.ToString(NTFSDuplicatedFileOptionList[2].Value)}" />
                                         </MenuFlyout>
-                                    </controls:DropDownButton.Flyout>
-                                </controls:DropDownButton>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
                             </Grid>
 
                             <MenuFlyoutSeparator />
@@ -1131,6 +1138,7 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSCustomFileFilterTypeDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind NTFSCustomFileFilterTypeDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
@@ -1145,11 +1153,11 @@
                                     TextChanged="{x:Bind OnNTFSCustomFileFilterTypeTextChanged}" />
                             </Grid>
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
 
                 <!--  段模式恢复选项  -->
-                <controls:Expander
+                <Expander
                     Grid.Row="4"
                     Margin="30,0,30,3"
                     Padding="0"
@@ -1159,7 +1167,7 @@
                     IsExpanded="True"
                     Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.Key, RecoveryModeList[3].Key), Mode=OneWay}">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -1178,9 +1186,9 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentModeRecoveryOptions')}" />
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel Padding="0">
                             <!--  恢复内容  -->
                             <Grid
@@ -1216,6 +1224,7 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentRestoreContentDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind SegmentRestoreContentDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
@@ -1328,38 +1337,39 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentDuplicatedFileOptionDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind SegmentDuplicatedFileOptionDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
                                 </StackPanel>
 
-                                <controls:DropDownButton Grid.Column="1" Content="{x:Bind SelectedSegmentDuplicatedFileOption.Value, Mode=OneWay}">
+                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedSegmentDuplicatedFileOption.Value, Mode=OneWay}">
 
-                                    <controls:DropDownButton.Flyout>
+                                    <DropDownButton.Flyout>
                                         <MenuFlyout Placement="Bottom">
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnSegmentDuplicatedFileOptionClicked}"
                                                 GroupName="SegmentDuplicatedFileOptionRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedSegmentDuplicatedFileOption.Key, SegmentDuplicatedFileOptionList[0].Key), Mode=OneWay}"
                                                 Tag="{x:Bind SegmentDuplicatedFileOptionList[0]}"
                                                 Text="{x:Bind system:Convert.ToString(SegmentDuplicatedFileOptionList[0].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnSegmentDuplicatedFileOptionClicked}"
                                                 GroupName="SegmentDuplicatedFileOptionRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedSegmentDuplicatedFileOption.Key, SegmentDuplicatedFileOptionList[1].Key), Mode=OneWay}"
                                                 Tag="{x:Bind SegmentDuplicatedFileOptionList[1]}"
                                                 Text="{x:Bind system:Convert.ToString(SegmentDuplicatedFileOptionList[1].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnSegmentDuplicatedFileOptionClicked}"
                                                 GroupName="SegmentDuplicatedFileOptionRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedSegmentDuplicatedFileOption.Key, SegmentDuplicatedFileOptionList[2].Key), Mode=OneWay}"
                                                 Tag="{x:Bind SegmentDuplicatedFileOptionList[2]}"
                                                 Text="{x:Bind system:Convert.ToString(SegmentDuplicatedFileOptionList[2].Value)}" />
                                         </MenuFlyout>
-                                    </controls:DropDownButton.Flyout>
-                                </controls:DropDownButton>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
                             </Grid>
 
                             <MenuFlyoutSeparator />
@@ -1461,6 +1471,7 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentCustomFileFilterTypeDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind SegmentCustomFileFilterTypeDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
@@ -1512,12 +1523,13 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentSourceDeviceNumberSectorsDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind SegmentSourceDeviceNumberSectorsDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
                                 </StackPanel>
 
-                                <controls:NumberBox
+                                <NumberBox
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     LargeChange="1"
@@ -1564,12 +1576,13 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentSourceDeviceClusterSizeDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind SegmentSourceDeviceClusterSizeDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
                                 </StackPanel>
 
-                                <controls:NumberBox
+                                <NumberBox
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     LargeChange="1"
@@ -1579,11 +1592,11 @@
                                     Value="{x:Bind SegmentSourceDeviceClusterSize, Mode=OneWay}" />
                             </Grid>
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
 
                 <!--  签名模式恢复选项  -->
-                <controls:Expander
+                <Expander
                     Grid.Row="4"
                     Margin="30,0,30,3"
                     Padding="0"
@@ -1593,7 +1606,7 @@
                     IsExpanded="True"
                     Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.Key, RecoveryModeList[4].Key), Mode=OneWay}">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -1612,9 +1625,9 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureModeRecoveryOptions')}" />
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel Padding="0">
                             <!--  恢复特定扩展组  -->
                             <Grid
@@ -1682,6 +1695,7 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureRestoreSpecificExtensionGroupsTypeDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind SignatureRestoreSpecificExtensionGroupsTypeDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
@@ -1733,12 +1747,13 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureSourceDeviceNumberSectorsDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind SignatureSourceDeviceNumberSectorsDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
                                 </StackPanel>
 
-                                <controls:NumberBox
+                                <NumberBox
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     LargeChange="1"
@@ -1785,12 +1800,13 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureSourceDeviceClusterSizeDescription')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind SignatureSourceDeviceClusterSizeDescription.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
                                 </StackPanel>
 
-                                <controls:NumberBox
+                                <NumberBox
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     LargeChange="1"
@@ -1800,11 +1816,11 @@
                                     Value="{x:Bind SignatureSourceDeviceClusterSize, Mode=OneWay}" />
                             </Grid>
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
 
                 <!--  模式选择建议  -->
-                <controls:Expander
+                <Expander
                     Grid.Row="5"
                     Margin="30,0,30,3"
                     Padding="0"
@@ -1813,7 +1829,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -1831,9 +1847,9 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RecoveryModeSuggestion')}" />
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <ListView
                             CornerRadius="0"
                             ItemsSource="{x:Bind RecoveryModeSuggestionList}"
@@ -1874,6 +1890,7 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('FileSystem')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind FileSystemHeaderText.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
@@ -1892,6 +1909,7 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('Circumstances')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind CircumstancesHeaderText.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
@@ -1910,6 +1928,7 @@
                                             <ToolTip
                                                 MaxWidth="9999"
                                                 Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RecommendedMode')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                 Visibility="{x:Bind RecommendedModeHeaderText.IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
@@ -1947,6 +1966,7 @@
                                                 <ToolTip
                                                     MaxWidth="9999"
                                                     Content="{x:Bind FileSystem}"
+                                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                     Visibility="{Binding ElementName=FileSystemText, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
@@ -1969,6 +1989,7 @@
                                                 <ToolTip
                                                     MaxWidth="9999"
                                                     Content="{x:Bind Circumstances}"
+                                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                     Visibility="{Binding ElementName=CircumstancesText, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
@@ -1991,6 +2012,7 @@
                                                 <ToolTip
                                                     MaxWidth="9999"
                                                     Content="{x:Bind RecommendedMode}"
+                                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                     Visibility="{Binding ElementName=RecommendedModeText, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
@@ -1998,11 +2020,11 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
 
                 <!--  其他选项说明  -->
-                <controls:Expander
+                <Expander
                     Grid.Row="6"
                     Margin="30,0,30,3"
                     Padding="0"
@@ -2011,7 +2033,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -2029,9 +2051,9 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('OtherOptionsInstruction')}" />
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel>
                             <TextBlock
                                 Margin="44,10,16,10"
@@ -2173,8 +2195,8 @@
                                 TextAlignment="Justify"
                                 TextWrapping="Wrap" />
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
             </Grid>
         </ScrollViewer>
     </Grid>

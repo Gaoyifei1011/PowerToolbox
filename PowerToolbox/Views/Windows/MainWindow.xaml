@@ -1,0 +1,780 @@
+﻿<Window
+    x:Class="PowerToolbox.Views.Windows.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
+    xmlns:converter="using:PowerToolbox.Helpers.Converters"
+    xmlns:rootservice="using:PowerToolbox.Services.Root"
+    xmlns:settingsservice="using:PowerToolbox.Services.Settings"
+    Title="{x:Bind WindowTitle, Mode=OneWay}"
+    SystemBackdrop="{x:Bind WindowSystemBackdrop, Mode=OneWay}">
+
+    <Page
+        x:Name="MainPage"
+        ActualThemeChanged="{x:Bind OnActualThemeChanged}"
+        FlowDirection="{x:Bind settingsservice:LanguageService.FlowDirection}"
+        KeyDown="{x:Bind OnKeyDown}"
+        RequestedTheme="{x:Bind WindowTheme, Mode=OneWay}">
+
+        <Page.Resources>
+            <ResourceDictionary>
+                <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent" />
+                <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent" />
+                <Thickness x:Key="NavigationViewContentMargin">0,30,0,0</Thickness>
+
+                <MenuFlyout x:Name="TitlebarMenuFlyout" Placement="BottomEdgeAlignedLeft">
+
+                    <MenuFlyoutItem
+                        Height="28"
+                        Padding="11,0"
+                        Click="{x:Bind OnRestoreClicked}"
+                        FontSize="12"
+                        IsEnabled="{x:Bind IsWindowMaximized, Mode=OneWay}"
+                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Restore')}">
+
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Margin="6" Glyph="&#xE923;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+
+                    <MenuFlyoutItem
+                        Height="28"
+                        Padding="11,0"
+                        Click="{x:Bind OnMoveClicked}"
+                        FontSize="12"
+                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsWindowMaximized), Mode=OneWay}"
+                        Tag="{x:Bind TitlebarMenuFlyout}"
+                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Move')}" />
+
+                    <MenuFlyoutItem
+                        Height="28"
+                        Padding="11,0"
+                        Click="{x:Bind OnSizeClicked}"
+                        FontSize="12"
+                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsWindowMaximized), Mode=OneWay}"
+                        Tag="{x:Bind TitlebarMenuFlyout}"
+                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Size')}" />
+
+                    <MenuFlyoutItem
+                        Height="28"
+                        Padding="11,0"
+                        Click="{x:Bind OnMinimizeClicked}"
+                        FontSize="12"
+                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Minimize')}">
+
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Margin="6" Glyph="&#xE921;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+
+                    <MenuFlyoutItem
+                        Height="28"
+                        Padding="11,0"
+                        Click="{x:Bind OnMaximizeClicked}"
+                        FontSize="12"
+                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsWindowMaximized), Mode=OneWay}"
+                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Maximize')}">
+
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Margin="6" Glyph="&#xE922;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+
+                    <MenuFlyoutSeparator Width="200" />
+
+                    <MenuFlyoutItem
+                        Height="28"
+                        Padding="11,0"
+                        Click="{x:Bind OnCloseClicked}"
+                        FontSize="12"
+                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Close')}">
+
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Margin="6" Glyph="&#xE8BB;" />
+                        </MenuFlyoutItem.Icon>
+
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Key="F4" Modifiers="Menu" />
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                </MenuFlyout>
+            </ResourceDictionary>
+        </Page.Resources>
+
+        <Grid>
+            <!--  应用标题栏内容  -->
+            <TitleBar
+                x:Name="AppTitlebar"
+                Title="{x:Bind WindowTitle, Mode=OneWay}"
+                Height="48"
+                Margin="35,0,0,0"
+                VerticalAlignment="Top">
+
+                <TitleBar.LeftHeader>
+                    <ImageIcon
+                        MaxWidth="16"
+                        MaxHeight="16"
+                        Margin="14,0,2,0"
+                        Source="ms-appx:///Assets/Square44x44Logo.altform-unplated_targetsize-256.png" />
+                </TitleBar.LeftHeader>
+            </TitleBar>
+
+            <NavigationView
+                x:Name="MainNavigationView"
+                AlwaysShowHeader="False"
+                BackRequested="{x:Bind OnBackRequested}"
+                Canvas.ZIndex="0"
+                Collapsed="{x:Bind OnCollapsed}"
+                Expanding="{x:Bind OnExpanding}"
+                IsBackButtonVisible="Visible"
+                IsBackEnabled="{x:Bind IsBackEnabled, Mode=OneWay}"
+                IsPaneToggleButtonVisible="False"
+                IsSettingsVisible="False"
+                ItemInvoked="{x:Bind OnItemInvoked}"
+                Loaded="{x:Bind OnLoaded}"
+                OpenPaneLength="220"
+                PaneDisplayMode="Left"
+                SelectedItem="{x:Bind SelectedItem, Mode=OneWay}">
+
+                <NavigationView.MenuItems>
+                    <!--  所有工具  -->
+                    <NavigationViewItem Tag="AllTools">
+
+                        <NavigationViewItem.Icon>
+                            <ImageIcon Source="ms-appx:///Assets/ControlIcon/AllTools.png" />
+                        </NavigationViewItem.Icon>
+
+                        <NavigationViewItem.Content>
+                            <TextBlock
+                                x:Name="WindowAllToolsText"
+                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('AllTools')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                        </NavigationViewItem.Content>
+
+                        <ToolTipService.ToolTip>
+                            <ToolTip
+                                MaxWidth="9999"
+                                Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('AllTools')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                Visibility="{x:Bind WindowAllToolsText.IsTextTrimmed, Mode=OneWay}" />
+                        </ToolTipService.ToolTip>
+                    </NavigationViewItem>
+
+                    <NavigationViewItemSeparator Margin="0,0,6,0" />
+
+                    <!--  休闲工具  -->
+                    <NavigationViewItem Tag="Relaxation">
+
+                        <NavigationViewItem.Icon>
+                            <ImageIcon Source="ms-appx:///Assets/ControlIcon/Relaxation.png" />
+                        </NavigationViewItem.Icon>
+
+                        <NavigationViewItem.Content>
+                            <TextBlock
+                                x:Name="WindowRelaxationText"
+                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Relaxation')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                        </NavigationViewItem.Content>
+
+                        <ToolTipService.ToolTip>
+                            <ToolTip
+                                MaxWidth="9999"
+                                Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('Relaxation')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                Visibility="{x:Bind WindowRelaxationText.IsTextTrimmed, Mode=OneWay}" />
+                        </ToolTipService.ToolTip>
+
+                        <NavigationViewItem.MenuItems>
+                            <NavigationViewItem Tag="Loaf">
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowLoafText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Loaf')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/Loaf.png" />
+                                </NavigationViewItem.Icon>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('Loaf')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowLoafText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+                        </NavigationViewItem.MenuItems>
+                    </NavigationViewItem>
+
+                    <!--  文件工具  -->
+                    <NavigationViewItem Tag="File">
+
+                        <NavigationViewItem.Icon>
+                            <ImageIcon Source="ms-appx:///Assets/ControlIcon/File.png" />
+                        </NavigationViewItem.Icon>
+
+                        <NavigationViewItem.Content>
+                            <TextBlock
+                                x:Name="WindowFileText"
+                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('File')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                        </NavigationViewItem.Content>
+
+                        <ToolTipService.ToolTip>
+                            <ToolTip
+                                MaxWidth="9999"
+                                Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('File')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                Visibility="{x:Bind WindowFileText.IsTextTrimmed, Mode=OneWay}" />
+                        </ToolTipService.ToolTip>
+
+                        <NavigationViewItem.MenuItems>
+                            <NavigationViewItem Tag="FileManager">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/FileManager.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowFileManagerText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('FileManager')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('FileManager')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowFileManagerText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="FileCertificate">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/FileCertificate.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowFileCertificateText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('FileCertificate')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('FileCertificate')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowFileCertificateText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="FileUnlock">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/FileUnlock.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowFileUnlockText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('FileUnlock')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('FileUnlock')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowFileUnlockText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+                        </NavigationViewItem.MenuItems>
+                    </NavigationViewItem>
+
+                    <!--  资源工具  -->
+                    <NavigationViewItem Tag="Resource">
+
+                        <NavigationViewItem.Icon>
+                            <ImageIcon Source="ms-appx:///Assets/ControlIcon/Resource.png" />
+                        </NavigationViewItem.Icon>
+
+                        <NavigationViewItem.Content>
+                            <TextBlock
+                                x:Name="WindowResourceText"
+                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Resource')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                        </NavigationViewItem.Content>
+
+                        <ToolTipService.ToolTip>
+                            <ToolTip
+                                MaxWidth="9999"
+                                Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('Resource')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                Visibility="{x:Bind WindowResourceText.IsTextTrimmed, Mode=OneWay}" />
+                        </ToolTipService.ToolTip>
+
+                        <NavigationViewItem.MenuItems>
+                            <NavigationViewItem Tag="DataEncryptVertify">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/DataEncryptVertify.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowDataEncryptVertifyText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataEncryptVertify')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataEncryptVertify')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowDataEncryptVertifyText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="DownloadManager">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/DownloadManager.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowDownloadManagerText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DownloadManager')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('DownloadManager')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowDownloadManagerText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="IconExtract">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/IconExtract.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowIconExtractText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('IconExtract')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('IconExtract')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowIconExtractText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="PriExtract">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/PriExtract.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowPriExtractText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('PriExtract')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('PriExtract')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowPriExtractText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+                        </NavigationViewItem.MenuItems>
+                    </NavigationViewItem>
+
+                    <!--  个性化工具  -->
+                    <NavigationViewItem Tag="Personalize">
+
+                        <NavigationViewItem.Icon>
+                            <ImageIcon Source="ms-appx:///Assets/ControlIcon/Personalize.png" />
+                        </NavigationViewItem.Icon>
+
+                        <NavigationViewItem.Content>
+                            <TextBlock
+                                x:Name="WindowPersonalizeText"
+                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Personalize')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                        </NavigationViewItem.Content>
+
+                        <ToolTipService.ToolTip>
+                            <ToolTip
+                                MaxWidth="9999"
+                                Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('Personalize')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                Visibility="{x:Bind WindowPersonalizeText.IsTextTrimmed, Mode=OneWay}" />
+                        </ToolTipService.ToolTip>
+
+                        <NavigationViewItem.MenuItems>
+                            <NavigationViewItem Tag="ThemeSwitch">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/ThemeSwitch.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="ThemeSwitchText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ThemeSwitch')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('ThemeSwitch')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind ThemeSwitchText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="ShellMenu">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/ShellMenu.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowShellMenuText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ShellMenu')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('ShellMenu')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowShellMenuText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="ContextMenuManager">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/ContextMenuManager.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowContextMenuManagerText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ContextMenuManager')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('ContextMenuManager')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowContextMenuManagerText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="ExperimentalFeatureManager">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/ExperimentalFeatureManager.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowExperimentalFeatureManagerText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ExperimentalFeatureManager')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('ExperimentalFeatureManager')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowExperimentalFeatureManagerText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+                        </NavigationViewItem.MenuItems>
+                    </NavigationViewItem>
+
+                    <!--  系统工具  -->
+                    <NavigationViewItem Tag="System">
+
+                        <NavigationViewItem.Icon>
+                            <ImageIcon Source="ms-appx:///Assets/ControlIcon/System.png" />
+                        </NavigationViewItem.Icon>
+
+                        <NavigationViewItem.Content>
+                            <TextBlock
+                                x:Name="WindowSystemText"
+                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('System')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                        </NavigationViewItem.Content>
+
+                        <ToolTipService.ToolTip>
+                            <ToolTip
+                                MaxWidth="9999"
+                                Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('System')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                Visibility="{x:Bind WindowSystemText.IsTextTrimmed, Mode=OneWay}" />
+                        </ToolTipService.ToolTip>
+
+                        <NavigationViewItem.MenuItems>
+                            <NavigationViewItem Tag="LoopbackManager">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/LoopbackManager.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowLoopbackManagerText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('LoopbackManager')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('LoopbackManager')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowLoopbackManagerText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="ScheduledTaskManager">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/ScheduledTaskManager.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowScheduledTaskManagerText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ScheduledTaskManager')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('ScheduledTaskManager')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowScheduledTaskManagerText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="Hosts" Visibility="Collapsed">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/Hosts.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowHostsText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Hosts')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('Hosts')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowHostsText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="DriverManager">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/DriverManager.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowDriverManagerText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DriverManager')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('DriverManager')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowDriverManagerText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="UpdateManager">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/UpdateManager.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowUpdateManagerText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('UpdateManager')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('UpdateManager')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowUpdateManagerText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="WinFR">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/WinFR.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowWinFRText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('WinFR')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('WinFR')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowWinFRText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+
+                            <NavigationViewItem Tag="WinSAT">
+
+                                <NavigationViewItem.Icon>
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/WinSAT.png" />
+                                </NavigationViewItem.Icon>
+
+                                <NavigationViewItem.Content>
+                                    <TextBlock
+                                        x:Name="WindowWinSATText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('WinSAT')}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                </NavigationViewItem.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('WinSAT')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Visibility="{x:Bind WindowWinSATText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </NavigationViewItem>
+                        </NavigationViewItem.MenuItems>
+                    </NavigationViewItem>
+                </NavigationView.MenuItems>
+
+                <NavigationView.FooterMenuItems>
+                    <NavigationViewItem Tag="Settings">
+
+                        <NavigationViewItem.Icon>
+                            <ImageIcon Source="ms-appx:///Assets/ControlIcon/Settings.png" />
+                        </NavigationViewItem.Icon>
+
+                        <NavigationViewItem.Content>
+                            <TextBlock
+                                x:Name="WindowSettingsText"
+                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Settings')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap" />
+                        </NavigationViewItem.Content>
+
+                        <ToolTipService.ToolTip>
+                            <ToolTip
+                                MaxWidth="9999"
+                                Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('Settings')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                Visibility="{x:Bind WindowSettingsText.IsTextTrimmed, Mode=OneWay}" />
+                        </ToolTipService.ToolTip>
+                    </NavigationViewItem>
+                </NavigationView.FooterMenuItems>
+
+                <Frame Navigated="{x:Bind OnNavigated}" NavigationFailed="{x:Bind OnNavigationFailed}">
+                    <Frame.ContentTransitions>
+                        <TransitionCollection>
+                            <NavigationThemeTransition />
+                        </TransitionCollection>
+                    </Frame.ContentTransitions>
+                </Frame>
+            </NavigationView>
+
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState x:Name="BackgroundDefault">
+                        <VisualState.Setters>
+                            <Setter Target="MainPage.Background" Value="{ThemeResource DefaultBackgroundColorBrush}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="BackgroundTransparent" />
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Grid>
+    </Page>
+</Window>

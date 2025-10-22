@@ -1,4 +1,9 @@
-﻿using PowerToolbox.Extensions.DataType.Class;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Navigation;
+using PowerToolbox.Extensions.Collections;
+using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
@@ -14,10 +19,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // 抑制 CA1822，IDE0060 警告
 #pragma warning disable CA1822,IDE0060
@@ -128,7 +129,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private ObservableCollection<ShellMenuItemModel> ShellMenuItemCollection { get; } = [];
+        private WinRTObservableCollection<ShellMenuItemModel> ShellMenuItemCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -211,7 +212,7 @@ namespace PowerToolbox.Views.Pages
                 }
             });
 
-            if (MainWindow.Current.Content is MainPage mainPage && mainPage.GetFrameContent() is ShellMenuPage shellMenuPage)
+            if (MainWindow.Current.GetFrameContent() is ShellMenuPage shellMenuPage)
             {
                 shellMenuPage.NavigateTo(shellMenuPage.PageList[1], new List<object>
                 {
@@ -328,7 +329,7 @@ namespace PowerToolbox.Views.Pages
                 return;
             }
 
-            if (MainWindow.Current.Content is MainPage mainPage && mainPage.GetFrameContent() is ShellMenuPage shellMenuPage)
+            if (MainWindow.Current.GetFrameContent() is ShellMenuPage shellMenuPage)
             {
                 shellMenuPage.NavigateTo(shellMenuPage.PageList[1], new List<object>
                 {
@@ -377,13 +378,13 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnMenuSettingsClicked(object sender, RoutedEventArgs args)
         {
-            (MainWindow.Current.Content as MainPage).NavigateTo(typeof(SettingsPage));
+            MainWindow.Current.NavigateTo(typeof(SettingsPage));
         }
 
         /// <summary>
         /// 点击选中项触发的事件
         /// </summary>
-        private void OnItemInvoked(Microsoft.UI.Xaml.Controls.TreeView sender, Microsoft.UI.Xaml.Controls.TreeViewItemInvokedEventArgs args)
+        private void OnItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
         {
             if (args.InvokedItem is ShellMenuItemModel shellMenuItem)
             {

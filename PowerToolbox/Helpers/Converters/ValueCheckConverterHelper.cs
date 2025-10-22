@@ -1,5 +1,6 @@
-﻿using PowerToolbox.Extensions.DataType.Enums;
-using Windows.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Extensions.DataType.Enums;
 
 namespace PowerToolbox.Helpers.Converters
 {
@@ -8,9 +9,9 @@ namespace PowerToolbox.Helpers.Converters
     /// </summary>
     public static class ValueCheckConverterHelper
     {
-        public static Visibility IsCurrentItem(object selectedItem, object item)
+        public static Visibility IsCurrentItem(SelectorBarItem selectedItem, SelectorBarItem comparedItem)
         {
-            return Equals(selectedItem, item) ? Visibility.Visible : Visibility.Collapsed;
+            return Equals(selectedItem, comparedItem) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
@@ -43,6 +44,14 @@ namespace PowerToolbox.Helpers.Converters
         public static Visibility CheckUpdateAppResultKind(UpdateAppResultKind updateAppReusltKind, UpdateAppResultKind comparedUpdateAppReusltKind)
         {
             return Equals(updateAppReusltKind, comparedUpdateAppReusltKind) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 检查模拟更新类型
+        /// </summary>
+        public static Visibility CheckSimulateUpdateKind(SimulateUpdateKind simulateUpdateKind, SimulateUpdateKind comparedSimulateUpdateKind)
+        {
+            return Equals(simulateUpdateKind, comparedSimulateUpdateKind) ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

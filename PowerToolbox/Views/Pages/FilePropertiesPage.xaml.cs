@@ -1,4 +1,8 @@
-﻿using PowerToolbox.Extensions.DataType.Enums;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using PowerToolbox.Extensions.Collections;
+using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Dialogs;
@@ -7,7 +11,6 @@ using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.Tracing;
 using System.IO;
@@ -17,9 +20,6 @@ using System.Windows.Forms;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.System;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
 
 // 抑制 IDE0060 警告
 #pragma warning disable IDE0060
@@ -236,7 +236,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private ObservableCollection<OldAndNewPropertiesModel> FilePropertiesCollection { get; } = [];
+        private WinRTObservableCollection<OldAndNewPropertiesModel> FilePropertiesCollection { get; } = [];
 
         private List<OperationFailedModel> OperationFailedList { get; } = [];
 
@@ -252,7 +252,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 设置拖动的数据的可视表示形式
         /// </summary>
-        protected override void OnDragOver(global::Windows.UI.Xaml.DragEventArgs args)
+        protected override void OnDragOver(Microsoft.UI.Xaml.DragEventArgs args)
         {
             base.OnDragOver(args);
             if (IsModifyingNow)
@@ -277,7 +277,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 拖动文件完成后获取文件信息
         /// </summary>
-        protected override async void OnDrop(global::Windows.UI.Xaml.DragEventArgs args)
+        protected override async void OnDrop(Microsoft.UI.Xaml.DragEventArgs args)
         {
             base.OnDrop(args);
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
@@ -713,7 +713,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnUnchecked(object sender, RoutedEventArgs args)
         {
-            if (sender is global::Windows.UI.Xaml.Controls.CheckBox checkBox && checkBox.Tag is string tag)
+            if (sender is Microsoft.UI.Xaml.Controls.CheckBox checkBox && checkBox.Tag is string tag)
             {
                 if (string.Equals(tag, nameof(CreateDate)))
                 {

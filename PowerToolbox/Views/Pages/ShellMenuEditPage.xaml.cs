@@ -1,4 +1,8 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Navigation;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Services.Root;
@@ -14,11 +18,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
 using Windows.Storage.Streams;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // 抑制 IDE0060 警告
 #pragma warning disable IDE0060
@@ -707,7 +706,7 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            if (MainWindow.Current.Content is MainPage mainPage && mainPage.GetFrameContent() is ShellMenuPage shellMenuPage)
+            if (MainWindow.Current.GetFrameContent() is ShellMenuPage shellMenuPage)
             {
                 shellMenuPage.NavigateTo(shellMenuPage.PageList[0], null, false);
             }
@@ -721,7 +720,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnTitleTextChanged(object sender, TextChangedEventArgs args)
         {
-            MenuTitleText = (sender as global::Windows.UI.Xaml.Controls.TextBox).Text;
+            MenuTitleText = (sender as Microsoft.UI.Xaml.Controls.TextBox).Text;
         }
 
         /// <summary>
@@ -885,7 +884,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnMenuParameterTextChanged(object sender, TextChangedEventArgs args)
         {
-            MenuParameterText = (sender as global::Windows.UI.Xaml.Controls.TextBox).Text;
+            MenuParameterText = (sender as Microsoft.UI.Xaml.Controls.TextBox).Text;
         }
 
         /// <summary>
@@ -937,7 +936,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnMenuFileMatchFormatTextChanged(object sender, TextChangedEventArgs args)
         {
-            MenuFileMatchFormatText = (sender as global::Windows.UI.Xaml.Controls.TextBox).Text;
+            MenuFileMatchFormatText = (sender as Microsoft.UI.Xaml.Controls.TextBox).Text;
         }
 
         #endregion 第二部分：自定义扩展菜单编辑页面——挂载的事件

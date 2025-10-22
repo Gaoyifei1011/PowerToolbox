@@ -2,7 +2,6 @@
     x:Class="PowerToolbox.Views.Pages.LoafPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -70,7 +69,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Spacing="10">
-                            <controls:ProgressRing
+                            <ProgressRing
                                 Width="60"
                                 Height="60"
                                 IsActive="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(LoadImageCompleted), Mode=OneWay}"
@@ -118,7 +117,7 @@
                 </Grid>
 
                 <!--  摸鱼控制栏  -->
-                <controls:Expander
+                <Expander
                     Grid.Row="2"
                     Margin="30,0,30,3"
                     Padding="0"
@@ -127,7 +126,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -145,9 +144,9 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('ConfigOptions')}" />
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel Padding="0">
                             <Grid
                                 Height="52"
@@ -165,26 +164,26 @@
                                     VerticalAlignment="Center"
                                     Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('UpdateStyle')}" />
 
-                                <controls:DropDownButton Grid.Column="1" Content="{x:Bind SelectedUpdateStyle.Value, Mode=OneWay}">
+                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedSimulateUpdateStyle.Value, Mode=OneWay}">
 
-                                    <controls:DropDownButton.Flyout>
+                                    <DropDownButton.Flyout>
                                         <MenuFlyout Placement="Bottom">
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnUpdateStyleClicked}"
                                                 GroupName="UpdateStyleRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedUpdateStyle.Key, UpdateList[0].Key), Mode=OneWay}"
+                                                IsChecked="{x:Bind x:Object.Equals(SelectedSimulateUpdateStyle.Key, UpdateList[0].Key), Mode=OneWay}"
                                                 Tag="{x:Bind UpdateList[0]}"
                                                 Text="{x:Bind system:Convert.ToString(UpdateList[0].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnUpdateStyleClicked}"
                                                 GroupName="UpdateStyleRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedUpdateStyle.Key, UpdateList[1].Key), Mode=OneWay}"
+                                                IsChecked="{x:Bind x:Object.Equals(SelectedSimulateUpdateStyle.Key, UpdateList[1].Key), Mode=OneWay}"
                                                 Tag="{x:Bind UpdateList[1]}"
                                                 Text="{x:Bind system:Convert.ToString(UpdateList[1].Value)}" />
                                         </MenuFlyout>
-                                    </controls:DropDownButton.Flyout>
-                                </controls:DropDownButton>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
                             </Grid>
 
                             <MenuFlyoutSeparator />
@@ -308,11 +307,11 @@
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
 
                 <!--  小提示  -->
-                <controls:Expander
+                <Expander
                     Grid.Row="3"
                     Margin="30,0,30,3"
                     Padding="0"
@@ -321,7 +320,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -339,9 +338,9 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('Tips')}" />
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel>
                             <TextBlock
                                 Margin="44,10,16,5"
@@ -358,8 +357,8 @@
                                 TextAlignment="Justify"
                                 TextWrapping="Wrap" />
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
             </Grid>
         </ScrollViewer>
     </Grid>

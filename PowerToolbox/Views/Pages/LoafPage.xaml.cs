@@ -1,4 +1,7 @@
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Navigation;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Windows;
@@ -9,11 +12,6 @@ using System.Diagnostics.Tracing;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // 抑制 IDE0060 警告
 #pragma warning disable IDE0060
@@ -95,18 +93,18 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<UpdateKind, string> _selectedUpdateStyle;
+        private KeyValuePair<SimulateUpdateKind, string> _selectedSimulateUpdateStyle;
 
-        public KeyValuePair<UpdateKind, string> SelectedUpdateStyle
+        public KeyValuePair<SimulateUpdateKind, string> SelectedSimulateUpdateStyle
         {
-            get { return _selectedUpdateStyle; }
+            get { return _selectedSimulateUpdateStyle; }
 
             set
             {
-                if (!Equals(_selectedUpdateStyle, value))
+                if (!Equals(_selectedSimulateUpdateStyle, value))
                 {
-                    _selectedUpdateStyle = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedUpdateStyle)));
+                    _selectedSimulateUpdateStyle = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedSimulateUpdateStyle)));
                 }
             }
         }
@@ -143,16 +141,16 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<KeyValuePair<UpdateKind, string>> UpdateList { get; } = [];
+        private List<KeyValuePair<SimulateUpdateKind, string>> UpdateList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public LoafPage()
         {
             InitializeComponent();
-            UpdateList.Add(new KeyValuePair<UpdateKind, string>(UpdateKind.Windows11, Windows11StyleString));
-            UpdateList.Add(new KeyValuePair<UpdateKind, string>(UpdateKind.Windows10, Windows10StyleString));
-            SelectedUpdateStyle = UpdateList[0];
+            UpdateList.Add(new KeyValuePair<SimulateUpdateKind, string>(SimulateUpdateKind.Windows11, Windows11StyleString));
+            UpdateList.Add(new KeyValuePair<SimulateUpdateKind, string>(SimulateUpdateKind.Windows10, Windows10StyleString));
+            SelectedSimulateUpdateStyle = UpdateList[0];
         }
 
         #region 第一部分：重写父类事件
@@ -254,17 +252,20 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnStartLoafClicked(object sender, RoutedEventArgs args)
         {
-            new LoafWindow(SelectedUpdateStyle.Key, DurationTime, BlockAllKeys, LockScreenAutomaticly).Show();
-            LoafWindow.Current.FormClosed += OnClosed;
+            new SimulateUpdateWindow(SelectedSimulateUpdateStyle.Key, DurationTime, BlockAllKeys, LockScreenAutomaticly).Activate();
+            SimulateUpdateWindow.Current.Closed += OnClosed;
             IsLoafing = true;
         }
 
         /// <summary>
         /// 停止模拟更新后触发的事件
         /// </summary>
-        private void OnClosed(object sender, FormClosedEventArgs args)
+        private void OnClosed(object sender, WindowEventArgs args)
         {
-            LoafWindow.Current.FormClosed -= OnClosed;
+            if (SimulateUpdateWindow.Current is not null)
+            {
+                SimulateUpdateWindow.Current.Closed -= OnClosed;
+            }
             IsLoafing = false;
         }
 
@@ -273,9 +274,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnUpdateStyleClicked(object sender, RoutedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<UpdateKind, string> updateStyle)
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<SimulateUpdateKind, string> simulateUpdateStyle)
             {
-                SelectedUpdateStyle = updateStyle;
+                SelectedSimulateUpdateStyle = simulateUpdateStyle;
             }
         }
 

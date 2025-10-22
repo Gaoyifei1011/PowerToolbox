@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.UI.Xaml.Controls;
+using System.ComponentModel;
 using System.Text;
-using Windows.UI.Xaml.Controls;
 
 namespace PowerToolbox.Views.Dialogs
 {

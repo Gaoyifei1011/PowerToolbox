@@ -1,8 +1,8 @@
-﻿using PowerToolbox.Extensions.DataType.Enums;
+﻿using Microsoft.UI.Xaml.Media;
+using PowerToolbox.Extensions.Collections;
+using PowerToolbox.Extensions.DataType.Enums;
 using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using Windows.UI.Xaml.Media;
 
 namespace PowerToolbox.Models
 {
@@ -222,7 +222,7 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 子菜单
         /// </summary>
-        public ObservableCollection<ShellMenuItemModel> SubMenuItemCollection { get; set; } = [];
+        public WinRTObservableCollection<ShellMenuItemModel> SubMenuItemCollection { get; set; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

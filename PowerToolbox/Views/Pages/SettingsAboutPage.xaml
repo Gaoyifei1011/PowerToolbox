@@ -2,8 +2,8 @@
     x:Class="PowerToolbox.Views.Pages.SettingsAboutPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
     xmlns:collection="using:System.Collections"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -63,7 +63,10 @@
                             </Hyperlink>
 
                             <ToolTipService.ToolTip>
-                                <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('SettingsAbout/DeveloperNameToolTip')}" />
+                                <ToolTip
+                                    MaxWidth="9999"
+                                    Content="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('SettingsAbout/DeveloperNameToolTip')}"
+                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                             </ToolTipService.ToolTip>
                         </TextBlock>
                     </StackPanel>
@@ -333,7 +336,7 @@
             </GridView>
 
             <!--  项目引用信息  -->
-            <controls:Expander
+            <Expander
                 Grid.Row="2"
                 Margin="0,0,0,3"
                 Padding="0"
@@ -341,15 +344,15 @@
                 HorizontalContentAlignment="Stretch"
                 IsExpanded="True">
 
-                <controls:Expander.Header>
+                <Expander.Header>
                     <TextBlock
                         Padding="16,0,0,0"
                         FontSize="15"
                         FontWeight="Medium"
                         Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('Reference')}" />
-                </controls:Expander.Header>
+                </Expander.Header>
 
-                <controls:Expander.Content>
+                <Expander.Content>
                     <GridView
                         Margin="26,0,16,0"
                         Padding="5"
@@ -388,7 +391,7 @@
                                         </Hyperlink>
 
                                         <ToolTipService.ToolTip>
-                                            <ToolTip MaxWidth="9999">
+                                            <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
                                                 <TextBlock>
                                                     <Run Text="{x:Bind system:Convert.ToString(Key)}" />
                                                     <LineBreak />
@@ -401,26 +404,26 @@
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
-                </controls:Expander.Content>
-            </controls:Expander>
+                </Expander.Content>
+            </Expander>
 
             <!--  感谢用户信息  -->
-            <controls:Expander
+            <Expander
                 Grid.Row="3"
                 Padding="0"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
                 IsExpanded="True">
 
-                <controls:Expander.Header>
+                <Expander.Header>
                     <TextBlock
                         Padding="15,0,0,0"
                         FontSize="16"
                         FontWeight="Medium"
                         Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('Thanks')}" />
-                </controls:Expander.Header>
+                </Expander.Header>
 
-                <controls:Expander.Content>
+                <Expander.Content>
                     <StackPanel Margin="0">
                         <TextBlock
                             Margin="30,10,16,5"
@@ -469,7 +472,7 @@
                                             </Hyperlink>
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip MaxWidth="9999">
+                                                <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
                                                     <TextBlock>
                                                         <Run Text="{x:Bind system:Convert.ToString(Key)}" />
                                                         <LineBreak />
@@ -483,8 +486,8 @@
                             </GridView.ItemTemplate>
                         </GridView>
                     </StackPanel>
-                </controls:Expander.Content>
-            </controls:Expander>
+                </Expander.Content>
+            </Expander>
         </Grid>
     </ScrollViewer>
 </Page>

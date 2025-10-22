@@ -2,8 +2,8 @@
     x:Class="PowerToolbox.Views.Pages.HostsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
     xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:enum="using:PowerToolbox.Extensions.DataType.Enums"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -404,7 +404,10 @@
                 </Button.Flyout>
 
                 <ToolTipService.ToolTip>
-                    <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.HostsResource.GetString('ViewMore')}" />
+                    <ToolTip
+                        MaxWidth="9999"
+                        Content="{x:Bind rootservice:ResourceService.HostsResource.GetString('ViewMore')}"
+                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                 </ToolTipService.ToolTip>
             </Button>
         </Grid>
@@ -428,7 +431,7 @@
                 Spacing="10"
                 Visibility="{x:Bind CheckHostsState(HostsResultKind, enum:HostsResultKind.Loading), Mode=OneWay}">
 
-                <controls:ProgressRing IsActive="True" IsEnabled="True" />
+                <ProgressRing IsActive="True" IsEnabled="True" />
 
                 <TextBlock
                     VerticalAlignment="Center"
@@ -512,7 +515,7 @@
                             </TextBlock>
 
                             <ToolTipService.ToolTip>
-                                <ToolTip MaxWidth="9999">
+                                <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
                                     <StackPanel>
                                         <TextBlock>
                                             <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('AddressName')}" />
@@ -582,7 +585,10 @@
                             </Button.Flyout>
 
                             <ToolTipService.ToolTip>
-                                <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.HostsResource.GetString('ViewMore')}" />
+                                <ToolTip
+                                    MaxWidth="9999"
+                                    Content="{x:Bind rootservice:ResourceService.HostsResource.GetString('ViewMore')}"
+                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                             </ToolTipService.ToolTip>
                         </Button>
                     </Grid>

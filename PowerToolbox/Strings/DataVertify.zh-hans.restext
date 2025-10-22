@@ -1,5 +1,4 @@
-﻿AICH=AICH
-BLAKE2sp=BLAKE2sp
+﻿BLAKE2sp=BLAKE2sp
 BLAKE3=BLAKE3
 BTIH=BTIH
 Content=内容
@@ -35,6 +34,7 @@ MD5=MD5
 OpenLocalFile=打开本地文件
 Operation=操作
 RIPEMD160=RIPEMD_160
+SelectFile=选择文件
 SHA1=SHA_1
 SHA224=SHA_224
 SHA256=SHA_256

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using Windows.UI.Xaml.Media;
+﻿using Microsoft.UI.Xaml.Media;
+using PowerToolbox.Extensions.Collections;
+using System;
 
 namespace PowerToolbox.Models
 {
@@ -37,6 +37,6 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 子菜单项
         /// </summary>
-        public ObservableCollection<ContextMenuItemModel> ContextMenuItemCollection { get; set; }
+        public WinRTObservableCollection<ContextMenuItemModel> ContextMenuItemCollection { get; set; }
     }
 }

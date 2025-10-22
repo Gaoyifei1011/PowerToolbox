@@ -1,4 +1,6 @@
-﻿using PowerToolbox.Extensions.DataType.Enums;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Dialogs;
 using PowerToolbox.Views.NotificationTips;
@@ -13,8 +15,6 @@ using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Services.Store;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
 #pragma warning disable CA1806,CA1822,IDE0060
@@ -47,10 +47,10 @@ namespace PowerToolbox.Views.Pages
         //项目引用信息
         private ListDictionary ReferenceList { get; } = new()
         {
-            { "Microsoft.UI.Xaml", new Uri("https://github.com/microsoft/microsoft-ui-xaml") },
             { "Microsoft.Windows.SDK.BuildTools", new Uri("https://aka.ms/WinSDKProjectURL") },
             { "Microsoft.Windows.SDK.BuildTools.MSIX", new Uri("https://aka.ms/WinSDKProjectURL") },
             { "Microsoft.Windows.SDK.Contracts", new Uri("https://aka.ms/WinSDKProjectURL") },
+            { "Microsoft.WindowsAppSDK", new Uri("https://github.com/microsoft/windowsappsdk") },
             { "Mile.Aria2", new Uri("https://github.com/ProjectMile/Mile.Aria2") },
             { "System.Private.Uri", new Uri("https://dot.net") }
         };

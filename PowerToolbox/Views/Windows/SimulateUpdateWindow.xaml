@@ -1,0 +1,86 @@
+﻿<Window
+    x:Class="PowerToolbox.Views.Windows.SimulateUpdateWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="using:PowerToolbox.Helpers.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:enum="using:PowerToolbox.Extensions.DataType.Enums"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rootservice="using:PowerToolbox.Services.Root"
+    xmlns:settingsservice="using:PowerToolbox.Services.Settings"
+    Closed="{x:Bind OnClosed}"
+    mc:Ignorable="d">
+
+    <Grid FlowDirection="{x:Bind settingsservice:LanguageService.FlowDirection}">
+        <!--  Windows 11 风格模拟更新控件  -->
+        <Grid
+            x:Name="Windows11Style"
+            Background="Black"
+            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckSimulateUpdateKind(SimulateUpdateKind, enum:SimulateUpdateKind.Windows11), Mode=OneWay}">
+            <StackPanel VerticalAlignment="Center">
+                <ProgressRing
+                    Width="60"
+                    Height="60"
+                    Margin="0,0,0,10"
+                    HorizontalAlignment="Center"
+                    Foreground="White"
+                    IsActive="True" />
+
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="23"
+                    Foreground="White"
+                    Text="{x:Bind Windows11UpdateText, Mode=OneWay}" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="23"
+                    Foreground="White"
+                    Text="{x:Bind rootservice:ResourceService.SimulateUpdateResource.GetString('Windows11UpdateText2')}" />
+            </StackPanel>
+
+            <TextBlock
+                Margin="0,0,0,104"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                FontSize="23"
+                Foreground="White"
+                Text="{x:Bind rootservice:ResourceService.SimulateUpdateResource.GetString('ComputerRestart')}" />
+        </Grid>
+
+        <!--  Windows 10 风格模拟更新控件  -->
+        <Grid
+            x:Name="Windows10Style"
+            Background="{ThemeResource SystemAccentColor}"
+            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckSimulateUpdateKind(SimulateUpdateKind, enum:SimulateUpdateKind.Windows10), Mode=OneWay}">
+            <StackPanel VerticalAlignment="Center">
+                <ProgressRing
+                    Width="60"
+                    Height="60"
+                    Margin="0,0,0,10"
+                    HorizontalAlignment="Center"
+                    Foreground="White"
+                    IsActive="True"
+                    Style="{StaticResource Windows10ProgressRingStyle}" />
+
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="23"
+                    Foreground="White"
+                    Text="{x:Bind Windows10UpdateText, Mode=OneWay}" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="23"
+                    Foreground="White"
+                    Text="{x:Bind rootservice:ResourceService.SimulateUpdateResource.GetString('Windows10UpdateText2')}" />
+            </StackPanel>
+
+            <TextBlock
+                Margin="0,0,0,104"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                FontSize="23"
+                Foreground="White"
+                Text="{x:Bind rootservice:ResourceService.SimulateUpdateResource.GetString('ComputerRestart')}" />
+        </Grid>
+    </Grid>
+</Window>

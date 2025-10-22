@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using Windows.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
+using System.ComponentModel;
 
 namespace PowerToolbox.Views.Pages
 {

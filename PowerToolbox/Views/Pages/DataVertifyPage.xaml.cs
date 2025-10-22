@@ -1,10 +1,11 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Extensions.Collections;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.Tracing;
 using System.IO;
@@ -12,8 +13,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using System.Windows.Forms;
 
 // 抑制 CA1822，IDE0060 警告
 #pragma warning disable CA1822,IDE0060
@@ -25,7 +25,6 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class DataVertifyPage : Page, INotifyPropertyChanged
     {
-        private readonly string AICHString = ResourceService.DataVertifyResource.GetString("AICH");
         private readonly string BLAKE2spString = ResourceService.DataVertifyResource.GetString("BLAKE2sp");
         private readonly string BLAKE3String = ResourceService.DataVertifyResource.GetString("BLAKE3");
         private readonly string BTIHString = ResourceService.DataVertifyResource.GetString("BTIH");
@@ -56,6 +55,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string MD4String = ResourceService.DataVertifyResource.GetString("MD4");
         private readonly string MD5String = ResourceService.DataVertifyResource.GetString("MD5");
         private readonly string RIPEMD160String = ResourceService.DataVertifyResource.GetString("RIPEMD160");
+        private readonly string SelectFileString = ResourceService.DataVertifyResource.GetString("SelectFile");
         private readonly string SHA1String = ResourceService.DataVertifyResource.GetString("SHA1");
         private readonly string SHA224String = ResourceService.DataVertifyResource.GetString("SHA224");
         private readonly string SHA256String = ResourceService.DataVertifyResource.GetString("SHA256");
@@ -180,18 +180,13 @@ namespace PowerToolbox.Views.Pages
 
         private List<DataVertifyTypeModel> DataVertifyTypeList { get; } = [];
 
-        private ObservableCollection<DataEncryptVertifyResultModel> DataVertifyResultCollection { get; } = [];
+        private WinRTObservableCollection<DataEncryptVertifyResultModel> DataVertifyResultCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public DataVertifyPage()
         {
             InitializeComponent();
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = AICHString,
-                DataVertifyType = DataVertifyType.AICH
-            });
             DataVertifyTypeList.Add(new DataVertifyTypeModel()
             {
                 Name = BLAKE2spString,
@@ -411,9 +406,18 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 打开本地文件
         /// </summary>
-        /// TODO：未完成
         private void OnOpenLocalFileClicked(object sender, RoutedEventArgs args)
         {
+            OpenFileDialog openFileDialog = new()
+            {
+                Multiselect = false,
+                Title = SelectFileString
+            };
+            if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
+            {
+                VertifyFile = openFileDialog.FileName;
+            }
+            openFileDialog.Dispose();
         }
 
         /// <summary>
@@ -421,7 +425,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnTextChanged(object sender, TextChangedEventArgs args)
         {
-            if (sender is TextBox textBox)
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
                 VertifyContent = textBox.Text;
             }
@@ -430,7 +434,6 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 开始数据校验
         /// </summary>
-        /// TODO：未完成
         private async void OnStartVertifyClicked(object sender, RoutedEventArgs args)
         {
             selectVertifyIndex = SelectedIndex;
@@ -581,16 +584,13 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取校验后的数据
         /// </summary>
+        /// TODO：未完成
         private string GetVertifiedData(DataVertifyType dataVertifyType, int selectedVertifyIndex, byte[] contentData, FileStream fileStream)
         {
             string vertifiedData = string.Empty;
 
             switch (dataVertifyType)
             {
-                case DataVertifyType.AICH:
-                    {
-                        break;
-                    }
                 case DataVertifyType.BLAKE2sp:
                     {
                         break;
@@ -687,7 +687,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), 20, e);
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.MD5) + 1, e);
                         }
                         break;
                     }
@@ -719,7 +719,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), 26, e);
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.RIPEMD_160) + 1, e);
                         }
                         break;
                     }
@@ -751,7 +751,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), 22, e);
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_1) + 1, e);
                         }
                         break;
                     }
@@ -787,7 +787,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), 24, e);
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_256) + 1, e);
                         }
                         break;
                     }
@@ -819,7 +819,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), 25, e);
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_384) + 1, e);
                         }
                         break;
                     }
@@ -851,7 +851,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), 26, e);
+                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_512) + 1, e);
                         }
                         break;
                     }

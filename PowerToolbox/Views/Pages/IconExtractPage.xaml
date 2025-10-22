@@ -2,7 +2,7 @@
     x:Class="PowerToolbox.Views.Pages.IconExtractPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:enum="using:PowerToolbox.Extensions.DataType.Enums"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -39,6 +39,7 @@
                 <ToolTip
                     MaxWidth="9999"
                     Content="{x:Bind GetResults, Mode=OneWay}"
+                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                     Visibility="{x:Bind GetResultsText.IsTextTrimmed, Mode=OneWay}" />
             </ToolTipService.ToolTip>
         </TextBlock>
@@ -140,7 +141,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <controls:ProgressRing
+                    <ProgressRing
                         Grid.Column="0"
                         Width="26"
                         Height="26"
@@ -201,31 +202,31 @@
                             VerticalAlignment="Center"
                             Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('SaveIconFormat')}" />
 
-                        <controls:DropDownButton
+                        <DropDownButton
                             Grid.Row="0"
                             Grid.Column="1"
                             Margin="0,0,0,3"
                             HorizontalAlignment="Stretch"
                             Content="{x:Bind SelectedIconFormat.Key, Mode=OneWay}">
 
-                            <controls:DropDownButton.Flyout>
+                            <DropDownButton.Flyout>
                                 <MenuFlyout Placement="Bottom">
-                                    <controls:RadioMenuFlyoutItem
+                                    <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconFormatClicked}"
                                         GroupName="IconFormatRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconFormat.Key, IconFormatList[0].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconFormatList[0]}"
                                         Text="{x:Bind system:Convert.ToString(IconFormatList[0].Value)}" />
 
-                                    <controls:RadioMenuFlyoutItem
+                                    <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconFormatClicked}"
                                         GroupName="IconFormatRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconFormat.Key, IconFormatList[1].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconFormatList[1]}"
                                         Text="{x:Bind system:Convert.ToString(IconFormatList[1].Value)}" />
                                 </MenuFlyout>
-                            </controls:DropDownButton.Flyout>
-                        </controls:DropDownButton>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
 
                         <TextBlock
                             Grid.Row="1"
@@ -233,72 +234,72 @@
                             VerticalAlignment="Center"
                             Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('SaveIconSize')}" />
 
-                        <controls:DropDownButton
+                        <DropDownButton
                             Grid.Row="1"
                             Grid.Column="1"
                             HorizontalAlignment="Stretch"
                             Content="{x:Bind SelectedIconSize.Value, Mode=OneWay}">
 
-                            <controls:DropDownButton.Flyout>
+                            <DropDownButton.Flyout>
                                 <MenuFlyout Placement="Bottom">
-                                    <controls:RadioMenuFlyoutItem
+                                    <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconSizeClicked}"
                                         GroupName="IconSizeRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[0].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[0]}"
                                         Text="{x:Bind system:Convert.ToString(IconSizeList[0].Value)}" />
 
-                                    <controls:RadioMenuFlyoutItem
+                                    <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconSizeClicked}"
                                         GroupName="IconSizeRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[1].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[1]}"
                                         Text="{x:Bind system:Convert.ToString(IconSizeList[1].Value)}" />
 
-                                    <controls:RadioMenuFlyoutItem
+                                    <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconSizeClicked}"
                                         GroupName="IconSizeRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[2].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[2]}"
                                         Text="{x:Bind system:Convert.ToString(IconSizeList[2].Value)}" />
 
-                                    <controls:RadioMenuFlyoutItem
+                                    <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconSizeClicked}"
                                         GroupName="IconSizeRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[3].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[3]}"
                                         Text="{x:Bind system:Convert.ToString(IconSizeList[3].Value)}" />
 
-                                    <controls:RadioMenuFlyoutItem
+                                    <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconSizeClicked}"
                                         GroupName="IconSizeRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[4].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[4]}"
                                         Text="{x:Bind system:Convert.ToString(IconSizeList[4].Value)}" />
 
-                                    <controls:RadioMenuFlyoutItem
+                                    <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconSizeClicked}"
                                         GroupName="IconSizeRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[5].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[5]}"
                                         Text="{x:Bind system:Convert.ToString(IconSizeList[5].Value)}" />
 
-                                    <controls:RadioMenuFlyoutItem
+                                    <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconSizeClicked}"
                                         GroupName="IconSizeRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[6].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[6]}"
                                         Text="{x:Bind system:Convert.ToString(IconSizeList[6].Value)}" />
 
-                                    <controls:RadioMenuFlyoutItem
+                                    <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconSizeClicked}"
                                         GroupName="IconSizeRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[7].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[7]}"
                                         Text="{x:Bind system:Convert.ToString(IconSizeList[7].Value)}" />
                                 </MenuFlyout>
-                            </controls:DropDownButton.Flyout>
-                        </controls:DropDownButton>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
                     </Grid>
                 </Grid>
 
@@ -366,7 +367,7 @@
                     Spacing="5"
                     Visibility="{x:Bind IsSaving, Mode=OneWay}">
 
-                    <controls:ProgressRing
+                    <ProgressRing
                         Width="20"
                         Height="20"
                         IsActive="{x:Bind IsSaving, Mode=OneWay}" />

@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -66,7 +66,7 @@
                         Padding="12"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
-                        Background="{ThemeResource MenuFlyoutPresenterBackground}"
+                        Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                         BorderBrush="Transparent"
                         BorderThickness="1"
                         CornerRadius="4"
@@ -113,7 +113,7 @@
                 </Grid>
 
                 <!--  未自动设置开机启动提示  -->
-                <controls:InfoBar
+                <InfoBar
                     Grid.Row="1"
                     Height="50"
                     Margin="30,0,30,3"
@@ -124,16 +124,16 @@
                     Style="{StaticResource InfoBarStyle}"
                     Visibility="{x:Bind GetInfoBarState(IsManualCloseInfoBar, IsThemeSwitchNotificationEnabled), Mode=OneWay}">
 
-                    <controls:InfoBar.ActionButton>
+                    <InfoBar.ActionButton>
                         <Button
                             HorizontalAlignment="Right"
                             Click="{x:Bind OnEnableStartupTaskClicked}"
                             Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('EnableStartupTask')}" />
-                    </controls:InfoBar.ActionButton>
-                </controls:InfoBar>
+                    </InfoBar.ActionButton>
+                </InfoBar>
 
                 <!--  系统主题设置  -->
-                <controls:Expander
+                <Expander
                     Grid.Row="2"
                     Margin="30,0,30,3"
                     Padding="0"
@@ -142,7 +142,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -161,12 +161,12 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SystemThemeSettings')}" />
 
-                            <controls:SplitButton
+                            <SplitButton
                                 Grid.Column="2"
                                 Click="{x:Bind OnRefreshClicked}"
                                 Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('Refresh')}">
 
-                                <controls:SplitButton.Flyout>
+                                <SplitButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
                                         <MenuFlyoutItem Click="{x:Bind OnOpenPersonalizeClicked}" Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('Personalize')}">
                                             <MenuFlyoutItem.Icon>
@@ -174,12 +174,12 @@
                                             </MenuFlyoutItem.Icon>
                                         </MenuFlyoutItem>
                                     </MenuFlyout>
-                                </controls:SplitButton.Flyout>
-                            </controls:SplitButton>
+                                </SplitButton.Flyout>
+                            </SplitButton>
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel Padding="0">
                             <Grid
                                 Height="52"
@@ -197,26 +197,26 @@
                                     VerticalAlignment="Center"
                                     Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SystemThemeStyle')}" />
 
-                                <controls:DropDownButton Grid.Column="1" Content="{x:Bind SelectedSystemThemeStyle.Value, Mode=OneWay}">
+                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedSystemThemeStyle.Value, Mode=OneWay}">
 
-                                    <controls:DropDownButton.Flyout>
+                                    <DropDownButton.Flyout>
                                         <MenuFlyout Placement="Bottom">
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnSystemThemeStyleClicked}"
                                                 GroupName="SystemThemeStyleRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedSystemThemeStyle.Key, SystemThemeStyleList[0].Key), Mode=OneWay}"
                                                 Tag="{x:Bind SystemThemeStyleList[0]}"
                                                 Text="{x:Bind system:Convert.ToString(SystemThemeStyleList[0].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnSystemThemeStyleClicked}"
                                                 GroupName="SystemThemeStyleRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedSystemThemeStyle.Key, SystemThemeStyleList[1].Key), Mode=OneWay}"
                                                 Tag="{x:Bind SystemThemeStyleList[1]}"
                                                 Text="{x:Bind system:Convert.ToString(SystemThemeStyleList[1].Value)}" />
                                         </MenuFlyout>
-                                    </controls:DropDownButton.Flyout>
-                                </controls:DropDownButton>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
                             </Grid>
 
                             <MenuFlyoutSeparator />
@@ -237,26 +237,26 @@
                                     VerticalAlignment="Center"
                                     Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AppThemeStyle')}" />
 
-                                <controls:DropDownButton Grid.Column="1" Content="{x:Bind SelectedAppThemeStyle.Value, Mode=OneWay}">
+                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedAppThemeStyle.Value, Mode=OneWay}">
 
-                                    <controls:DropDownButton.Flyout>
+                                    <DropDownButton.Flyout>
                                         <MenuFlyout Placement="Bottom">
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnAppThemeStyleClicked}"
                                                 GroupName="AppThemeStyleRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedAppThemeStyle.Key, AppThemeStyleList[0].Key), Mode=OneWay}"
                                                 Tag="{x:Bind AppThemeStyleList[0]}"
                                                 Text="{x:Bind system:Convert.ToString(AppThemeStyleList[0].Value)}" />
 
-                                            <controls:RadioMenuFlyoutItem
+                                            <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnAppThemeStyleClicked}"
                                                 GroupName="AppThemeStyleRadioGroup"
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedAppThemeStyle.Key, AppThemeStyleList[1].Key), Mode=OneWay}"
                                                 Tag="{x:Bind AppThemeStyleList[1]}"
                                                 Text="{x:Bind system:Convert.ToString(AppThemeStyleList[1].Value)}" />
                                         </MenuFlyout>
-                                    </controls:DropDownButton.Flyout>
-                                </controls:DropDownButton>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
                             </Grid>
 
                             <MenuFlyoutSeparator />
@@ -305,11 +305,11 @@
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
 
                 <!--  自动切换主题设置  -->
-                <controls:Expander
+                <Expander
                     Grid.Row="3"
                     Margin="30,0,30,3"
                     Padding="0"
@@ -318,7 +318,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -337,12 +337,12 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoThemeSwitchSettings')}" />
 
-                            <controls:SplitButton
+                            <SplitButton
                                 Grid.Column="2"
                                 Click="{x:Bind OnSaveClicked}"
                                 Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('Save')}">
 
-                                <controls:SplitButton.Flyout>
+                                <SplitButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
                                         <MenuFlyoutItem Click="{x:Bind OnRestoreDefaultClicked}" Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('RestoreDefault')}">
                                             <MenuFlyoutItem.Icon>
@@ -350,16 +350,19 @@
                                             </MenuFlyoutItem.Icon>
                                         </MenuFlyoutItem>
                                     </MenuFlyout>
-                                </controls:SplitButton.Flyout>
+                                </SplitButton.Flyout>
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SaveToolTip')}" />
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SaveToolTip')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                                 </ToolTipService.ToolTip>
-                            </controls:SplitButton>
+                            </SplitButton>
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel Padding="0">
                             <Grid
                                 Height="52"
@@ -443,7 +446,7 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SetTime')}" />
 
-                                                <controls:AnimatedIcon
+                                                <AnimatedIcon
                                                     Width="12"
                                                     Height="12"
                                                     Margin="8,0,0,0"
@@ -451,14 +454,14 @@
                                                     VerticalAlignment="Center"
                                                     AutomationProperties.AccessibilityView="Raw">
                                                     <animatedvisuals:AnimatedChevronDownSmallVisualSource />
-                                                    <controls:AnimatedIcon.FallbackIconSource>
-                                                        <controls:FontIconSource
+                                                    <AnimatedIcon.FallbackIconSource>
+                                                        <FontIconSource
                                                             FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                                             FontSize="8"
                                                             Glyph="&#xE96E;"
                                                             IsTextScaleFactorEnabled="False" />
-                                                    </controls:AnimatedIcon.FallbackIconSource>
-                                                </controls:AnimatedIcon>
+                                                    </AnimatedIcon.FallbackIconSource>
+                                                </AnimatedIcon>
                                             </StackPanel>
                                         </HyperlinkButton.Content>
 
@@ -466,13 +469,14 @@
                                             <Flyout
                                                 x:Name="SystemThemeSetTimeFlyout"
                                                 Placement="Bottom"
-                                                ShouldConstrainToRootBounds="False">
+                                                ShouldConstrainToRootBounds="False"
+                                                SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}">
 
                                                 <Flyout.FlyoutPresenterStyle>
                                                     <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
                                                         <Setter Property="Padding" Value="0" />
                                                         <Setter Property="MinWidth" Value="0" />
-                                                        <Setter Property="Background" Value="{ThemeResource MenuFlyoutPresenterBackground}" />
+                                                        <Setter Property="Background" Value="Transparent" />
                                                     </Style>
                                                 </Flyout.FlyoutPresenterStyle>
 
@@ -525,7 +529,10 @@
                                                             </Button.Content>
 
                                                             <ToolTipService.ToolTip>
-                                                                <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('CloseFlyout')}" />
+                                                                <ToolTip
+                                                                    MaxWidth="9999"
+                                                                    Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('CloseFlyout')}"
+                                                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                                                             </ToolTipService.ToolTip>
                                                         </Button>
                                                     </Grid>
@@ -654,7 +661,7 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SetTime')}" />
 
-                                                <controls:AnimatedIcon
+                                                <AnimatedIcon
                                                     Width="12"
                                                     Height="12"
                                                     Margin="8,0,0,0"
@@ -662,14 +669,14 @@
                                                     VerticalAlignment="Center"
                                                     AutomationProperties.AccessibilityView="Raw">
                                                     <animatedvisuals:AnimatedChevronDownSmallVisualSource />
-                                                    <controls:AnimatedIcon.FallbackIconSource>
-                                                        <controls:FontIconSource
+                                                    <AnimatedIcon.FallbackIconSource>
+                                                        <FontIconSource
                                                             FontFamily="{ThemeResource SymbolThemeFontFamily}"
                                                             FontSize="8"
                                                             Glyph="&#xE96E;"
                                                             IsTextScaleFactorEnabled="False" />
-                                                    </controls:AnimatedIcon.FallbackIconSource>
-                                                </controls:AnimatedIcon>
+                                                    </AnimatedIcon.FallbackIconSource>
+                                                </AnimatedIcon>
                                             </StackPanel>
                                         </HyperlinkButton.Content>
 
@@ -677,13 +684,14 @@
                                             <Flyout
                                                 x:Name="AppThemeSetTimeFlyout"
                                                 Placement="Bottom"
-                                                ShouldConstrainToRootBounds="False">
+                                                ShouldConstrainToRootBounds="False"
+                                                SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}">
 
                                                 <Flyout.FlyoutPresenterStyle>
                                                     <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
                                                         <Setter Property="Padding" Value="0" />
                                                         <Setter Property="MinWidth" Value="0" />
-                                                        <Setter Property="Background" Value="{ThemeResource MenuFlyoutPresenterBackground}" />
+                                                        <Setter Property="Background" Value="Transparent" />
                                                     </Style>
                                                 </Flyout.FlyoutPresenterStyle>
 
@@ -736,7 +744,10 @@
                                                             </Button.Content>
 
                                                             <ToolTipService.ToolTip>
-                                                                <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('CloseFlyout')}" />
+                                                                <ToolTip
+                                                                    MaxWidth="9999"
+                                                                    Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('CloseFlyout')}"
+                                                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                                                             </ToolTipService.ToolTip>
                                                         </Button>
                                                     </Grid>
@@ -882,11 +893,11 @@
                                 </Grid>
                             </StackPanel>
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
 
                 <!--  小提示  -->
-                <controls:Expander
+                <Expander
                     Grid.Row="4"
                     Margin="30,0,30,3"
                     Padding="0"
@@ -895,7 +906,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True">
 
-                    <controls:Expander.Header>
+                    <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -913,9 +924,9 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('Tips')}" />
                         </Grid>
-                    </controls:Expander.Header>
+                    </Expander.Header>
 
-                    <controls:Expander.Content>
+                    <Expander.Content>
                         <StackPanel>
                             <TextBlock
                                 Margin="44,10,16,10"
@@ -925,8 +936,8 @@
                                 TextAlignment="Justify"
                                 TextWrapping="Wrap" />
                         </StackPanel>
-                    </controls:Expander.Content>
-                </controls:Expander>
+                    </Expander.Content>
+                </Expander>
             </Grid>
         </ScrollViewer>
     </Grid>

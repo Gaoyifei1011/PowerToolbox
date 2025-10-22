@@ -1,12 +1,11 @@
-﻿using PowerToolbox.Models;
+﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Navigation;
 using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Tracing;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
 namespace PowerToolbox.Views.Pages
 {
@@ -15,11 +14,9 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class DataEncryptVertifyPage : Page, INotifyPropertyChanged
     {
-        private bool isInitialized;
+        private SelectorBarItem _selectedItem;
 
-        private Microsoft.UI.Xaml.Controls.NavigationViewItem _selectedItem;
-
-        public Microsoft.UI.Xaml.Controls.NavigationViewItem SelectedItem
+        public SelectorBarItem SelectedItem
         {
             get { return _selectedItem; }
 
@@ -33,13 +30,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<KeyValuePair<string, Type>> PageList { get; } =
-        [
-            new KeyValuePair<string, Type>("DataEncrypt",typeof(DataEncryptPage)),
-            new KeyValuePair<string, Type>("DataVertify", typeof(DataVertifyPage)),
-        ];
-
-        private List<NavigationModel> NavigationItemList { get; } = [];
+        private List<Type> PageList { get; } = [typeof(DataEncryptPage), typeof(DataVertifyPage)];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -57,6 +48,12 @@ namespace PowerToolbox.Views.Pages
         {
             base.OnNavigatedTo(args);
             DataEncryptVertifyFrame.ContentTransitions = SuppressNavigationTransitionCollection;
+
+            // 第一次导航
+            if (GetCurrentPageType() is null)
+            {
+                NavigateTo(PageList[0]);
+            }
         }
 
         #endregion 第一部分：重写父类事件
@@ -64,50 +61,22 @@ namespace PowerToolbox.Views.Pages
         #region 第二部分：数据加密校验页面——挂载的事件
 
         /// <summary>
-        /// 导航控件加载完成后初始化内容
+        /// 点击选择器栏发生的事件
         /// </summary>
-        private void OnLoaded(object sender, RoutedEventArgs args)
+        private void OnSelectorBarTapped(object sender, TappedRoutedEventArgs args)
         {
-            if (!isInitialized)
+            if (sender is SelectorBarItem selectorBarItem && selectorBarItem.Tag is Type pageType)
             {
-                isInitialized = true;
-                if (sender is Microsoft.UI.Xaml.Controls.NavigationView navigationView)
-                {
-                    foreach (object menuItem in navigationView.MenuItems)
-                    {
-                        if (menuItem is Microsoft.UI.Xaml.Controls.NavigationViewItem navigationViewItem && navigationViewItem.Tag is string tag)
-                        {
-                            int tagIndex = PageList.FindIndex(item => string.Equals(item.Key, tag));
+                int index = PageList.IndexOf(pageType);
+                int currentIndex = PageList.FindIndex(item => Equals(item, GetCurrentPageType()));
 
-                            NavigationItemList.Add(new NavigationModel()
-                            {
-                                NavigationTag = PageList[tagIndex].Key,
-                                NavigationItem = navigationViewItem,
-                                NavigationPage = PageList[tagIndex].Value,
-                            });
-                        }
-                    }
+                if (index is 0 && !Equals(GetCurrentPageType(), PageList[0]))
+                {
+                    NavigateTo(PageList[0], null, index > currentIndex);
                 }
-
-                SelectedItem = NavigationItemList[0].NavigationItem;
-                NavigateTo(PageList[0].Value);
-            }
-        }
-
-        /// <summary>
-        /// 当菜单中的项收到交互（如单击或点击）时发生
-        /// </summary>
-        private void OnItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)
-        {
-            if (args.InvokedItemContainer is Microsoft.UI.Xaml.Controls.NavigationViewItemBase navigationViewItem && navigationViewItem.Tag is string tag)
-            {
-                NavigationModel navigationItem = NavigationItemList.Find(item => string.Equals(item.NavigationTag, tag, StringComparison.OrdinalIgnoreCase));
-
-                if (navigationItem.NavigationPage is not null && !Equals(SelectedItem, navigationItem.NavigationItem))
+                else if (index is 1 && !Equals(GetCurrentPageType(), PageList[1]))
                 {
-                    int selectedIndex = sender.MenuItems.IndexOf(SelectedItem);
-                    int invokedIndex = sender.MenuItems.IndexOf(navigationItem.NavigationItem);
-                    NavigateTo(navigationItem.NavigationPage, null, invokedIndex > selectedIndex);
+                    NavigateTo(PageList[1], null, index > currentIndex);
                 }
             }
         }
@@ -117,20 +86,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNavigated(object sender, NavigationEventArgs args)
         {
-            try
+            int index = PageList.FindIndex(item => Equals(item, GetCurrentPageType()));
+
+            if (index >= 0 && index < DataEncryptVertifySelctorBar.Items.Count)
             {
-                Type currentPageType = GetCurrentPageType();
-                foreach (NavigationModel navigationItem in NavigationItemList)
-                {
-                    if (navigationItem.NavigationPage is not null && Equals(navigationItem.NavigationPage, currentPageType))
-                    {
-                        SelectedItem = navigationItem.NavigationItem;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataEncryptVertifyPage), nameof(OnNavigated), 1, e);
+                SelectedItem = DataEncryptVertifySelctorBar.Items[PageList.FindIndex(item => Equals(item, GetCurrentPageType()))];
             }
         }
 
@@ -140,22 +100,14 @@ namespace PowerToolbox.Views.Pages
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs args)
         {
             args.Handled = true;
+            int index = PageList.FindIndex(item => Equals(item, GetCurrentPageType()));
 
-            try
+            if (index >= 0 && index < DataEncryptVertifySelctorBar.Items.Count)
             {
-                Type currentPageType = GetCurrentPageType();
-                foreach (NavigationModel navigationItem in NavigationItemList)
-                {
-                    if (navigationItem.NavigationPage is not null && Equals(navigationItem.NavigationPage, currentPageType))
-                    {
-                        SelectedItem = navigationItem.NavigationItem;
-                    }
-                }
+                SelectedItem = DataEncryptVertifySelctorBar.Items[PageList.FindIndex(item => Equals(item, GetCurrentPageType()))];
             }
-            catch (Exception e)
-            {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataEncryptVertifyPage), nameof(OnNavigationFailed), 1, e);
-            }
+
+            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataEncryptVertifyPage), nameof(OnNavigationFailed), 1, args.Exception);
         }
 
         #endregion 第二部分：数据加密校验页面——挂载的事件
@@ -167,20 +119,17 @@ namespace PowerToolbox.Views.Pages
         {
             try
             {
-                if (NavigationItemList.Find(item => Equals(item.NavigationPage, navigationPageType)) is NavigationModel navigationItem)
+                if (slideDirection.HasValue)
                 {
-                    if (slideDirection.HasValue)
-                    {
-                        DataEncryptVertifyFrame.ContentTransitions = slideDirection.Value ? RightSlideNavigationTransitionCollection : LeftSlideNavigationTransitionCollection;
-                    }
-
-                    // 导航到该项目对应的页面
-                    DataEncryptVertifyFrame.Navigate(navigationItem.NavigationPage, parameter);
+                    DataEncryptVertifyFrame.ContentTransitions = slideDirection.Value ? RightSlideNavigationTransitionCollection : LeftSlideNavigationTransitionCollection;
                 }
+
+                // 导航到该项目对应的页面
+                DataEncryptVertifyFrame.Navigate(navigationPageType, parameter);
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileManagerPage), nameof(NavigateTo), 1, e);
+                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataEncryptVertifyPage), nameof(NavigateTo), 1, e);
             }
         }
 

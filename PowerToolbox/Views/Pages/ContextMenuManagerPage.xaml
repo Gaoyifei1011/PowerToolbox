@@ -2,8 +2,8 @@
     x:Class="PowerToolbox.Views.Pages.ContextMenuManagerPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
     xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:enum="using:PowerToolbox.Extensions.DataType.Enums"
@@ -127,7 +127,10 @@
                         </Button.Flyout>
 
                         <ToolTipService.ToolTip>
-                            <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('ViewMore')}" />
+                            <ToolTip
+                                MaxWidth="9999"
+                                Content="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('ViewMore')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                         </ToolTipService.ToolTip>
                     </Button>
                 </Grid>
@@ -151,7 +154,7 @@
                         Spacing="10"
                         Visibility="{x:Bind CheckContextMenuState(ContextMenuResultKind, enum:ContextMenuResultKind.Loading), Mode=OneWay}">
 
-                        <controls:ProgressRing IsActive="True" IsEnabled="True" />
+                        <ProgressRing IsActive="True" IsEnabled="True" />
 
                         <TextBlock
                             VerticalAlignment="Center"
@@ -191,14 +194,14 @@
 
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:ContextMenuModel">
-                            <controls:Expander
+                            <Expander
                                 Margin="0,0,0,2"
                                 HorizontalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
                                 Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                 IsExpanded="False">
 
-                                <controls:Expander.Header>
+                                <Expander.Header>
                                     <Grid Height="60">
 
                                         <Grid.ColumnDefinitions>
@@ -217,7 +220,7 @@
                                             BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
                                             BorderThickness="1"
                                             CornerRadius="{StaticResource ControlCornerRadius}">
-                                            <controls:ImageIcon Source="{x:Bind PackageIcon}" />
+                                            <ImageIcon Source="{x:Bind PackageIcon}" />
                                         </Grid>
 
                                         <StackPanel
@@ -239,6 +242,7 @@
                                                     <ToolTip
                                                         MaxWidth="9999"
                                                         Content="{x:Bind PackageDisplayName}"
+                                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                         Visibility="{Binding ElementName=PackageDisplayNameText, Path=IsTextTrimmed, Mode=OneWay}" />
                                                 </ToolTipService.ToolTip>
                                             </TextBlock>
@@ -257,6 +261,7 @@
                                                     <ToolTip
                                                         MaxWidth="9999"
                                                         Content="{x:Bind PackageFullName}"
+                                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                                         Visibility="{Binding ElementName=PackageFullNameText, Path=IsTextTrimmed, Mode=OneWay}" />
                                                 </ToolTipService.ToolTip>
                                             </TextBlock>
@@ -277,13 +282,16 @@
                                             </Button.Content>
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('OpenPackagePath')}" />
+                                                <ToolTip
+                                                    MaxWidth="9999"
+                                                    Content="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('OpenPackagePath')}"
+                                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                                             </ToolTipService.ToolTip>
                                         </Button>
                                     </Grid>
-                                </controls:Expander.Header>
+                                </Expander.Header>
 
-                                <controls:Expander.Content>
+                                <Expander.Content>
                                     <ListView ItemsSource="{x:Bind ContextMenuItemCollection}" SelectionMode="None">
 
                                         <ListView.ItemContainerStyle>
@@ -316,7 +324,7 @@
                                                         IsChecked="{x:Bind IsEnabled, Mode=OneWay}">
 
                                                         <ToolTipService.ToolTip>
-                                                            <ToolTip MaxWidth="9999">
+                                                            <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
                                                                 <Grid>
                                                                     <TextBlock Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('Selected')}" Visibility="{x:Bind IsEnabled, Mode=OneWay}" />
                                                                     <TextBlock Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsEnabled), Mode=OneWay}" />
@@ -335,8 +343,8 @@
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
                                     </ListView>
-                                </controls:Expander.Content>
-                            </controls:Expander>
+                                </Expander.Content>
+                            </Expander>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -393,7 +401,10 @@
                         </Button.Content>
 
                         <ToolTipService.ToolTip>
-                            <ToolTip MaxWidth="9999" Content="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('Close')}" />
+                            <ToolTip
+                                MaxWidth="9999"
+                                Content="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('Close')}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                         </ToolTipService.ToolTip>
                     </Button>
                 </Grid>

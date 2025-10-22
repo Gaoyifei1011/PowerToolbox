@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Configuration;
+﻿using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml;
+using System;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Globalization;
 using System.Threading;
-using System.Windows.Forms;
+using ThemeSwitch.Extensions.Threading;
 using ThemeSwitch.Helpers.Root;
 using ThemeSwitch.Services.Controls.Settings;
 using ThemeSwitch.Services.Root;
-using ThemeSwitch.Views.Windows;
 
 // 抑制 CA1806 警告
 #pragma warning disable CA1806
@@ -18,7 +17,6 @@ namespace ThemeSwitch
 {
     public static class Program
     {
-        private static readonly NameValueCollection configurationCollection = ConfigurationManager.GetSection("System.Windows.Forms.ApplicationConfigurationSection") as NameValueCollection;
         private static string ThemeSwitchString;
 
         /// <summary>
@@ -54,18 +52,16 @@ namespace ThemeSwitch
             {
                 InitializeProgramResources();
                 ThemeSwitchString = ResourceService.ThemeSwitchTrayResource.GetString("ThemeSwitch");
-                configurationCollection["DpiAwareness"] = "PerMonitorV2";
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-                Application.ThreadException += OnThreadException;
                 AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
                 if (AutoThemeSwitchService.AutoThemeSwitchEnableValue)
                 {
-                    SystemTrayService.InitializeSystemTray(ThemeSwitchString, Application.ExecutablePath);
-                    new ThemeSwitchApp();
-                    Application.Run(new ThemeSwitchTrayWindow());
+                    SystemTrayService.InitializeSystemTray(ThemeSwitchString, System.Windows.Forms.Application.ExecutablePath);
+                    Application.Start((param) =>
+                    {
+                        SynchronizationContext.SetSynchronizationContext(new DispatcherQueueSynchronizationContext(DispatcherQueue.GetForCurrentThread()));
+                        new ThemeSwitchApp();
+                    });
                 }
                 else
                 {
@@ -79,17 +75,9 @@ namespace ThemeSwitch
         }
 
         /// <summary>
-        /// 处理 Windows 窗体 UI 线程异常
+        /// 处理应用非 UI 线程异常
         /// </summary>
-        private static void OnThreadException(object sender, ThreadExceptionEventArgs args)
-        {
-            LogService.WriteLog(EventLevel.Warning, nameof(ThemeSwitch), nameof(Program), nameof(OnThreadException), 1, args.Exception);
-        }
-
-        /// <summary>
-        /// 处理 Windows 窗体非 UI 线程异常
-        /// </summary>
-        private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs args)
+        private static void OnUnhandledException(object sender, System.UnhandledExceptionEventArgs args)
         {
             LogService.WriteLog(EventLevel.Warning, nameof(ThemeSwitch), nameof(Program), nameof(OnUnhandledException), 1, args.ExceptionObject as Exception);
         }
