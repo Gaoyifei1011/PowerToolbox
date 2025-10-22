@@ -104,12 +104,14 @@ A toolbox that integrates multiple gadgets
 | Batch modify file properties                              | Finished                                                             |
 | Batch delete the certificates of signed files             | Finished                                                             |
 | File unlock                                               | Finished                                                             |
+| Data encrypt and vertify                                  | Developing                                                           |
 | Download manager                                          | Finished                                                             |
 | Extract file icons                                        | Finished                                                             |
 | Extract the package resource index(.pri) file conten      | Finished                                                             |
-| Switch theme                                              | Finished                                                             |
+| Theme switch                                              | Continue developing                                                  |
 | Customize the right-click menu                            | Finished                                                             |
 | Right-click menu items manager                            | Finished                                                             |
+| Experimental feature management                           | Developing                                                           |
 | Loopback manager                                          | Finished                                                             |
 | Driver manager                                            | Finished                                                             |
 | Update manager                                            | Finished                                                             |
