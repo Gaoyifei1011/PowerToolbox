@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -375,7 +374,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnOpenPersonalizeClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnOpenPersonalizeClicked), 1, e);
                 }
             });
         }
@@ -568,7 +567,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSaveClicked), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSaveClicked), 1, e);
                     }
                 }
                 else
@@ -700,7 +699,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSaveClicked), 2, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSaveClicked), 2, e);
             }
         }
 
@@ -888,7 +887,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(InitializeSystemThemeSettingsAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(InitializeSystemThemeSettingsAsync), 1, e);
                 }
             }
             else

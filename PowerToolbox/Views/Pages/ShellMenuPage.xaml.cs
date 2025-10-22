@@ -5,7 +5,7 @@ using PowerToolbox.Services.Root;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 
 // 抑制 IDE0060 警告
 #pragma warning disable IDE0060
@@ -115,7 +115,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuPage), nameof(NavigateTo), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuPage), nameof(NavigateTo), 1, e);
             }
         }
 

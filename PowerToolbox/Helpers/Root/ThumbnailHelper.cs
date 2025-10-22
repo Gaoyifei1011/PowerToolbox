@@ -2,7 +2,7 @@
 using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -53,7 +53,7 @@ namespace PowerToolbox.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ThumbnailHelper), nameof(GetThumbnailBitmap), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThumbnailHelper), nameof(GetThumbnailBitmap), 1, e);
                 return null;
             }
         }

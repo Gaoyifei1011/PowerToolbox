@@ -5,7 +5,6 @@ using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -66,7 +65,7 @@ namespace PowerToolbox.Services.Download
             //  发生异常时，使用默认的参数
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(InitializeAria2Conf), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(InitializeAria2Conf), 1, e);
                 aria2Arguments = string.Format(defaultAria2Arguments, Process.GetCurrentProcess().Id);
             }
         }
@@ -95,7 +94,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(Initialize), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(Initialize), 1, e);
                 }
             });
         }
@@ -117,7 +116,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(Release), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(Release), 1, e);
                 }
             });
         }
@@ -154,7 +153,7 @@ namespace PowerToolbox.Services.Download
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(IsAria2ExistedAsync), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(IsAria2ExistedAsync), 1, e);
                 return false;
             }
         }
@@ -292,7 +291,7 @@ namespace PowerToolbox.Services.Download
                                 }
                                 catch (Exception e)
                                 {
-                                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(CreateDownload), 1, e);
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(CreateDownload), 1, e);
                                 }
                                 finally
                                 {
@@ -315,7 +314,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(CreateDownload), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(CreateDownload), 2, e);
                 }
             });
         }
@@ -412,7 +411,7 @@ namespace PowerToolbox.Services.Download
                                 }
                                 catch (Exception e)
                                 {
-                                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(ContinueDownload), 1, e);
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(ContinueDownload), 1, e);
                                 }
                                 finally
                                 {
@@ -424,7 +423,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(ContinueDownload), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(ContinueDownload), 2, e);
                 }
             });
         }
@@ -521,7 +520,7 @@ namespace PowerToolbox.Services.Download
                                 }
                                 catch (Exception e)
                                 {
-                                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(PauseDownload), 1, e);
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(PauseDownload), 1, e);
                                 }
                                 finally
                                 {
@@ -533,7 +532,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(PauseDownload), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(PauseDownload), 2, e);
                 }
             });
         }
@@ -633,7 +632,7 @@ namespace PowerToolbox.Services.Download
                                 }
                                 catch (Exception e)
                                 {
-                                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(DeleteDownload), 1, e);
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(DeleteDownload), 1, e);
                                 }
                                 finally
                                 {
@@ -645,7 +644,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(DeleteDownload), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(DeleteDownload), 2, e);
                 }
             });
         }
@@ -787,7 +786,7 @@ namespace PowerToolbox.Services.Download
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(TellStatusAsync), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(TellStatusAsync), 1, e);
             }
 
             return ValueTuple.Create(isTellStatusSuccessfully, downloadProgressState, completedSize, totalSize, downloadSpeed);
@@ -838,7 +837,7 @@ namespace PowerToolbox.Services.Download
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(OnTimerElapsed), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(OnTimerElapsed), 1, e);
             }
             finally
             {
@@ -883,7 +882,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(RemoveResultAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(Aria2Service), nameof(RemoveResultAsync), 1, e);
                 }
             });
         }

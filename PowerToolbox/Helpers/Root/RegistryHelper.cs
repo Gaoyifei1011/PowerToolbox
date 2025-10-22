@@ -3,7 +3,7 @@ using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.PInvoke.Advapi32;
 using System;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 
@@ -62,7 +62,7 @@ namespace PowerToolbox.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(ReadRegistryKey), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(ReadRegistryKey), 1, e);
             }
 
             return value;
@@ -115,7 +115,7 @@ namespace PowerToolbox.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(SaveRegistryKey), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(SaveRegistryKey), 1, e);
                 return false;
             }
         }
@@ -147,7 +147,7 @@ namespace PowerToolbox.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(RemoveRegistryKey), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(RemoveRegistryKey), 1, e);
                 return false;
             }
         }
@@ -181,7 +181,7 @@ namespace PowerToolbox.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(EnumSubKey), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(EnumSubKey), 1, e);
             }
 
             return registryEnumKeyItem;
@@ -213,7 +213,7 @@ namespace PowerToolbox.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(MonitorRegistryValueChange), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(MonitorRegistryValueChange), 1, e);
                 return false;
             }
         }

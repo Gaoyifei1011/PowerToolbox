@@ -17,7 +17,6 @@ using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -135,7 +134,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnOpenFolderExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnOpenFolderExecuteRequested), 1, e);
                     }
                 });
             }
@@ -187,7 +186,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnDeleteWithFileExecuteRequested), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnDeleteWithFileExecuteRequested), 1, e);
                             return ValueTuple.Create(false, e);
                         }
                     });
@@ -227,7 +226,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnShareFileExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnShareFileExecuteRequested), 1, e);
                     }
                 }
             }
@@ -337,7 +336,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnOpenFolderClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnOpenFolderClicked), 1, e);
                 }
             });
         }
@@ -398,7 +397,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnNetworkInternetClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnNetworkInternetClicked), 1, e);
                 }
             });
         }
@@ -505,7 +504,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnDownloadProgress), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnDownloadProgress), 1, e);
                 }
 
                 synchronizationContext.Post((_) =>
@@ -530,7 +529,7 @@ namespace PowerToolbox.Views.Pages
                                 }
                                 catch (Exception e)
                                 {
-                                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnDownloadProgress), 2, e);
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnDownloadProgress), 2, e);
                                 }
                                 finally
                                 {
@@ -572,7 +571,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnApplicationExit), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnApplicationExit), 1, e);
             }
         }
 
@@ -590,7 +589,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnDataRequested), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnDataRequested), 1, e);
             }
             finally
             {

@@ -6,7 +6,7 @@ using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -357,7 +357,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 1, e);
                 }
 
                 if ((selectEncryptIndex is 0 && fileStream is not null) || (selectEncryptIndex is 1 && contentData is not null))
@@ -394,7 +394,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 2, e);
                     }
                 }
 
@@ -465,7 +465,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), 20, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), 20, e);
                         }
                         break;
                     }

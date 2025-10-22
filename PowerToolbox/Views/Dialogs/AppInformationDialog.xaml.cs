@@ -11,7 +11,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -137,7 +136,7 @@ namespace PowerToolbox.Views.Dialogs
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(AppInformationDialog), nameof(OnCopyAppInformationClicked), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AppInformationDialog), nameof(OnCopyAppInformationClicked), 1, e);
             }
             finally
             {

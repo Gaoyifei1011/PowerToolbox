@@ -10,7 +10,6 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Kernel32;
 using System;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Globalization;
 using System.Text;
 using System.Threading;
@@ -71,7 +70,7 @@ namespace PowerToolbox
         /// </summary>
         private static void OnUnhandledException(object sender, System.UnhandledExceptionEventArgs args)
         {
-            LogService.WriteLog(EventLevel.Warning, nameof(PowerToolbox), nameof(Program), nameof(OnUnhandledException), 1, args.ExceptionObject as Exception);
+            LogService.WriteLog(TraceEventType.Warning, nameof(PowerToolbox), nameof(Program), nameof(OnUnhandledException), 1, args.ExceptionObject as Exception);
         }
 
         /// <summary>

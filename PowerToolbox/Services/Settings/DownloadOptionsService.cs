@@ -3,7 +3,7 @@ using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.IO;
 
 // 抑制 CA1806 警告
@@ -66,7 +66,7 @@ namespace PowerToolbox.Services.Settings
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Warning, nameof(PowerToolbox), nameof(DownloadOptionsService), nameof(GetFolder), 1, e);
+                LogService.WriteLog(TraceEventType.Warning, nameof(PowerToolbox), nameof(DownloadOptionsService), nameof(GetFolder), 1, e);
                 SetFolder(defaultDownloadFolder);
                 return defaultDownloadFolder;
             }

@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -148,7 +147,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnDrop), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnDrop), 1, e);
             }
             finally
             {
@@ -175,7 +174,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnDrop), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnDrop), 2, e);
                     }
                 }
 
@@ -255,7 +254,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnSelectFileClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnSelectFileClicked), 1, e);
                         }
                     }
 
@@ -306,7 +305,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnSelectFolderClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnSelectFolderClicked), 1, e);
                         }
 
                         return fileUnlockList;
@@ -346,7 +345,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnOpenTaskManagerClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnOpenTaskManagerClicked), 1, e);
                 }
             });
         }
@@ -379,7 +378,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnCancelUnlockClicked), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnCancelUnlockClicked), 1, e);
             }
         }
 
@@ -406,7 +405,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(AddToFileUnlockPageAsync), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(AddToFileUnlockPageAsync), 1, e);
                         }
                     }
                     // 选择的是文件
@@ -500,7 +499,7 @@ namespace PowerToolbox.Views.Pages
                                                     }
                                                     catch (Exception e)
                                                     {
-                                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(RemoveUnlockAsync), 1, e);
+                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(RemoveUnlockAsync), 1, e);
                                                         continue;
                                                     }
                                                 }
@@ -511,7 +510,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(RemoveUnlockAsync), 2, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(RemoveUnlockAsync), 2, e);
                             }
                             finally
                             {
@@ -542,7 +541,7 @@ namespace PowerToolbox.Views.Pages
                                     }
                                     catch (Exception sube)
                                     {
-                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(RemoveUnlockAsync), 3, sube);
+                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(RemoveUnlockAsync), 3, sube);
                                     }
                                 }
                                 finally

@@ -7,7 +7,6 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -250,7 +249,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnRunAssesssmentClicked), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnRunAssesssmentClicked), 1, e);
                 cWinSATCallbacks = null;
                 progressDialog = null;
             }
@@ -269,7 +268,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnOpenAssessmentLogFolderClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnOpenAssessmentLogFolderClicked), 1, e);
                 }
             });
         }
@@ -287,7 +286,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnLearnSystemAssessmentClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnLearnSystemAssessmentClicked), 1, e);
                 }
             });
         }
@@ -328,7 +327,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnStatusUpdated), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnStatusUpdated), 1, e);
                         cWinSATCallbacks = null;
                         progressDialog = null;
                         IsNotRunningAssessment = true;
@@ -361,7 +360,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnStatusUpdated), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnStatusUpdated), 2, e);
                         cWinSATCallbacks = null;
                         progressDialog = null;
                         IsNotRunningAssessment = true;
@@ -401,7 +400,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnStatusUpdated), 3, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnStatusUpdated), 3, e);
                 }
             });
 

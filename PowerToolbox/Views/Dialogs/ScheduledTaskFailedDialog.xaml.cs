@@ -9,7 +9,6 @@ using PowerToolbox.Views.Windows;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -100,7 +99,7 @@ namespace PowerToolbox.Views.Dialogs
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskFailedDialog), nameof(OnCopyOperationFailedClicked), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskFailedDialog), nameof(OnCopyOperationFailedClicked), 1, e);
             }
             finally
             {
@@ -123,7 +122,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskFailedDialog), nameof(OnOpenScheduledTaskProgramClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskFailedDialog), nameof(OnOpenScheduledTaskProgramClicked), 1, e);
                 }
             });
         }

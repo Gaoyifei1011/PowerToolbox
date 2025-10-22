@@ -14,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -248,7 +247,7 @@ namespace PowerToolbox.Views.Pages
                     catch (Exception e)
                     {
                         fileSystemWatcher = null;
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(HostsPage), nameof(OnNavigatedFrom), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(HostsPage), nameof(OnNavigatedFrom), 1, e);
                     }
                 }
             });
@@ -538,7 +537,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(HostsPage), nameof(OnOpenFileClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(HostsPage), nameof(OnOpenFileClicked), 1, e);
                 }
             });
         }

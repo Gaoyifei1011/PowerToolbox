@@ -435,6 +435,7 @@
 		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Text.winmd" />
 		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Xaml.winmd" />
 		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="Microsoft.VisualBasic" />
 		<Reference Include="System.Device" />
 		<Reference Include="System.Management" />
 		<Reference Include="System.Net.Http" />

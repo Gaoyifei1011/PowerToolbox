@@ -2,7 +2,7 @@
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -83,7 +83,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(OpenFolderDialog), nameof(ShowDialog), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(OpenFolderDialog), nameof(ShowDialog), 1, e);
                 if (FileOpenDialog is not null)
                 {
                     Marshal.FinalReleaseComObject(FileOpenDialog);

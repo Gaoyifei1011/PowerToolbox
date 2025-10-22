@@ -12,7 +12,7 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -144,7 +144,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnDrop), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnDrop), 1, e);
             }
             finally
             {
@@ -173,7 +173,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnDrop), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnDrop), 2, e);
                         continue;
                     }
                 }
@@ -436,7 +436,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnSelectFileClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnSelectFileClicked), 1, e);
                             continue;
                         }
                     }
@@ -495,7 +495,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnSelectFolderClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnSelectFolderClicked), 1, e);
                         }
 
                         try
@@ -516,7 +516,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnSelectFolderClicked), 2, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnSelectFolderClicked), 2, e);
                         }
                     });
 

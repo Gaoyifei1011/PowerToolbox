@@ -5,7 +5,7 @@ using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 
 namespace PowerToolbox.Views.Pages
 {
@@ -107,7 +107,7 @@ namespace PowerToolbox.Views.Pages
                 SelectedItem = DataEncryptVertifySelctorBar.Items[PageList.FindIndex(item => Equals(item, GetCurrentPageType()))];
             }
 
-            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataEncryptVertifyPage), nameof(OnNavigationFailed), 1, args.Exception);
+            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptVertifyPage), nameof(OnNavigationFailed), 1, args.Exception);
         }
 
         #endregion 第二部分：数据加密校验页面——挂载的事件
@@ -129,7 +129,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataEncryptVertifyPage), nameof(NavigateTo), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptVertifyPage), nameof(NavigateTo), 1, e);
             }
         }
 

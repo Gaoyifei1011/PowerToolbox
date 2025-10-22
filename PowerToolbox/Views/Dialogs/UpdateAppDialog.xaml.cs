@@ -6,7 +6,7 @@ using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.Threading;
 using Windows.Services.Store;
 
@@ -132,7 +132,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateAppDialog), nameof(OnCancelOrCloseClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateAppDialog), nameof(OnCancelOrCloseClicked), 1, e);
                 }
             }
         }
@@ -285,7 +285,7 @@ namespace PowerToolbox.Views.Dialogs
                 cancellationTokenSource.Dispose();
                 cancellationTokenSource = null;
                 CloseText = CloseString;
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateAppDialog), nameof(OnUpdateClicked), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateAppDialog), nameof(OnUpdateClicked), 1, e);
             }
             catch (Exception e)
             {
@@ -293,7 +293,7 @@ namespace PowerToolbox.Views.Dialogs
                 cancellationTokenSource.Dispose();
                 cancellationTokenSource = null;
                 CloseText = CloseString;
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateAppDialog), nameof(OnUpdateClicked), 2, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateAppDialog), nameof(OnUpdateClicked), 2, e);
             }
         }
 
@@ -315,7 +315,7 @@ namespace PowerToolbox.Views.Dialogs
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateAppDialog), nameof(OnCancelOrCloseClicked), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateAppDialog), nameof(OnCancelOrCloseClicked), 1, e);
                     }
                 }
                 else

@@ -8,7 +8,7 @@ using PowerToolbox.Views.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -191,7 +191,7 @@ namespace PowerToolbox.Views.Pages
                     catch (Exception e)
                     {
                         isLoadWallpaperFailed = true;
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(LoafPage), nameof(OnNavigatedTo), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoafPage), nameof(OnNavigatedTo), 1, e);
                     }
                 });
 
@@ -208,7 +208,7 @@ namespace PowerToolbox.Views.Pages
                     isLoadWallpaperFailed = true;
                     LoafImage = ActualTheme is ElementTheme.Light ? new(new Uri("ms-appx:///Assets/Images/LoafLightWallpaper.jpg")) : new(new Uri("ms-appx:///Assets/Images/LoafDarkWallpaper.jpg"));
                     LoadImageCompleted = true;
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(LoafPage), nameof(OnNavigatedTo), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoafPage), nameof(OnNavigatedTo), 2, e);
                 }
             }
 
@@ -228,7 +228,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(LoafPage), nameof(OnNavigatedFrom), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoafPage), nameof(OnNavigatedFrom), 1, e);
             }
         }
 

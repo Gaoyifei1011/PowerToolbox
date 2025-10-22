@@ -9,7 +9,6 @@ using PowerToolbox.WindowsAPI.PInvoke.Rstrtmgr;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 
@@ -112,7 +111,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAdvancedPage), nameof(OnRestartExplorerClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAdvancedPage), nameof(OnRestartExplorerClicked), 1, e);
                 }
             });
 

@@ -2,7 +2,6 @@
 using PowerToolbox.Services.Root;
 using System;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Threading.Tasks;
 
 // 抑制 CA1822，IDE0060 警告
@@ -33,7 +32,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(OpenStartupTaskFailedDialog), nameof(OnOpenTaskManagerClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(OpenStartupTaskFailedDialog), nameof(OnOpenTaskManagerClicked), 1, e);
                 }
             });
         }
@@ -52,7 +51,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(OpenStartupTaskFailedDialog), nameof(OnOpenGroupPolicyClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(OpenStartupTaskFailedDialog), nameof(OnOpenGroupPolicyClicked), 1, e);
                 }
             });
         }

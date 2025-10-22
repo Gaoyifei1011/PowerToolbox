@@ -14,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -251,7 +250,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnSystemThemeSettingsClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnSystemThemeSettingsClicked), 1, e);
                 }
             });
         }
@@ -300,7 +299,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnSystemBackdropSettingsClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnSystemBackdropSettingsClicked), 1, e);
                 }
             });
         }
@@ -318,7 +317,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnSystemLanguageSettingsClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnSystemLanguageSettingsClicked), 1, e);
                 }
             });
         }
@@ -391,7 +390,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnApplicationExit), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnApplicationExit), 1, e);
             }
         }
 

@@ -55,13 +55,13 @@ namespace PowerToolbox.Views.Pages
         // 资源工具列表
         private List<ControlItemModel> ResourceToolsList { get; } =
         [
-            new ControlItemModel()
-            {
-                Title = ResourceService.AllToolsResource.GetString("DataEncryptVertify"),
-                Description = ResourceService.AllToolsResource.GetString("DataEncryptVertifyDescription"),
-                ImagePath = "ms-appx:///Assets/ControlIcon/DataEncryptVertify.png",
-                Tag = "DataEncryptVertify"
-            },
+            //new ControlItemModel()
+            //{
+            //    Title = ResourceService.AllToolsResource.GetString("DataEncryptVertify"),
+            //    Description = ResourceService.AllToolsResource.GetString("DataEncryptVertifyDescription"),
+            //    ImagePath = "ms-appx:///Assets/ControlIcon/DataEncryptVertify.png",
+            //    Tag = "DataEncryptVertify"
+            //},
             new ControlItemModel()
             {
                 Title = ResourceService.AllToolsResource.GetString("DownloadManager"),
@@ -109,13 +109,13 @@ namespace PowerToolbox.Views.Pages
                 ImagePath = "ms-appx:///Assets/ControlIcon/ContextMenuManager.png",
                 Tag = "ContextMenuManager"
             },
-            new ControlItemModel()
-            {
-                Title = ResourceService.AllToolsResource.GetString("ExperimentalFeatureManager"),
-                Description = ResourceService.AllToolsResource.GetString("ExperimentalFeatureManagerDescription"),
-                ImagePath = "ms-appx:///Assets/ControlIcon/ExperimentalFeatureManager.png",
-                Tag = "ExperimentalFeatureManager"
-            }
+            //new ControlItemModel()
+            //{
+            //    Title = ResourceService.AllToolsResource.GetString("ExperimentalFeatureManager"),
+            //    Description = ResourceService.AllToolsResource.GetString("ExperimentalFeatureManagerDescription"),
+            //    ImagePath = "ms-appx:///Assets/ControlIcon/ExperimentalFeatureManager.png",
+            //    Tag = "ExperimentalFeatureManager"
+            //}
         ];
 
         // 系统工具列表

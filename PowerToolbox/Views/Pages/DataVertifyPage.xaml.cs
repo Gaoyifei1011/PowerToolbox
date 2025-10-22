@@ -7,7 +7,7 @@ using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -490,7 +490,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnStartVertifyClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnStartVertifyClicked), 1, e);
                 }
 
                 if ((selectVertifyIndex is 0 && fileStream is not null) || (selectVertifyIndex is 1 && contentData is not null))
@@ -527,7 +527,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnStartVertifyClicked), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnStartVertifyClicked), 2, e);
                     }
                 }
 
@@ -687,7 +687,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.MD5) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.MD5) + 1, e);
                         }
                         break;
                     }
@@ -719,7 +719,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.RIPEMD_160) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.RIPEMD_160) + 1, e);
                         }
                         break;
                     }
@@ -751,7 +751,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_1) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_1) + 1, e);
                         }
                         break;
                     }
@@ -787,7 +787,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_256) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_256) + 1, e);
                         }
                         break;
                     }
@@ -819,7 +819,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_384) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_384) + 1, e);
                         }
                         break;
                     }
@@ -851,7 +851,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_512) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_512) + 1, e);
                         }
                         break;
                     }

@@ -5,7 +5,7 @@ using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.Threading;
 
 namespace PowerToolbox.Services.Download
@@ -82,7 +82,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(OnDownloadProgress), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(OnDownloadProgress), 1, e);
                 }
                 finally
                 {
@@ -120,7 +120,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(OnDownloadProgress), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(OnDownloadProgress), 2, e);
                 }
                 finally
                 {
@@ -155,7 +155,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(OnDownloadProgress), 3, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(OnDownloadProgress), 3, e);
                 }
                 finally
                 {
@@ -193,7 +193,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(OnDownloadProgress), 4, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(OnDownloadProgress), 4, e);
                 }
                 finally
                 {
@@ -232,7 +232,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(OnDownloadProgress), 5, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(OnDownloadProgress), 5, e);
                 }
                 finally
                 {
@@ -268,7 +268,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(OnDownloadProgress), 6, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(OnDownloadProgress), 6, e);
                 }
                 finally
                 {
@@ -342,7 +342,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(CloseDownloadScheduler), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSchedulerService), nameof(CloseDownloadScheduler), 1, e);
                 }
             }
         }

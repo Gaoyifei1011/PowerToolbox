@@ -10,7 +10,6 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -168,7 +167,7 @@ namespace PowerToolbox.Views.Dialogs
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(AddDownloadTaskDialog), nameof(OnDownloadLinkTextChanged), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AddDownloadTaskDialog), nameof(OnDownloadLinkTextChanged), 1, e);
                             return string.Empty;
                         }
                     });
@@ -262,7 +261,7 @@ namespace PowerToolbox.Views.Dialogs
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(AddDownloadTaskDialog), nameof(OnDownloadClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AddDownloadTaskDialog), nameof(OnDownloadClicked), 1, e);
                             return false;
                         }
                     });
@@ -283,7 +282,7 @@ namespace PowerToolbox.Views.Dialogs
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(AddDownloadTaskDialog), nameof(OnDownloadClicked), 2, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AddDownloadTaskDialog), nameof(OnDownloadClicked), 2, e);
                         }
                     });
                 }

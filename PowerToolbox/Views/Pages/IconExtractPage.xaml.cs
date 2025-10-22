@@ -13,7 +13,7 @@ using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -292,7 +292,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnDragOver), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnDragOver), 1, e);
             }
             finally
             {
@@ -323,7 +323,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnDrop), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnDrop), 1, e);
                     }
 
                     return null;
@@ -336,7 +336,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnDrop), 2, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnDrop), 2, e);
             }
             finally
             {
@@ -390,7 +390,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnSelectionChanged), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnSelectionChanged), 1, e);
                     }
                 }
             }
@@ -449,7 +449,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnIconSizeClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnIconSizeClicked), 1, e);
                         }
                     }
                 }
@@ -529,7 +529,7 @@ namespace PowerToolbox.Views.Pages
                                     catch (Exception e)
                                     {
                                         saveFailedCount++;
-                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 1, e);
+                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 1, e);
                                     }
                                 }
                             }
@@ -599,7 +599,7 @@ namespace PowerToolbox.Views.Pages
                                     catch (Exception e)
                                     {
                                         saveFailedCount++;
-                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportAllIconsClicked), 1, e);
+                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportAllIconsClicked), 1, e);
                                     }
                                 }
                             }
@@ -665,7 +665,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(ParseIconFileAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(ParseIconFileAsync), 1, e);
                 }
 
                 return iconsList;
@@ -701,7 +701,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(ParseIconFileAsync), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(ParseIconFileAsync), 2, e);
                 }
             }
             else
@@ -764,7 +764,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(SaveIcon), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(SaveIcon), 1, e);
                 return false;
             }
         }

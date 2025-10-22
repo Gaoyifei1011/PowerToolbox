@@ -80,6 +80,7 @@
 		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_InteractiveExperiences)\metadata\10.0.18362.0\Microsoft.UI.winmd" />
 		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Text.winmd" />
 		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Xaml.winmd" />
+		<Reference Include="Microsoft.VisualBasic" />
 		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
 </Project>

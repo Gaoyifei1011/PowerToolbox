@@ -8,7 +8,7 @@ using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -99,7 +99,7 @@ namespace PowerToolbox.Views.Dialogs
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(OperationFailedDialog), nameof(OnCopyOperationFailedClicked), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(OperationFailedDialog), nameof(OnCopyOperationFailedClicked), 1, e);
             }
             finally
             {

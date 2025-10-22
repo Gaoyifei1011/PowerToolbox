@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -138,7 +137,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnOpenPackagePathExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnOpenPackagePathExecuteRequested), 1, e);
                     }
                 });
             }
@@ -164,7 +163,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnCheckBoxClickExecuteRequested), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnCheckBoxClickExecuteRequested), 1, e);
                         }
                     }
                     else
@@ -176,7 +175,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnCheckBoxClickExecuteRequested), 2, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnCheckBoxClickExecuteRequested), 2, e);
                         }
                     }
 
@@ -206,7 +205,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnCheckBoxClickExecuteRequested), 3, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnCheckBoxClickExecuteRequested), 3, e);
                             registryKey.Close();
                             registryKey.Dispose();
                             return ValueTuple.Create(blockedClsidType, false);
@@ -343,7 +342,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnRestoreDefaultClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnRestoreDefaultClicked), 1, e);
                 }
 
                 try
@@ -363,7 +362,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnRestoreDefaultClicked), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnRestoreDefaultClicked), 2, e);
                 }
             });
 
@@ -514,7 +513,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 1, e);
                 }
 
                 return queryedContextMenuList;
@@ -542,7 +541,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 2, e);
                         contextMenuItem.PackageIcon = emptyImage;
                     }
 
@@ -601,7 +600,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetBlockedClsidList), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetBlockedClsidList), 1, e);
             }
 
             try
@@ -626,7 +625,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetBlockedClsidList), 2, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetBlockedClsidList), 2, e);
             }
 
             return blockClsidList;
@@ -738,7 +737,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetAppInfo), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetAppInfo), 1, e);
                 return ValueTuple.Create(string.Empty, string.Empty, new List<Guid>());
             }
         }

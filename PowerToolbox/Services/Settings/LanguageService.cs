@@ -6,7 +6,7 @@ using PowerToolbox.WindowsAPI.PInvoke.Shlwapi;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -79,7 +79,7 @@ namespace PowerToolbox.Services.Settings
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(LanguageService), nameof(InitializeLanguageList), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LanguageService), nameof(InitializeLanguageList), 1, e);
                 AppLanguagesList.Clear();
                 AppLanguagesList.Add("en-us");
             }

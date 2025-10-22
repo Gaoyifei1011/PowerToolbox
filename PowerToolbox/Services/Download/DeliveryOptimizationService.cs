@@ -5,7 +5,7 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Ole32;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -102,7 +102,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DeliveryOptimizationService), nameof(CreateDownload), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DeliveryOptimizationService), nameof(CreateDownload), 1, e);
                 }
             }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
         }
@@ -253,7 +253,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DeliveryOptimizationService), nameof(OnStatusChanged), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DeliveryOptimizationService), nameof(OnStatusChanged), 1, e);
                 }
             }
 
@@ -285,7 +285,7 @@ namespace PowerToolbox.Services.Download
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DeliveryOptimizationService), nameof(OnStatusChanged), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DeliveryOptimizationService), nameof(OnStatusChanged), 2, e);
                 }
             }
         }

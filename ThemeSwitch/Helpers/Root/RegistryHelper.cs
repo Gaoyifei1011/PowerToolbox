@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using ThemeSwitch.Services.Root;
 
 namespace ThemeSwitch.Helpers.Root
@@ -56,7 +56,7 @@ namespace ThemeSwitch.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(ThemeSwitch), nameof(RegistryHelper), nameof(ReadRegistryKey), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(RegistryHelper), nameof(ReadRegistryKey), 1, e);
             }
             return value;
         }
@@ -108,7 +108,7 @@ namespace ThemeSwitch.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(ThemeSwitch), nameof(RegistryHelper), nameof(SaveRegistryKey), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(RegistryHelper), nameof(SaveRegistryKey), 1, e);
                 return false;
             }
         }
@@ -141,7 +141,7 @@ namespace ThemeSwitch.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(ThemeSwitch), nameof(RegistryHelper), nameof(RemoveRegistryKey), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(RegistryHelper), nameof(RemoveRegistryKey), 1, e);
                 return false;
             }
         }

@@ -23,7 +23,7 @@ using PowerToolbox.WindowsAPI.PInvoke.Uxtheme;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -471,7 +471,7 @@ namespace PowerToolbox.Views.Windows
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(MainPage), nameof(OnNavigated), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainPage), nameof(OnNavigated), 1, e);
             }
         }
 
@@ -481,7 +481,7 @@ namespace PowerToolbox.Views.Windows
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs args)
         {
             args.Handled = true;
-            LogService.WriteLog(EventLevel.Warning, nameof(PowerToolbox), nameof(LogService), nameof(OnNavigationFailed), 1, args.Exception);
+            LogService.WriteLog(TraceEventType.Warning, nameof(PowerToolbox), nameof(LogService), nameof(OnNavigationFailed), 1, args.Exception);
             (Application.Current as MainApp).Dispose();
         }
 
@@ -710,7 +710,7 @@ namespace PowerToolbox.Views.Windows
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(MainWindowSubClassProc), 1, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(MainWindowSubClassProc), 1, e);
                             }
                         }, null);
                         break;
@@ -728,7 +728,7 @@ namespace PowerToolbox.Views.Windows
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(MainWindowSubClassProc), 2, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(MainWindowSubClassProc), 2, e);
                             }
                             finally
                             {
@@ -962,7 +962,7 @@ namespace PowerToolbox.Views.Windows
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(MainPage), nameof(NavigateTo), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainPage), nameof(NavigateTo), 1, e);
             }
         }
 
@@ -996,7 +996,7 @@ namespace PowerToolbox.Views.Windows
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(MainPage), nameof(NavigationFrom), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainPage), nameof(NavigationFrom), 1, e);
                 }
 
                 (MainNavigationView.Content as Frame).GoBack();
@@ -1048,7 +1048,7 @@ namespace PowerToolbox.Views.Windows
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(ShowDialogAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(ShowDialogAsync), 1, e);
                 }
                 isDialogOpening = false;
             }
@@ -1077,7 +1077,7 @@ namespace PowerToolbox.Views.Windows
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(ShowNotificationAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(ShowNotificationAsync), 1, e);
                 }
             }
         }
@@ -1293,7 +1293,7 @@ namespace PowerToolbox.Views.Windows
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(MainPage), nameof(SendReceivedFilesListAsync), 1, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainPage), nameof(SendReceivedFilesListAsync), 1, e);
                             }
                         }
 

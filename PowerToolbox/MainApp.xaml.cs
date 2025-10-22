@@ -6,7 +6,7 @@ using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 
 // 抑制 CA1822 警告
 #pragma warning disable CA1822
@@ -46,7 +46,7 @@ namespace PowerToolbox
         /// </summary>
         private void OnUnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs args)
         {
-            LogService.WriteLog(EventLevel.Warning, nameof(PowerToolbox), nameof(MainApp), nameof(OnUnhandledException), 1, args.Exception);
+            LogService.WriteLog(TraceEventType.Warning, nameof(PowerToolbox), nameof(MainApp), nameof(OnUnhandledException), 1, args.Exception);
         }
 
         /// <summary>

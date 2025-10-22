@@ -8,7 +8,6 @@ using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -158,7 +157,7 @@ namespace PowerToolbox.Views.Windows
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SimulateUpdateWindow), nameof(OnElapsed), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SimulateUpdateWindow), nameof(OnElapsed), 1, e);
             }
         }
 
@@ -187,7 +186,7 @@ namespace PowerToolbox.Views.Windows
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SimulateUpdateWindow), nameof(StartHook), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SimulateUpdateWindow), nameof(StartHook), 1, e);
             }
         }
 
@@ -211,7 +210,7 @@ namespace PowerToolbox.Views.Windows
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SimulateUpdateWindow), nameof(StopHook), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SimulateUpdateWindow), nameof(StopHook), 1, e);
             }
         }
 

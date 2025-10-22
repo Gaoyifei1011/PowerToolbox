@@ -12,7 +12,7 @@ using PowerToolbox.Views.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -514,7 +514,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnNavigatedTo), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnNavigatedTo), 1, e);
                         }
                     }
 
@@ -533,7 +533,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnNavigatedTo), 2, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnNavigatedTo), 2, e);
                         }
                     }
 
@@ -552,7 +552,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnNavigatedTo), 3, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnNavigatedTo), 3, e);
                         }
                     }
                 }
@@ -666,7 +666,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnSaveClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnSaveClicked), 1, e);
                 }
             }
 
@@ -684,7 +684,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnSaveClicked), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnSaveClicked), 2, e);
                 }
             }
 
@@ -702,7 +702,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnSaveClicked), 3, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnSaveClicked), 3, e);
                 }
             }
 
@@ -785,7 +785,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnDefaultIconBrowserClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnDefaultIconBrowserClicked), 1, e);
                 }
             }
             openFileDialog.Dispose();
@@ -820,7 +820,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnLightThemeIconBrowserClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnLightThemeIconBrowserClicked), 1, e);
                 }
             }
             openFileDialog.Dispose();
@@ -855,7 +855,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnDarkThemeIconBrowserClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnDarkThemeIconBrowserClicked), 1, e);
                 }
             }
             openFileDialog.Dispose();

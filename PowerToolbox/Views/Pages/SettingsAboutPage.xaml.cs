@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
@@ -87,7 +86,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnShowReleaseNotesClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnShowReleaseNotesClicked), 1, e);
                 }
             });
         }
@@ -113,7 +112,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnSystemInformationClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnSystemInformationClicked), 1, e);
                 }
             });
         }
@@ -139,7 +138,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnHelpTranslateClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnHelpTranslateClicked), 1, e);
                 }
             });
         }
@@ -157,7 +156,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnProjectDescriptionClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnProjectDescriptionClicked), 1, e);
                 }
             });
         }
@@ -175,7 +174,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnSendFeedbackClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnSendFeedbackClicked), 1, e);
                 }
             });
         }
@@ -206,7 +205,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnCheckUpdateClicked), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnCheckUpdateClicked), 1, e);
                         IsChecking = false;
                         await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CheckUpdate, 2));
                     }
@@ -239,7 +238,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (PingException e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(IsNetworkConnected), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(IsNetworkConnected), 1, e);
                 return false;
             }
         }

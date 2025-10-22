@@ -4,7 +4,6 @@ using Microsoft.Win32;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -116,7 +115,7 @@ namespace ThemeSwitch.Views.Windows
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(ThemeSwitch), nameof(ThemeSwitchTrayWindow), nameof(OnOpenMainProgramClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(ThemeSwitchTrayWindow), nameof(OnOpenMainProgramClicked), 1, e);
                 }
             });
         }
@@ -194,7 +193,7 @@ namespace ThemeSwitch.Views.Windows
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(ThemeSwitch), nameof(ThemeSwitchTrayWindow), nameof(OnDoubleClick), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(ThemeSwitchTrayWindow), nameof(OnDoubleClick), 1, e);
                 }
             });
         }
@@ -444,7 +443,7 @@ namespace ThemeSwitch.Views.Windows
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(ThemeSwitch), nameof(ThemeSwitchTrayWindow), nameof(MainWindowSubClassProc), 1, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(ThemeSwitchTrayWindow), nameof(MainWindowSubClassProc), 1, e);
                             }
                         }, null);
                         break;

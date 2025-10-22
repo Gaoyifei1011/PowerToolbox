@@ -11,7 +11,6 @@ using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -114,7 +113,7 @@ namespace PowerToolbox.Views.Dialogs
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnOpenFilePathExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnOpenFilePathExecuteRequested), 1, e);
                     }
                 });
             }
@@ -159,7 +158,7 @@ namespace PowerToolbox.Views.Dialogs
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnOpenProcessPathExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnOpenProcessPathExecuteRequested), 1, e);
                     }
                 });
             }
@@ -203,7 +202,7 @@ namespace PowerToolbox.Views.Dialogs
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockFailedDialog), nameof(OnCopyOperationFailedClicked), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockFailedDialog), nameof(OnCopyOperationFailedClicked), 1, e);
             }
             finally
             {
@@ -228,7 +227,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileUnlockFailedDialog), nameof(OnOpenTaskManagerClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockFailedDialog), nameof(OnOpenTaskManagerClicked), 1, e);
                 }
             });
         }

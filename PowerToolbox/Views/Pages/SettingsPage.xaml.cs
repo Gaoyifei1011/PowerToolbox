@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -136,7 +135,7 @@ namespace PowerToolbox.Views.Pages
                 SelectedItem = SettingsSelctorBar.Items[PageList.FindIndex(item => Equals(item, GetCurrentPageType()))];
             }
 
-            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(OnNavigationFailed), 1, args.Exception);
+            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(OnNavigationFailed), 1, args.Exception);
         }
 
         /// <summary>
@@ -212,7 +211,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnPinToDesktopClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnPinToDesktopClicked), 1, e);
                     return false;
                 }
             });
@@ -247,7 +246,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnPinToStartScreenClicked), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnPinToStartScreenClicked), 1, e);
             }
             finally
             {
@@ -279,7 +278,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnPinToTaskbarClicked), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnPinToTaskbarClicked), 1, e);
             }
             finally
             {
@@ -300,7 +299,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnAppSettingsClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnAppSettingsClicked), 1, e);
                 }
             });
         }
@@ -335,7 +334,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnTroubleShootClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnTroubleShootClicked), 1, e);
                 }
             });
         }
@@ -359,7 +358,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(NavigateTo), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(NavigateTo), 1, e);
             }
         }
 

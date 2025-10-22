@@ -12,7 +12,7 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -295,7 +295,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnDrop), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnDrop), 1, e);
             }
             finally
             {
@@ -324,7 +324,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnDrop), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnDrop), 2, e);
                         continue;
                     }
                 }
@@ -594,7 +594,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnSelectFileClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnSelectFileClicked), 1, e);
                             continue;
                         }
                     }
@@ -653,7 +653,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnSelectFolderClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnSelectFolderClicked), 1, e);
                         }
 
                         try
@@ -674,7 +674,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnSelectFolderClicked), 2, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnSelectFolderClicked), 2, e);
                         }
                     });
 

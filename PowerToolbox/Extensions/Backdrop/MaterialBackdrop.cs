@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using PowerToolbox.Services.Root;
 using System;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 
 namespace PowerToolbox.Extensions.Backdrop
 {
@@ -41,7 +41,7 @@ namespace PowerToolbox.Extensions.Backdrop
 
             if (systemBackdropController is not null)
             {
-                LogService.WriteLog(EventLevel.Warning, nameof(PowerToolbox), nameof(MaterialBackdrop), nameof(OnTargetConnected), 1, new Exception());
+                LogService.WriteLog(TraceEventType.Warning, nameof(PowerToolbox), nameof(MaterialBackdrop), nameof(OnTargetConnected), 1, new Exception());
                 (Application.Current as MainApp).Dispose();
             }
 

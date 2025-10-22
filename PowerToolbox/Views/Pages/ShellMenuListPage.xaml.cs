@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -162,7 +162,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(OnNavigatedFrom), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(OnNavigatedFrom), 1, e);
             }
         }
 
@@ -448,7 +448,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumShellMenuItem), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumShellMenuItem), 1, e);
                     }
                 }
                 else
@@ -472,7 +472,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumShellMenuItem), 2, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumShellMenuItem), 2, e);
                             }
                         }
                         // 深色主题图标
@@ -491,7 +491,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumShellMenuItem), 3, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumShellMenuItem), 3, e);
                             }
                         }
                     }
@@ -513,7 +513,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumShellMenuItem), 4, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumShellMenuItem), 4, e);
                             }
                         }
                     }
@@ -687,7 +687,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumModifyShellMenuItemTheme), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumModifyShellMenuItemTheme), 1, e);
                         }
                     }
                 }
@@ -708,7 +708,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumModifyShellMenuItemTheme), 2, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumModifyShellMenuItemTheme), 2, e);
                         }
                     }
                 }

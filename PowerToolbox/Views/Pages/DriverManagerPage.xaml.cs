@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -411,7 +410,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(OnOpenFolderExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(OnOpenFolderExecuteRequested), 1, e);
                     }
                 });
             }
@@ -605,7 +604,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(OnOpenDeviceManagementClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(OnOpenDeviceManagementClicked), 1, e);
                 }
             });
         }
@@ -1650,7 +1649,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetDriverInformationList), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetDriverInformationList), 1, e);
             }
 
             return driverList;
@@ -1906,13 +1905,13 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 1, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 1, e);
                             }
                         });
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 2, e);
                     }
 
                     totalSize += fileAllSize;
@@ -1933,20 +1932,20 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 3, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 3, e);
                             }
                         });
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 4, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 4, e);
                     }
 
                     totalSize += folderAllSize;
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 5, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 5, e);
                 }
             }
 

@@ -4,7 +4,7 @@ using PowerToolbox.Helpers.Root;
 using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -42,7 +42,7 @@ namespace PowerToolbox.Services.Shell
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(InitializeShellMenu), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(InitializeShellMenu), 1, e);
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace PowerToolbox.Services.Shell
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(EnumRemoveMenuItem), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(EnumRemoveMenuItem), 1, e);
                 }
             }
 
@@ -172,7 +172,7 @@ namespace PowerToolbox.Services.Shell
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(EnumRemoveMenuItem), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(EnumRemoveMenuItem), 2, e);
                 }
             }
 
@@ -184,7 +184,7 @@ namespace PowerToolbox.Services.Shell
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(EnumRemoveMenuItem), 3, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(EnumRemoveMenuItem), 3, e);
                 }
             }
 
@@ -203,7 +203,7 @@ namespace PowerToolbox.Services.Shell
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(EnumRemoveMenuItem), 4, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(EnumRemoveMenuItem), 4, e);
             }
 
             try
@@ -220,7 +220,7 @@ namespace PowerToolbox.Services.Shell
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(EnumRemoveMenuItem), 5, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(EnumRemoveMenuItem), 5, e);
             }
 
             try
@@ -237,7 +237,7 @@ namespace PowerToolbox.Services.Shell
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(EnumRemoveMenuItem), 6, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuService), nameof(EnumRemoveMenuItem), 6, e);
             }
 
             // 获取子菜单项

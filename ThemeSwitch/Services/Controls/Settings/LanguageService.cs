@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -81,7 +81,7 @@ namespace ThemeSwitch.Services.Controls.Settings
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(ThemeSwitch), nameof(LanguageService), nameof(InitializeLanguageList), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(LanguageService), nameof(InitializeLanguageList), 1, e);
                 AppLanguagesList.Clear();
                 AppLanguagesList.Add("en-us");
             }

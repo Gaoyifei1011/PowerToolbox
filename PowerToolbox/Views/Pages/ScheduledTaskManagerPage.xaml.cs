@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -173,7 +172,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnNavigatedTo), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnNavigatedTo), 1, e);
                     }
                 }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
                 await GetScheduledTaskAsync();
@@ -219,7 +218,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnDisableScheduledTaskExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnDisableScheduledTaskExecuteRequested), 1, e);
                         return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(false, e, null);
                     }
                 }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
@@ -276,7 +275,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnEnableScheduledTaskExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnEnableScheduledTaskExecuteRequested), 1, e);
                         return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(false, e, null);
                     }
                 }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
@@ -333,7 +332,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnRunScheduledTaskExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnRunScheduledTaskExecuteRequested), 1, e);
                         return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(false, e, null);
                     }
                 }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
@@ -390,7 +389,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnStopScheduledTaskExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnStopScheduledTaskExecuteRequested), 1, e);
                         return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(false, e, null);
                     }
                 }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
@@ -444,7 +443,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnExportScheduledTaskExecuteRequested), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnExportScheduledTaskExecuteRequested), 1, e);
                             return false;
                         }
                     }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
@@ -482,7 +481,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnStopScheduledTaskExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnStopScheduledTaskExecuteRequested), 1, e);
                         return ValueTuple.Create(false, e);
                     }
                 }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
@@ -548,7 +547,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnOpenProcessPathExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnOpenProcessPathExecuteRequested), 1, e);
                     }
                 });
             }
@@ -710,7 +709,7 @@ namespace PowerToolbox.Views.Pages
                                     Path = scheduledTaskItem.Path,
                                     Exception = e
                                 });
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnRunScheduledTaskClicked), 1, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnRunScheduledTaskClicked), 1, e);
                             }
                         }
 
@@ -792,7 +791,7 @@ namespace PowerToolbox.Views.Pages
                                     Path = scheduledTaskItem.Path,
                                     Exception = e
                                 });
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnStopScheduledTaskClicked), 1, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnStopScheduledTaskClicked), 1, e);
                             }
                         }
 
@@ -867,7 +866,7 @@ namespace PowerToolbox.Views.Pages
                                     Path = scheduledTaskItem.Path,
                                     Exception = e
                                 });
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnExportScheduledTaskClicked), 1, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnExportScheduledTaskClicked), 1, e);
                             }
                         }
                     }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
@@ -920,7 +919,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnOpenScheduledTaskProgramClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnOpenScheduledTaskProgramClicked), 1, e);
                 }
             });
         }
@@ -950,7 +949,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnApplicationExit), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnApplicationExit), 1, e);
             }
         }
 
@@ -1005,7 +1004,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskAsync), 1, e);
                 }
 
                 return scheduledTaskList;
@@ -1043,7 +1042,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskAsync), 2, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskAsync), 2, e);
                         }
 
                         return memoryStream;
@@ -1059,7 +1058,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskAsync), 3, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskAsync), 3, e);
                             scheduledTaskItem.TaskIcon = emptyImage;
                         }
                         finally
@@ -1138,7 +1137,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetSubTaskFolder), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetSubTaskFolder), 1, e);
             }
 
             return subTaskFolderList;
@@ -1162,7 +1161,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetRegisteredTask), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetRegisteredTask), 1, e);
             }
 
             return registeredTaskList;
@@ -1186,7 +1185,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception sube)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTasks), 1, sube);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTasks), 1, sube);
                 }
 
                 ScheduledTaskModel scheduledTask = new()
@@ -1221,7 +1220,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTasks), 2, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTasks), 2, e);
                 return null;
             }
         }

@@ -13,7 +13,7 @@ using PowerToolbox.WindowsAPI.PInvoke.Imagehlp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -158,7 +158,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(OnDrop), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(OnDrop), 1, e);
                         continue;
                     }
                 }
@@ -295,7 +295,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(OnSelectFileClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(OnSelectFileClicked), 1, e);
                             continue;
                         }
                     }
@@ -352,7 +352,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(OnSelectFolderClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(OnSelectFolderClicked), 1, e);
                         }
 
                         return fileNameList;

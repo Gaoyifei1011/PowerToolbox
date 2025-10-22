@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -437,7 +436,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnNavigatedTo), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnNavigatedTo), 1, e);
                             return false;
                         }
                     });
@@ -467,7 +466,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnNavigatedTo), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnNavigatedTo), 2, e);
                     }
                 });
 
@@ -522,7 +521,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableCancelInstallExecuteRequested), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableCancelInstallExecuteRequested), 1, e);
                         }
                     });
                 }
@@ -567,7 +566,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableHideExecuteRequested), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableHideExecuteRequested), 1, e);
                         }
                     }
 
@@ -585,7 +584,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableHideExecuteRequested), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableHideExecuteRequested), 2, e);
                     }
 
                     IsAvailableHideEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
@@ -651,7 +650,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableInstallExecuteRequested), 1, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableInstallExecuteRequested), 1, e);
                                 return null;
                             }
                         });
@@ -724,7 +723,7 @@ namespace PowerToolbox.Views.Pages
                                 }
                                 catch (Exception e)
                                 {
-                                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableInstallExecuteRequested), 2, e);
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableInstallExecuteRequested), 2, e);
                                     return null;
                                 }
                             });
@@ -785,7 +784,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableInstallExecuteRequested), 3, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableInstallExecuteRequested), 3, e);
                     }
                 }
             }
@@ -888,7 +887,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnHiddenShowExecuteRequested), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnHiddenShowExecuteRequested), 1, e);
                         }
                     }
 
@@ -906,7 +905,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnHiddenShowExecuteRequested), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnHiddenShowExecuteRequested), 2, e);
                     }
 
                     IsAvailableHideEnabled = (AvailableUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && !item.UpdateInformation.IsHidden);
@@ -941,7 +940,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnInstalledCancelUninstallExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnInstalledCancelUninstallExecuteRequested), 1, e);
                     }
                 });
             }
@@ -1014,7 +1013,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnInstalledUninstallExecuteRequested), 1, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnInstalledUninstallExecuteRequested), 1, e);
                                 return null;
                             }
                         });
@@ -1071,7 +1070,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnInstalledUninstallExecuteRequested), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnInstalledUninstallExecuteRequested), 2, e);
                     }
                 }
             }
@@ -1092,7 +1091,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnLearnMoreExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnLearnMoreExecuteRequested), 1, e);
                     }
                 });
             }
@@ -1113,7 +1112,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnOpenSupportUrlExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnOpenSupportUrlExecuteRequested), 1, e);
                     }
                 });
             }
@@ -1148,7 +1147,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnUninstallWithCmdExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnUninstallWithCmdExecuteRequested), 1, e);
                     }
                 });
             }
@@ -1181,7 +1180,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnWindowsUpdateClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnWindowsUpdateClicked), 1, e);
                 }
             });
         }
@@ -1199,7 +1198,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnWindowsUpdateHistoryClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnWindowsUpdateHistoryClicked), 1, e);
                 }
             });
         }
@@ -1217,7 +1216,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnWIPSettingsClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnWIPSettingsClicked), 1, e);
                 }
             });
         }
@@ -1331,7 +1330,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableInstallClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableInstallClicked), 1, e);
                         }
 
                         synchronizationContext.Post(_ =>
@@ -1434,7 +1433,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableInstallClicked), 2, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableInstallClicked), 2, e);
                             }
 
                             synchronizationContext.Post(_ =>
@@ -1569,7 +1568,7 @@ namespace PowerToolbox.Views.Pages
                                     }
                                     catch (Exception e)
                                     {
-                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableHideClicked), 1, e);
+                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableHideClicked), 1, e);
                                         continue;
                                     }
                                 }
@@ -1608,7 +1607,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableHideClicked), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableHideClicked), 2, e);
                     }
                 }
 
@@ -1661,7 +1660,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableCancelInstallClicked), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnAvailableCancelInstallClicked), 1, e);
                     }
                 });
             }
@@ -1763,7 +1762,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnInstalledUninstallClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnInstalledUninstallClicked), 1, e);
                         }
 
                         synchronizationContext.Post(_ =>
@@ -1899,7 +1898,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnInstalledCancelUninstallClicked), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnInstalledCancelUninstallClicked), 2, e);
                     }
                 });
             }
@@ -1966,7 +1965,7 @@ namespace PowerToolbox.Views.Pages
                                     }
                                     catch (Exception e)
                                     {
-                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnHiddenShowClicked), 1, e);
+                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnHiddenShowClicked), 1, e);
                                         continue;
                                     }
                                 }
@@ -2005,7 +2004,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnHiddenShowClicked), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnHiddenShowClicked), 2, e);
                     }
                 }
 
@@ -2119,7 +2118,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnCleanUpdateHistoryClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(OnCleanUpdateHistoryClicked), 1, e);
                     return false;
                 }
             });
@@ -2464,7 +2463,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(CheckUpdate), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(CheckUpdate), 1, e);
                 }
 
                 return result;
@@ -2605,7 +2604,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(ExitCustomPreviewChannel), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(ExitCustomPreviewChannel), 1, e);
                 }
             });
 
@@ -2674,7 +2673,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(ExitCustomPreviewChannel), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(ExitCustomPreviewChannel), 2, e);
                     }
 
                     RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Microsoft\WindowsSelfHost\UI\Visibility", "UIHiddenElements", 65535);
@@ -2733,12 +2732,12 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(ExitCustomPreviewChannel), 3, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(ExitCustomPreviewChannel), 3, e);
                     }
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(ExitCustomPreviewChannel), 4, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(ExitCustomPreviewChannel), 4, e);
                 }
             });
 
@@ -2762,7 +2761,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(StopService), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(StopService), 1, e);
             }
         }
 
@@ -2783,7 +2782,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(StartService), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(StartService), 1, e);
             }
         }
 

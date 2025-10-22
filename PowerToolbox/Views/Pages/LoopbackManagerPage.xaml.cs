@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -181,7 +180,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(OnOpenWorkingDirectoryExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(OnOpenWorkingDirectoryExecuteRequested), 1, e);
                     }
                 });
             }
@@ -204,7 +203,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(OnLearnLoopbackClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(OnLearnLoopbackClicked), 1, e);
                 }
             });
         }
@@ -421,7 +420,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 1, e);
                         }
 
                         NTAccount userAccountType = null;
@@ -437,7 +436,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 2, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 2, e);
                         }
 
                         string logoFullPath = GetLogoInfo(inetContainerItem.workingDirectory);
@@ -462,7 +461,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 3, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 3, e);
                         continue;
                     }
                 }
@@ -494,7 +493,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 4, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 4, e);
                         loopbackItem.AppIcon = emptyImage;
                     }
 
@@ -642,7 +641,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackEnabled), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackEnabled), 1, e);
                     return false;
                 }
             }
@@ -736,7 +735,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLogoInfo), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLogoInfo), 1, e);
             }
 
             return logoFullPath;

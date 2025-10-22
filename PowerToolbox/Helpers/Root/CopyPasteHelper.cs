@@ -1,6 +1,6 @@
 ﻿using PowerToolbox.Services.Root;
 using System;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace PowerToolbox.Helpers.Root
@@ -22,7 +22,7 @@ namespace PowerToolbox.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(CopyPasteHelper), nameof(CopyToClipboard), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(CopyPasteHelper), nameof(CopyToClipboard), 1, e);
                 return false;
             }
         }

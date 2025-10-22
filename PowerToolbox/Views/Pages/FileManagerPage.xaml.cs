@@ -7,7 +7,7 @@ using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 
 // 抑制 IDE0060 警告
 #pragma warning disable IDE0060
@@ -215,7 +215,7 @@ namespace PowerToolbox.Views.Pages
                 SelectedItem = FileManagerSelctorBar.Items[PageList.FindIndex(item => Equals(item, GetCurrentPageType()))];
             }
 
-            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileManagerPage), nameof(OnNavigationFailed), 1, args.Exception);
+            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileManagerPage), nameof(OnNavigationFailed), 1, args.Exception);
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(FileManagerPage), nameof(NavigateTo), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileManagerPage), nameof(NavigateTo), 1, e);
             }
         }
 

@@ -331,7 +331,7 @@
                         </ToolTipService.ToolTip>
 
                         <NavigationViewItem.MenuItems>
-                            <NavigationViewItem Tag="DataEncryptVertify">
+                            <NavigationViewItem Tag="DataEncryptVertify" Visibility="Collapsed">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/DataEncryptVertify.png" />
@@ -518,7 +518,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="ExperimentalFeatureManager">
+                            <NavigationViewItem Tag="ExperimentalFeatureManager" Visibility="Collapsed">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/ExperimentalFeatureManager.png" />

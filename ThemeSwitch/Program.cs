@@ -2,7 +2,6 @@
 using Microsoft.UI.Xaml;
 using System;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Globalization;
 using System.Threading;
 using ThemeSwitch.Extensions.Threading;
@@ -79,7 +78,7 @@ namespace ThemeSwitch
         /// </summary>
         private static void OnUnhandledException(object sender, System.UnhandledExceptionEventArgs args)
         {
-            LogService.WriteLog(EventLevel.Warning, nameof(ThemeSwitch), nameof(Program), nameof(OnUnhandledException), 1, args.ExceptionObject as Exception);
+            LogService.WriteLog(TraceEventType.Warning, nameof(ThemeSwitch), nameof(Program), nameof(OnUnhandledException), 1, args.ExceptionObject as Exception);
         }
 
         /// <summary>

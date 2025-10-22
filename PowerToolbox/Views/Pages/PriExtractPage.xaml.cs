@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -385,7 +384,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnDragOver), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnDragOver), 1, e);
                 return;
             }
             finally
@@ -417,7 +416,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnDrop), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnDrop), 1, e);
                     }
 
                     return null;
@@ -430,7 +429,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnDrop), 2, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnDrop), 2, e);
                 return;
             }
             finally
@@ -534,7 +533,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnEmbeddedDataExecuteRequested), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnEmbeddedDataExecuteRequested), 1, e);
                         }
                     });
 
@@ -875,7 +874,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnExportSelectedEmbeddedDataClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnExportSelectedEmbeddedDataClicked), 1, e);
                         }
                     });
 
@@ -969,7 +968,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnExportAllEmbeddedDataClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnExportAllEmbeddedDataClicked), 1, e);
                         }
                     });
                 }
@@ -1207,7 +1206,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                     catch (Exception e)
                                                                     {
-                                                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 1, e);
+                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 1, e);
                                                                     }
                                                                 }
 
@@ -1233,7 +1232,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                     catch (Exception e)
                                                                     {
-                                                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 2, e);
+                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 2, e);
                                                                     }
                                                                 }
 
@@ -1260,7 +1259,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                     catch (Exception e)
                                                                     {
-                                                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 3, e);
+                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 3, e);
                                                                     }
                                                                 }
 
@@ -1286,7 +1285,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                     catch (Exception e)
                                                                     {
-                                                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 4, e);
+                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 4, e);
                                                                     }
                                                                 }
 
@@ -1313,7 +1312,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                     catch (Exception e)
                                                                     {
-                                                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 5, e);
+                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 5, e);
                                                                     }
                                                                 }
 
@@ -1339,7 +1338,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                     catch (Exception e)
                                                                     {
-                                                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 6, e);
+                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 6, e);
                                                                     }
                                                                 }
 
@@ -1363,7 +1362,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                     catch (Exception e)
                                                                     {
-                                                                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 7, e);
+                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 7, e);
                                                                     }
                                                                 }
 
@@ -1398,7 +1397,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 8, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 8, e);
                     return false;
                 }
             });

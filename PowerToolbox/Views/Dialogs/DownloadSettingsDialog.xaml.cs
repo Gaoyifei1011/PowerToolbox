@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -97,7 +96,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnDownloadOpenFolderClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnDownloadOpenFolderClicked), 1, e);
                 }
             });
         }
@@ -164,7 +163,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnOpenDeliveryOptimizationClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnOpenDeliveryOptimizationClicked), 1, e);
                 }
             });
         }
@@ -211,7 +210,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnConfigurationClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnConfigurationClicked), 1, e);
                 }
             });
         }
@@ -229,7 +228,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnTroubleShootClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnTroubleShootClicked), 1, e);
                 }
             });
         }

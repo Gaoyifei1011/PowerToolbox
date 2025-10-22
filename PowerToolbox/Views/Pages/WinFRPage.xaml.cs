@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -707,7 +706,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnNavigatedTo), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnNavigatedTo), 1, e);
                 }
 
                 try
@@ -729,7 +728,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnNavigatedTo), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnNavigatedTo), 2, e);
                 }
 
                 GlobalNotificationService.ApplicationExit += OnApplicationExit;
@@ -782,7 +781,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnInstallWinFRClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnInstallWinFRClicked), 1, e);
                 }
             });
         }
@@ -992,7 +991,7 @@ namespace PowerToolbox.Views.Pages
                                         }
                                         catch (Exception e)
                                         {
-                                            LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnRecoveryClicked), 1, e);
+                                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnRecoveryClicked), 1, e);
                                         }
                                     }, null);
 
@@ -1010,7 +1009,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnRecoveryClicked), 2, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnRecoveryClicked), 2, e);
 
                                 synchronizationContext.Post((_) =>
                                 {
@@ -1041,7 +1040,7 @@ namespace PowerToolbox.Views.Pages
                 catch (Exception e)
                 {
                     isRecovering = false;
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnRecoveryClicked), 3, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnRecoveryClicked), 3, e);
                     try
                     {
                         if (progressDialog is not null)
@@ -1053,7 +1052,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception)
                     {
-                        LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnRecoveryClicked), 4, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnRecoveryClicked), 4, e);
                     }
                 }
             }
@@ -1087,7 +1086,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnLearnWinFRClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnLearnWinFRClicked), 1, e);
                 }
             });
         }
@@ -1123,7 +1122,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnOpenSaveFolderClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnOpenSaveFolderClicked), 1, e);
                 }
             });
         }
@@ -1335,7 +1334,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnSegmentSourceDeviceNumberSectorsValueChanged), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnSegmentSourceDeviceNumberSectorsValueChanged), 1, e);
                     SegmentSourceDeviceNumberSectors = 0;
                 }
             }
@@ -1358,7 +1357,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnSegmentSourceDeviceClusterSizeValueChanged), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnSegmentSourceDeviceClusterSizeValueChanged), 1, e);
                     SegmentSourceDeviceClusterSize = 0;
                 }
             }
@@ -1403,7 +1402,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnSignatureSourceDeviceNumberSectorsValueChanged), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnSignatureSourceDeviceNumberSectorsValueChanged), 1, e);
                     SignatureSourceDeviceNumberSectors = 0;
                 }
             }
@@ -1426,7 +1425,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnSignatureSourceDeviceClusterSizeValueChanged), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnSignatureSourceDeviceClusterSizeValueChanged), 1, e);
                     SignatureSourceDeviceClusterSize = 0;
                 }
             }
@@ -1454,7 +1453,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnApplicationExit), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnApplicationExit), 1, e);
             }
         }
 
@@ -1492,7 +1491,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnElapsed), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnElapsed), 1, e);
                 }
             }, null);
         }
@@ -2044,7 +2043,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(KillProcessAndChildren), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(KillProcessAndChildren), 1, e);
                 }
             }
         }

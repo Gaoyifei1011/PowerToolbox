@@ -2,7 +2,7 @@
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using System;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using ThemeSwitch.Services.Root;
 using ThemeSwitch.Views.Windows;
 using ThemeSwitch.WindowsAPI.PInvoke.User32;
@@ -45,7 +45,7 @@ namespace ThemeSwitch
         /// </summary>
         private void OnUnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs args)
         {
-            LogService.WriteLog(EventLevel.Warning, nameof(ThemeSwitch), nameof(ThemeSwitchApp), nameof(OnUnhandledException), 1, args.Exception);
+            LogService.WriteLog(TraceEventType.Warning, nameof(ThemeSwitch), nameof(ThemeSwitchApp), nameof(OnUnhandledException), 1, args.Exception);
         }
 
         /// <summary>

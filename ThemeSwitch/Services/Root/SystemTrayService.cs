@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics.Tracing;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -63,7 +63,7 @@ namespace ThemeSwitch.Services.Root
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(EventLevel.Error, nameof(ThemeSwitch), nameof(SystemTrayService), nameof(CloseSystemTray), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(SystemTrayService), nameof(CloseSystemTray), 1, e);
                 }
             }
         }
