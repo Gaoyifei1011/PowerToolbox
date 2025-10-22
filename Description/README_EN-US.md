@@ -120,10 +120,10 @@ A toolbox that integrates multiple gadgets
 
 ### Project References (Sort by alphabetical order)
 
-> * [Microsoft.UI.Xaml](https://github.com/microsoft/microsoft-ui-xaml)&emsp;
 > * [Microsoft.Windows.SDK.BuildTools](https://aka.ms/WinSDKProjectURL)&emsp;
 > * [Microsoft.Windows.SDK.BuildTools.MSIX](https://aka.ms/WinSDKProjectURL)&emsp;
 > * [Microsoft.Windows.SDK.Contracts](https://aka.ms/WinSDKProjectURL)&emsp;
+> * [Microsoft.WindowsAppSDK](https://github.com/microsoft/windowsappsdk)&emsp;
 > * [Mile.Aria2](https://github.com/ProjectMile/Mile.Aria2)&emsp;
 > * [System.Private.Uri](https://dot.net)&emsp;
 

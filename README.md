@@ -127,10 +127,10 @@
 
 ### 项目引用（按英文首字母排序）
 
-> * [Microsoft.UI.Xaml](https://github.com/microsoft/microsoft-ui-xaml)&emsp;
 > * [Microsoft.Windows.SDK.BuildTools](https://aka.ms/WinSDKProjectURL)&emsp;
 > * [Microsoft.Windows.SDK.BuildTools.MSIX](https://aka.ms/WinSDKProjectURL)&emsp;
 > * [Microsoft.Windows.SDK.Contracts](https://aka.ms/WinSDKProjectURL)&emsp;
+> * [Microsoft.WindowsAppSDK](https://github.com/microsoft/windowsappsdk)&emsp;
 > * [Mile.Aria2](https://github.com/ProjectMile/Mile.Aria2)&emsp;
 > * [System.Private.Uri](https://dot.net)&emsp;
 
