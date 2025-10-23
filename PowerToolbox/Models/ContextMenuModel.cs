@@ -1,5 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Media;
-using PowerToolbox.Extensions.Collections;
+using PowerToolbox.Extensions.DataType.Class;
 using System;
 
 namespace PowerToolbox.Models

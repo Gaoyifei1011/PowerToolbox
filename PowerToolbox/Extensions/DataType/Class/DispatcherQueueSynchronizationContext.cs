@@ -3,7 +3,7 @@ using System;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 
-namespace PowerToolbox.Extensions.Threading
+namespace PowerToolbox.Extensions.DataType.Class
 {
     public class DispatcherQueueSynchronizationContext(DispatcherQueue dispatcherQueue) : SynchronizationContext
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
-using PowerToolbox.Extensions.Threading;
+using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Services.Download;
 using PowerToolbox.Services.Root;

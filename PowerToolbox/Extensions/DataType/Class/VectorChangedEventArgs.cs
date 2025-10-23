@@ -1,6 +1,6 @@
 ﻿using Windows.Foundation.Collections;
 
-namespace PowerToolbox.Extensions.Collections
+namespace PowerToolbox.Extensions.DataType.Class
 {
     /// <summary>
     /// 向量更改时触发的事件参数

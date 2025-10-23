@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.Foundation.Collections;
 
-namespace PowerToolbox.Extensions.Collections
+namespace PowerToolbox.Extensions.DataType.Class
 {
     /// <summary>
     /// 扩展 ObservableCollection 以支持 WinRT 的 IObservableVector 通知集合发生变化
