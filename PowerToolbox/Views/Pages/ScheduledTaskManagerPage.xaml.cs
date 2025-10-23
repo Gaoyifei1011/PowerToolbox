@@ -52,10 +52,6 @@ namespace PowerToolbox.Views.Pages
         private ITaskService taskService;
         private bool isInitialized;
 
-        public ExecuteCommand DisableScheduledTaskCommand { get; } = new();
-
-        public ExecuteCommand EnableScheduledTaskCommand { get; } = new();
-
         private string _scheduledTaskDescription;
 
         public string ScheduledTaskDescription
@@ -161,9 +157,6 @@ namespace PowerToolbox.Views.Pages
             if (!isInitialized)
             {
                 isInitialized = true;
-                GlobalNotificationService.ApplicationExit += OnApplicationExit;
-                DisableScheduledTaskCommand.ExecuteRequested += OnDisableScheduledTaskExecuteRequested;
-                EnableScheduledTaskCommand.ExecuteRequested += OnEnableScheduledTaskExecuteRequested;
                 await Task.Factory.StartNew((param) =>
                 {
                     try
@@ -933,27 +926,6 @@ namespace PowerToolbox.Views.Pages
         }
 
         #endregion 第三部分：计划任务管理页面——挂载的事件
-
-        #region 第四部分：计划任务管理页面——自定义事件
-
-        /// <summary>
-        /// 应用程序即将关闭时发生的事件
-        /// </summary>
-        private void OnApplicationExit()
-        {
-            try
-            {
-                GlobalNotificationService.ApplicationExit -= OnApplicationExit;
-                DisableScheduledTaskCommand.ExecuteRequested -= OnDisableScheduledTaskExecuteRequested;
-                EnableScheduledTaskCommand.ExecuteRequested -= OnEnableScheduledTaskExecuteRequested;
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnApplicationExit), 1, e);
-            }
-        }
-
-        #endregion 第四部分：计划任务管理页面——自定义事件
 
         /// <summary>
         /// 获取计划任务

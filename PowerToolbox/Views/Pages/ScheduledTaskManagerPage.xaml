@@ -16,6 +16,8 @@
 
     <Page.Resources>
         <class:ExecuteCommand x:Name="CheckBoxClickCommand" ExecuteRequested="{x:Bind OnCheckBoxExecuteRequested}" />
+        <class:ExecuteCommand x:Name="DisableScheduledTaskCommand" ExecuteRequested="{x:Bind OnDisableScheduledTaskExecuteRequested}" />
+        <class:ExecuteCommand x:Name="EnableScheduledTaskCommand" ExecuteRequested="{x:Bind OnEnableScheduledTaskExecuteRequested}" />
         <class:ExecuteCommand x:Name="RunScheduledTaskCommand" ExecuteRequested="{x:Bind OnRunScheduledTaskExecuteRequested}" />
         <class:ExecuteCommand x:Name="StopScheduledTaskCommand" ExecuteRequested="{x:Bind OnStopScheduledTaskExecuteRequested}" />
         <class:ExecuteCommand x:Name="ExportScheduledTaskCommand" ExecuteRequested="{x:Bind OnExportScheduledTaskExecuteRequested}" />
@@ -360,7 +362,7 @@
                                         <SplitButton
                                             Grid.Column="3"
                                             Margin="5,0,0,0"
-                                            Command="{Binding ElementName=ScheduledTaskPage, Path=DisableScheduledTaskCommand}"
+                                            Command="{StaticResource DisableScheduledTaskCommand}"
                                             CommandParameter="{x:Bind}"
                                             Content="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Disable')}"
                                             CornerRadius="{StaticResource ControlCornerRadius}"
@@ -434,7 +436,7 @@
                                         <SplitButton
                                             Grid.Column="3"
                                             Margin="5,0,0,0"
-                                            Command="{Binding ElementName=ScheduledTaskPage, Path=EnableScheduledTaskCommand}"
+                                            Command="{StaticResource EnableScheduledTaskCommand}"
                                             CommandParameter="{x:Bind}"
                                             Content="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Enable')}"
                                             CornerRadius="{StaticResource ControlCornerRadius}"

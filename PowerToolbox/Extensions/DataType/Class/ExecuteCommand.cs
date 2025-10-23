@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace PowerToolbox.Extensions.DataType.Class
 {
-    public class ExecuteCommand : ICommand
+    public class ExecuteCommand : ICommand, Microsoft.UI.Xaml.Input.ICommand
     {
         public event EventHandler CanExecuteChanged;
 
@@ -20,6 +20,19 @@ namespace PowerToolbox.Extensions.DataType.Class
         public void Execute(object parameter)
         {
             ExecuteRequested?.Invoke(this, new ExecuteRequestedEventArgs(parameter));
+        }
+
+        event EventHandler<object> Microsoft.UI.Xaml.Input.ICommand.CanExecuteChanged
+        {
+            add
+            {
+                throw new NotImplementedException();
+            }
+
+            remove
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
