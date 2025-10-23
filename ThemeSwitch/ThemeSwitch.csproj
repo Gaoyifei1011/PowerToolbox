@@ -34,6 +34,9 @@
     <TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>
     <TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
 		<UsingMicrosoftNETSdk>false</UsingMicrosoftNETSdk>
+		<WindowsAppSDKBackgroundTask>false</WindowsAppSDKBackgroundTask>
+		<WindowsAppSDKDeploymentManagerInitialize>false</WindowsAppSDKDeploymentManagerInitialize>
+		<WindowsAppSDKSingleFileVerifyConfiguration>false</WindowsAppSDKSingleFileVerifyConfiguration>
 		<WindowsAppSDKVerifyCsWinRtVersions>false</WindowsAppSDKVerifyCsWinRtVersions>
 	</PropertyGroup>
 

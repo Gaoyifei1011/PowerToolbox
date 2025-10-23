@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 
-// 抑制 IDE0060 警告
-#pragma warning disable IDE0060
+// 抑制 CA1806，IDE0060 警告
+#pragma warning disable CA1806,IDE0060
 
 namespace PowerToolbox.Views.Windows
 {
@@ -93,7 +93,6 @@ namespace PowerToolbox.Views.Windows
             InitializeComponent();
 
             AppWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
-            ExtendsContentIntoTitleBar = true;
             SimulateUpdateKind = simulateUpdateKind;
             simulateTotalTime = duration.TotalSeconds is not 0 ? Convert.ToInt32(duration.TotalSeconds) : 1;
             string percentage = ((double)simulatePassedTime / simulateTotalTime).ToString("0%");
@@ -104,8 +103,7 @@ namespace PowerToolbox.Views.Windows
             simulateUpdateTimer.Start();
             _blockAllKeys = blockAllKeys;
             _lockScreenAutomaticly = lockScreenAutomaticly;
-            // TODO：未完成
-            (Content as WindowsAPI.ComTypes.IUIElementProtected).ProtectedCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
+            (Content as WindowsAPI.ComTypes.IUIElementProtected).ProtectedCursor = InputDesktopResourceCursor.CreateFromModule("PowerToolbox.exe", 101);
             int exStyle = GetWindowLongAuto((IntPtr)AppWindow.Id.Value, WindowLongIndexFlags.GWL_EXSTYLE);
             SetWindowLongAuto((IntPtr)AppWindow.Id.Value, WindowLongIndexFlags.GWL_EXSTYLE, (IntPtr)(exStyle & ~0x00040000 | 0x00000080));
             SystemSleepHelper.PreventForCurrentThread();

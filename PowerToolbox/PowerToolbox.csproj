@@ -2,8 +2,6 @@
 	<PropertyGroup>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<AnalysisLevel>latest</AnalysisLevel>
-		<ApplicationIcon>Assets\PowerToolbox.ico</ApplicationIcon>
-		<ApplicationManifest>PowerToolbox.manifest</ApplicationManifest>
 		<AssemblyName>PowerToolbox</AssemblyName>
 		<CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
 		<CustomAfterMicrosoftCommonTargets>$(SolutionDir)Configuration\XamlCompiler.targets</CustomAfterMicrosoftCommonTargets>
@@ -34,7 +32,11 @@
 		<TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>
 		<TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
 		<UsingMicrosoftNETSdk>false</UsingMicrosoftNETSdk>
+		<WindowsAppSDKBackgroundTask>false</WindowsAppSDKBackgroundTask>
+		<WindowsAppSDKDeploymentManagerInitialize>false</WindowsAppSDKDeploymentManagerInitialize>
+		<WindowsAppSDKSingleFileVerifyConfiguration>false</WindowsAppSDKSingleFileVerifyConfiguration>
 		<WindowsAppSDKVerifyCsWinRtVersions>false</WindowsAppSDKVerifyCsWinRtVersions>
+		<Win32Resource>PowerToolbox.res</Win32Resource>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Platform)'=='x86'">
