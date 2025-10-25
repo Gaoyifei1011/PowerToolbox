@@ -37,7 +37,6 @@ TaskStateDisabled=已禁用
 TaskStateQueued=等待运行
 TaskStateReady=准备就绪
 TaskStateRunning=正在运行中
-Unknown=[未知]
 UnSelected=未选择
 UseInstruction=使用说明
 Version=计划任务版本
