@@ -1,7 +1,7 @@
 ﻿using PowerToolbox.Extensions.DataType.Constant;
 using PowerToolbox.Services.Root;
 using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace PowerToolbox.Services.Settings
 {
@@ -11,6 +11,7 @@ namespace PowerToolbox.Services.Settings
     public static class AutoThemeSwitchService
     {
         private static readonly string autoThemeSwitchEnableKey = ConfigKey.AutoThemeSwitchEnableKey;
+        private static readonly string autoThemeSwitchTypeKey = ConfigKey.AutoThemeSwitchTypeKey;
         private static readonly string autoSwitchSystemThemeKey = ConfigKey.AutoSwitchSystemThemeKey;
         private static readonly string autoSwitchAppThemeKey = ConfigKey.AutoSwitchAppThemeKey;
         private static readonly string isShowColorInDarkThemeKey = ConfigKey.IsShowColorInDarkThemeKey;
@@ -18,6 +19,7 @@ namespace PowerToolbox.Services.Settings
         private static readonly string systemThemeDarkTimeKey = ConfigKey.SystemThemeDarkTimeKey;
         private static readonly string appThemeLightTimeKey = ConfigKey.AppThemeLightTimeKey;
         private static readonly string appThemeDarkTimeKey = ConfigKey.AppThemeDarkTimeKey;
+        private static string defaultAutoThemeSwitchTypeValue;
 
         public static bool DefaultAutoThemeSwitchEnableValue { get; } = false;
 
@@ -35,142 +37,34 @@ namespace PowerToolbox.Services.Settings
 
         public static TimeSpan DefaultAppThemeDarkTime { get; } = new(19, 0, 0);
 
-        private static bool _autoThemeSwitchEnableValue;
+        public static bool AutoThemeSwitchEnableValue { get; set; }
 
-        public static bool AutoThemeSwitchEnableValue
-        {
-            get { return _autoThemeSwitchEnableValue; }
+        public static string AutoThemeSwitchTypeValue { get; set; }
 
-            private set
-            {
-                if (!Equals(_autoThemeSwitchEnableValue, value))
-                {
-                    _autoThemeSwitchEnableValue = value;
-                    PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(AutoThemeSwitchEnableValue)));
-                }
-            }
-        }
+        public static bool AutoSwitchSystemThemeValue { get; set; }
 
-        private static bool _autoSwitchSystemThemeValue;
+        public static bool AutoSwitchAppThemeValue { get; set; }
 
-        public static bool AutoSwitchSystemThemeValue
-        {
-            get { return _autoSwitchSystemThemeValue; }
+        public static bool IsShowColorInDarkThemeValue { get; set; }
 
-            private set
-            {
-                if (!Equals(_autoSwitchSystemThemeValue, value))
-                {
-                    _autoSwitchSystemThemeValue = value;
-                    PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(AutoSwitchSystemThemeValue)));
-                }
-            }
-        }
+        public static TimeSpan SystemThemeLightTime { get; set; }
 
-        private static bool _autoSwitchAppThemeValue;
+        public static TimeSpan SystemThemeDarkTime { get; set; }
 
-        public static bool AutoSwitchAppThemeValue
-        {
-            get { return _autoSwitchAppThemeValue; }
+        public static TimeSpan AppThemeLightTime { get; set; }
 
-            private set
-            {
-                if (!Equals(_autoSwitchAppThemeValue, value))
-                {
-                    _autoSwitchAppThemeValue = value;
-                    PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(AutoSwitchAppThemeValue)));
-                }
-            }
-        }
+        public static TimeSpan AppThemeDarkTime { get; set; }
 
-        private static bool _isShowColorInDarkThemeValue;
-
-        public static bool IsShowColorInDarkThemeValue
-        {
-            get { return _isShowColorInDarkThemeValue; }
-
-            private set
-            {
-                if (!Equals(_isShowColorInDarkThemeValue, value))
-                {
-                    _isShowColorInDarkThemeValue = value;
-                    PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(IsShowColorInDarkThemeValue)));
-                }
-            }
-        }
-
-        private static TimeSpan _systemThemeLightTime;
-
-        public static TimeSpan SystemThemeLightTime
-        {
-            get { return _systemThemeLightTime; }
-
-            private set
-            {
-                if (!Equals(_systemThemeLightTime, value))
-                {
-                    _systemThemeLightTime = value;
-                    PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(SystemThemeLightTime)));
-                }
-            }
-        }
-
-        private static TimeSpan _systemThemeDarkTime;
-
-        public static TimeSpan SystemThemeDarkTime
-        {
-            get { return _systemThemeDarkTime; }
-
-            private set
-            {
-                if (!Equals(_systemThemeDarkTime, value))
-                {
-                    _systemThemeDarkTime = value;
-                    PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(SystemThemeDarkTime)));
-                }
-            }
-        }
-
-        private static TimeSpan _appThemeLightTime;
-
-        public static TimeSpan AppThemeLightTime
-        {
-            get { return _appThemeLightTime; }
-
-            private set
-            {
-                if (!Equals(_appThemeLightTime, value))
-                {
-                    _appThemeLightTime = value;
-                    PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(AppThemeLightTime)));
-                }
-            }
-        }
-
-        private static TimeSpan _appThemeDarkTime;
-
-        public static TimeSpan AppThemeDarkTime
-        {
-            get { return _appThemeDarkTime; }
-
-            private set
-            {
-                if (!Equals(_appThemeDarkTime, value))
-                {
-                    _appThemeDarkTime = value;
-                    PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(AppThemeDarkTime)));
-                }
-            }
-        }
-
-        public static event PropertyChangedEventHandler PropertyChanged;
+        public static List<string> AutoThemeSwitchTypeList { get; } = ["FixedTime", "SunriseSunset"];
 
         /// <summary>
         /// 应用在初始化前获取设置存储的自动切换主题所有选项值
         /// </summary>
         public static void InitializeAutoThemeSwitch()
         {
+            defaultAutoThemeSwitchTypeValue = AutoThemeSwitchTypeList[0];
             AutoThemeSwitchEnableValue = GetAutoThemeSwitchEnableValue();
+            AutoThemeSwitchTypeValue = GetAutoThemeSwitchTypeValue();
             AutoSwitchSystemThemeValue = GetAutoSwitchSystemThemeValue();
             AutoSwitchAppThemeValue = GetAutoSwitchAppThemeValue();
             IsShowColorInDarkThemeValue = GetIsShowColorInDarkThemeValue();
@@ -210,6 +104,22 @@ namespace PowerToolbox.Services.Settings
             }
 
             return autoSwitchSystemThemeValue.Value;
+        }
+
+        /// <summary>
+        /// 获取设置存储的自动切换主题类型值，如果设置没有存储，使用默认值
+        /// </summary>
+        private static string GetAutoThemeSwitchTypeValue()
+        {
+            string autoThemeSwitchTypeValue = LocalSettingsService.ReadSetting<string>(autoThemeSwitchTypeKey);
+
+            if (string.IsNullOrEmpty(autoThemeSwitchTypeValue))
+            {
+                SetAutoThemeSwitchEnableValue(DefaultAutoThemeSwitchEnableValue);
+                return defaultAutoThemeSwitchTypeValue;
+            }
+
+            return autoThemeSwitchTypeValue;
         }
 
         /// <summary>
@@ -359,6 +269,15 @@ namespace PowerToolbox.Services.Settings
         {
             AutoThemeSwitchEnableValue = autoThemeSwitchEnableValue;
             LocalSettingsService.SaveSetting(autoThemeSwitchEnableKey, autoThemeSwitchEnableValue);
+        }
+
+        /// <summary>
+        /// 自动切换主题类型值发生修改时修改设置存储的自动切换主题类型值
+        /// </summary>
+        public static void SetAutoThemeSwitchTypeValue(string autoThemeSwitchTypeValue)
+        {
+            AutoThemeSwitchTypeValue = autoThemeSwitchTypeValue;
+            LocalSettingsService.SaveSetting(autoThemeSwitchTypeKey, autoThemeSwitchTypeValue);
         }
 
         /// <summary>

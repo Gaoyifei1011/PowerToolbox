@@ -17,6 +17,8 @@
 
         public const string AutoThemeSwitchEnableKey = "AutoThemeSwitchEnable";
 
+        public const string AutoThemeSwitchTypeKey = "AutoThemeSwitchType";
+
         public const string BackdropKey = "AppBackdrop";
 
         public const string DownloadFolderKey = "DownloadFolder";
