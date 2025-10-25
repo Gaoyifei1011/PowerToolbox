@@ -364,6 +364,7 @@
 
                     <Expander.Content>
                         <StackPanel Padding="0">
+                            <!--  是否启用自动切换主题模式  -->
                             <Grid
                                 Height="52"
                                 Padding="44,0,16,0"
@@ -419,6 +420,51 @@
 
                                 <MenuFlyoutSeparator />
 
+                                <!--  自动切换主题类型  -->
+                                <Grid
+                                    Height="52"
+                                    Padding="44,0,16,0"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoThemeSwitchType')}" />
+
+                                    <DropDownButton
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        Content="{x:Bind SelectedAutoThemeSwitchType.Value, Mode=OneWay}">
+
+                                        <DropDownButton.Flyout>
+                                            <MenuFlyout Placement="Bottom">
+                                                <RadioMenuFlyoutItem
+                                                    Click="{x:Bind OnAutoThemeSwitchTypeSelectClicked}"
+                                                    GroupName="AutoThemeSwitchTypeRadioGroup"
+                                                    IsChecked="{x:Bind x:Object.Equals(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[0].Key), Mode=OneWay}"
+                                                    Tag="{x:Bind AutoThemeSwitchTypeList[0]}"
+                                                    Text="{x:Bind AutoThemeSwitchTypeList[0].Value}" />
+
+                                                <RadioMenuFlyoutItem
+                                                    Click="{x:Bind OnAutoThemeSwitchTypeSelectClicked}"
+                                                    GroupName="AutoThemeSwitchTypeRadioGroup"
+                                                    IsChecked="{x:Bind x:Object.Equals(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}"
+                                                    Tag="{x:Bind AutoThemeSwitchTypeList[1]}"
+                                                    Text="{x:Bind AutoThemeSwitchTypeList[1].Value}" />
+                                            </MenuFlyout>
+                                        </DropDownButton.Flyout>
+                                    </DropDownButton>
+                                </Grid>
+
+                                <MenuFlyoutSeparator />
+
+                                <!--  自动切换系统主题  -->
                                 <Grid
                                     Height="52"
                                     Padding="44,0,16,0"
@@ -440,7 +486,7 @@
                                         Grid.Column="1"
                                         Margin="0,0,6,0"
                                         Click="{x:Bind OnShowSetTimeFlyoutClicked}"
-                                        Visibility="{x:Bind IsAutoSwitchSystemThemeValue, Mode=OneWay}">
+                                        Visibility="{x:Bind GetAutoSwitchSystemThemeTimeState(SelectedAutoThemeSwitchType.Key, IsAutoSwitchSystemThemeValue), Mode=OneWay}">
 
                                         <HyperlinkButton.Content>
                                             <StackPanel Orientation="Horizontal">
@@ -634,6 +680,7 @@
 
                                 <MenuFlyoutSeparator />
 
+                                <!--  自动切换应用主题  -->
                                 <Grid
                                     Height="52"
                                     Padding="44,0,16,0"
@@ -655,7 +702,7 @@
                                         Grid.Column="1"
                                         Margin="0,0,6,0"
                                         Click="{x:Bind OnShowSetTimeFlyoutClicked}"
-                                        Visibility="{x:Bind IsAutoSwitchAppThemeValue, Mode=OneWay}">
+                                        Visibility="{x:Bind GetAutoSwitchAppThemeTimeState(SelectedAutoThemeSwitchType.Key, IsAutoSwitchAppThemeValue), Mode=OneWay}">
 
                                         <HyperlinkButton.Content>
                                             <StackPanel Orientation="Horizontal">
@@ -849,6 +896,7 @@
 
                                 <MenuFlyoutSeparator />
 
+                                <!--  切换系统深色主题时显示主题色  -->
                                 <Grid
                                     Height="52"
                                     Padding="44,0,16,0"
@@ -891,6 +939,224 @@
                                             Toggled="{x:Bind OnShowColorInDarkThemeToggled}" />
                                     </StackPanel>
                                 </Grid>
+
+                                <MenuFlyoutSeparator Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}" />
+
+                                <!--  获取位置  -->
+                                <Grid
+                                    Height="52"
+                                    Padding="44,0,16,0"
+                                    HorizontalAlignment="Stretch"
+                                    Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('DevicePosition')}" />
+
+                                    <HyperlinkButton
+                                        Grid.Column="1"
+                                        Margin="0,0,4,0"
+                                        Click="{x:Bind OnSystemPositionSettingsClicked}"
+                                        Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SystemPositionSettings')}" />
+
+                                    <Button
+                                        Grid.Column="2"
+                                        Width="32"
+                                        Height="32"
+                                        Margin="5,0,0,0"
+                                        Padding="0"
+                                        Click="{x:Bind OnLocatePositionClicked}"
+                                        CommandParameter="{x:Bind}"
+                                        CornerRadius="{StaticResource ControlCornerRadius}">
+
+                                        <Button.Content>
+                                            <FontIcon FontSize="14" Glyph="&#xECAF;" />
+                                        </Button.Content>
+
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip
+                                                MaxWidth="9999"
+                                                Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('LocatePosition')}"
+                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                        </ToolTipService.ToolTip>
+                                    </Button>
+                                </Grid>
+
+                                <MenuFlyoutSeparator Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}" />
+
+                                <!--  时间偏移  -->
+                                <Grid
+                                    Height="52"
+                                    Padding="44,0,16,0"
+                                    HorizontalAlignment="Stretch"
+                                    Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('TimeOffset')}" />
+
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('Sunrise')}" />
+
+                                    <NumberBox
+                                        Grid.Column="2"
+                                        Margin="0,0,15,0"
+                                        VerticalAlignment="Center"
+                                        LargeChange="1"
+                                        SmallChange="1"
+                                        SpinButtonPlacementMode="Inline"
+                                        ValueChanged="{x:Bind OnSunriseOffsetValueChanged}"
+                                        Value="{x:Bind SunriseOffset, Mode=OneWay}" />
+
+                                    <TextBlock
+                                        Grid.Column="3"
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('Sunset')}" />
+
+                                    <NumberBox
+                                        Grid.Column="4"
+                                        VerticalAlignment="Center"
+                                        LargeChange="1"
+                                        SmallChange="1"
+                                        SpinButtonPlacementMode="Inline"
+                                        ValueChanged="{x:Bind OnSunsetOffsetValueChanged}"
+                                        Value="{x:Bind SunsetOffset, Mode=OneWay}" />
+                                </Grid>
+
+                                <MenuFlyoutSeparator Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}" />
+
+                                <!--  位置 / 日出日落信息展示  -->
+                                <Grid Height="140" Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid
+                                        Grid.Column="0"
+                                        Margin="44,0,0,0"
+                                        VerticalAlignment="Center"
+                                        RowSpacing="15">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            FontSize="20"
+                                            Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('YourPositon')}" />
+
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock
+                                                Grid.Column="0"
+                                                Margin="0,0,2,0"
+                                                VerticalAlignment="Center"
+                                                FontSize="16"
+                                                Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('Longitude')}" />
+
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                Margin="0,0,5,0"
+                                                VerticalAlignment="Center"
+                                                FontSize="16"
+                                                Text="{x:Bind Longitude, Mode=OneWay}" />
+
+                                            <TextBlock
+                                                Grid.Column="2"
+                                                Margin="0,0,2,0"
+                                                VerticalAlignment="Center"
+                                                FontSize="16"
+                                                Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('Latitude')}" />
+
+                                            <TextBlock
+                                                Grid.Column="3"
+                                                VerticalAlignment="Center"
+                                                FontSize="16"
+                                                Text="{x:Bind Latitude, Mode=OneWay}" />
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid
+                                        Grid.Column="1"
+                                        Margin="0,0,40,0"
+                                        VerticalAlignment="Center">
+
+                                        <StackPanel
+                                            Margin="30,0,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            Orientation="Horizontal"
+                                            Spacing="5">
+                                            <FontIcon FontSize="20" Glyph="&#xE706;" />
+                                            <TextBlock FontSize="18" Text="{x:Bind SunriseTime, Mode=OneWay}" />
+                                        </StackPanel>
+
+                                        <StackPanel
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Top"
+                                            Orientation="Horizontal"
+                                            Spacing="5">
+                                            <FontIcon FontSize="20" Glyph="&#xE708;" />
+                                            <TextBlock FontSize="18" Text="{x:Bind SunsetTime, Mode=OneWay}" />
+                                        </StackPanel>
+
+                                        <Path
+                                            Stroke="{ThemeResource TextFillColorPrimaryBrush}"
+                                            StrokeDashArray="5,3"
+                                            StrokeDashCap="Round"
+                                            StrokeThickness="1">
+                                            <Path.Data>
+                                                <PathGeometry>
+                                                    <PathFigure StartPoint="100,80">
+                                                        <ArcSegment
+                                                            IsLargeArc="true"
+                                                            Point="300,80"
+                                                            RotationAngle="0"
+                                                            Size="100,80"
+                                                            SweepDirection="Clockwise" />
+                                                    </PathFigure>
+                                                </PathGeometry>
+                                            </Path.Data>
+                                        </Path>
+
+                                        <Line
+                                            VerticalAlignment="Bottom"
+                                            Stroke="{ThemeResource TextFillColorPrimaryBrush}"
+                                            StrokeThickness="1"
+                                            X1="30"
+                                            X2="370"
+                                            Y1="0"
+                                            Y2="0" />
+                                    </Grid>
+                                </Grid>
                             </StackPanel>
                         </StackPanel>
                     </Expander.Content>
@@ -929,10 +1195,18 @@
                     <Expander.Content>
                         <StackPanel>
                             <TextBlock
-                                Margin="44,10,16,10"
+                                Margin="44,10,16,5"
                                 FontSize="14"
                                 FontWeight="Normal"
                                 Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('TipContent1')}"
+                                TextAlignment="Justify"
+                                TextWrapping="Wrap" />
+
+                            <TextBlock
+                                Margin="44,10,16,10"
+                                FontSize="14"
+                                FontWeight="Normal"
+                                Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('TipContent2')}"
                                 TextAlignment="Justify"
                                 TextWrapping="Wrap" />
                         </StackPanel>

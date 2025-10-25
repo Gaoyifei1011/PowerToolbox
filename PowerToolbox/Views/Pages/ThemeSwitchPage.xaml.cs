@@ -36,8 +36,12 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class ThemeSwitchPage : Page, INotifyPropertyChanged
     {
+        private readonly string AutoThemeSwitchTypeFixedTimeString = ResourceService.ThemeSwitchResource.GetString("AutoThemeSwitchTypeFixedTime");
+        private readonly string AutoThemeSwitchTypeSunriseSunsetString = ResourceService.ThemeSwitchResource.GetString("AutoThemeSwitchTypeSunriseSunset");
         private readonly string DarkString = ResourceService.ThemeSwitchResource.GetString("Dark");
         private readonly string LightString = ResourceService.ThemeSwitchResource.GetString("Light");
+        private readonly string NotAvailableString = ResourceService.ThemeSwitchResource.GetString("NotAvailable");
+        private readonly string UnknownString = ResourceService.ThemeSwitchResource.GetString("Unknown");
         private readonly Guid CLSID_DesktopWallpaper = new("C2CF3110-460E-4fC1-B9D0-8A1C0C9CC4BD");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private bool isInitialized;
@@ -203,6 +207,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private KeyValuePair<string, string> _selectedAutoThemeSwitchType;
+
+        public KeyValuePair<string, string> SelectedAutoThemeSwitchType
+        {
+            get { return _selectedAutoThemeSwitchType; }
+
+            set
+            {
+                if (!Equals(_selectedAutoThemeSwitchType, value))
+                {
+                    _selectedAutoThemeSwitchType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedAutoThemeSwitchType)));
+                }
+            }
+        }
+
         private bool _isAutoSwitchSystemThemeValue = AutoThemeSwitchService.AutoSwitchSystemThemeValue;
 
         public bool IsAutoSwitchSystemThemeValue
@@ -247,6 +267,102 @@ namespace PowerToolbox.Views.Pages
                 {
                     _isShowColorInDarkThemeValue = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsShowColorInDarkThemeValue)));
+                }
+            }
+        }
+
+        private int _sunriseOffset;
+
+        public int SunriseOffset
+        {
+            get { return _sunriseOffset; }
+
+            set
+            {
+                if (!Equals(_sunriseOffset, value))
+                {
+                    _sunriseOffset = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SunriseOffset)));
+                }
+            }
+        }
+
+        private int _sunsetOffset;
+
+        public int SunsetOffset
+        {
+            get { return _sunsetOffset; }
+
+            set
+            {
+                if (!Equals(_sunsetOffset, value))
+                {
+                    _sunsetOffset = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SunsetOffset)));
+                }
+            }
+        }
+
+        private string _longitude;
+
+        public string Longitude
+        {
+            get { return _longitude; }
+
+            set
+            {
+                if (!string.Equals(_longitude, value))
+                {
+                    _longitude = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Longitude)));
+                }
+            }
+        }
+
+        private string _latitude;
+
+        public string Latitude
+        {
+            get { return _latitude; }
+
+            set
+            {
+                if (!string.Equals(_latitude, value))
+                {
+                    _latitude = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Latitude)));
+                }
+            }
+        }
+
+        private string _sunriseTime;
+
+        public string SunriseTime
+        {
+            get { return _sunriseTime; }
+
+            set
+            {
+                if (!string.Equals(_sunriseTime, value))
+                {
+                    _sunriseTime = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SunriseTime)));
+                }
+            }
+        }
+
+        private string _sunsetTime;
+
+        public string SunsetTime
+        {
+            get { return _sunsetTime; }
+
+            set
+            {
+                if (!string.Equals(_sunsetTime, value))
+                {
+                    _sunsetTime = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SunsetTime)));
                 }
             }
         }
@@ -315,6 +431,8 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private List<KeyValuePair<string, string>> AutoThemeSwitchTypeList { get; } = [];
+
         private List<KeyValuePair<ElementTheme, string>> SystemThemeStyleList { get; } = [];
 
         private List<KeyValuePair<ElementTheme, string>> AppThemeStyleList { get; } = [];
@@ -329,8 +447,11 @@ namespace PowerToolbox.Views.Pages
             SystemThemeStyleList.Add(new KeyValuePair<ElementTheme, string>(ElementTheme.Dark, DarkString));
             AppThemeStyleList.Add(new KeyValuePair<ElementTheme, string>(ElementTheme.Light, LightString));
             AppThemeStyleList.Add(new KeyValuePair<ElementTheme, string>(ElementTheme.Dark, DarkString));
+            AutoThemeSwitchTypeList.Add(new KeyValuePair<string, string>(AutoThemeSwitchService.AutoThemeSwitchTypeList[0], AutoThemeSwitchTypeFixedTimeString));
+            AutoThemeSwitchTypeList.Add(new KeyValuePair<string, string>(AutoThemeSwitchService.AutoThemeSwitchTypeList[1], AutoThemeSwitchTypeSunriseSunsetString));
             SelectedSystemThemeStyle = SystemThemeStyleList[0];
             SelectedAppThemeStyle = AppThemeStyleList[0];
+            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList[0];
             RegistryHelper.NotifyKeyValueChanged += OnNotifyKeyValueChanged;
         }
 
@@ -516,6 +637,7 @@ namespace PowerToolbox.Views.Pages
             await Task.Run(() =>
             {
                 AutoThemeSwitchService.SetAutoThemeSwitchEnableValue(IsAutoThemeSwitchEnableValue);
+                AutoThemeSwitchService.SetAutoThemeSwitchTypeValue(SelectedAutoThemeSwitchType.Key);
                 AutoThemeSwitchService.SetAutoSwitchSystemThemeValue(IsAutoSwitchSystemThemeValue);
                 AutoThemeSwitchService.SetAutoSwitchAppThemeValue(IsAutoSwitchAppThemeValue);
                 AutoThemeSwitchService.SetIsShowColorInDarkThemeValue(IsShowColorInDarkThemeValue);
@@ -715,6 +837,17 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 自动切换主题类型发生改变时触发的事件
+        /// </summary>
+        private void OnAutoThemeSwitchTypeSelectClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> autoThemeSwitchType)
+            {
+                SelectedAutoThemeSwitchType = autoThemeSwitchType;
+            }
+        }
+
+        /// <summary>
         /// 修改选定的自动修改系统主题设置选项
         /// </summary>
         private void OnAutoSwitchSystemThemeToggled(object sender, RoutedEventArgs args)
@@ -817,6 +950,75 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        /// <summary>
+        /// 打开系统位置设置
+        /// </summary>
+        private void OnSystemPositionSettingsClicked(object sender, RoutedEventArgs args)
+        {
+            try
+            {
+                Process.Start("ms-settings:privacy-location");
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSystemPositionSettingsClicked), 1, e);
+            }
+        }
+
+        /// <summary>
+        /// 定位
+        /// </summary>
+        /// TODO：未完成
+        private void OnLocatePositionClicked(object sender, RoutedEventArgs args)
+        {
+        }
+
+        /// <summary>
+        /// 日出偏移时间发生变化后触发的事件
+        /// </summary>
+        private void OnSunriseOffsetValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+        {
+            if (args.NewValue is not double.NaN)
+            {
+                try
+                {
+                    SunriseOffset = Math.Abs(Convert.ToInt32(args.NewValue));
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSunriseOffsetValueChanged), 1, e);
+                    SunriseOffset = 0;
+                }
+            }
+            else
+            {
+                SunriseOffset = 0;
+            }
+        }
+
+        /// <summary>
+        /// 日落偏移时间发生变化后触发的事件
+        /// </summary>
+        private void OnSunsetOffsetValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+        {
+            if (args.NewValue is not double.NaN)
+            {
+                try
+                {
+                    SunsetOffset = Math.Abs(Convert.ToInt32(args.NewValue));
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSunsetOffsetValueChanged), 1, e);
+                    SunsetOffset = 0;
+                }
+            }
+            else
+            {
+                SunsetOffset = 0;
+            }
+        }
+
         #endregion 第二部分：修改主题页面——挂载的事件
 
         #region 第二部分：自定义事件
@@ -904,6 +1106,7 @@ namespace PowerToolbox.Views.Pages
             SystemAppTheme = appTheme;
             SelectedAppThemeStyle = AppThemeStyleList.Find(item => Equals(item.Key, appTheme));
 
+            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList.Find(item => string.Equals(item.Key, AutoThemeSwitchService.AutoThemeSwitchTypeValue, StringComparison.OrdinalIgnoreCase));
             IsShowThemeColorInStartAndTaskbarEnabled = Equals(SelectedSystemThemeStyle, SystemThemeStyleList[1]);
             bool showThemeColorInStartAndTaskbar = await Task.Run(GetShowThemeColorInStartAndTaskbar);
             IsShowThemeColorInStartAndTaskbar = showThemeColorInStartAndTaskbar;
@@ -949,6 +1152,30 @@ namespace PowerToolbox.Views.Pages
         {
             StartupTask startupTask = await StartupTask.GetAsync("ThemeSwitch");
             return startupTask is not null ? startupTask.State is StartupTaskState.Enabled || startupTask.State is StartupTaskState.EnabledByPolicy : await Task.FromResult(true);
+        }
+
+        /// <summary>
+        /// 获取自动切换系统主题时间显示状态值
+        /// </summary>
+        private Visibility GetAutoSwitchSystemThemeTimeState(string selectedAutoThemeSwitchType, bool isAutoSwitchSystemThemeValue)
+        {
+            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].Key) && isAutoSwitchSystemThemeValue ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 获取自动切换应用主题时间显示状态值
+        /// </summary>
+        private Visibility GetAutoSwitchAppThemeTimeState(string selectedAutoThemeSwitchType, bool isAutoSwitchAppThemeValue)
+        {
+            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].Key) && isAutoSwitchAppThemeValue ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 获取自动切换主题类型值
+        /// </summary>
+        private Visibility GetAutoThemeSwitchTypeState(string selectedAutoThemeSwitchType, string comparedAutoThemeSwitchType)
+        {
+            return string.Equals(selectedAutoThemeSwitchType, comparedAutoThemeSwitchType) ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }
