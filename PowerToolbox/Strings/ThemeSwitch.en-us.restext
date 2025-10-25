@@ -49,5 +49,4 @@ TimeOffset=Trigger time offset (Unit: Minutes)
 Tips=Tips
 TipContent1=1.Displays the theme color in the Start Menu and taskbar options are only available in system dark mode
 TipContent2=2.When the location acquisition fails, if the sunrise and sunset mode is used, the manual mode will be automatically switched
-Unknown=[Unknown]
 YourPositon=Your position

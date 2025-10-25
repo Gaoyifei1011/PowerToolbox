@@ -36,7 +36,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string LoopbackInformationString = ResourceService.LoopbackManagerResource.GetString("LoopbackInformation");
         private readonly string LoopbackEmptyDescriptionString = ResourceService.LoopbackManagerResource.GetString("LoopbackEmptyDescription");
         private readonly string LoopbackEmptyWithConditionDescriptionString = ResourceService.LoopbackManagerResource.GetString("LoopbackEmptyWithConditionDescription");
-        private readonly string UnknownString = ResourceService.LoopbackManagerResource.GetString("Unknown");
+        private readonly string NotAvailableString = ResourceService.LoopbackManagerResource.GetString("NotAvailable");
         private readonly BitmapImage emptyImage = new();
         private bool isInitialized;
 
@@ -442,16 +442,16 @@ namespace PowerToolbox.Views.Pages
 
                         LoopbackModel loopbackItem = new()
                         {
-                            AppContainerName = string.IsNullOrEmpty(inetContainerItem.appContainerName) ? UnknownString : inetContainerItem.appContainerName,
+                            AppContainerName = string.IsNullOrEmpty(inetContainerItem.appContainerName) ? NotAvailableString : inetContainerItem.appContainerName,
                             AppContainerSID = inetContainerItem.appContainerSid,
-                            AppContainerSIDName = string.IsNullOrEmpty(Convert.ToString(appContainerSid)) ? UnknownString : Convert.ToString(appContainerSid),
-                            DisplayName = string.IsNullOrEmpty(Convert.ToString(displayNameBuilder)) ? UnknownString : Convert.ToString(displayNameBuilder),
-                            Description = string.IsNullOrEmpty(Convert.ToString(descriptionBuilder)) ? UnknownString : Convert.ToString(descriptionBuilder),
-                            WorkingDirectory = string.IsNullOrEmpty(inetContainerItem.workingDirectory) ? UnknownString : inetContainerItem.workingDirectory,
-                            PackageFullName = string.IsNullOrEmpty(inetContainerItem.packageFullName) ? UnknownString : inetContainerItem.packageFullName,
+                            AppContainerSIDName = string.IsNullOrEmpty(Convert.ToString(appContainerSid)) ? NotAvailableString : Convert.ToString(appContainerSid),
+                            DisplayName = string.IsNullOrEmpty(Convert.ToString(displayNameBuilder)) ? NotAvailableString : Convert.ToString(displayNameBuilder),
+                            Description = string.IsNullOrEmpty(Convert.ToString(descriptionBuilder)) ? NotAvailableString : Convert.ToString(descriptionBuilder),
+                            WorkingDirectory = string.IsNullOrEmpty(inetContainerItem.workingDirectory) ? NotAvailableString : inetContainerItem.workingDirectory,
+                            PackageFullName = string.IsNullOrEmpty(inetContainerItem.packageFullName) ? NotAvailableString : inetContainerItem.packageFullName,
                             PackageIconUri = Uri.TryCreate(logoFullPath, UriKind.Absolute, out Uri uri) ? uri : null,
-                            AppBinariesPath = stringBinaries is not null ? string.Concat(stringBinaries) : UnknownString,
-                            AppContainerUserName = userAccountType is not null ? Convert.ToString(userAccountType) : UnknownString,
+                            AppBinariesPath = stringBinaries is not null ? string.Concat(stringBinaries) : NotAvailableString,
+                            AppContainerUserName = userAccountType is not null ? Convert.ToString(userAccountType) : NotAvailableString,
                             IsSelected = isEnabled,
                             IsOldChecked = isEnabled
                         };

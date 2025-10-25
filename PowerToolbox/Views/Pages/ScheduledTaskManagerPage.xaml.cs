@@ -37,6 +37,7 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class ScheduledTaskManagerPage : Page, INotifyPropertyChanged
     {
+        private readonly string NotAvailableString = ResourceService.ScheduledTaskManagerResource.GetString("NotAvailable");
         private readonly string ScheduledTaskInformationString = ResourceService.ScheduledTaskManagerResource.GetString("ScheduledTaskInformation");
         private readonly string ScheduledTaskEmptyDescriptionString = ResourceService.ScheduledTaskManagerResource.GetString("ScheduledTaskEmptyDescription");
         private readonly string ScheduledTaskEmptyWithConditionDescriptionString = ResourceService.ScheduledTaskManagerResource.GetString("ScheduledTaskEmptyWithConditionDescription");
@@ -45,7 +46,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string TaskStateQueuedString = ResourceService.ScheduledTaskManagerResource.GetString("TaskStateQueued");
         private readonly string TaskStateReadyString = ResourceService.ScheduledTaskManagerResource.GetString("TaskStateReady");
         private readonly string TaskStateRunningString = ResourceService.ScheduledTaskManagerResource.GetString("TaskStateRunning");
-        private readonly string UnknownString = ResourceService.ScheduledTaskManagerResource.GetString("Unknown");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly BitmapImage emptyImage = new();
         private ITaskService taskService;
@@ -202,7 +202,7 @@ namespace PowerToolbox.Views.Pages
                         return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new ScheduledTaskModel()
                         {
                             LastRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                            LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : UnknownString),
+                            LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
                             NextRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
                             State = GetTaskState(scheduledTask.RegisteredTask.State),
                             IsEnabled = scheduledTask.RegisteredTask.Enabled
@@ -259,7 +259,7 @@ namespace PowerToolbox.Views.Pages
                         return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new ScheduledTaskModel()
                         {
                             LastRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                            LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : UnknownString),
+                            LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
                             NextRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
                             State = GetTaskState(scheduledTask.RegisteredTask.State),
                             IsEnabled = scheduledTask.RegisteredTask.Enabled
@@ -316,7 +316,7 @@ namespace PowerToolbox.Views.Pages
                         return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new ScheduledTaskModel()
                         {
                             LastRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                            LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : UnknownString),
+                            LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
                             NextRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
                             State = GetTaskState(scheduledTask.RegisteredTask.State),
                             IsEnabled = scheduledTask.RegisteredTask.Enabled
@@ -373,7 +373,7 @@ namespace PowerToolbox.Views.Pages
                         return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new ScheduledTaskModel()
                         {
                             LastRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                            LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : UnknownString),
+                            LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
                             NextRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
                             State = GetTaskState(scheduledTask.RegisteredTask.State),
                             IsEnabled = scheduledTask.RegisteredTask.Enabled
@@ -712,7 +712,7 @@ namespace PowerToolbox.Views.Pages
                                 Name = scheduledTaskItem.Name,
                                 Path = scheduledTaskItem.Path,
                                 LastRunTime = new DateTimeOffset(scheduledTaskItem.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                                LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTaskItem.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTaskItem.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : UnknownString),
+                                LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTaskItem.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTaskItem.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
                                 NextRunTime = new DateTimeOffset(scheduledTaskItem.RegisteredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
                                 State = GetTaskState(scheduledTaskItem.RegisteredTask.State),
                                 IsEnabled = scheduledTaskItem.RegisteredTask.Enabled,
@@ -794,7 +794,7 @@ namespace PowerToolbox.Views.Pages
                                 Name = scheduledTaskItem.Name,
                                 Path = scheduledTaskItem.Path,
                                 LastRunTime = new DateTimeOffset(scheduledTaskItem.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                                LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTaskItem.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTaskItem.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : UnknownString),
+                                LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTaskItem.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTaskItem.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
                                 NextRunTime = new DateTimeOffset(scheduledTaskItem.RegisteredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
                                 State = GetTaskState(scheduledTaskItem.RegisteredTask.State),
                                 IsEnabled = scheduledTaskItem.RegisteredTask.Enabled,
@@ -998,7 +998,7 @@ namespace PowerToolbox.Views.Pages
 
                         try
                         {
-                            if (!string.IsNullOrEmpty(scheduledTaskItem.ProcessPath) && !string.Equals(scheduledTaskItem.ProcessPath, UnknownString, StringComparison.OrdinalIgnoreCase))
+                            if (!string.IsNullOrEmpty(scheduledTaskItem.ProcessPath) && !string.Equals(scheduledTaskItem.ProcessPath, NotAvailableString, StringComparison.OrdinalIgnoreCase))
                             {
                                 Bitmap thumbnailBitmap = ThumbnailHelper.GetThumbnailBitmap(scheduledTaskItem.ProcessPath);
 
@@ -1162,16 +1162,16 @@ namespace PowerToolbox.Views.Pages
                 ScheduledTaskModel scheduledTask = new()
                 {
                     IsSelected = false,
-                    Name = string.IsNullOrEmpty(registeredTask.Name) ? UnknownString : registeredTask.Name,
-                    Path = string.IsNullOrEmpty(registeredTask.Path) ? UnknownString : registeredTask.Path,
+                    Name = string.IsNullOrEmpty(registeredTask.Name) ? NotAvailableString : registeredTask.Name,
+                    Path = string.IsNullOrEmpty(registeredTask.Path) ? NotAvailableString : registeredTask.Path,
                     LastRunTime = new DateTimeOffset(registeredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                    LastTaskResult = string.Format("0x{0:X8}({1})", registeredTask.LastTaskResult, new Win32Exception(registeredTask.LastTaskResult) is Exception exception ? exception.Message : UnknownString),
+                    LastTaskResult = string.Format("0x{0:X8}({1})", registeredTask.LastTaskResult, new Win32Exception(registeredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
                     NextRunTime = new DateTimeOffset(registeredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
                     State = GetTaskState(registeredTask.State),
                     IsEnabled = registeredTask.Enabled,
-                    Author = string.IsNullOrEmpty(registeredTask.Definition.RegistrationInfo.Author) ? UnknownString : registeredTask.Definition.RegistrationInfo.Author,
-                    Description = string.IsNullOrEmpty(registeredTask.Definition.RegistrationInfo.Description) ? UnknownString : registeredTask.Definition.RegistrationInfo.Description,
-                    Version = string.IsNullOrEmpty(version) ? UnknownString : version,
+                    Author = string.IsNullOrEmpty(registeredTask.Definition.RegistrationInfo.Author) ? NotAvailableString : registeredTask.Definition.RegistrationInfo.Author,
+                    Description = string.IsNullOrEmpty(registeredTask.Definition.RegistrationInfo.Description) ? NotAvailableString : registeredTask.Definition.RegistrationInfo.Description,
+                    Version = string.IsNullOrEmpty(version) ? NotAvailableString : version,
                     RegisteredTask = registeredTask,
                     TaskFolder = taskFolder
                 };
@@ -1181,8 +1181,8 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (actionCollection[index] is IExecAction2 execAction)
                     {
-                        scheduledTask.ProcessPath = string.IsNullOrEmpty(execAction.Path) ? UnknownString : Environment.ExpandEnvironmentVariables(execAction.Path.Trim('"'));
-                        scheduledTask.ProcessArguments = string.IsNullOrEmpty(execAction.Arguments) ? UnknownString : execAction.Arguments;
+                        scheduledTask.ProcessPath = string.IsNullOrEmpty(execAction.Path) ? NotAvailableString : Environment.ExpandEnvironmentVariables(execAction.Path.Trim('"'));
+                        scheduledTask.ProcessArguments = string.IsNullOrEmpty(execAction.Arguments) ? NotAvailableString : execAction.Arguments;
                         break;
                     }
                 }
@@ -1217,12 +1217,12 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private string GetTaskState(_TASK_STATE taskState) => taskState switch
         {
-            _TASK_STATE.TASK_STATE_UNKNOWN => UnknownString,
+            _TASK_STATE.TASK_STATE_UNKNOWN => NotAvailableString,
             _TASK_STATE.TASK_STATE_DISABLED => TaskStateDisabledString,
             _TASK_STATE.TASK_STATE_QUEUED => TaskStateQueuedString,
             _TASK_STATE.TASK_STATE_READY => TaskStateReadyString,
             _TASK_STATE.TASK_STATE_RUNNING => TaskStateRunningString,
-            _ => UnknownString,
+            _ => NotAvailableString,
         };
     }
 }

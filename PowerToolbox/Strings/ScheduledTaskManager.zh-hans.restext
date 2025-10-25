@@ -10,6 +10,7 @@ LastTaskResult=上次运行的结果
 LearnScheduledTask=了解计划任务程序
 LoadingScheduledTask=正在加载计划任务信息中，请稍候...
 NextRunTime=下次运行的时间
+NotAvailable=N/A
 OpenProcessPath=打开程序路径
 OpenScheduledTaskProgram=打开任务计划程序
 Path=路径

@@ -17,7 +17,7 @@ namespace ThemeSwitch.Services.Root
     /// </summary>
     public static class LogService
     {
-        private static readonly string unknown = "unknown";
+        private static readonly string notavailable = "N/A";
         private static SemaphoreSlim logSemaphoreSlim = new(1, 1);
         private static bool isInitialized = false;
         private static FileLogTraceListener fileLogTraceListener = new();
@@ -106,19 +106,19 @@ namespace ThemeSwitch.Services.Root
                             stringBuilder.AppendLine(Convert.ToString(index));
                             stringBuilder.AppendLine("=========================================================");
                             stringBuilder.AppendLine("HelpLink");
-                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.HelpLink) ? unknown : exception.HelpLink.Replace('\r', ' ').Replace('\n', ' '));
+                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.HelpLink) ? notavailable : exception.HelpLink.Replace('\r', ' ').Replace('\n', ' '));
                             stringBuilder.AppendLine("=========================================================");
                             stringBuilder.AppendLine("Message");
-                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.Message) ? unknown : exception.Message.Replace('\r', ' ').Replace('\n', ' '));
+                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.Message) ? notavailable : exception.Message.Replace('\r', ' ').Replace('\n', ' '));
                             stringBuilder.AppendLine("=========================================================");
                             stringBuilder.AppendLine("HResult");
                             stringBuilder.AppendLine(Convert.ToString(exception.HResult, 16).ToUpper());
                             stringBuilder.AppendLine("=========================================================");
                             stringBuilder.AppendLine("Source");
-                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.Source) ? unknown : exception.Source.Replace('\r', ' ').Replace('\n', ' '));
+                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.Source) ? notavailable : exception.Source.Replace('\r', ' ').Replace('\n', ' '));
                             stringBuilder.AppendLine("=========================================================");
                             stringBuilder.AppendLine("StackTrace");
-                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.StackTrace) ? unknown : exception.StackTrace.Replace('\r', ' ').Replace('\n', ' '));
+                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.StackTrace) ? notavailable : exception.StackTrace.Replace('\r', ' ').Replace('\n', ' '));
                             stringBuilder.AppendLine("=========================================================");
 
                             fileLogTraceListener.BaseFileName = logFileName;

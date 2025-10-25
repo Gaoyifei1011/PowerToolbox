@@ -49,5 +49,4 @@ TimeOffset=触发时间偏移（单位：分钟）
 Tips=小提示
 TipContent1=1.在“开始菜单”和任务栏中显示主题色选项仅在系统深色模式下可用
 TipContent2=2.位置获取失败时，如果使用了日出日落模式，会自动使用手动模式
-Unknown=[未知]
 YourPositon=您的位置

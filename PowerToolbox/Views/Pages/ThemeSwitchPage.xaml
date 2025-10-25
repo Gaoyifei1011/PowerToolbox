@@ -974,7 +974,8 @@
                                         Padding="0"
                                         Click="{x:Bind OnLocatePositionClicked}"
                                         CommandParameter="{x:Bind}"
-                                        CornerRadius="{StaticResource ControlCornerRadius}">
+                                        CornerRadius="{StaticResource ControlCornerRadius}"
+                                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsGettingPosition), Mode=OneWay}">
 
                                         <Button.Content>
                                             <FontIcon FontSize="14" Glyph="&#xECAF;" />

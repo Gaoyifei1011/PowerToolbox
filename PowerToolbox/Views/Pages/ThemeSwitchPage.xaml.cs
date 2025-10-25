@@ -41,7 +41,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string DarkString = ResourceService.ThemeSwitchResource.GetString("Dark");
         private readonly string LightString = ResourceService.ThemeSwitchResource.GetString("Light");
         private readonly string NotAvailableString = ResourceService.ThemeSwitchResource.GetString("NotAvailable");
-        private readonly string UnknownString = ResourceService.ThemeSwitchResource.GetString("Unknown");
         private readonly Guid CLSID_DesktopWallpaper = new("C2CF3110-460E-4fC1-B9D0-8A1C0C9CC4BD");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private bool isInitialized;
@@ -271,6 +270,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isGettingPosition;
+
+        public bool IsGettingPosition
+        {
+            get { return _isGettingPosition; }
+
+            set
+            {
+                if (!Equals(_isGettingPosition, value))
+                {
+                    _isGettingPosition = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsGettingPosition)));
+                }
+            }
+        }
+
         private int _sunriseOffset;
 
         public int SunriseOffset
@@ -452,6 +467,10 @@ namespace PowerToolbox.Views.Pages
             SelectedSystemThemeStyle = SystemThemeStyleList[0];
             SelectedAppThemeStyle = AppThemeStyleList[0];
             SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList[0];
+            Longitude = NotAvailableString;
+            Latitude = NotAvailableString;
+            SunriseTime = NotAvailableString;
+            SunsetTime = NotAvailableString;
             RegistryHelper.NotifyKeyValueChanged += OnNotifyKeyValueChanged;
         }
 

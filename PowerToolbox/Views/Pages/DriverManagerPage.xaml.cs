@@ -53,10 +53,9 @@ namespace PowerToolbox.Views.Pages
         private readonly string ForceDeletingDriverFailedString = ResourceService.DriverManagerResource.GetString("ForceDeletingDriverFailed");
         private readonly string ForceDeletingDriverString = ResourceService.DriverManagerResource.GetString("ForceDeletingDriver");
         private readonly string ForceDeletingDriverSuccessfullyString = ResourceService.DriverManagerResource.GetString("ForceDeletingDriverSuccessfully");
+        private readonly string NotAvailableString = ResourceService.DriverManagerResource.GetString("NotAvailable");
         private readonly string RestartPCString = ResourceService.DriverManagerResource.GetString("RestartPC");
         private readonly string SelectFileString = ResourceService.DriverManagerResource.GetString("SelectFile");
-        private readonly string UnknownDeviceNameString = ResourceService.DriverManagerResource.GetString("UnknownDeviceName");
-        private readonly string UnknownString = ResourceService.DriverManagerResource.GetString("Unknown");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private bool isInitialized;
 
@@ -1624,7 +1623,7 @@ namespace PowerToolbox.Views.Pages
                         DriverSize = string.IsNullOrEmpty(driverLocation) ? "0B" : VolumeSizeHelper.ConvertVolumeSizeToString(GetFolderSize(Path.GetDirectoryName(driverLocation))),
                         DriverLocation = driverLocation,
                         DriverType = pnpDriverInformationItem.ClassName,
-                        SignatureName = string.IsNullOrEmpty(pnpDriverInformationItem.SignerName) ? UnknownString : pnpDriverInformationItem.SignerName,
+                        SignatureName = string.IsNullOrEmpty(pnpDriverInformationItem.SignerName) ? NotAvailableString : pnpDriverInformationItem.SignerName,
                     };
 
                     Guid dismDriverPackageItemGuid = new(pnpDriverInformationItem.ClassGuid);
@@ -1633,14 +1632,14 @@ namespace PowerToolbox.Views.Pages
                     {
                         if (Equals(dismDriverPackageItemGuid, systemDriverInformation.DeviceGuid) && string.Equals(driverItem.DriverOEMInfName, systemDriverInformation.InfPath, StringComparison.OrdinalIgnoreCase) && driverItem.DriverDate.Equals(systemDriverInformation.Date) && driverItem.DriverVersion.Equals(systemDriverInformation.Version))
                         {
-                            driverItem.DeviceName = string.IsNullOrEmpty(systemDriverInformation.Description) ? UnknownDeviceNameString : systemDriverInformation.Description;
+                            driverItem.DeviceName = string.IsNullOrEmpty(systemDriverInformation.Description) ? NotAvailableString : systemDriverInformation.Description;
                             break;
                         }
                     }
 
                     if (string.IsNullOrEmpty(driverItem.DeviceName))
                     {
-                        driverItem.DeviceName = UnknownDeviceNameString;
+                        driverItem.DeviceName = NotAvailableString;
                     }
 
                     driverList.Add(driverItem);

@@ -74,6 +74,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string ModifyWindowsInsiderPreviewString = ResourceService.UpdateManagerResource.GetString("ModifyWindowsInsiderPreview");
         private readonly string MsrcSeverityString = ResourceService.UpdateManagerResource.GetString("MsrcSeverity");
         private readonly string NoString = ResourceService.UpdateManagerResource.GetString("No");
+        private readonly string NotAvailableString = ResourceService.UpdateManagerResource.GetString("NotAvailable");
         private readonly string OpenPowerToolboxString = ResourceService.UpdateManagerResource.GetString("OpenPowerToolbox");
         private readonly string RecommendedCpuSpeedString = ResourceService.UpdateManagerResource.GetString("RecommendedCpuSpeed");
         private readonly string RecommendedHardDiskSpaceString = ResourceService.UpdateManagerResource.GetString("RecommendedHardDiskSpace");
@@ -81,7 +82,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string RestartPCString = ResourceService.UpdateManagerResource.GetString("RestartPC");
         private readonly string ReleaseNotesString = ResourceService.UpdateManagerResource.GetString("ReleaseNotes");
         private readonly string SupportedUrlString = ResourceService.UpdateManagerResource.GetString("SupportedUrl");
-        private readonly string UnknownString = ResourceService.UpdateManagerResource.GetString("Unknown");
         private readonly string UninstallUpdateCanceledString = ResourceService.UpdateManagerResource.GetString("UninstallUpdateCanceled");
         private readonly string UninstallUpdateCompletedNeedRebootString = ResourceService.UpdateManagerResource.GetString("UninstallUpdateCompletedNeedReboot");
         private readonly string UninstallUpdateCompletedString = ResourceService.UpdateManagerResource.GetString("UninstallUpdateCompleted");
@@ -800,9 +800,9 @@ namespace PowerToolbox.Views.Pages
                 {
                     StringBuilder copyInformationBuilder = new();
                     copyInformationBuilder.Append(UpdateNameString);
-                    copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.UpdateInformation.Title) ? UnknownString : updateItem.UpdateInformation.Title);
+                    copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.UpdateInformation.Title) ? NotAvailableString : updateItem.UpdateInformation.Title);
                     copyInformationBuilder.Append(DescriptionString);
-                    copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.UpdateInformation.Description) ? UnknownString : updateItem.UpdateInformation.Description);
+                    copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.UpdateInformation.Description) ? NotAvailableString : updateItem.UpdateInformation.Description);
                     copyInformationBuilder.Append(IsBetaString);
                     copyInformationBuilder.AppendLine(updateItem.UpdateInformation.IsBeta ? YesString : NoString);
                     copyInformationBuilder.Append(IsMandatoryString);
@@ -812,15 +812,15 @@ namespace PowerToolbox.Views.Pages
                     copyInformationBuilder.Append(MinDownloadSizeString);
                     copyInformationBuilder.AppendLine(VolumeSizeHelper.ConvertVolumeSizeToString(Convert.ToDouble(updateItem.UpdateInformation.Update.MinDownloadSize)));
                     copyInformationBuilder.Append(MsrcSeverityString);
-                    copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.UpdateInformation.MsrcSeverity) ? UnknownString : updateItem.UpdateInformation.MsrcSeverity);
+                    copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.UpdateInformation.MsrcSeverity) ? NotAvailableString : updateItem.UpdateInformation.MsrcSeverity);
                     copyInformationBuilder.Append(RecommendedCpuSpeedString);
-                    copyInformationBuilder.AppendLine(updateItem.UpdateInformation.RecommendedCpuSpeed is 0 ? UnknownString : string.Format("{0} MHz", updateItem.UpdateInformation.RecommendedCpuSpeed));
+                    copyInformationBuilder.AppendLine(updateItem.UpdateInformation.RecommendedCpuSpeed is 0 ? NotAvailableString : string.Format("{0} MHz", updateItem.UpdateInformation.RecommendedCpuSpeed));
                     copyInformationBuilder.Append(RecommendedHardDiskSpaceString);
-                    copyInformationBuilder.AppendLine(updateItem.UpdateInformation.RecommendedHardDiskSpace is 0 ? UnknownString : string.Format("{0} MB", updateItem.UpdateInformation.RecommendedHardDiskSpace));
+                    copyInformationBuilder.AppendLine(updateItem.UpdateInformation.RecommendedHardDiskSpace is 0 ? NotAvailableString : string.Format("{0} MB", updateItem.UpdateInformation.RecommendedHardDiskSpace));
                     copyInformationBuilder.Append(RecommendedMemoryString);
-                    copyInformationBuilder.AppendLine(updateItem.UpdateInformation.RecommendedMemory is 0 ? UnknownString : string.Format("{0} MB", updateItem.UpdateInformation.RecommendedMemory));
+                    copyInformationBuilder.AppendLine(updateItem.UpdateInformation.RecommendedMemory is 0 ? NotAvailableString : string.Format("{0} MB", updateItem.UpdateInformation.RecommendedMemory));
                     copyInformationBuilder.Append(ReleaseNotesString);
-                    copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.UpdateInformation.ReleaseNotes) ? UnknownString : updateItem.UpdateInformation.ReleaseNotes);
+                    copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.UpdateInformation.ReleaseNotes) ? NotAvailableString : updateItem.UpdateInformation.ReleaseNotes);
                     copyInformationBuilder.Append(SupportedUrlString);
                     copyInformationBuilder.AppendLine(updateItem.UpdateInformation.SupportURL);
 
@@ -829,15 +829,15 @@ namespace PowerToolbox.Views.Pages
                         copyInformationBuilder.Append(DeviceProblemNumberString);
                         copyInformationBuilder.AppendLine(Convert.ToString(updateItem.WindowsDriverInformation.DeviceProblemNumber));
                         copyInformationBuilder.Append(DriverClassString);
-                        copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.WindowsDriverInformation.DriverClass) ? UnknownString : updateItem.WindowsDriverInformation.DriverClass);
+                        copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.WindowsDriverInformation.DriverClass) ? NotAvailableString : updateItem.WindowsDriverInformation.DriverClass);
                         copyInformationBuilder.Append(DriverHardwareIDString);
-                        copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.WindowsDriverInformation.DriverHardwareID) ? UnknownString : updateItem.WindowsDriverInformation.DriverHardwareID);
+                        copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.WindowsDriverInformation.DriverHardwareID) ? NotAvailableString : updateItem.WindowsDriverInformation.DriverHardwareID);
                         copyInformationBuilder.Append(DriverManufacturerString);
-                        copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.WindowsDriverInformation.DriverManufacturer) ? UnknownString : updateItem.WindowsDriverInformation.DriverManufacturer);
+                        copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.WindowsDriverInformation.DriverManufacturer) ? NotAvailableString : updateItem.WindowsDriverInformation.DriverManufacturer);
                         copyInformationBuilder.Append(DriverModelString);
-                        copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.WindowsDriverInformation.DriverModel) ? UnknownString : updateItem.WindowsDriverInformation.DriverModel);
+                        copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.WindowsDriverInformation.DriverModel) ? NotAvailableString : updateItem.WindowsDriverInformation.DriverModel);
                         copyInformationBuilder.Append(DriverProviderString);
-                        copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.WindowsDriverInformation.DriverProvider) ? UnknownString : updateItem.WindowsDriverInformation.DriverProvider);
+                        copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateItem.WindowsDriverInformation.DriverProvider) ? NotAvailableString : updateItem.WindowsDriverInformation.DriverProvider);
                         copyInformationBuilder.Append(DriverVerDateString);
                         copyInformationBuilder.AppendLine(updateItem.WindowsDriverInformation.DriverVerDate.ToString("yyyy/MM/dd"));
                     }
@@ -2363,19 +2363,19 @@ namespace PowerToolbox.Views.Pages
                             UpdateModel updateItem = new()
                             {
                                 UpdateInformation = updateInformation,
-                                Description = string.IsNullOrEmpty(updateInformation.Description) ? UnknownString : updateInformation.Description,
-                                EulaText = string.IsNullOrEmpty(updateInformation.EulaText) ? UnknownString : updateInformation.EulaText,
+                                Description = string.IsNullOrEmpty(updateInformation.Description) ? NotAvailableString : updateInformation.Description,
+                                EulaText = string.IsNullOrEmpty(updateInformation.EulaText) ? NotAvailableString : updateInformation.EulaText,
                                 IsBeta = updateInformation.IsBeta ? YesString : NoString,
                                 IsMandatory = updateInformation.IsMandatory ? YesString : NoString,
                                 MaxDownloadSize = VolumeSizeHelper.ConvertVolumeSizeToString(Convert.ToDouble(updateInformation.Update.MaxDownloadSize)),
                                 MinDownloadSize = VolumeSizeHelper.ConvertVolumeSizeToString(Convert.ToDouble(updateInformation.Update.MinDownloadSize)),
-                                MsrcSeverity = string.IsNullOrEmpty(updateInformation.MsrcSeverity) ? UnknownString : updateInformation.MsrcSeverity,
-                                RecommendedCpuSpeed = updateInformation.RecommendedCpuSpeed is 0 ? UnknownString : string.Format("{0} MHz", updateInformation.RecommendedCpuSpeed),
-                                RecommendedHardDiskSpace = updateInformation.RecommendedHardDiskSpace is 0 ? UnknownString : string.Format("{0} MB", updateInformation.RecommendedHardDiskSpace),
-                                RecommendedMemory = updateInformation.RecommendedMemory is 0 ? UnknownString : string.Format("{0} MB", updateInformation.RecommendedMemory),
-                                ReleaseNotes = string.IsNullOrEmpty(updateInformation.ReleaseNotes) ? UnknownString : updateInformation.ReleaseNotes,
+                                MsrcSeverity = string.IsNullOrEmpty(updateInformation.MsrcSeverity) ? NotAvailableString : updateInformation.MsrcSeverity,
+                                RecommendedCpuSpeed = updateInformation.RecommendedCpuSpeed is 0 ? NotAvailableString : string.Format("{0} MHz", updateInformation.RecommendedCpuSpeed),
+                                RecommendedHardDiskSpace = updateInformation.RecommendedHardDiskSpace is 0 ? NotAvailableString : string.Format("{0} MB", updateInformation.RecommendedHardDiskSpace),
+                                RecommendedMemory = updateInformation.RecommendedMemory is 0 ? NotAvailableString : string.Format("{0} MB", updateInformation.RecommendedMemory),
+                                ReleaseNotes = string.IsNullOrEmpty(updateInformation.ReleaseNotes) ? NotAvailableString : updateInformation.ReleaseNotes,
                                 SupportURL = updateInformation.SupportURL,
-                                Title = string.IsNullOrEmpty(updateInformation.Title) ? UnknownString : updateInformation.Title,
+                                Title = string.IsNullOrEmpty(updateInformation.Title) ? NotAvailableString : updateInformation.Title,
                                 UpdateID = updateInformation.UpdateID,
                                 IsUpdating = false,
                                 UpdateProgress = string.Empty,
@@ -2418,17 +2418,17 @@ namespace PowerToolbox.Views.Pages
 
                                     updateItem.WindowsDriverInformation = windowsDriverInformation;
                                     updateItem.DeviceProblemNumber = Convert.ToString(windowsDriverInformation.DeviceProblemNumber);
-                                    updateItem.DriverClass = string.IsNullOrEmpty(windowsDriverInformation.DriverClass) ? UnknownString : windowsDriverInformation.DriverClass;
-                                    updateItem.DriverHardwareID = string.IsNullOrEmpty(windowsDriverInformation.DriverHardwareID) ? UnknownString : windowsDriverInformation.DriverHardwareID;
-                                    updateItem.DriverManufacturer = string.IsNullOrEmpty(windowsDriverInformation.DriverManufacturer) ? UnknownString : windowsDriverInformation.DriverManufacturer;
-                                    updateItem.DriverModel = string.IsNullOrEmpty(windowsDriverInformation.DriverModel) ? UnknownString : windowsDriverInformation.DriverModel;
-                                    updateItem.DriverProvider = string.IsNullOrEmpty(windowsDriverInformation.DriverProvider) ? UnknownString : windowsDriverInformation.DriverProvider;
+                                    updateItem.DriverClass = string.IsNullOrEmpty(windowsDriverInformation.DriverClass) ? NotAvailableString : windowsDriverInformation.DriverClass;
+                                    updateItem.DriverHardwareID = string.IsNullOrEmpty(windowsDriverInformation.DriverHardwareID) ? NotAvailableString : windowsDriverInformation.DriverHardwareID;
+                                    updateItem.DriverManufacturer = string.IsNullOrEmpty(windowsDriverInformation.DriverManufacturer) ? NotAvailableString : windowsDriverInformation.DriverManufacturer;
+                                    updateItem.DriverModel = string.IsNullOrEmpty(windowsDriverInformation.DriverModel) ? NotAvailableString : windowsDriverInformation.DriverModel;
+                                    updateItem.DriverProvider = string.IsNullOrEmpty(windowsDriverInformation.DriverProvider) ? NotAvailableString : windowsDriverInformation.DriverProvider;
                                     updateItem.DriverVerDate = windowsDriverInformation.DriverVerDate.ToString("yyyy/MM/dd");
                                 }
                             }
                             else
                             {
-                                updateItem.UpdateType = UnknownString;
+                                updateItem.UpdateType = NotAvailableString;
                             }
 
                             updateItem.CveIDList.AddRange(updateInformation.CveIDList);
@@ -2565,7 +2565,7 @@ namespace PowerToolbox.Views.Pages
                     }
                 default:
                     {
-                        return UnknownString;
+                        return NotAvailableString;
                     }
             }
         }
