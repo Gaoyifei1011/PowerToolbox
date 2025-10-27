@@ -1096,7 +1096,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectFolderClicked(object sender, RoutedEventArgs args)
         {
-            OpenFolderDialog openFolderDialog = new()
+            OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
             {
                 Description = SelectFolderString,
                 RootFolder = Environment.SpecialFolder.Desktop
@@ -1132,7 +1132,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnLogSelectFolderClicked(object sender, RoutedEventArgs args)
         {
-            OpenFolderDialog openFolderDialog = new()
+            OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
             {
                 Description = SelectFolderString,
                 RootFolder = Environment.SpecialFolder.Desktop

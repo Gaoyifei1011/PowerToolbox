@@ -214,7 +214,7 @@ namespace PowerToolbox.Views.Dialogs
         /// </summary>
         private void OnSelectFolderClicked(object sender, RoutedEventArgs args)
         {
-            OpenFolderDialog openFolderDialog = new()
+            OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
             {
                 Description = SelectFolderString,
                 RootFolder = Environment.SpecialFolder.Desktop

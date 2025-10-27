@@ -132,7 +132,7 @@ namespace PowerToolbox.Views.Dialogs
                         }
                     case "Custom":
                         {
-                            OpenFolderDialog openFolderDialog = new()
+                            OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
                             {
                                 Description = SelectFolderString,
                                 RootFolder = Environment.SpecialFolder.Desktop

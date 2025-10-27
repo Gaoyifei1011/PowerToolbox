@@ -508,7 +508,7 @@ namespace PowerToolbox.Views.Pages
             if (args.Parameter is EmbeddedDataModel embeddedData)
             {
                 IsProcessing = true;
-                OpenFolderDialog openFolderDialog = new()
+                OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
                 {
                     Description = SelectFolderString,
                     RootFolder = Environment.SpecialFolder.Desktop
@@ -677,7 +677,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectSaveFolderClicked(object sender, RoutedEventArgs args)
         {
-            OpenFolderDialog openFolderDialog = new()
+            OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
             {
                 Description = SelectFolderString,
                 RootFolder = Environment.SpecialFolder.Desktop
@@ -852,7 +852,7 @@ namespace PowerToolbox.Views.Pages
             if (selectedEmbeddedDataList.Count > 0)
             {
                 IsProcessing = true;
-                OpenFolderDialog openFolderDialog = new()
+                OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
                 {
                     Description = SelectFolderString,
                     RootFolder = Environment.SpecialFolder.Desktop
@@ -941,7 +941,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnExportAllEmbeddedDataClicked(object sender, RoutedEventArgs args)
         {
-            OpenFolderDialog openFolderDialog = new()
+            OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
             {
                 Description = SelectFolderString,
                 RootFolder = Environment.SpecialFolder.Desktop

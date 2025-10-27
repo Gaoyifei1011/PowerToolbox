@@ -483,7 +483,7 @@ namespace PowerToolbox.Views.Pages
             {
                 IList<object> selectedItemsList = IconsGridView.SelectedItems;
 
-                OpenFolderDialog openFolderDialog = new()
+                OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
                 {
                     Description = SelectFolderString,
                     RootFolder = Environment.SpecialFolder.Desktop
@@ -554,7 +554,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (!string.IsNullOrEmpty(filePath))
             {
-                OpenFolderDialog openFolderDialog = new()
+                OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
                 {
                     Description = SelectFolderString,
                     RootFolder = Environment.SpecialFolder.Desktop

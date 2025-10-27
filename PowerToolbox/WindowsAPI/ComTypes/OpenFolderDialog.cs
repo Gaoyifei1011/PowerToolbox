@@ -18,7 +18,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     {
         private readonly Guid CLSID_FileOpenDialog = new("DC1C5A9C-E88A-4DDE-A5A1-60F82A20AEF7");
         private IFileOpenDialog FileOpenDialog;
-        private Form parentForm;
+        private IntPtr Handle { get; }
 
         public string Description { get; set; } = string.Empty;
 
@@ -26,19 +26,15 @@ namespace PowerToolbox.WindowsAPI.ComTypes
 
         public Environment.SpecialFolder RootFolder { get; set; } = Environment.SpecialFolder.Desktop;
 
-        public OpenFolderDialog(Form form = null)
+        public OpenFolderDialog(IntPtr handle)
         {
-            if (form is null)
+            if (handle == IntPtr.Zero)
             {
-                if (Form.ActiveForm is null)
-                {
-                    throw new Win32Exception("没有处于激活的窗口");
-                }
-                parentForm = Form.ActiveForm;
+                throw new Win32Exception("窗口句柄不可以为空");
             }
             else
             {
-                parentForm = form;
+                Handle = handle;
             }
         }
 
@@ -63,7 +59,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
 
                 if (FileOpenDialog is not null)
                 {
-                    int result = FileOpenDialog.Show(parentForm.Handle);
+                    int result = FileOpenDialog.Show(Handle);
 
                     if (result is not 0)
                     {
@@ -115,7 +111,6 @@ namespace PowerToolbox.WindowsAPI.ComTypes
                     Marshal.FinalReleaseComObject(FileOpenDialog);
                 }
 
-                parentForm = null;
                 FileOpenDialog = null;
             }
         }

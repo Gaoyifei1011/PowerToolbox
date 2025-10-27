@@ -418,7 +418,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask is not null)
             {
-                OpenFolderDialog openFolderDialog = new()
+                OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
                 {
                     Description = SelectFolderString,
                     RootFolder = Environment.SpecialFolder.Desktop
@@ -834,7 +834,7 @@ namespace PowerToolbox.Views.Pages
             List<ScheduledTaskModel> selectedScheduledTaskList = [.. (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Where(item => item.IsSelected)];
             if (selectedScheduledTaskList.Count > 0)
             {
-                OpenFolderDialog openFolderDialog = new()
+                OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
                 {
                     Description = SelectFolderString,
                     RootFolder = Environment.SpecialFolder.Desktop
