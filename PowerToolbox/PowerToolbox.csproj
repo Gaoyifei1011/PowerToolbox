@@ -5,6 +5,7 @@
 		<AssemblyName>PowerToolbox</AssemblyName>
 		<CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
 		<CustomAfterMicrosoftCommonTargets>$(SolutionDir)Configuration\XamlCompiler.targets</CustomAfterMicrosoftCommonTargets>
+		<DefaultLanguage>en-US</DefaultLanguage>
 		<DefaultXamlRuntime>WinUI</DefaultXamlRuntime>
 		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
 		<Deterministic>true</Deterministic>
