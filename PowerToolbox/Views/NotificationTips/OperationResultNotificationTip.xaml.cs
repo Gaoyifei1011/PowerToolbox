@@ -108,6 +108,16 @@ namespace PowerToolbox.Views.NotificationTips
                 IsSuccessOperation = false;
                 OperationContent = ResourceService.NotificationTipResource.GetString("FileDeleteFailed");
             }
+            else if (operationKind is OperationKind.DevicePositionInitializeFailed)
+            {
+                IsSuccessOperation = false;
+                OperationContent = ResourceService.NotificationTipResource.GetString("DevicePositionInitializeFailed");
+            }
+            else if (operationKind is OperationKind.DevicePositionLoadFailed)
+            {
+                IsSuccessOperation = false;
+                OperationContent = ResourceService.NotificationTipResource.GetString("DevicePositionLoadFailed");
+            }
             else if (operationKind is OperationKind.DriveEmpty)
             {
                 IsSuccessOperation = false;
@@ -137,6 +147,11 @@ namespace PowerToolbox.Views.NotificationTips
             {
                 IsSuccessOperation = true;
                 OperationContent = ResourceService.NotificationTipResource.GetString("ForceDeleteDriverSuccessfully");
+            }
+            else if (operationKind is OperationKind.IcoSizeNotSelected)
+            {
+                IsSuccessOperation = false;
+                OperationContent = ResourceService.NotificationTipResource.GetString("IcoSizeNotSelected");
             }
             else if (operationKind is OperationKind.InsiderPreviewSettings)
             {

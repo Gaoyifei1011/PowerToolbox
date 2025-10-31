@@ -273,55 +273,55 @@
                                             Grid.Row="0"
                                             Grid.Column="0"
                                             Content="{x:Bind IconSizeList[0].Value}"
-                                            IsEnabled="{x:Bind Is16SizeEnabled, Mode=TwoWay}" />
+                                            IsChecked="{x:Bind Is16SizeEnabled, Mode=TwoWay}" />
 
                                         <CheckBox
                                             Grid.Row="0"
                                             Grid.Column="1"
                                             Content="{x:Bind IconSizeList[1].Value}"
-                                            IsEnabled="{x:Bind Is24SizeEnabled, Mode=TwoWay}" />
+                                            IsChecked="{x:Bind Is24SizeEnabled, Mode=TwoWay}" />
 
                                         <CheckBox
                                             Grid.Row="0"
                                             Grid.Column="2"
                                             Content="{x:Bind IconSizeList[2].Value}"
-                                            IsEnabled="{x:Bind Is32SizeEnabled, Mode=TwoWay}" />
+                                            IsChecked="{x:Bind Is32SizeEnabled, Mode=TwoWay}" />
 
                                         <CheckBox
                                             Grid.Row="1"
                                             Grid.Column="0"
                                             Content="{x:Bind IconSizeList[3].Value}"
-                                            IsEnabled="{x:Bind Is48SizeEnabled, Mode=TwoWay}" />
+                                            IsChecked="{x:Bind Is48SizeEnabled, Mode=TwoWay}" />
 
                                         <CheckBox
                                             Grid.Row="1"
                                             Grid.Column="1"
                                             Content="{x:Bind IconSizeList[4].Value}"
-                                            IsEnabled="{x:Bind Is64SizeEnabled, Mode=TwoWay}" />
+                                            IsChecked="{x:Bind Is64SizeEnabled, Mode=TwoWay}" />
 
                                         <CheckBox
                                             Grid.Row="1"
                                             Grid.Column="2"
                                             Content="{x:Bind IconSizeList[5].Value}"
-                                            IsEnabled="{x:Bind Is72SizeEnabled, Mode=TwoWay}" />
+                                            IsChecked="{x:Bind Is72SizeEnabled, Mode=TwoWay}" />
 
                                         <CheckBox
                                             Grid.Row="2"
                                             Grid.Column="0"
                                             Content="{x:Bind IconSizeList[6].Value}"
-                                            IsEnabled="{x:Bind Is96SizeEnabled, Mode=TwoWay}" />
+                                            IsChecked="{x:Bind Is96SizeEnabled, Mode=TwoWay}" />
 
                                         <CheckBox
                                             Grid.Row="2"
                                             Grid.Column="1"
                                             Content="{x:Bind IconSizeList[7].Value}"
-                                            IsEnabled="{x:Bind Is128SizeEnabled, Mode=TwoWay}" />
+                                            IsChecked="{x:Bind Is128SizeEnabled, Mode=TwoWay}" />
 
                                         <CheckBox
                                             Grid.Row="2"
                                             Grid.Column="2"
                                             Content="{x:Bind IconSizeList[8].Value}"
-                                            IsEnabled="{x:Bind Is256SizeEnabled, Mode=TwoWay}" />
+                                            IsChecked="{x:Bind Is256SizeEnabled, Mode=TwoWay}" />
                                     </Grid>
                                 </Flyout>
                             </DropDownButton.Flyout>
@@ -391,6 +391,13 @@
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[7].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[7]}"
                                         Text="{x:Bind system:Convert.ToString(IconSizeList[7].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnIconSizeClicked}"
+                                        GroupName="IconSizeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[8].Key), Mode=OneWay}"
+                                        Tag="{x:Bind IconSizeList[8]}"
+                                        Text="{x:Bind system:Convert.ToString(IconSizeList[8].Value)}" />
                                 </MenuFlyout>
                             </DropDownButton.Flyout>
                         </DropDownButton>

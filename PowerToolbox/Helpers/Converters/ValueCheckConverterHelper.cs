@@ -53,5 +53,13 @@ namespace PowerToolbox.Helpers.Converters
         {
             return Equals(simulateUpdateKind, comparedSimulateUpdateKind) ? Visibility.Visible : Visibility.Collapsed;
         }
+
+        /// <summary>
+        /// 检查选择的保存图标格式
+        /// </summary>
+        public static Visibility CheckIconFormat(string iconFormatKey, string comparedIconFormatKey)
+        {
+            return string.Equals(iconFormatKey, comparedIconFormatKey) ? Visibility.Visible : Visibility.Collapsed;
+        }
     }
 }
