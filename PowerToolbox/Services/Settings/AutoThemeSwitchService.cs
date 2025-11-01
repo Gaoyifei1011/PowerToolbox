@@ -19,9 +19,12 @@ namespace PowerToolbox.Services.Settings
         private static readonly string systemThemeDarkTimeKey = ConfigKey.SystemThemeDarkTimeKey;
         private static readonly string appThemeLightTimeKey = ConfigKey.AppThemeLightTimeKey;
         private static readonly string appThemeDarkTimeKey = ConfigKey.AppThemeDarkTimeKey;
-        private static string defaultAutoThemeSwitchTypeValue;
+        private static readonly string sunriseOffsetKey = ConfigKey.SunriseOffsetKey;
+        private static readonly string sunsetOffsetKey = ConfigKey.SunsetOffsetKey;
 
         public static bool DefaultAutoThemeSwitchEnableValue { get; } = false;
+
+        public static string DefaultAutoThemeSwitchTypeValue { get; private set; }
 
         public static bool DefaultAutoSwitchSystemThemeValue { get; } = false;
 
@@ -36,6 +39,10 @@ namespace PowerToolbox.Services.Settings
         public static TimeSpan DefaultAppThemeLightTime { get; } = new(7, 0, 0);
 
         public static TimeSpan DefaultAppThemeDarkTime { get; } = new(19, 0, 0);
+
+        public static int DefaultSunriseOffset { get; } = 0;
+
+        public static int DefaultSunsetOffset { get; } = 0;
 
         public static bool AutoThemeSwitchEnableValue { get; set; }
 
@@ -55,6 +62,10 @@ namespace PowerToolbox.Services.Settings
 
         public static TimeSpan AppThemeDarkTime { get; set; }
 
+        public static int SunriseOffset { get; set; }
+
+        public static int SunsetOffset { get; set; }
+
         public static List<string> AutoThemeSwitchTypeList { get; } = ["FixedTime", "SunriseSunset"];
 
         /// <summary>
@@ -62,7 +73,7 @@ namespace PowerToolbox.Services.Settings
         /// </summary>
         public static void InitializeAutoThemeSwitch()
         {
-            defaultAutoThemeSwitchTypeValue = AutoThemeSwitchTypeList[0];
+            DefaultAutoThemeSwitchTypeValue = AutoThemeSwitchTypeList[0];
             AutoThemeSwitchEnableValue = GetAutoThemeSwitchEnableValue();
             AutoThemeSwitchTypeValue = GetAutoThemeSwitchTypeValue();
             AutoSwitchSystemThemeValue = GetAutoSwitchSystemThemeValue();
@@ -72,6 +83,8 @@ namespace PowerToolbox.Services.Settings
             SystemThemeDarkTime = GetSystemThemeDarkTime();
             AppThemeLightTime = GetAppThemeLightTime();
             AppThemeDarkTime = GetAppThemeDarkTime();
+            SunriseOffset = GetSunriseOffset();
+            SunsetOffset = GetSunsetOffset();
         }
 
         /// <summary>
@@ -116,7 +129,7 @@ namespace PowerToolbox.Services.Settings
             if (string.IsNullOrEmpty(autoThemeSwitchTypeValue))
             {
                 SetAutoThemeSwitchEnableValue(DefaultAutoThemeSwitchEnableValue);
-                return defaultAutoThemeSwitchTypeValue;
+                return DefaultAutoThemeSwitchTypeValue;
             }
 
             return autoThemeSwitchTypeValue;
@@ -263,6 +276,38 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
+        /// 获取设置存储的日出时间值，如果设置没有存储，使用默认值
+        /// </summary>
+        private static int GetSunriseOffset()
+        {
+            int? sunriseOffset = LocalSettingsService.ReadSetting<int?>(sunriseOffsetKey);
+
+            if (!sunriseOffset.HasValue)
+            {
+                SetSunriseOffset(DefaultSunriseOffset);
+                return DefaultSunriseOffset;
+            }
+
+            return sunriseOffset.Value;
+        }
+
+        /// <summary>
+        /// 获取设置存储的日落时间值，如果设置没有存储，使用默认值
+        /// </summary>
+        private static int GetSunsetOffset()
+        {
+            int? sunsetOffset = LocalSettingsService.ReadSetting<int?>(sunsetOffsetKey);
+
+            if (!sunsetOffset.HasValue)
+            {
+                SetSunsetOffset(DefaultSunsetOffset);
+                return DefaultSunsetOffset;
+            }
+
+            return sunsetOffset.Value;
+        }
+
+        /// <summary>
         /// 自动切换主题启用值发生修改时修改设置存储的自动切换主题启用值
         /// </summary>
         public static void SetAutoThemeSwitchEnableValue(bool autoThemeSwitchEnableValue)
@@ -341,6 +386,24 @@ namespace PowerToolbox.Services.Settings
         {
             AppThemeDarkTime = appThemeDarkTime;
             LocalSettingsService.SaveSetting(appThemeDarkTimeKey, appThemeDarkTime.ToString());
+        }
+
+        /// <summary>
+        /// 日出时间值发生修改时修改设置存储的日出时间值
+        /// </summary>
+        public static void SetSunriseOffset(int sunriseOffset)
+        {
+            SunriseOffset = sunriseOffset;
+            LocalSettingsService.SaveSetting(sunriseOffsetKey, sunriseOffset);
+        }
+
+        /// <summary>
+        /// 日落时间值发生修改时修改设置存储的日落时间值
+        /// </summary>
+        public static void SetSunsetOffset(int sunsetOffset)
+        {
+            SunsetOffset = sunsetOffset;
+            LocalSettingsService.SaveSetting(sunsetOffsetKey, sunsetOffset);
         }
     }
 }
