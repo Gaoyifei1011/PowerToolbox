@@ -31,6 +31,10 @@
 
         public const string LanguageKey = "AppLanguage";
 
+        public const string SunsetOffsetKey = "SunsetOffset";
+
+        public const string SunriseOffsetKey = "SunriseOffset";
+
         public const string SystemThemeLightTimeKey = "SystemThemeLightTime";
 
         public const string SystemThemeDarkTimeKey = "SystemThemeDarkTime";
