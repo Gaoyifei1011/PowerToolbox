@@ -5,8 +5,10 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Win32;
+using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
+using PowerToolbox.Services.Position;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
 using PowerToolbox.Views.Dialogs;
@@ -17,6 +19,7 @@ using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Device.Location;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -286,7 +289,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private int _sunriseOffset;
+        private int _sunriseOffset = AutoThemeSwitchService.SunriseOffset;
 
         public int SunriseOffset
         {
@@ -302,7 +305,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private int _sunsetOffset;
+        private int _sunsetOffset = AutoThemeSwitchService.SunsetOffset;
 
         public int SunsetOffset
         {
@@ -485,6 +488,7 @@ namespace PowerToolbox.Views.Pages
             if (!isInitialized)
             {
                 isInitialized = true;
+                GlobalNotificationService.ApplicationExit += OnApplicationExit;
                 await Task.Run(() =>
                 {
                     desktopWallpaper = (IDesktopWallpaper)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_DesktopWallpaper));
@@ -495,6 +499,29 @@ namespace PowerToolbox.Views.Pages
             }
 
             await InitializeSystemThemeSettingsAsync();
+        }
+
+        /// <summary>
+        /// 应用程序即将关闭时发生的事件
+        /// </summary>
+        private async void OnApplicationExit()
+        {
+            try
+            {
+                GlobalNotificationService.ApplicationExit -= OnApplicationExit;
+                if (IsAutoThemeSwitchEnableValue && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized)
+                {
+                    await UnInitializeDeviceServiceAsync();
+                    Latitude = NotAvailableString;
+                    Longitude = NotAvailableString;
+                    SunriseTime = NotAvailableString;
+                    SunsetTime = NotAvailableString;
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnApplicationExit), 1, e);
+            }
         }
 
         #endregion 第一部分：重写父类事件
@@ -664,6 +691,8 @@ namespace PowerToolbox.Views.Pages
                 AutoThemeSwitchService.SetSystemThemeDarkTime(SystemThemeDarkTime);
                 AutoThemeSwitchService.SetAppThemeLightTime(AppThemeLightTime);
                 AutoThemeSwitchService.SetAppThemeDarkTime(AppThemeDarkTime);
+                AutoThemeSwitchService.SetSunriseOffset(SunriseOffset);
+                AutoThemeSwitchService.SetSunsetOffset(SunsetOffset);
 
                 if (IsAutoThemeSwitchEnableValue)
                 {
@@ -750,6 +779,7 @@ namespace PowerToolbox.Views.Pages
             await Task.Run(() =>
             {
                 AutoThemeSwitchService.SetAutoThemeSwitchEnableValue(AutoThemeSwitchService.DefaultAutoThemeSwitchEnableValue);
+                AutoThemeSwitchService.SetAutoThemeSwitchTypeValue(AutoThemeSwitchService.DefaultAutoThemeSwitchTypeValue);
                 AutoThemeSwitchService.SetAutoSwitchSystemThemeValue(AutoThemeSwitchService.DefaultAutoSwitchSystemThemeValue);
                 AutoThemeSwitchService.SetAutoSwitchAppThemeValue(AutoThemeSwitchService.DefaultAutoSwitchAppThemeValue);
                 AutoThemeSwitchService.SetIsShowColorInDarkThemeValue(AutoThemeSwitchService.DefaultIsShowColorInDarkThemeValue);
@@ -757,6 +787,8 @@ namespace PowerToolbox.Views.Pages
                 AutoThemeSwitchService.SetSystemThemeDarkTime(AutoThemeSwitchService.DefaultSystemThemeDarkTime);
                 AutoThemeSwitchService.SetAppThemeLightTime(AutoThemeSwitchService.DefaultAppThemeLightTime);
                 AutoThemeSwitchService.SetAppThemeDarkTime(AutoThemeSwitchService.DefaultAppThemeDarkTime);
+                AutoThemeSwitchService.SetSunriseOffset(AutoThemeSwitchService.DefaultSunriseOffset);
+                AutoThemeSwitchService.SetSunsetOffset(AutoThemeSwitchService.DefaultSunriseOffset);
 
                 Process[] processArray = Process.GetProcessesByName("ThemeSwitch");
 
@@ -783,6 +815,7 @@ namespace PowerToolbox.Views.Pages
             });
 
             IsAutoThemeSwitchEnableValue = AutoThemeSwitchService.DefaultAutoThemeSwitchEnableValue;
+            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList[AutoThemeSwitchService.AutoThemeSwitchTypeList.FindIndex(item => string.Equals(item, AutoThemeSwitchService.DefaultAutoThemeSwitchTypeValue))];
             IsAutoSwitchSystemThemeValue = AutoThemeSwitchService.DefaultAutoSwitchSystemThemeValue;
             IsAutoSwitchAppThemeValue = AutoThemeSwitchService.DefaultAutoSwitchAppThemeValue;
             IsShowColorInDarkThemeValue = AutoThemeSwitchService.DefaultIsShowColorInDarkThemeValue;
@@ -790,6 +823,8 @@ namespace PowerToolbox.Views.Pages
             SystemThemeDarkTime = AutoThemeSwitchService.DefaultSystemThemeDarkTime;
             AppThemeLightTime = AutoThemeSwitchService.DefaultAppThemeLightTime;
             AppThemeDarkTime = AutoThemeSwitchService.DefaultAppThemeDarkTime;
+            SunriseOffset = AutoThemeSwitchService.DefaultSunriseOffset;
+            SunsetOffset = AutoThemeSwitchService.DefaultSunsetOffset;
             IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnableValue && !await Task.Run(GetStartupTaskEnabledAsync);
             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ThemeSwitchRestoreResult));
         }
@@ -847,22 +882,66 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 是否启用自动切换主题
         /// </summary>
-        private void OnAutoThemeSwitchEnableToggled(object sender, RoutedEventArgs args)
+        private async void OnAutoThemeSwitchEnableToggled(object sender, RoutedEventArgs args)
         {
             if (sender is ToggleSwitch toggleSwitch)
             {
                 IsAutoThemeSwitchEnableValue = toggleSwitch.IsOn;
+            }
+
+            if (Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]))
+            {
+                if (IsAutoThemeSwitchEnableValue)
+                {
+                    if (!DevicePositionService.IsInitialized)
+                    {
+                        await InitializeDeviceServiceAsync();
+                    }
+                }
+                else
+                {
+                    if (DevicePositionService.IsInitialized)
+                    {
+                        await UnInitializeDeviceServiceAsync();
+                        Latitude = NotAvailableString;
+                        Longitude = NotAvailableString;
+                        SunriseTime = NotAvailableString;
+                        SunsetTime = NotAvailableString;
+                    }
+                }
             }
         }
 
         /// <summary>
         /// 自动切换主题类型发生改变时触发的事件
         /// </summary>
-        private void OnAutoThemeSwitchTypeSelectClicked(object sender, RoutedEventArgs args)
+        private async void OnAutoThemeSwitchTypeSelectClicked(object sender, RoutedEventArgs args)
         {
             if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> autoThemeSwitchType)
             {
                 SelectedAutoThemeSwitchType = autoThemeSwitchType;
+            }
+
+            if (IsAutoThemeSwitchEnableValue)
+            {
+                if (Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]))
+                {
+                    if (!DevicePositionService.IsInitialized)
+                    {
+                        await InitializeDeviceServiceAsync();
+                    }
+                }
+                else
+                {
+                    if (DevicePositionService.IsInitialized)
+                    {
+                        await UnInitializeDeviceServiceAsync();
+                        Latitude = NotAvailableString;
+                        Longitude = NotAvailableString;
+                        SunriseTime = NotAvailableString;
+                        SunsetTime = NotAvailableString;
+                    }
+                }
             }
         }
 
@@ -985,11 +1064,36 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 定位
+        /// 获取设备位置
         /// </summary>
-        /// TODO：未完成
-        private void OnLocatePositionClicked(object sender, RoutedEventArgs args)
+        private async void OnLocatePositionClicked(object sender, RoutedEventArgs args)
         {
+            IsGettingPosition = true;
+            if (IsAutoThemeSwitchEnableValue && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]))
+            {
+                if (DevicePositionService.IsInitialized)
+                {
+                    if (DevicePositionService.IsLoaded)
+                    {
+                        SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
+                        TimeSpan sunRiseTime = new TimeSpan(sunTime.SunriseHour, sunTime.SunriseMinute, 0) + TimeSpan.FromMinutes(SunriseOffset);
+                        TimeSpan sunSetTime = new TimeSpan(sunTime.SunsetHour, sunTime.SunsetMinute, 0) + TimeSpan.FromMinutes(SunsetOffset);
+                        Latitude = Convert.ToString(DevicePositionService.Latitude);
+                        Longitude = Convert.ToString(DevicePositionService.Longitude);
+                        SunriseTime = sunRiseTime.ToString(@"hh\:mm");
+                        SunsetTime = sunSetTime.ToString(@"hh\:mm");
+                    }
+                    else
+                    {
+                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DevicePositionLoadFailed));
+                    }
+                }
+                else
+                {
+                    await InitializeDeviceServiceAsync();
+                }
+            }
+            IsGettingPosition = false;
         }
 
         /// <summary>
@@ -1001,7 +1105,7 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
-                    SunriseOffset = Math.Abs(Convert.ToInt32(args.NewValue));
+                    SunriseOffset = Convert.ToInt32(args.NewValue);
                 }
                 catch (Exception e)
                 {
@@ -1012,6 +1116,15 @@ namespace PowerToolbox.Views.Pages
             else
             {
                 SunriseOffset = 0;
+            }
+
+            if (IsAutoThemeSwitchEnableValue && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized && DevicePositionService.IsLoaded)
+            {
+                SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
+                TimeSpan sunRiseTime = new TimeSpan(sunTime.SunriseHour, sunTime.SunriseMinute, 0) + TimeSpan.FromMinutes(SunriseOffset);
+                Latitude = Convert.ToString(DevicePositionService.Latitude);
+                Longitude = Convert.ToString(DevicePositionService.Longitude);
+                SunriseTime = sunRiseTime.ToString(@"hh\:mm");
             }
         }
 
@@ -1024,7 +1137,7 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
-                    SunsetOffset = Math.Abs(Convert.ToInt32(args.NewValue));
+                    SunsetOffset = Convert.ToInt32(args.NewValue);
                 }
                 catch (Exception e)
                 {
@@ -1035,6 +1148,15 @@ namespace PowerToolbox.Views.Pages
             else
             {
                 SunsetOffset = 0;
+            }
+
+            if (IsAutoThemeSwitchEnableValue && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized && DevicePositionService.IsLoaded)
+            {
+                SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
+                TimeSpan sunSetTime = new TimeSpan(sunTime.SunsetHour, sunTime.SunsetMinute, 0) + TimeSpan.FromMinutes(SunsetOffset);
+                Latitude = Convert.ToString(DevicePositionService.Latitude);
+                Longitude = Convert.ToString(DevicePositionService.Longitude);
+                SunsetTime = sunSetTime.ToString(@"hh\:mm");
             }
         }
 
@@ -1130,6 +1252,141 @@ namespace PowerToolbox.Views.Pages
             bool showThemeColorInStartAndTaskbar = await Task.Run(GetShowThemeColorInStartAndTaskbar);
             IsShowThemeColorInStartAndTaskbar = showThemeColorInStartAndTaskbar;
             IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnableValue && !await Task.Run(GetStartupTaskEnabledAsync);
+
+            if (IsAutoThemeSwitchEnableValue && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && !DevicePositionService.IsInitialized)
+            {
+                await InitializeDeviceServiceAsync();
+            }
+        }
+
+        /// <summary>
+        /// 初始化设备位置服务
+        /// </summary>
+        private async Task InitializeDeviceServiceAsync()
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    if (!DevicePositionService.IsInitialized)
+                    {
+                        DevicePositionService.Initialize();
+                        DevicePositionService.StatusOrPositionChanged += OnStatusOrPositionChanged;
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(InitializeDeviceServiceAsync), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 卸载设备位置服务
+        /// </summary>
+        private async Task UnInitializeDeviceServiceAsync()
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    if (DevicePositionService.IsInitialized)
+                    {
+                        DevicePositionService.UnInitialize();
+                        DevicePositionService.StatusOrPositionChanged -= OnStatusOrPositionChanged;
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(UnInitializeDeviceServiceAsync), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 位置或状态发生变化时触发的事件
+        /// </summary>
+        private async void OnStatusOrPositionChanged()
+        {
+            switch (DevicePositionService.GeoPositionStatus)
+            {
+                case GeoPositionStatus.Ready:
+                    {
+                        SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
+                        TimeSpan sunRiseTime = new TimeSpan(sunTime.SunriseHour, sunTime.SunriseMinute, 0) + TimeSpan.FromMinutes(SunriseOffset);
+                        TimeSpan sunSetTime = new TimeSpan(sunTime.SunsetHour, sunTime.SunsetMinute, 0) + TimeSpan.FromMinutes(SunsetOffset);
+
+                        synchronizationContext.Post((_) =>
+                        {
+                            Latitude = Convert.ToString(DevicePositionService.Latitude);
+                            Longitude = Convert.ToString(DevicePositionService.Longitude);
+                            SunriseTime = sunRiseTime.ToString(@"hh\:mm");
+                            SunsetTime = sunSetTime.ToString(@"hh\:mm");
+                        }, null);
+                        break;
+                    }
+                case GeoPositionStatus.Initializing:
+                    {
+                        synchronizationContext.Post((_) =>
+                        {
+                            Latitude = NotAvailableString;
+                            Longitude = NotAvailableString;
+                            SunriseTime = NotAvailableString;
+                            SunsetTime = NotAvailableString;
+                        }, null);
+                        break;
+                    }
+                case GeoPositionStatus.NoData:
+                    {
+                        synchronizationContext.Post((_) =>
+                        {
+                            Latitude = NotAvailableString;
+                            Longitude = NotAvailableString;
+                            SunriseTime = NotAvailableString;
+                            SunsetTime = NotAvailableString;
+                        }, null);
+                        break;
+                    }
+                case GeoPositionStatus.Disabled:
+                    {
+                        synchronizationContext.Post((_) =>
+                        {
+                            Latitude = NotAvailableString;
+                            Longitude = NotAvailableString;
+                            SunriseTime = NotAvailableString;
+                            SunsetTime = NotAvailableString;
+                        }, null);
+                        break;
+                    }
+                default:
+                    {
+                        synchronizationContext.Post((_) =>
+                        {
+                            Latitude = NotAvailableString;
+                            Longitude = NotAvailableString;
+                            SunriseTime = NotAvailableString;
+                            SunsetTime = NotAvailableString;
+                        }, null);
+                        break;
+                    }
+            }
+
+            // 如果定位服务被禁用，直接卸载当前服务
+            if (DevicePositionService.Permission is GeoPositionPermission.Denied || DevicePositionService.GeoPositionStatus is GeoPositionStatus.Disabled)
+            {
+                try
+                {
+                    DevicePositionService.StatusOrPositionChanged -= OnStatusOrPositionChanged;
+                    synchronizationContext.Post(async (_) =>
+                    {
+                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DevicePositionInitializeFailed));
+                    }, null);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnStatusOrPositionChanged), 1, e);
+                }
+            }
         }
 
         /// <summary>
