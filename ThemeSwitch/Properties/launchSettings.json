@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "主题切换": {
-      "commandName": "Project",
-      "nativeDebugging": true
-    }
-  }
-}
