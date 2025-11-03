@@ -3,7 +3,6 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<AnalysisLevel>latest</AnalysisLevel>
 		<ApplicationIcon>Assets\ThemeSwitchService.ico</ApplicationIcon>
-		<ApplicationManifest>ThemeSwitchService.manifest</ApplicationManifest>
 		<AssemblyName>ThemeSwitchService</AssemblyName>
 		<CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
 		<DefaultLanguage>en-US</DefaultLanguage>

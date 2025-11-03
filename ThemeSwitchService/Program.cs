@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.ServiceProcess;
+using ThemeSwitchService.Helpers.Root;
+using ThemeSwitchService.Services.Root;
 
 namespace ThemeSwitchService
 {
@@ -11,6 +14,18 @@ namespace ThemeSwitchService
         [STAThread]
         public static void Main()
         {
+            if (!RuntimeHelper.IsMSIX)
+            {
+                try
+                {
+                    Process.Start("powertoolbox:");
+                }
+                catch (Exception)
+                { }
+                return;
+            }
+
+            LogService.Initialize();
             ServiceBase.Run(new ThemeSwitchRootService());
         }
     }

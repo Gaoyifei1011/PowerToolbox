@@ -1,6 +1,7 @@
 ﻿using System.Security.Principal;
+using ThemeSwitchService.WindowsAPI.PInvoke.Kernel32;
 
-namespace ThemeSwitch.Helpers.Root
+namespace ThemeSwitchService.Helpers.Root
 {
     /// <summary>
     /// 运行时辅助类

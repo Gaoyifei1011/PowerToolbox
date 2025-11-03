@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 using System.Timers;
-using ThemeSwitch.Services.Root;
 using ThemeSwitchService.Extensions.DataType.Class;
 using ThemeSwitchService.Extensions.DataType.Enums;
 using ThemeSwitchService.Helpers.Root;
 using ThemeSwitchService.Services.Controls.Settings;
 using ThemeSwitchService.Services.Position;
+using ThemeSwitchService.Services.Root;
 using ThemeSwitchService.WindowsAPI.PInvoke.User32;
 
 // 抑制 CA1806，CA1822 警告

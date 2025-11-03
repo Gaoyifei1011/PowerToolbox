@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Device.Location;
 using System.Diagnostics;
-using ThemeSwitch.Services.Root;
+using ThemeSwitchService.Services.Root;
 
 namespace ThemeSwitchService.Services.Position
 {

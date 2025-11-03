@@ -5,11 +5,12 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ThemeSwitchService.WindowsAPI.PInvoke.Shell32;
 
 // 抑制 CA1806 警告
 #pragma warning disable CA1806
 
-namespace ThemeSwitch.Services.Root
+namespace ThemeSwitchService.Services.Root
 {
     /// <summary>
     /// 日志记录
@@ -151,7 +152,7 @@ namespace ThemeSwitch.Services.Root
                     }
                     catch (Exception e)
                     {
-                        WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(LogService), nameof(OpenLogFolder), 1, e);
+                        WriteLog(TraceEventType.Error, nameof(ThemeSwitchService), nameof(LogService), nameof(OpenLogFolder), 1, e);
                     }
                 });
             }

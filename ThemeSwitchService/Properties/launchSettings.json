@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PowerToolbox": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

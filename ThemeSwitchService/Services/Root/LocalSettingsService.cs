@@ -8,14 +8,14 @@ namespace ThemeSwitchService.Services.Root
     /// </summary>
     public static class LocalSettingsService
     {
-        private static readonly string settingsKey = @"Software\PowerToolbox\Settings";
+        private static readonly string settingsKey = @"S-1-5-21-2219739030-47996506-626211670-1001\Software\PowerToolbox\Settings";
 
         /// <summary>
         /// 读取设置选项存储信息
         /// </summary>
         public static T ReadSetting<T>(string key)
         {
-            return RegistryHelper.ReadRegistryKey<T>(Registry.CurrentUser, settingsKey, key);
+            return RegistryHelper.ReadRegistryKey<T>(Registry.Users, settingsKey, key);
         }
     }
 }
