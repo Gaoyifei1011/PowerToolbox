@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using ThemeSwitch.Services.Root;
 using ThemeSwitchService.Extensions.DataType.Constant;
 
 namespace ThemeSwitchService.Services.Controls.Settings

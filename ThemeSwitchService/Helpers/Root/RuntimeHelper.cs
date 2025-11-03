@@ -1,5 +1,4 @@
 ﻿using System.Security.Principal;
-using ThemeSwitch.WindowsAPI.PInvoke.Kernel32;
 
 namespace ThemeSwitch.Helpers.Root
 {

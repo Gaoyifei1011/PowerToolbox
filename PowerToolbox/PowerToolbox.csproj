@@ -283,9 +283,6 @@
 		<EmbeddedResource Include="Strings\ThemeSwitch.en-us.restext" />
 		<EmbeddedResource Include="Strings\ThemeSwitch.restext" />
 		<EmbeddedResource Include="Strings\ThemeSwitch.zh-hans.restext" />
-		<EmbeddedResource Include="Strings\ThemeSwitchTray.en-us.restext" />
-		<EmbeddedResource Include="Strings\ThemeSwitchTray.restext" />
-		<EmbeddedResource Include="Strings\ThemeSwitchTray.zh-hans.restext" />
 		<EmbeddedResource Include="Strings\UpdateManager.en-us.restext" />
 		<EmbeddedResource Include="Strings\UpdateManager.restext" />
 		<EmbeddedResource Include="Strings\UpdateManager.zh-hans.restext" />

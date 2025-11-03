@@ -5,7 +5,6 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using ThemeSwitch.WindowsAPI.PInvoke.Shell32;
 
 // 抑制 CA1806 警告
 #pragma warning disable CA1806

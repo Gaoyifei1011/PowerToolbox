@@ -76,7 +76,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="1.8.251003001" />
     <ProjectReference Include="..\PowerToolbox\PowerToolbox.csproj" />
     <ProjectReference Include="..\PowerToolboxShellExtension\PowerToolboxShellExtension.csproj" />
-    <ProjectReference Include="..\ThemeSwitch\ThemeSwitch.csproj" />
+    <ProjectReference Include="..\ThemeSwitchService\ThemeSwitchService.csproj" />
   </ItemGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
   <!--将生成的文件放到应用包的根目录-->
