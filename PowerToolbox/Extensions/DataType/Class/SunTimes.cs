@@ -9,5 +9,7 @@
         public string Text;
         public bool HasSunrise;
         public bool HasSunset;
+        public bool IsPolarDay;
+        public bool IsPolarNight;
     }
 }

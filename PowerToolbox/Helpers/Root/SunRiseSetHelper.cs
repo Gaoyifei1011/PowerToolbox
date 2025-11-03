@@ -13,9 +13,10 @@ namespace PowerToolbox.Helpers.Root
         /// </summary>
         public static SunTimes CalculateSunriseSunset(double latitude, double longitude, int year, int month, int day)
         {
-            double? riseUT = CalcTime(latitude, longitude, year, month, day, true);
-            double? setUT = CalcTime(latitude, longitude, year, month, day, false);
-
+            bool isPolarNight;
+            bool isPolarDay;
+            (_, _, double? riseUT) = CalcTime(latitude, longitude, year, month, day, true);
+            (isPolarDay, isPolarNight, double? setUT) = CalcTime(latitude, longitude, year, month, day, false);
             (int Hour, int Minute)? riseLocal = ToLocal(riseUT, year, month, day);
             (int Hour, int Minute)? setLocal = ToLocal(setUT, year, month, day);
 
@@ -27,6 +28,8 @@ namespace PowerToolbox.Helpers.Root
                 SunriseMinute = riseLocal?.Minute ?? -1,
                 SunsetHour = setLocal?.Hour ?? -1,
                 SunsetMinute = setLocal?.Minute ?? -1,
+                IsPolarDay = isPolarDay,
+                IsPolarNight = isPolarNight
             };
 
             return sunTimes;
@@ -35,7 +38,7 @@ namespace PowerToolbox.Helpers.Root
         /// <summary>
         /// 根据经纬度年月日计算日出日落时间
         /// </summary>
-        private static double? CalcTime(double latitude, double longitude, int year, int month, int day, bool isSunrise)
+        private static (bool, bool, double?) CalcTime(double latitude, double longitude, int year, int month, int day, bool isSunrise)
         {
             double zenith = 90.833;
             int n1 = (int)Math.Floor(275.0 * month / 9.0);
@@ -63,10 +66,15 @@ namespace PowerToolbox.Helpers.Root
             double cosH = (Math.Cos(Deg2Rad(zenith)) - (sinDec * Math.Sin(Deg2Rad(latitude))))
                         / (cosDec * Math.Cos(Deg2Rad(latitude)));
 
-            if (cosH > 1.0 || cosH < -1.0)
+            if (cosH > 1.0)
             {
-                //在此日期，该地点的太阳从不升起也从不落下
-                return null;
+                // 在这一天太阳不会升起（极夜）
+                return (false, true, null);
+            }
+            if (cosH < -1.0)
+            {
+                // 在这一天太阳永不落下（极昼）
+                return (true, false, null);
             }
 
             double h = isSunrise ? 360.0 - Rad2Deg(Math.Acos(cosH)) : Rad2Deg(Math.Acos(cosH));
@@ -76,7 +84,7 @@ namespace PowerToolbox.Helpers.Root
             double uT = t1 - lngHour;
             uT = NormalizeHours(uT);
 
-            return uT;
+            return (false, false, uT);
         }
 
         private static double NormalizeDegrees(double angle)

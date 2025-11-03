@@ -44,6 +44,8 @@ namespace PowerToolbox.Views.Pages
         private readonly string DarkString = ResourceService.ThemeSwitchResource.GetString("Dark");
         private readonly string LightString = ResourceService.ThemeSwitchResource.GetString("Light");
         private readonly string NotAvailableString = ResourceService.ThemeSwitchResource.GetString("NotAvailable");
+        private readonly string PolarDayString = ResourceService.ThemeSwitchResource.GetString("PolarDay");
+        private readonly string PolarNightString = ResourceService.ThemeSwitchResource.GetString("PolarNight");
         private readonly Guid CLSID_DesktopWallpaper = new("C2CF3110-460E-4fC1-B9D0-8A1C0C9CC4BD");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private bool isInitialized;
@@ -381,6 +383,38 @@ namespace PowerToolbox.Views.Pages
                 {
                     _sunsetTime = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SunsetTime)));
+                }
+            }
+        }
+
+        private bool _isPolarNightRegion;
+
+        public bool IsPolarNightRegion
+        {
+            get { return _isPolarNightRegion; }
+
+            set
+            {
+                if (!Equals(_isPolarNightRegion, value))
+                {
+                    _isPolarNightRegion = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsPolarNightRegion)));
+                }
+            }
+        }
+
+        private bool _isPolarDayRegion;
+
+        public bool IsPolarDayRegion
+        {
+            get { return _isPolarDayRegion; }
+
+            set
+            {
+                if (!Equals(_isPolarDayRegion, value))
+                {
+                    _isPolarDayRegion = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsPolarDayRegion)));
                 }
             }
         }
@@ -1075,13 +1109,76 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (DevicePositionService.IsLoaded)
                     {
-                        SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
-                        TimeSpan sunRiseTime = new TimeSpan(sunTime.SunriseHour, sunTime.SunriseMinute, 0) + TimeSpan.FromMinutes(SunriseOffset);
-                        TimeSpan sunSetTime = new TimeSpan(sunTime.SunsetHour, sunTime.SunsetMinute, 0) + TimeSpan.FromMinutes(SunsetOffset);
                         Latitude = Convert.ToString(DevicePositionService.Latitude);
                         Longitude = Convert.ToString(DevicePositionService.Longitude);
-                        SunriseTime = sunRiseTime.ToString(@"hh\:mm");
-                        SunsetTime = sunSetTime.ToString(@"hh\:mm");
+                        SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
+
+                        // 正常地区时间
+                        if (!sunTime.IsPolarDay && !sunTime.IsPolarNight)
+                        {
+                            IsPolarDayRegion = false;
+                            IsPolarNightRegion = false;
+                            TimeSpan standardSunriseTime = new(sunTime.SunriseHour, sunTime.SunriseMinute, 0);
+                            TimeSpan standardSunsetTime = new(sunTime.SunsetHour, sunTime.SunsetMinute, 0);
+                            TimeSpan calculatedSunriseTime = standardSunriseTime + TimeSpan.FromMinutes(SunriseOffset);
+                            TimeSpan calculatedSunsetTime = standardSunsetTime + TimeSpan.FromMinutes(SunsetOffset);
+                            TimeSpan sunriseTime = new(calculatedSunriseTime.Hours, calculatedSunriseTime.Minutes, 0);
+                            TimeSpan sunsetTime = new(calculatedSunsetTime.Hours, calculatedSunsetTime.Minutes, 0);
+
+                            if (sunriseTime < sunsetTime)
+                            {
+                                SunriseTime = sunriseTime.ToString(@"hh\:mm");
+                                SunsetTime = sunsetTime.ToString(@"hh\:mm");
+                            }
+                            else
+                            {
+                                SunriseOffset = 0;
+                                SunsetOffset = 0;
+                                SunriseTime = standardSunriseTime.ToString(@"hh\:mm");
+                                SunsetTime = standardSunsetTime.ToString(@"hh\:mm");
+                            }
+                        }
+                        // 极地地区时间
+                        else
+                        {
+                            SunriseOffset = 0;
+                            SunsetOffset = 0;
+
+                            // 北半球极地时间
+                            if (DevicePositionService.Latitude > 0)
+                            {
+                                // 北极极昼
+                                if (sunTime.IsPolarDay)
+                                {
+                                    IsPolarDayRegion = false;
+                                    IsPolarNightRegion = true;
+                                    SunsetTime = PolarDayString;
+                                }
+                                else
+                                {
+                                    IsPolarDayRegion = true;
+                                    IsPolarNightRegion = false;
+                                    SunriseTime = PolarNightString;
+                                }
+                            }
+                            // 南半球极地时间
+                            else
+                            {
+                                // 南极极昼
+                                if (sunTime.IsPolarDay)
+                                {
+                                    IsPolarDayRegion = false;
+                                    IsPolarNightRegion = true;
+                                    SunsetTime = PolarDayString;
+                                }
+                                else
+                                {
+                                    IsPolarDayRegion = true;
+                                    IsPolarNightRegion = false;
+                                    SunriseTime = PolarNightString;
+                                }
+                            }
+                        }
                     }
                     else
                     {
@@ -1101,30 +1198,89 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSunriseOffsetValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
+            int sunriseOffset = 0;
             if (args.NewValue is not double.NaN)
             {
                 try
                 {
-                    SunriseOffset = Convert.ToInt32(args.NewValue);
+                    sunriseOffset = Convert.ToInt32(args.NewValue);
                 }
                 catch (Exception e)
                 {
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSunriseOffsetValueChanged), 1, e);
-                    SunriseOffset = 0;
                 }
-            }
-            else
-            {
-                SunriseOffset = 0;
             }
 
             if (IsAutoThemeSwitchEnableValue && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized && DevicePositionService.IsLoaded)
             {
-                SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
-                TimeSpan sunRiseTime = new TimeSpan(sunTime.SunriseHour, sunTime.SunriseMinute, 0) + TimeSpan.FromMinutes(SunriseOffset);
                 Latitude = Convert.ToString(DevicePositionService.Latitude);
                 Longitude = Convert.ToString(DevicePositionService.Longitude);
-                SunriseTime = sunRiseTime.ToString(@"hh\:mm");
+                SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
+
+                // 正常地区时间
+                if (!sunTime.IsPolarDay && !sunTime.IsPolarNight)
+                {
+                    IsPolarDayRegion = false;
+                    IsPolarNightRegion = false;
+                    TimeSpan standardSunriseTime = new(sunTime.SunriseHour, sunTime.SunriseMinute, 0);
+                    TimeSpan standardSunsetTime = new(sunTime.SunsetHour, sunTime.SunsetMinute, 0);
+                    TimeSpan calculatedSunriseTime = standardSunriseTime + TimeSpan.FromMinutes(sunriseOffset);
+                    TimeSpan calculatedSunsetTime = standardSunsetTime + TimeSpan.FromMinutes(SunsetOffset);
+                    TimeSpan sunriseTime = new(calculatedSunriseTime.Hours, calculatedSunriseTime.Minutes, 0);
+                    TimeSpan sunsetTime = new(calculatedSunsetTime.Hours, calculatedSunsetTime.Minutes, 0);
+
+                    if (sunriseTime < sunsetTime)
+                    {
+                        SunriseOffset = sunriseOffset;
+                        SunriseTime = sunriseTime.ToString(@"hh\:mm");
+                    }
+                    else
+                    {
+                        SunriseOffset = 0;
+                        SunriseTime = standardSunriseTime.ToString(@"hh\:mm");
+                    }
+                }
+                // 极地地区时间
+                else
+                {
+                    SunriseOffset = 0;
+                    SunsetOffset = 0;
+
+                    // 北半球极地时间
+                    if (DevicePositionService.Latitude > 0)
+                    {
+                        // 北极极昼
+                        if (sunTime.IsPolarDay)
+                        {
+                            IsPolarDayRegion = false;
+                            IsPolarNightRegion = true;
+                            SunsetTime = PolarDayString;
+                        }
+                        else
+                        {
+                            IsPolarDayRegion = true;
+                            IsPolarNightRegion = false;
+                            SunriseTime = PolarNightString;
+                        }
+                    }
+                    // 南半球极地时间
+                    else
+                    {
+                        // 南极极昼
+                        if (sunTime.IsPolarDay)
+                        {
+                            IsPolarDayRegion = false;
+                            IsPolarNightRegion = true;
+                            SunsetTime = PolarDayString;
+                        }
+                        else
+                        {
+                            IsPolarDayRegion = true;
+                            IsPolarNightRegion = false;
+                            SunriseTime = PolarNightString;
+                        }
+                    }
+                }
             }
         }
 
@@ -1133,30 +1289,94 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSunsetOffsetValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
+            int sunsetOffset = 0;
             if (args.NewValue is not double.NaN)
             {
                 try
                 {
-                    SunsetOffset = Convert.ToInt32(args.NewValue);
+                    sunsetOffset = Convert.ToInt32(args.NewValue);
                 }
                 catch (Exception e)
                 {
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSunsetOffsetValueChanged), 1, e);
-                    SunsetOffset = 0;
+                    sunsetOffset = 0;
                 }
             }
             else
             {
-                SunsetOffset = 0;
+                sunsetOffset = 0;
             }
 
             if (IsAutoThemeSwitchEnableValue && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized && DevicePositionService.IsLoaded)
             {
-                SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
-                TimeSpan sunSetTime = new TimeSpan(sunTime.SunsetHour, sunTime.SunsetMinute, 0) + TimeSpan.FromMinutes(SunsetOffset);
                 Latitude = Convert.ToString(DevicePositionService.Latitude);
                 Longitude = Convert.ToString(DevicePositionService.Longitude);
-                SunsetTime = sunSetTime.ToString(@"hh\:mm");
+                SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
+
+                // 正常地区时间
+                if (!sunTime.IsPolarDay && !sunTime.IsPolarNight)
+                {
+                    IsPolarDayRegion = false;
+                    IsPolarNightRegion = false;
+                    TimeSpan standardSunriseTime = new(sunTime.SunriseHour, sunTime.SunriseMinute, 0);
+                    TimeSpan standardSunsetTime = new(sunTime.SunsetHour, sunTime.SunsetMinute, 0);
+                    TimeSpan calculatedSunriseTime = standardSunriseTime + TimeSpan.FromMinutes(SunriseOffset);
+                    TimeSpan calculatedSunsetTime = standardSunsetTime + TimeSpan.FromMinutes(sunsetOffset);
+                    TimeSpan sunriseTime = new(calculatedSunriseTime.Hours, calculatedSunriseTime.Minutes, 0);
+                    TimeSpan sunsetTime = new(calculatedSunsetTime.Hours, calculatedSunsetTime.Minutes, 0);
+
+                    if (sunriseTime < sunsetTime)
+                    {
+                        SunsetOffset = sunsetOffset;
+                        SunsetTime = sunsetTime.ToString(@"hh\:mm");
+                    }
+                    else
+                    {
+                        SunsetOffset = 0;
+                        SunsetTime = standardSunsetTime.ToString(@"hh\:mm");
+                    }
+                }
+                // 极地地区时间
+                else
+                {
+                    SunriseOffset = 0;
+                    SunsetOffset = 0;
+
+                    // 北半球极地时间
+                    if (DevicePositionService.Latitude > 0)
+                    {
+                        // 北极极昼
+                        if (sunTime.IsPolarDay)
+                        {
+                            IsPolarDayRegion = false;
+                            IsPolarNightRegion = true;
+                            SunsetTime = PolarDayString;
+                        }
+                        else
+                        {
+                            IsPolarDayRegion = true;
+                            IsPolarNightRegion = false;
+                            SunriseTime = PolarNightString;
+                        }
+                    }
+                    // 南半球极地时间
+                    else
+                    {
+                        // 南极极昼
+                        if (sunTime.IsPolarDay)
+                        {
+                            IsPolarDayRegion = false;
+                            IsPolarNightRegion = true;
+                            SunsetTime = PolarDayString;
+                        }
+                        else
+                        {
+                            IsPolarDayRegion = true;
+                            IsPolarNightRegion = false;
+                            SunriseTime = PolarNightString;
+                        }
+                    }
+                }
             }
         }
 
@@ -1312,16 +1532,78 @@ namespace PowerToolbox.Views.Pages
             {
                 case GeoPositionStatus.Ready:
                     {
-                        SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
-                        TimeSpan sunRiseTime = new TimeSpan(sunTime.SunriseHour, sunTime.SunriseMinute, 0) + TimeSpan.FromMinutes(SunriseOffset);
-                        TimeSpan sunSetTime = new TimeSpan(sunTime.SunsetHour, sunTime.SunsetMinute, 0) + TimeSpan.FromMinutes(SunsetOffset);
-
                         synchronizationContext.Post((_) =>
                         {
                             Latitude = Convert.ToString(DevicePositionService.Latitude);
                             Longitude = Convert.ToString(DevicePositionService.Longitude);
-                            SunriseTime = sunRiseTime.ToString(@"hh\:mm");
-                            SunsetTime = sunSetTime.ToString(@"hh\:mm");
+                            SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
+
+                            // 正常地区时间
+                            if (!sunTime.IsPolarDay && !sunTime.IsPolarNight)
+                            {
+                                IsPolarDayRegion = false;
+                                IsPolarNightRegion = false;
+                                TimeSpan standardSunriseTime = new(sunTime.SunriseHour, sunTime.SunriseMinute, 0);
+                                TimeSpan standardSunsetTime = new(sunTime.SunsetHour, sunTime.SunsetMinute, 0);
+                                TimeSpan calculatedSunriseTime = standardSunriseTime + TimeSpan.FromMinutes(SunriseOffset);
+                                TimeSpan calculatedSunsetTime = standardSunsetTime + TimeSpan.FromMinutes(SunsetOffset);
+                                TimeSpan sunriseTime = new(calculatedSunriseTime.Hours, calculatedSunriseTime.Minutes, 0);
+                                TimeSpan sunsetTime = new(calculatedSunsetTime.Hours, calculatedSunsetTime.Minutes, 0);
+
+                                if (sunriseTime < sunsetTime)
+                                {
+                                    SunriseTime = sunriseTime.ToString(@"hh\:mm");
+                                    SunsetTime = sunsetTime.ToString(@"hh\:mm");
+                                }
+                                else
+                                {
+                                    SunriseOffset = 0;
+                                    SunsetOffset = 0;
+                                    SunriseTime = standardSunriseTime.ToString(@"hh\:mm");
+                                    SunsetTime = standardSunsetTime.ToString(@"hh\:mm");
+                                }
+                            }
+                            // 极地地区时间
+                            else
+                            {
+                                SunriseOffset = 0;
+                                SunsetOffset = 0;
+
+                                // 北半球极地时间
+                                if (DevicePositionService.Latitude > 0)
+                                {
+                                    // 北极极昼
+                                    if (sunTime.IsPolarDay)
+                                    {
+                                        IsPolarDayRegion = false;
+                                        IsPolarNightRegion = true;
+                                        SunsetTime = PolarDayString;
+                                    }
+                                    else
+                                    {
+                                        IsPolarDayRegion = true;
+                                        IsPolarNightRegion = false;
+                                        SunriseTime = PolarNightString;
+                                    }
+                                }
+                                // 南半球极地时间
+                                else
+                                {
+                                    // 南极极昼
+                                    if (sunTime.IsPolarDay)
+                                    {
+                                        IsPolarDayRegion = false;
+                                        IsPolarNightRegion = true;
+                                        SunsetTime = PolarDayString;
+                                    }
+                                    else
+                                    {
+                                        IsPolarDayRegion = true;
+                                        IsPolarNightRegion = false;
+                                        SunriseTime = PolarNightString;
+                                    }
+                                }
+                            }
                         }, null);
                         break;
                     }
@@ -1452,6 +1734,11 @@ namespace PowerToolbox.Views.Pages
         private Visibility GetAutoThemeSwitchTypeState(string selectedAutoThemeSwitchType, string comparedAutoThemeSwitchType)
         {
             return string.Equals(selectedAutoThemeSwitchType, comparedAutoThemeSwitchType) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private bool GetIsNotPolarRegion(bool isPolarDayRegion, bool isPolarNightRegion)
+        {
+            return !(isPolarDayRegion || isPolarNightRegion);
         }
     }
 }
