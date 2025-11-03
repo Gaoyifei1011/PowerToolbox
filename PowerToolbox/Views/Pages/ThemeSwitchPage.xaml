@@ -112,14 +112,14 @@
                     </StackPanel>
                 </Grid>
 
-                <!--  未自动设置开机启动提示  -->
+                <!--  未启用主题切换服务提示  -->
                 <InfoBar
                     Grid.Row="1"
                     Height="50"
                     Margin="30,0,30,3"
                     CloseButtonClick="{x:Bind OnCloseInfoBarClicked}"
                     IsOpen="True"
-                    Message="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('StartupTaskNotEnabled')}"
+                    Message="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ThemeSwitchServiceNotEnabled')}"
                     Severity="Warning"
                     Style="{StaticResource InfoBarStyle}"
                     Visibility="{x:Bind GetInfoBarState(IsManualCloseInfoBar, IsThemeSwitchNotificationEnabled), Mode=OneWay}">
@@ -127,8 +127,8 @@
                     <InfoBar.ActionButton>
                         <Button
                             HorizontalAlignment="Right"
-                            Click="{x:Bind OnEnableStartupTaskClicked}"
-                            Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('EnableStartupTask')}" />
+                            Click="{x:Bind OnEnableThemeSwitchServiceClicked}"
+                            Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('EnableThemeSwitchService')}" />
                     </InfoBar.ActionButton>
                 </InfoBar>
 

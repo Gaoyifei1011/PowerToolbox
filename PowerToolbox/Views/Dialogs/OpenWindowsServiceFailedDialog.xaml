@@ -1,12 +1,12 @@
 ﻿<ContentDialog
-    x:Class="PowerToolbox.Views.Dialogs.OpenStartupTaskFailedDialog"
+    x:Class="PowerToolbox.Views.Dialogs.OpenWindowsServiceFailedDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
     xmlns:window="using:PowerToolbox.Views.Windows"
-    Title="{x:Bind rootservice:ResourceService.DialogResource.GetString('OpenStartupTaskFailed')}"
+    Title="{x:Bind rootservice:ResourceService.DialogResource.GetString('OpenWindowsServiceFailed')}"
     CloseButtonText="{x:Bind rootservice:ResourceService.DialogResource.GetString('Cancel')}"
     DefaultButton="Primary"
     FlowDirection="{x:Bind ((FrameworkElement)window:MainWindow.Current.Content).FlowDirection, Mode=OneWay}"
@@ -23,13 +23,13 @@
     <StackPanel>
         <TextBlock
             Margin="0,0,0,5"
-            Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('OpenStartupTaskFailedContent1')}"
+            Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('OpenWindowsServiceFailedContent1')}"
             TextAlignment="Justify"
             TextWrapping="Wrap" />
 
         <TextBlock
             Margin="0,0,0,5"
-            Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('OpenStartupTaskFailedContent2')}"
+            Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('OpenWindowsServiceFailedContent2')}"
             TextAlignment="Justify"
             TextWrapping="Wrap" />
     </StackPanel>

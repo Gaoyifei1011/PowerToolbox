@@ -23,10 +23,10 @@ using System.Device.Location;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.UI;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
@@ -581,24 +581,33 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 启用开机自启任务
+        /// 启用主题切换服务
         /// </summary>
-        private async void OnEnableStartupTaskClicked(object sender, RoutedEventArgs args)
+        private async void OnEnableThemeSwitchServiceClicked(object sender, RoutedEventArgs args)
         {
-            bool isStartupTaskEnabled = await Task.Run(async () =>
+            bool isThemeSwitchServiceEnabled = await Task.Run(async () =>
             {
-                StartupTask startupTask = await StartupTask.GetAsync("ThemeSwitch");
-                StartupTaskState startupTaskState = await startupTask.RequestEnableAsync();
-                return startupTaskState is StartupTaskState.Enabled || startupTaskState is StartupTaskState.Disabled;
+                try
+                {
+                    ServiceController serviceController = new("ThemeSwitchService");
+                    bool isEnabled = serviceController.Status is ServiceControllerStatus.Running;
+                    serviceController.Dispose();
+                    return isEnabled;
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnEnableThemeSwitchServiceClicked), 1, e);
+                    return false;
+                }
             });
 
             if (AutoThemeSwitchService.AutoThemeSwitchEnableValue)
             {
-                IsThemeSwitchNotificationEnabled = !isStartupTaskEnabled;
+                IsThemeSwitchNotificationEnabled = !isThemeSwitchServiceEnabled;
 
                 if (IsThemeSwitchNotificationEnabled)
                 {
-                    await MainWindow.Current.ShowDialogAsync(new OpenStartupTaskFailedDialog());
+                    await MainWindow.Current.ShowDialogAsync(new OpenWindowsServiceFailedDialog());
                 }
             }
             else
@@ -732,76 +741,21 @@ namespace PowerToolbox.Views.Pages
                 {
                     try
                     {
-                        bool isExisted = false;
-                        Process[] processArray = Process.GetProcessesByName("ThemeSwitch");
-
-                        foreach (Process process in processArray)
+                        ServiceController serviceController = new("ThemeSwitchService");
+                        if (serviceController.Status is not ServiceControllerStatus.Running)
                         {
-                            if (process.Id is not 0 && !process.MainWindowHandle.Equals(IntPtr.Zero))
-                            {
-                                isExisted = true;
-                                string message = "Auto switch theme settings changed";
-
-                                COPYDATASTRUCT copyDataStruct = new()
-                                {
-                                    dwData = IntPtr.Zero,
-                                    cbData = Encoding.Unicode.GetBytes(message).Length + 1,
-                                    lpData = message,
-                                };
-
-                                IntPtr copyDataStructPtr = Marshal.AllocHGlobal(Marshal.SizeOf<COPYDATASTRUCT>());
-                                Marshal.StructureToPtr(copyDataStruct, copyDataStructPtr, false);
-                                User32Library.SendMessage(process.MainWindowHandle, WindowMessage.WM_COPYDATA, UIntPtr.Zero, copyDataStructPtr);
-                                Marshal.FreeHGlobal(copyDataStructPtr);
-                                break;
-                            }
+                            serviceController.Start();
                         }
-
-                        if (!isExisted)
-                        {
-                            ProcessStartInfo startInfo = new()
-                            {
-                                UseShellExecute = true,
-                                WorkingDirectory = Environment.CurrentDirectory,
-                                FileName = Path.Combine(Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath), "ThemeSwitch.exe"),
-                                Verb = "open"
-                            };
-                            Process.Start(startInfo);
-                        }
+                        serviceController.Dispose();
                     }
                     catch (Exception e)
                     {
                         LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSaveClicked), 1, e);
                     }
                 }
-                else
-                {
-                    Process[] processArray = Process.GetProcessesByName("ThemeSwitch");
-
-                    foreach (Process process in processArray)
-                    {
-                        if (process.Id is not 0 && !process.MainWindowHandle.Equals(IntPtr.Zero))
-                        {
-                            string message = "Auto switch theme settings changed";
-
-                            COPYDATASTRUCT copyDataStruct = new()
-                            {
-                                dwData = IntPtr.Zero,
-                                cbData = Encoding.Unicode.GetBytes(message).Length + 1,
-                                lpData = message,
-                            };
-
-                            IntPtr copyDataStructPtr = Marshal.AllocHGlobal(Marshal.SizeOf<COPYDATASTRUCT>());
-                            Marshal.StructureToPtr(copyDataStruct, copyDataStructPtr, false);
-                            User32Library.SendMessage(process.MainWindowHandle, WindowMessage.WM_COPYDATA, UIntPtr.Zero, copyDataStructPtr);
-                            Marshal.FreeHGlobal(copyDataStructPtr);
-                            break;
-                        }
-                    }
-                }
             });
 
-            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnableValue && !await Task.Run(GetStartupTaskEnabledAsync);
+            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnableValue && !await Task.Run(GetThemeSwitchServiceEnabledAsync);
             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ThemeSwitchSaveResult));
         }
 
@@ -859,7 +813,7 @@ namespace PowerToolbox.Views.Pages
             AppThemeDarkTime = AutoThemeSwitchService.DefaultAppThemeDarkTime;
             SunriseOffset = AutoThemeSwitchService.DefaultSunriseOffset;
             SunsetOffset = AutoThemeSwitchService.DefaultSunsetOffset;
-            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnableValue && !await Task.Run(GetStartupTaskEnabledAsync);
+            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnableValue && !await Task.Run(GetThemeSwitchServiceEnabledAsync);
             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ThemeSwitchRestoreResult));
         }
 
@@ -870,42 +824,12 @@ namespace PowerToolbox.Views.Pages
         {
             try
             {
-                bool isExisted = false;
-                Process[] processArray = Process.GetProcessesByName("ThemeSwitch");
-
-                foreach (Process process in processArray)
+                ServiceController serviceController = new("ThemeSwitchService");
+                if (serviceController.Status is not ServiceControllerStatus.Running)
                 {
-                    if (process.Id is not 0 && !process.MainWindowHandle.Equals(IntPtr.Zero))
-                    {
-                        isExisted = true;
-                        string message = "Auto switch theme settings changed";
-
-                        COPYDATASTRUCT copyDataStruct = new()
-                        {
-                            dwData = IntPtr.Zero,
-                            cbData = Encoding.Unicode.GetBytes(message).Length + 1,
-                            lpData = message,
-                        };
-
-                        IntPtr copyDataStructPtr = Marshal.AllocHGlobal(Marshal.SizeOf<COPYDATASTRUCT>());
-                        Marshal.StructureToPtr(copyDataStruct, copyDataStructPtr, false);
-                        User32Library.SendMessage(process.MainWindowHandle, WindowMessage.WM_COPYDATA, UIntPtr.Zero, copyDataStructPtr);
-                        Marshal.FreeHGlobal(copyDataStructPtr);
-                        break;
-                    }
+                    serviceController.Start();
                 }
-
-                if (!isExisted)
-                {
-                    ProcessStartInfo startInfo = new()
-                    {
-                        UseShellExecute = true,
-                        WorkingDirectory = Environment.CurrentDirectory,
-                        FileName = Path.Combine(Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath), "ThemeSwitch.exe"),
-                        Verb = "open",
-                    };
-                    Process.Start(startInfo);
-                }
+                serviceController.Dispose();
             }
             catch (Exception e)
             {
@@ -1471,7 +1395,7 @@ namespace PowerToolbox.Views.Pages
             IsShowThemeColorInStartAndTaskbarEnabled = Equals(SelectedSystemThemeStyle, SystemThemeStyleList[1]);
             bool showThemeColorInStartAndTaskbar = await Task.Run(GetShowThemeColorInStartAndTaskbar);
             IsShowThemeColorInStartAndTaskbar = showThemeColorInStartAndTaskbar;
-            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnableValue && !await Task.Run(GetStartupTaskEnabledAsync);
+            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnableValue && !await Task.Run(GetThemeSwitchServiceEnabledAsync);
 
             if (IsAutoThemeSwitchEnableValue && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && !DevicePositionService.IsInitialized)
             {
@@ -1706,10 +1630,20 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取启动任务状态
         /// </summary>
-        private async Task<bool> GetStartupTaskEnabledAsync()
+        private async Task<bool> GetThemeSwitchServiceEnabledAsync()
         {
-            StartupTask startupTask = await StartupTask.GetAsync("ThemeSwitch");
-            return startupTask is not null ? startupTask.State is StartupTaskState.Enabled || startupTask.State is StartupTaskState.EnabledByPolicy : await Task.FromResult(true);
+            try
+            {
+                ServiceController serviceController = new("ThemeSwitchService");
+                bool isEnabled = serviceController.Status is ServiceControllerStatus.Running;
+                serviceController.Dispose();
+                return isEnabled;
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(GetThemeSwitchServiceEnabledAsync), 1, e);
+                return false;
+            }
         }
 
         /// <summary>

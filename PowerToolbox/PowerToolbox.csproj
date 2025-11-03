@@ -314,7 +314,7 @@
 		<None Remove="Views\Dialogs\FileUnlockFailedDialog.xaml" />
 		<None Remove="Views\Dialogs\LicenseDialog.xaml" />
 		<None Remove="Views\Dialogs\NeedElevatedDialog.xaml" />
-		<None Remove="Views\Dialogs\OpenStartupTaskFailedDialog.xaml" />
+		<None Remove="Views\Dialogs\OpenWindowsServiceFailedDialog.xaml" />
 		<None Remove="Views\Dialogs\OperationFailedDialog.xaml" />
 		<None Remove="Views\Dialogs\RebootDialog.xaml" />
 		<None Remove="Views\Dialogs\RestartAppsDialog.xaml" />
@@ -383,7 +383,7 @@
 		<Page Include="Views\Dialogs\FileUnlockFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Dialogs\LicenseDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Dialogs\NeedElevatedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-		<Page Include="Views\Dialogs\OpenStartupTaskFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Views\Dialogs\OpenWindowsServiceFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Dialogs\OperationFailedDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Dialogs\RebootDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Dialogs\RestartAppsDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
