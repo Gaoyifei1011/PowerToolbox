@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <ApplicationIcon>Assets\ThemeSwitch.ico</ApplicationIcon>
+    <ApplicationManifest>ThemeSwitch.manifest</ApplicationManifest>
+    <AssemblyName>ThemeSwitch</AssemblyName>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+		<DefaultLanguage>en-US</DefaultLanguage>
+    <Deterministic>true</Deterministic>
+    <DesktopCompatible>true</DesktopCompatible>
+    <_EnableWindowsDesktopGlobbing>true</_EnableWindowsDesktopGlobbing>
+    <_EnableWindowsDesktopNETFrameworkImplicitReference>true</_EnableWindowsDesktopNETFrameworkImplicitReference>
+    <ImportWindowsDesktopTargets>false</ImportWindowsDesktopTargets>
+    <ImportFrameworkWinFXTargets>false</ImportFrameworkWinFXTargets>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <IncludeSymbols>false</IncludeSymbols>
+    <LangVersion>latest</LangVersion>
+    <Optimize>false</Optimize>
+    <OutputType>WinExe</OutputType>
+    <Platforms>x86;x64;ARM64</Platforms>
+    <ResolveComReferenceSilent>true</ResolveComReferenceSilent>
+    <RootNamespace>ThemeSwitch</RootNamespace>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <TargetFramework>net481</TargetFramework>
+    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>
+    <TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+	</PropertyGroup>
+
+  <PropertyGroup Condition="'$(Platform)'=='x86'">
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='x64'">
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='ARM64'">
+    <RuntimeIdentifier>win-arm64</RuntimeIdentifier>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DebuggerSupport>true</DebuggerSupport>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebuggerSupport>false</DebuggerSupport>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Assets\ThemeSwitch.ico" CopyToOutputDirectory="Never" />
+
+		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
+
+		<Reference Include="Microsoft.VisualBasic" />
+		<Reference Include="System.Device" />
+	</ItemGroup>
+</Project>
