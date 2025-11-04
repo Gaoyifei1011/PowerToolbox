@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 namespace PowerToolbox.Views.Dialogs
 {
     /// <summary>
-    /// 打开 Windows 服务失败提示
+    /// 打开自启任务失败提示
     /// </summary>
-    public sealed partial class OpenWindowsServiceFailedDialog : ContentDialog
+    public sealed partial class OpenStartupTaskFailedDialog : ContentDialog
     {
-        public OpenWindowsServiceFailedDialog()
+        public OpenStartupTaskFailedDialog()
         {
             InitializeComponent();
         }
@@ -32,7 +32,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(OpenWindowsServiceFailedDialog), nameof(OnOpenTaskManagerClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(OpenStartupTaskFailedDialog), nameof(OnOpenTaskManagerClicked), 1, e);
                 }
             });
         }
@@ -51,7 +51,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(OpenWindowsServiceFailedDialog), nameof(OnOpenGroupPolicyClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(OpenStartupTaskFailedDialog), nameof(OnOpenGroupPolicyClicked), 1, e);
                 }
             });
         }

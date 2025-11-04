@@ -31,8 +31,9 @@
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
-  <Project Path="ThemeSwitchService/ThemeSwitchService.csproj" Id="ccb2a077-46ac-470a-b651-25871dd3e3a3">
+  <Project Path="ThemeSwitch/ThemeSwitch.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
   </Project>
 </Solution>
