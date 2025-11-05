@@ -109,8 +109,6 @@
 	</Extensions>
 	<Capabilities>
 		<Capability Name="internetClient" />
-		<rescap:Capability Name="localSystemServices" />
-		<rescap:Capability Name="packagedServices" />
 		<rescap:Capability Name="runFullTrust" />
 		<rescap:Capability Name="unvirtualizedResources" />
 	</Capabilities>
