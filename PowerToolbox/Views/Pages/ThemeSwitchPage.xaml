@@ -1208,10 +1208,18 @@
                                 TextWrapping="Wrap" />
 
                             <TextBlock
-                                Margin="44,0,16,10"
+                                Margin="44,0,16,5"
                                 FontSize="14"
                                 FontWeight="Normal"
                                 Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('TipContent2')}"
+                                TextAlignment="Justify"
+                                TextWrapping="Wrap" />
+
+                            <TextBlock
+                                Margin="44,0,16,10"
+                                FontSize="14"
+                                FontWeight="Normal"
+                                Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('TipContent3')}"
                                 TextAlignment="Justify"
                                 TextWrapping="Wrap" />
                         </StackPanel>
