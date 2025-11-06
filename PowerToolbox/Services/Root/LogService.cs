@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic.Logging;
+﻿using Microsoft.VisualBasic.FileIO;
+using Microsoft.VisualBasic.Logging;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Diagnostics;
@@ -170,7 +171,7 @@ namespace PowerToolbox.Services.Root
                     string[] logFiles = Directory.GetFiles(logDirectory.FullName);
                     foreach (string logFile in logFiles)
                     {
-                        File.Delete(logFile);
+                        FileSystem.DeleteFile(logFile, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
                     }
 
                     return true;

@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.VisualBasic.FileIO;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
@@ -178,7 +179,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             if (File.Exists(download.FilePath))
                             {
-                                File.Delete(download.FilePath);
+                                FileSystem.DeleteFile(download.FilePath, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
                             }
 
                             return ValueTuple.Create<bool, Exception>(true, null);

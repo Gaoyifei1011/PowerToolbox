@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.VisualBasic.FileIO;
+using Microsoft.Win32;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Services.Root;
@@ -156,7 +157,7 @@ namespace PowerToolbox.Services.Shell
             {
                 try
                 {
-                    File.Delete(currentMenuItem.DefaultIconPath);
+                    FileSystem.DeleteFile(currentMenuItem.DefaultIconPath, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
                 }
                 catch (Exception e)
                 {
@@ -168,7 +169,7 @@ namespace PowerToolbox.Services.Shell
             {
                 try
                 {
-                    File.Delete(currentMenuItem.LightThemeIconPath);
+                    FileSystem.DeleteFile(currentMenuItem.LightThemeIconPath, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
                 }
                 catch (Exception e)
                 {
@@ -180,7 +181,7 @@ namespace PowerToolbox.Services.Shell
             {
                 try
                 {
-                    File.Delete(currentMenuItem.DarkThemeIconPath);
+                    FileSystem.DeleteFile(currentMenuItem.DarkThemeIconPath, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
                 }
                 catch (Exception e)
                 {
@@ -197,7 +198,7 @@ namespace PowerToolbox.Services.Shell
 
                     if (Directory.Exists(defaultIconDirectoryPath))
                     {
-                        Directory.Delete(defaultIconDirectoryPath);
+                        FileSystem.DeleteDirectory(defaultIconDirectoryPath, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
                     }
                 }
             }
@@ -214,7 +215,7 @@ namespace PowerToolbox.Services.Shell
 
                     if (Directory.Exists(lightThemeIconDirectoryPath))
                     {
-                        Directory.Delete(lightThemeIconDirectoryPath);
+                        FileSystem.DeleteDirectory(lightThemeIconDirectoryPath, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
                     }
                 }
             }
@@ -231,7 +232,7 @@ namespace PowerToolbox.Services.Shell
 
                     if (Directory.Exists(darkThemeIconDirectoryPath))
                     {
-                        Directory.Delete(darkThemeIconDirectoryPath);
+                        FileSystem.DeleteDirectory(darkThemeIconDirectoryPath, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
                     }
                 }
             }

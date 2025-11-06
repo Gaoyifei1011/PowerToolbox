@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
@@ -2099,14 +2100,14 @@ namespace PowerToolbox.Views.Pages
 
                     if (File.Exists(logFileName))
                     {
-                        File.Delete(logFileName);
+                        FileSystem.DeleteFile(logFileName, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
                     }
 
                     if (Directory.Exists(databaseDirectory))
                     {
                         foreach (string databaseFile in Directory.GetFiles(databaseDirectory))
                         {
-                            File.Delete(databaseFile);
+                            FileSystem.DeleteFile(databaseFile, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
                         }
                     }
 

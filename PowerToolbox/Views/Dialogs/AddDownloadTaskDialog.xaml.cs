@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.VisualBasic.FileIO;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Services.Download;
 using PowerToolbox.Services.Root;
@@ -255,7 +256,7 @@ namespace PowerToolbox.Views.Dialogs
                     {
                         try
                         {
-                            File.Delete(filePath);
+                            FileSystem.DeleteFile(filePath, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
                             DownloadSchedulerService.CreateDownload(DownloadLinkText, filePath);
                             return true;
                         }
