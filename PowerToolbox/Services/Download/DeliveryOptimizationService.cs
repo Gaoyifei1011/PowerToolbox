@@ -23,7 +23,7 @@ namespace PowerToolbox.Services.Download
     {
         private static readonly string displayName = "PowerToolbox";
         private static readonly object deliveryOptimizationLock = new();
-        private static Guid CLSID_DeliveryOptimization = new("5B99FA76-721C-423C-ADAC-56D03C8A8007");
+        private static readonly Guid CLSID_DeliveryOptimization = new("5B99FA76-721C-423C-ADAC-56D03C8A8007");
 
         private static Dictionary<string, (string saveFilePath, IDODownload doDownload, DODownloadStatusCallback doDownloadStatusCallback)> DeliveryOptimizationDict { get; } = [];
 
@@ -60,8 +60,8 @@ namespace PowerToolbox.Services.Download
                     // 创建 IDoManager
                     doManager = (IDOManager)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_DeliveryOptimization));
                     doManager.CreateDownload(out IDODownload doDownload);
-                    IntPtr pInterface = Marshal.GetComInterfaceForObject<object, IDODownload>(doDownload);
-                    Ole32Library.CoSetProxyBlanket(pInterface, uint.MaxValue, uint.MaxValue, unchecked((IntPtr)ulong.MaxValue), 0, 3, IntPtr.Zero, 32);
+                    nint pInterface = Marshal.GetComInterfaceForObject<object, IDODownload>(doDownload);
+                    Ole32Library.CoSetProxyBlanket(pInterface, uint.MaxValue, uint.MaxValue, unchecked((nint)ulong.MaxValue), 0, 3, 0, 32);
                     Marshal.Release(pInterface);
                     Marshal.FinalReleaseComObject(doManager);
 
@@ -98,7 +98,7 @@ namespace PowerToolbox.Services.Download
                         TotalSize = 0,
                     });
 
-                    doDownload.Start(IntPtr.Zero);
+                    doDownload.Start(0);
                 }
                 catch (Exception e)
                 {
@@ -118,7 +118,7 @@ namespace PowerToolbox.Services.Download
                 {
                     if (DeliveryOptimizationDict.TryGetValue(downloadID, out (string saveFilePath, IDODownload doDownload, DODownloadStatusCallback doDownloadStatusCallback) downloadValue))
                     {
-                        int continueResult = downloadValue.doDownload.Start(IntPtr.Zero);
+                        int continueResult = downloadValue.doDownload.Start(0);
 
                         if (continueResult is 0)
                         {

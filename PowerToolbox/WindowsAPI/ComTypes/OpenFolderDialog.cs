@@ -14,29 +14,18 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// <summary>
     /// 文件夹选取框
     /// </summary>
-    public class OpenFolderDialog : IDisposable
+    public class OpenFolderDialog(nint handle) : IDisposable
     {
         private readonly Guid CLSID_FileOpenDialog = new("DC1C5A9C-E88A-4DDE-A5A1-60F82A20AEF7");
-        private IFileOpenDialog FileOpenDialog;
-        private IntPtr Handle { get; }
+        private IFileOpenDialog fileOpenDialog;
+
+        private nint Handle { get; } = handle is 0 ? throw new Win32Exception("窗口句柄不可以为空") : handle;
 
         public string Description { get; set; } = string.Empty;
 
         public string SelectedPath { get; set; } = string.Empty;
 
         public Environment.SpecialFolder RootFolder { get; set; } = Environment.SpecialFolder.Desktop;
-
-        public OpenFolderDialog(IntPtr handle)
-        {
-            if (handle == IntPtr.Zero)
-            {
-                throw new Win32Exception("窗口句柄不可以为空");
-            }
-            else
-            {
-                Handle = handle;
-            }
-        }
 
         ~OpenFolderDialog()
         {
@@ -50,24 +39,24 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         {
             try
             {
-                FileOpenDialog = (IFileOpenDialog)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_FileOpenDialog));
-                FileOpenDialog.SetOptions(FILEOPENDIALOGOPTIONS.FOS_PICKFOLDERS | FILEOPENDIALOGOPTIONS.FOS_FORCEFILESYSTEM);
-                FileOpenDialog.SetTitle(Description);
+                fileOpenDialog = (IFileOpenDialog)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_FileOpenDialog));
+                fileOpenDialog.SetOptions(FILEOPENDIALOGOPTIONS.FOS_PICKFOLDERS | FILEOPENDIALOGOPTIONS.FOS_FORCEFILESYSTEM);
+                fileOpenDialog.SetTitle(Description);
                 Shell32Library.SHCreateItemFromParsingName(Environment.GetFolderPath(RootFolder), null, typeof(IShellItem).GUID, out IShellItem initialFolder);
-                FileOpenDialog.SetFolder(initialFolder);
+                fileOpenDialog.SetFolder(initialFolder);
                 Marshal.ReleaseComObject(initialFolder);
 
-                if (FileOpenDialog is not null)
+                if (fileOpenDialog is not null)
                 {
-                    int result = FileOpenDialog.Show(Handle);
+                    int result = fileOpenDialog.Show(Handle);
 
                     if (result is not 0)
                     {
                         return DialogResult.Cancel;
                     }
 
-                    FileOpenDialog.GetResult(out IShellItem pItem);
-                    pItem.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out IntPtr pszString);
+                    fileOpenDialog.GetResult(out IShellItem pItem);
+                    pItem.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out nint pszString);
                     SelectedPath = Marshal.PtrToStringUni(pszString);
                     Marshal.ReleaseComObject(pItem);
                     return DialogResult.OK;
@@ -80,9 +69,9 @@ namespace PowerToolbox.WindowsAPI.ComTypes
             catch (Exception e)
             {
                 LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(OpenFolderDialog), nameof(ShowDialog), 1, e);
-                if (FileOpenDialog is not null)
+                if (fileOpenDialog is not null)
                 {
-                    Marshal.FinalReleaseComObject(FileOpenDialog);
+                    Marshal.FinalReleaseComObject(fileOpenDialog);
                 }
                 return DialogResult.Cancel;
             }
@@ -106,12 +95,12 @@ namespace PowerToolbox.WindowsAPI.ComTypes
 
             lock (this)
             {
-                if (FileOpenDialog is not null)
+                if (fileOpenDialog is not null)
                 {
-                    Marshal.FinalReleaseComObject(FileOpenDialog);
+                    Marshal.FinalReleaseComObject(fileOpenDialog);
                 }
 
-                FileOpenDialog = null;
+                fileOpenDialog = null;
             }
         }
     }

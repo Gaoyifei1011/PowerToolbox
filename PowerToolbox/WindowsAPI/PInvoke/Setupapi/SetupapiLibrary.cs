@@ -29,7 +29,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Setupapi
         /// <returns>此函数返回 WINSETUPAPI BOOL。</returns>
         [DllImport(Setupapi, CharSet = CharSet.Unicode, EntryPoint = "SetupCopyOEMInfW", PreserveSig = true, SetLastError = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetupCopyOEMInf([MarshalAs(UnmanagedType.LPWStr)] string SourceInfFileName, [MarshalAs(UnmanagedType.LPWStr)] string OEMSourceMediaLocation, SPOST OEMSourceMediaType, SP_COPY CopyStyle, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder DestinationInfFileName, uint DestinationInfFileNameSize, ref uint RequiredSize, IntPtr DestinationInfFileNameComponent);
+        public static extern bool SetupCopyOEMInf([MarshalAs(UnmanagedType.LPWStr)] string SourceInfFileName, [MarshalAs(UnmanagedType.LPWStr)] string OEMSourceMediaLocation, SPOST OEMSourceMediaType, SP_COPY CopyStyle, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder DestinationInfFileName, uint DestinationInfFileNameSize, ref uint RequiredSize, nint DestinationInfFileNameComponent);
 
         /// <summary>
         /// SetupDiDestroyDeviceInfoList 函数删除设备信息集并释放所有相关内存。
@@ -37,7 +37,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Setupapi
         /// <param name="deviceInfoSet">设置为删除的设备信息的句柄。</param>
         /// <returns>如果成功，该函数将返回 TRUE 。 否则，它将返回 FALSE ，并且可以通过调用 GetLastError 来检索记录的错误。</returns>
         [DllImport(Setupapi, CharSet = CharSet.Unicode, EntryPoint = "SetupDiDestroyDeviceInfoList", PreserveSig = true, SetLastError = false)]
-        public static extern bool SetupDiDestroyDeviceInfoList(IntPtr deviceInfoSet);
+        public static extern bool SetupDiDestroyDeviceInfoList(nint deviceInfoSet);
 
         /// <summary>
         /// SetupDiEnumDeviceInfo 函数返回一个SP_DEVINFO_DATA结构，该结构指定设备信息集中的设备信息元素。
@@ -47,7 +47,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Setupapi
         /// <param name="deviceInfoData">指向 SP_DEVINFO_DATA 结构的指针，用于接收有关枚举设备信息元素的信息。 调用方必须设置 DeviceInfoData。cbSize 为 sizeof(SP_DEVINFO_DATA)。</param>
         /// <returns>如果成功，该函数将返回 TRUE 。 否则，它将返回 FALSE。</returns>
         [DllImport(Setupapi, CharSet = CharSet.Unicode, EntryPoint = "SetupDiEnumDeviceInfo", PreserveSig = true, SetLastError = false)]
-        public static extern bool SetupDiEnumDeviceInfo(IntPtr deviceInfoSet, int memberIndex, ref SP_DEVINFO_DATA deviceInfoData);
+        public static extern bool SetupDiEnumDeviceInfo(nint deviceInfoSet, int memberIndex, ref SP_DEVINFO_DATA deviceInfoData);
 
         /// <summary>
         /// SetupDiGetClassDevs 函数返回 设备信息集 的句柄，其中包含本地计算机请求的设备信息元素。
@@ -63,7 +63,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Setupapi
         /// <param name="flags">类型为 DWORD 的变量，指定用于筛选添加到设备信息集的设备信息元素的控制选项。 此参数可以是零个或多个以下标志的按位 OR。 </param>
         /// <returns>如果操作成功，SetupDiGetClassDevs 将句柄返回到 设备信息集，其中包含与提供的参数匹配的所有已安装设备。</returns>
         [DllImport(Setupapi, CharSet = CharSet.Unicode, EntryPoint = "SetupDiGetClassDevs", PreserveSig = true, SetLastError = false)]
-        public static extern IntPtr SetupDiGetClassDevs(Guid ClassGuid, [MarshalAs(UnmanagedType.LPWStr)] string enumerator, IntPtr hwndParent, DIGCF flags);
+        public static extern nint SetupDiGetClassDevs(Guid ClassGuid, [MarshalAs(UnmanagedType.LPWStr)] string enumerator, nint hwndParent, DIGCF flags);
 
         /// <summary>
         /// SetupDiGetDeviceProperty 函数检索设备实例属性。
@@ -78,7 +78,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Setupapi
         /// <param name="flags">该参数必须设置为零。</param>
         /// <returns>SetupDiGetDeviceProperty 如果成功，则返回 TRUE 。 否则，它将返回 FALSE。</returns>
         [DllImport(Setupapi, CharSet = CharSet.Unicode, EntryPoint = "SetupDiGetDevicePropertyW", PreserveSig = true, SetLastError = false)]
-        public static extern bool SetupDiGetDeviceProperty(IntPtr deviceInfoSet, ref SP_DEVINFO_DATA deviceInfoData, ref DEVPROPKEY propertyKey, out DEVPROP_TYPE propertyType, IntPtr propertyBuffer, int propertyBufferSize, out int requiredSize, int flags);
+        public static extern bool SetupDiGetDeviceProperty(nint deviceInfoSet, ref SP_DEVINFO_DATA deviceInfoData, ref DEVPROPKEY propertyKey, out DEVPROP_TYPE propertyType, nint propertyBuffer, int propertyBufferSize, out int requiredSize, int flags);
 
         /// <summary>
         /// SetupGetInfDriverStoreLocation 函数检索驱动程序存储中 INF 文件 的完全限定文件名（目录路径和文件名），该文件对应于系统 INF 文件目录中的指定 INF 文件或驱动程序存储中的指定 INF 文件。
@@ -91,7 +91,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Setupapi
         /// <param name="RequiredSize">指向接收 ReturnBuffer 缓冲区的大小（以字符为单位）的 DWORD 类型的变量的指针。</param>
         /// <returns>如果 SetupGetInfDriverStoreLocation 成功，则函数返回 true ;否则，该函数返回 FALSE。</returns>
         [DllImport(Setupapi, CharSet = CharSet.Unicode, EntryPoint = "SetupGetInfDriverStoreLocationW", PreserveSig = true, SetLastError = false)]
-        public static extern bool SetupGetInfDriverStoreLocation([MarshalAs(UnmanagedType.LPWStr)] string FileName, IntPtr AlternatePlatformInfo, IntPtr LocaleName, StringBuilder ReturnBuffer, int ReturnBufferSize, out int RequiredSize);
+        public static extern bool SetupGetInfDriverStoreLocation([MarshalAs(UnmanagedType.LPWStr)] string FileName, nint AlternatePlatformInfo, nint LocaleName, StringBuilder ReturnBuffer, int ReturnBufferSize, out int RequiredSize);
 
         /// <summary>
         /// SetupUninstallOEMInf 函数卸载指定的 .inf 文件和任何关联的 .pnf 文件。 如果 .inf 文件随用于签名驱动程序的目录一起安装，则也会删除该目录。 此函数的调用方必须具有管理权限，否则该函数将失败。
@@ -102,6 +102,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Setupapi
         /// <returns>此函数返回 WINSETUPAPI BOOL。</returns>
         [DllImport(Setupapi, CharSet = CharSet.Unicode, EntryPoint = "SetupUninstallOEMInfW", PreserveSig = true, SetLastError = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetupUninstallOEMInf([MarshalAs(UnmanagedType.LPWStr)] string InfFileName, SUOI_Flags Flags, IntPtr Reserved);
+        public static extern bool SetupUninstallOEMInf([MarshalAs(UnmanagedType.LPWStr)] string InfFileName, SUOI_Flags Flags, nint Reserved);
     }
 }

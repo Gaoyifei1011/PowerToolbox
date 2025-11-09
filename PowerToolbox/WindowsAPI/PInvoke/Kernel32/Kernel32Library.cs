@@ -48,7 +48,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Kernel32
         /// </summary>
         /// <returns>返回值是当前进程的伪句柄。</returns>
         [DllImport(Kernel32, CharSet = CharSet.Unicode, EntryPoint = "GetCurrentProcess", PreserveSig = true, SetLastError = false)]
-        public static extern IntPtr GetCurrentProcess();
+        public static extern nint GetCurrentProcess();
 
         /// <summary>
         /// 检索调用线程的最后错误代码值。 最后一个错误代码按线程进行维护。 多个线程不会覆盖彼此的最后一个错误代码。

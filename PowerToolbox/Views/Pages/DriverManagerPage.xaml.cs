@@ -434,7 +434,7 @@ namespace PowerToolbox.Views.Pages
                 // 删除驱动
                 (bool operationResult, Win32Exception win32Exception) = await Task.Run(() =>
                 {
-                    bool result = SetupapiLibrary.SetupUninstallOEMInf(driver.DriverOEMInfName, SUOI_Flags.SUOI_NONE, IntPtr.Zero);
+                    bool result = SetupapiLibrary.SetupUninstallOEMInf(driver.DriverOEMInfName, SUOI_Flags.SUOI_NONE, 0);
                     return result ? ValueTuple.Create<bool, Win32Exception>(result, null) : ValueTuple.Create(result, new Win32Exception(Kernel32Library.GetLastError()));
                 });
 
@@ -486,7 +486,7 @@ namespace PowerToolbox.Views.Pages
                 bool needReboot = false;
                 (bool operationResult, Win32Exception win32Exception) = await Task.Run(() =>
                 {
-                    bool result = NewDevLibrary.DiUninstallDriver(IntPtr.Zero, driver.DriverLocation, DIURFLAG.NO_REMOVE_INF, out needReboot) && SetupapiLibrary.SetupUninstallOEMInf(driver.DriverOEMInfName, SUOI_Flags.SUOI_FORCEDELETE, IntPtr.Zero);
+                    bool result = NewDevLibrary.DiUninstallDriver(0, driver.DriverLocation, DIURFLAG.NO_REMOVE_INF, out needReboot) && SetupapiLibrary.SetupUninstallOEMInf(driver.DriverOEMInfName, SUOI_Flags.SUOI_FORCEDELETE, 0);
                     return result ? ValueTuple.Create<bool, Win32Exception>(result, null) : ValueTuple.Create(result, new Win32Exception(Kernel32Library.GetLastError()));
                 });
 
@@ -787,7 +787,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             StringBuilder stringBuilder = new(260);
                             uint bufferSize = 0;
-                            bool result = SetupapiLibrary.SetupCopyOEMInf(fileName, null, SPOST.SPOST_PATH, SP_COPY.SP_COPY_NONE, stringBuilder, (uint)stringBuilder.Capacity, ref bufferSize, IntPtr.Zero);
+                            bool result = SetupapiLibrary.SetupCopyOEMInf(fileName, null, SPOST.SPOST_PATH, SP_COPY.SP_COPY_NONE, stringBuilder, (uint)stringBuilder.Capacity, ref bufferSize, 0);
                             Win32Exception win32Exception = new(Kernel32Library.GetLastError());
                             string driverOperation = result ? AddingDriverSuccessfullyString : string.Format(AddingDriverFailedString, win32Exception.NativeErrorCode, win32Exception.HResult, win32Exception.Message);
 
@@ -880,7 +880,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             StringBuilder stringBuilder = new(260);
                             uint bufferSize = 0;
-                            bool result = NewDevLibrary.DiInstallDriver(IntPtr.Zero, fileName, 0, out bool NeedReboot) && SetupapiLibrary.SetupCopyOEMInf(fileName, null, SPOST.SPOST_PATH, SP_COPY.SP_COPY_NONE, stringBuilder, (uint)stringBuilder.Capacity, ref bufferSize, IntPtr.Zero);
+                            bool result = NewDevLibrary.DiInstallDriver(0, fileName, 0, out bool NeedReboot) && SetupapiLibrary.SetupCopyOEMInf(fileName, null, SPOST.SPOST_PATH, SP_COPY.SP_COPY_NONE, stringBuilder, (uint)stringBuilder.Capacity, ref bufferSize, 0);
                             Win32Exception win32Exception = new(Kernel32Library.GetLastError());
                             string driverOperation = result ? AddInstallingDriverSuccessfullyString : string.Format(AddInstallingDriverFailedString, win32Exception.NativeErrorCode, win32Exception.HResult, win32Exception.Message);
                             lock (addInstallDriverResultDictObject)
@@ -983,7 +983,7 @@ namespace PowerToolbox.Views.Pages
 
                     deleteDriverTaskList.Add(Task.Run(() =>
                     {
-                        bool result = SetupapiLibrary.SetupUninstallOEMInf(driverItem.DriverOEMInfName, SUOI_Flags.SUOI_NONE, IntPtr.Zero);
+                        bool result = SetupapiLibrary.SetupUninstallOEMInf(driverItem.DriverOEMInfName, SUOI_Flags.SUOI_NONE, 0);
                         Win32Exception win32Exception = new(Kernel32Library.GetLastError());
                         string driverOperation = result ? DeletingDriverSuccessfullyString : string.Format(DeletingDriverFailedString, win32Exception.NativeErrorCode, win32Exception.HResult, win32Exception.Message);
                         lock (deleteDriverResultDictLock)
@@ -1071,7 +1071,7 @@ namespace PowerToolbox.Views.Pages
 
                     forceDeleteDriverTaskList.Add(Task.Run(() =>
                     {
-                        bool result = NewDevLibrary.DiUninstallDriver(IntPtr.Zero, driverItem.DriverLocation, DIURFLAG.NO_REMOVE_INF, out bool NeedReboot) && SetupapiLibrary.SetupUninstallOEMInf(driverItem.DriverOEMInfName, SUOI_Flags.SUOI_FORCEDELETE, IntPtr.Zero);
+                        bool result = NewDevLibrary.DiUninstallDriver(0, driverItem.DriverLocation, DIURFLAG.NO_REMOVE_INF, out bool NeedReboot) && SetupapiLibrary.SetupUninstallOEMInf(driverItem.DriverOEMInfName, SUOI_Flags.SUOI_FORCEDELETE, 0);
                         Win32Exception win32Exception = new(Kernel32Library.GetLastError());
                         string driverOperation = result ? ForceDeletingDriverSuccessfullyString : string.Format(ForceDeletingDriverFailedString, win32Exception.NativeErrorCode, win32Exception.HResult, win32Exception.Message);
                         lock (forceDeleteDriverResultDictLock)
@@ -1575,9 +1575,9 @@ namespace PowerToolbox.Views.Pages
                 }
 
                 List<SystemDriverInformation> systemDriverInformationList = [];
-                IntPtr deviceInfoSet = SetupapiLibrary.SetupDiGetClassDevs(Guid.Empty, null, IntPtr.Zero, DIGCF.DIGCF_ALLCLASSES);
+                nint deviceInfoSet = SetupapiLibrary.SetupDiGetClassDevs(Guid.Empty, null, 0, DIGCF.DIGCF_ALLCLASSES);
 
-                if (!deviceInfoSet.Equals(IntPtr.Zero))
+                if (deviceInfoSet is not 0)
                 {
                     SP_DEVINFO_DATA deviceInfoData = new()
                     {
@@ -1656,14 +1656,14 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 检索设备实例属性
         /// </summary>
-        private object GetDevNodeProperty(string devPropKey, SP_DEVINFO_DATA deviceInfoData, IntPtr deviceInfoSet)
+        private object GetDevNodeProperty(string devPropKey, SP_DEVINFO_DATA deviceInfoData, nint deviceInfoSet)
         {
             object value = null;
 
             if (DevPropKeyDict.TryGetValue(devPropKey, out DEVPROPKEY devPropKeyItem))
             {
-                SetupapiLibrary.SetupDiGetDeviceProperty(deviceInfoSet, ref deviceInfoData, ref devPropKeyItem, out _, IntPtr.Zero, 0, out int bufferSize, 0);
-                IntPtr propertyBufferPtr = Marshal.AllocHGlobal(bufferSize);
+                SetupapiLibrary.SetupDiGetDeviceProperty(deviceInfoSet, ref deviceInfoData, ref devPropKeyItem, out _, 0, 0, out int bufferSize, 0);
+                nint propertyBufferPtr = Marshal.AllocHGlobal(bufferSize);
 
                 if (SetupapiLibrary.SetupDiGetDeviceProperty(deviceInfoSet, ref deviceInfoData, ref devPropKeyItem, out DEVPROP_TYPE devPropertyType, propertyBufferPtr, bufferSize, out bufferSize, 0))
                 {
@@ -1955,12 +1955,12 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private static string GetDriverStoreLocation(string oemInfName)
         {
-            SetupapiLibrary.SetupGetInfDriverStoreLocation(oemInfName, IntPtr.Zero, IntPtr.Zero, null, 0, out int bufferSize);
+            SetupapiLibrary.SetupGetInfDriverStoreLocation(oemInfName, 0, 0, null, 0, out int bufferSize);
 
             if (bufferSize > 0)
             {
                 StringBuilder stringBuilder = new(bufferSize);
-                return SetupapiLibrary.SetupGetInfDriverStoreLocation(oemInfName, IntPtr.Zero, IntPtr.Zero, stringBuilder, stringBuilder.Capacity, out _) ? Convert.ToString(stringBuilder) : string.Empty;
+                return SetupapiLibrary.SetupGetInfDriverStoreLocation(oemInfName, 0, 0, stringBuilder, stringBuilder.Capacity, out _) ? Convert.ToString(stringBuilder) : string.Empty;
             }
             else
             {

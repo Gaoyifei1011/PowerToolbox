@@ -534,7 +534,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnSelectFolderClicked(object sender, RoutedEventArgs args)
         {
-            OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
+            OpenFolderDialog openFolderDialog = new((nint)MainWindow.Current.AppWindow.Id.Value)
             {
                 Description = SelectFolderString,
                 RootFolder = Environment.SpecialFolder.Desktop

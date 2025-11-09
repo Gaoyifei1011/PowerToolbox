@@ -207,23 +207,23 @@ namespace PowerToolbox.Views.Windows
 
             // 为应用主窗口添加窗口过程
             mainWindowSubClassProc = new SUBCLASSPROC(MainWindowSubClassProc);
-            Comctl32Library.SetWindowSubclass((IntPtr)AppWindow.Id.Value, mainWindowSubClassProc, 0, IntPtr.Zero);
+            Comctl32Library.SetWindowSubclass((nint)AppWindow.Id.Value, mainWindowSubClassProc, 0, 0);
 
             SetWindowTheme();
             SetSystemBackdrop();
             SetTopMost();
 
             // 默认直接显示到窗口中间
-            User32Library.GetWindowRect((IntPtr)AppWindow.Id.Value, out RECT rect);
+            User32Library.GetWindowRect((nint)AppWindow.Id.Value, out RECT rect);
             int width = rect.right - rect.left;
             int height = rect.bottom - rect.top;
-            User32Library.SetWindowPos((IntPtr)AppWindow.Id.Value, IntPtr.Zero, (System.Windows.Forms.SystemInformation.WorkingArea.Width - width) / 2, (System.Windows.Forms.SystemInformation.WorkingArea.Height - height) / 2, 0, 0, SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_NOZORDER);
+            User32Library.SetWindowPos((nint)AppWindow.Id.Value, 0, (System.Windows.Forms.SystemInformation.WorkingArea.Width - width) / 2, (System.Windows.Forms.SystemInformation.WorkingArea.Height - height) / 2, 0, 0, SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_NOZORDER);
 
             if (RuntimeHelper.IsElevated)
             {
                 User32Library.ChangeWindowMessageFilter(WindowMessage.WM_DROPFILES, ChangeFilterFlags.MSGFLT_ADD);
                 User32Library.ChangeWindowMessageFilter(WindowMessage.WM_COPYGLOBALDATA, ChangeFilterFlags.MSGFLT_ADD);
-                Shell32Library.DragAcceptFiles((IntPtr)AppWindow.Id.Value, true);
+                Shell32Library.DragAcceptFiles((nint)AppWindow.Id.Value, true);
             }
         }
 
@@ -234,7 +234,7 @@ namespace PowerToolbox.Views.Windows
         /// </summary>
         private void OnRestoreClicked(object sender, RoutedEventArgs args)
         {
-            User32Library.SendMessage((IntPtr)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_RESTORE, IntPtr.Zero);
+            User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_RESTORE, 0);
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace PowerToolbox.Views.Windows
             if (sender is MenuFlyoutItem menuFlyoutItem && menuFlyoutItem.Tag is MenuFlyout menuFlyout)
             {
                 menuFlyout.Hide();
-                User32Library.SendMessage((IntPtr)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_MOVE, IntPtr.Zero);
+                User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_MOVE, 0);
             }
         }
 
@@ -257,7 +257,7 @@ namespace PowerToolbox.Views.Windows
             if (sender is MenuFlyoutItem menuFlyoutItem && menuFlyoutItem.Tag is MenuFlyout menuFlyout)
             {
                 menuFlyout.Hide();
-                User32Library.SendMessage((IntPtr)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_SIZE, IntPtr.Zero);
+                User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_SIZE, 0);
             }
         }
 
@@ -266,7 +266,7 @@ namespace PowerToolbox.Views.Windows
         /// </summary>
         private void OnMinimizeClicked(object sender, RoutedEventArgs args)
         {
-            User32Library.SendMessage((IntPtr)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_MINIMIZE, IntPtr.Zero);
+            User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_MINIMIZE, 0);
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace PowerToolbox.Views.Windows
         /// </summary>
         private void OnMaximizeClicked(object sender, RoutedEventArgs args)
         {
-            User32Library.SendMessage((IntPtr)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_MAXIMIZE, IntPtr.Zero);
+            User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_MAXIMIZE, 0);
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace PowerToolbox.Views.Windows
         /// </summary>
         private void OnCloseClicked(object sender, RoutedEventArgs args)
         {
-            User32Library.SendMessage((IntPtr)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_CLOSE, IntPtr.Zero);
+            User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_CLOSE, 0);
         }
 
         #endregion 第三部分：窗口右键菜单事件
@@ -689,7 +689,7 @@ namespace PowerToolbox.Views.Windows
 
                             if (MainPage.IsLoaded)
                             {
-                                double dpi = Convert.ToDouble(User32Library.GetDpiForWindow((IntPtr)AppWindow.Id.Value)) / 96;
+                                double dpi = Convert.ToDouble(User32Library.GetDpiForWindow((nint)AppWindow.Id.Value)) / 96;
                                 overlappedPresenter.PreferredMinimumWidth = Convert.ToInt32(1000 * dpi);
                                 overlappedPresenter.PreferredMinimumHeight = Convert.ToInt32(600 * dpi);
                             }
@@ -705,7 +705,7 @@ namespace PowerToolbox.Views.Windows
                             {
                                 if (WindowSystemBackdrop is MaterialBackdrop materialBackdrop && materialBackdrop.BackdropConfiguration is not null)
                                 {
-                                    materialBackdrop.BackdropConfiguration.IsInputActive = AlwaysShowBackdropService.AlwaysShowBackdropValue || wParam != UIntPtr.Zero;
+                                    materialBackdrop.BackdropConfiguration.IsInputActive = AlwaysShowBackdropService.AlwaysShowBackdropValue || wParam is not 0;
                                 }
                             }
                             catch (Exception e)
@@ -760,7 +760,7 @@ namespace PowerToolbox.Views.Windows
                                         navigationViewBackButtonToolTip.Loaded -= ToolTipBackdropHelper.OnLoaded;
                                     }
                                     DownloadSchedulerService.TerminateDownload();
-                                    Comctl32Library.RemoveWindowSubclass((IntPtr)AppWindow.Id.Value, mainWindowSubClassProc, 0);
+                                    Comctl32Library.RemoveWindowSubclass((nint)AppWindow.Id.Value, mainWindowSubClassProc, 0);
                                     (Application.Current as MainApp).Dispose();
                                 }
                                 else if (contentDialogResult is ContentDialogResult.Secondary)
@@ -788,7 +788,7 @@ namespace PowerToolbox.Views.Windows
                                 {
                                     navigationViewBackButtonToolTip.Loaded -= ToolTipBackdropHelper.OnLoaded;
                                 }
-                                Comctl32Library.RemoveWindowSubclass((IntPtr)AppWindow.Id.Value, mainWindowSubClassProc, 0);
+                                Comctl32Library.RemoveWindowSubclass((nint)AppWindow.Id.Value, mainWindowSubClassProc, 0);
                                 (Application.Current as MainApp).Dispose();
                             }
                         }, null);
@@ -809,8 +809,8 @@ namespace PowerToolbox.Views.Windows
                         if (wParam is 2 && Content is not null && Content.XamlRoot is not null)
                         {
                             System.Drawing.Point cursorPos = new((int)LOWORD((uint)lParam), (int)HIWORD((uint)lParam));
-                            User32Library.MapWindowPoints(IntPtr.Zero, hWnd, ref cursorPos, 2); ;
-                            double dpi = Convert.ToDouble(User32Library.GetDpiForWindow((IntPtr)AppWindow.Id.Value)) / 96;
+                            User32Library.MapWindowPoints(0, hWnd, ref cursorPos, 2); ;
+                            double dpi = Convert.ToDouble(User32Library.GetDpiForWindow((nint)AppWindow.Id.Value)) / 96;
 
                             FlyoutShowOptions options = new()
                             {
@@ -872,7 +872,7 @@ namespace PowerToolbox.Views.Windows
                                 ShowMode = FlyoutShowMode.Standard
                             };
                             TitlebarMenuFlyout.ShowAt(null, options);
-                            return IntPtr.Zero;
+                            return 0;
                         }
                         else if (sysCommand is SYSTEMCOMMAND.SC_KEYMENU)
                         {
@@ -884,7 +884,7 @@ namespace PowerToolbox.Views.Windows
                                     ShowMode = FlyoutShowMode.Standard
                                 };
                                 TitlebarMenuFlyout.ShowAt(null, options);
-                                return IntPtr.Zero;
+                                return 0;
                             }
                             else if (lParam is (int)System.Windows.Forms.Keys.F10 && Content.XamlRoot is not null)
                             {

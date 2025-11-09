@@ -29,7 +29,7 @@ namespace PowerToolbox.Services.Shell
         /// </summary>
         public static void InitializeShellMenu()
         {
-            Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, IntPtr.Zero, out string localAppdataPath);
+            Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, 0, out string localAppdataPath);
 
             if (!string.IsNullOrEmpty(localAppdataPath))
             {

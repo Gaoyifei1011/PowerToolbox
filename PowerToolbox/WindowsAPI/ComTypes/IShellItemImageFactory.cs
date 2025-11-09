@@ -18,6 +18,6 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <param name="phbm">指向此方法成功返回的值的指针，它接收检索到的位图的句柄。 调用方有责任在不再需要资源时通过 DeleteObject 释放检索到的资源。</param>
         /// <returns>如果此方法成功，则返回 S_OK。 否则，它将返回 HRESULT 错误代码。</returns>
         [PreserveSig]
-        int GetImage(Size size, SIIGBF flags, out IntPtr phbm);
+        int GetImage(Size size, SIIGBF flags, out nint phbm);
     }
 }

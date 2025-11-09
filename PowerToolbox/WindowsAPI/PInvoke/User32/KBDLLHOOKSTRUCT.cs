@@ -33,6 +33,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         /// <summary>
         /// 与消息关联的其他信息。
         /// </summary>
-        public UIntPtr dwExtraInfo;
+        public nuint dwExtraInfo;
     }
 }

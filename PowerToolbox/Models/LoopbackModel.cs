@@ -75,7 +75,7 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 应用容器的包标识符
         /// </summary>
-        public IntPtr AppContainerSID { get; set; }
+        public nint AppContainerSID { get; set; }
 
         /// <summary>
         /// 应用容器的包标识符名称

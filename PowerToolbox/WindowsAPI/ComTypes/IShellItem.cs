@@ -22,7 +22,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <param name="ppv">此方法返回时，包含由 riid 指定的处理程序返回的类型 riid 的指针。</param>
         /// <returns>如果该方法成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [PreserveSig]
-        int BindToHandler(IntPtr pbc, Guid bhid, Guid riid, out IntPtr ppv);
+        int BindToHandler(nint pbc, Guid bhid, Guid riid, out nint ppv);
 
         /// <summary>
         /// 获取 IShellItem 对象的父对象。
@@ -39,7 +39,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <param name="ppszName">一个值，当此函数成功返回时，接收指向检索的显示名称的指针的地址。</param>
         /// <returns>如果该方法成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [PreserveSig]
-        int GetDisplayName(SIGDN sigdnName, out IntPtr ppszName);
+        int GetDisplayName(SIGDN sigdnName, out nint ppszName);
 
         /// <summary>
         /// 获取 IShellItem 对象的请求属性集。

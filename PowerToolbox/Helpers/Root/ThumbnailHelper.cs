@@ -25,14 +25,14 @@ namespace PowerToolbox.Helpers.Root
 
                 if (result is 0)
                 {
-                    result = ((IShellItemImageFactory)shellItem).GetImage(new Size(256, 256), SIIGBF.SIIGBF_RESIZETOFIT, out IntPtr hBitmap);
+                    result = ((IShellItemImageFactory)shellItem).GetImage(new Size(256, 256), SIIGBF.SIIGBF_RESIZETOFIT, out nint hBitmap);
                     Marshal.ReleaseComObject(shellItem);
 
                     if (result is 0)
                     {
-                        Bitmap bitmap = System.Drawing.Image.FromHbitmap(hBitmap);
+                        Bitmap bitmap = Image.FromHbitmap(hBitmap);
 
-                        if (System.Drawing.Image.GetPixelFormatSize(bitmap.PixelFormat) < 32)
+                        if (Image.GetPixelFormatSize(bitmap.PixelFormat) < 32)
                         {
                             return bitmap;
                         }
@@ -74,8 +74,7 @@ namespace PowerToolbox.Helpers.Root
                 {
                     for (int x = 0; x <= srcData.Width - 1; x++)
                     {
-                        Color pixelColor = Color.FromArgb(
-                            Marshal.ReadInt32(srcData.Scan0, (srcData.Stride * y) + (4 * x)));
+                        Color pixelColor = Color.FromArgb(Marshal.ReadInt32(srcData.Scan0, (srcData.Stride * y) + (4 * x)));
 
                         if (pixelColor.A > 0 & pixelColor.A < 255)
                         {

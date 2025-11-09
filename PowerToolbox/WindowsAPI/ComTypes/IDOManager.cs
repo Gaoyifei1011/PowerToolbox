@@ -31,6 +31,6 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <param name="ppEnum">指向 IEnumUnknown 的接口指针的地址，用于枚举现有下载。 枚举器的内容取决于 类别的值。 枚举接口中包含的下载是以前由此函数的同一调用方创建的下载。</param>
         /// <returns>如果函数成功，则返回 S_OK。 否则，它将返回 HRESULT错误代码。</returns>
         [PreserveSig]
-        int EnumDownloads(DODownloadProperty category, out IntPtr ppEnum);
+        int EnumDownloads(DODownloadProperty category, out nint ppEnum);
     }
 }

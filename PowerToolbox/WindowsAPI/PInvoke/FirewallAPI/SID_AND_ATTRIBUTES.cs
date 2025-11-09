@@ -12,7 +12,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.FirewallAPI
         /// <summary>
         /// 指向 SID 结构的指针。
         /// </summary>
-        public IntPtr Sid;
+        public nint Sid;
 
         /// <summary>
         /// 指定 SID 的属性。 此值最多包含 32 个一位标志。 其含义取决于 SID 的定义和用法。

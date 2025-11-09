@@ -88,10 +88,10 @@ namespace PowerToolbox.Views.Dialogs
                         {
                             if (File.Exists(filePath))
                             {
-                                IntPtr pidlList = Shell32Library.ILCreateFromPath(filePath);
-                                if (!pidlList.Equals(IntPtr.Zero))
+                                nint pidlList = Shell32Library.ILCreateFromPath(filePath);
+                                if (pidlList is not 0)
                                 {
-                                    Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, IntPtr.Zero, 0);
+                                    Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
                                     Shell32Library.ILFree(pidlList);
                                 }
                             }
@@ -133,10 +133,10 @@ namespace PowerToolbox.Views.Dialogs
                         {
                             if (File.Exists(processPath))
                             {
-                                IntPtr pidlList = Shell32Library.ILCreateFromPath(processPath);
-                                if (!pidlList.Equals(IntPtr.Zero))
+                                nint pidlList = Shell32Library.ILCreateFromPath(processPath);
+                                if (pidlList is not 0)
                                 {
-                                    Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, IntPtr.Zero, 0);
+                                    Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
                                     Shell32Library.ILFree(pidlList);
                                 }
                             }

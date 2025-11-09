@@ -243,8 +243,8 @@ namespace PowerToolbox.Views.Pages
                 if (progressDialog is not null)
                 {
                     progressDialog.SetTitle(WEIString);
-                    progressDialog.SetLine(2, WEIContentString, false, IntPtr.Zero);
-                    progressDialog.StartProgressDialog((IntPtr)MainWindow.Current.AppWindow.Id.Value, null, PROGDLG.PROGDLG_MODAL | PROGDLG.PROGDLG_NOMINIMIZE, IntPtr.Zero);
+                    progressDialog.SetLine(2, WEIContentString, false, 0);
+                    progressDialog.StartProgressDialog((nint)MainWindow.Current.AppWindow.Id.Value, null, PROGDLG.PROGDLG_MODAL | PROGDLG.PROGDLG_NOMINIMIZE, 0);
                 }
             }
             catch (Exception e)
@@ -321,7 +321,7 @@ namespace PowerToolbox.Views.Pages
                                 return;
                             }
 
-                            progressDialog.SetLine(1, cWinSATCallbacks.CurrentState, false, IntPtr.Zero);
+                            progressDialog.SetLine(1, cWinSATCallbacks.CurrentState, false, 0);
                             progressDialog.SetProgress(cWinSATCallbacks.CurrentTick, cWinSATCallbacks.TickTotal);
                         }
                     }

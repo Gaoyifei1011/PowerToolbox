@@ -15,5 +15,5 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
     ///  如果 nCode 大于或等于零，强烈建议调用 CallNextHookEx 函数 并返回它返回的值; 否则，已安装 WH_CALLWNDPROCRET 挂钩的其他应用程序将不会收到挂钩通知，并可能因此行为不正确。 如果挂钩过程不调用 CallNextHookEx，则返回值应为零。
     /// </returns>
     [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-    public delegate IntPtr HOOKPROC(int nCode, UIntPtr wParam, IntPtr lParam);
+    public delegate nint HOOKPROC(int nCode, nuint wParam, nint lParam);
 }

@@ -509,7 +509,7 @@ namespace PowerToolbox.Views.Pages
             {
                 IsSelected = true;
 
-                IntPtr[] phicon = new IntPtr[1];
+                nint[] phicon = new nint[1];
                 int[] piconid = new int[1];
                 int iconIndex = Convert.ToInt32((selectedItemsList.Last() as IconModel).DisplayIndex);
                 int nIcons = User32Library.PrivateExtractIcons(filePath, iconIndex, Convert.ToInt32(SelectedIconSize.Key), Convert.ToInt32(SelectedIconSize.Key), phicon, piconid, 1, 0);
@@ -568,7 +568,7 @@ namespace PowerToolbox.Views.Pages
 
                 if (IconsGridView.SelectedItem is not null)
                 {
-                    IntPtr[] phicon = new IntPtr[1];
+                    nint[] phicon = new nint[1];
                     int[] piconid = new int[1];
                     int iconIndex = Convert.ToInt32((IconsGridView.SelectedItem as IconModel).DisplayIndex);
                     int nIcons = User32Library.PrivateExtractIcons(filePath, iconIndex, Convert.ToInt32(SelectedIconSize.Key), Convert.ToInt32(SelectedIconSize.Key), phicon, piconid, 1, 0);
@@ -633,7 +633,7 @@ namespace PowerToolbox.Views.Pages
                     await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IcoSizeNotSelected));
                     return;
                 }
-                OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
+                OpenFolderDialog openFolderDialog = new((nint)MainWindow.Current.AppWindow.Id.Value)
                 {
                     Description = SelectFolderString,
                     RootFolder = Environment.SpecialFolder.Desktop
@@ -752,7 +752,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (!string.IsNullOrEmpty(filePath))
             {
-                OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
+                OpenFolderDialog openFolderDialog = new((nint)MainWindow.Current.AppWindow.Id.Value)
                 {
                     Description = SelectFolderString,
                     RootFolder = Environment.SpecialFolder.Desktop
@@ -887,7 +887,7 @@ namespace PowerToolbox.Views.Pages
                     iconsNum = User32Library.PrivateExtractIcons(filePath, 0, 0, 0, null, null, 0, 0);
 
                     // 显示图标
-                    IntPtr[] phicon = new IntPtr[iconsNum];
+                    nint[] phicon = new nint[iconsNum];
                     int[] piconid = new int[iconsNum];
 
                     int nIcons = User32Library.PrivateExtractIcons(filePath, 0, 48, 48, phicon, piconid, iconsNum, 0);
@@ -1063,7 +1063,7 @@ namespace PowerToolbox.Views.Pages
         {
             try
             {
-                IntPtr[] phicon = new IntPtr[1];
+                nint[] phicon = new nint[1];
                 int[] piconid = new int[1];
                 int nIcons = User32Library.PrivateExtractIcons(filePath, iconIndex, size, size, phicon, piconid, 1, 0);
 

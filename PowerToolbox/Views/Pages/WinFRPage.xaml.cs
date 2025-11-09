@@ -850,8 +850,8 @@ namespace PowerToolbox.Views.Pages
                     {
                         // 准备扫描
                         progressDialog.SetTitle(PrepareScanString);
-                        progressDialog.SetLine(1, PrepareScanString, false, IntPtr.Zero);
-                        progressDialog.StartProgressDialog((IntPtr)MainWindow.Current.AppWindow.Id.Value, null, PROGDLG.PROGDLG_MODAL | PROGDLG.PROGDLG_NOMINIMIZE, IntPtr.Zero);
+                        progressDialog.SetLine(1, PrepareScanString, false, 0);
+                        progressDialog.StartProgressDialog((nint)MainWindow.Current.AppWindow.Id.Value, null, PROGDLG.PROGDLG_MODAL | PROGDLG.PROGDLG_NOMINIMIZE, 0);
 
                         await Task.Run(() =>
                         {
@@ -916,8 +916,8 @@ namespace PowerToolbox.Views.Pages
                                                             if (progressDialog is not null && !progressDialog.HasUserCanceled())
                                                             {
                                                                 progressDialog.SetTitle(ScanDeletedFileString);
-                                                                progressDialog.SetLine(1, ScanDeletedFileString, false, IntPtr.Zero);
-                                                                progressDialog.SetLine(2, string.Format(ScanningDeletedFileString, scanPercentage), false, IntPtr.Zero);
+                                                                progressDialog.SetLine(1, ScanDeletedFileString, false, 0);
+                                                                progressDialog.SetLine(2, string.Format(ScanningDeletedFileString, scanPercentage), false, 0);
                                                                 progressDialog.SetProgress(scanPercentage, 200);
                                                             }
                                                         }, null);
@@ -945,9 +945,9 @@ namespace PowerToolbox.Views.Pages
                                                             if (progressDialog is not null && !progressDialog.HasUserCanceled())
                                                             {
                                                                 progressDialog.SetTitle(RecoverDeletedFileString);
-                                                                progressDialog.SetLine(1, RecoverDeletedFileString, false, IntPtr.Zero);
-                                                                progressDialog.SetLine(2, string.Format(RecoveringDeletedFileString, finishedPercentage), false, IntPtr.Zero);
-                                                                progressDialog.SetLine(3, string.Format(RecoverFileString, currentItemIndex, totalItemIndex, fileName), false, IntPtr.Zero);
+                                                                progressDialog.SetLine(1, RecoverDeletedFileString, false, 0);
+                                                                progressDialog.SetLine(2, string.Format(RecoveringDeletedFileString, finishedPercentage), false, 0);
+                                                                progressDialog.SetLine(3, string.Format(RecoverFileString, currentItemIndex, totalItemIndex, fileName), false, 0);
                                                                 progressDialog.SetProgress(finishedPercentage + 100, 200);
                                                             }
                                                         }, null);
@@ -1096,7 +1096,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectFolderClicked(object sender, RoutedEventArgs args)
         {
-            OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
+            OpenFolderDialog openFolderDialog = new((nint)MainWindow.Current.AppWindow.Id.Value)
             {
                 Description = SelectFolderString,
                 RootFolder = Environment.SpecialFolder.Desktop
@@ -1132,7 +1132,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnLogSelectFolderClicked(object sender, RoutedEventArgs args)
         {
-            OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
+            OpenFolderDialog openFolderDialog = new((nint)MainWindow.Current.AppWindow.Id.Value)
             {
                 Description = SelectFolderString,
                 RootFolder = Environment.SpecialFolder.Desktop
@@ -1996,7 +1996,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private List<INET_FIREWALL_APP_CONTAINER> GetAppContainerList()
         {
-            IntPtr arrayValue = IntPtr.Zero;
+            nint arrayValue = 0;
             uint size = 0;
             List<INET_FIREWALL_APP_CONTAINER> inetContainerList = [];
 
@@ -2004,7 +2004,7 @@ namespace PowerToolbox.Views.Pages
             GCHandle handle_ppACs = GCHandle.Alloc(arrayValue, GCHandleType.Pinned);
             FirewallAPILibrary.NetworkIsolationEnumAppContainers(NETISO_FLAG.NETISO_FLAG_MAX, out size, out arrayValue);
 
-            IntPtr pACs = arrayValue;
+            nint pACs = arrayValue;
 
             int structSize = Marshal.SizeOf<INET_FIREWALL_APP_CONTAINER>();
 

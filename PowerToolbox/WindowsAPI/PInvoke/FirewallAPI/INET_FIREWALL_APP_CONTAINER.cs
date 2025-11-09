@@ -12,12 +12,12 @@ namespace PowerToolbox.WindowsAPI.PInvoke.FirewallAPI
         /// <summary>
         /// 应用容器的包标识符
         /// </summary>
-        internal IntPtr appContainerSid;
+        internal nint appContainerSid;
 
         /// <summary>
         /// 安全标识符 (应用容器所属用户的 SID) 。
         /// </summary>
-        internal IntPtr userSid;
+        internal nint userSid;
 
         /// <summary>
         /// 应用容器的全局唯一名称。对于 Windows 应用商店应用的应用容器，也称为“包系列名称”。

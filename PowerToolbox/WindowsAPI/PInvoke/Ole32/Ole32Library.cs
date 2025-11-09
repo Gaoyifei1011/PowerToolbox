@@ -38,6 +38,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Ole32
         /// </param>
         /// <param name="dwCapabilities">此代理的功能。 有关可能值的列表，请参阅 EOLE_AUTHENTICATION_CAPABILITIES 枚举。 唯一可以通过此函数设置的标志是EOAC_MUTUAL_AUTH、EOAC_STATIC_CLOAKING、EOAC_DYNAMIC_CLOAKING，EOAC_ANY_AUTHORITY (此标志已弃用) 、EOAC_MAKE_FULLSIC和EOAC_DEFAULT。 如果未设置 pAuthInfo 且 Schannel 不是身份验证服务，则可以设置 EOAC_STATIC_CLOAKING 或 EOAC_DYNAMIC_CLOAKING。 (有关详细信息，请参阅 隐藏 。) 如果设置了此处提及的功能以外的任何功能标志， CoSetProxyBlanket 将失败。</param>
         [DllImport(Ole32, CharSet = CharSet.Unicode, EntryPoint = "CoSetProxyBlanket", PreserveSig = true, SetLastError = false)]
-        public static extern int CoSetProxyBlanket(IntPtr proxy, uint dwAuthnSvc, uint dwAuthzSvc, IntPtr pServerPrincName, uint dwAuthLevel, uint dwImpLevel, IntPtr pAuthInfo, uint dwCapabilities);
+        public static extern int CoSetProxyBlanket(nint proxy, uint dwAuthnSvc, uint dwAuthzSvc, nint pServerPrincName, uint dwAuthLevel, uint dwImpLevel, nint pAuthInfo, uint dwCapabilities);
     }
 }

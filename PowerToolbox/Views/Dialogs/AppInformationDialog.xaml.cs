@@ -76,7 +76,7 @@ namespace PowerToolbox.Views.Dialogs
                     for (int index = 0; index < count; index++)
                     {
                         int packageInfoSize = Marshal.SizeOf<PACKAGE_INFO>();
-                        IntPtr packageInfoPtr = Marshal.AllocHGlobal(packageInfoSize);
+                        nint packageInfoPtr = Marshal.AllocHGlobal(packageInfoSize);
                         Marshal.Copy(buffer, index * packageInfoSize, packageInfoPtr, packageInfoSize);
                         PACKAGE_INFO packageInfo = Marshal.PtrToStructure<PACKAGE_INFO>(packageInfoPtr);
                         packageInfoList.Add(packageInfo);

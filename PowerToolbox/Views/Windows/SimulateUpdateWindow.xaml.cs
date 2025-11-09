@@ -32,7 +32,7 @@ namespace PowerToolbox.Views.Windows
         private int simulatePassedTime = 0;
         private readonly bool _blockAllKeys = false;
         private readonly bool _lockScreenAutomaticly = false;
-        private IntPtr hHook = IntPtr.Zero;
+        private nint hHook = 0;
         private HOOKPROC keyBoardHookProc;
 
         public new static SimulateUpdateWindow Current { get; private set; }
@@ -104,8 +104,8 @@ namespace PowerToolbox.Views.Windows
             _blockAllKeys = blockAllKeys;
             _lockScreenAutomaticly = lockScreenAutomaticly;
             (Content as WindowsAPI.ComTypes.IUIElementProtected).ProtectedCursor = InputDesktopResourceCursor.CreateFromModule("PowerToolbox.exe", 101);
-            int exStyle = GetWindowLongAuto((IntPtr)AppWindow.Id.Value, WindowLongIndexFlags.GWL_EXSTYLE);
-            SetWindowLongAuto((IntPtr)AppWindow.Id.Value, WindowLongIndexFlags.GWL_EXSTYLE, (IntPtr)(exStyle & ~0x00040000 | 0x00000080));
+            int exStyle = GetWindowLongAuto((nint)AppWindow.Id.Value, WindowLongIndexFlags.GWL_EXSTYLE);
+            SetWindowLongAuto((nint)AppWindow.Id.Value, WindowLongIndexFlags.GWL_EXSTYLE, exStyle & ~0x00040000 | 0x00000080);
             SystemSleepHelper.PreventForCurrentThread();
             StartHook();
             Activate();
@@ -169,14 +169,14 @@ namespace PowerToolbox.Views.Windows
             try
             {
                 // 安装键盘钩子
-                if (hHook.Equals(IntPtr.Zero))
+                if (hHook is 0)
                 {
                     keyBoardHookProc = new HOOKPROC(OnKeyboardHookProc);
 
                     hHook = User32Library.SetWindowsHookEx(HOOKTYPE.WH_KEYBOARD_LL, keyBoardHookProc, Process.GetCurrentProcess().MainModule.BaseAddress, 0);
 
                     //如果设置钩子失败.
-                    if (hHook.Equals(IntPtr.Zero))
+                    if (hHook is 0)
                     {
                         StopHook();
                     }
@@ -196,7 +196,7 @@ namespace PowerToolbox.Views.Windows
             try
             {
                 bool unHookResult = true;
-                if (!hHook.Equals(IntPtr.Zero))
+                if (hHook is not 0)
                 {
                     unHookResult = User32Library.UnhookWindowsHookEx(hHook);
                 }
@@ -215,7 +215,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 自定义钩子消息处理
         /// </summary>
-        public IntPtr OnKeyboardHookProc(int nCode, UIntPtr wParam, IntPtr lParam)
+        public nint OnKeyboardHookProc(int nCode, nuint wParam, nint lParam)
         {
             // 处理键盘钩子消息
             if (nCode >= 0)
@@ -226,7 +226,7 @@ namespace PowerToolbox.Views.Windows
                 if (kbdllHookStruct.vkCode is Keys.Escape)
                 {
                     StopLoaf();
-                    return new IntPtr(1);
+                    return 1;
                 }
 
                 // 屏蔽所有键盘按键
@@ -235,43 +235,43 @@ namespace PowerToolbox.Views.Windows
                     // 左 Windows 徽标键
                     if (kbdllHookStruct.vkCode is Keys.LWin)
                     {
-                        return new IntPtr(1);
+                        return 1;
                     }
 
                     // 右 Windows 徽标键
                     if (kbdllHookStruct.vkCode is Keys.LWin)
                     {
-                        return new IntPtr(1);
+                        return 1;
                     }
 
                     // Ctrl 和 Esc 组合
                     if (kbdllHookStruct.vkCode is Keys.Escape && ((User32Library.GetKeyState(Keys.LControlKey) & 0x8000) is not 0 || (User32Library.GetKeyState(Keys.RControlKey) & 0x8000) is not 0))
                     {
-                        return new IntPtr(1);
+                        return 1;
                     }
 
                     // Alt 和 F4 组合
                     if (kbdllHookStruct.vkCode is Keys.F4 && ((User32Library.GetKeyState(Keys.Alt) & 0x8000) is not 0))
                     {
-                        return new IntPtr(1);
+                        return 1;
                     }
 
                     // Alt 和 Tab 组合
                     if (kbdllHookStruct.vkCode is Keys.Tab && ((User32Library.GetKeyState(Keys.Alt) & 0x8000) is not 0))
                     {
-                        return new IntPtr(1);
+                        return 1;
                     }
 
                     // Ctrl Shift Esc 组合
                     if (kbdllHookStruct.vkCode is Keys.Escape && ((User32Library.GetKeyState(Keys.LControlKey) & 0x8000) is not 0 || (User32Library.GetKeyState(Keys.RControlKey) & 0x8000) is not 0) && ((User32Library.GetKeyState(Keys.LShiftKey) & 0x8000) is not 0 || (User32Library.GetKeyState(Keys.RShiftKey) & 0x8000) is not 0))
                     {
-                        return new IntPtr(1);
+                        return 1;
                     }
 
                     // Alt 和 Space 组合
                     if (kbdllHookStruct.vkCode is Keys.Space && ((User32Library.GetKeyState(Keys.Alt) & 0x8000) is not 0))
                     {
-                        return new IntPtr(1);
+                        return 1;
                     }
                 }
             }
@@ -293,10 +293,10 @@ namespace PowerToolbox.Views.Windows
             // 恢复此线程曾经阻止的系统休眠和屏幕关闭。
             SystemSleepHelper.RestoreForCurrentThread();
             Close();
-            User32Library.keybd_event(Keys.LWin, 0, KEYEVENTFLAGS.KEYEVENTF_KEYDOWN, UIntPtr.Zero);
-            User32Library.keybd_event(Keys.D, 0, KEYEVENTFLAGS.KEYEVENTF_KEYDOWN, UIntPtr.Zero);
-            User32Library.keybd_event(Keys.D, 0, KEYEVENTFLAGS.KEYEVENTF_KEYUP, UIntPtr.Zero);
-            User32Library.keybd_event(Keys.LWin, 0, KEYEVENTFLAGS.KEYEVENTF_KEYUP, UIntPtr.Zero);
+            User32Library.keybd_event(Keys.LWin, 0, KEYEVENTFLAGS.KEYEVENTF_KEYDOWN, 0);
+            User32Library.keybd_event(Keys.D, 0, KEYEVENTFLAGS.KEYEVENTF_KEYDOWN, 0);
+            User32Library.keybd_event(Keys.D, 0, KEYEVENTFLAGS.KEYEVENTF_KEYUP, 0);
+            User32Library.keybd_event(Keys.LWin, 0, KEYEVENTFLAGS.KEYEVENTF_KEYUP, 0);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 获取窗口属性
         /// </summary>
-        private static int GetWindowLongAuto(IntPtr hWnd, WindowLongIndexFlags nIndex)
+        private static int GetWindowLongAuto(nint hWnd, WindowLongIndexFlags nIndex)
         {
             return IntPtr.Size is 8 ? User32Library.GetWindowLongPtr(hWnd, nIndex) : User32Library.GetWindowLong(hWnd, nIndex);
         }
@@ -324,7 +324,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 更改窗口属性
         /// </summary>
-        private static IntPtr SetWindowLongAuto(IntPtr hWnd, WindowLongIndexFlags nIndex, IntPtr dwNewLong)
+        private static nint SetWindowLongAuto(nint hWnd, WindowLongIndexFlags nIndex, nint dwNewLong)
         {
             return IntPtr.Size is 8 ? User32Library.SetWindowLongPtr(hWnd, nIndex, dwNewLong) : User32Library.SetWindowLong(hWnd, nIndex, dwNewLong);
         }

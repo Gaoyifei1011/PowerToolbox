@@ -17,6 +17,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.FirewallAPI
         /// <summary>
         /// 应用容器中运行的应用程序的路径。
         /// </summary>
-        public IntPtr binaries;
+        public nint binaries;
     }
 }

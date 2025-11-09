@@ -98,7 +98,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <param name="items">指向包含幻灯片放映图像的 IShellItemArray 的指针。 此数组可以包含存储在同一容器中的单个项 (存储在文件夹) 中的文件，也可以包含单个项，即容器本身 (包含图像) 的文件夹。 数组的任何其他配置都将导致此方法失败。</param>
         /// <returns>如果该方法成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [PreserveSig]
-        int SetSlideshow(IntPtr items);
+        int SetSlideshow(nint items);
 
         /// <summary>
         /// 获取存储幻灯片放映图像的目录的路径。
@@ -106,7 +106,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <param name="items">指向 IShellItemArray 对象的指针的地址，当此方法成功返回时，该对象接收构成幻灯片放映的项。 此数组可以包含存储在同一容器中的单个项，也可以包含作为容器本身的单个项。</param>
         /// <returns>如果该方法成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [PreserveSig]
-        int GetSlideshow(out IntPtr items);
+        int GetSlideshow(out nint items);
 
         /// <summary>
         /// 设置桌面壁纸幻灯片放映设置，以便进行随机播放和计时。

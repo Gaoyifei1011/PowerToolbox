@@ -67,7 +67,7 @@ namespace PowerToolbox
             int successCount = User32Library.PrivateExtractIcons(System.Windows.Forms.Application.ExecutablePath, 0, 256, 256, hIcons, ids, iconTotalCount, 0);
 
             // GetStoreApp.exe 应用程序只有一个图标
-            if (successCount >= 1 && hIcons[0] != IntPtr.Zero)
+            if (successCount >= 1 && hIcons[0] is not 0)
             {
                 appWindow.SetIcon(new IconId() { Value = (ulong)hIcons[0] });
             }

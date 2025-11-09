@@ -27,7 +27,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.NewDev
         /// <param name="NeedReboot">指向 DiInstallDriver 类型的 BOOL 类型的值的指针，用于指示是否需要系统重启才能完成安装。 此参数是可选的，可以 NULL。 如果提供参数并且需要系统重启才能完成安装，DiInstallDriver 将值设置为 true。 在这种情况下，调用方必须提示用户重启系统。 如果提供了此参数，并且不需要系统重启才能完成安装，DiInstallDriver 将值设置为 FALSE。 如果参数 NULL 并且需要系统重启才能完成安装，DiInstallDriver 将显示系统重启对话框。</param>
         /// <returns>DiInstallDriver 如果函数成功在 驱动程序存储中预安装指定的 驱动程序包，则返回 true。 如果函数在系统中的一个或多个设备上成功安装驱动程序，则 DiInstallDriver 也会返回 true。 如果在驱动程序存储中未成功安装驱动程序包，DiInstallDriver 返回 FALSE。</returns>
         [DllImport(NewDev, CharSet = CharSet.Unicode, EntryPoint = "DiInstallDriverW", PreserveSig = true, SetLastError = false)]
-        public static extern bool DiInstallDriver(IntPtr hwndParent, [MarshalAs(UnmanagedType.LPWStr)] string InfPath, uint Flags, out bool NeedReboot);
+        public static extern bool DiInstallDriver(nint hwndParent, [MarshalAs(UnmanagedType.LPWStr)] string InfPath, uint Flags, out bool NeedReboot);
 
         /// <summary>
         /// DiUninstallDriver 函数通过安装具有另一个匹配驱动程序包的设备（如果可用）安装驱动程序包，或者如果没有其他匹配驱动程序包可用，则从安装驱动程序包的任何设备中删除驱动程序包。 然后，从 驱动程序存储中删除指定的驱动程序包。
@@ -41,6 +41,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.NewDev
         /// <param name="NeedReboot">指向 BOOL 类型的值的指针，该值 DiUninstallDriver 设置为指示是否需要系统重启才能完成卸载。 此参数是可选的，可以 NULL。 如果提供参数并且需要系统重启才能完成卸载，DiUninstallDriver 将值设置为 true。 在这种情况下，调用方必须提示用户重启系统。 如果提供了此参数，并且不需要系统重启才能完成卸载，DiUninstallDriver 将值设置为 FALSE。 如果参数 NULL 并且需要系统重启才能完成卸载，DiUninstallDriver 将显示系统重启对话框。</param>
         /// <returns>DiInstallDriver 如果函数成功在 驱动程序存储中预安装指定的 驱动程序包，则返回 true。 如果函数在系统中的一个或多个设备上成功安装驱动程序，则 DiInstallDriver 也会返回 true。 如果在驱动程序存储中未成功安装驱动程序包，DiInstallDriver 返回 FALSE。</returns>
         [DllImport(NewDev, CharSet = CharSet.Unicode, EntryPoint = "DiUninstallDriverW", PreserveSig = true, SetLastError = false)]
-        public static extern bool DiUninstallDriver(IntPtr hwndParent, [MarshalAs(UnmanagedType.LPWStr)] string InfPath, DIURFLAG Flags, out bool NeedReboot);
+        public static extern bool DiUninstallDriver(nint hwndParent, [MarshalAs(UnmanagedType.LPWStr)] string InfPath, DIURFLAG Flags, out bool NeedReboot);
     }
 }

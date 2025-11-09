@@ -12,7 +12,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         /// <summary>
         /// 要传递给接收应用程序的数据类型。 接收应用程序定义有效类型。
         /// </summary>
-        public IntPtr dwData;
+        public nint dwData;
 
         /// <summary>
         /// lpData 成员指向的数据的大小（以字节为单位）。

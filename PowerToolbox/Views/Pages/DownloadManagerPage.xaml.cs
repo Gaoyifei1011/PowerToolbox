@@ -110,10 +110,10 @@ namespace PowerToolbox.Views.Pages
                         {
                             if (File.Exists(filePath))
                             {
-                                IntPtr pidlList = Shell32Library.ILCreateFromPath(filePath);
-                                if (!pidlList.Equals(IntPtr.Zero))
+                                nint pidlList = Shell32Library.ILCreateFromPath(filePath);
+                                if (pidlList is not 0)
                                 {
-                                    Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, IntPtr.Zero, 0);
+                                    Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
                                     Shell32Library.ILFree(pidlList);
                                 }
                             }
@@ -220,9 +220,9 @@ namespace PowerToolbox.Views.Pages
                     try
                     {
                         List<StorageFile> fileList = [await StorageFile.GetFileFromPathAsync(filePath)];
-                        dataTransferManagerInterop.GetForWindow((IntPtr)MainWindow.Current.AppWindow.Id.Value, new("A5CAEE9B-8708-49D1-8D36-67D25A8DA00C"), out DataTransferManager dataTransferManager);
+                        dataTransferManagerInterop.GetForWindow((nint)MainWindow.Current.AppWindow.Id.Value, new("A5CAEE9B-8708-49D1-8D36-67D25A8DA00C"), out DataTransferManager dataTransferManager);
                         dataTransferManager.DataRequested += (sender, args) => OnDataRequested(sender, args, fileList);
-                        dataTransferManagerInterop.ShowShareUIForWindow((IntPtr)MainWindow.Current.AppWindow.Id.Value);
+                        dataTransferManagerInterop.ShowShareUIForWindow((nint)MainWindow.Current.AppWindow.Id.Value);
                     }
                     catch (Exception e)
                     {
@@ -252,7 +252,7 @@ namespace PowerToolbox.Views.Pages
                         lpFile = filePath,
                         nShow = 5,
                         fMask = ShellExecuteMaskFlags.SEE_MASK_INVOKEIDLIST,
-                        hwnd = IntPtr.Zero
+                        hwnd = 0
                     };
                     Shell32Library.ShellExecuteEx(ref info);
                 });
@@ -331,7 +331,7 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
-                    Shell32Library.SHGetKnownFolderPath(new("374DE290-123F-4565-9164-39C4925E467B"), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, IntPtr.Zero, out string downloadFolder);
+                    Shell32Library.SHGetKnownFolderPath(new("374DE290-123F-4565-9164-39C4925E467B"), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, 0, out string downloadFolder);
                     Process.Start(downloadFolder);
                 }
                 catch (Exception e)

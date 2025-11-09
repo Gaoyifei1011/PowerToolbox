@@ -20,7 +20,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// </param>
         /// <returns>此方法返回以下 HRESULT 值以及其他值。</returns>
         [PreserveSig]
-        int AddFileSet(uint cFileCount, IntPtr pFileSet);
+        int AddFileSet(uint cFileCount, nint pFileSet);
 
         /// <summary>
         /// 将单个文件添加到作业。
@@ -37,7 +37,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <param name="pEnum">用于枚举作业中的文件的 IEnumBackgroundCopyFiles 接口指针。 完成后释放 ppEnumFiles 。</param>
         /// <returns>此方法在成功时返回 S_OK 或错误时返回标准 COM HRESULT 值之一。</returns>
         [PreserveSig]
-        int EnumFiles(out IntPtr pEnum);
+        int EnumFiles(out nint pEnum);
 
         /// <summary>
         /// 挂起作业。 新作业、出错的作业和已完成文件传输的作业将自动挂起。
@@ -97,7 +97,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <param name="pVal">包含与作业相关的时间戳。 有关可用的时间戳，请参阅 BG_JOB_TIMES 结构。</param>
         /// <returns>此方法返回以下 HRESULT 值以及其他值。</returns>
         [PreserveSig]
-        int GetTimes(out IntPtr pVal);
+        int GetTimes(out nint pVal);
 
         /// <summary>
         /// 检索作业的状态。

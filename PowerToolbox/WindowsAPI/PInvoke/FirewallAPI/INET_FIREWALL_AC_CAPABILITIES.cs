@@ -17,6 +17,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.FirewallAPI
         /// <summary>
         /// 与应用容器功能相关的安全信息。
         /// </summary>
-        public IntPtr capabilities;
+        public nint capabilities;
     }
 }

@@ -46,7 +46,7 @@ namespace PowerToolbox.Services.Download
         {
             try
             {
-                Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, IntPtr.Zero, out string localAppdataPath);
+                Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, 0, out string localAppdataPath);
                 Aria2ConfPath = Path.Combine(localAppdataPath, "Aria2.conf");
 
                 // 原配置文件存在且新的配置文件不存在，拷贝到指定目录

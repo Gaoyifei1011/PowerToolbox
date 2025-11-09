@@ -16,6 +16,9 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+// 抑制 CA1806 警告
+#pragma warning disable CA1806
+
 namespace PowerToolbox.Views.Dialogs
 {
     /// <summary>
@@ -112,14 +115,14 @@ namespace PowerToolbox.Views.Dialogs
                 {
                     case "AppCache":
                         {
-                            Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, IntPtr.Zero, out string localAppdataPath);
+                            Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, 0, out string localAppdataPath);
                             DownloadFolder = localAppdataPath;
                             DownloadOptionsService.SetFolder(DownloadFolder);
                             break;
                         }
                     case "Download":
                         {
-                            Shell32Library.SHGetKnownFolderPath(new("374DE290-123F-4565-9164-39C4925E467B"), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, IntPtr.Zero, out string downloadFolder);
+                            Shell32Library.SHGetKnownFolderPath(new("374DE290-123F-4565-9164-39C4925E467B"), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, 0, out string downloadFolder);
                             DownloadFolder = downloadFolder;
                             DownloadOptionsService.SetFolder(DownloadFolder);
                             break;
@@ -132,7 +135,7 @@ namespace PowerToolbox.Views.Dialogs
                         }
                     case "Custom":
                         {
-                            OpenFolderDialog openFolderDialog = new((IntPtr)MainWindow.Current.AppWindow.Id.Value)
+                            OpenFolderDialog openFolderDialog = new((nint)MainWindow.Current.AppWindow.Id.Value)
                             {
                                 Description = SelectFolderString,
                                 RootFolder = Environment.SpecialFolder.Desktop

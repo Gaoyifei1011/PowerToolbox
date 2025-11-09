@@ -21,6 +21,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Imagehlp
         /// <returns>如果函数成功，则返回值为 TRUE。如果函数失败，则返回值为 FALSE。</returns>
         [DllImport(Imagehlp, CharSet = CharSet.Unicode, EntryPoint = "ImageRemoveCertificate", PreserveSig = true, SetLastError = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool ImageRemoveCertificate(IntPtr handle, int index);
+        public static extern bool ImageRemoveCertificate(nint handle, int index);
     }
 }

@@ -26,7 +26,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shlwapi
         /// <param name="ppstm">接收与文件关联的流的 IStream 接口指针。</param>
         /// <returns>如果此函数成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [DllImport(Shlwapi, CharSet = CharSet.Unicode, EntryPoint = "SHCreateStreamOnFileEx", PreserveSig = true)]
-        public static extern int SHCreateStreamOnFileEx([MarshalAs(UnmanagedType.LPWStr)] string pszFile, STGM grfMode, uint dwAttributes, bool fCreate, IStream pstmTemplate, out IStream ppstm);
+        public static extern int SHCreateStreamOnFileEx([MarshalAs(UnmanagedType.LPWStr)] string pszFile, STGM grfMode, uint dwAttributes, bool fCreate, [MarshalAs(UnmanagedType.Interface)] IStream pstmTemplate, [MarshalAs(UnmanagedType.Interface)] out IStream ppstm);
 
         /// <summary>
         /// 以间接字符串的形式给定该资源时，提取指定的文本资源 (以“@”符号) 开头的字符串。
@@ -37,6 +37,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shlwapi
         /// <param name="ppvReserved">未使用;设置为 NULL。</param>
         /// <returns>如果此函数成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [DllImport(Shlwapi, CharSet = CharSet.Unicode, EntryPoint = "SHLoadIndirectString", ExactSpelling = true, PreserveSig = true)]
-        public static extern int SHLoadIndirectString([MarshalAs(UnmanagedType.LPWStr)] string pszSource, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszOutBuf, int cchOutBuf, IntPtr ppvReserved);
+        public static extern int SHLoadIndirectString([MarshalAs(UnmanagedType.LPWStr)] string pszSource, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszOutBuf, int cchOutBuf, nint ppvReserved);
     }
 }

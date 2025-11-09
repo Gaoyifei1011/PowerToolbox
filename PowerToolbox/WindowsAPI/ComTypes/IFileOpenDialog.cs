@@ -16,7 +16,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <returns>如果该方法成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
 
         [PreserveSig]
-        int Show(IntPtr hwndOwner);
+        int Show(nint hwndOwner);
 
         /// <summary>
         /// 设置对话框可以打开或保存的文件类型。
@@ -26,7 +26,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <returns>如果该方法成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         /// </summary>
         [PreserveSig]
-        int SetFileTypes(uint cFileTypes, IntPtr rgFilterSpec);
+        int SetFileTypes(uint cFileTypes, nint rgFilterSpec);
 
         /// <summary>
         /// 设置在对话框中显示为所选的文件类型。
@@ -51,7 +51,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <param name="pdwCookie">指向 DWORD 的指针，该 DWORD 接收标识此事件处理程序的值。 当客户端完成对话时，该客户端必须使用此值调用 IFileDialog::Unadvise 方法。</param>
         /// <returns>如果该方法成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [PreserveSig]
-        int Advise(IntPtr pfde, out uint pdwCookie);
+        int Advise(nint pfde, out uint pdwCookie);
 
         /// <summary>
         /// 删除通过 Advise 方法附加的事件处理程序。
@@ -204,7 +204,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <param name="pFilter">指向要设置的 IShellItemFilter 的 指针。</param>
         /// <returns>如果该方法成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [PreserveSig]
-        int SetFilter(IntPtr pFilter);
+        int SetFilter(nint pFilter);
 
         /// <summary>
         /// 在允许多项选择的对话框中获取用户的选择。
@@ -212,7 +212,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <param name="ppenum">指向 IShellItemArray 的指针的地址，可通过该地址访问对话框中选择的项。</param>
         /// <returns>如果该方法成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [PreserveSig]
-        int GetResults(out IntPtr ppenum);
+        int GetResults(out nint ppenum);
 
         /// <summary>
         /// 获取对话框中当前选定的项。这些项目可能是在视图中选择的项目，也可能是在文件名编辑框中选择的文本。
@@ -220,6 +220,6 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <param name="ppsai">指向 IShellItemArray 的指针的地址，可通过该地址访问所选项。</param>
         /// <returns>如果该方法成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [PreserveSig]
-        int GetSelectedItems(out IntPtr ppsai);
+        int GetSelectedItems(out nint ppsai);
     }
 }
