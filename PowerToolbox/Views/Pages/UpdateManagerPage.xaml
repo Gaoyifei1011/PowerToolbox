@@ -38,7 +38,7 @@
     <Grid>
         <!--  检查更新和更多选项  -->
         <StackPanel
-            Margin="0,8,30,0"
+            Margin="0,12,30,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Canvas.ZIndex="1"
@@ -152,7 +152,7 @@
             </Button>
         </StackPanel>
 
-        <Grid Margin="14,0,0,0">
+        <Grid Margin="14,6,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />

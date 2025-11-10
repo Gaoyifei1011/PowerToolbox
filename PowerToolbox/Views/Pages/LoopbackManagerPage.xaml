@@ -28,7 +28,7 @@
 
         <StackPanel
             Grid.Row="0"
-            Margin="30,10,30,0"
+            Margin="30,15,30,0"
             Orientation="Horizontal"
             Spacing="5">
 
