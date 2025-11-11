@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
@@ -138,6 +139,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isAllSelected;
+
+        public bool IsAllSelected
+        {
+            get { return _isAllSelected; }
+
+            set
+            {
+                if (!Equals(_isAllSelected, value))
+                {
+                    _isAllSelected = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAllSelected)));
+                }
+            }
+        }
+
         private bool _isEncrypting;
 
         public bool IsEncrypting
@@ -251,6 +268,14 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 数据加密类型选中项发生改变时触发的事件
+        /// </summary>
+        private void OnDataEncryptCheckExecuteRequested(object sender, ExecuteRequestedEventArgs args)
+        {
+            IsAllSelected = DataEncryptTypeList.All(item => item.IsSelected);
+        }
+
+        /// <summary>
         /// 选中项发生改变时触发的事件
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
@@ -295,6 +320,32 @@ namespace PowerToolbox.Views.Pages
             {
                 EncryptContent = textBox.Text;
             }
+        }
+
+        /// <summary>
+        /// 全选
+        /// </summary>
+        private void OnSelectAllClicked(object sender, RoutedEventArgs args)
+        {
+            foreach (DataEncryptTypeModel dataEncryptTypeItem in DataEncryptTypeList)
+            {
+                dataEncryptTypeItem.IsSelected = true;
+            }
+
+            IsAllSelected = true;
+        }
+
+        /// <summary>
+        /// 全部反选
+        /// </summary>
+        private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
+        {
+            foreach (DataEncryptTypeModel dataEncryptTypeItem in DataEncryptTypeList)
+            {
+                dataEncryptTypeItem.IsSelected = false;
+            }
+
+            IsAllSelected = false;
         }
 
         /// <summary>

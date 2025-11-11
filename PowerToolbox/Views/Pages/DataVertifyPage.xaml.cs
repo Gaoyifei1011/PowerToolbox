@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
+using PowerToolbox.Helpers.Hashing;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using System;
@@ -158,6 +159,22 @@ namespace PowerToolbox.Views.Pages
                 {
                     _resultMessage = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultMessage)));
+                }
+            }
+        }
+
+        private bool _isAllSelected;
+
+        public bool IsAllSelected
+        {
+            get { return _isAllSelected; }
+
+            set
+            {
+                if (!Equals(_isAllSelected, value))
+                {
+                    _isAllSelected = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAllSelected)));
                 }
             }
         }
@@ -385,6 +402,14 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 数据校验类型选中项发生改变时触发的事件
+        /// </summary>
+        private void OnDataVertifyCheckExecuteRequested(object sender, ExecuteRequestedEventArgs args)
+        {
+            IsAllSelected = DataVertifyTypeList.All(item => item.IsSelected);
+        }
+
+        /// <summary>
         /// 选中项发生改变时触发的事件
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
@@ -429,6 +454,32 @@ namespace PowerToolbox.Views.Pages
             {
                 VertifyContent = textBox.Text;
             }
+        }
+
+        /// <summary>
+        /// 全选
+        /// </summary>
+        private void OnSelectAllClicked(object sender, RoutedEventArgs args)
+        {
+            foreach (DataVertifyTypeModel dataVertifyTypeItem in DataVertifyTypeList)
+            {
+                dataVertifyTypeItem.IsSelected = true;
+            }
+
+            IsAllSelected = true;
+        }
+
+        /// <summary>
+        /// 全部反选
+        /// </summary>
+        private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
+        {
+            foreach (DataVertifyTypeModel dataVertifyTypeItem in DataVertifyTypeList)
+            {
+                dataVertifyTypeItem.IsSelected = false;
+            }
+
+            IsAllSelected = false;
         }
 
         /// <summary>
@@ -653,10 +704,26 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataVertifyType.MD2:
                     {
+                        if (selectVertifyIndex is 0 && fileStream is not null)
+                        {
+                            vertifiedData = BCryptHelper.ComputeMD2Hash(fileStream);
+                        }
+                        else if (selectVertifyIndex is 1 && contentData is not null)
+                        {
+                            vertifiedData = BCryptHelper.ComputeMD2Hash(contentData);
+                        }
                         break;
                     }
                 case DataVertifyType.MD4:
                     {
+                        if (selectVertifyIndex is 0 && fileStream is not null)
+                        {
+                            vertifiedData = BCryptHelper.ComputeMD4Hash(fileStream);
+                        }
+                        else if (selectVertifyIndex is 1 && contentData is not null)
+                        {
+                            vertifiedData = BCryptHelper.ComputeMD4Hash(contentData);
+                        }
                         break;
                     }
                 case DataVertifyType.MD5:
