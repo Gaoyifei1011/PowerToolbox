@@ -73,10 +73,10 @@
     </AppxManifest>
     <None Include="Package.StoreAssociation.xml" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6901" />
-    <PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="1.8.251003001" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="1.8.251106002" />
     <ProjectReference Include="..\PowerToolbox\PowerToolbox.csproj" />
     <ProjectReference Include="..\PowerToolboxShellExtension\PowerToolboxShellExtension.csproj" />
-		<ProjectReference Include="..\ThemeSwitch\ThemeSwitch.csproj" />
+    <ProjectReference Include="..\ThemeSwitch\ThemeSwitch.csproj" />
   </ItemGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
   <!--将生成的文件放到应用包的根目录-->
