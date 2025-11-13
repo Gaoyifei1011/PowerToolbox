@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
+using PowerToolbox.Extensions.Hashing;
 using PowerToolbox.Helpers.Hashing;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
@@ -656,6 +657,29 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataVertifyType.CRC_32:
                     {
+                        try
+                        {
+                            Crc32 crc32 = new();
+                            byte[] hashBytes = null;
+                            if (selectVertifyIndex is 0 && fileStream is not null)
+                            {
+                                hashBytes = crc32.ComputeHash(fileStream);
+                            }
+                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            {
+                                hashBytes = crc32.ComputeHash(contentData);
+                            }
+                            crc32.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                vertifiedData = string.Format("{0:X}", BitConverter.ToUInt32(hashBytes, 0));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.CRC_32) + 1, e);
+                        }
                         break;
                     }
                 case DataVertifyType.CRC_64:
