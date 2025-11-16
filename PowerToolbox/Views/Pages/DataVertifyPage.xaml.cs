@@ -723,7 +723,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                vertifiedData = string.Format("{0:X}", BitConverter.ToUInt32(hashBytes, 0));
+                                vertifiedData = string.Format("{0:x}", BitConverter.ToUInt32(hashBytes, 0));
                             }
                         }
                         catch (Exception e)

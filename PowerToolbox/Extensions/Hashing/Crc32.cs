@@ -3,6 +3,9 @@ using System.Security.Cryptography;
 
 namespace PowerToolbox.Extensions.Hashing
 {
+    /// <summary>
+    /// Crc32 校验实现
+    /// </summary>
     public class Crc32 : HashAlgorithm
     {
         private uint crc32Result = 0xFFFFFFFF;
