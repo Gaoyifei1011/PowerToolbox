@@ -684,6 +684,29 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataVertifyType.CRC_64:
                     {
+                        try
+                        {
+                            CRC64 crc64 = new();
+                            byte[] hashBytes = null;
+                            if (selectVertifyIndex is 0 && fileStream is not null)
+                            {
+                                hashBytes = crc64.ComputeHash(fileStream);
+                            }
+                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            {
+                                hashBytes = crc64.ComputeHash(contentData);
+                            }
+                            crc64.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                vertifiedData = string.Format("{0:x16}", BitConverter.ToUInt64(hashBytes, 0));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.CRC_32) + 1, e);
+                        }
                         break;
                     }
                 case DataVertifyType.ED2K:
