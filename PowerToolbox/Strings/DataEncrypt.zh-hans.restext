@@ -40,4 +40,6 @@ SM2=SM2
 SM4=SM4
 StartEncrypt=开始加密
 TripleDES=TripleDES
+UseLowerCaseString=使用小写字母
+UseUpperCaseString=使用大写字母
 XOR=XOR

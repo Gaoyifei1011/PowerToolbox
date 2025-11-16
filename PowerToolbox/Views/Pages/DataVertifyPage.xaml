@@ -243,6 +243,7 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <FontIcon
@@ -256,8 +257,22 @@
                     VerticalAlignment="Center"
                     Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('Operation')}" />
 
-                <Button
+                <CheckBox
                     Grid.Column="2"
+                    MinWidth="0"
+                    Margin="0,0,10,0"
+                    Checked="{x:Bind OnUseUpperCaseChecked}"
+                    IsChecked="{x:Bind UseUpperCase, Mode=TwoWay}"
+                    Unchecked="{x:Bind OnUseUpperCaseUnchecked}">
+
+                    <Grid>
+                        <TextBlock Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('UseUpperCaseString')}" Visibility="{x:Bind UseUpperCase, Mode=OneWay}" />
+                        <TextBlock Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('UseLowerCaseString')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseUpperCase), Mode=OneWay}" />
+                    </Grid>
+                </CheckBox>
+
+                <Button
+                    Grid.Column="3"
                     Click="{x:Bind OnStartVertifyClicked}"
                     Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('StartVertify')}"
                     IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVertifying), Mode=OneWay}"
@@ -382,7 +397,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="14"
                                 IsTextSelectionEnabled="True"
-                                Text="{x:Bind Result}"
+                                Text="{x:Bind Result, Mode=OneWay}"
                                 TextAlignment="Left"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="Wrap" />

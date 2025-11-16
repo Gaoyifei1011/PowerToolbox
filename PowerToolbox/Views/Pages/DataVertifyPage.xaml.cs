@@ -180,6 +180,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _useUpperCase;
+
+        public bool UseUpperCase
+        {
+            get { return _useUpperCase; }
+
+            set
+            {
+                if (!Equals(_useUpperCase, value))
+                {
+                    _useUpperCase = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UseUpperCase)));
+                }
+            }
+        }
+
         private bool _isVertifying;
 
         public bool IsVertifying
@@ -484,6 +500,28 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 输出格式为大写字母
+        /// </summary>
+        private void OnUseUpperCaseChecked(object sender, RoutedEventArgs args)
+        {
+            foreach (DataEncryptVertifyResultModel dataEncryptVertifyResultItem in DataVertifyResultCollection)
+            {
+                dataEncryptVertifyResultItem.Result = dataEncryptVertifyResultItem.Result.ToUpper();
+            }
+        }
+
+        /// <summary>
+        /// 输出格式为小写字母
+        /// </summary>
+        private void OnUseUpperCaseUnchecked(object sender, RoutedEventArgs args)
+        {
+            foreach (DataEncryptVertifyResultModel dataEncryptVertifyResultItem in DataVertifyResultCollection)
+            {
+                dataEncryptVertifyResultItem.Result = dataEncryptVertifyResultItem.Result.ToLower();
+            }
+        }
+
+        /// <summary>
         /// 开始数据校验
         /// </summary>
         private async void OnStartVertifyClicked(object sender, RoutedEventArgs args)
@@ -587,9 +625,21 @@ namespace PowerToolbox.Views.Pages
                 return dataVertifyResultList;
             });
 
-            foreach (DataEncryptVertifyResultModel dataEncryptVertifyResultItem in dataVertifyResultList)
+            if (UseUpperCase)
             {
-                DataVertifyResultCollection.Add(dataEncryptVertifyResultItem);
+                foreach (DataEncryptVertifyResultModel dataEncryptVertifyResultItem in dataVertifyResultList)
+                {
+                    dataEncryptVertifyResultItem.Result = dataEncryptVertifyResultItem.Result.ToUpper();
+                    DataVertifyResultCollection.Add(dataEncryptVertifyResultItem);
+                }
+            }
+            else
+            {
+                foreach (DataEncryptVertifyResultModel dataEncryptVertifyResultItem in dataVertifyResultList)
+                {
+                    dataEncryptVertifyResultItem.Result = dataEncryptVertifyResultItem.Result.ToLower();
+                    DataVertifyResultCollection.Add(dataEncryptVertifyResultItem);
+                }
             }
 
             if (DataVertifyResultCollection.Count > 0)

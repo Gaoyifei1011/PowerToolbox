@@ -40,4 +40,6 @@ SM2=SM2
 SM4=SM4
 StartEncrypt=Start encrypt
 TripleDES=TripleDES
+UseLowerCaseString=Use lowercase letters
+UseUpperCaseString=Use uppercase letters
 XOR=XOR

@@ -1,9 +1,11 @@
-﻿namespace PowerToolbox.Models
+﻿using System.ComponentModel;
+
+namespace PowerToolbox.Models
 {
     /// <summary>
     /// 数据加密校验结果数据模型
     /// </summary>
-    public class DataEncryptVertifyResultModel
+    public class DataEncryptVertifyResultModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 加密 / 校验名称
@@ -13,6 +15,22 @@
         /// <summary>
         /// 加密 / 校验后的结果
         /// </summary>
-        public string Result { get; set; }
+        private string _result;
+
+        public string Result
+        {
+            get { return _result; }
+
+            set
+            {
+                if (!Equals(_result, value))
+                {
+                    _result = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Result)));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
