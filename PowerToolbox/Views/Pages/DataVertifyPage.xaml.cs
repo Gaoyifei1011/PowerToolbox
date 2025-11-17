@@ -17,8 +17,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-// 抑制 CA1822，IDE0060 警告
-#pragma warning disable CA1822,IDE0060
+// 抑制 CA1822，CA2022，IDE0060 警告
+#pragma warning disable CA1822,CA2022,IDE0060
 
 namespace PowerToolbox.Views.Pages
 {
@@ -564,14 +564,16 @@ namespace PowerToolbox.Views.Pages
             List<DataEncryptVertifyResultModel> dataVertifyResultList = await Task.Run(async () =>
             {
                 byte[] contentData = null;
-                FileStream fileStream = null;
                 List<DataEncryptVertifyResultModel> dataVertifyResultList = [];
 
                 try
                 {
                     if (selectVertifyIndex is 0)
                     {
-                        fileStream = File.OpenRead(selectedVertifyFile);
+                        FileStream fileStream = File.OpenRead(selectedVertifyFile);
+                        contentData = new byte[(int)fileStream.Length];
+                        fileStream.Read(contentData, 0, contentData.Length);
+                        fileStream.Dispose();
                     }
                     else if (selectVertifyIndex is 1)
                     {
@@ -583,7 +585,7 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnStartVertifyClicked), 1, e);
                 }
 
-                if ((selectVertifyIndex is 0 && fileStream is not null) || (selectVertifyIndex is 1 && contentData is not null))
+                if (contentData is not null && (selectVertifyIndex is 0 || selectVertifyIndex is 1))
                 {
                     List<Task> vertifyingTaskList = [];
                     object vertifyingLock = new();
@@ -591,7 +593,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         vertifyingTaskList.Add(Task.Run(() =>
                         {
-                            string vertifyResultContent = GetVertifiedData(dataVertifyTypeItem.DataVertifyType, selectVertifyIndex, contentData, fileStream);
+                            string vertifyResultContent = GetVertifiedData(dataVertifyTypeItem.DataVertifyType, selectVertifyIndex, contentData);
                             if (!string.IsNullOrEmpty(vertifyResultContent))
                             {
                                 lock (vertifyingLock)
@@ -605,20 +607,7 @@ namespace PowerToolbox.Views.Pages
                             }
                         }));
                     }
-
                     await Task.WhenAll(vertifyingTaskList);
-                }
-
-                if (fileStream is not null)
-                {
-                    try
-                    {
-                        fileStream.Dispose();
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnStartVertifyClicked), 2, e);
-                    }
                 }
 
                 dataVertifyResultList.Sort((item1, item2) => item1.Name.CompareTo(item2.Name));
@@ -687,7 +676,7 @@ namespace PowerToolbox.Views.Pages
         /// 获取校验后的数据
         /// </summary>
         /// TODO：未完成
-        private string GetVertifiedData(DataVertifyType dataVertifyType, int selectedVertifyIndex, byte[] contentData, FileStream fileStream)
+        private string GetVertifiedData(DataVertifyType dataVertifyType, int selectedVertifyIndex, byte[] contentData)
         {
             string vertifiedData = string.Empty;
 
@@ -711,11 +700,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             Crc32 crc32 = new();
                             byte[] hashBytes = null;
-                            if (selectVertifyIndex is 0 && fileStream is not null)
-                            {
-                                hashBytes = crc32.ComputeHash(fileStream);
-                            }
-                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            if (contentData is not null)
                             {
                                 hashBytes = crc32.ComputeHash(contentData);
                             }
@@ -738,11 +723,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             CRC64 crc64 = new();
                             byte[] hashBytes = null;
-                            if (selectVertifyIndex is 0 && fileStream is not null)
-                            {
-                                hashBytes = crc64.ComputeHash(fileStream);
-                            }
-                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            if (contentData is not null)
                             {
                                 hashBytes = crc64.ComputeHash(contentData);
                             }
@@ -755,7 +736,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.CRC_32) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.CRC_64) + 1, e);
                         }
                         break;
                     }
@@ -801,11 +782,7 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataVertifyType.MD2:
                     {
-                        if (selectVertifyIndex is 0 && fileStream is not null)
-                        {
-                            vertifiedData = BCryptHelper.ComputeMD2Hash(fileStream);
-                        }
-                        else if (selectVertifyIndex is 1 && contentData is not null)
+                        if (contentData is not null)
                         {
                             vertifiedData = BCryptHelper.ComputeMD2Hash(contentData);
                         }
@@ -813,11 +790,7 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataVertifyType.MD4:
                     {
-                        if (selectVertifyIndex is 0 && fileStream is not null)
-                        {
-                            vertifiedData = BCryptHelper.ComputeMD4Hash(fileStream);
-                        }
-                        else if (selectVertifyIndex is 1 && contentData is not null)
+                        if (contentData is not null)
                         {
                             vertifiedData = BCryptHelper.ComputeMD4Hash(contentData);
                         }
@@ -829,11 +802,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             MD5 md5 = MD5.Create();
                             byte[] hashBytes = null;
-                            if (selectVertifyIndex is 0 && fileStream is not null)
-                            {
-                                hashBytes = md5.ComputeHash(fileStream);
-                            }
-                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            if (contentData is not null)
                             {
                                 hashBytes = md5.ComputeHash(contentData);
                             }
@@ -861,11 +830,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             RIPEMD160 ripemd160 = RIPEMD160.Create();
                             byte[] hashBytes = null;
-                            if (selectVertifyIndex is 0 && fileStream is not null)
-                            {
-                                hashBytes = ripemd160.ComputeHash(fileStream);
-                            }
-                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            if (contentData is not null)
                             {
                                 hashBytes = ripemd160.ComputeHash(contentData);
                             }
@@ -893,11 +858,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             SHA1 sha1 = SHA1.Create();
                             byte[] hashBytes = null;
-                            if (selectVertifyIndex is 0 && fileStream is not null)
-                            {
-                                hashBytes = sha1.ComputeHash(fileStream);
-                            }
-                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            if (contentData is not null)
                             {
                                 hashBytes = sha1.ComputeHash(contentData);
                             }
@@ -929,11 +890,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             SHA256 sha256 = SHA256.Create();
                             byte[] hashBytes = null;
-                            if (selectVertifyIndex is 0 && fileStream is not null)
-                            {
-                                hashBytes = sha256.ComputeHash(fileStream);
-                            }
-                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            if (contentData is not null)
                             {
                                 hashBytes = sha256.ComputeHash(contentData);
                             }
@@ -961,11 +918,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             SHA384 sha384 = SHA384.Create();
                             byte[] hashBytes = null;
-                            if (selectVertifyIndex is 0 && fileStream is not null)
-                            {
-                                hashBytes = sha384.ComputeHash(fileStream);
-                            }
-                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            if (contentData is not null)
                             {
                                 hashBytes = sha384.ComputeHash(contentData);
                             }
@@ -993,11 +946,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             SHA512 sha512 = SHA512.Create();
                             byte[] hashBytes = null;
-                            if (selectVertifyIndex is 0 && fileStream is not null)
-                            {
-                                hashBytes = sha512.ComputeHash(fileStream);
-                            }
-                            else if (selectVertifyIndex is 1 && contentData is not null)
+                            if (contentData is not null)
                             {
                                 hashBytes = sha512.ComputeHash(contentData);
                             }
@@ -1065,6 +1014,25 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataVertifyType.XXH32:
                     {
+                        try
+                        {
+                            XxHash32 xxHash32 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = xxHash32.ComputeHash(contentData);
+                            }
+                            xxHash32.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                vertifiedData = string.Format("{0:x16}", BitConverter.ToUInt32(hashBytes, 0));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_512) + 1, e);
+                        }
                         break;
                     }
                 case DataVertifyType.XXH64:
