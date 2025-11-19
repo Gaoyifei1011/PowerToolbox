@@ -71,7 +71,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string SNEFRU256String = ResourceService.DataVertifyResource.GetString("SNEFRU256");
         private readonly string TIGERString = ResourceService.DataVertifyResource.GetString("TIGER");
         private readonly string TIGER2String = ResourceService.DataVertifyResource.GetString("TIGER2");
-        private readonly string TTHSString = ResourceService.DataVertifyResource.GetString("TTHS");
+        private readonly string TTHString = ResourceService.DataVertifyResource.GetString("TTH");
         private readonly string VertifyingString = ResourceService.DataVertifyResource.GetString("Vertifying");
         private readonly string VertifyTypeNotSelectedString = ResourceService.DataVertifyResource.GetString("VertifyTypeNotSelected");
         private readonly string WHIRLPOOLString = ResourceService.DataVertifyResource.GetString("WHIRLPOOL");
@@ -387,7 +387,7 @@ namespace PowerToolbox.Views.Pages
             });
             DataVertifyTypeList.Add(new DataVertifyTypeModel()
             {
-                Name = TTHSString,
+                Name = TTHString,
                 DataVertifyType = DataVertifyType.TTH
             });
             DataVertifyTypeList.Add(new DataVertifyTypeModel()
