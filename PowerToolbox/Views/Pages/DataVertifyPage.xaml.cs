@@ -726,7 +726,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         try
                         {
-                            CRC64 crc64 = new();
+                            Crc64 crc64 = new();
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
