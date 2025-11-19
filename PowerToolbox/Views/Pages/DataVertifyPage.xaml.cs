@@ -708,7 +708,12 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                vertifiedData = string.Format("{0:x}", BitConverter.ToUInt32(hashBytes, 0));
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
