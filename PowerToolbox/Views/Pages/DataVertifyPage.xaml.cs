@@ -839,9 +839,29 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataVertifyType.MD4:
                     {
-                        if (contentData is not null)
+                        try
                         {
-                            vertifiedData = BCryptHelper.ComputeMD4Hash(contentData);
+                            MD4 md4 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = md4.ComputeHash(contentData);
+                            }
+                            md4.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.MD4) + 1, e);
                         }
                         break;
                     }
