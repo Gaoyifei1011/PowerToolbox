@@ -1151,6 +1151,30 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataVertifyType.WHIRLPOOL:
                     {
+                        try
+                        {
+                            Whirlpool whirlpool = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = whirlpool.ComputeHash(contentData);
+                            }
+                            whirlpool.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.WHIRLPOOL) + 1, e);
+                        }
                         break;
                     }
                 case DataVertifyType.XXH32:
