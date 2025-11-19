@@ -1091,10 +1091,58 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataVertifyType.TIGER:
                     {
+                        try
+                        {
+                            Tiger tiger = new(1);
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = tiger.ComputeHash(contentData);
+                            }
+                            tiger.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.TIGER) + 1, e);
+                        }
                         break;
                     }
                 case DataVertifyType.TIGER2:
                     {
+                        try
+                        {
+                            Tiger tiger = new(128);
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = tiger.ComputeHash(contentData);
+                            }
+                            tiger.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.TIGER2) + 1, e);
+                        }
                         break;
                     }
                 case DataVertifyType.TTH:
