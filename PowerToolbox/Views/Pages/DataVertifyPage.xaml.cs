@@ -747,6 +747,30 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataVertifyType.ED2K:
                     {
+                        try
+                        {
+                            ED2K ed2k = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = ed2k.ComputeHash(contentData);
+                            }
+                            ed2k.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.ED2K) + 1, e);
+                        }
                         break;
                     }
                 case DataVertifyType.EDON_R_224:
