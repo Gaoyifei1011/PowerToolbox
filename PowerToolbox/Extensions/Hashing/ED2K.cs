@@ -14,27 +14,8 @@ namespace PowerToolbox.Extensions.Hashing
         private readonly List<byte[]> md4HashBlocks = [];
         private readonly MD4 md4 = new();
         private int missing = BLOCKSIZE;
-
-        private bool blueIsRed;
-
-        public bool BlueIsRed
-        {
-            get { return blueIsRed; }
-        }
-
         private byte[] redHash;
-
-        public byte[] RedHash
-        {
-            get { byte[] hash = Hash; return redHash is not null ? (byte[])redHash.Clone() : hash; }
-        }
-
         private byte[] blueHash;
-
-        public byte[] BlueHash
-        {
-            get { byte[] hash = Hash; return blueHash is not null ? (byte[])blueHash.Clone() : hash; }
-        }
 
         public ED2K()
         {
@@ -70,7 +51,6 @@ namespace PowerToolbox.Extensions.Hashing
 
         protected override byte[] HashFinal()
         {
-            blueIsRed = false;
             redHash = null;
             blueHash = null;
 
@@ -108,11 +88,6 @@ namespace PowerToolbox.Extensions.Hashing
                     md4.TransformFinalBlock(nullMd4Hash, 0, 16);
                     redHash = md4.Hash;
                 }
-            }
-
-            if (redHash is null)
-            {
-                blueIsRed = true;
             }
 
             return redHash ?? blueHash;

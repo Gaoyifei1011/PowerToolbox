@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// SHA3 224 算法实现
     /// </summary>
-    public sealed class Sha3_224 : HashAlgorithm
+    public class Sha3_224 : HashAlgorithm
     {
         private const int rateBytes = 144;
         private const int outputBytes = 28;
