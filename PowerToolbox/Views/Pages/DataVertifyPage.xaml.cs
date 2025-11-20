@@ -846,7 +846,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                vertifiedData = string.Format("{0:x16}", BitConverter.ToUInt64(hashBytes, 0));
+                                vertifiedData = string.Format("{0:x}", BitConverter.ToUInt64(hashBytes, 0));
                             }
                         }
                         catch (Exception e)
@@ -1421,7 +1421,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                vertifiedData = string.Format("{0:x16}", BitConverter.ToUInt32(hashBytes, 0));
+                                vertifiedData = string.Format("{0:x}", BitConverter.ToUInt32(hashBytes, 0));
                             }
                         }
                         catch (Exception e)

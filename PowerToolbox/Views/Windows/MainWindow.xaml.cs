@@ -1,4 +1,6 @@
 ﻿using Microsoft.UI.Composition.SystemBackdrops;
+using Microsoft.UI.Content;
+using Microsoft.UI.Input;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -47,6 +49,9 @@ namespace PowerToolbox.Views.Windows
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly OverlappedPresenter overlappedPresenter;
         private readonly SUBCLASSPROC mainWindowSubClassProc;
+        private readonly ContentIsland contentIsland;
+        private readonly InputKeyboardSource inputKeyboardSource;
+        private readonly InputPointerSource inputPointerSource;
         private bool isDialogOpening = false;
         private ToolTip navigationViewBackButtonToolTip;
 
@@ -195,12 +200,17 @@ namespace PowerToolbox.Views.Windows
             AppWindow.TitleBar.InactiveBackgroundColor = Colors.Transparent;
             AppWindow.TitleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
             IsWindowMaximized = overlappedPresenter.State is OverlappedPresenterState.Maximized;
+            contentIsland = ContentIsland.FindAllForCompositor(Compositor)[0];
+            inputKeyboardSource = InputKeyboardSource.GetForIsland(contentIsland);
+            inputPointerSource = InputPointerSource.GetForIsland(contentIsland);
 
             // 挂载相应的事件
             AlwaysShowBackdropService.PropertyChanged += OnServicePropertyChanged;
             ThemeService.PropertyChanged += OnServicePropertyChanged;
             BackdropService.PropertyChanged += OnServicePropertyChanged;
             TopMostService.PropertyChanged += OnServicePropertyChanged;
+            inputKeyboardSource.SystemKeyDown += OnSystemKeyDown;
+            inputPointerSource.PointerReleased += OnPointerReleased;
 
             // 标题栏和右键菜单设置
             SetClassicMenuTheme((Content as FrameworkElement).ActualTheme);
@@ -227,7 +237,34 @@ namespace PowerToolbox.Views.Windows
             }
         }
 
-        #region 第三部分：窗口右键菜单事件
+        #region 第一部分：窗口辅助类挂载的事件
+
+        /// 处理键盘系统按键事件
+        /// </summary>
+        private async void OnSystemKeyDown(InputKeyboardSource sender, KeyEventArgs args)
+        {
+            if (args.VirtualKey is VirtualKey.F10 && Content is not null && Content.XamlRoot is not null)
+            {
+                await Task.Delay(50);
+                SetPopupControlTheme(WindowTheme);
+            }
+        }
+
+        /// <summary>
+        /// 处理鼠标事件
+        /// </summary>
+        private async void OnPointerReleased(InputPointerSource sender, PointerEventArgs args)
+        {
+            if (args.CurrentPoint.Properties.PointerUpdateKind is PointerUpdateKind.RightButtonReleased && Content is not null && Content.XamlRoot is not null)
+            {
+                await Task.Delay(50);
+                SetPopupControlTheme(WindowTheme);
+            }
+        }
+
+        #endregion 第一部分：窗口辅助类挂载的事件
+
+        #region 第二部分：窗口右键菜单事件
 
         /// <summary>
         /// 窗口还原
@@ -285,9 +322,9 @@ namespace PowerToolbox.Views.Windows
             User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_CLOSE, 0);
         }
 
-        #endregion 第三部分：窗口右键菜单事件
+        #endregion 第二部分：窗口右键菜单事件
 
-        #region 第四部分：窗口内容挂载的事件
+        #region 第三部分：窗口内容挂载的事件
 
         /// <summary>
         /// 应用主题变化时设置标题栏按钮的颜色
@@ -309,9 +346,9 @@ namespace PowerToolbox.Views.Windows
             }
         }
 
-        #endregion 第四部分：窗口内容挂载的事件
+        #endregion 第三部分：窗口内容挂载的事件
 
-        #region 第五部分：导航控件及其内容挂载的事件
+        #region 第四部分：导航控件及其内容挂载的事件
 
         /// <summary>
         /// 导航控件加载完成后初始化内容，初始化导航控件属性、屏幕缩放比例值和应用的背景色
@@ -485,9 +522,9 @@ namespace PowerToolbox.Views.Windows
             (Application.Current as MainApp).Dispose();
         }
 
-        #endregion 第五部分：导航控件及其内容挂载的事件
+        #endregion 第四部分：导航控件及其内容挂载的事件
 
-        #region 第六部分：自定义事件
+        #region 第五部分：自定义事件
 
         /// <summary>
         /// 设置选项发生变化时触发的事件
@@ -511,9 +548,9 @@ namespace PowerToolbox.Views.Windows
             }, null);
         }
 
-        #endregion 第六部分：自定义事件
+        #endregion 第五部分：自定义事件
 
-        #region 第七部分：窗口及内容属性设置
+        #region 第六部分：窗口及内容属性设置
 
         /// <summary>
         /// 设置应用显示的主题
@@ -644,9 +681,9 @@ namespace PowerToolbox.Views.Windows
             overlappedPresenter.IsAlwaysOnTop = TopMostService.TopMostValue;
         }
 
-        #endregion 第七部分：窗口及内容属性设置
+        #endregion 第六部分：窗口及内容属性设置
 
-        #region 第八部分：窗口过程
+        #region 第七部分：窗口过程
 
         /// <summary>
         /// 应用主窗口消息处理
@@ -755,6 +792,8 @@ namespace PowerToolbox.Views.Windows
                                     ThemeService.PropertyChanged -= OnServicePropertyChanged;
                                     BackdropService.PropertyChanged -= OnServicePropertyChanged;
                                     TopMostService.PropertyChanged -= OnServicePropertyChanged;
+                                    inputKeyboardSource.SystemKeyDown -= OnSystemKeyDown;
+                                    inputPointerSource.PointerReleased -= OnPointerReleased;
                                     if (navigationViewBackButtonToolTip is not null)
                                     {
                                         navigationViewBackButtonToolTip.Loaded -= ToolTipBackdropHelper.OnLoaded;
@@ -783,7 +822,8 @@ namespace PowerToolbox.Views.Windows
                                 ThemeService.PropertyChanged -= OnServicePropertyChanged;
                                 BackdropService.PropertyChanged -= OnServicePropertyChanged;
                                 TopMostService.PropertyChanged -= OnServicePropertyChanged;
-
+                                inputKeyboardSource.SystemKeyDown -= OnSystemKeyDown;
+                                inputPointerSource.PointerReleased -= OnPointerReleased;
                                 if (navigationViewBackButtonToolTip is not null)
                                 {
                                     navigationViewBackButtonToolTip.Loaded -= ToolTipBackdropHelper.OnLoaded;
@@ -849,16 +889,6 @@ namespace PowerToolbox.Views.Windows
                         overlappedPresenter.PreferredMinimumHeight = Convert.ToInt32(600 * Convert.ToDouble(wParam) / 96);
                         break;
                     }
-                // 当用户释放鼠标左键时，光标位于窗口的工作区内的消息
-                case WindowMessage.WM_RBUTTONUP:
-                    {
-                        synchronizationContext.Post(async (_) =>
-                        {
-                            await Task.Delay(50);
-                            SetPopupControlTheme(WindowTheme);
-                        }, null);
-                        break;
-                    }
                 // 选择窗口右键菜单的条目时接收到的消息
                 case WindowMessage.WM_SYSCOMMAND:
                     {
@@ -885,14 +915,6 @@ namespace PowerToolbox.Views.Windows
                                 };
                                 TitlebarMenuFlyout.ShowAt(null, options);
                                 return 0;
-                            }
-                            else if (lParam is (int)System.Windows.Forms.Keys.F10 && Content.XamlRoot is not null)
-                            {
-                                synchronizationContext.Post(async (_) =>
-                                {
-                                    await Task.Delay(50);
-                                    SetPopupControlTheme(WindowTheme);
-                                }, null);
                             }
                         }
                         break;
@@ -930,9 +952,9 @@ namespace PowerToolbox.Views.Windows
             return Comctl32Library.DefSubclassProc(hWnd, Msg, wParam, lParam);
         }
 
-        #endregion 第八部分：窗口过程
+        #endregion 第七部分：窗口过程
 
-        #region 第九部分：窗口导航方法
+        #region 第八部分：窗口导航方法
 
         /// <summary>
         /// 页面向前导航
@@ -1027,9 +1049,9 @@ namespace PowerToolbox.Views.Windows
             return (MainNavigationView.Content as Frame).CanGoBack;
         }
 
-        #endregion 第九部分：窗口导航方法
+        #endregion 第八部分：窗口导航方法
 
-        #region 第十部分：显示对话框和应用通知
+        #region 第九部分：显示对话框和应用通知
 
         /// <summary>
         /// 显示内容对话框
@@ -1082,7 +1104,7 @@ namespace PowerToolbox.Views.Windows
             }
         }
 
-        #endregion 第十部分：显示对话框和应用通知
+        #endregion 第九部分：显示对话框和应用通知
 
         /// <summary>
         /// 将提权模式下拖放获得到的文件列表发送到各个页面
