@@ -13,6 +13,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
 
 // 抑制 CA1822，IDE0060 警告
 #pragma warning disable CA1822,IDE0060
@@ -34,6 +36,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string ContentEmptyString = ResourceService.DataEncryptResource.GetString("ContentEmpty");
         private readonly string ContentInitializeString = ResourceService.DataEncryptResource.GetString("ContentInitialize");
         private readonly string DESString = ResourceService.DataEncryptResource.GetString("DES");
+        private readonly string DragOverContentString = ResourceService.DataEncryptResource.GetString("DragOverContent");
         private readonly string ECCString = ResourceService.DataEncryptResource.GetString("ECC");
         private readonly string EncryptingString = ResourceService.DataEncryptResource.GetString("Encrypting");
         private readonly string EncryptTypeNotSelectedString = ResourceService.DataEncryptResource.GetString("EncryptTypeNotSelected");
@@ -44,6 +47,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string FileNotExistedString = ResourceService.DataEncryptResource.GetString("FileNotExisted");
         private readonly string FileNotSelectedString = ResourceService.DataEncryptResource.GetString("FileNotSelected");
         private readonly string MorseCodeString = ResourceService.DataEncryptResource.GetString("MorseCode");
+        private readonly string NoMultiFileString = ResourceService.DataVertifyResource.GetString("NoMultiFile");
         private readonly string RabbitString = ResourceService.DataEncryptResource.GetString("Rabbit");
         private readonly string RC2String = ResourceService.DataEncryptResource.GetString("RC2");
         private readonly string RC4String = ResourceService.DataEncryptResource.GetString("RC4");
@@ -283,12 +287,117 @@ namespace PowerToolbox.Views.Pages
             });
         }
 
+        #region 第一部分：ExecuteCommand 命令调用时挂载的事件
+
         /// <summary>
         /// 数据加密类型选中项发生改变时触发的事件
         /// </summary>
         private void OnDataEncryptCheckExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
             IsAllSelected = DataEncryptTypeList.All(item => item.IsSelected);
+        }
+
+        #endregion 第一部分：ExecuteCommand 命令调用时挂载的事件
+
+        #region 第二部分：数据校验页面——挂载的事件
+
+        /// <summary>
+        /// 设置拖动的数据的可视表示形式
+        /// </summary>
+        private async void OnDataDragOver(object sender, Microsoft.UI.Xaml.DragEventArgs args)
+        {
+            DragOperationDeferral dragOperationDeferral = args.GetDeferral();
+
+            try
+            {
+                if (IsEncrypting)
+                {
+                    args.AcceptedOperation = DataPackageOperation.None;
+                    args.DragUIOverride.IsCaptionVisible = true;
+                    args.DragUIOverride.IsContentVisible = false;
+                    args.DragUIOverride.IsGlyphVisible = true;
+                    args.DragUIOverride.Caption = EncryptingString;
+                }
+                else
+                {
+                    IReadOnlyList<IStorageItem> dragItemsList = await args.DataView.GetStorageItemsAsync();
+
+                    if (dragItemsList.Count is 1)
+                    {
+                        string extensionName = Path.GetExtension(dragItemsList[0].Name);
+
+                        args.AcceptedOperation = DataPackageOperation.Copy;
+                        args.DragUIOverride.IsCaptionVisible = true;
+                        args.DragUIOverride.IsContentVisible = false;
+                        args.DragUIOverride.IsGlyphVisible = true;
+                        args.DragUIOverride.Caption = DragOverContentString;
+                    }
+                    else
+                    {
+                        args.AcceptedOperation = DataPackageOperation.None;
+                        args.DragUIOverride.IsCaptionVisible = true;
+                        args.DragUIOverride.IsContentVisible = false;
+                        args.DragUIOverride.IsGlyphVisible = true;
+                        args.DragUIOverride.Caption = NoMultiFileString;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnDragOver), 1, e);
+            }
+            finally
+            {
+                args.Handled = true;
+                dragOperationDeferral.Complete();
+            }
+        }
+
+        /// <summary>
+        /// 拖动文件完成后获取文件信息
+        /// </summary>
+        private async void OnDataDrop(object sender, Microsoft.UI.Xaml.DragEventArgs args)
+        {
+            DragOperationDeferral dragOperationDeferral = args.GetDeferral();
+            string filePath = string.Empty;
+            try
+            {
+                DataPackageView dataPackageView = args.DataView;
+                IReadOnlyList<IStorageItem> filesList = await Task.Run(async () =>
+                {
+                    try
+                    {
+                        if (dataPackageView.Contains(StandardDataFormats.StorageItems))
+                        {
+                            return await dataPackageView.GetStorageItemsAsync();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnDrop), 1, e);
+                    }
+
+                    return null;
+                });
+
+                if (filesList is not null && filesList.Count is 1)
+                {
+                    filePath = filesList[0].Path;
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnDrop), 2, e);
+            }
+            finally
+            {
+                dragOperationDeferral.Complete();
+            }
+
+            if (File.Exists(filePath))
+            {
+                EncryptFile = filePath;
+            }
         }
 
         /// <summary>
@@ -548,6 +657,8 @@ namespace PowerToolbox.Views.Pages
             }
             IsEncrypting = false;
         }
+
+        #endregion 第二部分：数据校验页面——挂载的事件
 
         /// <summary>
         /// 获取校验后的数据

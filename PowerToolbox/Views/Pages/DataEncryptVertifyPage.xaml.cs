@@ -140,5 +140,13 @@ namespace PowerToolbox.Views.Pages
         {
             return DataEncryptVertifyFrame.CurrentSourcePageType;
         }
+
+        /// <summary>
+        /// 获取当前导航控件内容对应的页面
+        /// </summary>
+        public object GetFrameContent()
+        {
+            return DataEncryptVertifyFrame.Content;
+        }
     }
 }

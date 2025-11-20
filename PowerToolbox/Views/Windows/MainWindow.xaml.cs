@@ -1090,7 +1090,29 @@ namespace PowerToolbox.Views.Windows
         public async Task SendReceivedFilesListAsync(List<string> filesList)
         {
             Type currentPageType = GetCurrentPageType();
-            if (Equals(currentPageType, typeof(FileManagerPage)))
+            if (Equals(currentPageType, typeof(DataEncryptVertifyPage)))
+            {
+                DataEncryptVertifyPage dataEncryptVertifyPage = GetFrameContent() as DataEncryptVertifyPage;
+                Type currentDataEncryptVertifyPage = dataEncryptVertifyPage.GetCurrentPageType();
+
+                if (Equals(currentDataEncryptVertifyPage, typeof(DataEncryptPage)))
+                {
+                    DataEncryptPage dataEncryptPage = dataEncryptVertifyPage.GetFrameContent() as DataEncryptPage;
+                    if (!dataEncryptPage.IsEncrypting && filesList.Count is 1)
+                    {
+                        dataEncryptPage.EncryptFile = filesList[0];
+                    }
+                }
+                else if (Equals(currentDataEncryptVertifyPage, typeof(DataVertifyPage)))
+                {
+                    DataVertifyPage dataVertifyPage = dataEncryptVertifyPage.GetFrameContent() as DataVertifyPage;
+                    if (!dataVertifyPage.IsVertifying && filesList.Count is 1)
+                    {
+                        dataVertifyPage.VertifyFile = filesList[0];
+                    }
+                }
+            }
+            else if (Equals(currentPageType, typeof(FileManagerPage)))
             {
                 FileManagerPage fileManagerPage = GetFrameContent() as FileManagerPage;
                 Type currentFileManagerPageType = fileManagerPage.GetCurrentPageType();

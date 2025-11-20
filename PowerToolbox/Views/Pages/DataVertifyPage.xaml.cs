@@ -15,6 +15,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
 
 // 抑制 CA1822，CA2022，IDE0060 警告
 #pragma warning disable CA1822,CA2022,IDE0060
@@ -36,6 +38,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string ContentVertifyWholeSuccessfullyString = ResourceService.DataVertifyResource.GetString("ContentVertifyWholeSuccessfully");
         private readonly string CRC32String = ResourceService.DataVertifyResource.GetString("CRC32");
         private readonly string CRC64String = ResourceService.DataVertifyResource.GetString("CRC64");
+        private readonly string DragOverContentString = ResourceService.DataVertifyResource.GetString("DragOverContent");
         private readonly string ED2KString = ResourceService.DataVertifyResource.GetString("ED2K");
         private readonly string EDONR224String = ResourceService.DataVertifyResource.GetString("EDONR224");
         private readonly string EDONR256String = ResourceService.DataVertifyResource.GetString("EDONR256");
@@ -55,6 +58,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string MD2String = ResourceService.DataVertifyResource.GetString("MD2");
         private readonly string MD4String = ResourceService.DataVertifyResource.GetString("MD4");
         private readonly string MD5String = ResourceService.DataVertifyResource.GetString("MD5");
+        private readonly string NoMultiFileString = ResourceService.DataVertifyResource.GetString("NoMultiFile");
         private readonly string RIPEMD160String = ResourceService.DataVertifyResource.GetString("RIPEMD160");
         private readonly string SelectFileString = ResourceService.DataVertifyResource.GetString("SelectFile");
         private readonly string SHA1String = ResourceService.DataVertifyResource.GetString("SHA1");
@@ -417,12 +421,117 @@ namespace PowerToolbox.Views.Pages
             });
         }
 
+        #region 第一部分：ExecuteCommand 命令调用时挂载的事件
+
         /// <summary>
         /// 数据校验类型选中项发生改变时触发的事件
         /// </summary>
         private void OnDataVertifyCheckExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
             IsAllSelected = DataVertifyTypeList.All(item => item.IsSelected);
+        }
+
+        #endregion 第一部分：ExecuteCommand 命令调用时挂载的事件
+
+        #region 第二部分：数据校验页面——挂载的事件
+
+        /// <summary>
+        /// 设置拖动的数据的可视表示形式
+        /// </summary>
+        private async void OnDataDragOver(object sender, Microsoft.UI.Xaml.DragEventArgs args)
+        {
+            DragOperationDeferral dragOperationDeferral = args.GetDeferral();
+
+            try
+            {
+                if (IsVertifying)
+                {
+                    args.AcceptedOperation = DataPackageOperation.None;
+                    args.DragUIOverride.IsCaptionVisible = true;
+                    args.DragUIOverride.IsContentVisible = false;
+                    args.DragUIOverride.IsGlyphVisible = true;
+                    args.DragUIOverride.Caption = VertifyingString;
+                }
+                else
+                {
+                    IReadOnlyList<IStorageItem> dragItemsList = await args.DataView.GetStorageItemsAsync();
+
+                    if (dragItemsList.Count is 1)
+                    {
+                        string extensionName = Path.GetExtension(dragItemsList[0].Name);
+
+                        args.AcceptedOperation = DataPackageOperation.Copy;
+                        args.DragUIOverride.IsCaptionVisible = true;
+                        args.DragUIOverride.IsContentVisible = false;
+                        args.DragUIOverride.IsGlyphVisible = true;
+                        args.DragUIOverride.Caption = DragOverContentString;
+                    }
+                    else
+                    {
+                        args.AcceptedOperation = DataPackageOperation.None;
+                        args.DragUIOverride.IsCaptionVisible = true;
+                        args.DragUIOverride.IsContentVisible = false;
+                        args.DragUIOverride.IsGlyphVisible = true;
+                        args.DragUIOverride.Caption = NoMultiFileString;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnDragOver), 1, e);
+            }
+            finally
+            {
+                args.Handled = true;
+                dragOperationDeferral.Complete();
+            }
+        }
+
+        /// <summary>
+        /// 拖动文件完成后获取文件信息
+        /// </summary>
+        private async void OnDataDrop(object sender, Microsoft.UI.Xaml.DragEventArgs args)
+        {
+            DragOperationDeferral dragOperationDeferral = args.GetDeferral();
+            string filePath = string.Empty;
+            try
+            {
+                DataPackageView dataPackageView = args.DataView;
+                IReadOnlyList<IStorageItem> filesList = await Task.Run(async () =>
+                {
+                    try
+                    {
+                        if (dataPackageView.Contains(StandardDataFormats.StorageItems))
+                        {
+                            return await dataPackageView.GetStorageItemsAsync();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnDrop), 1, e);
+                    }
+
+                    return null;
+                });
+
+                if (filesList is not null && filesList.Count is 1)
+                {
+                    filePath = filesList[0].Path;
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnDrop), 2, e);
+            }
+            finally
+            {
+                dragOperationDeferral.Complete();
+            }
+
+            if (File.Exists(filePath))
+            {
+                VertifyFile = filePath;
+            }
         }
 
         /// <summary>
@@ -670,6 +779,8 @@ namespace PowerToolbox.Views.Pages
             }
             IsVertifying = false;
         }
+
+        #endregion 第二部分：数据校验页面——挂载的事件
 
         /// <summary>
         /// 获取校验后的数据

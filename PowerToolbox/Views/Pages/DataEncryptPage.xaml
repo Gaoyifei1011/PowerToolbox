@@ -56,9 +56,13 @@
                 Grid.Row="1"
                 Height="140"
                 Margin="0,5,0,3"
+                AllowDrop="True"
+                Background="Transparent"
                 BorderBrush="{ThemeResource TextFillColorSecondaryBrush}"
                 BorderThickness="1"
                 CornerRadius="{StaticResource ControlCornerRadius}"
+                DragEnter="{x:Bind OnDataDragOver}"
+                Drop="{x:Bind OnDataDrop}"
                 Visibility="{x:Bind GetDataEncryptType(SelectedIndex, 0), Mode=OneWay}">
 
                 <StackPanel
