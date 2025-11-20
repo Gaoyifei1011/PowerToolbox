@@ -1174,6 +1174,30 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataVertifyType.SM3:
                     {
+                        try
+                        {
+                            SM3 sm3 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = sm3.ComputeHash(contentData);
+                            }
+                            sm3.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SM3) + 1, e);
+                        }
                         break;
                     }
                 case DataVertifyType.SNEFRU_128:
