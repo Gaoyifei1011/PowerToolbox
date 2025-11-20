@@ -1146,6 +1146,30 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataVertifyType.SHA3_512:
                     {
+                        try
+                        {
+                            Sha3_512 sha3_512 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = sha3_512.ComputeHash(contentData);
+                            }
+                            sha3_512.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA3_512) + 1, e);
+                        }
                         break;
                     }
                 case DataVertifyType.SM3:
