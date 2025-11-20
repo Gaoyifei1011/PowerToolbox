@@ -121,7 +121,7 @@ namespace PowerToolbox.Helpers.Root
             int minutes = (int)((ut.Value - hours) * 60.0);
 
             // Normalize minute overflow
-            if (minutes == 60)
+            if (minutes is 60)
             {
                 minutes = 0;
                 hours = (hours + 1) % 24;

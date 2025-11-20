@@ -57,7 +57,7 @@ namespace PowerToolbox.Extensions.Hashing
         {
             int i;
 
-            if (processingBufferCount != 0)
+            if (processingBufferCount is not 0)
             {
                 if (cbSize < (64 - processingBufferCount))
                 {
@@ -81,7 +81,7 @@ namespace PowerToolbox.Extensions.Hashing
                 ProcessBlock(array, ibStart + i);
             }
 
-            if (cbSize % 64 != 0)
+            if (cbSize % 64 is not 0)
             {
                 System.Buffer.BlockCopy(array, cbSize - cbSize % 64 + ibStart, processingBuffer, 0, cbSize % 64);
                 processingBufferCount = cbSize % 64;
@@ -190,7 +190,7 @@ namespace PowerToolbox.Extensions.Hashing
             AddLength(total << 3, paddingBuffer, inputCount + paddingSize);
             ProcessBlock(paddingBuffer, 0);
 
-            if (inputCount + paddingSize + 8 == 128)
+            if (inputCount + paddingSize + 8 is 128)
             {
                 ProcessBlock(paddingBuffer, 64);
             }

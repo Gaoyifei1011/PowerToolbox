@@ -144,7 +144,7 @@ namespace PowerToolbox.Extensions.Hashing
             }
 
             int bytesLeft = cbSize % 64;
-            if (bytesLeft != 0)
+            if (bytesLeft is not 0)
             {
                 Array.Copy(array, cbSize - bytesLeft + ibStart, partialBlock, 0, bytesLeft);
                 bufferFill = bytesLeft;
@@ -171,7 +171,7 @@ namespace PowerToolbox.Extensions.Hashing
                 bufferFill -= 64;
             }
 
-            for (bufferFill = inputOffset + 56; bitLength != 0; bitLength >>= 8, bufferFill++)
+            for (bufferFill = inputOffset + 56; bitLength is not 0; bitLength >>= 8, bufferFill++)
             {
                 partialBlock[bufferFill] = (byte)bitLength;
             }

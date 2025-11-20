@@ -26,14 +26,14 @@ namespace PowerToolbox.Extensions.Hashing
 
         public byte[] RedHash
         {
-            get { byte[] hash = Hash; return redHash != null ? (byte[])redHash.Clone() : hash; }
+            get { byte[] hash = Hash; return redHash is not null ? (byte[])redHash.Clone() : hash; }
         }
 
         private byte[] blueHash;
 
         public byte[] BlueHash
         {
-            get { byte[] hash = Hash; return blueHash != null ? (byte[])blueHash.Clone() : hash; }
+            get { byte[] hash = Hash; return blueHash is not null ? (byte[])blueHash.Clone() : hash; }
         }
 
         public ED2K()
@@ -45,24 +45,24 @@ namespace PowerToolbox.Extensions.Hashing
         public override bool CanReuseTransform
         { get { return true; } }
 
-        protected override void HashCore(byte[] b, int offset, int length)
+        protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
-            while (length != 0)
+            while (cbSize is not 0)
             {
-                if (length < missing)
+                if (cbSize < missing)
                 {
-                    md4.TransformBlock(b, offset, length, null, 0);
-                    missing -= length;
-                    length = 0;
+                    md4.TransformBlock(array, ibStart, cbSize, null, 0);
+                    missing -= cbSize;
+                    cbSize = 0;
                 }
                 else
                 {
-                    md4.TransformFinalBlock(b, offset, missing);
+                    md4.TransformFinalBlock(array, ibStart, missing);
                     md4HashBlocks.Add(md4.Hash);
                     md4.Initialize();
 
-                    length -= missing;
-                    offset += missing;
+                    cbSize -= missing;
+                    ibStart += missing;
                     missing = BLOCKSIZE;
                 }
             }
@@ -74,12 +74,12 @@ namespace PowerToolbox.Extensions.Hashing
             redHash = null;
             blueHash = null;
 
-            if (md4HashBlocks.Count == 0)
+            if (md4HashBlocks.Count is 0)
             {
                 md4.TransformFinalBlock(nullArray, 0, 0);
                 blueHash = md4.Hash;
             }
-            else if (md4HashBlocks.Count == 1 && missing == BLOCKSIZE)
+            else if (md4HashBlocks.Count is 1 && missing is BLOCKSIZE)
             {
                 blueHash = md4HashBlocks[0];
 
@@ -89,7 +89,7 @@ namespace PowerToolbox.Extensions.Hashing
             }
             else
             {
-                if (missing != BLOCKSIZE)
+                if (missing is not BLOCKSIZE)
                 {
                     md4.TransformFinalBlock(nullArray, 0, 0);
                     md4HashBlocks.Add(md4.Hash);
@@ -102,7 +102,7 @@ namespace PowerToolbox.Extensions.Hashing
                 md4.TransformFinalBlock(nullArray, 0, 0);
                 blueHash = md4.Hash;
 
-                if (missing == BLOCKSIZE)
+                if (missing is BLOCKSIZE)
                 {
                     md4.Initialize(state);
                     md4.TransformFinalBlock(nullMd4Hash, 0, 16);
@@ -110,7 +110,11 @@ namespace PowerToolbox.Extensions.Hashing
                 }
             }
 
-            if (redHash == null) blueIsRed = true;
+            if (redHash is null)
+            {
+                blueIsRed = true;
+            }
+
             return redHash ?? blueHash;
         }
 

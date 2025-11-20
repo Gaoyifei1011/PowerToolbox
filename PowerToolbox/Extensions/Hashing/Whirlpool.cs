@@ -220,7 +220,7 @@ namespace PowerToolbox.Extensions.Hashing
 
             uint carry = 0;
             ulong value = sizeBits;
-            for (int i = 31; i >= 0 && (carry != 0 || value != 0); i--)
+            for (int i = 31; i >= 0 && (carry is not 0 || value is not 0); i--)
             {
                 carry += bitLength[i] + ((uint)value & 0xff);
                 bitLength[i] = (byte)carry;
@@ -234,7 +234,7 @@ namespace PowerToolbox.Extensions.Hashing
                 currentHash[bufferPosition++] |= (byte)(currentByte >> remainder);
                 bufferBits += 8 - remainder;
 
-                if (bufferBits == 512)
+                if (bufferBits is 512)
                 {
                     Process();
                     bufferBits = 0;
@@ -267,7 +267,7 @@ namespace PowerToolbox.Extensions.Hashing
                 bufferBits += 8 - remainder;
                 sizeBits -= (ulong)(8 - remainder);
 
-                if (bufferBits == 512)
+                if (bufferBits is 512)
                 {
                     Process();
                     bufferBits = 0;

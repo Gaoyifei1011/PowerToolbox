@@ -426,8 +426,6 @@
 		<Page Include="Views\Windows\SimulateUpdateWindow.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Windows\MainWindow.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 
-		<ProjectCapability Include="Uwp" />
-
 		<PRIResource Include="Strings\en-us\Resources.resjson" />
 		<PRIResource Include="Strings\zh-hans\Resources.resjson" />
 		

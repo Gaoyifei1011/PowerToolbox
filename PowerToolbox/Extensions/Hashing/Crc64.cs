@@ -83,12 +83,12 @@ namespace PowerToolbox.Extensions.Hashing
             crc64Result = 0;
         }
 
-        protected override void HashCore(byte[] array, int start, int size)
+        protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
             crc64Result = ~crc64Result;
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < cbSize; i++)
             {
-                uint tableIndex = ((uint)(crc64Result ^ array[start + i])) & 0xff;
+                uint tableIndex = ((uint)(crc64Result ^ array[ibStart + i])) & 0xff;
                 crc64Result = crc64Table[tableIndex] ^ (crc64Result >> 8);
             }
         }
