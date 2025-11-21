@@ -1421,7 +1421,12 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                vertifiedData = string.Format("{0:x}", BitConverter.ToUInt32(hashBytes, 0));
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
@@ -1432,6 +1437,30 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataVertifyType.XXH64:
                     {
+                        try
+                        {
+                            XXHash64 xxhash64 = new(0);
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = xxhash64.ComputeHash(contentData);
+                            }
+                            xxhash64.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                vertifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.XXH64) + 1, e);
+                        }
                         break;
                     }
                 case DataVertifyType.XXH3:
