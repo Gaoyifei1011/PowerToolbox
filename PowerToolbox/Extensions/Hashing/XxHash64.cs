@@ -93,7 +93,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
-            if (State != 1) State = 1;
+            if (State is not 1)
+            {
+                State = 1;
+            }
+
             int size = cbSize - ibStart;
             remainingLength = size & 31;
             if (cbSize >= 32)
@@ -112,7 +116,11 @@ namespace PowerToolbox.Extensions.Hashing
                 } while (ibStart < limit);
             }
             totalLength += cbSize;
-            if (remainingLength == 0) return;
+            if (remainingLength is 0)
+            {
+                return;
+            }
+
             currentArray = array;
             currentIndex = ibStart;
         }

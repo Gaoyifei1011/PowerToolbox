@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 
+// 抑制 IDE0060 警告
+#pragma warning disable IDE0060
+
 namespace PowerToolbox.Views.Pages
 {
     /// <summary>
@@ -30,7 +33,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<Type> PageList { get; } = [typeof(DataEncryptPage), typeof(DataVertifyPage)];
+        private List<Type> PageList { get; } = [typeof(DataVertifyPage)];
 
         public event PropertyChangedEventHandler PropertyChanged;
 

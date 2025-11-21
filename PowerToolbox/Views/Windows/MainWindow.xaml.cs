@@ -52,7 +52,6 @@ namespace PowerToolbox.Views.Windows
         private readonly ContentIsland contentIsland;
         private readonly InputKeyboardSource inputKeyboardSource;
         private readonly InputPointerSource inputPointerSource;
-        private bool isDialogOpening = false;
         private ToolTip navigationViewBackButtonToolTip;
 
         public new static MainWindow Current { get; private set; }
@@ -1059,20 +1058,30 @@ namespace PowerToolbox.Views.Windows
         public async Task<ContentDialogResult> ShowDialogAsync(ContentDialog contentDialog)
         {
             ContentDialogResult dialogResult = ContentDialogResult.None;
-            if (!isDialogOpening && contentDialog is not null && Content is not null)
+            bool isDialogOpening = false;
+            if (contentDialog is not null && Content is not null)
             {
-                isDialogOpening = true;
+                foreach (Popup popup in VisualTreeHelper.GetOpenPopupsForXamlRoot(Content.XamlRoot))
+                {
+                    if (popup.Child is ContentDialog)
+                    {
+                        isDialogOpening = true;
+                        break;
+                    }
+                }
 
-                try
+                if (!isDialogOpening)
                 {
-                    contentDialog.XamlRoot = Content.XamlRoot;
-                    dialogResult = await contentDialog.ShowAsync();
+                    try
+                    {
+                        contentDialog.XamlRoot = Content.XamlRoot;
+                        dialogResult = await contentDialog.ShowAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(ShowDialogAsync), 1, e);
+                    }
                 }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(ShowDialogAsync), 1, e);
-                }
-                isDialogOpening = false;
             }
 
             return dialogResult;

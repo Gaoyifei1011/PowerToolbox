@@ -64,13 +64,6 @@
                         IsTapEnabled="True"
                         Tag="{x:Bind PageList[0]}"
                         Tapped="{x:Bind OnSelectorBarTapped}"
-                        Text="{x:Bind rootservice:ResourceService.DataEncryptVertifyResource.GetString('DataEncrypt')}" />
-
-                    <SelectorBarItem
-                        Padding="12,5"
-                        IsTapEnabled="True"
-                        Tag="{x:Bind PageList[1]}"
-                        Tapped="{x:Bind OnSelectorBarTapped}"
                         Text="{x:Bind rootservice:ResourceService.DataEncryptVertifyResource.GetString('DataVertify')}" />
                 </SelectorBar>
 

@@ -28,9 +28,6 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class DataVertifyPage : Page, INotifyPropertyChanged
     {
-        private readonly string BLAKE2spString = ResourceService.DataVertifyResource.GetString("BLAKE2sp");
-        private readonly string BLAKE3String = ResourceService.DataVertifyResource.GetString("BLAKE3");
-        private readonly string BTIHString = ResourceService.DataVertifyResource.GetString("BTIH");
         private readonly string ContentEmptyString = ResourceService.DataVertifyResource.GetString("ContentEmpty");
         private readonly string ContentInitializeString = ResourceService.DataVertifyResource.GetString("ContentInitialize");
         private readonly string ContentVertifyFailedString = ResourceService.DataVertifyResource.GetString("ContentVertifyFailed");
@@ -40,21 +37,12 @@ namespace PowerToolbox.Views.Pages
         private readonly string CRC64String = ResourceService.DataVertifyResource.GetString("CRC64");
         private readonly string DragOverContentString = ResourceService.DataVertifyResource.GetString("DragOverContent");
         private readonly string ED2KString = ResourceService.DataVertifyResource.GetString("ED2K");
-        private readonly string EDONR224String = ResourceService.DataVertifyResource.GetString("EDONR224");
-        private readonly string EDONR256String = ResourceService.DataVertifyResource.GetString("EDONR256");
-        private readonly string EDONR384String = ResourceService.DataVertifyResource.GetString("EDONR384");
-        private readonly string EDONR512String = ResourceService.DataVertifyResource.GetString("EDONR512");
         private readonly string FileInitializeString = ResourceService.DataVertifyResource.GetString("FileInitialize");
         private readonly string FileNotExistedString = ResourceService.DataVertifyResource.GetString("FileNotExisted");
         private readonly string FileNotSelectedString = ResourceService.DataVertifyResource.GetString("FileNotSelected");
         private readonly string FileVertifyFailedString = ResourceService.DataVertifyResource.GetString("FileVertifyFailed");
         private readonly string FileVertifyPartSuccessfullyString = ResourceService.DataVertifyResource.GetString("FileVertifyPartSuccessfully");
         private readonly string FileVertifyWholeSuccessfullyString = ResourceService.DataVertifyResource.GetString("FileVertifyWholeSuccessfully");
-        private readonly string GOST12256String = ResourceService.DataVertifyResource.GetString("GOST12256");
-        private readonly string GOST12512String = ResourceService.DataVertifyResource.GetString("GOST12512");
-        private readonly string GOST94String = ResourceService.DataVertifyResource.GetString("GOST94");
-        private readonly string GOST94CryptoProString = ResourceService.DataVertifyResource.GetString("GOST94CryptoPro");
-        private readonly string HAS160String = ResourceService.DataVertifyResource.GetString("HAS160");
         private readonly string MD2String = ResourceService.DataVertifyResource.GetString("MD2");
         private readonly string MD4String = ResourceService.DataVertifyResource.GetString("MD4");
         private readonly string MD5String = ResourceService.DataVertifyResource.GetString("MD5");
@@ -71,16 +59,11 @@ namespace PowerToolbox.Views.Pages
         private readonly string SHA384String = ResourceService.DataVertifyResource.GetString("SHA384");
         private readonly string SHA512String = ResourceService.DataVertifyResource.GetString("SHA512");
         private readonly string SM3String = ResourceService.DataVertifyResource.GetString("SM3");
-        private readonly string SNEFRU128String = ResourceService.DataVertifyResource.GetString("SNEFRU128");
-        private readonly string SNEFRU256String = ResourceService.DataVertifyResource.GetString("SNEFRU256");
         private readonly string TIGERString = ResourceService.DataVertifyResource.GetString("TIGER");
         private readonly string TIGER2String = ResourceService.DataVertifyResource.GetString("TIGER2");
-        private readonly string TTHString = ResourceService.DataVertifyResource.GetString("TTH");
         private readonly string VertifyingString = ResourceService.DataVertifyResource.GetString("Vertifying");
         private readonly string VertifyTypeNotSelectedString = ResourceService.DataVertifyResource.GetString("VertifyTypeNotSelected");
         private readonly string WHIRLPOOLString = ResourceService.DataVertifyResource.GetString("WHIRLPOOL");
-        private readonly string XXH128String = ResourceService.DataVertifyResource.GetString("XXH128");
-        private readonly string XXH3String = ResourceService.DataVertifyResource.GetString("XXH3");
         private readonly string XXH32String = ResourceService.DataVertifyResource.GetString("XXH32");
         private readonly string XXH64String = ResourceService.DataVertifyResource.GetString("XXH64");
         private int selectVertifyIndex = -1;
@@ -226,21 +209,6 @@ namespace PowerToolbox.Views.Pages
             InitializeComponent();
             DataVertifyTypeList.Add(new DataVertifyTypeModel()
             {
-                Name = BLAKE2spString,
-                DataVertifyType = DataVertifyType.BLAKE2sp
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = BLAKE3String,
-                DataVertifyType = DataVertifyType.BLAKE3
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = BTIHString,
-                DataVertifyType = DataVertifyType.BTIH
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
                 Name = CRC32String,
                 DataVertifyType = DataVertifyType.CRC_32
             });
@@ -253,51 +221,6 @@ namespace PowerToolbox.Views.Pages
             {
                 Name = ED2KString,
                 DataVertifyType = DataVertifyType.ED2K
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = EDONR224String,
-                DataVertifyType = DataVertifyType.EDON_R_224
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = EDONR256String,
-                DataVertifyType = DataVertifyType.EDON_R_256
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = EDONR384String,
-                DataVertifyType = DataVertifyType.EDON_R_384
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = EDONR512String,
-                DataVertifyType = DataVertifyType.EDON_R_512
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = GOST12256String,
-                DataVertifyType = DataVertifyType.GOST12_256
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = GOST12512String,
-                DataVertifyType = DataVertifyType.GOST12_512
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = GOST94String,
-                DataVertifyType = DataVertifyType.GOST94
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = GOST94CryptoProString,
-                DataVertifyType = DataVertifyType.GOST94CryptoPro
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = HAS160String,
-                DataVertifyType = DataVertifyType.HAS_160
             });
             DataVertifyTypeList.Add(new DataVertifyTypeModel()
             {
@@ -371,16 +294,6 @@ namespace PowerToolbox.Views.Pages
             });
             DataVertifyTypeList.Add(new DataVertifyTypeModel()
             {
-                Name = SNEFRU128String,
-                DataVertifyType = DataVertifyType.SNEFRU_128
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = SNEFRU256String,
-                DataVertifyType = DataVertifyType.SNEFRU_256
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
                 Name = TIGERString,
                 DataVertifyType = DataVertifyType.TIGER
             });
@@ -388,11 +301,6 @@ namespace PowerToolbox.Views.Pages
             {
                 Name = TIGER2String,
                 DataVertifyType = DataVertifyType.TIGER2
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = TTHString,
-                DataVertifyType = DataVertifyType.TTH
             });
             DataVertifyTypeList.Add(new DataVertifyTypeModel()
             {
@@ -408,16 +316,6 @@ namespace PowerToolbox.Views.Pages
             {
                 Name = XXH64String,
                 DataVertifyType = DataVertifyType.XXH64
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = XXH3String,
-                DataVertifyType = DataVertifyType.XXH3
-            });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
-            {
-                Name = XXH128String,
-                DataVertifyType = DataVertifyType.XXH128
             });
         }
 
@@ -792,18 +690,6 @@ namespace PowerToolbox.Views.Pages
 
             switch (dataVertifyType)
             {
-                case DataVertifyType.BLAKE2sp:
-                    {
-                        break;
-                    }
-                case DataVertifyType.BLAKE3:
-                    {
-                        break;
-                    }
-                case DataVertifyType.BTIH:
-                    {
-                        break;
-                    }
                 case DataVertifyType.CRC_32:
                     {
                         try
@@ -881,42 +767,6 @@ namespace PowerToolbox.Views.Pages
                         {
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.ED2K) + 1, e);
                         }
-                        break;
-                    }
-                case DataVertifyType.EDON_R_224:
-                    {
-                        break;
-                    }
-                case DataVertifyType.EDON_R_256:
-                    {
-                        break;
-                    }
-                case DataVertifyType.EDON_R_384:
-                    {
-                        break;
-                    }
-                case DataVertifyType.EDON_R_512:
-                    {
-                        break;
-                    }
-                case DataVertifyType.GOST12_256:
-                    {
-                        break;
-                    }
-                case DataVertifyType.GOST12_512:
-                    {
-                        break;
-                    }
-                case DataVertifyType.GOST94:
-                    {
-                        break;
-                    }
-                case DataVertifyType.GOST94CryptoPro:
-                    {
-                        break;
-                    }
-                case DataVertifyType.HAS_160:
-                    {
                         break;
                     }
                 case DataVertifyType.MD2:
@@ -1311,14 +1161,6 @@ namespace PowerToolbox.Views.Pages
                         }
                         break;
                     }
-                case DataVertifyType.SNEFRU_128:
-                    {
-                        break;
-                    }
-                case DataVertifyType.SNEFRU_256:
-                    {
-                        break;
-                    }
                 case DataVertifyType.TIGER:
                     {
                         try
@@ -1373,10 +1215,6 @@ namespace PowerToolbox.Views.Pages
                         {
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.TIGER2) + 1, e);
                         }
-                        break;
-                    }
-                case DataVertifyType.TTH:
-                    {
                         break;
                     }
                 case DataVertifyType.WHIRLPOOL:
@@ -1461,14 +1299,6 @@ namespace PowerToolbox.Views.Pages
                         {
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.XXH64) + 1, e);
                         }
-                        break;
-                    }
-                case DataVertifyType.XXH3:
-                    {
-                        break;
-                    }
-                case DataVertifyType.XXH128:
-                    {
                         break;
                     }
             }
