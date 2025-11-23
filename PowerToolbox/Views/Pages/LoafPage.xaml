@@ -171,16 +171,16 @@
                                             <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnUpdateStyleClicked}"
                                                 GroupName="UpdateStyleRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedSimulateUpdateStyle.Key, UpdateList[0].Key), Mode=OneWay}"
-                                                Tag="{x:Bind UpdateList[0]}"
-                                                Text="{x:Bind system:Convert.ToString(UpdateList[0].Value)}" />
+                                                IsChecked="{x:Bind x:Object.Equals(SelectedSimulateUpdateStyle.Key, SimulateUpdateStyleList[0].Key), Mode=OneWay}"
+                                                Tag="{x:Bind SimulateUpdateStyleList[0]}"
+                                                Text="{x:Bind system:Convert.ToString(SimulateUpdateStyleList[0].Value)}" />
 
                                             <RadioMenuFlyoutItem
                                                 Click="{x:Bind OnUpdateStyleClicked}"
                                                 GroupName="UpdateStyleRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedSimulateUpdateStyle.Key, UpdateList[1].Key), Mode=OneWay}"
-                                                Tag="{x:Bind UpdateList[1]}"
-                                                Text="{x:Bind system:Convert.ToString(UpdateList[1].Value)}" />
+                                                IsChecked="{x:Bind x:Object.Equals(SelectedSimulateUpdateStyle.Key, SimulateUpdateStyleList[1].Key), Mode=OneWay}"
+                                                Tag="{x:Bind SimulateUpdateStyleList[1]}"
+                                                Text="{x:Bind system:Convert.ToString(SimulateUpdateStyleList[1].Value)}" />
                                         </MenuFlyout>
                                     </DropDownButton.Flyout>
                                 </DropDownButton>
@@ -278,33 +278,55 @@
                                 <TextBlock
                                     Grid.Column="0"
                                     VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('LockScreenAutomaticly')}" />
+                                    Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('AfterSimulateOperation')}" />
 
-                                <StackPanel
-                                    Grid.Column="1"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal">
+                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedAfterSimulateOperation.Value, Mode=OneWay}">
+                                    <DropDownButton.Flyout>
+                                        <MenuFlyout Placement="Bottom">
+                                            <RadioMenuFlyoutItem
+                                                Click="{x:Bind OnAfterSimulateOperationClicked}"
+                                                GroupName="AfterSimulateOperationRadioGroup"
+                                                IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[0].Key), Mode=OneWay}"
+                                                Tag="{x:Bind AfterSimulateOperationList[0]}"
+                                                Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[0].Value)}" />
 
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('LockScreenAutomaticlyOffContent')}"
-                                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(LockScreenAutomaticly), Mode=OneWay}" />
+                                            <RadioMenuFlyoutItem
+                                                Click="{x:Bind OnAfterSimulateOperationClicked}"
+                                                GroupName="AfterSimulateOperationRadioGroup"
+                                                IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[1].Key), Mode=OneWay}"
+                                                Tag="{x:Bind AfterSimulateOperationList[1]}"
+                                                Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[1].Value)}" />
 
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('LockScreenAutomaticlyOnContent')}"
-                                        Visibility="{x:Bind LockScreenAutomaticly, Mode=OneWay}" />
+                                            <RadioMenuFlyoutItem
+                                                Click="{x:Bind OnAfterSimulateOperationClicked}"
+                                                GroupName="AfterSimulateOperationRadioGroup"
+                                                IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[2].Key), Mode=OneWay}"
+                                                Tag="{x:Bind AfterSimulateOperationList[2]}"
+                                                Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[2].Value)}" />
 
-                                    <ToggleSwitch
-                                        MinWidth="0"
-                                        Margin="10,-2,-10,0"
-                                        IsOn="{x:Bind LockScreenAutomaticly, Mode=OneWay}"
-                                        OffContent=""
-                                        OnContent=""
-                                        Toggled="{x:Bind OnLockScreenAutomaticlyToggled}" />
-                                </StackPanel>
+                                            <RadioMenuFlyoutItem
+                                                Click="{x:Bind OnAfterSimulateOperationClicked}"
+                                                GroupName="AfterSimulateOperationRadioGroup"
+                                                IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[3].Key), Mode=OneWay}"
+                                                Tag="{x:Bind AfterSimulateOperationList[3]}"
+                                                Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[3].Value)}" />
+
+                                            <RadioMenuFlyoutItem
+                                                Click="{x:Bind OnAfterSimulateOperationClicked}"
+                                                GroupName="AfterSimulateOperationRadioGroup"
+                                                IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[4].Key), Mode=OneWay}"
+                                                Tag="{x:Bind AfterSimulateOperationList[4]}"
+                                                Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[4].Value)}" />
+
+                                            <RadioMenuFlyoutItem
+                                                Click="{x:Bind OnAfterSimulateOperationClicked}"
+                                                GroupName="AfterSimulateOperationRadioGroup"
+                                                IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[5].Key), Mode=OneWay}"
+                                                Tag="{x:Bind AfterSimulateOperationList[5]}"
+                                                Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[5].Value)}" />
+                                        </MenuFlyout>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
                             </Grid>
                         </StackPanel>
                     </Expander.Content>

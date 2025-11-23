@@ -24,6 +24,12 @@ namespace PowerToolbox.Views.Pages
     public sealed partial class LoafPage : Page, INotifyPropertyChanged
     {
         private readonly string LoafTimeString = ResourceService.LoafResource.GetString("LoafTime");
+        private readonly string LockScreenString = ResourceService.LoafResource.GetString("LockScreen");
+        private readonly string LogOffString = ResourceService.LoafResource.GetString("LogOff");
+        private readonly string NoneString = ResourceService.LoafResource.GetString("None");
+        private readonly string RestartString = ResourceService.LoafResource.GetString("Restart");
+        private readonly string ShutdownString = ResourceService.LoafResource.GetString("Shutdown");
+        private readonly string SleepString = ResourceService.LoafResource.GetString("Sleep");
         private readonly string Windows10StyleString = ResourceService.LoafResource.GetString("Windows10Style");
         private readonly string Windows11StyleString = ResourceService.LoafResource.GetString("Windows11Style");
         private bool isInitialized;
@@ -125,32 +131,41 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _lockScreenAutomaticly = true;
+        private KeyValuePair<string, string> _selectedAfterSimulatedOperation;
 
-        public bool LockScreenAutomaticly
+        public KeyValuePair<string, string> SelectedAfterSimulateOperation
         {
-            get { return _lockScreenAutomaticly; }
+            get { return _selectedAfterSimulatedOperation; }
 
             set
             {
-                if (!Equals(_lockScreenAutomaticly, value))
+                if (!Equals(_selectedAfterSimulatedOperation, value))
                 {
-                    _lockScreenAutomaticly = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LockScreenAutomaticly)));
+                    _selectedAfterSimulatedOperation = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedAfterSimulateOperation)));
                 }
             }
         }
 
-        private List<KeyValuePair<SimulateUpdateKind, string>> UpdateList { get; } = [];
+        private List<KeyValuePair<SimulateUpdateKind, string>> SimulateUpdateStyleList { get; } = [];
+
+        private List<KeyValuePair<string, string>> AfterSimulateOperationList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public LoafPage()
         {
             InitializeComponent();
-            UpdateList.Add(new KeyValuePair<SimulateUpdateKind, string>(SimulateUpdateKind.Windows11, Windows11StyleString));
-            UpdateList.Add(new KeyValuePair<SimulateUpdateKind, string>(SimulateUpdateKind.Windows10, Windows10StyleString));
-            SelectedSimulateUpdateStyle = UpdateList[0];
+            SimulateUpdateStyleList.Add(new KeyValuePair<SimulateUpdateKind, string>(SimulateUpdateKind.Windows11, Windows11StyleString));
+            SimulateUpdateStyleList.Add(new KeyValuePair<SimulateUpdateKind, string>(SimulateUpdateKind.Windows10, Windows10StyleString));
+            AfterSimulateOperationList.Add(new KeyValuePair<string, string>("None", NoneString));
+            AfterSimulateOperationList.Add(new KeyValuePair<string, string>("LockScreen", LockScreenString));
+            AfterSimulateOperationList.Add(new KeyValuePair<string, string>("LogOff", LogOffString));
+            AfterSimulateOperationList.Add(new KeyValuePair<string, string>("Sleep", SleepString));
+            AfterSimulateOperationList.Add(new KeyValuePair<string, string>("Restart", RestartString));
+            AfterSimulateOperationList.Add(new KeyValuePair<string, string>("Shutdown", ShutdownString));
+            SelectedSimulateUpdateStyle = SimulateUpdateStyleList[0];
+            SelectedAfterSimulateOperation = AfterSimulateOperationList[0];
         }
 
         #region 第一部分：重写父类事件
@@ -252,7 +267,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnStartLoafClicked(object sender, RoutedEventArgs args)
         {
-            new SimulateUpdateWindow(SelectedSimulateUpdateStyle.Key, DurationTime, BlockAllKeys, LockScreenAutomaticly).Activate();
+            new SimulateUpdateWindow(SelectedSimulateUpdateStyle.Key, DurationTime, BlockAllKeys, SelectedAfterSimulateOperation.Key).Activate();
             SimulateUpdateWindow.Current.Closed += OnClosed;
             IsLoafing = true;
         }
@@ -305,11 +320,11 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 模拟更新结束后是否自动锁屏
         /// </summary>
-        private void OnLockScreenAutomaticlyToggled(object sender, RoutedEventArgs args)
+        private void OnAfterSimulateOperationClicked(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> afterSimulateOperation)
             {
-                LockScreenAutomaticly = toggleSwitch.IsOn;
+                SelectedAfterSimulateOperation = afterSimulateOperation;
             }
         }
 

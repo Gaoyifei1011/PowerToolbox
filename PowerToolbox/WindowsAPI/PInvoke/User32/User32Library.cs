@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PowerToolbox.WindowsAPI.PInvoke.Advapi32;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -35,6 +36,18 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "ChangeWindowMessageFilter", PreserveSig = true, SetLastError = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ChangeWindowMessageFilter(WindowMessage message, ChangeFilterFlags dwFlag);
+
+        /// <summary>
+        /// 注销交互式用户，关闭系统，或关闭并重启系统。 它将 WM_QUERYENDSESSION 消息发送到所有应用程序，以确定它们是否可以终止。
+        /// </summary>
+        /// <param name="uFlags">关闭类型。</param>
+        /// <param name="dwReason">
+        /// 启动关闭的原因。 此参数必须是 系统关闭原因代码之一。
+        /// 如果此参数为零，则不会设置SHTDN_REASON_FLAG_PLANNED原因代码，因此默认操作是未定义的关闭，该关闭操作记录为“找不到此原因的标题”。 默认情况下，它也是计划外关闭。 根据系统配置方式，计划外关闭会触发创建包含系统状态信息的文件，这可能会延迟关闭。 因此，不要对此参数使用零。</param>
+        /// <returns>如果该函数成功，则返回值为非零值。 由于函数以异步方式执行，因此非零返回值指示已启动关闭。 它并不指示关闭是否成功。 系统、用户或其他应用程序可能会中止关闭。如果函数失败，则返回值为零。</returns>
+        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "ExitWindowsEx", PreserveSig = true, SetLastError = false)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool ExitWindowsEx(EWX uFlags, SHTDN_REASON dwReason);
 
         /// <summary>
         /// 返回指定窗口的每英寸点数 (dpi) 值。
