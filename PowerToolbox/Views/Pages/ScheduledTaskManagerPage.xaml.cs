@@ -485,6 +485,18 @@ namespace PowerToolbox.Views.Pages
                     ScheduledTaskCollection.Remove(scheduledTask);
                     ScheduledTaskList.Remove(scheduledTask);
                     await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskDelete, 1, 0));
+
+                    if (ScheduledTaskList.Count is 0)
+                    {
+                        ScheduledTaskResultKind = ScheduledTaskResultKind.Failed;
+                        ScheduledTaskFailedContent = ScheduledTaskEmptyDescriptionString;
+                    }
+                    else
+                    {
+                        ScheduledTaskResultKind = ScheduledTaskCollection.Count is 0 ? ScheduledTaskResultKind.Failed : ScheduledTaskResultKind.Successfully;
+                        ScheduledTaskFailedContent = ScheduledTaskCollection.Count is 0 ? ScheduledTaskEmptyWithConditionDescriptionString : string.Empty;
+                        ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, (ScheduledTaskCollection as ObservableCollection<ScheduledTaskModel>).Count(item => item.IsSelected));
+                    }
                 }
                 else
                 {
