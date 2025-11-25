@@ -370,6 +370,7 @@
 		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
 		
 		<Page Include="Styles\Main\DateTimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Styles\Main\RadioButtons.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\Main\InfoBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\Main\NavigationView.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\Main\ProgressRing.xaml" XamlRuntime="$(DefaultXamlRuntime)" />

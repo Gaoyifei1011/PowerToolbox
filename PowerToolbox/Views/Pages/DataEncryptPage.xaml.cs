@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -27,16 +28,21 @@ namespace PowerToolbox.Views.Pages
     public sealed partial class DataEncryptPage : Page, INotifyPropertyChanged
     {
         private readonly string AESString = ResourceService.DataEncryptResource.GetString("AES");
+        private readonly string ANSIX923String = ResourceService.DataEncryptResource.GetString("ANSIX923");
         private readonly string BlowfishString = ResourceService.DataEncryptResource.GetString("Blowfish");
         private readonly string CaesarCipherString = ResourceService.DataEncryptResource.GetString("CaesarCipher");
+        private readonly string CBCString = ResourceService.DataEncryptResource.GetString("CBC");
+        private readonly string CFBString = ResourceService.DataEncryptResource.GetString("CFB");
         private readonly string ChaCha20String = ResourceService.DataEncryptResource.GetString("ChaCha20");
         private readonly string ContentEncryptFailedString = ResourceService.DataEncryptResource.GetString("ContentEncryptFailed");
         private readonly string ContentEncryptPartSuccessfullyString = ResourceService.DataEncryptResource.GetString("ContentEncryptPartSuccessfully");
         private readonly string ContentEncryptWholeSuccessfullyString = ResourceService.DataEncryptResource.GetString("ContentEncryptWholeSuccessfully");
         private readonly string ContentEmptyString = ResourceService.DataEncryptResource.GetString("ContentEmpty");
         private readonly string ContentInitializeString = ResourceService.DataEncryptResource.GetString("ContentInitialize");
+        private readonly string CTSString = ResourceService.DataEncryptResource.GetString("CTS");
         private readonly string DESString = ResourceService.DataEncryptResource.GetString("DES");
         private readonly string DragOverContentString = ResourceService.DataEncryptResource.GetString("DragOverContent");
+        private readonly string ECBString = ResourceService.DataEncryptResource.GetString("ECB");
         private readonly string ECCString = ResourceService.DataEncryptResource.GetString("ECC");
         private readonly string EncryptingString = ResourceService.DataEncryptResource.GetString("Encrypting");
         private readonly string EncryptTypeNotSelectedString = ResourceService.DataEncryptResource.GetString("EncryptTypeNotSelected");
@@ -46,19 +52,25 @@ namespace PowerToolbox.Views.Pages
         private readonly string FileInitializeString = ResourceService.DataEncryptResource.GetString("FileInitialize");
         private readonly string FileNotExistedString = ResourceService.DataEncryptResource.GetString("FileNotExisted");
         private readonly string FileNotSelectedString = ResourceService.DataEncryptResource.GetString("FileNotSelected");
+        private readonly string ISO10126String = ResourceService.DataEncryptResource.GetString("ISO10126");
         private readonly string MorseCodeString = ResourceService.DataEncryptResource.GetString("MorseCode");
-        private readonly string NoMultiFileString = ResourceService.DataVertifyResource.GetString("NoMultiFile");
+        private readonly string NonePaddingString = ResourceService.DataEncryptResource.GetString("NonePadding");
+        private readonly string NoMultiFileString = ResourceService.DataEncryptResource.GetString("NoMultiFile");
+        private readonly string OFBString = ResourceService.DataEncryptResource.GetString("OFB");
+        private readonly string PKCS7String = ResourceService.DataEncryptResource.GetString("PKCS7");
         private readonly string RabbitString = ResourceService.DataEncryptResource.GetString("Rabbit");
         private readonly string RC2String = ResourceService.DataEncryptResource.GetString("RC2");
         private readonly string RC4String = ResourceService.DataEncryptResource.GetString("RC4");
         private readonly string RC5String = ResourceService.DataEncryptResource.GetString("RC5");
         private readonly string RC6String = ResourceService.DataEncryptResource.GetString("RC6");
+        private readonly string RijndaelString = ResourceService.DataEncryptResource.GetString("Rijndael");
         private readonly string RSAString = ResourceService.DataEncryptResource.GetString("RSA");
         private readonly string SelectFileString = ResourceService.DataEncryptResource.GetString("SelectFile");
         private readonly string SM2String = ResourceService.DataEncryptResource.GetString("SM2");
         private readonly string SM4String = ResourceService.DataEncryptResource.GetString("SM4");
         private readonly string TripleDESString = ResourceService.DataEncryptResource.GetString("TripleDES");
         private readonly string XORString = ResourceService.DataEncryptResource.GetString("XOR");
+        private readonly string ZerosString = ResourceService.DataEncryptResource.GetString("Zeros");
         private int selectEncryptIndex = -1;
         private string selectedEncryptFile = string.Empty;
         private string selectedEncryptContent = string.Empty;
@@ -159,6 +171,86 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private DataEncryptTypeModel _selectedDataEncryptType;
+
+        public DataEncryptTypeModel SelectedDataEncryptType
+        {
+            get { return _selectedDataEncryptType; }
+
+            set
+            {
+                if (!Equals(_selectedDataEncryptType, value))
+                {
+                    _selectedDataEncryptType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedDataEncryptType)));
+                }
+            }
+        }
+
+        private string _encryptKeyText;
+
+        public string EncryptKeyText
+        {
+            get { return _encryptKeyText; }
+
+            set
+            {
+                if (!string.Equals(_encryptKeyText, value))
+                {
+                    _encryptKeyText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EncryptKeyText)));
+                }
+            }
+        }
+
+        private string _initializationVectorText;
+
+        public string InitializationVectorText
+        {
+            get { return _initializationVectorText; }
+
+            set
+            {
+                if (!string.Equals(_initializationVectorText, value))
+                {
+                    _initializationVectorText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InitializationVectorText)));
+                }
+            }
+        }
+
+        private KeyValuePair<CipherMode, string> _selectedEncryptedBlockCipherMode;
+
+        public KeyValuePair<CipherMode, string> SelectedEncryptedBlockCipherMode
+        {
+            get { return _selectedEncryptedBlockCipherMode; }
+
+            set
+            {
+                if (!Equals(_selectedEncryptedBlockCipherMode, value))
+                {
+                    _selectedEncryptedBlockCipherMode = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedEncryptedBlockCipherMode)));
+                }
+            }
+        }
+
+        private KeyValuePair<PaddingMode, string> _selectedPaddingMode;
+
+        public KeyValuePair<PaddingMode, string> SelectedPaddingMode
+        {
+            get { return _selectedPaddingMode; }
+
+            set
+            {
+                if (!Equals(_selectedPaddingMode, value))
+                {
+                    _selectedPaddingMode = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedPaddingMode)));
+                }
+            }
+        }
+
         private bool _useUpperCase;
 
         public bool UseUpperCase
@@ -193,6 +285,10 @@ namespace PowerToolbox.Views.Pages
 
         private List<DataEncryptTypeModel> DataEncryptTypeList { get; } = [];
 
+        private List<KeyValuePair<CipherMode, string>> EncryptedBlockCipherModeList { get; } = [];
+
+        private List<KeyValuePair<PaddingMode, string>> PaddingModeList { get; } = [];
+
         private List<DataEncryptVertifyResultModel> DataEncryptResultCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -200,6 +296,18 @@ namespace PowerToolbox.Views.Pages
         public DataEncryptPage()
         {
             InitializeComponent();
+            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CBC, CBCString));
+            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.ECB, ECBString));
+            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.OFB, OFBString));
+            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CFB, CFBString));
+            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CTS, CTSString));
+            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.None, NonePaddingString));
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.PKCS7, PKCS7String));
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.Zeros, ZerosString));
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.ANSIX923, ANSIX923String));
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.ISO10126, ISO10126String));
+            SelectedPaddingMode = PaddingModeList[0];
             DataEncryptTypeList.Add(new DataEncryptTypeModel()
             {
                 DataEncryptType = DataEncryptType.AES,
@@ -262,6 +370,11 @@ namespace PowerToolbox.Views.Pages
             });
             DataEncryptTypeList.Add(new DataEncryptTypeModel()
             {
+                DataEncryptType = DataEncryptType.Rijndael,
+                Name = RijndaelString
+            });
+            DataEncryptTypeList.Add(new DataEncryptTypeModel()
+            {
                 DataEncryptType = DataEncryptType.RSA,
                 Name = RSAString
             });
@@ -285,6 +398,7 @@ namespace PowerToolbox.Views.Pages
                 DataEncryptType = DataEncryptType.XOR,
                 Name = XORString
             });
+            SelectedDataEncryptType = DataEncryptTypeList[0];
         }
 
         #region 第一部分：ExecuteCommand 命令调用时挂载的事件
@@ -294,7 +408,10 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnDataEncryptCheckExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            IsAllSelected = DataEncryptTypeList.All(item => item.IsSelected);
+            if (args.Parameter is DataEncryptType dataEncryptType)
+            {
+                SelectedDataEncryptType = DataEncryptTypeList.Find(item => Equals(item.DataEncryptType, dataEncryptType));
+            }
         }
 
         #endregion 第一部分：ExecuteCommand 命令调用时挂载的事件
@@ -439,7 +556,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 校验内容发生改变时触发的事件
         /// </summary>
-        private void OnTextChanged(object sender, TextChangedEventArgs args)
+        private void OnEncryptContentTextChanged(object sender, TextChangedEventArgs args)
         {
             if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
@@ -448,29 +565,47 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 全选
+        /// 加密密钥内容发生改变时触发的事件
         /// </summary>
-        private void OnSelectAllClicked(object sender, RoutedEventArgs args)
+        private void OnEncryptKeyTextChanged(object sender, TextChangedEventArgs args)
         {
-            foreach (DataEncryptTypeModel dataEncryptTypeItem in DataEncryptTypeList)
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
-                dataEncryptTypeItem.IsSelected = true;
+                EncryptKeyText = textBox.Text;
             }
-
-            IsAllSelected = true;
         }
 
         /// <summary>
-        /// 全部反选
+        /// 初始化向量内容改变时触发的事件
         /// </summary>
-        private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
+        private void OnInitializationVectorTextChanged(object sender, TextChangedEventArgs args)
         {
-            foreach (DataEncryptTypeModel dataEncryptTypeItem in DataEncryptTypeList)
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
-                dataEncryptTypeItem.IsSelected = false;
+                InitializationVectorText = textBox.Text;
             }
+        }
 
-            IsAllSelected = false;
+        /// <summary>
+        /// 加密块密码模式发生变化时触发的事件
+        /// </summary>
+        private void OnEncryptedBlockCipherModeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is MenuFlyoutItem menuFlyoutItem && menuFlyoutItem.Tag is KeyValuePair<CipherMode, string> encryptedBlockCipherMode)
+            {
+                SelectedEncryptedBlockCipherMode = encryptedBlockCipherMode;
+            }
+        }
+
+        /// <summary>
+        /// 填充模式发生变化时触发的事件
+        /// </summary>
+        private void OnPaddingModeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is MenuFlyoutItem menuFlyoutItem && menuFlyoutItem.Tag is KeyValuePair<PaddingMode, string> encryptedPaddingMode)
+            {
+                SelectedPaddingMode = encryptedPaddingMode;
+            }
         }
 
         /// <summary>

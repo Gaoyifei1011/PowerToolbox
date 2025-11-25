@@ -33,7 +33,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<Type> PageList { get; } = [typeof(DataVertifyPage)];
+        private List<Type> PageList { get; } = [typeof(DataEncryptPage), typeof(DataVertifyPage)];
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -17,10 +17,11 @@
         RC4 = 9,
         RC5 = 10,
         RC6 = 11,
-        RSA = 12,
-        SM2 = 13,
-        SM4 = 14,
-        TripleDES = 15,
-        XOR = 16,
+        Rijndael = 12,
+        RSA = 13,
+        SM2 = 14,
+        SM4 = 15,
+        TripleDES = 16,
+        XOR = 17,
     }
 }

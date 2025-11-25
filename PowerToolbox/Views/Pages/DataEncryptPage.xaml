@@ -9,6 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:PowerToolbox.Models"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
+    xmlns:system="using:System"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
@@ -25,6 +26,7 @@
 
         <Grid Margin="0,0,30,30">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -120,7 +122,7 @@
                 PlaceholderText="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptPHText')}"
                 Style="{StaticResource TextBoxStyle}"
                 Text="{x:Bind EncryptContent, Mode=OneWay}"
-                TextChanged="{x:Bind OnTextChanged}"
+                TextChanged="{x:Bind OnEncryptContentTextChanged}"
                 Visibility="{x:Bind GetDataEncryptType(SelectedIndex, 1), Mode=OneWay}" />
 
             <!--  数据加密验证栏  -->
@@ -166,7 +168,6 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <FontIcon
@@ -179,62 +180,245 @@
                             Grid.Column="1"
                             VerticalAlignment="Center"
                             Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('DataEncryptType')}" />
-
-                        <CommandBar Grid.Column="2" DefaultLabelPosition="Right">
-                            <CommandBar.PrimaryCommands>
-                                <AppBarButton
-                                    Click="{x:Bind OnSelectAllClicked}"
-                                    Label="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('SelectAll')}"
-                                    Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsAllSelected), Mode=OneWay}">
-                                    <AppBarButton.Icon>
-                                        <FontIcon Glyph="&#xE8B3;" />
-                                    </AppBarButton.Icon>
-                                </AppBarButton>
-
-                                <AppBarButton
-                                    Click="{x:Bind OnSelectNoneClicked}"
-                                    Label="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('SelectNone')}"
-                                    Visibility="{x:Bind IsAllSelected, Mode=OneWay}">
-                                    <AppBarButton.Icon>
-                                        <FontIcon Glyph="&#xE8E6;" />
-                                    </AppBarButton.Icon>
-                                </AppBarButton>
-                            </CommandBar.PrimaryCommands>
-                        </CommandBar>
                     </Grid>
                 </Expander.Header>
 
                 <Expander.Content>
-                    <GridView
+                    <RadioButtons
+                        Margin="8,0,0,8"
                         Padding="12,10,0,10"
                         ItemsSource="{x:Bind DataEncryptTypeList}"
-                        SelectionMode="None">
+                        SelectedItem="{x:Bind SelectedDataEncryptType, Mode=OneWay}"
+                        Style="{StaticResource RadioButtonsStyle}">
 
-                        <GridView.ItemContainerStyle>
-                            <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
-                                <Setter Property="MinHeight" Value="0" />
-                                <Setter Property="Margin" Value="5,5,0,5" />
-                            </Style>
-                        </GridView.ItemContainerStyle>
-
-                        <GridView.ItemTemplate>
+                        <RadioButtons.ItemTemplate>
                             <DataTemplate x:DataType="model:DataEncryptTypeModel">
-                                <CheckBox
-                                    MinWidth="120"
-                                    MinHeight="0"
-                                    Padding="8,0,0,0"
+                                <RadioButton
+                                    MinWidth="0"
+                                    Margin="8,0,0,0"
                                     Command="{StaticResource DataEncryptCheckCommand}"
-                                    Content="{x:Bind Name}"
-                                    IsChecked="{x:Bind IsSelected, Mode=TwoWay}" />
+                                    CommandParameter="{x:Bind DataEncryptType}"
+                                    Content="{x:Bind Name}" />
                             </DataTemplate>
-                        </GridView.ItemTemplate>
-                    </GridView>
+                        </RadioButtons.ItemTemplate>
+                    </RadioButtons>
+                </Expander.Content>
+            </Expander>
+
+            <Expander
+                Grid.Row="4"
+                Margin="0,0,0,3"
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                IsExpanded="True">
+
+                <Expander.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <FontIcon
+                            Grid.Column="0"
+                            Margin="0,0,12,0"
+                            FontSize="16"
+                            Glyph="&#xE90F;" />
+
+                        <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('SymmetricAlgorithmOption')}" />
+                    </Grid>
+                </Expander.Header>
+
+                <Expander.Content>
+                    <StackPanel Padding="0">
+                        <!--  加密密钥  -->
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptKey')}" />
+
+                            <TextBox
+                                Grid.Column="1"
+                                Width="350"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                PlaceholderText="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptKeyPHText')}"
+                                Text="{x:Bind EncryptKeyText, Mode=OneWay}"
+                                TextChanged="{x:Bind OnEncryptKeyTextChanged}" />
+                        </Grid>
+
+                        <MenuFlyoutSeparator />
+
+                        <!--  初始化向量  -->
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('InitializationVector')}" />
+
+                            <TextBox
+                                Grid.Column="1"
+                                Width="350"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                PlaceholderText="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('InitializationVectorPHText')}"
+                                Text="{x:Bind InitializationVectorText, Mode=OneWay}"
+                                TextChanged="{x:Bind OnInitializationVectorTextChanged}" />
+                        </Grid>
+
+                        <MenuFlyoutSeparator />
+
+                        <!--  加密的块密码模式  -->
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptedBlockCipherMode')}" />
+
+                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedEncryptedBlockCipherMode.Value, Mode=OneWay}">
+                                <DropDownButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnEncryptedBlockCipherModeClicked}"
+                                            GroupName="EncryptedBlockCipherModeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedEncryptedBlockCipherMode.Key, EncryptedBlockCipherModeList[0].Key), Mode=OneWay}"
+                                            Tag="{x:Bind EncryptedBlockCipherModeList[0]}"
+                                            Text="{x:Bind system:Convert.ToString(EncryptedBlockCipherModeList[0].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnEncryptedBlockCipherModeClicked}"
+                                            GroupName="EncryptedBlockCipherModeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedEncryptedBlockCipherMode.Key, EncryptedBlockCipherModeList[1].Key), Mode=OneWay}"
+                                            Tag="{x:Bind EncryptedBlockCipherModeList[1]}"
+                                            Text="{x:Bind system:Convert.ToString(EncryptedBlockCipherModeList[1].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnEncryptedBlockCipherModeClicked}"
+                                            GroupName="EncryptedBlockCipherModeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedEncryptedBlockCipherMode.Key, EncryptedBlockCipherModeList[2].Key), Mode=OneWay}"
+                                            Tag="{x:Bind EncryptedBlockCipherModeList[2]}"
+                                            Text="{x:Bind system:Convert.ToString(EncryptedBlockCipherModeList[2].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnEncryptedBlockCipherModeClicked}"
+                                            GroupName="EncryptedBlockCipherModeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedEncryptedBlockCipherMode.Key, EncryptedBlockCipherModeList[3].Key), Mode=OneWay}"
+                                            Tag="{x:Bind EncryptedBlockCipherModeList[3]}"
+                                            Text="{x:Bind system:Convert.ToString(EncryptedBlockCipherModeList[3].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnEncryptedBlockCipherModeClicked}"
+                                            GroupName="EncryptedBlockCipherModeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedEncryptedBlockCipherMode.Key, EncryptedBlockCipherModeList[4].Key), Mode=OneWay}"
+                                            Tag="{x:Bind EncryptedBlockCipherModeList[4]}"
+                                            Text="{x:Bind system:Convert.ToString(EncryptedBlockCipherModeList[4].Value)}" />
+                                    </MenuFlyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+                        </Grid>
+
+                        <MenuFlyoutSeparator />
+
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('PaddingMode')}" />
+
+                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedPaddingMode.Value, Mode=OneWay}">
+                                <DropDownButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnPaddingModeClicked}"
+                                            GroupName="PaddingModeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[0].Key), Mode=OneWay}"
+                                            Tag="{x:Bind PaddingModeList[0]}"
+                                            Text="{x:Bind system:Convert.ToString(PaddingModeList[0].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnPaddingModeClicked}"
+                                            GroupName="PaddingModeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[1].Key), Mode=OneWay}"
+                                            Tag="{x:Bind PaddingModeList[1]}"
+                                            Text="{x:Bind system:Convert.ToString(PaddingModeList[1].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnPaddingModeClicked}"
+                                            GroupName="PaddingModeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[2].Key), Mode=OneWay}"
+                                            Tag="{x:Bind PaddingModeList[2]}"
+                                            Text="{x:Bind system:Convert.ToString(PaddingModeList[2].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnPaddingModeClicked}"
+                                            GroupName="PaddingModeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[3].Key), Mode=OneWay}"
+                                            Tag="{x:Bind PaddingModeList[3]}"
+                                            Text="{x:Bind system:Convert.ToString(PaddingModeList[3].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnPaddingModeClicked}"
+                                            GroupName="PaddingModeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[4].Key), Mode=OneWay}"
+                                            Tag="{x:Bind PaddingModeList[4]}"
+                                            Text="{x:Bind system:Convert.ToString(PaddingModeList[4].Value)}" />
+                                    </MenuFlyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+                        </Grid>
+                    </StackPanel>
                 </Expander.Content>
             </Expander>
 
             <!--  数据加密控制栏  -->
             <Grid
-                Grid.Row="4"
+                Grid.Row="5"
                 Height="60"
                 Margin="0,0,0,3"
                 Padding="16,0"
@@ -283,8 +467,9 @@
                     Style="{StaticResource AccentButtonStyle}" />
             </Grid>
 
+            <!--  数据加密结果列表  -->
             <ListView
-                Grid.Row="5"
+                Grid.Row="6"
                 Margin="0,0,0,3"
                 Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
