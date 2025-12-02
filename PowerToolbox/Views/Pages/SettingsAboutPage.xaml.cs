@@ -48,10 +48,10 @@ namespace PowerToolbox.Views.Pages
         {
             { "Microsoft.Windows.SDK.BuildTools", new Uri("https://aka.ms/WinSDKProjectURL") },
             { "Microsoft.Windows.SDK.BuildTools.MSIX", new Uri("https://aka.ms/WinSDKProjectURL") },
-            { "Microsoft.Windows.SDK.Contracts", new Uri("https://aka.ms/WinSDKProjectURL") },
+            { "Microsoft.Windows.SDK.NET.Ref", new Uri("https://aka.ms/WinSDKProjectURL") },
             { "Microsoft.WindowsAppSDK", new Uri("https://github.com/microsoft/windowsappsdk") },
             { "Mile.Aria2", new Uri("https://github.com/ProjectMile/Mile.Aria2") },
-            { "System.Private.Uri", new Uri("https://dot.net") }
+            { "System.Runtime.WindowsRuntime", new Uri("https://github.com/dotnet/corefx") }
         };
 
         //项目感谢者信息
