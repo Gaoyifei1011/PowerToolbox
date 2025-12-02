@@ -523,7 +523,7 @@ namespace PowerToolbox.Views.Pages
         {
             foreach (DataEncryptVertifyResultModel dataEncryptVertifyResultItem in DataVertifyResultCollection)
             {
-                dataEncryptVertifyResultItem.Result = dataEncryptVertifyResultItem.Result.ToLower();
+                dataEncryptVertifyResultItem.Result = dataEncryptVertifyResultItem.Result.ToLowerInvariant();
             }
         }
 
@@ -632,7 +632,7 @@ namespace PowerToolbox.Views.Pages
             {
                 foreach (DataEncryptVertifyResultModel dataEncryptVertifyResultItem in dataVertifyResultList)
                 {
-                    dataEncryptVertifyResultItem.Result = dataEncryptVertifyResultItem.Result.ToLower();
+                    dataEncryptVertifyResultItem.Result = dataEncryptVertifyResultItem.Result.ToLowerInvariant();
                     DataVertifyResultCollection.Add(dataEncryptVertifyResultItem);
                 }
             }

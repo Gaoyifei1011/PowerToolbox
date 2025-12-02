@@ -657,7 +657,7 @@ namespace PowerToolbox.Views.Pages
                             {
                                 if (!string.IsNullOrEmpty(oldAndNewNameItem.OriginalFileName))
                                 {
-                                    oldAndNewNameItem.NewFileName = oldAndNewNameItem.OriginalFileName.ToLower();
+                                    oldAndNewNameItem.NewFileName = oldAndNewNameItem.OriginalFileName.ToLowerInvariant();
                                     oldAndNewNameItem.NewFilePath = oldAndNewNameItem.OriginalFilePath.Replace(oldAndNewNameItem.OriginalFileName, oldAndNewNameItem.NewFileName);
                                 }
                             }
@@ -672,7 +672,7 @@ namespace PowerToolbox.Views.Pages
                             {
                                 if (!string.IsNullOrEmpty(oldAndNewNameItem.OriginalFileName))
                                 {
-                                    string fileName = Path.GetFileNameWithoutExtension(oldAndNewNameItem.OriginalFileName).ToLower();
+                                    string fileName = Path.GetFileNameWithoutExtension(oldAndNewNameItem.OriginalFileName).ToLowerInvariant();
                                     string extensionName = Path.GetExtension(oldAndNewNameItem.OriginalFileName);
                                     oldAndNewNameItem.NewFileName = fileName + extensionName;
                                     oldAndNewNameItem.NewFilePath = oldAndNewNameItem.OriginalFilePath.Replace(oldAndNewNameItem.OriginalFileName, oldAndNewNameItem.NewFileName);
@@ -690,7 +690,7 @@ namespace PowerToolbox.Views.Pages
                                 if (!string.IsNullOrEmpty(oldAndNewNameItem.OriginalFileName))
                                 {
                                     string fileName = Path.GetFileNameWithoutExtension(oldAndNewNameItem.OriginalFileName);
-                                    string extensionName = Path.GetExtension(oldAndNewNameItem.OriginalFileName).ToLower();
+                                    string extensionName = Path.GetExtension(oldAndNewNameItem.OriginalFileName).ToLowerInvariant();
                                     oldAndNewNameItem.NewFileName = fileName + extensionName;
                                     oldAndNewNameItem.NewFilePath = oldAndNewNameItem.OriginalFilePath.Replace(oldAndNewNameItem.OriginalFileName, oldAndNewNameItem.NewFileName);
                                 }
