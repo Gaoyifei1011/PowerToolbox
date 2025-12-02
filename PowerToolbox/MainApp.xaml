@@ -12,13 +12,13 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources>
                     <XamlControlsResources.MergedDictionaries>
-                        <ResourceDictionary Source="ms-appx:///Styles/Main/DateTimePicker.xaml" />
-                        <ResourceDictionary Source="ms-appx:///Styles/Main/InfoBar.xaml" />
-                        <ResourceDictionary Source="ms-appx:///Styles/Main/NavigationView.xaml" />
-                        <ResourceDictionary Source="ms-appx:///Styles/Main/ProgressRing.xaml" />
-                        <ResourceDictionary Source="ms-appx:///Styles/Main/RadioButtons.xaml" />
-                        <ResourceDictionary Source="ms-appx:///Styles/Main/TextBlock.xaml" />
-                        <ResourceDictionary Source="ms-appx:///Styles/Main/TimePicker.xaml" />
+                        <ResourceDictionary Source="ms-appx:///Styles/DateTimePicker.xaml" />
+                        <ResourceDictionary Source="ms-appx:///Styles/InfoBar.xaml" />
+                        <ResourceDictionary Source="ms-appx:///Styles/NavigationView.xaml" />
+                        <ResourceDictionary Source="ms-appx:///Styles/ProgressRing.xaml" />
+                        <ResourceDictionary Source="ms-appx:///Styles/RadioButtons.xaml" />
+                        <ResourceDictionary Source="ms-appx:///Styles/TextBox.xaml" />
+                        <ResourceDictionary Source="ms-appx:///Styles/TimePicker.xaml" />
 
                         <ResourceDictionary>
                             <ResourceDictionary.ThemeDictionaries>

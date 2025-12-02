@@ -183,8 +183,7 @@
                             CornerRadius="{TemplateBinding CornerRadius}"
                             FontSize="{TemplateBinding FontSize}"
                             IsTabStop="False"
-                            Style="{StaticResource DeleteButtonStyle}"
-                            Visibility="Collapsed" />
+                            Style="{StaticResource DeleteButtonStyle}" />
                         <ContentPresenter
                             x:Name="DescriptionPresenter"
                             Grid.Row="2"
