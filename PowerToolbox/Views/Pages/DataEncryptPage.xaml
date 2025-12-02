@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
-    xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,7 +14,6 @@
 
     <Page.Resources>
         <CornerRadius x:Key="ListViewItemCornerRadius">0</CornerRadius>
-        <class:ExecuteCommand x:Name="DataEncryptCheckCommand" ExecuteRequested="{x:Bind OnDataEncryptCheckExecuteRequested}" />
     </Page.Resources>
 
     <ScrollViewer
@@ -123,6 +121,7 @@
                 Style="{StaticResource TextBoxStyle}"
                 Text="{x:Bind EncryptContent, Mode=OneWay}"
                 TextChanged="{x:Bind OnEncryptContentTextChanged}"
+                TextWrapping="Wrap"
                 Visibility="{x:Bind GetDataEncryptType(SelectedIndex, 1), Mode=OneWay}" />
 
             <!--  数据加密验证栏  -->
@@ -189,6 +188,7 @@
                         Padding="12,10,0,10"
                         ItemsSource="{x:Bind DataEncryptTypeList}"
                         SelectedItem="{x:Bind SelectedDataEncryptType, Mode=OneWay}"
+                        SelectionChanged="{x:Bind OnEncryptSelectionChanged}"
                         Style="{StaticResource RadioButtonsStyle}">
 
                         <RadioButtons.ItemTemplate>
@@ -196,8 +196,6 @@
                                 <RadioButton
                                     MinWidth="0"
                                     Margin="8,0,0,0"
-                                    Command="{StaticResource DataEncryptCheckCommand}"
-                                    CommandParameter="{x:Bind DataEncryptType}"
                                     Content="{x:Bind Name}" />
                             </DataTemplate>
                         </RadioButtons.ItemTemplate>
@@ -468,132 +466,51 @@
             </Grid>
 
             <!--  数据加密结果列表  -->
-            <ListView
+            <Expander
                 Grid.Row="6"
-                Margin="0,0,0,3"
-                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                BorderThickness="1"
-                CornerRadius="{ThemeResource ControlCornerRadius}"
-                ItemsSource="{x:Bind DataEncryptResultCollection}"
-                SelectionMode="None"
-                Visibility="{x:Bind GetEncryptResult(IsEncrypting, DataEncryptResultCollection.Count), Mode=OneWay}">
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                IsExpanded="True"
+                Visibility="{x:Bind GetEncryptResult(ResultServerity), Mode=OneWay}">
 
-                <ListView.Header>
-                    <Grid
-                        MinHeight="35"
-                        Padding="6,0,0,0"
-                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                        BorderThickness="0,0,0,1">
-
+                <Expander.Header>
+                    <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock
-                            x:Name="EncryptTypeHeaderText"
+                        <FontIcon
                             Grid.Column="0"
-                            Margin="10,0,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptType')}"
-                            TextTrimming="CharacterEllipsis"
-                            TextWrapping="NoWrap">
-
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptType')}"
-                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                    Visibility="{x:Bind EncryptTypeHeaderText.IsTextTrimmed, Mode=OneWay}" />
-                            </ToolTipService.ToolTip>
-                        </TextBlock>
+                            Margin="0,0,12,0"
+                            FontSize="16"
+                            Glyph="&#xE8BC;" />
 
                         <TextBlock
-                            x:Name="EncryptResultHeaderText"
                             Grid.Column="1"
-                            Margin="10,0,0,0"
-                            HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptResult')}">
-
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptResult')}"
-                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                    Visibility="{x:Bind EncryptResultHeaderText.IsTextTrimmed, Mode=OneWay}" />
-                            </ToolTipService.ToolTip>
-                        </TextBlock>
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptResult')}" />
                     </Grid>
-                </ListView.Header>
+                </Expander.Header>
 
-                <ListView.ItemContainerStyle>
-                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="Margin" Value="0" />
-                        <Setter Property="MinHeight" Value="0" />
-                        <Setter Property="Padding" Value="0" />
-                    </Style>
-                </ListView.ItemContainerStyle>
+                <Expander.Content>
+                    <StackPanel>
+                        <TextBlock
+                            IsTextSelectionEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsLargeContent), Mode=OneWay}"
+                            MaxLines="5"
+                            Text="{x:Bind EncryptResult, Mode=OneWay}"
+                            TextAlignment="Justify"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="Wrap" />
 
-                <ItemsControl.ItemContainerTransitions>
-                    <TransitionCollection />
-                </ItemsControl.ItemContainerTransitions>
-
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="model:DataEncryptVertifyResultModel">
-                        <Grid
-                            MinHeight="35"
-                            Padding="6,4,10,4"
-                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                            BorderThickness="0,0,0,1">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock
-                                x:Name="EncryptTypeText"
-                                Grid.Column="0"
-                                MinWidth="50"
-                                Margin="10,0,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                FontSize="14"
-                                Text="{x:Bind Name}"
-                                TextAlignment="Left"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap">
-
-                                <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        MaxWidth="9999"
-                                        Content="{x:Bind Name}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                        Placement="Mouse"
-                                        Visibility="{Binding ElementName=EncryptTypeText, Path=IsTextTrimmed, Mode=OneWay}" />
-                                </ToolTipService.ToolTip>
-                            </TextBlock>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                MinWidth="50"
-                                Margin="10,0,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                FontSize="14"
-                                IsTextSelectionEnabled="True"
-                                Text="{x:Bind Result}"
-                                TextAlignment="Left"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="Wrap" />
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                        <TextBlock HorizontalAlignment="Left" Visibility="{x:Bind IsLargeContent, Mode=OneWay}">
+                            <Hyperlink Click="{x:Bind OnViewLocalFileClicked}" UnderlineStyle="None">
+                                <Run Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('ViewLocalFile')}" />
+                            </Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                </Expander.Content>
+            </Expander>
         </Grid>
     </ScrollViewer>
 </Page>
