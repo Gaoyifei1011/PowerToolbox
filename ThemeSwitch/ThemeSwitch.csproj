@@ -51,8 +51,6 @@
   <ItemGroup>
     <None Update="Assets\ThemeSwitch.ico" CopyToOutputDirectory="Never" />
 
-		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
-
 		<Reference Include="Microsoft.VisualBasic" />
 		<Reference Include="System.Device" />
 	</ItemGroup>

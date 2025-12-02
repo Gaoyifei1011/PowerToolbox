@@ -121,6 +121,7 @@
                 Style="{StaticResource TextBoxStyle}"
                 Text="{x:Bind VertifyContent, Mode=OneWay}"
                 TextChanged="{x:Bind OnTextChanged}"
+                TextWrapping="Wrap"
                 Visibility="{x:Bind GetDataVertifyType(SelectedIndex, 1), Mode=OneWay}" />
 
             <!--  数据校验验证栏  -->
