@@ -200,7 +200,7 @@ namespace PowerToolbox.Views.Pages
 
         private List<DataVertifyTypeModel> DataVertifyTypeList { get; } = [];
 
-        private WinRTObservableCollection<DataEncryptVertifyResultModel> DataVertifyResultCollection { get; } = [];
+        private WinRTObservableCollection<DataVertifyResultModel> DataVertifyResultCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -510,9 +510,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnUseUpperCaseChecked(object sender, RoutedEventArgs args)
         {
-            foreach (DataEncryptVertifyResultModel dataEncryptVertifyResultItem in DataVertifyResultCollection)
+            foreach (DataVertifyResultModel dataVertifyResultItem in DataVertifyResultCollection)
             {
-                dataEncryptVertifyResultItem.Result = dataEncryptVertifyResultItem.Result.ToUpperInvariant();
+                dataVertifyResultItem.Result = dataVertifyResultItem.Result.ToUpperInvariant();
             }
         }
 
@@ -521,9 +521,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnUseUpperCaseUnchecked(object sender, RoutedEventArgs args)
         {
-            foreach (DataEncryptVertifyResultModel dataEncryptVertifyResultItem in DataVertifyResultCollection)
+            foreach (DataVertifyResultModel dataVertifyResultItem in DataVertifyResultCollection)
             {
-                dataEncryptVertifyResultItem.Result = dataEncryptVertifyResultItem.Result.ToLowerInvariant();
+                dataVertifyResultItem.Result = dataVertifyResultItem.Result.ToLowerInvariant();
             }
         }
 
@@ -567,10 +567,10 @@ namespace PowerToolbox.Views.Pages
             ResultServerity = InfoBarSeverity.Informational;
             ResultMessage = VertifyingString;
             DataVertifyResultCollection.Clear();
-            List<DataEncryptVertifyResultModel> dataVertifyResultList = await Task.Run(async () =>
+            List<DataVertifyResultModel> dataVertifyResultList = await Task.Run(async () =>
             {
                 byte[] contentData = null;
-                List<DataEncryptVertifyResultModel> dataVertifyResultList = [];
+                List<DataVertifyResultModel> dataVertifyResultList = [];
 
                 try
                 {
@@ -604,7 +604,7 @@ namespace PowerToolbox.Views.Pages
                             {
                                 lock (vertifyingLock)
                                 {
-                                    dataVertifyResultList.Add(new DataEncryptVertifyResultModel()
+                                    dataVertifyResultList.Add(new DataVertifyResultModel()
                                     {
                                         Name = dataVertifyTypeItem.Name,
                                         Result = vertifyResultContent
@@ -622,18 +622,18 @@ namespace PowerToolbox.Views.Pages
 
             if (UseUpperCase)
             {
-                foreach (DataEncryptVertifyResultModel dataEncryptVertifyResultItem in dataVertifyResultList)
+                foreach (DataVertifyResultModel dataVertifyResultItem in dataVertifyResultList)
                 {
-                    dataEncryptVertifyResultItem.Result = dataEncryptVertifyResultItem.Result.ToUpperInvariant();
-                    DataVertifyResultCollection.Add(dataEncryptVertifyResultItem);
+                    dataVertifyResultItem.Result = dataVertifyResultItem.Result.ToUpperInvariant();
+                    DataVertifyResultCollection.Add(dataVertifyResultItem);
                 }
             }
             else
             {
-                foreach (DataEncryptVertifyResultModel dataEncryptVertifyResultItem in dataVertifyResultList)
+                foreach (DataVertifyResultModel dataVertifyResultItem in dataVertifyResultList)
                 {
-                    dataEncryptVertifyResultItem.Result = dataEncryptVertifyResultItem.Result.ToLowerInvariant();
-                    DataVertifyResultCollection.Add(dataEncryptVertifyResultItem);
+                    dataVertifyResultItem.Result = dataVertifyResultItem.Result.ToLowerInvariant();
+                    DataVertifyResultCollection.Add(dataVertifyResultItem);
                 }
             }
 

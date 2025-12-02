@@ -358,7 +358,7 @@
                 </ItemsControl.ItemContainerTransitions>
 
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="model:DataEncryptVertifyResultModel">
+                    <DataTemplate x:DataType="model:DataVertifyResultModel">
                         <Grid
                             MinHeight="35"
                             Padding="6,4,10,4"
