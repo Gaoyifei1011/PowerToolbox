@@ -112,7 +112,7 @@ namespace ThemeSwitch.Services.Root
                             stringBuilder.AppendLine(string.IsNullOrEmpty(exception.Message) ? notavailable : exception.Message.Replace('\r', ' ').Replace('\n', ' '));
                             stringBuilder.AppendLine("=========================================================");
                             stringBuilder.AppendLine("HResult");
-                            stringBuilder.AppendLine(Convert.ToString(exception.HResult, 16).ToUpper());
+                            stringBuilder.AppendLine(Convert.ToString(exception.HResult, 16).ToUpperInvariant());
                             stringBuilder.AppendLine("=========================================================");
                             stringBuilder.AppendLine("Source");
                             stringBuilder.AppendLine(string.IsNullOrEmpty(exception.Source) ? notavailable : exception.Source.Replace('\r', ' ').Replace('\n', ' '));
