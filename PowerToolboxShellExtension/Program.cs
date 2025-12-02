@@ -3,7 +3,6 @@ using PowerToolboxShellExtension.Services.Shell;
 using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
-using WinRT;
 
 namespace PowerToolboxShellExtension
 {
@@ -24,7 +23,6 @@ namespace PowerToolboxShellExtension
         [UnmanagedCallersOnly(EntryPoint = "DllGetClassObject")]
         public static unsafe int DllGetClassObject(Guid clsid, Guid riid, nint* ppv)
         {
-            ComWrappersSupport.InitializeComWrappers();
             ShellMenuService.InitializeShellMenu();
 
             if (Equals(clsid, typeof(ExplorerCommand).GUID))
