@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Documents;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
+using PowerToolbox.Extensions.Encrypt;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using System;
@@ -856,6 +857,43 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataEncryptType.Blowfish:
                     {
+                        try
+                        {
+                            Blowfish blowfish = new();
+                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            {
+                                blowfish.GenerateKey();
+                            }
+                            if (string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                blowfish.GenerateIV();
+                            }
+                            blowfish.Mode = SelectedEncryptedBlockCipherMode.Key;
+                            blowfish.Padding = SelectedPaddingMode.Key;
+                            ICryptoTransform cryptoTransform = blowfish.CreateEncryptor(blowfish.Key, blowfish.IV);
+                            MemoryStream memoryStream = new();
+                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
+                            {
+                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
+                                fileStream.CopyTo(cryptoStream);
+                                fileStream.Dispose();
+                            }
+                            else if (selectedEncryptIndex is 1)
+                            {
+                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                cryptoStream.Write(data, 0, data.Length);
+                                cryptoStream.FlushFinalBlock();
+                            }
+                            string result = Convert.ToBase64String(memoryStream.ToArray());
+                            cryptoStream.Dispose();
+                            memoryStream.Dispose();
+                            return result;
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.Blowfish) + 1, e);
+                        }
                         break;
                     }
                 case DataEncryptType.CaesarCipher:
