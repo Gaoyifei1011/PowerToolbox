@@ -11,15 +11,15 @@
     <TargetFrameworkMoniker>native,Version=v0.0</TargetFrameworkMoniker>
     <!--指定自己的体系为native-->
     <NuGetTargetMoniker Condition="'$(NuGetTargetMoniker)' == ''">native,Version=v0.0</NuGetTargetMoniker>
-    <TargetFrameworkMoniker Condition ="'$(DesignTimeBuild)' == 'true'">.NETCore,Version=v9.0</TargetFrameworkMoniker>
-    <NuGetTargetMoniker Condition ="'$(DesignTimeBuild)' == 'true'">.NETCore,Version=v9.0</NuGetTargetMoniker>
+    <TargetFrameworkMoniker Condition ="'$(DesignTimeBuild)' == 'true'">.NETFramework,Version=v4.8.1</TargetFrameworkMoniker>
+    <NuGetTargetMoniker Condition ="'$(DesignTimeBuild)' == 'true'">.NETFramework,Version=v4.8.1</NuGetTargetMoniker>
     <!--如果不指定这一行，那么arm64平台会找不到RID而失败-->
     <RuntimeIdentifiers Condition="'$(RuntimeIdentifiers)' == ''">win;win-x86;win-x64;win-arm;win-arm64;win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <!--从兼容性考虑，继续向上搜索 Directory.Build.props-->
   <PropertyGroup>
-    <NoWarn>CS0169;CS0649;IDE0079;NU1702</NoWarn>
+    <NoWarn>CS0169;CS0649;IDE0079;NU1701;NU1702</NoWarn>
     <DirectoryBuildPropsPath>$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))</DirectoryBuildPropsPath>
   </PropertyGroup>
   <Import Project="$(DirectoryBuildPropsPath)" Condition="'$(DirectoryBuildPropsPath)' != ''" />
