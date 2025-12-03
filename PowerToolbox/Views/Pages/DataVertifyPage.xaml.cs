@@ -683,7 +683,6 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取校验后的数据
         /// </summary>
-        /// TODO：未完成
         private string GetVertifiedData(DataVertifyType dataVertifyType, int selectedVertifyIndex, byte[] contentData)
         {
             string vertifiedData = string.Empty;
