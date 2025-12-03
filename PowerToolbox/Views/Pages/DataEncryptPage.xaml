@@ -245,6 +245,8 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
@@ -252,15 +254,54 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptKey')}" />
 
-                            <TextBox
+                            <TextBlock
                                 Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('StringEncodingType')}" />
+
+                            <DropDownButton
+                                Grid.Column="2"
+                                Margin="2,0,0,0"
+                                Content="{x:Bind SelectedEncryptKeyStringType.Value, Mode=OneWay}"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}">
+
+                                <DropDownButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnEncryptKeyStringTypeClicked}"
+                                            GroupName="EncryptKeyStringTypeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedEncryptKeyStringType.Key, EncryptKeyStringTypeList[0].Key), Mode=OneWay}"
+                                            Tag="{x:Bind EncryptKeyStringTypeList[0]}"
+                                            Text="{x:Bind system:Convert.ToString(EncryptKeyStringTypeList[0].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnEncryptKeyStringTypeClicked}"
+                                            GroupName="EncryptKeyStringTypeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedEncryptKeyStringType.Key, EncryptKeyStringTypeList[1].Key), Mode=OneWay}"
+                                            Tag="{x:Bind EncryptKeyStringTypeList[1]}"
+                                            Text="{x:Bind system:Convert.ToString(EncryptKeyStringTypeList[1].Value)}" />
+                                    </MenuFlyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+
+                            <TextBox
+                                Grid.Column="3"
                                 Width="350"
+                                Margin="6,0,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
                                 PlaceholderText="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptKeyPHText')}"
                                 Text="{x:Bind EncryptKeyText, Mode=OneWay}"
-                                TextChanged="{x:Bind OnEncryptKeyTextChanged}" />
+                                TextChanged="{x:Bind OnEncryptKeyTextChanged}">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind system:String.Format(StringLengthString, EncryptKeyText.Length), Mode=OneWay}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                </ToolTipService.ToolTip>
+                            </TextBox>
                         </Grid>
 
                         <MenuFlyoutSeparator />
@@ -275,6 +316,8 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
@@ -282,15 +325,54 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('InitializationVector')}" />
 
-                            <TextBox
+                            <TextBlock
                                 Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('StringEncodingType')}" />
+
+                            <DropDownButton
+                                Grid.Column="2"
+                                Margin="2,0,0,0"
+                                Content="{x:Bind SelectedInitializationVectorStringType.Value, Mode=OneWay}"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}">
+
+                                <DropDownButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnInitializationVectorStringTypeClicked}"
+                                            GroupName="InitializationVectorStringTypeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedInitializationVectorStringType.Key, InitializationVectorStringTypeList[0].Key), Mode=OneWay}"
+                                            Tag="{x:Bind InitializationVectorStringTypeList[0]}"
+                                            Text="{x:Bind system:Convert.ToString(InitializationVectorStringTypeList[0].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnInitializationVectorStringTypeClicked}"
+                                            GroupName="InitializationVectorStringTypeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedInitializationVectorStringType.Key, InitializationVectorStringTypeList[1].Key), Mode=OneWay}"
+                                            Tag="{x:Bind InitializationVectorStringTypeList[1]}"
+                                            Text="{x:Bind system:Convert.ToString(InitializationVectorStringTypeList[1].Value)}" />
+                                    </MenuFlyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+
+                            <TextBox
+                                Grid.Column="3"
                                 Width="350"
+                                Margin="6,0,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
                                 PlaceholderText="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('InitializationVectorPHText')}"
                                 Text="{x:Bind InitializationVectorText, Mode=OneWay}"
-                                TextChanged="{x:Bind OnInitializationVectorTextChanged}" />
+                                TextChanged="{x:Bind OnInitializationVectorTextChanged}">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind system:String.Format(StringLengthString, InitializationVectorText.Length), Mode=OneWay}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                </ToolTipService.ToolTip>
+                            </TextBox>
                         </Grid>
 
                         <MenuFlyoutSeparator />

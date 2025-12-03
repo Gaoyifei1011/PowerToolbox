@@ -1,7 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Documents;
-using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Extensions.Encrypt;
 using PowerToolbox.Models;
@@ -30,6 +29,7 @@ namespace PowerToolbox.Views.Pages
     {
         private readonly string AESString = ResourceService.DataEncryptResource.GetString("AES");
         private readonly string ANSIX923String = ResourceService.DataEncryptResource.GetString("ANSIX923");
+        private readonly string Base64String = ResourceService.DataEncryptResource.GetString("Base64");
         private readonly string BlowfishString = ResourceService.DataEncryptResource.GetString("Blowfish");
         private readonly string CaesarCipherString = ResourceService.DataEncryptResource.GetString("CaesarCipher");
         private readonly string CBCString = ResourceService.DataEncryptResource.GetString("CBC");
@@ -68,7 +68,9 @@ namespace PowerToolbox.Views.Pages
         private readonly string SelectFileString = ResourceService.DataEncryptResource.GetString("SelectFile");
         private readonly string SM2String = ResourceService.DataEncryptResource.GetString("SM2");
         private readonly string SM4String = ResourceService.DataEncryptResource.GetString("SM4");
+        private readonly string StringLengthString = ResourceService.DataEncryptResource.GetString("StringLength");
         private readonly string TripleDESString = ResourceService.DataEncryptResource.GetString("TripleDES");
+        private readonly string UTF8String = ResourceService.DataEncryptResource.GetString("UTF8");
         private readonly string XORString = ResourceService.DataEncryptResource.GetString("XOR");
         private readonly string ZerosString = ResourceService.DataEncryptResource.GetString("Zeros");
         private int selectEncryptIndex = -1;
@@ -188,7 +190,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _encryptKeyText;
+        private string _encryptKeyText = string.Empty;
 
         public string EncryptKeyText
         {
@@ -204,7 +206,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _initializationVectorText;
+        private string _initializationVectorText = string.Empty;
 
         public string InitializationVectorText
         {
@@ -216,6 +218,38 @@ namespace PowerToolbox.Views.Pages
                 {
                     _initializationVectorText = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InitializationVectorText)));
+                }
+            }
+        }
+
+        private KeyValuePair<string, string> _selectedEncryptKeyStringType;
+
+        public KeyValuePair<string, string> SelectedEncryptKeyStringType
+        {
+            get { return _selectedEncryptKeyStringType; }
+
+            set
+            {
+                if (!Equals(_selectedEncryptKeyStringType, value))
+                {
+                    _selectedEncryptKeyStringType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedEncryptKeyStringType)));
+                }
+            }
+        }
+
+        private KeyValuePair<string, string> _selectedInitializationVectorStringType;
+
+        public KeyValuePair<string, string> SelectedInitializationVectorStringType
+        {
+            get { return _selectedInitializationVectorStringType; }
+
+            set
+            {
+                if (!Equals(_selectedInitializationVectorStringType, value))
+                {
+                    _selectedInitializationVectorStringType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedInitializationVectorStringType)));
                 }
             }
         }
@@ -334,6 +368,10 @@ namespace PowerToolbox.Views.Pages
 
         private List<DataEncryptTypeModel> DataEncryptTypeList { get; } = [];
 
+        private List<KeyValuePair<string, string>> EncryptKeyStringTypeList { get; } = [];
+
+        private List<KeyValuePair<string, string>> InitializationVectorStringTypeList { get; } = [];
+
         private List<KeyValuePair<CipherMode, string>> EncryptedBlockCipherModeList { get; } = [];
 
         private List<KeyValuePair<PaddingMode, string>> PaddingModeList { get; } = [];
@@ -343,6 +381,12 @@ namespace PowerToolbox.Views.Pages
         public DataEncryptPage()
         {
             InitializeComponent();
+            EncryptKeyStringTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
+            EncryptKeyStringTypeList.Add(new KeyValuePair<string, string>("Base64", Base64String));
+            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+            InitializationVectorStringTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
+            InitializationVectorStringTypeList.Add(new KeyValuePair<string, string>("Base64", Base64String));
+            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
             EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CBC, CBCString));
             EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.ECB, ECBString));
             EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.OFB, OFBString));
@@ -448,18 +492,7 @@ namespace PowerToolbox.Views.Pages
             SelectedDataEncryptType = DataEncryptTypeList[0];
         }
 
-        #region 第一部分：ExecuteCommand 命令调用时挂载的事件
-
-        /// <summary>
-        /// 数据加密类型选中项发生改变时触发的事件
-        /// </summary>
-        private void OnDataEncryptCheckExecuteRequested(object sender, ExecuteRequestedEventArgs args)
-        {
-        }
-
-        #endregion 第一部分：ExecuteCommand 命令调用时挂载的事件
-
-        #region 第二部分：数据校验页面——挂载的事件
+        #region 第一部分：数据校验页面——挂载的事件
 
         /// <summary>
         /// 设置拖动的数据的可视表示形式
@@ -607,11 +640,14 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        /// <summary>
+        /// 数据加密类型选中项发生改变时触发的事件
+        /// </summary>
         private void OnEncryptSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.RemovedItems.Count > 0 && args.AddedItems.Count > 0)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is DataEncryptTypeModel dataEncryptType)
             {
-                SelectedDataEncryptType = args.AddedItems[0] as DataEncryptTypeModel;
+                SelectedDataEncryptType = dataEncryptType;
                 EncryptKeyText = string.Empty;
                 InitializationVectorText = string.Empty;
             }
@@ -644,7 +680,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnEncryptedBlockCipherModeClicked(object sender, RoutedEventArgs args)
         {
-            if (sender is MenuFlyoutItem menuFlyoutItem && menuFlyoutItem.Tag is KeyValuePair<CipherMode, string> encryptedBlockCipherMode)
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<CipherMode, string> encryptedBlockCipherMode)
             {
                 SelectedEncryptedBlockCipherMode = encryptedBlockCipherMode;
             }
@@ -655,7 +691,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnPaddingModeClicked(object sender, RoutedEventArgs args)
         {
-            if (sender is MenuFlyoutItem menuFlyoutItem && menuFlyoutItem.Tag is KeyValuePair<PaddingMode, string> encryptedPaddingMode)
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<PaddingMode, string> encryptedPaddingMode)
             {
                 SelectedPaddingMode = encryptedPaddingMode;
             }
@@ -680,6 +716,28 @@ namespace PowerToolbox.Views.Pages
             if (!string.IsNullOrEmpty(EncryptResult))
             {
                 EncryptResult = EncryptResult.ToLowerInvariant();
+            }
+        }
+
+        /// <summary>
+        /// 加密密钥字符串编码模式发生变化时触发的事件
+        /// </summary>
+        private void OnEncryptKeyStringTypeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> encryptKeyStringType)
+            {
+                SelectedEncryptKeyStringType = encryptKeyStringType;
+            }
+        }
+
+        /// <summary>
+        /// 初始化向量字符串编码模式发生变化时触发的事件
+        /// </summary>
+        private void OnInitializationVectorStringTypeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> initializationVectorStringType)
+            {
+                SelectedInitializationVectorStringType = initializationVectorStringType;
             }
         }
 
@@ -725,12 +783,12 @@ namespace PowerToolbox.Views.Pages
             ResultServerity = InfoBarSeverity.Informational;
             ResultMessage = EncryptingString;
 
-            (string encryptedData, string key, string initializationVector) encryptResult = await Task.Run(() =>
+            (string encryptedData, string key, string keyStringType, string initializationVector, string initializationVectorStringType) = await Task.Run(() =>
             {
                 return GetEncryptedData(SelectedDataEncryptType.DataEncryptType, selectEncryptIndex, selectedEncryptContent, selectedEncryptFile);
             });
 
-            if (string.IsNullOrEmpty(encryptResult.encryptedData))
+            if (string.IsNullOrEmpty(encryptedData))
             {
                 ResultServerity = InfoBarSeverity.Error;
                 if (selectEncryptIndex is 0)
@@ -745,15 +803,23 @@ namespace PowerToolbox.Views.Pages
             else
             {
                 ResultServerity = InfoBarSeverity.Success;
-                if (string.IsNullOrEmpty(EncryptKeyText))
+                if (string.IsNullOrEmpty(EncryptKeyText) && !string.IsNullOrEmpty(key))
                 {
-                    EncryptKeyText = encryptResult.key;
+                    EncryptKeyText = key;
+                    if (!string.IsNullOrEmpty(keyStringType))
+                    {
+                        SelectedEncryptKeyStringType = EncryptKeyStringTypeList.Find(item => string.Equals(item.Key, keyStringType));
+                    }
                 }
-                if (string.IsNullOrEmpty(InitializationVectorText))
+                if (string.IsNullOrEmpty(InitializationVectorText) && !string.IsNullOrEmpty(initializationVector))
                 {
-                    InitializationVectorText = encryptResult.initializationVector;
+                    InitializationVectorText = initializationVector;
+                    if (!string.IsNullOrEmpty(initializationVectorStringType))
+                    {
+                        SelectedInitializationVectorStringType = InitializationVectorStringTypeList.Find(item => string.Equals(item.Key, initializationVectorStringType));
+                    }
                 }
-                if (encryptResult.encryptedData.Length > 1024)
+                if (encryptedData.Length > 1024)
                 {
                     EncryptResult = LargeContentString;
                     IsLargeContent = true;
@@ -763,7 +829,7 @@ namespace PowerToolbox.Views.Pages
                         try
                         {
                             encryptedLocalFile = Path.GetTempFileName();
-                            File.AppendAllText(encryptedLocalFile, UseUpperCase ? encryptResult.encryptedData.ToUpperInvariant() : encryptResult.encryptedData.ToLowerInvariant());
+                            File.AppendAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
                         }
                         catch (Exception e)
                         {
@@ -773,7 +839,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 else
                 {
-                    EncryptResult = UseUpperCase ? encryptResult.encryptedData.ToUpperInvariant() : encryptResult.encryptedData.ToLowerInvariant();
+                    EncryptResult = UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant();
                     IsLargeContent = false;
                 }
                 if (selectEncryptIndex is 0)
@@ -809,17 +875,19 @@ namespace PowerToolbox.Views.Pages
             });
         }
 
-        #endregion 第二部分：数据校验页面——挂载的事件
+        #endregion 第一部分：数据校验页面——挂载的事件
 
         /// <summary>
         /// 获取校验后的数据
         /// </summary>
         /// TODO：未完成
-        private (string, string, string) GetEncryptedData(DataEncryptType dataEncryptType, int selectedEncryptIndex, string contentData, string encryptFile)
+        private (string, string, string, string, string) GetEncryptedData(DataEncryptType dataEncryptType, int selectedEncryptIndex, string contentData, string encryptFile)
         {
             string encryptedData = string.Empty;
             string key = string.Empty;
+            string keyStringType = string.Empty;
             string initializationVector = string.Empty;
+            string initializationVectorStringType = string.Empty;
 
             switch (dataEncryptType)
             {
@@ -832,37 +900,40 @@ namespace PowerToolbox.Views.Pages
                             {
                                 aes.GenerateKey();
                                 key = Convert.ToBase64String(aes.Key);
+                                keyStringType = EncryptKeyStringTypeList[1].Key;
                             }
                             else
                             {
-                                try
+                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
+                                {
+                                    aes.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
                                 {
                                     aes.Key = Convert.FromBase64String(EncryptKeyText);
-                                }
-                                catch (Exception)
-                                {
-                                    try
-                                    {
-                                        aes.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
-                                    }
-                                    catch (Exception)
-                                    {
-                                    }
-                                }
-                                finally
-                                {
-                                    key = EncryptKeyText;
+                                    keyStringType = EncryptKeyStringTypeList[1].Key;
                                 }
                             }
+
                             if (string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 aes.GenerateIV();
                                 initializationVector = Convert.ToBase64String(aes.IV);
+                                initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
                             }
                             else
                             {
-                                aes.IV = Convert.FromBase64String(InitializationVectorText);
-                                initializationVector = InitializationVectorText;
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    aes.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    aes.IV = Convert.FromBase64String(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
+                                }
                             }
 
                             aes.Mode = SelectedEncryptedBlockCipherMode.Key;
@@ -878,7 +949,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Convert.FromBase64String(contentData);
+                                byte[] data = Encoding.UTF8.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -901,21 +972,40 @@ namespace PowerToolbox.Views.Pages
                             {
                                 blowfish.GenerateKey();
                                 key = Convert.ToBase64String(blowfish.Key);
+                                keyStringType = EncryptKeyStringTypeList[1].Key;
                             }
                             else
                             {
-                                blowfish.Key = Convert.FromBase64String(EncryptKeyText);
-                                key = EncryptKeyText;
+                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
+                                {
+                                    blowfish.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
+                                {
+                                    blowfish.Key = Convert.FromBase64String(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[1].Key;
+                                }
                             }
+
                             if (string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 blowfish.GenerateIV();
                                 initializationVector = Convert.ToBase64String(blowfish.IV);
+                                initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
                             }
                             else
                             {
-                                blowfish.IV = Convert.FromBase64String(InitializationVectorText);
-                                initializationVector = InitializationVectorText;
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    blowfish.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    blowfish.IV = Convert.FromBase64String(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
+                                }
                             }
 
                             blowfish.Mode = SelectedEncryptedBlockCipherMode.Key;
@@ -931,7 +1021,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Convert.FromBase64String(contentData);
+                                byte[] data = Encoding.UTF8.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -962,22 +1052,40 @@ namespace PowerToolbox.Views.Pages
                             {
                                 des.GenerateKey();
                                 key = Convert.ToBase64String(des.Key);
+                                keyStringType = EncryptKeyStringTypeList[1].Key;
                             }
                             else
                             {
-                                des.Key = Convert.FromBase64String(EncryptKeyText);
-                                key = EncryptKeyText;
+                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
+                                {
+                                    des.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
+                                {
+                                    des.Key = Convert.FromBase64String(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[1].Key;
+                                }
                             }
 
                             if (string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 des.GenerateIV();
-                                key = Convert.ToBase64String(des.IV);
+                                initializationVector = Convert.ToBase64String(des.IV);
+                                initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
                             }
                             else
                             {
-                                des.IV = Convert.FromBase64String(InitializationVectorText);
-                                key = InitializationVectorText;
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    des.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    des.IV = Convert.FromBase64String(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
+                                }
                             }
 
                             des.Mode = SelectedEncryptedBlockCipherMode.Key;
@@ -993,7 +1101,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Convert.FromBase64String(contentData);
+                                byte[] data = Encoding.UTF8.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1028,21 +1136,40 @@ namespace PowerToolbox.Views.Pages
                             {
                                 rc2.GenerateKey();
                                 key = Convert.ToBase64String(rc2.Key);
+                                keyStringType = EncryptKeyStringTypeList[1].Key;
                             }
                             else
                             {
-                                rc2.Key = Convert.FromBase64String(EncryptKeyText);
-                                key = EncryptKeyText;
+                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
+                                {
+                                    rc2.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
+                                {
+                                    rc2.Key = Convert.FromBase64String(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[1].Key;
+                                }
                             }
+
                             if (string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 rc2.GenerateIV();
                                 initializationVector = Convert.ToBase64String(rc2.IV);
+                                initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
                             }
                             else
                             {
-                                rc2.IV = Convert.FromBase64String(InitializationVectorText);
-                                initializationVector = InitializationVectorText;
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    rc2.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    rc2.IV = Convert.FromBase64String(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
+                                }
                             }
 
                             rc2.Mode = SelectedEncryptedBlockCipherMode.Key;
@@ -1058,7 +1185,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Convert.FromBase64String(contentData);
+                                byte[] data = Encoding.UTF8.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1093,21 +1220,40 @@ namespace PowerToolbox.Views.Pages
                             {
                                 rijndael.GenerateKey();
                                 key = Convert.ToBase64String(rijndael.Key);
+                                keyStringType = EncryptKeyStringTypeList[1].Key;
                             }
                             else
                             {
-                                rijndael.Key = Convert.FromBase64String(EncryptKeyText);
-                                key = EncryptKeyText;
+                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
+                                {
+                                    rijndael.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
+                                {
+                                    rijndael.Key = Convert.FromBase64String(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[1].Key;
+                                }
                             }
+
                             if (string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 rijndael.GenerateIV();
                                 initializationVector = Convert.ToBase64String(rijndael.IV);
+                                initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
                             }
                             else
                             {
-                                rijndael.Key = Convert.FromBase64String(InitializationVectorText);
-                                initializationVector = InitializationVectorText;
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    rijndael.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    rijndael.IV = Convert.FromBase64String(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
+                                }
                             }
 
                             rijndael.Mode = SelectedEncryptedBlockCipherMode.Key;
@@ -1123,7 +1269,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Convert.FromBase64String(contentData);
+                                byte[] data = Encoding.UTF8.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1158,25 +1304,42 @@ namespace PowerToolbox.Views.Pages
                             {
                                 tripleDes.GenerateKey();
                                 key = Convert.ToBase64String(tripleDes.Key);
+                                keyStringType = EncryptKeyStringTypeList[1].Key;
                             }
                             else
                             {
-                                tripleDes.Key = Convert.FromBase64String(EncryptKeyText);
-                                key = EncryptKeyText;
+                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
+                                {
+                                    tripleDes.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
+                                {
+                                    tripleDes.Key = Convert.FromBase64String(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[1].Key;
+                                }
                             }
+
                             if (string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 tripleDes.GenerateIV();
                                 initializationVector = Convert.ToBase64String(tripleDes.IV);
+                                initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
                             }
                             else
                             {
-                                tripleDes.IV = Convert.FromBase64String(InitializationVectorText);
-                                initializationVector = InitializationVectorText;
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    tripleDes.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    tripleDes.IV = Convert.FromBase64String(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
+                                }
                             }
 
-                            key = Encoding.UTF8.GetString(tripleDes.Key);
-                            initializationVector = Encoding.UTF8.GetString(tripleDes.IV);
                             tripleDes.Mode = SelectedEncryptedBlockCipherMode.Key;
                             tripleDes.Padding = SelectedPaddingMode.Key;
                             ICryptoTransform cryptoTransform = tripleDes.CreateEncryptor(tripleDes.Key, tripleDes.IV);
@@ -1190,7 +1353,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Convert.FromBase64String(contentData);
+                                byte[] data = Encoding.UTF8.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1210,7 +1373,7 @@ namespace PowerToolbox.Views.Pages
                     }
             }
 
-            return ValueTuple.Create(encryptedData, key, initializationVector);
+            return ValueTuple.Create(encryptedData, key, keyStringType, initializationVector, initializationVectorStringType);
         }
 
         /// <summary>

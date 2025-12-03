@@ -236,7 +236,7 @@ namespace PowerToolbox.Extensions.Encrypt
                 {
                     TransformBlock(inBuf, nOfs, nCount, lastBlocks, 0);
 
-                    if (PaddingMode.PKCS7 == PaddingValue)
+                    if (PaddingValue is PaddingMode.PKCS7)
                     {
                         nCount -= lastBlocks[nCount - 1];
                     }
@@ -282,16 +282,14 @@ namespace PowerToolbox.Extensions.Encrypt
 
         public override void GenerateKey()
         {
-            if (null == rngCryptoServiceProvider) rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-
+            rngCryptoServiceProvider ??= new RNGCryptoServiceProvider();
             KeyValue = new byte[KeySizeValue / 8];
             rngCryptoServiceProvider.GetBytes(KeyValue);
         }
 
         public override void GenerateIV()
         {
-            if (null == rngCryptoServiceProvider) rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-
+            rngCryptoServiceProvider ??= new RNGCryptoServiceProvider();
             IVValue = new byte[BlowfishBase.BLOCKSIZE];
             rngCryptoServiceProvider.GetBytes(IVValue);
         }
