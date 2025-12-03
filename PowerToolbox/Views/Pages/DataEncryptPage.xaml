@@ -186,6 +186,7 @@
                     <RadioButtons
                         Margin="8,0,0,8"
                         Padding="12,10,0,10"
+                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
                         ItemsSource="{x:Bind DataEncryptTypeList}"
                         SelectedItem="{x:Bind SelectedDataEncryptType, Mode=OneWay}"
                         SelectionChanged="{x:Bind OnEncryptSelectionChanged}"
@@ -256,6 +257,7 @@
                                 Width="350"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
                                 PlaceholderText="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptKeyPHText')}"
                                 Text="{x:Bind EncryptKeyText, Mode=OneWay}"
                                 TextChanged="{x:Bind OnEncryptKeyTextChanged}" />
@@ -285,6 +287,7 @@
                                 Width="350"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
                                 PlaceholderText="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('InitializationVectorPHText')}"
                                 Text="{x:Bind InitializationVectorText, Mode=OneWay}"
                                 TextChanged="{x:Bind OnInitializationVectorTextChanged}" />
@@ -309,7 +312,11 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptedBlockCipherMode')}" />
 
-                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedEncryptedBlockCipherMode.Value, Mode=OneWay}">
+                            <DropDownButton
+                                Grid.Column="1"
+                                Content="{x:Bind SelectedEncryptedBlockCipherMode.Value, Mode=OneWay}"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}">
+
                                 <DropDownButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
                                         <RadioMenuFlyoutItem
@@ -369,7 +376,11 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('PaddingMode')}" />
 
-                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedPaddingMode.Value, Mode=OneWay}">
+                            <DropDownButton
+                                Grid.Column="1"
+                                Content="{x:Bind SelectedPaddingMode.Value, Mode=OneWay}"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}">
+
                                 <DropDownButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
                                         <RadioMenuFlyoutItem
