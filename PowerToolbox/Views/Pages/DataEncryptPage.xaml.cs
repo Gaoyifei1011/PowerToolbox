@@ -1038,6 +1038,22 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataEncryptType.CaesarCipher:
                     {
+                        if (selectedEncryptIndex is 0)
+                        {
+                            //TOOD：显示通知：凯撒密码仅支持字符串加密
+                        }
+                        else
+                        {
+                            try
+                            {
+                                // TODO：偏移量变量需要更新单独的设置选项
+                                encryptedData = CaesarCipher.CaesarEncrypt(contentData, 15);
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.CaesarCipher) + 1, e);
+                            }
+                        }
                         break;
                     }
                 case DataEncryptType.ChaCha20:
