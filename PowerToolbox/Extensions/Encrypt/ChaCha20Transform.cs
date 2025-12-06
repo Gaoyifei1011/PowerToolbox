@@ -61,7 +61,7 @@ namespace PowerToolbox.Extensions.Encrypt
             _state[13] = 0;
 
             // 初始向量（IV）
-            byte[] effectiveIV = iv.Length == 16 ? new ArraySegment<byte>(iv, 4, 12).ToArray() : iv;
+            byte[] effectiveIV = iv.Length is 16 ? new ArraySegment<byte>(iv, 4, 12).ToArray() : iv;
             _state[14] = BitConverter.ToUInt32(effectiveIV, 0);
             _state[15] = BitConverter.ToUInt32(effectiveIV, 4);
         }
@@ -98,7 +98,7 @@ namespace PowerToolbox.Extensions.Encrypt
 
                     // 递增计数器[citation:2]
                     _state[12]++;
-                    if (_state[12] == 0) // 处理溢出
+                    if (_state[12] is 0) // 处理溢出
                     {
                         _state[13]++;
                     }

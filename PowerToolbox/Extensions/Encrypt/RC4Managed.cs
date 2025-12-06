@@ -162,7 +162,7 @@ namespace PowerToolbox.Extensions.Encrypt
             {
                 x = 0;
                 y = 0;
-                if (key != null)
+                if (key is not null)
                 {
                     Array.Clear(key, 0, key.Length);
                     key = null;
@@ -217,7 +217,7 @@ namespace PowerToolbox.Extensions.Encrypt
 
         private void CheckInput(byte[] inputBuffer, int inputOffset, int inputCount)
         {
-            if (inputBuffer == null)
+            if (inputBuffer is null)
             {
                 throw new ArgumentNullException(nameof(inputBuffer));
             }
@@ -240,7 +240,7 @@ namespace PowerToolbox.Extensions.Encrypt
 
         private static void CheckOutput(byte[] outputBuffer, int outputOffset, int inputCount)
         {
-            if (outputBuffer == null)
+            if (outputBuffer is null)
             {
                 throw new ArgumentNullException(nameof(outputBuffer));
             }

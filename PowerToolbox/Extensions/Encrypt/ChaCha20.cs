@@ -3,7 +3,7 @@
 namespace PowerToolbox.Extensions.Encrypt
 {
     /// <summary>
-    /// ChaCha20 加密算法实现
+    /// ChaCha20 对称加密算法实现
     /// 密钥长度：256位 (32字节)
     /// 初始向量(IV)长度：96位 (12字节) 或 128位 (16字节，其中后12字节有效)
     /// </summary>

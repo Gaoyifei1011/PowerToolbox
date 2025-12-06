@@ -17,7 +17,7 @@
         {
             get
             {
-                var result = new byte[BLOCKSIZE];
+                byte[] result = new byte[BLOCKSIZE];
 
                 result[0] = (byte)(m_unIvHi >> 24);
                 result[1] = (byte)(m_unIvHi >> 16);

@@ -76,8 +76,12 @@ namespace PowerToolbox.Extensions.Hashing
                 }
 
                 md4.Initialize();
-                foreach (var md4HashBlock in md4HashBlocks) md4.TransformBlock(md4HashBlock, 0, 16, null, 0);
-                var state = md4.GetState();
+                foreach (byte[] md4HashBlock in md4HashBlocks)
+                {
+                    md4.TransformBlock(md4HashBlock, 0, 16, null, 0);
+                }
+
+                MD4.InternalState state = md4.GetState();
 
                 md4.TransformFinalBlock(nullArray, 0, 0);
                 blueHash = md4.Hash;

@@ -35,7 +35,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
-            if (cbSize == 0) return;
+            if (cbSize is 0)
+            {
+                return;
+            }
+
             int offset = ibStart;
             int remaining = cbSize;
             byteCount += (ulong)cbSize;
@@ -112,8 +116,7 @@ namespace PowerToolbox.Extensions.Hashing
         private static uint Rotl(uint x, int n)
         {
             int s = n & 31;
-            if (s == 0) return x;
-            return (x << s) | (x >> (32 - s));
+            return s is 0 ? x : (x << s) | (x >> (32 - s));
         }
 
         private static uint P0(uint x)

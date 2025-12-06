@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 namespace PowerToolbox.Extensions.Encrypt
 {
     /// <summary>
-    /// BlowFish 加密算法实现
+    /// BlowFish 对称加密算法实现
     /// </summary>
     public class Blowfish : SymmetricAlgorithm, ICryptoTransform
     {
@@ -222,7 +222,7 @@ namespace PowerToolbox.Extensions.Encrypt
                 result = new byte[nBufSize];
                 Array.Copy(inBuf, nOfs, result, 0, nCount);
 
-                for (var nI = nCount; nI < nBufSize; nI++)
+                for (int nI = nCount; nI < nBufSize; nI++)
                 {
                     result[nI] = (byte)nFill;
                 }
