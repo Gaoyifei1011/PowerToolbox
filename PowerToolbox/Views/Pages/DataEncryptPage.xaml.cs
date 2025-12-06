@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -1138,6 +1137,22 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataEncryptType.MorseCode:
                     {
+                        if (selectedEncryptIndex is 0)
+                        {
+                            //TOOD：显示通知：摩尔斯密码仅支持字符串加密
+                        }
+                        else
+                        {
+                            try
+                            {
+                                // 隐藏选项
+                                encryptedData = MorseCode.Encode(contentData.ToUpperInvariant());
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.CaesarCipher) + 1, e);
+                            }
+                        }
                         break;
                     }
                 case DataEncryptType.Rabbit:
