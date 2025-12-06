@@ -1434,6 +1434,74 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataEncryptType.SM4:
                     {
+                        try
+                        {
+                            SM4 sm4 = new();
+                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            {
+                                sm4.GenerateKey();
+                                key = Convert.ToBase64String(sm4.Key);
+                                keyStringType = EncryptKeyStringTypeList[1].Key;
+                            }
+                            else
+                            {
+                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
+                                {
+                                    sm4.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
+                                {
+                                    sm4.Key = Convert.FromBase64String(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[1].Key;
+                                }
+                            }
+
+                            if (string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                sm4.GenerateIV();
+                                initializationVector = Convert.ToBase64String(sm4.IV);
+                                initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
+                            }
+                            else
+                            {
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    sm4.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    sm4.IV = Convert.FromBase64String(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
+                                }
+                            }
+
+                            sm4.Mode = SelectedEncryptedBlockCipherMode.Key;
+                            sm4.Padding = SelectedPaddingMode.Key;
+                            ICryptoTransform cryptoTransform = sm4.CreateEncryptor(sm4.Key, sm4.IV);
+                            MemoryStream memoryStream = new();
+                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
+                            {
+                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
+                                fileStream.CopyTo(cryptoStream);
+                                fileStream.Dispose();
+                            }
+                            else if (selectedEncryptIndex is 1)
+                            {
+                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                cryptoStream.Write(data, 0, data.Length);
+                                cryptoStream.FlushFinalBlock();
+                            }
+                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
+                            cryptoStream.Dispose();
+                            memoryStream.Dispose();
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.SM4) + 1, e);
+                        }
                         break;
                     }
                 case DataEncryptType.TripleDES:
