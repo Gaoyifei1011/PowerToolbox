@@ -374,7 +374,6 @@
 		<Page Include="Styles\InfoBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\NavigationView.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\ProgressRing.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-		<Page Include="Styles\TextBox.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\TimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Dialogs\AddDownloadTaskDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Dialogs\AppInformationDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />

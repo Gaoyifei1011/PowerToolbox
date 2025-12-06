@@ -17,7 +17,6 @@
                         <ResourceDictionary Source="ms-appx:///Styles/NavigationView.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/ProgressRing.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/RadioButtons.xaml" />
-                        <ResourceDictionary Source="ms-appx:///Styles/TextBox.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/TimePicker.xaml" />
 
                         <ResourceDictionary>

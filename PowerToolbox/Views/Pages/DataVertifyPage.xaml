@@ -118,7 +118,6 @@
                 Height="140"
                 Margin="0,5,0,3"
                 PlaceholderText="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('VertifyPHText')}"
-                Style="{StaticResource TextBoxStyle}"
                 Text="{x:Bind VertifyContent, Mode=OneWay}"
                 TextChanged="{x:Bind OnTextChanged}"
                 TextWrapping="Wrap"
