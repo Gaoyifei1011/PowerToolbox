@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -76,11 +77,10 @@ namespace PowerToolbox.Views.Dialogs
                     for (int index = 0; index < count; index++)
                     {
                         int packageInfoSize = Marshal.SizeOf<PACKAGE_INFO>();
-                        nint packageInfoPtr = Marshal.AllocHGlobal(packageInfoSize);
+                        nint packageInfoPtr = Marshal.UnsafeAddrOfPinnedArrayElement(buffer, index * packageInfoSize);
                         Marshal.Copy(buffer, index * packageInfoSize, packageInfoPtr, packageInfoSize);
                         PACKAGE_INFO packageInfo = Marshal.PtrToStructure<PACKAGE_INFO>(packageInfoPtr);
                         packageInfoList.Add(packageInfo);
-                        Marshal.FreeHGlobal(packageInfoPtr);
                     }
 
                     foreach (PACKAGE_INFO packageInfo in packageInfoList)
