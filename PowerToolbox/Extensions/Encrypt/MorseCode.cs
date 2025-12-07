@@ -7,7 +7,7 @@ namespace PowerToolbox.Extensions.Encrypt
     /// </summary>
     public static class MorseCode
     {
-        private static Dictionary<char, string> charToMorse = new Dictionary<char, string>()
+        private static readonly Dictionary<char, string> charToMorse = new()
         {
             {'A', ".-"}, {'B', "-..."}, {'C', "-.-."}, {'D', "-.."}, {'E', "."},
             {'F', "..-."}, {'G', "--."}, {'H', "...."}, {'I', ".."}, {'J', ".---"},
@@ -32,7 +32,7 @@ namespace PowerToolbox.Extensions.Encrypt
         /// <summary>
         /// 摩尔斯密码加密
         /// </summary>
-        public static string Encode(string encodeText)
+        public static string MorseEncode(string encodeText)
         {
             string encoded = string.Empty;
             foreach (char c in encodeText)
@@ -52,7 +52,7 @@ namespace PowerToolbox.Extensions.Encrypt
         /// <summary>
         /// 摩尔斯密码解密
         /// </summary>
-        public static string Decode(string morseCode)
+        public static string MorseDecode(string morseCode)
         {
             string[] words = morseCode.Split(' ');
             string decoded = string.Empty;
