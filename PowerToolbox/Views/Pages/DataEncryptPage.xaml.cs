@@ -1037,11 +1037,7 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataEncryptType.CaesarCipher:
                     {
-                        if (selectedEncryptIndex is 0)
-                        {
-                            //TOOD：显示通知：凯撒密码仅支持字符串加密
-                        }
-                        else
+                        if (selectedEncryptIndex is 1)
                         {
                             try
                             {
@@ -1537,6 +1533,17 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataEncryptType.XOR:
                     {
+                        if (selectedEncryptIndex is 1)
+                        {
+                            try
+                            {
+                                encryptedData = XOR.XOREncrypt(contentData, EncryptKeyText);
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.XOR) + 1, e);
+                            }
+                        }
                         break;
                     }
             }
