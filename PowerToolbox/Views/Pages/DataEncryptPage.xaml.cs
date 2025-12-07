@@ -1381,6 +1381,48 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataEncryptType.RSA:
                     {
+                        try
+                        {
+                            RSA rsa = RSA.Create();
+                            string privateKey = string.Empty;
+                            string publicKey = string.Empty;
+                            //TODO：提供用于设置公钥和私钥的选项
+                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            {
+                                privateKey = rsa.ToXmlString(true);
+                                publicKey = rsa.ToXmlString(false);
+                            }
+                            else
+                            {
+                                // TODO：未完成
+                            }
+
+                            // TODO：其他选项有待挖掘
+                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
+                            {
+                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
+                                byte[] data = new byte[(int)fileStream.Length];
+                                fileStream.Read(data, 0, contentData.Length);
+                                fileStream.Dispose();
+                                //TODO：更新公钥加密或私钥加密选项
+                                rsa.FromXmlString(publicKey);
+                                //TODO：更新填充选项
+                                byte[] encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
+                                encryptedData = Convert.ToBase64String(encryptedOutput);
+                            }
+                            else if (selectedEncryptIndex is 1)
+                            {
+                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                //TODO：更新填充选项
+                                byte[] encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
+                                encryptedData = Convert.ToBase64String(encryptedOutput);
+                            }
+                            rsa.Dispose();
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.SM4) + 1, e);
+                        }
                         break;
                     }
                 case DataEncryptType.SM2:
