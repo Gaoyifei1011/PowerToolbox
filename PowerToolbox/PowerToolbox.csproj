@@ -367,7 +367,6 @@
 		<PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="1.8.251106002" />
 		<PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="1.8.251105000" GeneratePathProperty="True" IncludeAssets="none" PrivateAssets="all" />
 		<PackageReference Include="Mile.Aria2" Version="1.0.230" />
-		<PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
 		
 		<Page Include="Styles\DateTimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\RadioButtons.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
@@ -429,11 +428,11 @@
 		<PRIResource Include="Strings\en-us\Resources.resjson" />
 		<PRIResource Include="Strings\zh-hans\Resources.resjson" />
 		
-		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_InteractiveExperiences)\metadata\10.0.18362.0\Microsoft.UI.winmd" />
-		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Text.winmd" />
-		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Xaml.winmd" />
-    <Reference Include="$(Pkgmicrosoft_windows_sdk_net_ref)\winmd\*.winmd" />
-    <Reference Include="$(WindowsSdkPath)\UnionMetadata\$(TargetPlatformVersion)\Facade\Windows.WinMD" />
+		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_InteractiveExperiences)\metadata\10.0.18362.0\Microsoft.UI.winmd" Private="false" Visible="false" />
+		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Text.winmd" Private="false" Visible="false" />
+		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Xaml.winmd" Private="false" Visible="false" />
+    <Reference Include="$(Pkgmicrosoft_windows_sdk_net_ref)\winmd\*.winmd" Private="false" Visible="false"  />
+    <Reference Include="$(WindowsSdkPath)\UnionMetadata\$(TargetPlatformVersion)\Facade\Windows.WinMD" Private="false" Visible="false" />
 		<Reference Include="Microsoft.CSharp" />
 		<Reference Include="Microsoft.VisualBasic" />
 		<Reference Include="System.Device" />
@@ -441,5 +440,6 @@
 		<Reference Include="System.Net.Http" />
 		<Reference Include="System.ServiceProcess" />
 		<Reference Include="System.Windows.Forms" />
+    <Reference Include="$(Windir)\Microsoft.NET\Framework\v4.0.30319\System.Runtime.WindowsRuntime.dll" Private="false" Visible="false" />
 	</ItemGroup>
 </Project>
