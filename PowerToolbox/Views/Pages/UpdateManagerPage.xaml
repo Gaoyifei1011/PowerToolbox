@@ -1587,7 +1587,7 @@
                                                     CornerRadius="{ThemeResource ControlCornerRadius}"
                                                     Orientation="Horizontal">
 
-                                                    <ContentControl IsEnabled="{x:Bind UpdateInformation.IsUninstallable}">
+                                                    <ContentControl IsEnabled="{x:Bind UpdateInformation.IsCanUninstall}">
 
                                                         <Grid>
                                                             <Button

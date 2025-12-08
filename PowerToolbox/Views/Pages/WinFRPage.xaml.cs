@@ -1000,11 +1000,8 @@ namespace PowerToolbox.Views.Pages
                                         winFRTimer.Stop();
                                     }
 
-                                    if (winFRProcess is not null)
-                                    {
-                                        winFRProcess.Dispose();
-                                        winFRProcess = null;
-                                    }
+                                    winFRProcess?.Dispose();
+                                    winFRProcess = null;
                                 }
                             }
                             catch (Exception e)
@@ -1530,12 +1527,12 @@ namespace PowerToolbox.Views.Pages
                     if (isSystemDrive)
                     {
                         driveItem.DiskImage = SystemDriveSource;
-                        driveItem.IsSytemDrive = true;
+                        driveItem.IsSystemDrive = true;
                     }
                     else
                     {
                         driveItem.DiskImage = StandardDriveSource;
-                        driveItem.IsSytemDrive = false;
+                        driveItem.IsSystemDrive = false;
                     }
 
                     driveList.Add(driveItem);

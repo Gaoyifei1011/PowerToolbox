@@ -3,8 +3,7 @@
     /// <summary>
     /// BlowfishBase ECB 的实现
     /// </summary>
-    /// <remarks>使用该类加密或解密字节数组或单个块与BlowfishBase在ECB（电子代码本）模式，他们的密钥长度可以灵活从零到56字节。
-    /// </remarks>
+    /// <remarks>使用该类加密或解密字节数组或单个块与BlowfishBase在ECB（电子代码本）模式，他们的密钥长度可以灵活从零到56字节。</remarks>
     public class BlowfishBase
     {
         public const int MAXKEYLENGTH = 56;

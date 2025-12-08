@@ -84,9 +84,9 @@ namespace PowerToolbox.Services.Settings
                 AppLanguagesList.Add("en-us");
             }
 
-            foreach (string applanguage in AppLanguagesList)
+            foreach (string appLanguage in AppLanguagesList)
             {
-                CultureInfo culture = CultureInfo.GetCultureInfo(applanguage);
+                CultureInfo culture = CultureInfo.GetCultureInfo(appLanguage);
 
                 LanguageList.Add(new KeyValuePair<string, string>(culture.Name, culture.NativeName));
             }

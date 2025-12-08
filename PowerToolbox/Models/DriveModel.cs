@@ -40,7 +40,7 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 是否为系统卷
         /// </summary>
-        public bool IsSytemDrive { get; set; }
+        public bool IsSystemDrive { get; set; }
 
         /// <summary>
         /// 驱动器已使用空间百分比

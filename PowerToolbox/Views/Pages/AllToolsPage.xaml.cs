@@ -57,10 +57,10 @@ namespace PowerToolbox.Views.Pages
         [
             new ControlItemModel()
             {
-                Title = ResourceService.AllToolsResource.GetString("DataEncryptVertify"),
-                Description = ResourceService.AllToolsResource.GetString("DataEncryptVertifyDescription"),
-                ImagePath = "ms-appx:///Assets/ControlIcon/DataEncryptVertify.png",
-                Tag = "DataEncryptVertify"
+                Title = ResourceService.AllToolsResource.GetString("DataEncryptVerify"),
+                Description = ResourceService.AllToolsResource.GetString("DataEncryptVerifyDescription"),
+                ImagePath = "ms-appx:///Assets/ControlIcon/DataEncryptVerify.png",
+                Tag = "DataEncryptVerify"
             },
             new ControlItemModel()
             {

@@ -109,7 +109,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 binaryReader.ReadUInt32();
             }
 
-            List<ScopeAndItemInfo> scopeAndItemInfosList = new((int)(numScopes + numItems));
+            List<ScopeAndItemInfo> scopeAndItemInfoList = new((int)(numScopes + numItems));
 
             for (int i = 0; i < numScopes + numItems; i++)
             {
@@ -122,7 +122,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 ushort index = binaryReader.ReadUInt16();
                 bool isScope = (flags & 0x10) is not 0;
                 bool nameInAscii = (flags & 0x20) is not 0;
-                scopeAndItemInfosList.Add(new ScopeAndItemInfo()
+                scopeAndItemInfoList.Add(new ScopeAndItemInfo()
                 {
                     Parent = parent,
                     FullPathLength = fullPathLength,
@@ -133,7 +133,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            List<ScopeExInfo> scopeExInfosList = new((int)numScopes);
+            List<ScopeExInfo> scopeExInfoList = new((int)numScopes);
 
             for (int i = 0; i < numScopes; i++)
             {
@@ -141,7 +141,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 ushort childCount = binaryReader.ReadUInt16();
                 ushort firstChildIndex = binaryReader.ReadUInt16();
                 binaryReader.ExpectUInt16(0);
-                scopeExInfosList.Add(new ScopeExInfo()
+                scopeExInfoList.Add(new ScopeExInfo()
                 {
                     ScopeIndex = scopeIndex,
                     ChildCount = childCount,
@@ -164,19 +164,19 @@ namespace PowerToolbox.Extensions.PriExtract
 
             for (int i = 0; i < numScopes + numItems; i++)
             {
-                long pos = scopeAndItemInfosList[i].NameInAscii
-                    ? asciiDataOffset + scopeAndItemInfosList[i].NameOffset
-                    : unicodeDataOffset + scopeAndItemInfosList[i].NameOffset * 2;
+                long pos = scopeAndItemInfoList[i].NameInAscii
+                    ? asciiDataOffset + scopeAndItemInfoList[i].NameOffset
+                    : unicodeDataOffset + scopeAndItemInfoList[i].NameOffset * 2;
 
                 binaryReader.BaseStream.Seek(pos, SeekOrigin.Begin);
 
-                string name = scopeAndItemInfosList[i].FullPathLength is not 0
-                    ? binaryReader.ReadNullTerminatedString(scopeAndItemInfosList[i].NameInAscii ? Encoding.ASCII : Encoding.Unicode)
+                string name = scopeAndItemInfoList[i].FullPathLength is not 0
+                    ? binaryReader.ReadNullTerminatedString(scopeAndItemInfoList[i].NameInAscii ? Encoding.ASCII : Encoding.Unicode)
                     : string.Empty;
 
-                ushort index = scopeAndItemInfosList[i].Index;
+                ushort index = scopeAndItemInfoList[i].Index;
 
-                if (scopeAndItemInfosList[i].IsScope)
+                if (scopeAndItemInfoList[i].IsScope)
                 {
                     if (scopesArray[index] is not null)
                     {
@@ -208,13 +208,13 @@ namespace PowerToolbox.Extensions.PriExtract
 
             for (int i = 0; i < numScopes + numItems; i++)
             {
-                ushort index = scopeAndItemInfosList[i].Index;
+                ushort index = scopeAndItemInfoList[i].Index;
 
-                ushort parent = scopeAndItemInfosList[scopeAndItemInfosList[i].Parent].Index;
+                ushort parent = scopeAndItemInfoList[scopeAndItemInfoList[i].Parent].Index;
 
                 if (parent is not 0xFFFF)
                 {
-                    if (scopeAndItemInfosList[i].IsScope)
+                    if (scopeAndItemInfoList[i].IsScope)
                     {
                         if (!parent.Equals(index))
                         {
@@ -230,11 +230,11 @@ namespace PowerToolbox.Extensions.PriExtract
 
             for (int i = 0; i < numScopes; i++)
             {
-                List<ResourceMapScopeAndItem> children = new(scopeExInfosList[i].ChildCount);
+                List<ResourceMapScopeAndItem> children = new(scopeExInfoList[i].ChildCount);
 
-                for (int j = 0; j < scopeExInfosList[i].ChildCount; j++)
+                for (int j = 0; j < scopeExInfoList[i].ChildCount; j++)
                 {
-                    ScopeAndItemInfo saiInfo = scopeAndItemInfosList[scopeExInfosList[i].FirstChildIndex + j];
+                    ScopeAndItemInfo saiInfo = scopeAndItemInfoList[scopeExInfoList[i].FirstChildIndex + j];
 
                     if (saiInfo.IsScope)
                     {

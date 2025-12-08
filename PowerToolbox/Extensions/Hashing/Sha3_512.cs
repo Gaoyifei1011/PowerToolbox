@@ -60,7 +60,7 @@ namespace PowerToolbox.Extensions.Hashing
 
             if (ibStart < 0 || cbSize < 0 || ibStart + cbSize > array.Length)
             {
-                throw new ArgumentOutOfRangeException(nameof(ibStart), nameof(cbSize), "Invaild parameter");
+                throw new ArgumentOutOfRangeException(nameof(ibStart), nameof(cbSize), "Invalid parameter");
             }
 
             int offset = ibStart;

@@ -46,7 +46,7 @@ namespace PowerToolbox.Extensions.DataType.Class
         /// <summary>
         /// 更新是否可以被卸载
         /// </summary>
-        public bool IsUninstallable { get; set; }
+        public bool IsCanUninstall { get; set; }
 
         /// <summary>
         /// 更新最大下载大小

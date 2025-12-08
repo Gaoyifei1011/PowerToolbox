@@ -138,7 +138,7 @@
 ### 下载与安装注意事项
 
 > * 该程序使用的是 Xaml Islands 构建的，建议您的系统版本为Windows 11（代号 22H2 / 内部版本号 22621）或更高版本，最低版本为Windows 11（代号 2004 / 内部版本号 19041）或更高版本。
-> * [Release](https://github.com/Gaoyifei1011/PowerToolbox/releases)页面的二进制安装文件已经打包成压缩包。请解压压缩包并使用Powershell管理员模式（必要情况下）运行install.ps1文件方可实现快速安装。
+> * [Release](https://github.com/Gaoyifei1011/PowerToolbox/releases)页面的二进制安装文件已经打包成压缩包。请解压压缩包并使用PowerShell管理员模式（必要情况下）运行install.ps1文件方可实现快速安装。
 > * 自行下载项目源代码并编译。（请仔细阅读下面的项目编译步骤）
 
 ------

@@ -7,7 +7,7 @@ namespace PowerToolboxShellExtension.Services.Root
     /// </summary>
     public static class LocalSettingsService
     {
-        private static readonly string settingsKey = @"Software\PowerToolboxs\Settings";
+        private static readonly string settingsKey = @"Software\PowerToolbox\Settings";
 
         /// <summary>
         /// 读取设置选项存储信息

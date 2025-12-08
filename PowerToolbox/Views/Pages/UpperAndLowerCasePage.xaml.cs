@@ -181,7 +181,7 @@ namespace PowerToolbox.Views.Pages
                 return upperAndLowerCaseList;
             });
 
-            AddtoUpperAndLowerCasePage(upperAndLowerCaseList);
+            AddToUpperAndLowerCasePage(upperAndLowerCaseList);
             IsOperationFailed = false;
             OperationFailedList.Clear();
         }
@@ -445,7 +445,7 @@ namespace PowerToolbox.Views.Pages
                 });
 
                 openFileDialog.Dispose();
-                AddtoUpperAndLowerCasePage(upperAndLowerCaseList);
+                AddToUpperAndLowerCasePage(upperAndLowerCaseList);
             }
             else
             {
@@ -520,8 +520,8 @@ namespace PowerToolbox.Views.Pages
                         }
                     });
 
-                    AddtoUpperAndLowerCasePage(directoryNameList);
-                    AddtoUpperAndLowerCasePage(fileNameList);
+                    AddToUpperAndLowerCasePage(directoryNameList);
+                    AddToUpperAndLowerCasePage(fileNameList);
                 }
 
                 openFolderDialog.Dispose();
@@ -559,7 +559,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 添加到大写小写页面
         /// </summary>
-        public void AddtoUpperAndLowerCasePage(List<OldAndNewNameModel> upperAndLowerCaseList)
+        public void AddToUpperAndLowerCasePage(List<OldAndNewNameModel> upperAndLowerCaseList)
         {
             lock (upperAndLowerCaseLock)
             {

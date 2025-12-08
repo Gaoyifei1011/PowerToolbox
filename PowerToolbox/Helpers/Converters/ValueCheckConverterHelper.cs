@@ -41,9 +41,9 @@ namespace PowerToolbox.Helpers.Converters
         /// <summary>
         /// 检查更新应用状态
         /// </summary>
-        public static Visibility CheckUpdateAppResultKind(UpdateAppResultKind updateAppReusltKind, UpdateAppResultKind comparedUpdateAppReusltKind)
+        public static Visibility CheckUpdateAppResultKind(UpdateAppResultKind updateAppResultKind, UpdateAppResultKind comparedUpdateAppResultKind)
         {
-            return Equals(updateAppReusltKind, comparedUpdateAppReusltKind) ? Visibility.Visible : Visibility.Collapsed;
+            return Equals(updateAppResultKind, comparedUpdateAppResultKind) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

@@ -26,49 +26,49 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 数据校验页面
     /// </summary>
-    public sealed partial class DataVertifyPage : Page, INotifyPropertyChanged
+    public sealed partial class DataVerifyPage : Page, INotifyPropertyChanged
     {
-        private readonly string ContentEmptyString = ResourceService.DataVertifyResource.GetString("ContentEmpty");
-        private readonly string ContentInitializeString = ResourceService.DataVertifyResource.GetString("ContentInitialize");
-        private readonly string ContentVertifyFailedString = ResourceService.DataVertifyResource.GetString("ContentVertifyFailed");
-        private readonly string ContentVertifyPartSuccessfullyString = ResourceService.DataVertifyResource.GetString("ContentVertifyPartSuccessfully");
-        private readonly string ContentVertifyWholeSuccessfullyString = ResourceService.DataVertifyResource.GetString("ContentVertifyWholeSuccessfully");
-        private readonly string CRC32String = ResourceService.DataVertifyResource.GetString("CRC32");
-        private readonly string CRC64String = ResourceService.DataVertifyResource.GetString("CRC64");
-        private readonly string DragOverContentString = ResourceService.DataVertifyResource.GetString("DragOverContent");
-        private readonly string ED2KString = ResourceService.DataVertifyResource.GetString("ED2K");
-        private readonly string FileInitializeString = ResourceService.DataVertifyResource.GetString("FileInitialize");
-        private readonly string FileNotExistedString = ResourceService.DataVertifyResource.GetString("FileNotExisted");
-        private readonly string FileNotSelectedString = ResourceService.DataVertifyResource.GetString("FileNotSelected");
-        private readonly string FileVertifyFailedString = ResourceService.DataVertifyResource.GetString("FileVertifyFailed");
-        private readonly string FileVertifyPartSuccessfullyString = ResourceService.DataVertifyResource.GetString("FileVertifyPartSuccessfully");
-        private readonly string FileVertifyWholeSuccessfullyString = ResourceService.DataVertifyResource.GetString("FileVertifyWholeSuccessfully");
-        private readonly string MD2String = ResourceService.DataVertifyResource.GetString("MD2");
-        private readonly string MD4String = ResourceService.DataVertifyResource.GetString("MD4");
-        private readonly string MD5String = ResourceService.DataVertifyResource.GetString("MD5");
-        private readonly string NoMultiFileString = ResourceService.DataVertifyResource.GetString("NoMultiFile");
-        private readonly string RIPEMD160String = ResourceService.DataVertifyResource.GetString("RIPEMD160");
-        private readonly string SelectFileString = ResourceService.DataVertifyResource.GetString("SelectFile");
-        private readonly string SHA1String = ResourceService.DataVertifyResource.GetString("SHA1");
-        private readonly string SHA224String = ResourceService.DataVertifyResource.GetString("SHA224");
-        private readonly string SHA256String = ResourceService.DataVertifyResource.GetString("SHA256");
-        private readonly string SHA3224String = ResourceService.DataVertifyResource.GetString("SHA3224");
-        private readonly string SHA3256String = ResourceService.DataVertifyResource.GetString("SHA3256");
-        private readonly string SHA3384String = ResourceService.DataVertifyResource.GetString("SHA3384");
-        private readonly string SHA3512String = ResourceService.DataVertifyResource.GetString("SHA3512");
-        private readonly string SHA384String = ResourceService.DataVertifyResource.GetString("SHA384");
-        private readonly string SHA512String = ResourceService.DataVertifyResource.GetString("SHA512");
-        private readonly string SM3String = ResourceService.DataVertifyResource.GetString("SM3");
-        private readonly string TIGERString = ResourceService.DataVertifyResource.GetString("TIGER");
-        private readonly string TIGER2String = ResourceService.DataVertifyResource.GetString("TIGER2");
-        private readonly string VertifyingString = ResourceService.DataVertifyResource.GetString("Vertifying");
-        private readonly string VertifyTypeNotSelectedString = ResourceService.DataVertifyResource.GetString("VertifyTypeNotSelected");
-        private readonly string WHIRLPOOLString = ResourceService.DataVertifyResource.GetString("WHIRLPOOL");
-        private readonly string XXH32String = ResourceService.DataVertifyResource.GetString("XXH32");
-        private readonly string XXH64String = ResourceService.DataVertifyResource.GetString("XXH64");
-        private int selectVertifyIndex = -1;
-        private string selectedVertifyFile = string.Empty;
-        private string selectedVertifyContent = string.Empty;
+        private readonly string ContentEmptyString = ResourceService.DataVerifyResource.GetString("ContentEmpty");
+        private readonly string ContentInitializeString = ResourceService.DataVerifyResource.GetString("ContentInitialize");
+        private readonly string ContentVerifyFailedString = ResourceService.DataVerifyResource.GetString("ContentVerifyFailed");
+        private readonly string ContentVerifyPartSuccessfullyString = ResourceService.DataVerifyResource.GetString("ContentVerifyPartSuccessfully");
+        private readonly string ContentVerifyWholeSuccessfullyString = ResourceService.DataVerifyResource.GetString("ContentVerifyWholeSuccessfully");
+        private readonly string CRC32String = ResourceService.DataVerifyResource.GetString("CRC32");
+        private readonly string CRC64String = ResourceService.DataVerifyResource.GetString("CRC64");
+        private readonly string DragOverContentString = ResourceService.DataVerifyResource.GetString("DragOverContent");
+        private readonly string ED2KString = ResourceService.DataVerifyResource.GetString("ED2K");
+        private readonly string FileInitializeString = ResourceService.DataVerifyResource.GetString("FileInitialize");
+        private readonly string FileNotExistedString = ResourceService.DataVerifyResource.GetString("FileNotExisted");
+        private readonly string FileNotSelectedString = ResourceService.DataVerifyResource.GetString("FileNotSelected");
+        private readonly string FileVerifyFailedString = ResourceService.DataVerifyResource.GetString("FileVerifyFailed");
+        private readonly string FileVerifyPartSuccessfullyString = ResourceService.DataVerifyResource.GetString("FileVerifyPartSuccessfully");
+        private readonly string FileVerifyWholeSuccessfullyString = ResourceService.DataVerifyResource.GetString("FileVerifyWholeSuccessfully");
+        private readonly string MD2String = ResourceService.DataVerifyResource.GetString("MD2");
+        private readonly string MD4String = ResourceService.DataVerifyResource.GetString("MD4");
+        private readonly string MD5String = ResourceService.DataVerifyResource.GetString("MD5");
+        private readonly string NoMultiFileString = ResourceService.DataVerifyResource.GetString("NoMultiFile");
+        private readonly string RIPEMD160String = ResourceService.DataVerifyResource.GetString("RIPEMD160");
+        private readonly string SelectFileString = ResourceService.DataVerifyResource.GetString("SelectFile");
+        private readonly string SHA1String = ResourceService.DataVerifyResource.GetString("SHA1");
+        private readonly string SHA224String = ResourceService.DataVerifyResource.GetString("SHA224");
+        private readonly string SHA256String = ResourceService.DataVerifyResource.GetString("SHA256");
+        private readonly string SHA3224String = ResourceService.DataVerifyResource.GetString("SHA3224");
+        private readonly string SHA3256String = ResourceService.DataVerifyResource.GetString("SHA3256");
+        private readonly string SHA3384String = ResourceService.DataVerifyResource.GetString("SHA3384");
+        private readonly string SHA3512String = ResourceService.DataVerifyResource.GetString("SHA3512");
+        private readonly string SHA384String = ResourceService.DataVerifyResource.GetString("SHA384");
+        private readonly string SHA512String = ResourceService.DataVerifyResource.GetString("SHA512");
+        private readonly string SM3String = ResourceService.DataVerifyResource.GetString("SM3");
+        private readonly string TIGERString = ResourceService.DataVerifyResource.GetString("TIGER");
+        private readonly string TIGER2String = ResourceService.DataVerifyResource.GetString("TIGER2");
+        private readonly string VerifyingString = ResourceService.DataVerifyResource.GetString("Verifying");
+        private readonly string VerifyTypeNotSelectedString = ResourceService.DataVerifyResource.GetString("VerifyTypeNotSelected");
+        private readonly string WHIRLPOOLString = ResourceService.DataVerifyResource.GetString("WHIRLPOOL");
+        private readonly string XXH32String = ResourceService.DataVerifyResource.GetString("XXH32");
+        private readonly string XXH64String = ResourceService.DataVerifyResource.GetString("XXH64");
+        private int selectVerifyIndex = -1;
+        private string selectedVerifyFile = string.Empty;
+        private string selectedVerifyContent = string.Empty;
 
         private int _selectedIndex = 0;
 
@@ -86,41 +86,41 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _vertifyFile;
+        private string _verifyFile;
 
-        public string VertifyFile
+        public string VerifyFile
         {
-            get { return _vertifyFile; }
+            get { return _verifyFile; }
 
             set
             {
-                if (!Equals(_vertifyFile, value))
+                if (!Equals(_verifyFile, value))
                 {
-                    _vertifyFile = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(VertifyFile)));
+                    _verifyFile = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(VerifyFile)));
                 }
             }
         }
 
-        private string _vertifyContent;
+        private string _verifyContent;
 
-        public string VertifyContent
+        public string VerifyContent
         {
-            get { return _vertifyContent; }
+            get { return _verifyContent; }
 
             set
             {
-                if (!Equals(_vertifyContent, value))
+                if (!Equals(_verifyContent, value))
                 {
-                    _vertifyContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(VertifyContent)));
+                    _verifyContent = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(VerifyContent)));
                 }
             }
         }
 
         private InfoBarSeverity _resultSeverity;
 
-        private InfoBarSeverity ResultServerity
+        private InfoBarSeverity ResultSeverity
         {
             get { return _resultSeverity; }
 
@@ -129,7 +129,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_resultSeverity, value))
                 {
                     _resultSeverity = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultServerity)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultSeverity)));
                 }
             }
         }
@@ -182,140 +182,140 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isVertifying;
+        private bool _isVerifying;
 
-        public bool IsVertifying
+        public bool IsVerifying
         {
-            get { return _isVertifying; }
+            get { return _isVerifying; }
 
             set
             {
-                if (!Equals(_isVertifying, value))
+                if (!Equals(_isVerifying, value))
                 {
-                    _isVertifying = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsVertifying)));
+                    _isVerifying = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsVerifying)));
                 }
             }
         }
 
-        private List<DataVertifyTypeModel> DataVertifyTypeList { get; } = [];
+        private List<DataVerifyTypeModel> DataVerifyTypeList { get; } = [];
 
-        private WinRTObservableCollection<DataVertifyResultModel> DataVertifyResultCollection { get; } = [];
+        private WinRTObservableCollection<DataVerifyResultModel> DataVerifyResultCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DataVertifyPage()
+        public DataVerifyPage()
         {
             InitializeComponent();
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = CRC32String,
-                DataVertifyType = DataVertifyType.CRC_32
+                DataVerifyType = DataVerifyType.CRC_32
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = CRC64String,
-                DataVertifyType = DataVertifyType.CRC_64
+                DataVerifyType = DataVerifyType.CRC_64
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = ED2KString,
-                DataVertifyType = DataVertifyType.ED2K
+                DataVerifyType = DataVerifyType.ED2K
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = MD2String,
-                DataVertifyType = DataVertifyType.MD2
+                DataVerifyType = DataVerifyType.MD2
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = MD4String,
-                DataVertifyType = DataVertifyType.MD4
+                DataVerifyType = DataVerifyType.MD4
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = MD5String,
-                DataVertifyType = DataVertifyType.MD5
+                DataVerifyType = DataVerifyType.MD5
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = RIPEMD160String,
-                DataVertifyType = DataVertifyType.RIPEMD_160
+                DataVerifyType = DataVerifyType.RIPEMD_160
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = SHA1String,
-                DataVertifyType = DataVertifyType.SHA_1
+                DataVerifyType = DataVerifyType.SHA_1
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = SHA224String,
-                DataVertifyType = DataVertifyType.SHA_224
+                DataVerifyType = DataVerifyType.SHA_224
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = SHA256String,
-                DataVertifyType = DataVertifyType.SHA_256
+                DataVerifyType = DataVerifyType.SHA_256
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = SHA384String,
-                DataVertifyType = DataVertifyType.SHA_384
+                DataVerifyType = DataVerifyType.SHA_384
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = SHA512String,
-                DataVertifyType = DataVertifyType.SHA_512
+                DataVerifyType = DataVerifyType.SHA_512
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = SHA3224String,
-                DataVertifyType = DataVertifyType.SHA3_224
+                DataVerifyType = DataVerifyType.SHA3_224
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = SHA3256String,
-                DataVertifyType = DataVertifyType.SHA3_256
+                DataVerifyType = DataVerifyType.SHA3_256
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = SHA3384String,
-                DataVertifyType = DataVertifyType.SHA3_384
+                DataVerifyType = DataVerifyType.SHA3_384
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = SHA3512String,
-                DataVertifyType = DataVertifyType.SHA3_512
+                DataVerifyType = DataVerifyType.SHA3_512
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = SM3String,
-                DataVertifyType = DataVertifyType.SM3
+                DataVerifyType = DataVerifyType.SM3
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = TIGERString,
-                DataVertifyType = DataVertifyType.TIGER
+                DataVerifyType = DataVerifyType.TIGER
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = TIGER2String,
-                DataVertifyType = DataVertifyType.TIGER2
+                DataVerifyType = DataVerifyType.TIGER2
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = WHIRLPOOLString,
-                DataVertifyType = DataVertifyType.WHIRLPOOL
+                DataVerifyType = DataVerifyType.WHIRLPOOL
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = XXH32String,
-                DataVertifyType = DataVertifyType.XXH32
+                DataVerifyType = DataVerifyType.XXH32
             });
-            DataVertifyTypeList.Add(new DataVertifyTypeModel()
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = XXH64String,
-                DataVertifyType = DataVertifyType.XXH64
+                DataVerifyType = DataVerifyType.XXH64
             });
         }
 
@@ -324,9 +324,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 数据校验类型选中项发生改变时触发的事件
         /// </summary>
-        private void OnDataVertifyCheckExecuteRequested(object sender, ExecuteRequestedEventArgs args)
+        private void OnDataVerifyCheckExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            IsAllSelected = DataVertifyTypeList.All(item => item.IsSelected);
+            IsAllSelected = DataVerifyTypeList.All(item => item.IsSelected);
         }
 
         #endregion 第一部分：ExecuteCommand 命令调用时挂载的事件
@@ -342,13 +342,13 @@ namespace PowerToolbox.Views.Pages
 
             try
             {
-                if (IsVertifying)
+                if (IsVerifying)
                 {
                     args.AcceptedOperation = DataPackageOperation.None;
                     args.DragUIOverride.IsCaptionVisible = true;
                     args.DragUIOverride.IsContentVisible = false;
                     args.DragUIOverride.IsGlyphVisible = true;
-                    args.DragUIOverride.Caption = VertifyingString;
+                    args.DragUIOverride.Caption = VerifyingString;
                 }
                 else
                 {
@@ -376,7 +376,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnDragOver), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnDragOver), 1, e);
             }
             finally
             {
@@ -419,7 +419,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnDrop), 2, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnDrop), 2, e);
             }
             finally
             {
@@ -428,7 +428,7 @@ namespace PowerToolbox.Views.Pages
 
             if (File.Exists(filePath))
             {
-                VertifyFile = filePath;
+                VerifyFile = filePath;
             }
         }
 
@@ -440,11 +440,11 @@ namespace PowerToolbox.Views.Pages
             if (sender is RadioButtons radioButtons && radioButtons.SelectedIndex >= 0)
             {
                 SelectedIndex = radioButtons.SelectedIndex;
-                if (SelectedIndex is 0 && ResultServerity is InfoBarSeverity.Informational)
+                if (SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
                 {
                     ResultMessage = FileInitializeString;
                 }
-                else if (SelectedIndex is 1 && ResultServerity is InfoBarSeverity.Informational)
+                else if (SelectedIndex is 1 && ResultSeverity is InfoBarSeverity.Informational)
                 {
                     ResultMessage = ContentInitializeString;
                 }
@@ -463,7 +463,7 @@ namespace PowerToolbox.Views.Pages
             };
             if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
             {
-                VertifyFile = openFileDialog.FileName;
+                VerifyFile = openFileDialog.FileName;
             }
             openFileDialog.Dispose();
         }
@@ -475,7 +475,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
-                VertifyContent = textBox.Text;
+                VerifyContent = textBox.Text;
             }
         }
 
@@ -484,9 +484,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectAllClicked(object sender, RoutedEventArgs args)
         {
-            foreach (DataVertifyTypeModel dataVertifyTypeItem in DataVertifyTypeList)
+            foreach (DataVerifyTypeModel dataVerifyTypeItem in DataVerifyTypeList)
             {
-                dataVertifyTypeItem.IsSelected = true;
+                dataVerifyTypeItem.IsSelected = true;
             }
 
             IsAllSelected = true;
@@ -497,9 +497,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
         {
-            foreach (DataVertifyTypeModel dataVertifyTypeItem in DataVertifyTypeList)
+            foreach (DataVerifyTypeModel dataVerifyTypeItem in DataVerifyTypeList)
             {
-                dataVertifyTypeItem.IsSelected = false;
+                dataVerifyTypeItem.IsSelected = false;
             }
 
             IsAllSelected = false;
@@ -510,9 +510,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnUseUpperCaseChecked(object sender, RoutedEventArgs args)
         {
-            foreach (DataVertifyResultModel dataVertifyResultItem in DataVertifyResultCollection)
+            foreach (DataVerifyResultModel dataVerifyResultItem in DataVerifyResultCollection)
             {
-                dataVertifyResultItem.Result = dataVertifyResultItem.Result.ToUpperInvariant();
+                dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToUpperInvariant();
             }
         }
 
@@ -521,161 +521,161 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnUseUpperCaseUnchecked(object sender, RoutedEventArgs args)
         {
-            foreach (DataVertifyResultModel dataVertifyResultItem in DataVertifyResultCollection)
+            foreach (DataVerifyResultModel dataVerifyResultItem in DataVerifyResultCollection)
             {
-                dataVertifyResultItem.Result = dataVertifyResultItem.Result.ToLowerInvariant();
+                dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToLowerInvariant();
             }
         }
 
         /// <summary>
         /// 开始数据校验
         /// </summary>
-        private async void OnStartVertifyClicked(object sender, RoutedEventArgs args)
+        private async void OnStartVerifyClicked(object sender, RoutedEventArgs args)
         {
-            selectVertifyIndex = SelectedIndex;
-            selectedVertifyFile = VertifyFile;
-            selectedVertifyContent = VertifyContent;
-            if (selectVertifyIndex is 0 && string.IsNullOrEmpty(selectedVertifyFile))
+            selectVerifyIndex = SelectedIndex;
+            selectedVerifyFile = VerifyFile;
+            selectedVerifyContent = VerifyContent;
+            if (selectVerifyIndex is 0 && string.IsNullOrEmpty(selectedVerifyFile))
             {
-                ResultServerity = InfoBarSeverity.Error;
-                if (string.IsNullOrEmpty(selectedVertifyFile))
+                ResultSeverity = InfoBarSeverity.Error;
+                if (string.IsNullOrEmpty(selectedVerifyFile))
                 {
                     ResultMessage = FileNotSelectedString;
                     return;
                 }
-                else if (!File.Exists(selectedVertifyFile))
+                else if (!File.Exists(selectedVerifyFile))
                 {
                     ResultMessage = FileNotExistedString;
                     return;
                 }
                 return;
             }
-            else if (selectVertifyIndex is 1 && string.IsNullOrEmpty(selectedVertifyContent))
+            else if (selectVerifyIndex is 1 && string.IsNullOrEmpty(selectedVerifyContent))
             {
-                ResultServerity = InfoBarSeverity.Error;
+                ResultSeverity = InfoBarSeverity.Error;
                 ResultMessage = ContentEmptyString;
             }
 
-            List<DataVertifyTypeModel> selectedDataVertifyTpyeList = [.. DataVertifyTypeList.Where(item => item.IsSelected)];
-            if (selectedDataVertifyTpyeList.Count is 0)
+            List<DataVerifyTypeModel> selectedDataVerifyTypeList = [.. DataVerifyTypeList.Where(item => item.IsSelected)];
+            if (selectedDataVerifyTypeList.Count is 0)
             {
-                ResultServerity = InfoBarSeverity.Error;
-                ResultMessage = VertifyTypeNotSelectedString;
+                ResultSeverity = InfoBarSeverity.Error;
+                ResultMessage = VerifyTypeNotSelectedString;
                 return;
             }
-            IsVertifying = true;
-            ResultServerity = InfoBarSeverity.Informational;
-            ResultMessage = VertifyingString;
-            DataVertifyResultCollection.Clear();
-            List<DataVertifyResultModel> dataVertifyResultList = await Task.Run(async () =>
+            IsVerifying = true;
+            ResultSeverity = InfoBarSeverity.Informational;
+            ResultMessage = VerifyingString;
+            DataVerifyResultCollection.Clear();
+            List<DataVerifyResultModel> dataVerifyResultList = await Task.Run(async () =>
             {
                 byte[] contentData = null;
-                List<DataVertifyResultModel> dataVertifyResultList = [];
+                List<DataVerifyResultModel> dataVerifyResultList = [];
 
                 try
                 {
-                    if (selectVertifyIndex is 0)
+                    if (selectVerifyIndex is 0)
                     {
-                        FileStream fileStream = File.OpenRead(selectedVertifyFile);
+                        FileStream fileStream = File.OpenRead(selectedVerifyFile);
                         contentData = new byte[(int)fileStream.Length];
                         fileStream.Read(contentData, 0, contentData.Length);
                         fileStream.Dispose();
                     }
-                    else if (selectVertifyIndex is 1)
+                    else if (selectVerifyIndex is 1)
                     {
-                        contentData = Encoding.UTF8.GetBytes(selectedVertifyContent);
+                        contentData = Encoding.UTF8.GetBytes(selectedVerifyContent);
                     }
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnStartVertifyClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnStartVerifyClicked), 1, e);
                 }
 
-                if (contentData is not null && (selectVertifyIndex is 0 || selectVertifyIndex is 1))
+                if (contentData is not null && (selectVerifyIndex is 0 || selectVerifyIndex is 1))
                 {
-                    List<Task> vertifyingTaskList = [];
-                    object vertifyingLock = new();
-                    foreach (DataVertifyTypeModel dataVertifyTypeItem in selectedDataVertifyTpyeList)
+                    List<Task> verifyingTaskList = [];
+                    object verifyingLock = new();
+                    foreach (DataVerifyTypeModel dataVerifyTypeItem in selectedDataVerifyTypeList)
                     {
-                        vertifyingTaskList.Add(Task.Run(() =>
+                        verifyingTaskList.Add(Task.Run(() =>
                         {
-                            string vertifyResultContent = GetVertifiedData(dataVertifyTypeItem.DataVertifyType, selectVertifyIndex, contentData);
-                            if (!string.IsNullOrEmpty(vertifyResultContent))
+                            string verifyResultContent = GetVerifiedData(dataVerifyTypeItem.DataVerifyType, selectVerifyIndex, contentData);
+                            if (!string.IsNullOrEmpty(verifyResultContent))
                             {
-                                lock (vertifyingLock)
+                                lock (verifyingLock)
                                 {
-                                    dataVertifyResultList.Add(new DataVertifyResultModel()
+                                    dataVerifyResultList.Add(new DataVerifyResultModel()
                                     {
-                                        Name = dataVertifyTypeItem.Name,
-                                        Result = vertifyResultContent
+                                        Name = dataVerifyTypeItem.Name,
+                                        Result = verifyResultContent
                                     });
                                 }
                             }
                         }));
                     }
-                    await Task.WhenAll(vertifyingTaskList);
+                    await Task.WhenAll(verifyingTaskList);
                 }
 
-                dataVertifyResultList.Sort((item1, item2) => item1.Name.CompareTo(item2.Name));
-                return dataVertifyResultList;
+                dataVerifyResultList.Sort((item1, item2) => item1.Name.CompareTo(item2.Name));
+                return dataVerifyResultList;
             });
 
             if (UseUpperCase)
             {
-                foreach (DataVertifyResultModel dataVertifyResultItem in dataVertifyResultList)
+                foreach (DataVerifyResultModel dataVerifyResultItem in dataVerifyResultList)
                 {
-                    dataVertifyResultItem.Result = dataVertifyResultItem.Result.ToUpperInvariant();
-                    DataVertifyResultCollection.Add(dataVertifyResultItem);
+                    dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToUpperInvariant();
+                    DataVerifyResultCollection.Add(dataVerifyResultItem);
                 }
             }
             else
             {
-                foreach (DataVertifyResultModel dataVertifyResultItem in dataVertifyResultList)
+                foreach (DataVerifyResultModel dataVerifyResultItem in dataVerifyResultList)
                 {
-                    dataVertifyResultItem.Result = dataVertifyResultItem.Result.ToLowerInvariant();
-                    DataVertifyResultCollection.Add(dataVertifyResultItem);
+                    dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToLowerInvariant();
+                    DataVerifyResultCollection.Add(dataVerifyResultItem);
                 }
             }
 
-            if (DataVertifyResultCollection.Count > 0)
+            if (DataVerifyResultCollection.Count > 0)
             {
-                ResultServerity = InfoBarSeverity.Success;
-                if (Equals(selectedDataVertifyTpyeList.Count, DataVertifyResultCollection.Count))
+                ResultSeverity = InfoBarSeverity.Success;
+                if (Equals(selectedDataVerifyTypeList.Count, DataVerifyResultCollection.Count))
                 {
-                    if (selectVertifyIndex is 0)
+                    if (selectVerifyIndex is 0)
                     {
-                        ResultMessage = string.Format(FileVertifyWholeSuccessfullyString, DataVertifyResultCollection.Count);
+                        ResultMessage = string.Format(FileVerifyWholeSuccessfullyString, DataVerifyResultCollection.Count);
                     }
-                    else if (selectVertifyIndex is 1)
+                    else if (selectVerifyIndex is 1)
                     {
-                        ResultMessage = string.Format(ContentVertifyWholeSuccessfullyString, DataVertifyResultCollection.Count);
+                        ResultMessage = string.Format(ContentVerifyWholeSuccessfullyString, DataVerifyResultCollection.Count);
                     }
                 }
                 else
                 {
-                    if (selectVertifyIndex is 0)
+                    if (selectVerifyIndex is 0)
                     {
-                        ResultMessage = string.Format(FileVertifyPartSuccessfullyString, DataVertifyResultCollection.Count, selectedDataVertifyTpyeList.Count - DataVertifyResultCollection.Count);
+                        ResultMessage = string.Format(FileVerifyPartSuccessfullyString, DataVerifyResultCollection.Count, selectedDataVerifyTypeList.Count - DataVerifyResultCollection.Count);
                     }
-                    else if (selectVertifyIndex is 1)
+                    else if (selectVerifyIndex is 1)
                     {
-                        ResultMessage = string.Format(ContentVertifyPartSuccessfullyString, DataVertifyResultCollection.Count, selectedDataVertifyTpyeList.Count - DataVertifyResultCollection.Count);
+                        ResultMessage = string.Format(ContentVerifyPartSuccessfullyString, DataVerifyResultCollection.Count, selectedDataVerifyTypeList.Count - DataVerifyResultCollection.Count);
                     }
                 }
             }
             else
             {
-                ResultServerity = InfoBarSeverity.Error;
-                if (selectVertifyIndex is 0)
+                ResultSeverity = InfoBarSeverity.Error;
+                if (selectVerifyIndex is 0)
                 {
-                    ResultMessage = FileVertifyFailedString;
+                    ResultMessage = FileVerifyFailedString;
                 }
-                else if (selectVertifyIndex is 1)
+                else if (selectVerifyIndex is 1)
                 {
-                    ResultMessage = ContentVertifyFailedString;
+                    ResultMessage = ContentVerifyFailedString;
                 }
             }
-            IsVertifying = false;
+            IsVerifying = false;
         }
 
         #endregion 第二部分：数据校验页面——挂载的事件
@@ -683,13 +683,13 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取校验后的数据
         /// </summary>
-        private string GetVertifiedData(DataVertifyType dataVertifyType, int selectedVertifyIndex, byte[] contentData)
+        private string GetVerifiedData(DataVerifyType dataVerifyType, int selectedVerifyIndex, byte[] contentData)
         {
-            string vertifiedData = string.Empty;
+            string verifiedData = string.Empty;
 
-            switch (dataVertifyType)
+            switch (dataVerifyType)
             {
-                case DataVertifyType.CRC_32:
+                case DataVerifyType.CRC_32:
                     {
                         try
                         {
@@ -708,16 +708,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.CRC_32) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.CRC_32) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.CRC_64:
+                case DataVerifyType.CRC_64:
                     {
                         try
                         {
@@ -731,16 +731,16 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                vertifiedData = string.Format("{0:x}", BitConverter.ToUInt64(hashBytes, 0));
+                                verifiedData = string.Format("{0:x}", BitConverter.ToUInt64(hashBytes, 0));
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.CRC_64) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.CRC_64) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.ED2K:
+                case DataVerifyType.ED2K:
                     {
                         try
                         {
@@ -759,16 +759,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.ED2K) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.ED2K) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.MD2:
+                case DataVerifyType.MD2:
                     {
                         try
                         {
@@ -787,16 +787,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.MD2) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.MD2) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.MD4:
+                case DataVerifyType.MD4:
                     {
                         try
                         {
@@ -815,16 +815,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.MD4) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.MD4) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.MD5:
+                case DataVerifyType.MD5:
                     {
                         try
                         {
@@ -843,16 +843,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.MD5) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.MD5) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.RIPEMD_160:
+                case DataVerifyType.RIPEMD_160:
                     {
                         try
                         {
@@ -871,16 +871,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.RIPEMD_160) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.RIPEMD_160) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.SHA_1:
+                case DataVerifyType.SHA_1:
                     {
                         try
                         {
@@ -899,16 +899,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_1) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.SHA_1) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.SHA_224:
+                case DataVerifyType.SHA_224:
                     {
                         try
                         {
@@ -927,16 +927,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_224) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.SHA_224) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.SHA_256:
+                case DataVerifyType.SHA_256:
                     {
                         try
                         {
@@ -955,16 +955,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_256) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.SHA_256) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.SHA_384:
+                case DataVerifyType.SHA_384:
                     {
                         try
                         {
@@ -983,16 +983,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_384) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.SHA_384) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.SHA_512:
+                case DataVerifyType.SHA_512:
                     {
                         try
                         {
@@ -1011,16 +1011,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA_512) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.SHA_512) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.SHA3_224:
+                case DataVerifyType.SHA3_224:
                     {
                         try
                         {
@@ -1039,16 +1039,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA3_224) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.SHA3_224) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.SHA3_256:
+                case DataVerifyType.SHA3_256:
                     {
                         try
                         {
@@ -1067,16 +1067,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA3_256) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.SHA3_256) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.SHA3_384:
+                case DataVerifyType.SHA3_384:
                     {
                         try
                         {
@@ -1095,16 +1095,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA3_384) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.SHA3_384) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.SHA3_512:
+                case DataVerifyType.SHA3_512:
                     {
                         try
                         {
@@ -1123,16 +1123,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SHA3_512) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.SHA3_512) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.SM3:
+                case DataVerifyType.SM3:
                     {
                         try
                         {
@@ -1151,16 +1151,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.SM3) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.SM3) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.TIGER:
+                case DataVerifyType.TIGER:
                     {
                         try
                         {
@@ -1179,16 +1179,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.TIGER) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.TIGER) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.TIGER2:
+                case DataVerifyType.TIGER2:
                     {
                         try
                         {
@@ -1207,16 +1207,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.TIGER2) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.TIGER2) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.WHIRLPOOL:
+                case DataVerifyType.WHIRLPOOL:
                     {
                         try
                         {
@@ -1235,16 +1235,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.WHIRLPOOL) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.WHIRLPOOL) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.XXH32:
+                case DataVerifyType.XXH32:
                     {
                         try
                         {
@@ -1263,16 +1263,16 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.XXH32) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.XXH32) + 1, e);
                         }
                         break;
                     }
-                case DataVertifyType.XXH64:
+                case DataVerifyType.XXH64:
                     {
                         try
                         {
@@ -1291,24 +1291,24 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     stringBuilder.Append(b.ToString("x2"));
                                 }
-                                vertifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(stringBuilder);
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(GetVertifiedData), Convert.ToInt32(DataVertifyType.XXH64) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.XXH64) + 1, e);
                         }
                         break;
                     }
             }
 
-            return vertifiedData;
+            return verifiedData;
         }
 
         /// <summary>
         /// 获取要校验的类型
         /// </summary>
-        private Visibility GetDataVertifyType(int selectedIndex, int comparedSelectedIndex)
+        private Visibility GetDataVerifyType(int selectedIndex, int comparedSelectedIndex)
         {
             return Equals(selectedIndex, comparedSelectedIndex) ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -1316,9 +1316,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取校验结果列表显示类型
         /// </summary>
-        private Visibility GetVertifyResult(bool isVertifying, int vertifyCount)
+        private Visibility GetVerifyResult(bool isVerifying, int verifyCount)
         {
-            return isVertifying ? Visibility.Collapsed : vertifyCount > 0 ? Visibility.Visible : Visibility.Collapsed;
+            return isVerifying ? Visibility.Collapsed : verifyCount > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

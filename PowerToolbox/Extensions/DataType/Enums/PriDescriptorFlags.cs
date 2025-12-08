@@ -8,6 +8,6 @@ namespace PowerToolbox.Extensions.DataType.Enums
         AutoMerge = 1,
         IsDeploymentMergeable = 2,
         IsDeploymentMergeResult = 4,
-        IsAutomergeMergeResult = 8
+        IsAutoMergeResult = 8
     }
 }

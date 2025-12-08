@@ -16,9 +16,9 @@ namespace PowerToolbox.Services.Root
 
         public static ResourceManager DataEncryptResource { get; } = new("PowerToolbox.Strings.DataEncrypt", CurrentAssembly);
 
-        public static ResourceManager DataEncryptVertifyResource { get; } = new("PowerToolbox.Strings.DataEncryptVertify", CurrentAssembly);
+        public static ResourceManager DataEncryptVerifyResource { get; } = new("PowerToolbox.Strings.DataEncryptVerify", CurrentAssembly);
 
-        public static ResourceManager DataVertifyResource { get; } = new("PowerToolbox.Strings.DataVertify", CurrentAssembly);
+        public static ResourceManager DataVerifyResource { get; } = new("PowerToolbox.Strings.DataVerify", CurrentAssembly);
 
         public static ResourceManager DialogResource { get; } = new("PowerToolbox.Strings.Dialog", CurrentAssembly);
 

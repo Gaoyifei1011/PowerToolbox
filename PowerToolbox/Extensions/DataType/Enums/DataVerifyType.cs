@@ -3,7 +3,7 @@
     /// <summary>
     /// 数据校验类型
     /// </summary>
-    public enum DataVertifyType
+    public enum DataVerifyType
     {
         CRC_32 = 0,
         CRC_64 = 1,

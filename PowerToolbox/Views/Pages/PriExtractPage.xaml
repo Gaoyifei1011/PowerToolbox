@@ -755,24 +755,24 @@
                         Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('ExtractOptions')}" />
 
                     <CheckBox
-                        Click="{x:Bind OnExtractSaveSamelyClicked}"
-                        Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('ExtractSaveSamely')}"
-                        IsChecked="{x:Bind IsExtractSaveSamely, Mode=TwoWay}" />
+                        Click="{x:Bind OnExtractSaveSameClicked}"
+                        Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('ExtractSaveSame')}"
+                        IsChecked="{x:Bind IsExtractSaveSame, Mode=TwoWay}" />
 
                     <CheckBox
                         Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('ExtractSaveString')}"
                         IsChecked="{x:Bind IsExtractSaveString, Mode=TwoWay}"
-                        IsEnabled="{x:Bind IsExtractSaveSamely, Mode=OneWay}" />
+                        IsEnabled="{x:Bind IsExtractSaveSame, Mode=OneWay}" />
 
                     <CheckBox
                         Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('ExtractSaveFilePath')}"
                         IsChecked="{x:Bind IsExtractSaveFilePath, Mode=TwoWay}"
-                        IsEnabled="{x:Bind IsExtractSaveSamely, Mode=OneWay}" />
+                        IsEnabled="{x:Bind IsExtractSaveSame, Mode=OneWay}" />
 
                     <CheckBox
                         Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('ExtractSaveEmbeddedData')}"
                         IsChecked="{x:Bind IsExtractSaveEmbeddedData, Mode=TwoWay}"
-                        IsEnabled="{x:Bind IsExtractSaveSamely, Mode=OneWay}" />
+                        IsEnabled="{x:Bind IsExtractSaveSame, Mode=OneWay}" />
 
                     <MenuFlyoutSeparator Grid.Row="5" Margin="5,3" />
 
@@ -780,7 +780,7 @@
                         HorizontalAlignment="Stretch"
                         Click="{x:Bind OnSelectSaveFolderClicked}"
                         Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectSaveFolder')}"
-                        IsEnabled="{x:Bind IsExtractSaveSamely, Mode=OneWay}">
+                        IsEnabled="{x:Bind IsExtractSaveSame, Mode=OneWay}">
 
                         <ToolTipService.ToolTip>
                             <ToolTip
@@ -855,7 +855,7 @@
                                                         CommandParameter="{x:Bind}"
                                                         GroupName="LanguageRadioGroup"
                                                         IsChecked="{x:Bind IsChecked, Mode=OneWay}"
-                                                        Text="{x:Bind system:Convert.ToString(LangaugeInfo.Value)}" />
+                                                        Text="{x:Bind system:Convert.ToString(LanguageInfo.Value)}" />
                                                 </DataTemplate>
                                             </ListView.ItemTemplate>
                                         </ListView>

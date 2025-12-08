@@ -16,8 +16,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-// 抑制 CA1806 警告
-#pragma warning disable CA1806
+// 抑制 CA1806，IDE0060 警告
+#pragma warning disable CA1806,IDE0060
 
 namespace PowerToolbox.Views.Dialogs
 {
@@ -115,8 +115,8 @@ namespace PowerToolbox.Views.Dialogs
                 {
                     case "AppCache":
                         {
-                            Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, 0, out string localAppdataPath);
-                            DownloadFolder = localAppdataPath;
+                            Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, 0, out string localAppDataPath);
+                            DownloadFolder = localAppDataPath;
                             DownloadOptionsService.SetFolder(DownloadFolder);
                             break;
                         }

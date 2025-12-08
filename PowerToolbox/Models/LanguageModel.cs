@@ -11,7 +11,7 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 语言信息
         /// </summary>
-        public KeyValuePair<string, string> LangaugeInfo { get; set; }
+        public KeyValuePair<string, string> LanguageInfo { get; set; }
 
         /// <summary>
         /// 语言项是否已经被选择

@@ -163,7 +163,7 @@ namespace PowerToolbox.Views.Windows
             new KeyValuePair<string, Type>("FileCertificate",typeof(FileCertificatePage)),
             new KeyValuePair<string, Type>("FileUnlock",typeof(FileUnlockPage)),
             new KeyValuePair<string, Type>("Resource",null),
-            new KeyValuePair<string, Type>("DataEncryptVertify",typeof(DataEncryptVertifyPage)),
+            new KeyValuePair<string, Type>("DataEncryptVerify",typeof(DataEncryptVerifyPage)),
             new KeyValuePair<string, Type>("DownloadManager",typeof(DownloadManagerPage)),
             new KeyValuePair<string, Type>("IconExtract",typeof(IconExtractPage)),
             new KeyValuePair<string, Type>("PriExtract",typeof(PriExtractPage)),
@@ -1122,25 +1122,25 @@ namespace PowerToolbox.Views.Windows
         public async Task SendReceivedFilesListAsync(List<string> filesList)
         {
             Type currentPageType = GetCurrentPageType();
-            if (Equals(currentPageType, typeof(DataEncryptVertifyPage)))
+            if (Equals(currentPageType, typeof(DataEncryptVerifyPage)))
             {
-                DataEncryptVertifyPage dataEncryptVertifyPage = GetFrameContent() as DataEncryptVertifyPage;
-                Type currentDataEncryptVertifyPage = dataEncryptVertifyPage.GetCurrentPageType();
+                DataEncryptVerifyPage dataEncryptVerifyPage = GetFrameContent() as DataEncryptVerifyPage;
+                Type currentDataEncryptVerifyPage = dataEncryptVerifyPage.GetCurrentPageType();
 
-                if (Equals(currentDataEncryptVertifyPage, typeof(DataEncryptPage)))
+                if (Equals(currentDataEncryptVerifyPage, typeof(DataEncryptPage)))
                 {
-                    DataEncryptPage dataEncryptPage = dataEncryptVertifyPage.GetFrameContent() as DataEncryptPage;
+                    DataEncryptPage dataEncryptPage = dataEncryptVerifyPage.GetFrameContent() as DataEncryptPage;
                     if (!dataEncryptPage.IsEncrypting && filesList.Count is 1)
                     {
                         dataEncryptPage.EncryptFile = filesList[0];
                     }
                 }
-                else if (Equals(currentDataEncryptVertifyPage, typeof(DataVertifyPage)))
+                else if (Equals(currentDataEncryptVerifyPage, typeof(DataVerifyPage)))
                 {
-                    DataVertifyPage dataVertifyPage = dataEncryptVertifyPage.GetFrameContent() as DataVertifyPage;
-                    if (!dataVertifyPage.IsVertifying && filesList.Count is 1)
+                    DataVerifyPage dataVerifyPage = dataEncryptVerifyPage.GetFrameContent() as DataVerifyPage;
+                    if (!dataVerifyPage.IsVerifying && filesList.Count is 1)
                     {
-                        dataVertifyPage.VertifyFile = filesList[0];
+                        dataVerifyPage.VerifyFile = filesList[0];
                     }
                 }
             }
@@ -1239,7 +1239,7 @@ namespace PowerToolbox.Views.Windows
                             return upperAndLowerCaseList;
                         });
 
-                        upperAndLowerCasePage.AddtoUpperAndLowerCasePage(upperAndLowerCaseList);
+                        upperAndLowerCasePage.AddToUpperAndLowerCasePage(upperAndLowerCaseList);
                     }
                 }
                 else if (Equals(currentFileManagerPageType, typeof(FilePropertiesPage)))

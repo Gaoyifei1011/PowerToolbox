@@ -111,8 +111,8 @@
 
 		<Content Include="Assets\ControlIcon\AllTools.png" CopyToOutputDirectory="Always" />
 		<Content Include="Assets\ControlIcon\ContextMenuManager.png" CopyToOutputDirectory="Always" />
-		<Content Include="Assets\ControlIcon\DataEncryptVertify.png" CopyToOutputDirectory="Always" />
-		<Content Include="Assets\ControlIcon\DownloadManager.png" CopyToOutputDirectory="Always" />
+    <Content Include="Assets\ControlIcon\DataEncryptVerify.png" CopyToOutputDirectory="Always" />
+    <Content Include="Assets\ControlIcon\DownloadManager.png" CopyToOutputDirectory="Always" />
 		<Content Include="Assets\ControlIcon\DriverManager.png" CopyToOutputDirectory="Always" />
 		<Content Include="Assets\ControlIcon\ExperimentalFeatureManager.png" CopyToOutputDirectory="Always" />
 		<Content Include="Assets\ControlIcon\File.png" CopyToOutputDirectory="Always" />
@@ -198,13 +198,13 @@
 		<EmbeddedResource Include="Strings\DataEncrypt.en-us.restext" />
 		<EmbeddedResource Include="Strings\DataEncrypt.restext" />
 		<EmbeddedResource Include="Strings\DataEncrypt.zh-hans.restext" />
-		<EmbeddedResource Include="Strings\DataEncryptVertify.en-us.restext" />
-		<EmbeddedResource Include="Strings\DataEncryptVertify.restext" />
-		<EmbeddedResource Include="Strings\DataEncryptVertify.zh-hans.restext" />
-		<EmbeddedResource Include="Strings\DataVertify.en-us.restext" />
-		<EmbeddedResource Include="Strings\DataVertify.restext" />
-		<EmbeddedResource Include="Strings\DataVertify.zh-hans.restext" />
-		<EmbeddedResource Include="Strings\Dialog.en-us.restext" />
+    <EmbeddedResource Include="Strings\DataEncryptVerify.en-us.restext" />
+    <EmbeddedResource Include="Strings\DataEncryptVerify.restext" />
+    <EmbeddedResource Include="Strings\DataEncryptVerify.zh-hans.restext" />
+    <EmbeddedResource Include="Strings\DataVerify.en-us.restext" />
+    <EmbeddedResource Include="Strings\DataVerify.restext" />
+    <EmbeddedResource Include="Strings\DataVerify.zh-hans.restext" />
+    <EmbeddedResource Include="Strings\Dialog.en-us.restext" />
 		<EmbeddedResource Include="Strings\Dialog.restext" />
 		<EmbeddedResource Include="Strings\Dialog.zh-hans.restext" />
 		<EmbeddedResource Include="Strings\DownloadManager.en-us.restext" />
@@ -325,9 +325,9 @@
 		<None Remove="Views\Pages\AllToolsPage.xaml" />
 		<None Remove="Views\Pages\ContextMenuManagerPage.xaml" />
 		<None Remove="Views\Pages\DataEncryptPage.xaml" />
-		<None Remove="Views\Pages\DataEncryptVertifyPage.xaml" />
-		<None Remove="Views\Pages\DataVertifyPage.xaml" />
-		<None Remove="Views\Pages\DownloadManagerPage.xaml" />
+    <None Remove="Views\Pages\DataEncryptVerifyPage.xaml" />
+    <None Remove="Views\Pages\DataVerifyPage.xaml" />
+    <None Remove="Views\Pages\DownloadManagerPage.xaml" />
 		<None Remove="Views\Pages\DriverManagerPage.xaml" />
 		<None Remove="Views\Pages\ExtensionNamePage.xaml" />
 		<None Remove="Views\Pages\FileCertificatePage.xaml" />
@@ -393,9 +393,9 @@
 		<Page Include="Views\Pages\AllToolsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\ContextMenuManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\DataEncryptPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-		<Page Include="Views\Pages\DataEncryptVertifyPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-		<Page Include="Views\Pages\DataVertifyPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-		<Page Include="Views\Pages\DownloadManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Views\Pages\DataEncryptVerifyPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Views\Pages\DataVerifyPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Views\Pages\DownloadManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\DriverManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\ExperimentalFeatureManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Pages\ExtensionNamePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
@@ -431,7 +431,7 @@
 		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_InteractiveExperiences)\metadata\10.0.18362.0\Microsoft.UI.winmd" Private="false" Visible="false" />
 		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Text.winmd" Private="false" Visible="false" />
 		<Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Xaml.winmd" Private="false" Visible="false" />
-    <Reference Include="$(Pkgmicrosoft_windows_sdk_net_ref)\winmd\*.winmd" Private="false" Visible="false"  />
+    <Reference Include="$(Pkgmicrosoft_windows_sdk_net_ref)\winmd\*.winmd" Private="false" Visible="false" />
     <Reference Include="$(WindowsSdkPath)\UnionMetadata\$(TargetPlatformVersion)\Facade\Windows.WinMD" Private="false" Visible="false" />
 		<Reference Include="Microsoft.CSharp" />
 		<Reference Include="Microsoft.VisualBasic" />

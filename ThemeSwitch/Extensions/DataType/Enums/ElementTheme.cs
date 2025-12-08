@@ -1,4 +1,4 @@
-﻿namespace ThemeSwitchService.Extensions.DataType.Enums
+﻿namespace ThemeSwitch.Extensions.DataType.Enums
 {
     /// <summary>
     /// 主题值

@@ -5,7 +5,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 数据加密校验结果数据模型
     /// </summary>
-    public class DataVertifyResultModel : INotifyPropertyChanged
+    public class DataVerifyResultModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 加密 / 校验名称

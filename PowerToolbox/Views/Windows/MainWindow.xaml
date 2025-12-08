@@ -331,16 +331,16 @@
                         </ToolTipService.ToolTip>
 
                         <NavigationViewItem.MenuItems>
-                            <NavigationViewItem Tag="DataEncryptVertify">
+                            <NavigationViewItem Tag="DataEncryptVerify">
 
                                 <NavigationViewItem.Icon>
-                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/DataEncryptVertify.png" />
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/DataEncryptVerify.png" />
                                 </NavigationViewItem.Icon>
 
                                 <NavigationViewItem.Content>
                                     <TextBlock
-                                        x:Name="WindowDataEncryptVertifyText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataEncryptVertify')}"
+                                        x:Name="WindowDataEncryptVerifyText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataEncryptVerify')}"
                                         TextTrimming="CharacterEllipsis"
                                         TextWrapping="NoWrap" />
                                 </NavigationViewItem.Content>
@@ -348,9 +348,9 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataEncryptVertify')}"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataEncryptVerify')}"
                                         Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                        Visibility="{x:Bind WindowDataEncryptVertifyText.IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{x:Bind WindowDataEncryptVerifyText.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 

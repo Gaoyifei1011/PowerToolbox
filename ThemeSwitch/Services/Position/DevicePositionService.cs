@@ -47,7 +47,7 @@ namespace ThemeSwitch.Services.Position
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitchService), nameof(DevicePositionService), nameof(Initialize), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(DevicePositionService), nameof(Initialize), 1, e);
                 IsInitialized = false;
             }
         }
@@ -77,7 +77,7 @@ namespace ThemeSwitch.Services.Position
             {
                 IsInitialized = false;
                 IsLoaded = false;
-                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitchService), nameof(DevicePositionService), nameof(UnInitialize), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(DevicePositionService), nameof(UnInitialize), 1, e);
             }
         }
 

@@ -104,10 +104,10 @@ A toolbox that integrates multiple gadgets
 | Batch modify file properties                              | Finished                                                             |
 | Batch delete the certificates of signed files             | Finished                                                             |
 | File unlock                                               | Finished                                                             |
-| Data encrypt and vertify                                  | Developing                                                           |
+| Data encrypt and verify                                   | Developing                                                           |
 | Download manager                                          | Finished                                                             |
 | Extract file icons                                        | Finished                                                             |
-| Extract the package resource index(.pri) file conten      | Finished                                                             |
+| Extract the package resource index(.pri) file content     | Finished                                                             |
 | Theme switch                                              | Finished                                                             |
 | Customize the right-click menu                            | Finished                                                             |
 | Right-click menu items manager                            | Finished                                                             |
@@ -138,7 +138,7 @@ A toolbox that integrates multiple gadgets
 ### Download and installation considerations
 
 > * The program is built using Xaml Islands, it is recommended that your system version is Windows 11 (codenamed 22H2 / internal version number 22621) or later, The minimum version is Windows 11 (codenamed 2004 / internal version number 19041) or later.
-> * [Release](https://github.com/Gaoyifei1011/PowerToolbox/releases) The binary installation file for the page has been packaged into a compressed package. Unzip the package and run the install.ps1 file in Powershell admin mode (if necessary) for a quick installation.
+> * [Release](https://github.com/Gaoyifei1011/PowerToolbox/releases) The binary installation file for the page has been packaged into a compressed package. Unzip the package and run the install.ps1 file in PowerShell admin mode (if necessary) for a quick installation.
 > * Download and compile the project source code yourself. (Please read the project compilation steps below carefully)
 
 ------

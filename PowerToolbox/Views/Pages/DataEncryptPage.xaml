@@ -132,7 +132,7 @@
                 IsIconVisible="True"
                 IsOpen="True"
                 Message="{x:Bind ResultMessage, Mode=OneWay}"
-                Severity="{x:Bind ResultServerity, Mode=OneWay}"
+                Severity="{x:Bind ResultSeverity, Mode=OneWay}"
                 Style="{StaticResource InfoBarStyle}">
 
                 <InfoBar.ActionButton>
@@ -563,7 +563,7 @@
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
                 IsExpanded="True"
-                Visibility="{x:Bind GetEncryptResult(ResultServerity), Mode=OneWay}">
+                Visibility="{x:Bind GetEncryptResult(ResultSeverity), Mode=OneWay}">
 
                 <Expander.Header>
                     <Grid>

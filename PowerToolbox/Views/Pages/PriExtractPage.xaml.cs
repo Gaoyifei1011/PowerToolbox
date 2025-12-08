@@ -56,18 +56,18 @@ namespace PowerToolbox.Views.Pages
         private string stringFileName;
         private string filePathFileName;
 
-        private bool _isExtractSaveSamely;
+        private bool _isExtractSaveSame;
 
-        public bool IsExtractSaveSamely
+        public bool IsExtractSaveSame
         {
-            get { return _isExtractSaveSamely; }
+            get { return _isExtractSaveSame; }
 
             set
             {
-                if (!Equals(_isExtractSaveSamely, value))
+                if (!Equals(_isExtractSaveSame, value))
                 {
-                    _isExtractSaveSamely = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExtractSaveSamely)));
+                    _isExtractSaveSame = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExtractSaveSame)));
                 }
             }
         }
@@ -465,9 +465,9 @@ namespace PowerToolbox.Views.Pages
                 foreach (LanguageModel languageItem in LanguageCollection)
                 {
                     languageItem.IsChecked = false;
-                    if (string.Equals(language.LangaugeInfo.Key, languageItem.LangaugeInfo.Key))
+                    if (string.Equals(language.LanguageInfo.Key, languageItem.LanguageInfo.Key))
                     {
-                        SelectedLanguage = languageItem.LangaugeInfo;
+                        SelectedLanguage = languageItem.LanguageInfo;
                         languageItem.IsChecked = true;
                     }
                 }
@@ -662,9 +662,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 提取时同时保存单选框点击时触发的事件
         /// </summary>
-        private void OnExtractSaveSamelyClicked(object sender, RoutedEventArgs args)
+        private void OnExtractSaveSameClicked(object sender, RoutedEventArgs args)
         {
-            if (!IsExtractSaveSamely)
+            if (!IsExtractSaveSame)
             {
                 IsExtractSaveString = false;
                 IsExtractSaveFilePath = false;
@@ -1406,7 +1406,7 @@ namespace PowerToolbox.Views.Pages
                 LanguageCollection.Add(new LanguageModel()
                 {
                     IsChecked = true,
-                    LangaugeInfo = new KeyValuePair<string, string>("AllLanguage", AllLanguageString)
+                    LanguageInfo = new KeyValuePair<string, string>("AllLanguage", AllLanguageString)
                 });
 
                 // 显示获取到的所有内容
@@ -1416,11 +1416,11 @@ namespace PowerToolbox.Views.Pages
                     LanguageCollection.Add(new LanguageModel()
                     {
                         IsChecked = false,
-                        LangaugeInfo = new KeyValuePair<string, string>(cultureInfo.Name, string.Format("{0}[{1}]", cultureInfo.DisplayName, languageItem))
+                        LanguageInfo = new KeyValuePair<string, string>(cultureInfo.Name, string.Format("{0}[{1}]", cultureInfo.DisplayName, languageItem))
                     });
                 }
 
-                SelectedLanguage = LanguageCollection[0].LangaugeInfo;
+                SelectedLanguage = LanguageCollection[0].LanguageInfo;
                 HasStringResource = StringList.Count > 0;
                 HasFilePathResource = FilePathList.Count > 0;
                 HasEmbeddedDataResource = EmbeddedDataList.Count > 0;
@@ -1455,7 +1455,7 @@ namespace PowerToolbox.Views.Pages
             {
                 List<StringModel> filteredStringList = [];
 
-                if (Equals(SelectedLanguage, LanguageCollection[0].LangaugeInfo))
+                if (Equals(SelectedLanguage, LanguageCollection[0].LanguageInfo))
                 {
                     if (string.IsNullOrEmpty(StringSearchText))
                     {

@@ -56,7 +56,7 @@ namespace ThemeSwitch.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitchService), nameof(RegistryHelper), nameof(ReadRegistryKey), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(RegistryHelper), nameof(ReadRegistryKey), 1, e);
             }
             return value;
         }
@@ -108,7 +108,7 @@ namespace ThemeSwitch.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitchService), nameof(RegistryHelper), nameof(SaveRegistryKey), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(RegistryHelper), nameof(SaveRegistryKey), 1, e);
                 return false;
             }
         }
@@ -141,7 +141,7 @@ namespace ThemeSwitch.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitchService), nameof(RegistryHelper), nameof(RemoveRegistryKey), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(RegistryHelper), nameof(RemoveRegistryKey), 1, e);
                 return false;
             }
         }

@@ -18,7 +18,7 @@ namespace PowerToolbox.Services.Root
     /// </summary>
     public static class LogService
     {
-        private static readonly string notavailable = "N/A";
+        private static readonly string notAvailable = "N/A";
         private static SemaphoreSlim logSemaphoreSlim = new(1, 1);
         private static bool isInitialized = false;
         private static FileLogTraceListener fileLogTraceListener = new();
@@ -29,15 +29,15 @@ namespace PowerToolbox.Services.Root
         /// </summary>
         public static void Initialize()
         {
-            Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, 0, out string localAppdataPath);
+            Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, 0, out string localAppDataPath);
 
-            if (!string.IsNullOrEmpty(localAppdataPath))
+            if (!string.IsNullOrEmpty(localAppDataPath))
             {
                 try
                 {
-                    if (Directory.Exists(localAppdataPath))
+                    if (Directory.Exists(localAppDataPath))
                     {
-                        string logFolderPath = Path.Combine(localAppdataPath, "Logs");
+                        string logFolderPath = Path.Combine(localAppDataPath, "Logs");
                         logDirectory = Directory.CreateDirectory(logFolderPath);
                         isInitialized = true;
                     }
@@ -107,19 +107,19 @@ namespace PowerToolbox.Services.Root
                             stringBuilder.AppendLine(Convert.ToString(index));
                             stringBuilder.AppendLine("=========================================================");
                             stringBuilder.AppendLine("HelpLink");
-                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.HelpLink) ? notavailable : exception.HelpLink.Replace('\r', ' ').Replace('\n', ' '));
+                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.HelpLink) ? notAvailable : exception.HelpLink.Replace('\r', ' ').Replace('\n', ' '));
                             stringBuilder.AppendLine("=========================================================");
                             stringBuilder.AppendLine("Message");
-                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.Message) ? notavailable : exception.Message.Replace('\r', ' ').Replace('\n', ' '));
+                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.Message) ? notAvailable : exception.Message.Replace('\r', ' ').Replace('\n', ' '));
                             stringBuilder.AppendLine("=========================================================");
                             stringBuilder.AppendLine("HResult");
                             stringBuilder.AppendLine(Convert.ToString(exception.HResult, 16).ToUpperInvariant());
                             stringBuilder.AppendLine("=========================================================");
                             stringBuilder.AppendLine("Source");
-                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.Source) ? notavailable : exception.Source.Replace('\r', ' ').Replace('\n', ' '));
+                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.Source) ? notAvailable : exception.Source.Replace('\r', ' ').Replace('\n', ' '));
                             stringBuilder.AppendLine("=========================================================");
                             stringBuilder.AppendLine("StackTrace");
-                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.StackTrace) ? notavailable : exception.StackTrace.Replace('\r', ' ').Replace('\n', ' '));
+                            stringBuilder.AppendLine(string.IsNullOrEmpty(exception.StackTrace) ? notAvailable : exception.StackTrace.Replace('\r', ' ').Replace('\n', ' '));
                             stringBuilder.AppendLine("=========================================================");
 
                             fileLogTraceListener.BaseFileName = logFileName;

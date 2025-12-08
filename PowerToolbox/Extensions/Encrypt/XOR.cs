@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-
-namespace PowerToolbox.Extensions.Encrypt
+﻿namespace PowerToolbox.Extensions.Encrypt
 {
     /// <summary>
     /// 异或加密算法实现

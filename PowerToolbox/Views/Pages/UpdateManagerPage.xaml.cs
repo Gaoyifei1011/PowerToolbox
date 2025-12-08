@@ -925,8 +925,8 @@ namespace PowerToolbox.Views.Pages
             {
                 installedUpdate.UpdateProgress = UpdateCancelingString;
                 installedUpdate.IsUpdateCanceled = true;
-                IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-                IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+                IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsCanUninstall);
+                IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsCanUninstall);
 
                 Task.Run(() =>
                 {
@@ -954,8 +954,8 @@ namespace PowerToolbox.Views.Pages
             if (args.Parameter as UpdateModel is UpdateModel installedUpdate)
             {
                 installedUpdate.IsSelected = !installedUpdate.IsSelected;
-                IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-                IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+                IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsCanUninstall);
+                IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsCanUninstall);
             }
         }
 
@@ -1059,8 +1059,8 @@ namespace PowerToolbox.Views.Pages
 
                         // 移除更新卸载任务
                         uninstallationJobDict.Remove(installedUpdate.UpdateID);
-                        IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-                        IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+                        IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsCanUninstall);
+                        IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsCanUninstall);
 
                         // 所有更新下载、安装和卸载完成，恢复检查更新功能
                         if (downloadJobDict.Count is 0 && installationJobDict.Count is 0 && uninstallationJobDict.Count is 0)
@@ -1133,12 +1133,12 @@ namespace PowerToolbox.Views.Pages
 
                         if (matchResult is not null && matchResult.Success && matchResult.Value.Length > 2)
                         {
-                            string kbNumbder = matchResult.Value.Substring(2);
+                            string kbNumber = matchResult.Value.Substring(2);
                             string executeFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "wusa.exe");
                             ProcessStartInfo processStartInfo = new()
                             {
                                 FileName = "wusa.exe",
-                                Arguments = string.Format("/uninstall /kb:{0}", kbNumbder),
+                                Arguments = string.Format("/uninstall /kb:{0}", kbNumber),
                                 UseShellExecute = true
                             };
 
@@ -1680,8 +1680,8 @@ namespace PowerToolbox.Views.Pages
                 installedUpdateItem.IsSelected = true;
             }
 
-            IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-            IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+            IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsCanUninstall);
+            IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsCanUninstall);
         }
 
         /// <summary>
@@ -1845,8 +1845,8 @@ namespace PowerToolbox.Views.Pages
                         // 当前更新的卸载所有步骤都已完成
                         synchronizationContext.Post(_ =>
                         {
-                            IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-                            IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+                            IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsCanUninstall);
+                            IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsCanUninstall);
 
                             // 所有更新下载、安装和卸载完成，恢复检查更新功能
                             if (downloadJobDict.Count is 0 && installationJobDict.Count is 0 && uninstallationJobDict.Count is 0)
@@ -1858,8 +1858,8 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-            IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+            IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsCanUninstall);
+            IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsCanUninstall);
         }
 
         /// <summary>
@@ -1903,8 +1903,8 @@ namespace PowerToolbox.Views.Pages
                 });
             }
 
-            IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsUninstallable);
-            IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsUninstallable);
+            IsInstalledUninstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && !item.IsUpdating && item.UpdateInformation.IsCanUninstall);
+            IsInstalledCancelInstallEnabled = (InstalledUpdateCollection as ObservableCollection<UpdateModel>).Any(item => item.IsSelected && item.IsUpdating && !item.IsUpdateCanceled && item.UpdateInformation.IsCanUninstall);
         }
 
         /// <summary>
@@ -2326,7 +2326,7 @@ namespace PowerToolbox.Views.Pages
                                 IsHidden = update.IsHidden,
                                 IsInstalled = update.IsInstalled,
                                 IsMandatory = update.IsMandatory,
-                                IsUninstallable = update.IsUninstallable,
+                                IsCanUninstall = update.IsUninstallable,
                                 MaxDownloadSize = update.MaxDownloadSize,
                                 MinDownloadSize = update.MinDownloadSize,
                                 MsrcSeverity = update.MsrcSeverity,

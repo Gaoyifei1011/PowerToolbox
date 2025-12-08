@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="PowerToolbox.Views.Pages.DataVertifyPage"
+    x:Class="PowerToolbox.Views.Pages.DataVerifyPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
@@ -14,7 +14,7 @@
 
     <Page.Resources>
         <CornerRadius x:Key="ListViewItemCornerRadius">0</CornerRadius>
-        <class:ExecuteCommand x:Name="DataVertifyCheckCommand" ExecuteRequested="{x:Bind OnDataVertifyCheckExecuteRequested}" />
+        <class:ExecuteCommand x:Name="DataVerifyCheckCommand" ExecuteRequested="{x:Bind OnDataVerifyCheckExecuteRequested}" />
     </Page.Resources>
 
     <ScrollViewer
@@ -43,12 +43,12 @@
                 <RadioButton
                     MinWidth="0"
                     Margin="0,0,20,0"
-                    Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('File')}" />
+                    Content="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('File')}" />
 
                 <RadioButton
                     MinWidth="0"
                     Margin="20,0,0,0"
-                    Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('Content')}" />
+                    Content="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('Content')}" />
             </RadioButtons>
 
             <!--  数据验证文件  -->
@@ -63,7 +63,7 @@
                 CornerRadius="{StaticResource ControlCornerRadius}"
                 DragEnter="{x:Bind OnDataDragOver}"
                 Drop="{x:Bind OnDataDrop}"
-                Visibility="{x:Bind GetDataVertifyType(SelectedIndex, 0), Mode=OneWay}">
+                Visibility="{x:Bind GetDataVerifyType(SelectedIndex, 0), Mode=OneWay}">
 
                 <StackPanel
                     Margin="0,15"
@@ -79,34 +79,34 @@
                     <TextBlock
                         HorizontalAlignment="Center"
                         FontSize="16"
-                        Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('DragAndDrop')}" />
+                        Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('DragAndDrop')}" />
 
                     <Button
                         HorizontalAlignment="Center"
                         Click="{x:Bind OnOpenLocalFileClicked}"
-                        Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('OpenLocalFile')}" />
+                        Content="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('OpenLocalFile')}" />
 
                     <TextBlock
                         HorizontalAlignment="Center"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('FileNotSelected')}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityReverseConvert(VertifyFile), Mode=OneWay}" />
+                        Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('FileNotSelected')}"
+                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityReverseConvert(VerifyFile), Mode=OneWay}" />
 
                     <TextBlock
-                        x:Name="VertifyFileText"
+                        x:Name="VerifyFileText"
                         HorizontalAlignment="Center"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        Text="{x:Bind VertifyFile, Mode=OneWay}"
+                        Text="{x:Bind VerifyFile, Mode=OneWay}"
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="NoWrap"
-                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(VertifyFile), Mode=OneWay}">
+                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(VerifyFile), Mode=OneWay}">
 
                         <ToolTipService.ToolTip>
                             <ToolTip
                                 MaxWidth="9999"
-                                Content="{x:Bind VertifyFile, Mode=OneWay}"
+                                Content="{x:Bind VerifyFile, Mode=OneWay}"
                                 Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                Visibility="{x:Bind VertifyFileText.IsTextTrimmed, Mode=OneWay}" />
+                                Visibility="{x:Bind VerifyFileText.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -117,11 +117,11 @@
                 Grid.Row="1"
                 Height="140"
                 Margin="0,5,0,3"
-                PlaceholderText="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('VertifyPHText')}"
-                Text="{x:Bind VertifyContent, Mode=OneWay}"
+                PlaceholderText="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyPHText')}"
+                Text="{x:Bind VerifyContent, Mode=OneWay}"
                 TextChanged="{x:Bind OnTextChanged}"
                 TextWrapping="Wrap"
-                Visibility="{x:Bind GetDataVertifyType(SelectedIndex, 1), Mode=OneWay}" />
+                Visibility="{x:Bind GetDataVerifyType(SelectedIndex, 1), Mode=OneWay}" />
 
             <!--  数据校验验证栏  -->
             <InfoBar
@@ -132,7 +132,7 @@
                 IsIconVisible="True"
                 IsOpen="True"
                 Message="{x:Bind ResultMessage, Mode=OneWay}"
-                Severity="{x:Bind ResultServerity, Mode=OneWay}"
+                Severity="{x:Bind ResultSeverity, Mode=OneWay}"
                 Style="{StaticResource InfoBarStyle}">
 
                 <InfoBar.ActionButton>
@@ -144,9 +144,9 @@
                         BorderBrush="Transparent"
                         BorderThickness="0"
                         IsHitTestVisible="False"
-                        Visibility="{x:Bind IsVertifying, Mode=OneWay}">
+                        Visibility="{x:Bind IsVerifying, Mode=OneWay}">
 
-                        <ProgressRing IsActive="{x:Bind IsVertifying, Mode=OneWay}" IsIndeterminate="True" />
+                        <ProgressRing IsActive="{x:Bind IsVerifying, Mode=OneWay}" IsIndeterminate="True" />
                     </Button>
                 </InfoBar.ActionButton>
             </InfoBar>
@@ -178,13 +178,13 @@
                         <TextBlock
                             Grid.Column="1"
                             VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('DataVertifyType')}" />
+                            Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('DataVerifyType')}" />
 
                         <CommandBar Grid.Column="2" DefaultLabelPosition="Right">
                             <CommandBar.PrimaryCommands>
                                 <AppBarButton
                                     Click="{x:Bind OnSelectAllClicked}"
-                                    Label="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('SelectAll')}"
+                                    Label="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('SelectAll')}"
                                     Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsAllSelected), Mode=OneWay}">
                                     <AppBarButton.Icon>
                                         <FontIcon Glyph="&#xE8B3;" />
@@ -193,7 +193,7 @@
 
                                 <AppBarButton
                                     Click="{x:Bind OnSelectNoneClicked}"
-                                    Label="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('SelectNone')}"
+                                    Label="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('SelectNone')}"
                                     Visibility="{x:Bind IsAllSelected, Mode=OneWay}">
                                     <AppBarButton.Icon>
                                         <FontIcon Glyph="&#xE8E6;" />
@@ -207,8 +207,8 @@
                 <Expander.Content>
                     <GridView
                         Padding="12,10,0,10"
-                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVertifying), Mode=OneWay}"
-                        ItemsSource="{x:Bind DataVertifyTypeList}"
+                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}"
+                        ItemsSource="{x:Bind DataVerifyTypeList}"
                         SelectionMode="None">
 
                         <GridView.ItemContainerStyle>
@@ -219,12 +219,12 @@
                         </GridView.ItemContainerStyle>
 
                         <GridView.ItemTemplate>
-                            <DataTemplate x:DataType="model:DataVertifyTypeModel">
+                            <DataTemplate x:DataType="model:DataVerifyTypeModel">
                                 <CheckBox
                                     MinWidth="120"
                                     MinHeight="0"
                                     Padding="8,0,0,0"
-                                    Command="{StaticResource DataVertifyCheckCommand}"
+                                    Command="{StaticResource DataVerifyCheckCommand}"
                                     Content="{x:Bind Name}"
                                     IsChecked="{x:Bind IsSelected, Mode=TwoWay}" />
                             </DataTemplate>
@@ -260,7 +260,7 @@
                 <TextBlock
                     Grid.Column="1"
                     VerticalAlignment="Center"
-                    Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('Operation')}" />
+                    Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('Operation')}" />
 
                 <CheckBox
                     Grid.Column="2"
@@ -268,20 +268,20 @@
                     Margin="0,0,10,0"
                     Checked="{x:Bind OnUseUpperCaseChecked}"
                     IsChecked="{x:Bind UseUpperCase, Mode=TwoWay}"
-                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVertifying), Mode=OneWay}"
+                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}"
                     Unchecked="{x:Bind OnUseUpperCaseUnchecked}">
 
                     <Grid>
-                        <TextBlock Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('UseUpperCaseString')}" Visibility="{x:Bind UseUpperCase, Mode=OneWay}" />
-                        <TextBlock Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('UseLowerCaseString')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseUpperCase), Mode=OneWay}" />
+                        <TextBlock Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('UseUpperCaseString')}" Visibility="{x:Bind UseUpperCase, Mode=OneWay}" />
+                        <TextBlock Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('UseLowerCaseString')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseUpperCase), Mode=OneWay}" />
                     </Grid>
                 </CheckBox>
 
                 <Button
                     Grid.Column="3"
-                    Click="{x:Bind OnStartVertifyClicked}"
-                    Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('StartVertify')}"
-                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVertifying), Mode=OneWay}"
+                    Click="{x:Bind OnStartVerifyClicked}"
+                    Content="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('StartVerify')}"
+                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}"
                     Style="{StaticResource AccentButtonStyle}" />
             </Grid>
 
@@ -292,9 +292,9 @@
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
                 CornerRadius="{ThemeResource ControlCornerRadius}"
-                ItemsSource="{x:Bind DataVertifyResultCollection}"
+                ItemsSource="{x:Bind DataVerifyResultCollection}"
                 SelectionMode="None"
-                Visibility="{x:Bind GetVertifyResult(IsVertifying, DataVertifyResultCollection.Count), Mode=OneWay}">
+                Visibility="{x:Bind GetVerifyResult(IsVerifying, DataVerifyResultCollection.Count), Mode=OneWay}">
 
                 <ListView.Header>
                     <Grid
@@ -309,38 +309,38 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
-                            x:Name="VertifyTypeHeaderText"
+                            x:Name="VerifyTypeHeaderText"
                             Grid.Column="0"
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('VertifyType')}"
+                            Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyType')}"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="NoWrap">
 
                             <ToolTipService.ToolTip>
                                 <ToolTip
                                     MaxWidth="9999"
-                                    Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('VertifyType')}"
+                                    Content="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyType')}"
                                     Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                    Visibility="{x:Bind VertifyTypeHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                    Visibility="{x:Bind VerifyTypeHeaderText.IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </TextBlock>
 
                         <TextBlock
-                            x:Name="VertifyResultHeaderText"
+                            x:Name="VerifyResultHeaderText"
                             Grid.Column="1"
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('VertifyResult')}">
+                            Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyResult')}">
 
                             <ToolTipService.ToolTip>
                                 <ToolTip
                                     MaxWidth="9999"
-                                    Content="{x:Bind rootservice:ResourceService.DataVertifyResource.GetString('VertifyResult')}"
+                                    Content="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyResult')}"
                                     Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                    Visibility="{x:Bind VertifyResultHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                    Visibility="{x:Bind VerifyResultHeaderText.IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </TextBlock>
                     </Grid>
@@ -360,7 +360,7 @@
                 </ItemsControl.ItemContainerTransitions>
 
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="model:DataVertifyResultModel">
+                    <DataTemplate x:DataType="model:DataVerifyResultModel">
                         <Grid
                             MinHeight="35"
                             Padding="6,4,10,4"
@@ -373,7 +373,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
-                                x:Name="VertifyTypeText"
+                                x:Name="VerifyTypeText"
                                 Grid.Column="0"
                                 MinWidth="50"
                                 Margin="10,0,0,0"
@@ -391,7 +391,7 @@
                                         Content="{x:Bind Name}"
                                         Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=VertifyTypeText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=VerifyTypeText, Path=IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 

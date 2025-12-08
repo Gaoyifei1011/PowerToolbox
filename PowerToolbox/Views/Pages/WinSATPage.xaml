@@ -527,7 +527,7 @@
             IsIconVisible="True"
             IsOpen="True"
             Message="{x:Bind ResultMessage, Mode=OneWay}"
-            Severity="{x:Bind ResultServerity, Mode=OneWay}"
+            Severity="{x:Bind ResultSeverity, Mode=OneWay}"
             Style="{StaticResource InfoBarStyle}" />
 
         <!--  系统评估控制栏  -->
@@ -564,7 +564,7 @@
                 Spacing="5">
 
                 <Button
-                    Click="{x:Bind OnRunAssesssmentClicked}"
+                    Click="{x:Bind OnRunAssessmentClicked}"
                     Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('RunAssessment')}"
                     IsEnabled="{x:Bind IsNotRunningAssessment, Mode=OneWay}"
                     Style="{StaticResource AccentButtonStyle}" />

@@ -128,7 +128,7 @@ namespace PowerToolbox.Views.Pages
 
         private InfoBarSeverity _resultSeverity;
 
-        private InfoBarSeverity ResultServerity
+        private InfoBarSeverity ResultSeverity
         {
             get { return _resultSeverity; }
 
@@ -137,7 +137,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_resultSeverity, value))
                 {
                     _resultSeverity = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultServerity)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultSeverity)));
                 }
             }
         }
@@ -537,7 +537,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnDragOver), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnDragOver), 1, e);
             }
             finally
             {
@@ -580,7 +580,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnDrop), 2, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnDrop), 2, e);
             }
             finally
             {
@@ -601,11 +601,11 @@ namespace PowerToolbox.Views.Pages
             if (sender is RadioButtons radioButtons && radioButtons.SelectedIndex >= 0)
             {
                 SelectedIndex = radioButtons.SelectedIndex;
-                if (SelectedIndex is 0 && ResultServerity is InfoBarSeverity.Informational)
+                if (SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
                 {
                     ResultMessage = FileInitializeString;
                 }
-                else if (SelectedIndex is 1 && ResultServerity is InfoBarSeverity.Informational)
+                else if (SelectedIndex is 1 && ResultSeverity is InfoBarSeverity.Informational)
                 {
                     ResultMessage = ContentInitializeString;
                 }
@@ -754,7 +754,7 @@ namespace PowerToolbox.Views.Pages
             IsLargeContent = false;
             if (selectEncryptIndex is 0 && string.IsNullOrEmpty(selectedEncryptFile))
             {
-                ResultServerity = InfoBarSeverity.Error;
+                ResultSeverity = InfoBarSeverity.Error;
                 if (string.IsNullOrEmpty(selectedEncryptFile))
                 {
                     ResultMessage = FileNotSelectedString;
@@ -769,18 +769,18 @@ namespace PowerToolbox.Views.Pages
             }
             else if (selectEncryptIndex is 1 && string.IsNullOrEmpty(selectedEncryptContent))
             {
-                ResultServerity = InfoBarSeverity.Error;
+                ResultSeverity = InfoBarSeverity.Error;
                 ResultMessage = ContentEmptyString;
             }
 
             if (SelectedDataEncryptType is null)
             {
-                ResultServerity = InfoBarSeverity.Error;
+                ResultSeverity = InfoBarSeverity.Error;
                 ResultMessage = EncryptTypeNotSelectedString;
                 return;
             }
             IsEncrypting = true;
-            ResultServerity = InfoBarSeverity.Informational;
+            ResultSeverity = InfoBarSeverity.Informational;
             ResultMessage = EncryptingString;
 
             (string encryptedData, string key, string keyStringType, string initializationVector, string initializationVectorStringType) = await Task.Run(() =>
@@ -790,7 +790,7 @@ namespace PowerToolbox.Views.Pages
 
             if (string.IsNullOrEmpty(encryptedData))
             {
-                ResultServerity = InfoBarSeverity.Error;
+                ResultSeverity = InfoBarSeverity.Error;
                 if (selectEncryptIndex is 0)
                 {
                     ResultMessage = FileEncryptFailedString;
@@ -802,7 +802,7 @@ namespace PowerToolbox.Views.Pages
             }
             else
             {
-                ResultServerity = InfoBarSeverity.Success;
+                ResultSeverity = InfoBarSeverity.Success;
                 if (string.IsNullOrEmpty(EncryptKeyText) && !string.IsNullOrEmpty(key))
                 {
                     EncryptKeyText = key;
@@ -833,7 +833,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnStartEncryptClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 1, e);
                         }
                     });
                 }
@@ -870,7 +870,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVertifyPage), nameof(OnViewLocalFileClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnViewLocalFileClicked), 1, e);
                 }
             });
         }

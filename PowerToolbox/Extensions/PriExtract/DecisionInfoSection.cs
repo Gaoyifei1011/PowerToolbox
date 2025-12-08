@@ -52,38 +52,38 @@ namespace PowerToolbox.Extensions.PriExtract
             ushort numIndexTableEntries = binaryReader.ReadUInt16();
             ushort totalDataLength = binaryReader.ReadUInt16();
 
-            List<DecisionInfo> decisionInfosList = new(numDecisions);
+            List<DecisionInfo> decisionInfoList = new(numDecisions);
             for (int i = 0; i < numDecisions; i++)
             {
                 ushort firstQualifierSetIndexIndex = binaryReader.ReadUInt16();
                 ushort numQualifierSetsInDecision = binaryReader.ReadUInt16();
-                decisionInfosList.Add(new DecisionInfo()
+                decisionInfoList.Add(new DecisionInfo()
                 {
                     FirstQualifierSetIndexIndex = firstQualifierSetIndexIndex,
                     NumQualifierSetsInDecision = numQualifierSetsInDecision,
                 });
             }
 
-            List<QualifierSetInfo> qualifierSetInfosList = new(numQualifierSets);
+            List<QualifierSetInfo> qualifierSetInfoList = new(numQualifierSets);
             for (int i = 0; i < numQualifierSets; i++)
             {
                 ushort firstQualifierIndexIndex = binaryReader.ReadUInt16();
                 ushort numQualifiersInSet = binaryReader.ReadUInt16();
-                qualifierSetInfosList.Add(new QualifierSetInfo()
+                qualifierSetInfoList.Add(new QualifierSetInfo()
                 {
                     FirstQualifierIndexIndex = firstQualifierIndexIndex,
                     NumQualifiersInSet = numQualifiersInSet,
                 });
             }
 
-            List<QualifierInfo> qualifierInfosList = new(numQualifiers);
+            List<QualifierInfo> qualifierInfoList = new(numQualifiers);
             for (int i = 0; i < numQualifiers; i++)
             {
                 ushort index = binaryReader.ReadUInt16();
                 ushort priority = binaryReader.ReadUInt16();
                 ushort fallbackScore = binaryReader.ReadUInt16();
                 binaryReader.ExpectUInt16(0);
-                qualifierInfosList.Add(new QualifierInfo()
+                qualifierInfoList.Add(new QualifierInfo()
                 {
                     Index = index,
                     Priority = priority,
@@ -91,7 +91,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            List<DistinctQualifierInfo> distinctQualifierInfosList = new(numDistinctQualifiers);
+            List<DistinctQualifierInfo> distinctQualifierInfoList = new(numDistinctQualifiers);
             for (int i = 0; i < numDistinctQualifiers; i++)
             {
                 binaryReader.ReadUInt16();
@@ -99,7 +99,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 binaryReader.ReadUInt16();
                 binaryReader.ReadUInt16();
                 uint operandValueOffset = binaryReader.ReadUInt32();
-                distinctQualifierInfosList.Add(new DistinctQualifierInfo()
+                distinctQualifierInfoList.Add(new DistinctQualifierInfo()
                 {
                     QualifierType = qualifierType,
                     OperandValueOffset = operandValueOffset,
@@ -119,7 +119,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
             for (int i = 0; i < numQualifiers; i++)
             {
-                DistinctQualifierInfo distinctQualifierInfo = distinctQualifierInfosList[qualifierInfosList[i].Index];
+                DistinctQualifierInfo distinctQualifierInfo = distinctQualifierInfoList[qualifierInfoList[i].Index];
 
                 binaryReader.BaseStream.Seek(dataStartOffset + distinctQualifierInfo.OperandValueOffset * 2, SeekOrigin.Begin);
 
@@ -129,8 +129,8 @@ namespace PowerToolbox.Extensions.PriExtract
                 {
                     Index = (ushort)i,
                     Type = distinctQualifierInfo.QualifierType,
-                    Priority = qualifierInfosList[i].Priority,
-                    FallbackScore = qualifierInfosList[i].FallbackScore,
+                    Priority = qualifierInfoList[i].Priority,
+                    FallbackScore = qualifierInfoList[i].FallbackScore,
                     Value = value
                 });
             }
@@ -141,11 +141,11 @@ namespace PowerToolbox.Extensions.PriExtract
 
             for (int i = 0; i < numQualifierSets; i++)
             {
-                List<Qualifier> qualifiersInSet = new(qualifierSetInfosList[i].NumQualifiersInSet);
+                List<Qualifier> qualifiersInSet = new(qualifierSetInfoList[i].NumQualifiersInSet);
 
-                for (int j = 0; j < qualifierSetInfosList[i].NumQualifiersInSet; j++)
+                for (int j = 0; j < qualifierSetInfoList[i].NumQualifiersInSet; j++)
                 {
-                    qualifiersInSet.Add(qualifiersList[indexTableArray[qualifierSetInfosList[i].FirstQualifierIndexIndex + j]]);
+                    qualifiersInSet.Add(qualifiersList[indexTableArray[qualifierSetInfoList[i].FirstQualifierIndexIndex + j]]);
                 }
 
                 qualifierSetsList.Add(new QualifierSet()
@@ -161,11 +161,11 @@ namespace PowerToolbox.Extensions.PriExtract
 
             for (int i = 0; i < numDecisions; i++)
             {
-                List<QualifierSet> qualifierSetsInDecision = new(decisionInfosList[i].NumQualifierSetsInDecision);
+                List<QualifierSet> qualifierSetsInDecision = new(decisionInfoList[i].NumQualifierSetsInDecision);
 
-                for (int j = 0; j < decisionInfosList[i].NumQualifierSetsInDecision; j++)
+                for (int j = 0; j < decisionInfoList[i].NumQualifierSetsInDecision; j++)
                 {
-                    qualifierSetsInDecision.Add(qualifierSetsList[indexTableArray[decisionInfosList[i].FirstQualifierSetIndexIndex + j]]);
+                    qualifierSetsInDecision.Add(qualifierSetsList[indexTableArray[decisionInfoList[i].FirstQualifierSetIndexIndex + j]]);
                 }
 
                 decisionsList.Add(new Decision()

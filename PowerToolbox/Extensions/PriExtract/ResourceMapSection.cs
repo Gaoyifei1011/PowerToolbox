@@ -159,12 +159,12 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            List<ItemInfo> itemInfosList = [];
+            List<ItemInfo> itemInfoList = [];
             for (int i = 0; i < itemInfoCount; i++)
             {
                 ushort decision = binaryReader.ReadUInt16();
                 ushort firstCandidate = binaryReader.ReadUInt16();
-                itemInfosList.Add(new ItemInfo()
+                itemInfoList.Add(new ItemInfo()
                 {
                     Decision = decision,
                     FirstCandidate = firstCandidate,
@@ -206,7 +206,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 {
                     uint decision = r.ReadUInt32();
                     uint firstCandidate = r.ReadUInt32();
-                    itemInfosList.Add(new ItemInfo()
+                    itemInfoList.Add(new ItemInfo()
                     {
                         Decision = decision,
                         FirstCandidate = firstCandidate,
@@ -219,7 +219,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 }
             }
 
-            List<CandidateInfo> candidateInfos = new((int)numCandidates);
+            List<CandidateInfo> candidateInfoList = new((int)numCandidates);
             for (int i = 0; i < numCandidates; i++)
             {
                 byte type = binaryReader.ReadByte();
@@ -230,7 +230,7 @@ namespace PowerToolbox.Extensions.PriExtract
                     ushort sourceFileIndex = binaryReader.ReadUInt16();
                     ushort dataItemIndex = binaryReader.ReadUInt16();
                     ushort dataItemSection = binaryReader.ReadUInt16();
-                    candidateInfos.Add(new CandidateInfo()
+                    candidateInfoList.Add(new CandidateInfo()
                     {
                         Type = 0x01,
                         ResourceValueType = resourceValueType,
@@ -246,7 +246,7 @@ namespace PowerToolbox.Extensions.PriExtract
                     ResourceValueType resourceValueType = resourceValueTypeTableList[binaryReader.ReadByte()];
                     ushort length = binaryReader.ReadUInt16();
                     uint stringOffset = binaryReader.ReadUInt32();
-                    candidateInfos.Add(new CandidateInfo()
+                    candidateInfoList.Add(new CandidateInfo()
                     {
                         Type = 0x00,
                         ResourceValueType = resourceValueType,
@@ -288,7 +288,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
                 for (uint itemInfoIndex = itemInfoGroup.FirstItemInfo; itemInfoIndex < itemInfoGroup.FirstItemInfo + itemInfoGroup.GroupSize; itemInfoIndex++)
                 {
-                    ItemInfo itemInfo = itemInfosList[(int)itemInfoIndex];
+                    ItemInfo itemInfo = itemInfoList[(int)itemInfoIndex];
 
                     ushort decisionIndex = (ushort)itemInfo.Decision;
 
@@ -298,7 +298,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
                     for (int i = 0; i < decision.QualifierSetsList.Count; i++)
                     {
-                        CandidateInfo candidateInfo = candidateInfos[(int)itemInfo.FirstCandidate + i];
+                        CandidateInfo candidateInfo = candidateInfoList[(int)itemInfo.FirstCandidate + i];
 
                         if (candidateInfo.Type is 0x01)
                         {

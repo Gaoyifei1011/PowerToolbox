@@ -1,8 +1,8 @@
 AllTools=所有工具
 ContextMenuManager=右键菜单管理
 ContextMenuManagerDescription=管理系统右键菜单项的显示状态
-DataEncryptVertify=数据加密校验
-DataEncryptVertifyDescription=对数据进行加密或校验
+DataEncryptVerify=数据加密校验
+DataEncryptVerifyDescription=对数据进行加密或校验
 DownloadManager=下载管理
 DownloadManagerDescription=使用系统内置的传递优化构建的的简单下载器
 DriverManager=驱动管理

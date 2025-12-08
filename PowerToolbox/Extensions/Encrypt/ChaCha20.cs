@@ -106,7 +106,7 @@ namespace PowerToolbox.Extensions.Encrypt
             uint[] working = new uint[16];
 
             // Constants "expand 32-byte k"
-            state[0] = 0x61707865; // "expa"
+            state[0] = 0x61707865; // "expand"
             state[1] = 0x3320646e; // "nd 3"
             state[2] = 0x79622d32; // "2-by"
             state[3] = 0x6b206574; // "te k"

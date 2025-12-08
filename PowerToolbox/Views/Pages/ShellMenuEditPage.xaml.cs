@@ -774,7 +774,7 @@ namespace PowerToolbox.Views.Pages
                     BitmapImage bitmapImage = new();
                     bitmapImage.SetSource(emptyStream);
                     selectedDefaultIconPath = openFileDialog.FileName;
-                    DefaultIconPath = Path.Combine(ShellMenuService.ShellMenuConfigDirectory.FullName, Convert.ToString(editMenuGuid), "DefualtIcon.ico");
+                    DefaultIconPath = Path.Combine(ShellMenuService.ShellMenuConfigDirectory.FullName, Convert.ToString(editMenuGuid), "DefaultIcon.ico");
                     Icon defaultIcon = Icon.ExtractAssociatedIcon(openFileDialog.FileName);
                     MemoryStream memoryStream = new();
                     defaultIcon.ToBitmap().Save(memoryStream, ImageFormat.Png);

@@ -1159,11 +1159,11 @@ namespace PowerToolbox.Views.Pages
                     continue;
                 }
 
-                DateTimeOffset lastestDate = driverInfGroupInfo.Max(item => item.DriverDate);
+                DateTimeOffset latestDate = driverInfGroupInfo.Max(item => item.DriverDate);
 
                 foreach (DriverModel driverItem in driverInfGroupInfo)
                 {
-                    if (driverItem.DriverDate < lastestDate)
+                    if (driverItem.DriverDate < latestDate)
                     {
                         driverItem.IsSelected = true;
                     }

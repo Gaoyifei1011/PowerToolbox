@@ -15,7 +15,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 数据加密校验页面
     /// </summary>
-    public sealed partial class DataEncryptVertifyPage : Page, INotifyPropertyChanged
+    public sealed partial class DataEncryptVerifyPage : Page, INotifyPropertyChanged
     {
         private SelectorBarItem _selectedItem;
 
@@ -33,11 +33,11 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<Type> PageList { get; } = [typeof(DataEncryptPage), typeof(DataVertifyPage)];
+        private List<Type> PageList { get; } = [typeof(DataEncryptPage), typeof(DataVerifyPage)];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DataEncryptVertifyPage()
+        public DataEncryptVerifyPage()
         {
             InitializeComponent();
         }
@@ -50,7 +50,7 @@ namespace PowerToolbox.Views.Pages
         protected override void OnNavigatedTo(NavigationEventArgs args)
         {
             base.OnNavigatedTo(args);
-            DataEncryptVertifyFrame.ContentTransitions = SuppressNavigationTransitionCollection;
+            DataEncryptVerifyFrame.ContentTransitions = SuppressNavigationTransitionCollection;
 
             // 第一次导航
             if (GetCurrentPageType() is null)
@@ -91,9 +91,9 @@ namespace PowerToolbox.Views.Pages
         {
             int index = PageList.FindIndex(item => Equals(item, GetCurrentPageType()));
 
-            if (index >= 0 && index < DataEncryptVertifySelctorBar.Items.Count)
+            if (index >= 0 && index < DataEncryptVerifySelctorBar.Items.Count)
             {
-                SelectedItem = DataEncryptVertifySelctorBar.Items[PageList.FindIndex(item => Equals(item, GetCurrentPageType()))];
+                SelectedItem = DataEncryptVerifySelctorBar.Items[PageList.FindIndex(item => Equals(item, GetCurrentPageType()))];
             }
         }
 
@@ -105,12 +105,12 @@ namespace PowerToolbox.Views.Pages
             args.Handled = true;
             int index = PageList.FindIndex(item => Equals(item, GetCurrentPageType()));
 
-            if (index >= 0 && index < DataEncryptVertifySelctorBar.Items.Count)
+            if (index >= 0 && index < DataEncryptVerifySelctorBar.Items.Count)
             {
-                SelectedItem = DataEncryptVertifySelctorBar.Items[PageList.FindIndex(item => Equals(item, GetCurrentPageType()))];
+                SelectedItem = DataEncryptVerifySelctorBar.Items[PageList.FindIndex(item => Equals(item, GetCurrentPageType()))];
             }
 
-            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptVertifyPage), nameof(OnNavigationFailed), 1, args.Exception);
+            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptVerifyPage), nameof(OnNavigationFailed), 1, args.Exception);
         }
 
         #endregion 第二部分：数据加密校验页面——挂载的事件
@@ -124,15 +124,15 @@ namespace PowerToolbox.Views.Pages
             {
                 if (slideDirection.HasValue)
                 {
-                    DataEncryptVertifyFrame.ContentTransitions = slideDirection.Value ? RightSlideNavigationTransitionCollection : LeftSlideNavigationTransitionCollection;
+                    DataEncryptVerifyFrame.ContentTransitions = slideDirection.Value ? RightSlideNavigationTransitionCollection : LeftSlideNavigationTransitionCollection;
                 }
 
                 // 导航到该项目对应的页面
-                DataEncryptVertifyFrame.Navigate(navigationPageType, parameter);
+                DataEncryptVerifyFrame.Navigate(navigationPageType, parameter);
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptVertifyPage), nameof(NavigateTo), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptVerifyPage), nameof(NavigateTo), 1, e);
             }
         }
 
@@ -141,7 +141,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         public Type GetCurrentPageType()
         {
-            return DataEncryptVertifyFrame.CurrentSourcePageType;
+            return DataEncryptVerifyFrame.CurrentSourcePageType;
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         public object GetFrameContent()
         {
-            return DataEncryptVertifyFrame.Content;
+            return DataEncryptVerifyFrame.Content;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 数据校验类型数据模型
     /// </summary>
-    public class DataVertifyTypeModel : INotifyPropertyChanged
+    public class DataVerifyTypeModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 数据校验类型是否被选择
@@ -35,7 +35,7 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 数据校验类型
         /// </summary>
-        public DataVertifyType DataVertifyType { get; set; }
+        public DataVerifyType DataVerifyType { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

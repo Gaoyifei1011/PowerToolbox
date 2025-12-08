@@ -232,8 +232,8 @@ namespace PowerToolbox.Views.Pages
             try
             {
                 using Ping ping = new();
-                PingReply pingRelpy = ping.Send("8.8.8.8", 1000);
-                return pingRelpy.Status is IPStatus.Success;
+                PingReply pingReply = ping.Send("8.8.8.8", 1000);
+                return pingReply.Status is IPStatus.Success;
             }
             catch (PingException e)
             {

@@ -7,12 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using ThemeSwitch.Extensions.DataType.Class;
+using ThemeSwitch.Extensions.DataType.Enums;
 using ThemeSwitch.Helpers.Root;
 using ThemeSwitch.Services.Controls.Settings;
 using ThemeSwitch.Services.Position;
 using ThemeSwitch.Services.Root;
 using ThemeSwitch.WindowsAPI.PInvoke.User32;
-using ThemeSwitchService.Extensions.DataType.Enums;
 
 // 抑制 CA1806 警告
 #pragma warning disable CA1806
@@ -519,7 +519,7 @@ namespace ThemeSwitch
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitchService), nameof(ThemeSwitch), nameof(InitializeDeviceServiceAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(Program), nameof(InitializeDeviceServiceAsync), 1, e);
                 }
             });
         }
@@ -541,7 +541,7 @@ namespace ThemeSwitch
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitchService), nameof(ThemeSwitch), nameof(UnInitializeDeviceServiceAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(Program), nameof(UnInitializeDeviceServiceAsync), 1, e);
                 }
             });
         }
@@ -725,7 +725,7 @@ namespace ThemeSwitch
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitchService), nameof(ThemeSwitch), nameof(OnStatusOrPositionChanged), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(ThemeSwitch), nameof(Program), nameof(OnStatusOrPositionChanged), 1, e);
                 }
             }
         }

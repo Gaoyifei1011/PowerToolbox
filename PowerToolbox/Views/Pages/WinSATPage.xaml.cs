@@ -164,7 +164,7 @@ namespace PowerToolbox.Views.Pages
 
         private InfoBarSeverity _resultSeverity;
 
-        private InfoBarSeverity ResultServerity
+        private InfoBarSeverity ResultSeverity
         {
             get { return _resultSeverity; }
 
@@ -173,7 +173,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_resultSeverity, value))
                 {
                     _resultSeverity = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultServerity)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultSeverity)));
                 }
             }
         }
@@ -224,7 +224,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 运行评估
         /// </summary>
-        private void OnRunAssesssmentClicked(object sender, RoutedEventArgs args)
+        private void OnRunAssessmentClicked(object sender, RoutedEventArgs args)
         {
             IsNotRunningAssessment = false;
             try
@@ -249,7 +249,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnRunAssesssmentClicked), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnRunAssessmentClicked), 1, e);
                 cWinSATCallbacks = null;
                 progressDialog = null;
             }
@@ -412,7 +412,7 @@ namespace PowerToolbox.Views.Pages
             GamingGraphicsSubScore = gamingGraphicsSubScore is 0.0 ? "N/A" : gamingGraphicsSubScore.ToString("F1");
             PrimaryDiskSubScore = primaryDiskSubScore is 0.0 ? "N/A" : primaryDiskSubScore.ToString("F1");
             ResultMessage = basicScore is 0.0 ? ErrorMessageString : string.Format(SuccessMessageString, assessmentDate is null ? string.Empty : assessmentDate);
-            ResultServerity = basicScore is 0.0 ? InfoBarSeverity.Warning : InfoBarSeverity.Success;
+            ResultSeverity = basicScore is 0.0 ? InfoBarSeverity.Warning : InfoBarSeverity.Success;
         }
     }
 }

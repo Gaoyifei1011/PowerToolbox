@@ -8,17 +8,17 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class ExperimentalFeatureManagerPage : Page, INotifyPropertyChanged
     {
-        private string _experimentaFeatureDescription;
+        private string _experimentalFeatureDescription;
 
         public string ExperimentalFeatureDescription
         {
-            get { return _experimentaFeatureDescription; }
+            get { return _experimentalFeatureDescription; }
 
             set
             {
-                if (!string.Equals(_experimentaFeatureDescription, value))
+                if (!string.Equals(_experimentalFeatureDescription, value))
                 {
-                    _experimentaFeatureDescription = value;
+                    _experimentalFeatureDescription = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ExperimentalFeatureDescription)));
                 }
             }

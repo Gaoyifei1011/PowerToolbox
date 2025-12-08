@@ -66,7 +66,7 @@ namespace PowerToolbox.Helpers.Root
             Bitmap bitmap = new(srcBitmap.Width, srcBitmap.Height, targetPixelFormat);
             Rectangle bitmapBound = new(0, 0, srcBitmap.Width, srcBitmap.Height);
             BitmapData srcData = srcBitmap.LockBits(bitmapBound, ImageLockMode.ReadOnly, srcBitmap.PixelFormat);
-            bool isAlplaBitmap = false;
+            bool isAlphaBitmap = false;
 
             try
             {
@@ -78,7 +78,7 @@ namespace PowerToolbox.Helpers.Root
 
                         if (pixelColor.A > 0 & pixelColor.A < 255)
                         {
-                            isAlplaBitmap = true;
+                            isAlphaBitmap = true;
                         }
 
                         bitmap.SetPixel(x, y, pixelColor);
@@ -90,7 +90,7 @@ namespace PowerToolbox.Helpers.Root
                 srcBitmap.UnlockBits(srcData);
             }
 
-            return isAlplaBitmap ? bitmap : srcBitmap;
+            return isAlphaBitmap ? bitmap : srcBitmap;
         }
     }
 }
