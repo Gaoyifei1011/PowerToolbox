@@ -1053,6 +1053,73 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataEncryptType.ChaCha20:
                     {
+                        try
+                        {
+                            byte[] encryptedKey = null;
+                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            {
+                                encryptedKey = ChaCha20.GenerateKey();
+                                key = Convert.ToBase64String(encryptedKey);
+                                keyStringType = EncryptKeyStringTypeList[1].Key;
+                            }
+                            else
+                            {
+                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
+                                {
+                                    encryptedKey = Encoding.UTF8.GetBytes(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
+                                {
+                                    encryptedKey = Convert.FromBase64String(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[1].Key;
+                                }
+                            }
+
+                            byte[] encryptedIV = null;
+                            if (string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                encryptedIV = ChaCha20.GenerateIV();
+                                initializationVector = Convert.ToBase64String(encryptedIV);
+                                initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
+                            }
+                            else
+                            {
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    encryptedIV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    encryptedIV = Convert.FromBase64String(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
+                                }
+                            }
+
+                            byte[] data = null;
+                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
+                            {
+                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
+                                data = new byte[(int)fileStream.Length];
+                                fileStream.Read(data, 0, contentData.Length);
+                                fileStream.Dispose();
+                            }
+                            else if (selectedEncryptIndex is 1)
+                            {
+                                data = Encoding.UTF8.GetBytes(contentData);
+                            }
+
+                            if (data is not null && encryptedKey is not null && encryptedIV is not null)
+                            {
+                                encryptedData = Convert.ToBase64String(ChaCha20.Encrypt(encryptedKey, encryptedIV, data));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.ChaCha20) + 1, e);
+                        }
+
                         break;
                     }
                 case DataEncryptType.DES:
