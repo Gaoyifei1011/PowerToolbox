@@ -4,99 +4,79 @@ using System.Security.Cryptography;
 namespace PowerToolbox.Extensions.Encrypt
 {
     /// <summary>
-    /// SM4（国密4）对称加密算法实现
+    /// SM4 SymmetricAlgorithm实现。
+    /// 块大小：128位。密钥大小：128位。
+    /// 支持ECB， CBC， CFB， OFB, CTS （CTS是通过CBC偷回模拟-见注释）
+    /// 支持PaddingMode: None， PKCS7, Zeros, ANSIX923, ISO10126。
     /// </summary>
     public class SM4 : SymmetricAlgorithm
     {
         public SM4()
         {
-            KeySizeValue = 128;
+            // SM4 参数
             BlockSizeValue = 128;
-            FeedbackSizeValue = BlockSizeValue;
+            KeySizeValue = 128;
             LegalBlockSizesValue = [new KeySizes(128, 128, 0)];
             LegalKeySizesValue = [new KeySizes(128, 128, 0)];
-            Mode = CipherMode.ECB;
+
+            // 默认参数
+            Mode = CipherMode.CBC;
             Padding = PaddingMode.PKCS7;
         }
 
-        /// <summary>
-        /// 生成IV
-        /// </summary>
+        public override ICryptoTransform CreateDecryptor(byte[] rgbKey, byte[] rgbIV)
+        {
+            return CreateTransform(rgbKey, rgbIV, false);
+        }
+
+        public override ICryptoTransform CreateEncryptor(byte[] rgbKey, byte[] rgbIV)
+        {
+            return CreateTransform(rgbKey, rgbIV, true);
+        }
+
         public override void GenerateIV()
         {
-            byte[] buf = new byte[16];
-            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            byte[] iv = new byte[BlockSize / 8];
+            using (RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create())
             {
-                rng.GetBytes(buf);
+                randomNumberGenerator.GetBytes(iv);
             }
-            IV = buf;
+            IVValue = iv;
         }
 
-        /// <summary>
-        /// 生成密钥
-        /// </summary>
         public override void GenerateKey()
         {
-            byte[] buf = new byte[16];
-            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            byte[] key = new byte[KeySize / 8];
+            using (RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create())
             {
-                rng.GetBytes(buf);
+                randomNumberGenerator.GetBytes(key);
             }
-            Key = buf;
+            KeyValue = key;
         }
 
-        /// <summary>
-        /// 生成加密器
-        /// </summary>
-        public override ICryptoTransform CreateEncryptor(byte[] key, byte[] iv)
+        private SM4CryptoTransform CreateTransform(byte[] key, byte[] iv, bool encrypting)
         {
-            return CreateTransform(key, iv, true);
-        }
-
-        /// <summary>
-        /// 生成解密器
-        /// </summary>
-        public override ICryptoTransform CreateDecryptor(byte[] key, byte[] iv)
-        {
-            return CreateTransform(key, iv, false);
-        }
-
-        private ICryptoTransform CreateTransform(byte[] rgbKey, byte[] rgbIV, bool encryptMode)
-        {
-            ICryptoTransform transform = new SM4Transform(rgbKey, rgbIV, encryptMode);
-            switch (Mode)
+            if (key is null)
             {
-                case CipherMode.ECB:
-                    break;
-
-                case CipherMode.CBC:
-                    transform = new CbcTransform(transform, rgbIV, encryptMode);
-                    break;
-
-                default:
-                    throw new NotSupportedException("Only CBC/ECB is supported");
+                throw new ArgumentNullException(nameof(key));
             }
 
-            switch (PaddingValue)
+            if (key.Length * 8 != KeySize)
             {
-                case PaddingMode.None:
-                    break;
-
-                case PaddingMode.PKCS7:
-                case PaddingMode.ISO10126:
-                case PaddingMode.ANSIX923:
-                    transform = new PKCS7PaddingTransform(transform, PaddingValue, encryptMode);
-                    break;
-
-                case PaddingMode.Zeros:
-                    transform = new ZerosPaddingTransform(transform, encryptMode);
-                    break;
-
-                default:
-                    throw new NotSupportedException("Only PKCS#7 padding is supported");
+                throw new CryptographicException($"Key must be {KeySize} bits.");
             }
 
-            return transform;
+            if (iv is null)
+            {
+                byte[] t = new byte[BlockSize / 8];
+                using (RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create())
+                {
+                    randomNumberGenerator.GetBytes(t);
+                }
+
+                iv = t;
+            }
+            return iv.Length * 8 != BlockSize ? throw new CryptographicException($"IV must be {BlockSize} bits.") : new SM4CryptoTransform(key, iv, Mode, Padding, encrypting);
         }
     }
 }
