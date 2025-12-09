@@ -21,7 +21,7 @@ namespace PowerToolbox.Extensions.Encrypt
         /// </summary>
         public new static RC4 Create()
         {
-            return new RC4Managed();
+            return new RC4CryptoTransform();
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace PowerToolbox.Extensions.Encrypt
         public new static RC4 Create(string algName)
         {
             object alg = CryptoConfig.CreateFromName(algName);
-            alg ??= new RC4Managed();
+            alg ??= new RC4CryptoTransform();
             return alg as RC4;
         }
     }

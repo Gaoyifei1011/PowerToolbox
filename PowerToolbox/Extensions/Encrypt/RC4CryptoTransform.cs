@@ -9,7 +9,7 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// 使用托管库计算输入数据的 RC4 哈希值
     /// </summary>
-    public class RC4Managed : RC4, ICryptoTransform
+    public class RC4CryptoTransform : RC4, ICryptoTransform
     {
         private byte[] key;
         private byte[] state = new byte[256];
@@ -146,10 +146,10 @@ namespace PowerToolbox.Extensions.Encrypt
         /// </summary>
         public override void GenerateKey()
         {
-            RandomNumberGenerator generator = RandomNumberGenerator.Create();
+            RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
             int keySize = KeySizeValue >> 3;
             byte[] key = new byte[keySize];
-            generator.GetBytes(key);
+            randomNumberGenerator.GetBytes(key);
             KeyValue = key;
         }
 

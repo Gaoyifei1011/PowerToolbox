@@ -25,7 +25,9 @@ namespace PowerToolbox.Extensions.Encrypt
         public int OutputBlockSize => BLOCK_SIZE;
 
         public void Dispose()
-        { }
+        {
+            GC.SuppressFinalize(this);
+        }
 
         private static uint[] GenerateKeySchedule(byte[] key)
         {
