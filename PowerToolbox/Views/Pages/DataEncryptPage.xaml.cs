@@ -1364,6 +1364,74 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataEncryptType.RC5:
                     {
+                        try
+                        {
+                            RC5 rc5 = new();
+                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            {
+                                rc5.GenerateKey();
+                                key = Convert.ToBase64String(rc5.Key);
+                                keyStringType = EncryptKeyStringTypeList[1].Key;
+                            }
+                            else
+                            {
+                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
+                                {
+                                    rc5.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
+                                {
+                                    rc5.Key = Convert.FromBase64String(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[1].Key;
+                                }
+                            }
+
+                            if (string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                rc5.GenerateIV();
+                                initializationVector = Convert.ToBase64String(rc5.IV);
+                                initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
+                            }
+                            else
+                            {
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    rc5.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    rc5.IV = Convert.FromBase64String(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
+                                }
+                            }
+
+                            rc5.Mode = SelectedEncryptedBlockCipherMode.Key;
+                            rc5.Padding = SelectedPaddingMode.Key;
+                            ICryptoTransform cryptoTransform = rc5.CreateEncryptor(rc5.Key, rc5.IV);
+                            MemoryStream memoryStream = new();
+                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
+                            {
+                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
+                                fileStream.CopyTo(cryptoStream);
+                                fileStream.Dispose();
+                            }
+                            else if (selectedEncryptIndex is 1)
+                            {
+                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                cryptoStream.Write(data, 0, data.Length);
+                                cryptoStream.FlushFinalBlock();
+                            }
+                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
+                            cryptoStream.Dispose();
+                            memoryStream.Dispose();
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.RC5) + 1, e);
+                        }
                         break;
                     }
                 case DataEncryptType.RC6:
