@@ -18,6 +18,7 @@ FileNotSelected=未选择文件
 FileVerifyFailed=文件校验失败
 FileVerifyPartSuccessfully=文件共有{0}个类型校验成功，{1}个类型校验失败
 FileVerifyWholeSuccessfully=文件共有{0}个类型校验成功
+Has160=HAS_160
 MD2=MD2
 MD4=MD4
 MD5=MD5

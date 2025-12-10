@@ -44,6 +44,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string FileVerifyFailedString = ResourceService.DataVerifyResource.GetString("FileVerifyFailed");
         private readonly string FileVerifyPartSuccessfullyString = ResourceService.DataVerifyResource.GetString("FileVerifyPartSuccessfully");
         private readonly string FileVerifyWholeSuccessfullyString = ResourceService.DataVerifyResource.GetString("FileVerifyWholeSuccessfully");
+        private readonly string Has160String = ResourceService.DataVerifyResource.GetString("Has160");
         private readonly string MD2String = ResourceService.DataVerifyResource.GetString("MD2");
         private readonly string MD4String = ResourceService.DataVerifyResource.GetString("MD4");
         private readonly string MD5String = ResourceService.DataVerifyResource.GetString("MD5");
@@ -227,6 +228,11 @@ namespace PowerToolbox.Views.Pages
             {
                 Name = ED2KString,
                 DataVerifyType = DataVerifyType.ED2K
+            });
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            {
+                Name = Has160String,
+                DataVerifyType = DataVerifyType.HAS160
             });
             DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
@@ -799,6 +805,34 @@ namespace PowerToolbox.Views.Pages
                         catch (Exception e)
                         {
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.ED2K) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.HAS160:
+                    {
+                        try
+                        {
+                            Has160 has160 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = has160.ComputeHash(contentData);
+                            }
+                            has160.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                verifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.HAS160) + 1, e);
                         }
                         break;
                     }

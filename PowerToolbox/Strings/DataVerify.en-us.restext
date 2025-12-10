@@ -18,6 +18,7 @@ FileNotSelected=File not selected
 FileVerifyFailed=File verified failed
 FileVerifyPartSuccessfully=Out of the file, {0} types were successfully verified, {1} types failed to verify
 FileVerifyWholeSuccessfully=Out of the file, {0} types were successfully verified
+Has160=HAS_160
 MD2=MD2
 MD4=MD4
 MD5=MD5
