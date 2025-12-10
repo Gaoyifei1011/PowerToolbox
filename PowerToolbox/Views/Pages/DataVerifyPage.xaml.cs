@@ -28,6 +28,7 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class DataVerifyPage : Page, INotifyPropertyChanged
     {
+        private readonly string Blake2bString = ResourceService.DataVerifyResource.GetString("Blake2b");
         private readonly string ContentEmptyString = ResourceService.DataVerifyResource.GetString("ContentEmpty");
         private readonly string ContentInitializeString = ResourceService.DataVerifyResource.GetString("ContentInitialize");
         private readonly string ContentVerifyFailedString = ResourceService.DataVerifyResource.GetString("ContentVerifyFailed");
@@ -207,6 +208,11 @@ namespace PowerToolbox.Views.Pages
         public DataVerifyPage()
         {
             InitializeComponent();
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            {
+                Name = Blake2bString,
+                DataVerifyType = DataVerifyType.Blake2b
+            });
             DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = CRC32String,
@@ -689,6 +695,34 @@ namespace PowerToolbox.Views.Pages
 
             switch (dataVerifyType)
             {
+                case DataVerifyType.Blake2b:
+                    {
+                        try
+                        {
+                            Blake2b blake2b = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = blake2b.ComputeHash(contentData);
+                            }
+                            blake2b.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                verifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.Blake2b) + 1, e);
+                        }
+                        break;
+                    }
                 case DataVerifyType.CRC_32:
                     {
                         try

@@ -1,3 +1,4 @@
+Blake2b=Blake2b
 Content=Content
 ContentEmpty=Text content is empty
 ContentInitialize=Please enter the text content for verification
