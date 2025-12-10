@@ -1,145 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Windows.Foundation.Collections;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace PowerToolbox.Extensions.DataType.Class
 {
     /// <summary>
     /// 扩展 ObservableCollection 以支持 WinRT 的 IObservableVector 通知集合发生变化
     /// </summary>
-    public class WinRTObservableCollection<T> : ObservableCollection<T>, IObservableVector<object>
+    public class WinRTObservableCollection<T> : ObservableCollection<T>, Microsoft.UI.Xaml.Interop.INotifyCollectionChanged
     {
-        public event VectorChangedEventHandler<object> VectorChanged;
+        public new event Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventHandler CollectionChanged;
 
-        protected override void ClearItems()
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs args)
         {
-            base.ClearItems();
+            base.OnCollectionChanged(args);
 
-            if (VectorChanged is not null)
+            switch (args.Action)
             {
-                VectorChanged(this, new VectorChangedEventArgs
-                {
-                    CollectionChange = CollectionChange.Reset,
-                    Index = 0
-                });
+                case NotifyCollectionChangedAction.Add:
+                    {
+                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Add, null, null, args.NewStartingIndex, args.OldStartingIndex));
+                        break;
+                    }
+                case NotifyCollectionChangedAction.Remove:
+                    {
+                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Remove, null, null, args.NewStartingIndex, args.OldStartingIndex));
+                        break;
+                    }
+                case NotifyCollectionChangedAction.Replace:
+                    {
+                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Replace, null, null, args.NewStartingIndex, args.OldStartingIndex));
+                        break;
+                    }
+                case NotifyCollectionChangedAction.Move:
+                    {
+                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Move, null, null, args.NewStartingIndex, args.OldStartingIndex));
+                        break;
+                    }
+                case NotifyCollectionChangedAction.Reset:
+                    {
+                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Reset, null, null, args.NewStartingIndex, args.OldStartingIndex));
+                        break;
+                    }
             }
-        }
-
-        protected override void RemoveItem(int index)
-        {
-            base.RemoveItem(index);
-
-            if (VectorChanged is not null)
-            {
-                VectorChanged(this, new VectorChangedEventArgs
-                {
-                    CollectionChange = CollectionChange.ItemRemoved,
-                    Index = Convert.ToUInt32(index)
-                });
-            }
-        }
-
-        protected override void InsertItem(int index, T item)
-        {
-            base.InsertItem(index, item);
-
-            if (VectorChanged is not null)
-            {
-                VectorChanged(this, new VectorChangedEventArgs
-                {
-                    CollectionChange = CollectionChange.ItemInserted,
-                    Index = Convert.ToUInt32(index)
-                });
-            }
-        }
-
-        protected override void SetItem(int index, T item)
-        {
-            base.SetItem(index, item);
-
-            if (VectorChanged is not null)
-            {
-                VectorChanged(this, new VectorChangedEventArgs
-                {
-                    CollectionChange = CollectionChange.ItemChanged,
-                    Index = Convert.ToUInt32(index)
-                });
-            }
-        }
-
-        int IList<object>.IndexOf(object item)
-        {
-            return IndexOf((T)item);
-        }
-
-        void IList<object>.Insert(int index, object item)
-        {
-            Insert(index, (T)item);
-        }
-
-        object IList<object>.this[int index]
-        {
-            get
-            {
-                return Items[index];
-            }
-            set
-            {
-                SetItem(index, (T)value);
-            }
-        }
-
-        void ICollection<object>.Add(object item)
-        {
-            Add((T)item);
-        }
-
-        bool ICollection<object>.Contains(object item)
-        {
-            return Contains((T)item);
-        }
-
-        void ICollection<object>.CopyTo(object[] array, int arrayIndex)
-        {
-            if (array is null)
-            {
-                throw new ArgumentException(null, nameof(array));
-            }
-
-            if (arrayIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(arrayIndex));
-            }
-
-            if (array.Length - arrayIndex < Count)
-            {
-                throw new ArgumentException("The remaining space of the target array is insufficient to accommodate all the elements in the collection");
-            }
-
-            for (int index = 0; index < Items.Count; index++)
-            {
-                array[arrayIndex + index] = Items[index];
-            }
-        }
-
-        bool ICollection<object>.Remove(object item)
-        {
-            return Remove((T)item);
-        }
-
-        bool ICollection<object>.IsReadOnly
-        {
-            get
-            {
-                return (this as ICollection<T>).IsReadOnly;
-            }
-        }
-
-        IEnumerator<object> IEnumerable<object>.GetEnumerator()
-        {
-            IList<object> items = [.. Items];
-            return items.GetEnumerator();
         }
     }
 }
