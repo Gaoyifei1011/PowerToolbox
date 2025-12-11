@@ -29,6 +29,7 @@ namespace PowerToolbox.Views.Pages
     public sealed partial class DataVerifyPage : Page, INotifyPropertyChanged
     {
         private readonly string Blake2bString = ResourceService.DataVerifyResource.GetString("Blake2b");
+        private readonly string Blake3String = ResourceService.DataVerifyResource.GetString("Blake3");
         private readonly string ContentEmptyString = ResourceService.DataVerifyResource.GetString("ContentEmpty");
         private readonly string ContentInitializeString = ResourceService.DataVerifyResource.GetString("ContentInitialize");
         private readonly string ContentVerifyFailedString = ResourceService.DataVerifyResource.GetString("ContentVerifyFailed");
@@ -213,6 +214,11 @@ namespace PowerToolbox.Views.Pages
             {
                 Name = Blake2bString,
                 DataVerifyType = DataVerifyType.Blake2b
+            });
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            {
+                Name = Blake3String,
+                DataVerifyType = DataVerifyType.Blake3
             });
             DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
@@ -726,6 +732,34 @@ namespace PowerToolbox.Views.Pages
                         catch (Exception e)
                         {
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.Blake2b) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.Blake3:
+                    {
+                        try
+                        {
+                            Blake3 blake3 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = blake3.ComputeHash(contentData);
+                            }
+                            blake3.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                verifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.Blake3) + 1, e);
                         }
                         break;
                     }

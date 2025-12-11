@@ -1,4 +1,5 @@
 ﻿Blake2b=Blake2b
+Blake3=Blake3
 Content=内容
 ContentEmpty=Text content is empty
 ContentInitialize=请输入文本内容进行校验

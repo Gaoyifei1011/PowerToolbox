@@ -1,4 +1,5 @@
 Blake2b=Blake2b
+Blake3=Blake3
 Content=Content
 ContentEmpty=Text content is empty
 ContentInitialize=Please enter the text content for verification
