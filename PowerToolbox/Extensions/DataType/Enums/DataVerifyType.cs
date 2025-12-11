@@ -30,5 +30,6 @@
         WHIRLPOOL = 22,
         XXH32 = 23,
         XXH64 = 24,
+        XXH128 = 25,
     }
 }

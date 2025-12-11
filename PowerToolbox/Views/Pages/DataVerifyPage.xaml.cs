@@ -69,6 +69,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string WHIRLPOOLString = ResourceService.DataVerifyResource.GetString("WHIRLPOOL");
         private readonly string XXH32String = ResourceService.DataVerifyResource.GetString("XXH32");
         private readonly string XXH64String = ResourceService.DataVerifyResource.GetString("XXH64");
+        private readonly string XXH128String = ResourceService.DataVerifyResource.GetString("XXH128");
         private int selectVerifyIndex = -1;
         private string selectedVerifyFile = string.Empty;
         private string selectedVerifyContent = string.Empty;
@@ -334,6 +335,11 @@ namespace PowerToolbox.Views.Pages
             {
                 Name = XXH64String,
                 DataVerifyType = DataVerifyType.XXH64
+            });
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            {
+                Name = XXH128String,
+                DataVerifyType = DataVerifyType.XXH128
             });
         }
 
@@ -1399,6 +1405,34 @@ namespace PowerToolbox.Views.Pages
                         catch (Exception e)
                         {
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.XXH64) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.XXH128:
+                    {
+                        try
+                        {
+                            XxHash128 xxhash128 = new(0);
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                xxhash128.Append(contentData);
+                                hashBytes = xxhash128.GetCurrentHash();
+                            }
+
+                            if (hashBytes is not null)
+                            {
+                                StringBuilder stringBuilder = new();
+                                foreach (byte b in hashBytes)
+                                {
+                                    stringBuilder.Append(b.ToString("x2"));
+                                }
+                                verifiedData = Convert.ToString(stringBuilder);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.XXH128) + 1, e);
                         }
                         break;
                     }
