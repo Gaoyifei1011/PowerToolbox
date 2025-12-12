@@ -1240,6 +1240,52 @@ namespace PowerToolbox.Views.Pages
                         }
                         break;
                     }
+                case DataVerifyType.Shake128:
+                    {
+                        try
+                        {
+                            Shake128 shake128 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = shake128.ComputeHash(contentData);
+                            }
+                            shake128.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.Shake128) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.Shake256:
+                    {
+                        try
+                        {
+                            Shake256 shake256 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                hashBytes = shake256.ComputeHash(contentData);
+                            }
+                            shake256.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.Shake256) + 1, e);
+                        }
+                        break;
+                    }
                 case DataVerifyType.SM3:
                     {
                         try
