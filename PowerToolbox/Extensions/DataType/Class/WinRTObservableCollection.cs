@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 namespace PowerToolbox.Extensions.DataType.Class
 {
     /// <summary>
-    /// 扩展 ObservableCollection 以支持 WinRT 的 IObservableVector 通知集合发生变化
+    /// 扩展 ObservableCollection，以通知 WinUI 3 集合已经发生变化
     /// </summary>
     public class WinRTObservableCollection<T> : ObservableCollection<T>, Microsoft.UI.Xaml.Interop.INotifyCollectionChanged
     {

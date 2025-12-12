@@ -61,6 +61,8 @@ namespace PowerToolbox.Views.Pages
         private readonly string SHA3512String = ResourceService.DataVerifyResource.GetString("SHA3512");
         private readonly string SHA384String = ResourceService.DataVerifyResource.GetString("SHA384");
         private readonly string SHA512String = ResourceService.DataVerifyResource.GetString("SHA512");
+        private readonly string Shake128String = ResourceService.DataVerifyResource.GetString("Shake128");
+        private readonly string Shake256String = ResourceService.DataVerifyResource.GetString("Shake256");
         private readonly string SM3String = ResourceService.DataVerifyResource.GetString("SM3");
         private readonly string TIGERString = ResourceService.DataVerifyResource.GetString("TIGER");
         private readonly string TIGER2String = ResourceService.DataVerifyResource.GetString("TIGER2");
@@ -305,6 +307,16 @@ namespace PowerToolbox.Views.Pages
             {
                 Name = SHA3512String,
                 DataVerifyType = DataVerifyType.SHA3_512
+            });
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            {
+                Name = Shake128String,
+                DataVerifyType = DataVerifyType.Shake128
+            });
+            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            {
+                Name = Shake256String,
+                DataVerifyType = DataVerifyType.Shake256
             });
             DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
@@ -727,12 +739,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -755,12 +762,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -783,12 +785,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -834,12 +831,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -862,12 +854,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -890,12 +877,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -918,12 +900,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -946,12 +923,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -974,12 +946,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1002,12 +969,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1030,12 +992,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1058,12 +1015,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1086,12 +1038,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1114,12 +1061,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1142,12 +1084,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1170,12 +1107,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1198,12 +1130,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1226,12 +1153,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1300,12 +1222,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1328,12 +1245,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1356,12 +1268,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1384,12 +1291,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1412,12 +1314,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1440,12 +1337,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)
@@ -1468,12 +1360,7 @@ namespace PowerToolbox.Views.Pages
 
                             if (hashBytes is not null)
                             {
-                                StringBuilder stringBuilder = new();
-                                foreach (byte b in hashBytes)
-                                {
-                                    stringBuilder.Append(b.ToString("x2"));
-                                }
-                                verifiedData = Convert.ToString(stringBuilder);
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
                             }
                         }
                         catch (Exception e)

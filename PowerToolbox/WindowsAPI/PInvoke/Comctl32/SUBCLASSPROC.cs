@@ -1,5 +1,4 @@
 ﻿using PowerToolbox.WindowsAPI.PInvoke.User32;
-using System;
 using System.Runtime.InteropServices;
 
 namespace PowerToolbox.WindowsAPI.PInvoke.Comctl32

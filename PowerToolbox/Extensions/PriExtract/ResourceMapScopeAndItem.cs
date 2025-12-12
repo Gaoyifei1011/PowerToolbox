@@ -10,6 +10,6 @@ namespace PowerToolbox.Extensions.PriExtract
 
         public string Name { get; set; }
 
-        public IReadOnlyList<ResourceMapScopeAndItem> Children { get; internal set; }
+        public IReadOnlyList<ResourceMapScopeAndItem> Children { get; set; }
     }
 }

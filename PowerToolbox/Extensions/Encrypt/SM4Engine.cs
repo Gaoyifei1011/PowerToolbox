@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Encrypt
     /// SM4分组密码核心实现
     /// 提供密钥扩展和单块加密/解密
     /// </summary>
-    internal static class SM4Engine
+    public static class SM4Engine
     {
         // System parameter FK
         private static readonly uint[] FK =

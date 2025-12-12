@@ -17,17 +17,17 @@
         {
             get
             {
-                byte[] result = new byte[BLOCKSIZE];
-
-                result[0] = (byte)(m_unIvHi >> 24);
-                result[1] = (byte)(m_unIvHi >> 16);
-                result[2] = (byte)(m_unIvHi >> 8);
-                result[3] = (byte)m_unIvHi;
-                result[4] = (byte)(m_unIvLo >> 24);
-                result[5] = (byte)(m_unIvLo >> 16);
-                result[6] = (byte)(m_unIvLo >> 8);
-                result[7] = (byte)m_unIvLo;
-
+                byte[] result =
+                [
+                    (byte)(m_unIvHi >> 24),
+                    (byte)(m_unIvHi >> 16),
+                    (byte)(m_unIvHi >> 8),
+                    (byte)m_unIvHi,
+                    (byte)(m_unIvLo >> 24),
+                    (byte)(m_unIvLo >> 16),
+                    (byte)(m_unIvLo >> 8),
+                    (byte)m_unIvLo,
+                ];
                 return result;
             }
 

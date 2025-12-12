@@ -43,7 +43,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string DESString = ResourceService.DataEncryptResource.GetString("DES");
         private readonly string DragOverContentString = ResourceService.DataEncryptResource.GetString("DragOverContent");
         private readonly string ECBString = ResourceService.DataEncryptResource.GetString("ECB");
-        private readonly string ECCString = ResourceService.DataEncryptResource.GetString("ECC");
         private readonly string EncryptingString = ResourceService.DataEncryptResource.GetString("Encrypting");
         private readonly string EncryptTypeNotSelectedString = ResourceService.DataEncryptResource.GetString("EncryptTypeNotSelected");
         private readonly string FileEncryptFailedString = ResourceService.DataEncryptResource.GetString("FileEncryptFailed");
@@ -66,7 +65,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string RijndaelString = ResourceService.DataEncryptResource.GetString("Rijndael");
         private readonly string RSAString = ResourceService.DataEncryptResource.GetString("RSA");
         private readonly string SelectFileString = ResourceService.DataEncryptResource.GetString("SelectFile");
-        private readonly string SM2String = ResourceService.DataEncryptResource.GetString("SM2");
         private readonly string SM4String = ResourceService.DataEncryptResource.GetString("SM4");
         private readonly string StringLengthString = ResourceService.DataEncryptResource.GetString("StringLength");
         private readonly string TripleDESString = ResourceService.DataEncryptResource.GetString("TripleDES");
@@ -426,11 +424,6 @@ namespace PowerToolbox.Views.Pages
             });
             DataEncryptTypeList.Add(new DataEncryptTypeModel()
             {
-                DataEncryptType = DataEncryptType.ECC,
-                Name = ECCString
-            });
-            DataEncryptTypeList.Add(new DataEncryptTypeModel()
-            {
                 DataEncryptType = DataEncryptType.MorseCode,
                 Name = MorseCodeString
             });
@@ -468,11 +461,6 @@ namespace PowerToolbox.Views.Pages
             {
                 DataEncryptType = DataEncryptType.RSA,
                 Name = RSAString
-            });
-            DataEncryptTypeList.Add(new DataEncryptTypeModel()
-            {
-                DataEncryptType = DataEncryptType.SM2,
-                Name = SM2String
             });
             DataEncryptTypeList.Add(new DataEncryptTypeModel()
             {
@@ -1194,10 +1182,6 @@ namespace PowerToolbox.Views.Pages
                         }
                         break;
                     }
-                case DataEncryptType.ECC:
-                    {
-                        break;
-                    }
                 case DataEncryptType.MorseCode:
                     {
                         if (selectedEncryptIndex is 1)
@@ -1684,10 +1668,6 @@ namespace PowerToolbox.Views.Pages
                         {
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.SM4) + 1, e);
                         }
-                        break;
-                    }
-                case DataEncryptType.SM2:
-                    {
                         break;
                     }
                 case DataEncryptType.SM4:

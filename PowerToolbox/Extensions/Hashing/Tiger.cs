@@ -94,7 +94,7 @@ namespace PowerToolbox.Extensions.Hashing
             0x901063aae5e5c33c, 0x9818b34448698d90, 0xe36487ae3e1e8abb, 0xafbdf931893bdcb4, 0x6345a0dc5fbbd519, 0x8628fe269b9465ca, 0x1e5d01603f9c51ec, 0x4de44006a15049b7, 0xbf6c70e5f776cbb1, 0x411218f2ef552bed, 0xcb0c0708705a36a3, 0xe74d14754f986044, 0xcd56d9430ea8280e, 0xc12591d7535f5065, 0xc83223f1720aef96, 0xc3a0396f7363a51f
         ];
 
-        internal Tiger(byte paddingByte)
+        public Tiger(byte paddingByte)
         {
             HashSizeValue = 192;
             this.paddingByte = paddingByte;
