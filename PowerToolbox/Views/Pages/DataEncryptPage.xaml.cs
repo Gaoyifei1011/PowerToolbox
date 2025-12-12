@@ -1216,6 +1216,68 @@ namespace PowerToolbox.Views.Pages
                     }
                 case DataEncryptType.Rabbit:
                     {
+                        try
+                        {
+                            Rabbit rabbit = new();
+                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            {
+                                rabbit.GenerateKey();
+                                key = Convert.ToBase64String(rabbit.Key);
+                                keyStringType = EncryptKeyStringTypeList[1].Key;
+                            }
+                            else
+                            {
+                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
+                                {
+                                    rabbit.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
+                                {
+                                    rabbit.Key = Convert.FromBase64String(EncryptKeyText);
+                                    keyStringType = EncryptKeyStringTypeList[1].Key;
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    rabbit.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[0].Key;
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    rabbit.IV = Convert.FromBase64String(InitializationVectorText);
+                                    initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
+                                }
+                            }
+
+                            rabbit.Mode = CipherMode.CBC;
+                            rabbit.Padding = SelectedPaddingMode.Key;
+                            ICryptoTransform cryptoTransform = rabbit.CreateEncryptor(rabbit.Key, rabbit.IV);
+                            MemoryStream memoryStream = new();
+                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
+                            {
+                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
+                                fileStream.CopyTo(cryptoStream);
+                                fileStream.Dispose();
+                            }
+                            else if (selectedEncryptIndex is 1)
+                            {
+                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                cryptoStream.Write(data, 0, data.Length);
+                                cryptoStream.FlushFinalBlock();
+                            }
+                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
+                            cryptoStream.Dispose();
+                            memoryStream.Dispose();
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.Rabbit) + 1, e);
+                        }
                         break;
                     }
                 case DataEncryptType.RC2:
