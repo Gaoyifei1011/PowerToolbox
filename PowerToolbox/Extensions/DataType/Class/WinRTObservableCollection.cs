@@ -18,27 +18,27 @@ namespace PowerToolbox.Extensions.DataType.Class
             {
                 case NotifyCollectionChangedAction.Add:
                     {
-                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Add, null, null, args.NewStartingIndex, args.OldStartingIndex));
+                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Add, new BindableVector(args.NewItems), new BindableVector(args.OldItems), args.NewStartingIndex, args.OldStartingIndex));
                         break;
                     }
                 case NotifyCollectionChangedAction.Remove:
                     {
-                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Remove, null, null, args.NewStartingIndex, args.OldStartingIndex));
+                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Remove, new BindableVector(args.NewItems), new BindableVector(args.OldItems), args.NewStartingIndex, args.OldStartingIndex));
                         break;
                     }
                 case NotifyCollectionChangedAction.Replace:
                     {
-                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Replace, null, null, args.NewStartingIndex, args.OldStartingIndex));
+                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Replace, new BindableVector(args.NewItems), new BindableVector(args.OldItems), args.NewStartingIndex, args.OldStartingIndex));
                         break;
                     }
                 case NotifyCollectionChangedAction.Move:
                     {
-                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Move, null, null, args.NewStartingIndex, args.OldStartingIndex));
+                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Move, new BindableVector(args.NewItems), new BindableVector(args.OldItems), args.NewStartingIndex, args.OldStartingIndex));
                         break;
                     }
                 case NotifyCollectionChangedAction.Reset:
                     {
-                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Reset, null, null, args.NewStartingIndex, args.OldStartingIndex));
+                        CollectionChanged?.Invoke(this, new Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventArgs(Microsoft.UI.Xaml.Interop.NotifyCollectionChangedAction.Reset, new BindableVector(args.NewItems), new BindableVector(args.OldItems), args.NewStartingIndex, args.OldStartingIndex));
                         break;
                     }
             }
