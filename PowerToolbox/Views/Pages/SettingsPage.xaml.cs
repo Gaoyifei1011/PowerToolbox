@@ -2,7 +2,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Documents;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
@@ -68,7 +67,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 导航到该页面触发的事件
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs args)
+        protected override async void OnNavigatedTo(NavigationEventArgs args)
         {
             base.OnNavigatedTo(args);
             SettingsFrame.ContentTransitions = SuppressNavigationTransitionCollection;
@@ -76,7 +75,7 @@ namespace PowerToolbox.Views.Pages
             // 第一次导航
             if (GetCurrentPageType() is null)
             {
-                NavigateTo(PageList[0]);
+                SelectedItem = SettingsSelctorBar.Items[0];
             }
         }
 
@@ -85,40 +84,33 @@ namespace PowerToolbox.Views.Pages
         #region 第二部分：设置页面——挂载的事件
 
         /// <summary>
-        /// 点击选择器栏发生的事件
+        /// 点击选择器栏选中项发生变化时发生的事件
         /// </summary>
-        private void OnSelectorBarTapped(object sender, TappedRoutedEventArgs args)
+        private void OnSelectorBarSelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
         {
-            if (sender is SelectorBarItem selectorBarItem && selectorBarItem.Tag is Type pageType)
-            {
-                int index = PageList.IndexOf(pageType);
-                int currentIndex = PageList.FindIndex(item => Equals(item, GetCurrentPageType()));
+            SelectedItem = sender.SelectedItem;
+            int index = sender.Items.IndexOf(SelectedItem);
+            Type currentPage = GetCurrentPageType();
+            int currentIndex = PageList.FindIndex(item => Equals(item, currentPage));
 
-                if (index is 0 && !Equals(GetCurrentPageType(), PageList[0]))
+            if (index is 0)
+            {
+                if (currentPage is null)
+                {
+                    NavigateTo(PageList[0]);
+                }
+                else if (!Equals(currentPage, PageList[0]))
                 {
                     NavigateTo(PageList[0], null, index > currentIndex);
                 }
-                else if (index is 1 && !Equals(GetCurrentPageType(), PageList[1]))
-                {
-                    NavigateTo(PageList[1], null, index > currentIndex);
-                }
-                else if (index is 2 && !Equals(GetCurrentPageType(), PageList[2]))
-                {
-                    NavigateTo(PageList[2], null, index > currentIndex);
-                }
             }
-        }
-
-        /// <summary>
-        /// 导航完成后发生的事件
-        /// </summary>
-        private void OnNavigated(object sender, NavigationEventArgs args)
-        {
-            int index = PageList.FindIndex(item => Equals(item, GetCurrentPageType()));
-
-            if (index >= 0 && index < SettingsSelctorBar.Items.Count)
+            else if (index is 1 && !Equals(currentPage, PageList[1]))
             {
-                SelectedItem = SettingsSelctorBar.Items[PageList.FindIndex(item => Equals(item, GetCurrentPageType()))];
+                NavigateTo(PageList[1], null, index > currentIndex);
+            }
+            else if (index is 2 && !Equals(GetCurrentPageType(), PageList[2]))
+            {
+                NavigateTo(PageList[2], null, index > currentIndex);
             }
         }
 
@@ -132,7 +124,7 @@ namespace PowerToolbox.Views.Pages
 
             if (index >= 0 && index < SettingsSelctorBar.Items.Count)
             {
-                SelectedItem = SettingsSelctorBar.Items[PageList.FindIndex(item => Equals(item, GetCurrentPageType()))];
+                SelectedItem = SettingsSelctorBar.Items[index];
             }
 
             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(OnNavigationFailed), 1, args.Exception);

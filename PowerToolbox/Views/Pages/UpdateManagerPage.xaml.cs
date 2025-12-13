@@ -1229,11 +1229,11 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 当菜单中的项收到交互（如单击或点击）时发生
+        /// 点击选择器栏选中项发生变化时发生的事件
         /// </summary>
-        private void OnSelectorBarTapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs args)
+        private void OnSelectorBarSelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
         {
-            SelectedItem = sender as SelectorBarItem;
+            SelectedItem = sender.SelectedItem;
         }
 
         /// <summary>

@@ -64,28 +64,12 @@
                     Margin="6,6,30,3"
                     Padding="0"
                     HorizontalAlignment="Left"
-                    SelectedItem="{x:Bind SelectedItem, Mode=OneWay}">
+                    SelectedItem="{x:Bind SelectedItem, Mode=OneWay}"
+                    SelectionChanged="{x:Bind OnSelectorBarSelectionChanged}">
 
-                    <SelectorBarItem
-                        Padding="12,5"
-                        IsTapEnabled="True"
-                        Tag="{x:Bind PageList[0]}"
-                        Tapped="{x:Bind OnSelectorBarTapped}"
-                        Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('General')}" />
-
-                    <SelectorBarItem
-                        Padding="12,5"
-                        IsTapEnabled="True"
-                        Tag="{x:Bind PageList[1]}"
-                        Tapped="{x:Bind OnSelectorBarTapped}"
-                        Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('Advanced')}" />
-
-                    <SelectorBarItem
-                        Padding="12,5"
-                        IsTapEnabled="True"
-                        Tag="{x:Bind PageList[2]}"
-                        Tapped="{x:Bind OnSelectorBarTapped}"
-                        Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('About')}" />
+                    <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('General')}" />
+                    <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('Advanced')}" />
+                    <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('About')}" />
                 </SelectorBar>
 
                 <Grid Grid.Row="2" Margin="-14,0,0,0">
@@ -100,7 +84,6 @@
                     <Frame
                         x:Name="SettingsFrame"
                         Grid.Row="1"
-                        Navigated="{x:Bind OnNavigated}"
                         NavigationFailed="{x:Bind OnNavigationFailed}" />
                 </Grid>
 

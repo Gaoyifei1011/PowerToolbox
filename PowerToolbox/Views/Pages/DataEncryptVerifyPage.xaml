@@ -57,28 +57,17 @@
                     Margin="4,10,30,3"
                     Padding="0"
                     HorizontalAlignment="Left"
-                    SelectedItem="{x:Bind SelectedItem, Mode=OneWay}">
+                    SelectedItem="{x:Bind SelectedItem, Mode=OneWay}"
+                    SelectionChanged="{x:Bind OnSelectorBarSelectionChanged}">
 
-                    <SelectorBarItem
-                        Padding="12,5"
-                        IsTapEnabled="True"
-                        Tag="{x:Bind PageList[0]}"
-                        Tapped="{x:Bind OnSelectorBarTapped}"
-                        Text="{x:Bind rootservice:ResourceService.DataEncryptVerifyResource.GetString('DataEncrypt')}" />
-
-                    <SelectorBarItem
-                        Padding="12,5"
-                        IsTapEnabled="True"
-                        Tag="{x:Bind PageList[1]}"
-                        Tapped="{x:Bind OnSelectorBarTapped}"
-                        Text="{x:Bind rootservice:ResourceService.DataEncryptVerifyResource.GetString('DataVerify')}" />
+                    <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.DataEncryptVerifyResource.GetString('DataEncrypt')}" />
+                    <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.DataEncryptVerifyResource.GetString('DataVerify')}" />
                 </SelectorBar>
 
                 <Frame
                     x:Name="DataEncryptVerifyFrame"
                     Grid.Row="1"
                     Margin="16,0,0,0"
-                    Navigated="{x:Bind OnNavigated}"
                     NavigationFailed="{x:Bind OnNavigationFailed}" />
             </Grid>
         </SplitView.Content>
