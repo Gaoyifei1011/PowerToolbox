@@ -29,7 +29,9 @@ namespace PowerToolbox.Views.Pages
     {
         private readonly string AESString = ResourceService.DataEncryptResource.GetString("AES");
         private readonly string ANSIX923String = ResourceService.DataEncryptResource.GetString("ANSIX923");
+        private readonly string ASCIIString = ResourceService.DataEncryptResource.GetString("ASCII");
         private readonly string Base64String = ResourceService.DataEncryptResource.GetString("Base64");
+        private readonly string BigEndianUnicodeString = ResourceService.DataEncryptResource.GetString("BigEndianUnicode");
         private readonly string BlowfishString = ResourceService.DataEncryptResource.GetString("Blowfish");
         private readonly string CaesarCipherString = ResourceService.DataEncryptResource.GetString("CaesarCipher");
         private readonly string CBCString = ResourceService.DataEncryptResource.GetString("CBC");
@@ -40,6 +42,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string ContentEmptyString = ResourceService.DataEncryptResource.GetString("ContentEmpty");
         private readonly string ContentInitializeString = ResourceService.DataEncryptResource.GetString("ContentInitialize");
         private readonly string CTSString = ResourceService.DataEncryptResource.GetString("CTS");
+        private readonly string CustomString = ResourceService.DataEncryptResource.GetString("Custom");
         private readonly string DESString = ResourceService.DataEncryptResource.GetString("DES");
         private readonly string DragOverContentString = ResourceService.DataEncryptResource.GetString("DragOverContent");
         private readonly string ECBString = ResourceService.DataEncryptResource.GetString("ECB");
@@ -50,7 +53,11 @@ namespace PowerToolbox.Views.Pages
         private readonly string FileInitializeString = ResourceService.DataEncryptResource.GetString("FileInitialize");
         private readonly string FileNotExistedString = ResourceService.DataEncryptResource.GetString("FileNotExisted");
         private readonly string FileNotSelectedString = ResourceService.DataEncryptResource.GetString("FileNotSelected");
+        private readonly string GB18030String = ResourceService.DataEncryptResource.GetString("GB18030");
+        private readonly string GB2312String = ResourceService.DataEncryptResource.GetString("GB2312");
+        private readonly string GBKString = ResourceService.DataEncryptResource.GetString("GBK");
         private readonly string ISO10126String = ResourceService.DataEncryptResource.GetString("ISO10126");
+        private readonly string ISO88591String = ResourceService.DataEncryptResource.GetString("ISO88591");
         private readonly string LargeContentString = ResourceService.DataEncryptResource.GetString("LargeContent");
         private readonly string MorseCodeString = ResourceService.DataEncryptResource.GetString("MorseCode");
         private readonly string NoMultiFileString = ResourceService.DataEncryptResource.GetString("NoMultiFile");
@@ -67,7 +74,12 @@ namespace PowerToolbox.Views.Pages
         private readonly string SelectFileString = ResourceService.DataEncryptResource.GetString("SelectFile");
         private readonly string SM4String = ResourceService.DataEncryptResource.GetString("SM4");
         private readonly string StringLengthString = ResourceService.DataEncryptResource.GetString("StringLength");
+        private readonly string TextEncodingInvalidString = ResourceService.DataEncryptResource.GetString("TextEncodingInvalid");
         private readonly string TripleDESString = ResourceService.DataEncryptResource.GetString("TripleDES");
+        private readonly string UnicodeString = ResourceService.DataEncryptResource.GetString("Unicode");
+        private readonly string UnknownErrorString = ResourceService.DataEncryptResource.GetString("UnknownError");
+        private readonly string UTF32String = ResourceService.DataEncryptResource.GetString("UTF32");
+        private readonly string UTF7String = ResourceService.DataEncryptResource.GetString("UTF7");
         private readonly string UTF8String = ResourceService.DataEncryptResource.GetString("UTF8");
         private readonly string XORString = ResourceService.DataEncryptResource.GetString("XOR");
         private readonly string ZerosString = ResourceService.DataEncryptResource.GetString("Zeros");
@@ -284,6 +296,38 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private KeyValuePair<string, string> _selectedTextEncodingType;
+
+        public KeyValuePair<string, string> SelectedTextEncodingType
+        {
+            get { return _selectedTextEncodingType; }
+
+            set
+            {
+                if (!Equals(_selectedTextEncodingType, value))
+                {
+                    _selectedTextEncodingType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTextEncodingType)));
+                }
+            }
+        }
+
+        private string _textEncodingCustomTypeText;
+
+        public string TextEncodingCustomTypeText
+        {
+            get { return _textEncodingCustomTypeText; }
+
+            set
+            {
+                if (!Equals(_textEncodingCustomTypeText, value))
+                {
+                    _textEncodingCustomTypeText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TextEncodingCustomTypeText)));
+                }
+            }
+        }
+
         private bool _useUpperCase;
 
         public bool UseUpperCase
@@ -374,29 +418,13 @@ namespace PowerToolbox.Views.Pages
 
         private List<KeyValuePair<PaddingMode, string>> PaddingModeList { get; } = [];
 
+        private List<KeyValuePair<string, string>> TextEncodingTypeList { get; } = [];
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public DataEncryptPage()
         {
             InitializeComponent();
-            EncryptKeyStringTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
-            EncryptKeyStringTypeList.Add(new KeyValuePair<string, string>("Base64", Base64String));
-            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-            InitializationVectorStringTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
-            InitializationVectorStringTypeList.Add(new KeyValuePair<string, string>("Base64", Base64String));
-            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CBC, CBCString));
-            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.ECB, ECBString));
-            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.OFB, OFBString));
-            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CFB, CFBString));
-            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CTS, CTSString));
-            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.None, NonePaddingString));
-            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.PKCS7, PKCS7String));
-            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.Zeros, ZerosString));
-            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.ANSIX923, ANSIX923String));
-            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.ISO10126, ISO10126String));
-            SelectedPaddingMode = PaddingModeList[0];
             DataEncryptTypeList.Add(new DataEncryptTypeModel()
             {
                 DataEncryptType = DataEncryptType.AES,
@@ -478,6 +506,36 @@ namespace PowerToolbox.Views.Pages
                 Name = XORString
             });
             SelectedDataEncryptType = DataEncryptTypeList[0];
+            EncryptKeyStringTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
+            EncryptKeyStringTypeList.Add(new KeyValuePair<string, string>("Base64", Base64String));
+            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+            InitializationVectorStringTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
+            InitializationVectorStringTypeList.Add(new KeyValuePair<string, string>("Base64", Base64String));
+            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CBC, CBCString));
+            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.ECB, ECBString));
+            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.OFB, OFBString));
+            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CFB, CFBString));
+            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CTS, CTSString));
+            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.None, NonePaddingString));
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.PKCS7, PKCS7String));
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.Zeros, ZerosString));
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.ANSIX923, ANSIX923String));
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.ISO10126, ISO10126String));
+            SelectedPaddingMode = PaddingModeList[0];
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.ASCII), ASCIIString));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.BigEndianUnicode), BigEndianUnicodeString));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("ISO-8859-1", ISO88591String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GB18030", GB18030String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GB2312", GB2312String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GBK", GBKString));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.Unicode), UnicodeString));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF32), UTF32String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF7), UTF7String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("Custom", CustomString));
+            SelectedTextEncodingType = TextEncodingTypeList[9];
         }
 
         #region 第一部分：数据校验页面——挂载的事件
@@ -675,6 +733,17 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 文字自定义编码类型内容发生变化时触发的事件
+        /// </summary>
+        private void OnTextEncodingCustomTypeTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                TextEncodingCustomTypeText = textBox.Text;
+            }
+        }
+
+        /// <summary>
         /// 填充模式发生变化时触发的事件
         /// </summary>
         private void OnPaddingModeClicked(object sender, RoutedEventArgs args)
@@ -682,6 +751,17 @@ namespace PowerToolbox.Views.Pages
             if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<PaddingMode, string> encryptedPaddingMode)
             {
                 SelectedPaddingMode = encryptedPaddingMode;
+            }
+        }
+
+        /// <summary>
+        /// 选择文字编码类型
+        /// </summary>
+        private void OnTextEncodingTypeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> textEncodingType)
+            {
+                SelectedTextEncodingType = textEncodingType;
             }
         }
 
@@ -767,13 +847,68 @@ namespace PowerToolbox.Views.Pages
                 ResultMessage = EncryptTypeNotSelectedString;
                 return;
             }
+
+            Encoding textEncoding = await Task.Run(() =>
+            {
+                Encoding textEncoding = null;
+                if (Equals(SelectedTextEncodingType, TextEncodingTypeList[0]))
+                {
+                    textEncoding = Encoding.ASCII;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[1]))
+                {
+                    textEncoding = Encoding.BigEndianUnicode;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[6]))
+                {
+                    textEncoding = Encoding.Unicode;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[7]))
+                {
+                    textEncoding = Encoding.UTF32;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[8]))
+                {
+                    textEncoding = Encoding.UTF7;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[9]))
+                {
+                    textEncoding = Encoding.UTF8;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[10]))
+                {
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(TextEncodingCustomTypeText))
+                        {
+                            textEncoding = int.TryParse(TextEncodingCustomTypeText, out int textEncodingCustomType) ? Encoding.GetEncoding(textEncodingCustomType) : Encoding.GetEncoding(TextEncodingCustomTypeText);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 1, e);
+                    }
+                }
+                else
+                {
+                    textEncoding = Encoding.GetEncoding(SelectedTextEncodingType.Key);
+                }
+                return textEncoding;
+            });
+
+            if (textEncoding is null)
+            {
+                ResultSeverity = InfoBarSeverity.Error;
+                ResultMessage = TextEncodingInvalidString;
+                return;
+            }
+
             IsEncrypting = true;
             ResultSeverity = InfoBarSeverity.Informational;
             ResultMessage = EncryptingString;
-
             (string encryptedData, string key, string keyStringType, string initializationVector, string initializationVectorStringType) = await Task.Run(() =>
             {
-                return GetEncryptedData(SelectedDataEncryptType.DataEncryptType, selectEncryptIndex, selectedEncryptContent, selectedEncryptFile);
+                return GetEncryptedData(SelectedDataEncryptType.DataEncryptType, selectEncryptIndex, selectedEncryptContent, textEncoding, selectedEncryptFile);
             });
 
             if (string.IsNullOrEmpty(encryptedData))
@@ -821,7 +956,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 2, e);
                         }
                     });
                 }
@@ -869,7 +1004,7 @@ namespace PowerToolbox.Views.Pages
         /// 获取校验后的数据
         /// </summary>
         /// TODO：未完成
-        private (string, string, string, string, string) GetEncryptedData(DataEncryptType dataEncryptType, int selectedEncryptIndex, string contentData, string encryptFile)
+        private (string, string, string, string, string) GetEncryptedData(DataEncryptType dataEncryptType, int selectedEncryptIndex, string contentData, Encoding textEncoding, string encryptFile)
         {
             string encryptedData = string.Empty;
             string key = string.Empty;
@@ -937,7 +1072,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                byte[] data = textEncoding.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1009,7 +1144,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                byte[] data = textEncoding.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1090,12 +1225,12 @@ namespace PowerToolbox.Views.Pages
                             {
                                 FileStream fileStream = File.OpenRead(selectedEncryptFile);
                                 data = new byte[(int)fileStream.Length];
-                                fileStream.Read(data, 0, contentData.Length);
+                                fileStream.Read(data, 0, data.Length);
                                 fileStream.Dispose();
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                data = Encoding.UTF8.GetBytes(contentData);
+                                data = textEncoding.GetBytes(contentData);
                             }
 
                             if (data is not null && encryptedKey is not null && encryptedIV is not null)
@@ -1168,7 +1303,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                byte[] data = textEncoding.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1250,7 +1385,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                byte[] data = textEncoding.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1322,7 +1457,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                byte[] data = textEncoding.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1394,7 +1529,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                byte[] data = textEncoding.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1466,7 +1601,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                byte[] data = textEncoding.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1538,7 +1673,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                byte[] data = textEncoding.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1610,7 +1745,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                byte[] data = textEncoding.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1647,7 +1782,7 @@ namespace PowerToolbox.Views.Pages
                             {
                                 FileStream fileStream = File.OpenRead(selectedEncryptFile);
                                 byte[] data = new byte[(int)fileStream.Length];
-                                fileStream.Read(data, 0, contentData.Length);
+                                fileStream.Read(data, 0, data.Length);
                                 fileStream.Dispose();
                                 //TODO：更新公钥加密或私钥加密选项
                                 rsa.FromXmlString(publicKey);
@@ -1657,7 +1792,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                byte[] data = textEncoding.GetBytes(contentData);
                                 //TODO：更新填充选项
                                 byte[] encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
                                 encryptedData = Convert.ToBase64String(encryptedOutput);
@@ -1728,7 +1863,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                byte[] data = textEncoding.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1800,7 +1935,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else if (selectedEncryptIndex is 1)
                             {
-                                byte[] data = Encoding.UTF8.GetBytes(contentData);
+                                byte[] data = textEncoding.GetBytes(contentData);
                                 cryptoStream.Write(data, 0, data.Length);
                                 cryptoStream.FlushFinalBlock();
                             }
@@ -1840,6 +1975,22 @@ namespace PowerToolbox.Views.Pages
         private Visibility GetDataEncryptType(int selectedIndex, int comparedSelectedIndex)
         {
             return Equals(selectedIndex, comparedSelectedIndex) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 获取文字编码选项控件可见状态
+        /// </summary>
+        private Visibility GetTextEncodingVisibleState(int selectedIndex, DataEncryptType selectedDataEncryptType)
+        {
+            return selectedIndex is 1 ? selectedDataEncryptType.Equals(DataEncryptTypeList[Convert.ToInt32(DataEncryptType.CaesarCipher)].DataEncryptType) || selectedDataEncryptType.Equals(DataEncryptTypeList[Convert.ToInt32(DataEncryptType.MorseCode)].DataEncryptType) || selectedDataEncryptType.Equals(DataEncryptTypeList[Convert.ToInt32(DataEncryptType.XOR)].DataEncryptType) ? Visibility.Collapsed : Visibility.Visible : Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 获取对应的文字编码类型
+        /// </summary>
+        private Visibility GetTextEncodingType(string textEncodingType, string comparedTextEncodingType)
+        {
+            return string.Equals(textEncodingType, comparedTextEncodingType) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

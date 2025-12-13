@@ -48,11 +48,11 @@ namespace PowerToolbox.Views.Pages
         private readonly string FileVerifyFailedString = ResourceService.DataVerifyResource.GetString("FileVerifyFailed");
         private readonly string FileVerifyPartSuccessfullyString = ResourceService.DataVerifyResource.GetString("FileVerifyPartSuccessfully");
         private readonly string FileVerifyWholeSuccessfullyString = ResourceService.DataVerifyResource.GetString("FileVerifyWholeSuccessfully");
-        private readonly string Has160String = ResourceService.DataVerifyResource.GetString("Has160");
-        private readonly string ISO88591String = ResourceService.DataVerifyResource.GetString("ISO88591");
         private readonly string GB18030String = ResourceService.DataVerifyResource.GetString("GB18030");
         private readonly string GB2312String = ResourceService.DataVerifyResource.GetString("GB2312");
         private readonly string GBKString = ResourceService.DataVerifyResource.GetString("GBK");
+        private readonly string Has160String = ResourceService.DataVerifyResource.GetString("Has160");
+        private readonly string ISO88591String = ResourceService.DataVerifyResource.GetString("ISO88591");
         private readonly string MD2String = ResourceService.DataVerifyResource.GetString("MD2");
         private readonly string MD4String = ResourceService.DataVerifyResource.GetString("MD4");
         private readonly string MD5String = ResourceService.DataVerifyResource.GetString("MD5");
@@ -616,7 +616,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnTextEncodingCustomTypeTextChanged(object sender, TextChangedEventArgs args)
         {
-            if (sender is global::Microsoft.UI.Xaml.Controls.TextBox textBox)
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
                 TextEncodingCustomTypeText = textBox.Text;
             }
@@ -675,6 +675,7 @@ namespace PowerToolbox.Views.Pages
                 ResultMessage = ContentEmptyString;
                 return;
             }
+
             Encoding textEncoding = await Task.Run(() =>
             {
                 Encoding textEncoding = null;

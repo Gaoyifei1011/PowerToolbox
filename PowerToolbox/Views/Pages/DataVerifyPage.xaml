@@ -235,7 +235,7 @@
                 </Expander.Content>
             </Expander>
 
-            <!--  数据校验类型  -->
+            <!--  文字编码选项  -->
             <Expander
                 Grid.Row="4"
                 Margin="0,0,0,3"
