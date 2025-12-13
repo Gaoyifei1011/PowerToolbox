@@ -28,6 +28,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class DataVerifyPage : Page, INotifyPropertyChanged
     {
+        private readonly string ASCIIString = ResourceService.DataVerifyResource.GetString("ASCII");
+        private readonly string BigEndianUnicodeString = ResourceService.DataVerifyResource.GetString("BigEndianUnicode");
         private readonly string Blake2bString = ResourceService.DataVerifyResource.GetString("Blake2b");
         private readonly string Blake3String = ResourceService.DataVerifyResource.GetString("Blake3");
         private readonly string ContentEmptyString = ResourceService.DataVerifyResource.GetString("ContentEmpty");
@@ -37,6 +39,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string ContentVerifyWholeSuccessfullyString = ResourceService.DataVerifyResource.GetString("ContentVerifyWholeSuccessfully");
         private readonly string CRC32String = ResourceService.DataVerifyResource.GetString("CRC32");
         private readonly string CRC64String = ResourceService.DataVerifyResource.GetString("CRC64");
+        private readonly string CustomString = ResourceService.DataVerifyResource.GetString("Custom");
         private readonly string DragOverContentString = ResourceService.DataVerifyResource.GetString("DragOverContent");
         private readonly string ED2KString = ResourceService.DataVerifyResource.GetString("ED2K");
         private readonly string FileInitializeString = ResourceService.DataVerifyResource.GetString("FileInitialize");
@@ -46,6 +49,10 @@ namespace PowerToolbox.Views.Pages
         private readonly string FileVerifyPartSuccessfullyString = ResourceService.DataVerifyResource.GetString("FileVerifyPartSuccessfully");
         private readonly string FileVerifyWholeSuccessfullyString = ResourceService.DataVerifyResource.GetString("FileVerifyWholeSuccessfully");
         private readonly string Has160String = ResourceService.DataVerifyResource.GetString("Has160");
+        private readonly string ISO88591String = ResourceService.DataVerifyResource.GetString("ISO88591");
+        private readonly string GB18030String = ResourceService.DataVerifyResource.GetString("GB18030");
+        private readonly string GB2312String = ResourceService.DataVerifyResource.GetString("GB2312");
+        private readonly string GBKString = ResourceService.DataVerifyResource.GetString("GBK");
         private readonly string MD2String = ResourceService.DataVerifyResource.GetString("MD2");
         private readonly string MD4String = ResourceService.DataVerifyResource.GetString("MD4");
         private readonly string MD5String = ResourceService.DataVerifyResource.GetString("MD5");
@@ -64,11 +71,17 @@ namespace PowerToolbox.Views.Pages
         private readonly string Shake128String = ResourceService.DataVerifyResource.GetString("Shake128");
         private readonly string Shake256String = ResourceService.DataVerifyResource.GetString("Shake256");
         private readonly string SM3String = ResourceService.DataVerifyResource.GetString("SM3");
+        private readonly string TextEncodingInvalidString = ResourceService.DataVerifyResource.GetString("TextEncodingInvalid");
         private readonly string TIGERString = ResourceService.DataVerifyResource.GetString("TIGER");
         private readonly string TIGER2String = ResourceService.DataVerifyResource.GetString("TIGER2");
+        private readonly string UnicodeString = ResourceService.DataVerifyResource.GetString("Unicode");
+        private readonly string UnknownErrorString = ResourceService.DataVerifyResource.GetString("UnknownError");
+        private readonly string UTF32String = ResourceService.DataVerifyResource.GetString("UTF32");
+        private readonly string UTF7String = ResourceService.DataVerifyResource.GetString("UTF7");
+        private readonly string UTF8String = ResourceService.DataVerifyResource.GetString("UTF8");
         private readonly string VerifyingString = ResourceService.DataVerifyResource.GetString("Verifying");
         private readonly string VerifyTypeNotSelectedString = ResourceService.DataVerifyResource.GetString("VerifyTypeNotSelected");
-        private readonly string WHIRLPOOLString = ResourceService.DataVerifyResource.GetString("WHIRLPOOL");
+        private readonly string WhirlpoolString = ResourceService.DataVerifyResource.GetString("Whirlpool");
         private readonly string XXH32String = ResourceService.DataVerifyResource.GetString("XXH32");
         private readonly string XXH64String = ResourceService.DataVerifyResource.GetString("XXH64");
         private readonly string XXH128String = ResourceService.DataVerifyResource.GetString("XXH128");
@@ -172,6 +185,38 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private KeyValuePair<string, string> _selectedTextEncodingType;
+
+        public KeyValuePair<string, string> SelectedTextEncodingType
+        {
+            get { return _selectedTextEncodingType; }
+
+            set
+            {
+                if (!Equals(_selectedTextEncodingType, value))
+                {
+                    _selectedTextEncodingType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTextEncodingType)));
+                }
+            }
+        }
+
+        private string _textEncodingCustomTypeText;
+
+        public string TextEncodingCustomTypeText
+        {
+            get { return _textEncodingCustomTypeText; }
+
+            set
+            {
+                if (!Equals(_textEncodingCustomTypeText, value))
+                {
+                    _textEncodingCustomTypeText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TextEncodingCustomTypeText)));
+                }
+            }
+        }
+
         private bool _useUpperCase;
 
         public bool UseUpperCase
@@ -204,6 +249,8 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private List<KeyValuePair<string, string>> TextEncodingTypeList { get; } = [];
+
         private List<DataVerifyTypeModel> DataVerifyTypeList { get; } = [];
 
         private WinRTObservableCollection<DataVerifyResultModel> DataVerifyResultCollection { get; } = [];
@@ -213,6 +260,18 @@ namespace PowerToolbox.Views.Pages
         public DataVerifyPage()
         {
             InitializeComponent();
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.ASCII), ASCIIString));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.BigEndianUnicode), BigEndianUnicodeString));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("ISO-8859-1", ISO88591String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GB18030", GB18030String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GB2312", GB2312String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GBK", GBKString));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.Unicode), UnicodeString));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF32), UTF32String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF7), UTF7String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("Custom", CustomString));
+            SelectedTextEncodingType = TextEncodingTypeList[9];
             DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
                 Name = Blake2bString,
@@ -335,7 +394,7 @@ namespace PowerToolbox.Views.Pages
             });
             DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
-                Name = WHIRLPOOLString,
+                Name = WhirlpoolString,
                 DataVerifyType = DataVerifyType.WHIRLPOOL
             });
             DataVerifyTypeList.Add(new DataVerifyTypeModel()
@@ -542,6 +601,28 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 选择文字编码类型
+        /// </summary>
+        private void OnTextEncodingTypeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> textEncodingType)
+            {
+                SelectedTextEncodingType = textEncodingType;
+            }
+        }
+
+        /// <summary>
+        /// 文字自定义编码类型内容发生变化时触发的事件
+        /// </summary>
+        private void OnTextEncodingCustomTypeTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is global::Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                TextEncodingCustomTypeText = textBox.Text;
+            }
+        }
+
+        /// <summary>
         /// 输出格式为大写字母
         /// </summary>
         private void OnUseUpperCaseChecked(object sender, RoutedEventArgs args)
@@ -577,12 +658,14 @@ namespace PowerToolbox.Views.Pages
                 if (string.IsNullOrEmpty(selectedVerifyFile))
                 {
                     ResultMessage = FileNotSelectedString;
-                    return;
                 }
                 else if (!File.Exists(selectedVerifyFile))
                 {
                     ResultMessage = FileNotExistedString;
-                    return;
+                }
+                else
+                {
+                    ResultMessage = UnknownErrorString;
                 }
                 return;
             }
@@ -590,6 +673,61 @@ namespace PowerToolbox.Views.Pages
             {
                 ResultSeverity = InfoBarSeverity.Error;
                 ResultMessage = ContentEmptyString;
+                return;
+            }
+            Encoding textEncoding = await Task.Run(() =>
+            {
+                Encoding textEncoding = null;
+                if (Equals(SelectedTextEncodingType, TextEncodingTypeList[0]))
+                {
+                    textEncoding = Encoding.ASCII;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[1]))
+                {
+                    textEncoding = Encoding.BigEndianUnicode;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[6]))
+                {
+                    textEncoding = Encoding.Unicode;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[7]))
+                {
+                    textEncoding = Encoding.UTF32;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[8]))
+                {
+                    textEncoding = Encoding.UTF7;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[9]))
+                {
+                    textEncoding = Encoding.UTF8;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[10]))
+                {
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(TextEncodingCustomTypeText))
+                        {
+                            textEncoding = int.TryParse(TextEncodingCustomTypeText, out int textEncodingCustomType) ? Encoding.GetEncoding(textEncodingCustomType) : Encoding.GetEncoding(TextEncodingCustomTypeText);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnStartVerifyClicked), 1, e);
+                    }
+                }
+                else
+                {
+                    textEncoding = Encoding.GetEncoding(SelectedTextEncodingType.Key);
+                }
+                return textEncoding;
+            });
+
+            if (textEncoding is null)
+            {
+                ResultSeverity = InfoBarSeverity.Error;
+                ResultMessage = TextEncodingInvalidString;
+                return;
             }
 
             List<DataVerifyTypeModel> selectedDataVerifyTypeList = [.. DataVerifyTypeList.Where(item => item.IsSelected)];
@@ -619,12 +757,12 @@ namespace PowerToolbox.Views.Pages
                     }
                     else if (selectVerifyIndex is 1)
                     {
-                        contentData = Encoding.UTF8.GetBytes(selectedVerifyContent);
+                        contentData = textEncoding.GetBytes(selectedVerifyContent);
                     }
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnStartVerifyClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnStartVerifyClicked), 2, e);
                 }
 
                 if (contentData is not null && (selectVerifyIndex is 0 || selectVerifyIndex is 1))
@@ -1380,6 +1518,14 @@ namespace PowerToolbox.Views.Pages
         private Visibility GetDataVerifyType(int selectedIndex, int comparedSelectedIndex)
         {
             return Equals(selectedIndex, comparedSelectedIndex) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 获取对应的文字编码类型
+        /// </summary>
+        private Visibility GetTextEncodingType(string textEncodingType, string comparedTextEncodingType)
+        {
+            return string.Equals(textEncodingType, comparedTextEncodingType) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
