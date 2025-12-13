@@ -101,11 +101,12 @@
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        IsTapEnabled="True"
-                        Tapped="{x:Bind OnStringSelectTapped}"
-                        Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Select')}"
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="NoWrap">
+
+                        <Hyperlink Click="{x:Bind OnStringSelectClicked}" UnderlineStyle="None">
+                            <Run Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Select')}" />
+                        </Hyperlink>
 
                         <ToolTipService.ToolTip>
                             <ToolTip
@@ -361,11 +362,12 @@
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        IsTapEnabled="True"
-                        Tapped="{x:Bind OnFilePathSelectTapped}"
-                        Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Select')}"
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="NoWrap">
+
+                        <Hyperlink Click="{x:Bind OnFilePathSelectClicked}" UnderlineStyle="None">
+                            <Run Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Select')}" />
+                        </Hyperlink>
 
                         <ToolTipService.ToolTip>
                             <ToolTip
@@ -579,11 +581,12 @@
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        IsTapEnabled="True"
-                        Tapped="{x:Bind OnEmbeddedDataSelectTapped}"
-                        Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Select')}"
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="NoWrap">
+
+                        <Hyperlink Click="{x:Bind OnEmbeddedDataSelectClicked}" UnderlineStyle="None">
+                            <Run Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Select')}" />
+                        </Hyperlink>
 
                         <ToolTipService.ToolTip>
                             <ToolTip

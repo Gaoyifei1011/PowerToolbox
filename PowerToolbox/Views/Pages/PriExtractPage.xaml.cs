@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Documents;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Extensions.DataType.Methods;
@@ -586,7 +587,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 字符串列表全选和全部不选
         /// </summary>
-        private void OnStringSelectTapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs args)
+        private void OnStringSelectClicked(Hyperlink sender, HyperlinkClickEventArgs args)
         {
             if (!isStringAllSelect)
             {
@@ -611,7 +612,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 文件路径列表全选和全部不选
         /// </summary>
-        private void OnFilePathSelectTapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs args)
+        private void OnFilePathSelectClicked(Hyperlink sender, HyperlinkClickEventArgs args)
         {
             if (!isFilePathAllSelect)
             {
@@ -636,7 +637,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 嵌入数据列表全选和全部不选
         /// </summary>
-        private void OnEmbeddedDataSelectTapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs args)
+        private void OnEmbeddedDataSelectClicked(Hyperlink sender, HyperlinkClickEventArgs args)
         {
             if (!isEmbeddedDataAllSelect)
             {
