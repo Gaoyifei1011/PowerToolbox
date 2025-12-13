@@ -14,7 +14,6 @@ using PowerToolbox.WindowsAPI.PInvoke.NewDev;
 using PowerToolbox.WindowsAPI.PInvoke.Setupapi;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -390,7 +389,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnCheckBoxExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, (DriverCollection as ObservableCollection<DriverModel>).Count(item => item.IsSelected));
+            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
         }
 
         /// <summary>
@@ -653,7 +652,7 @@ namespace PowerToolbox.Views.Pages
 
                 DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
                 DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyWithConditionDescriptionString : string.Empty;
-                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, (DriverCollection as ObservableCollection<DriverModel>).Count(item => item.IsSelected));
+                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
             }
         }
 
@@ -675,7 +674,7 @@ namespace PowerToolbox.Views.Pages
 
                 DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
                 DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyWithConditionDescriptionString : string.Empty;
-                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, (DriverCollection as ObservableCollection<DriverModel>).Count(item => item.IsSelected));
+                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
             }
         }
 
@@ -689,7 +688,7 @@ namespace PowerToolbox.Views.Pages
                 driverItem.IsSelected = true;
             }
 
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, (DriverCollection as ObservableCollection<DriverModel>).Count(item => item.IsSelected));
+            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
         }
 
         /// <summary>
@@ -702,7 +701,7 @@ namespace PowerToolbox.Views.Pages
                 driverItem.IsSelected = false;
             }
 
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, (DriverCollection as ObservableCollection<DriverModel>).Count(item => item.IsSelected));
+            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
         }
 
         /// <summary>
@@ -956,7 +955,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (RuntimeHelper.IsElevated)
             {
-                List<DriverModel> selectedDriverList = [.. (DriverCollection as ObservableCollection<DriverModel>).Where(item => item.IsSelected)];
+                List<DriverModel> selectedDriverList = [.. DriverCollection.Where(item => item.IsSelected)];
 
                 if (selectedDriverList.Count is 0)
                 {
@@ -1042,7 +1041,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (RuntimeHelper.IsElevated)
             {
-                List<DriverModel> selectedDriverList = [.. (DriverCollection as ObservableCollection<DriverModel>).Where(item => item.IsSelected)];
+                List<DriverModel> selectedDriverList = [.. DriverCollection.Where(item => item.IsSelected)];
 
                 if (selectedDriverList.Count is 0)
                 {
@@ -1150,7 +1149,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectOldDriverClicked(object sender, RoutedEventArgs args)
         {
-            IEnumerable<IGrouping<string, DriverModel>> driverInfGroupInfoList = (DriverCollection as ObservableCollection<DriverModel>).GroupBy(item => item.DriverInfName);
+            IEnumerable<IGrouping<string, DriverModel>> driverInfGroupInfoList = DriverCollection.GroupBy(item => item.DriverInfName);
 
             foreach (IGrouping<string, DriverModel> driverInfGroupInfo in driverInfGroupInfoList)
             {
@@ -1170,7 +1169,7 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, (DriverCollection as ObservableCollection<DriverModel>).Count(item => item.IsSelected));
+            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
         }
 
         #endregion 第二部分：驱动管理页面——挂载的事件
@@ -1183,7 +1182,7 @@ namespace PowerToolbox.Views.Pages
             DriverResultKind = DriverResultKind.Loading;
             DriverList.Clear();
             DriverCollection.Clear();
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, (DriverCollection as ObservableCollection<DriverModel>).Count(item => item.IsSelected));
+            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
 
             List<DriverModel> driverList = await Task.Run(() =>
             {
@@ -1337,7 +1336,7 @@ namespace PowerToolbox.Views.Pages
 
                 DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
                 DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyWithConditionDescriptionString : string.Empty;
-                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, (DriverCollection as ObservableCollection<DriverModel>).Count(item => item.IsSelected));
+                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
             }
         }
 
@@ -1487,7 +1486,7 @@ namespace PowerToolbox.Views.Pages
 
                 DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
                 DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyWithConditionDescriptionString : string.Empty;
-                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, (DriverCollection as ObservableCollection<DriverModel>).Count(item => item.IsSelected));
+                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
             }
         }
 

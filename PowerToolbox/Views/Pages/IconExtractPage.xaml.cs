@@ -12,7 +12,6 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -760,7 +759,7 @@ namespace PowerToolbox.Views.Pages
                 DialogResult dialogResult = openFolderDialog.ShowDialog();
                 if (dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes)
                 {
-                    List<IconModel> iconList = [.. (IconCollection as ObservableCollection<IconModel>)];
+                    List<IconModel> iconList = [.. IconCollection];
                     IsSaving = false;
                     int saveFailedCount = 0;
 

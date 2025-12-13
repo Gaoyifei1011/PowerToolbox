@@ -13,7 +13,6 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -801,7 +800,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnCopySelectedStringClicked(object sender, RoutedEventArgs args)
         {
             IsProcessing = true;
-            List<StringModel> selectedStringList = [.. (StringCollection as ObservableCollection<StringModel>).Where(item => item.IsSelected)];
+            List<StringModel> selectedStringList = [.. StringCollection.Where(item => item.IsSelected)];
             if (selectedStringList.Count > 0)
             {
                 StringBuilder copyStringBuilder = new();
@@ -825,7 +824,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnCopySelectedFilePathClicked(object sender, RoutedEventArgs args)
         {
             IsProcessing = true;
-            List<FilePathModel> selectedFilePathList = [.. (FilePathCollection as ObservableCollection<FilePathModel>).Where(item => item.IsSelected)];
+            List<FilePathModel> selectedFilePathList = [.. FilePathCollection.Where(item => item.IsSelected)];
             if (selectedFilePathList.Count > 0)
             {
                 StringBuilder copyFilePathBuilder = new();
@@ -848,7 +847,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnExportSelectedEmbeddedDataClicked(object sender, RoutedEventArgs args)
         {
-            List<EmbeddedDataModel> selectedEmbeddedDataList = [.. (EmbeddedDataCollection as ObservableCollection<EmbeddedDataModel>).Where(item => item.IsSelected)];
+            List<EmbeddedDataModel> selectedEmbeddedDataList = [.. EmbeddedDataCollection.Where(item => item.IsSelected)];
             if (selectedEmbeddedDataList.Count > 0)
             {
                 IsProcessing = true;
