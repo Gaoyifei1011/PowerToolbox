@@ -212,7 +212,8 @@
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
                 Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                IsExpanded="True">
+                IsExpanded="True"
+                Visibility="{x:Bind HasEncryptOptions, Mode=OneWay}">
 
                 <Expander.Header>
                     <Grid>
@@ -230,7 +231,7 @@
                         <TextBlock
                             Grid.Column="1"
                             VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('SymmetricAlgorithmOption')}" />
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptAlgorithmOption')}" />
                     </Grid>
                 </Expander.Header>
 
@@ -241,7 +242,8 @@
                             Height="52"
                             Padding="44,0,16,0"
                             HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center">
+                            VerticalAlignment="Center"
+                            Visibility="{x:Bind HasEncryptKey, Mode=OneWay}">
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -305,14 +307,15 @@
                             </TextBox>
                         </Grid>
 
-                        <MenuFlyoutSeparator />
+                        <MenuFlyoutSeparator Visibility="{x:Bind HasEncryptKey, Mode=OneWay}" />
 
                         <!--  初始化向量  -->
                         <Grid
                             Height="52"
                             Padding="44,0,16,0"
                             HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center">
+                            VerticalAlignment="Center"
+                            Visibility="{x:Bind HasInitializationVector, Mode=OneWay}">
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -376,14 +379,15 @@
                             </TextBox>
                         </Grid>
 
-                        <MenuFlyoutSeparator />
+                        <MenuFlyoutSeparator Visibility="{x:Bind HasInitializationVector, Mode=OneWay}" />
 
                         <!--  加密的块密码模式  -->
                         <Grid
                             Height="52"
                             Padding="44,0,16,0"
                             HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center">
+                            VerticalAlignment="Center"
+                            Visibility="{x:Bind HasEncryptedBlockCipherMode, Mode=OneWay}">
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -441,13 +445,15 @@
                             </DropDownButton>
                         </Grid>
 
-                        <MenuFlyoutSeparator />
+                        <MenuFlyoutSeparator Visibility="{x:Bind HasEncryptedBlockCipherMode, Mode=OneWay}" />
 
+                        <!--  填充模式  -->
                         <Grid
                             Height="52"
                             Padding="44,0,16,0"
                             HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center">
+                            VerticalAlignment="Center"
+                            Visibility="{x:Bind HasPaddingMode, Mode=OneWay}">
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -500,6 +506,164 @@
                                             IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[4].Key), Mode=OneWay}"
                                             Tag="{x:Bind PaddingModeList[4]}"
                                             Text="{x:Bind system:Convert.ToString(PaddingModeList[4].Value)}" />
+                                    </MenuFlyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+                        </Grid>
+
+                        <MenuFlyoutSeparator Visibility="{x:Bind HasPaddingMode, Mode=OneWay}" />
+
+                        <!--  偏移量  -->
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            Visibility="{x:Bind HasOffset, Mode=OneWay}">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('Offset')}" />
+
+                            <NumberBox
+                                Grid.Column="1"
+                                Margin="6,0,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
+                                LargeChange="1"
+                                SmallChange="1"
+                                SpinButtonPlacementMode="Inline"
+                                ValueChanged="{x:Bind OnOffsetValueChanged}"
+                                Value="{x:Bind Offset, Mode=OneWay}" />
+                        </Grid>
+
+                        <MenuFlyoutSeparator Visibility="{x:Bind HasOffset, Mode=OneWay}" />
+
+                        <!--  加密公钥（用于非对称加密）  -->
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            Visibility="{x:Bind HasEncryptPublicKey, Mode=OneWay}">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptPublicKey')}" />
+
+                            <TextBox
+                                Grid.Column="1"
+                                Width="350"
+                                Margin="6,0,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
+                                PlaceholderText="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptPublicKeyPHText')}"
+                                Text="{x:Bind EncryptPublicKeyText, Mode=OneWay}"
+                                TextChanged="{x:Bind OnEncryptPublicKeyTextChanged}">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind system:String.Format(StringLengthString, EncryptPublicKeyText.Length), Mode=OneWay}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                </ToolTipService.ToolTip>
+                            </TextBox>
+                        </Grid>
+
+                        <MenuFlyoutSeparator Visibility="{x:Bind HasEncryptPublicKey, Mode=OneWay}" />
+
+                        <!--  加密私钥（用于非对称加密）  -->
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            Visibility="{x:Bind HasEncryptPrivateKey, Mode=OneWay}">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptPrivateKey')}" />
+
+                            <TextBox
+                                Grid.Column="1"
+                                Width="350"
+                                Margin="6,0,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
+                                PlaceholderText="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptPrivateKeyPHText')}"
+                                Text="{x:Bind EncryptPrivateKeyText, Mode=OneWay}"
+                                TextChanged="{x:Bind OnEncryptPrivateKeyTextChanged}">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Content="{x:Bind system:String.Format(StringLengthString, EncryptPrivateKeyText.Length), Mode=OneWay}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                </ToolTipService.ToolTip>
+                            </TextBox>
+                        </Grid>
+
+                        <MenuFlyoutSeparator Visibility="{x:Bind HasEncryptPrivateKey, Mode=OneWay}" />
+
+                        <!--  RSA 非对称加密模式  -->
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            Visibility="{x:Bind HasRSAEncryptionPaddingMode, Mode=OneWay}">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('RSAEncryptionPaddingMode')}" />
+
+                            <DropDownButton
+                                Grid.Column="1"
+                                Content="{x:Bind SelectedRSAEncryptionPaddingMode.Value, Mode=OneWay}"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}">
+
+                                <DropDownButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnRSAEncryptionPaddingModeClicked}"
+                                            GroupName="RSAEncryptionPaddingModeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedRSAEncryptionPaddingMode.Key, RSAEncryptionPaddingModeList[0].Key), Mode=OneWay}"
+                                            Tag="{x:Bind RSAEncryptionPaddingModeList[0]}"
+                                            Text="{x:Bind system:Convert.ToString(RSAEncryptionPaddingModeList[0].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnRSAEncryptionPaddingModeClicked}"
+                                            GroupName="RSAEncryptionPaddingModeRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedRSAEncryptionPaddingMode.Key, RSAEncryptionPaddingModeList[1].Key), Mode=OneWay}"
+                                            Tag="{x:Bind RSAEncryptionPaddingModeList[1]}"
+                                            Text="{x:Bind system:Convert.ToString(RSAEncryptionPaddingModeList[1].Value)}" />
                                     </MenuFlyout>
                                 </DropDownButton.Flyout>
                             </DropDownButton>
