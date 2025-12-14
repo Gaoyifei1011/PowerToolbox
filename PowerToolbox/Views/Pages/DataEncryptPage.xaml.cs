@@ -32,7 +32,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string ASCIIString = ResourceService.DataEncryptResource.GetString("ASCII");
         private readonly string Base64String = ResourceService.DataEncryptResource.GetString("Base64");
         private readonly string BigEndianUnicodeString = ResourceService.DataEncryptResource.GetString("BigEndianUnicode");
-        private readonly string BlowfishString = ResourceService.DataEncryptResource.GetString("Blowfish");
         private readonly string CaesarCipherString = ResourceService.DataEncryptResource.GetString("CaesarCipher");
         private readonly string CBCString = ResourceService.DataEncryptResource.GetString("CBC");
         private readonly string CFBString = ResourceService.DataEncryptResource.GetString("CFB");
@@ -429,11 +428,6 @@ namespace PowerToolbox.Views.Pages
             {
                 DataEncryptType = DataEncryptType.AES,
                 Name = AESString
-            });
-            DataEncryptTypeList.Add(new DataEncryptTypeModel()
-            {
-                DataEncryptType = DataEncryptType.Blowfish,
-                Name = BlowfishString
             });
             DataEncryptTypeList.Add(new DataEncryptTypeModel()
             {
@@ -1083,78 +1077,6 @@ namespace PowerToolbox.Views.Pages
                         catch (Exception e)
                         {
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.AES) + 1, e);
-                        }
-                        break;
-                    }
-                case DataEncryptType.Blowfish:
-                    {
-                        try
-                        {
-                            Blowfish blowfish = new();
-                            if (string.IsNullOrEmpty(EncryptKeyText))
-                            {
-                                blowfish.GenerateKey();
-                                key = Convert.ToBase64String(blowfish.Key);
-                                keyStringType = EncryptKeyStringTypeList[1].Key;
-                            }
-                            else
-                            {
-                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
-                                {
-                                    blowfish.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
-                                    keyStringType = EncryptKeyStringTypeList[0].Key;
-                                }
-                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
-                                {
-                                    blowfish.Key = Convert.FromBase64String(EncryptKeyText);
-                                    keyStringType = EncryptKeyStringTypeList[1].Key;
-                                }
-                            }
-
-                            if (string.IsNullOrEmpty(InitializationVectorText))
-                            {
-                                blowfish.GenerateIV();
-                                initializationVector = Convert.ToBase64String(blowfish.IV);
-                                initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
-                            }
-                            else
-                            {
-                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
-                                {
-                                    blowfish.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
-                                    initializationVectorStringType = InitializationVectorStringTypeList[0].Key;
-                                }
-                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
-                                {
-                                    blowfish.IV = Convert.FromBase64String(InitializationVectorText);
-                                    initializationVectorStringType = InitializationVectorStringTypeList[1].Key;
-                                }
-                            }
-
-                            blowfish.Mode = SelectedEncryptedBlockCipherMode.Key;
-                            blowfish.Padding = SelectedPaddingMode.Key;
-                            ICryptoTransform cryptoTransform = blowfish.CreateEncryptor(blowfish.Key, blowfish.IV);
-                            MemoryStream memoryStream = new();
-                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
-                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
-                            {
-                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
-                                fileStream.CopyTo(cryptoStream);
-                                fileStream.Dispose();
-                            }
-                            else if (selectedEncryptIndex is 1)
-                            {
-                                byte[] data = textEncoding.GetBytes(contentData);
-                                cryptoStream.Write(data, 0, data.Length);
-                                cryptoStream.FlushFinalBlock();
-                            }
-                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
-                            cryptoStream.Dispose();
-                            memoryStream.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.Blowfish) + 1, e);
                         }
                         break;
                     }

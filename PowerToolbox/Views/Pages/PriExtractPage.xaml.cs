@@ -44,7 +44,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string NoMultiFileString = ResourceService.PriExtractResource.GetString("NoMultiFile");
         private readonly string NoOtherExtensionNameFileString = ResourceService.PriExtractResource.GetString("NoOtherExtensionNameFile");
         private readonly string NoSelectedFileString = ResourceService.PriExtractResource.GetString("NoSelectedFile");
-        private readonly string ProcessingNowString = ResourceService.PriExtractResource.GetString("ProcessNowString");
         private readonly string SelectedFolderString = ResourceService.PriExtractResource.GetString("SelectedFolder");
         private readonly string SelectFileString = ResourceService.PriExtractResource.GetString("SelectFile");
         private readonly string SelectFolderString = ResourceService.PriExtractResource.GetString("SelectFolder");

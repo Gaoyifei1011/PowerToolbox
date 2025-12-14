@@ -3,7 +3,6 @@ ANSIX923=ANSIX923
 ASCII=ASCII
 Base64=Base64
 BigEndianUnicode=Big Endian UTF16
-Blowfish=Blowfish
 CaesarCipher=CaesarCipher
 CBC=CBC
 CFB=CFB
