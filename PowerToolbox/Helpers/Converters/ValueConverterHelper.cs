@@ -25,16 +25,11 @@ namespace PowerToolbox.Helpers.Converters
         }
 
         /// <summary>
-        /// 字符串布尔值转换
+        /// 检查字符串是否为空
         /// </summary>
-        public static bool StringToBooleanConvert(string value)
+        public static bool IsNotEmptyString(string value)
         {
             return !string.IsNullOrEmpty(value);
-        }
-
-        public static bool ObjectCompareReverseConvert(object value, object comparedValue)
-        {
-            return !Equals(value, comparedValue);
         }
 
         /// <summary>

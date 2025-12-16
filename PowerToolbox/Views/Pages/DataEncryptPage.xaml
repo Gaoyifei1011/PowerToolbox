@@ -144,10 +144,146 @@
                         Background="Transparent"
                         BorderBrush="Transparent"
                         BorderThickness="0"
-                        IsHitTestVisible="False"
-                        Visibility="{x:Bind IsEncrypting, Mode=OneWay}">
+                        IsHitTestVisible="{x:Bind GetEncryptInfoButtonHitTestState(ResultSeverity, IsEncrypting), Mode=OneWay}"
+                        Visibility="{x:Bind GetEncryptInfoButtonVisibility(ResultSeverity), Mode=OneWay}">
 
-                        <ProgressRing IsActive="{x:Bind IsEncrypting, Mode=OneWay}" IsIndeterminate="True" />
+                        <Grid>
+                            <ProgressRing IsActive="{x:Bind GetEncryptInfoProgressRingActiveState(ResultSeverity, IsEncrypting), Mode=OneWay}" IsIndeterminate="True" />
+
+                            <Button
+                                Width="34"
+                                Height="34"
+                                Padding="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="{x:Bind GetEncryptFailedInfoButtonState(ResultSeverity, IsEncrypting, EncryptFailedInformation), Mode=OneWay}">
+
+                                <Button.Content>
+                                    <FontIcon FontSize="16" Glyph="&#xE783;" />
+                                </Button.Content>
+
+                                <Button.Flyout>
+                                    <Flyout
+                                        x:Name="ViewErrorInformationFlyout"
+                                        Placement="Bottom"
+                                        ShouldConstrainToRootBounds="False"
+                                        SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}">
+
+                                        <Flyout.FlyoutPresenterStyle>
+                                            <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                                <Setter Property="Padding" Value="0" />
+                                                <Setter Property="Background" Value="Transparent" />
+                                                <Setter Property="MinWidth" Value="0" />
+                                            </Style>
+                                        </Flyout.FlyoutPresenterStyle>
+
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="40" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid
+                                                Grid.Row="0"
+                                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                                BorderThickness="0,0,0,1">
+
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <FontIcon
+                                                    Grid.Column="0"
+                                                    Margin="16,0,6,0"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="16"
+                                                    Glyph="&#xE783;" />
+
+                                                <TextBlock
+                                                    Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"
+                                                    Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('ErrorInformation')}" />
+
+                                                <Button
+                                                    Grid.Column="2"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Click="{x:Bind OnCopyErrorInformationClicked}"
+                                                    IsEnabled="{x:Bind converter:ValueConverterHelper.IsNotEmptyString(EncryptFailedInformation), Mode=OneWay}"
+                                                    Style="{StaticResource AlternateCloseButtonStyle}">
+
+                                                    <Button.Content>
+                                                        <FontIcon
+                                                            Margin="4"
+                                                            FontSize="16"
+                                                            Glyph="&#xE8C8;" />
+                                                    </Button.Content>
+
+                                                    <ToolTipService.ToolTip>
+                                                        <ToolTip
+                                                            MaxWidth="9999"
+                                                            Background="Transparent"
+                                                            Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('CopyErrorInformation')}"
+                                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                    </ToolTipService.ToolTip>
+                                                </Button>
+
+                                                <Button
+                                                    Grid.Column="3"
+                                                    Margin="-5,0,0,0"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Click="{x:Bind OnCloseFlyoutClicked}"
+                                                    Style="{StaticResource AlternateCloseButtonStyle}"
+                                                    Tag="{x:Bind ViewErrorInformationFlyout}">
+
+                                                    <Button.Content>
+                                                        <FontIcon
+                                                            Margin="4"
+                                                            FontSize="16"
+                                                            Glyph="&#xE711;" />
+                                                    </Button.Content>
+
+                                                    <ToolTipService.ToolTip>
+                                                        <ToolTip
+                                                            MaxWidth="9999"
+                                                            Background="Transparent"
+                                                            Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('CloseFlyout')}"
+                                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                    </ToolTipService.ToolTip>
+                                                </Button>
+                                            </Grid>
+
+                                            <Grid
+                                                Grid.Row="1"
+                                                Width="450"
+                                                MinHeight="100"
+                                                Padding="16,8,16,8">
+
+                                                <TextBlock
+                                                    HorizontalAlignment="Left"
+                                                    IsTextSelectionEnabled="True"
+                                                    Text="{x:Bind EncryptFailedInformation, Mode=OneWay}"
+                                                    TextWrapping="Wrap" />
+                                            </Grid>
+                                        </Grid>
+                                    </Flyout>
+                                </Button.Flyout>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Background="Transparent"
+                                        Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('ViewErrorInformation')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                </ToolTipService.ToolTip>
+                            </Button>
+                        </Grid>
                     </Button>
                 </InfoBar.ActionButton>
             </InfoBar>
@@ -250,6 +386,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
@@ -305,6 +442,32 @@
                                         Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                                 </ToolTipService.ToolTip>
                             </TextBox>
+
+                            <Button
+                                Grid.Column="4"
+                                Width="34"
+                                Height="34"
+                                Margin="6,0,0,0"
+                                Padding="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Click="{x:Bind OnGenerateRandomKeyClicked}">
+
+                                <Button.Content>
+                                    <FontIcon
+                                        Margin="4"
+                                        FontSize="16"
+                                        Glyph="&#xE73F;" />
+                                </Button.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Background="Transparent"
+                                        Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('GenerateRandomKey')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                </ToolTipService.ToolTip>
+                            </Button>
                         </Grid>
 
                         <MenuFlyoutSeparator Visibility="{x:Bind HasEncryptKey, Mode=OneWay}" />
@@ -319,6 +482,7 @@
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -377,6 +541,32 @@
                                         Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
                                 </ToolTipService.ToolTip>
                             </TextBox>
+
+                            <Button
+                                Grid.Column="4"
+                                Width="34"
+                                Height="34"
+                                Margin="6,0,0,0"
+                                Padding="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Click="{x:Bind OnGenerateInitializationVectorClicked}">
+
+                                <Button.Content>
+                                    <FontIcon
+                                        Margin="4"
+                                        FontSize="16"
+                                        Glyph="&#xE73F;" />
+                                </Button.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Background="Transparent"
+                                        Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('GenerateInitializationVector')}"
+                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                </ToolTipService.ToolTip>
+                            </Button>
                         </Grid>
 
                         <MenuFlyoutSeparator Visibility="{x:Bind HasInitializationVector, Mode=OneWay}" />

@@ -550,7 +550,7 @@
                                                                 <MenuFlyoutItem
                                                                     Command="{StaticResource OpenSupportUrlCommand}"
                                                                     CommandParameter="{x:Bind SupportURL}"
-                                                                    IsEnabled="{x:Bind converter:ValueConverterHelper.StringToBooleanConvert(SupportURL)}"
+                                                                    IsEnabled="{x:Bind converter:ValueConverterHelper.IsNotEmptyString(SupportURL)}"
                                                                     Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('OpenSupportUrl')}">
 
                                                                     <MenuFlyoutItem.Icon>
@@ -1662,7 +1662,7 @@
                                                                 <MenuFlyoutItem
                                                                     Command="{StaticResource OpenSupportUrlCommand}"
                                                                     CommandParameter="{x:Bind SupportURL}"
-                                                                    IsEnabled="{x:Bind converter:ValueConverterHelper.StringToBooleanConvert(SupportURL)}"
+                                                                    IsEnabled="{x:Bind converter:ValueConverterHelper.IsNotEmptyString(SupportURL)}"
                                                                     Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('OpenSupportUrl')}">
 
                                                                     <MenuFlyoutItem.Icon>
@@ -2691,7 +2691,7 @@
                                                                 <MenuFlyoutItem
                                                                     Command="{StaticResource OpenSupportUrlCommand}"
                                                                     CommandParameter="{x:Bind SupportURL}"
-                                                                    IsEnabled="{x:Bind converter:ValueConverterHelper.StringToBooleanConvert(SupportURL)}"
+                                                                    IsEnabled="{x:Bind converter:ValueConverterHelper.IsNotEmptyString(SupportURL)}"
                                                                     Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('OpenSupportUrl')}" />
                                                             </MenuFlyout>
                                                         </Button.Flyout>
