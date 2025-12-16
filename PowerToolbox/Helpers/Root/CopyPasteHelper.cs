@@ -17,7 +17,7 @@ namespace PowerToolbox.Helpers.Root
         {
             try
             {
-                Clipboard.SetDataObject(content);
+                Clipboard.SetText(content);
                 return true;
             }
             catch (Exception e)
