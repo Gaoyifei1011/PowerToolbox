@@ -13,8 +13,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
-using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,6 +49,11 @@ namespace PowerToolbox.Views.Pages
         private readonly string DragOverContentString = ResourceService.DataEncryptResource.GetString("DragOverContent");
         private readonly string ECBString = ResourceService.DataEncryptResource.GetString("ECB");
         private readonly string EncryptingString = ResourceService.DataEncryptResource.GetString("Encrypting");
+        private readonly string EncryptKey162432SizeString = ResourceService.DataEncryptResource.GetString("EncryptKey162432Size");
+        private readonly string EncryptKey1624SizeString = ResourceService.DataEncryptResource.GetString("EncryptKey1624Size");
+        private readonly string EncryptKey16SizeString = ResourceService.DataEncryptResource.GetString("EncryptKey16Size");
+        private readonly string EncryptKey32SizeString = ResourceService.DataEncryptResource.GetString("EncryptKey32Size");
+        private readonly string EncryptKey8SizeString = ResourceService.DataEncryptResource.GetString("EncryptKey8Size");
         private readonly string EncryptKeyEmptyString = ResourceService.DataEncryptResource.GetString("EncryptKeyEmpty");
         private readonly string EncryptPublicKeyEmptyString = ResourceService.DataEncryptResource.GetString("EncryptPublicKeyEmpty");
         private readonly string EncryptTypeMustContentString = ResourceService.DataEncryptResource.GetString("EncryptTypeMustContent");
@@ -63,6 +66,9 @@ namespace PowerToolbox.Views.Pages
         private readonly string GB18030String = ResourceService.DataEncryptResource.GetString("GB18030");
         private readonly string GB2312String = ResourceService.DataEncryptResource.GetString("GB2312");
         private readonly string GBKString = ResourceService.DataEncryptResource.GetString("GBK");
+        private readonly string InitializationVector12SizeString = ResourceService.DataEncryptResource.GetString("InitializationVector12Size");
+        private readonly string InitializationVector16SizeString = ResourceService.DataEncryptResource.GetString("InitializationVector16Size");
+        private readonly string InitializationVector8SizeString = ResourceService.DataEncryptResource.GetString("InitializationVector8Size");
         private readonly string InitializationVectorEmptyString = ResourceService.DataEncryptResource.GetString("InitializationVectorEmpty");
         private readonly string ISO10126String = ResourceService.DataEncryptResource.GetString("ISO10126");
         private readonly string ISO88591String = ResourceService.DataEncryptResource.GetString("ISO88591");
@@ -242,6 +248,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private string _encryptKeyPHText = string.Empty;
+
+        public string EncryptKeyPHText
+        {
+            get { return _encryptKeyPHText; }
+
+            set
+            {
+                if (!string.Equals(_encryptKeyPHText, value))
+                {
+                    _encryptKeyPHText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EncryptKeyPHText)));
+                }
+            }
+        }
+
         private string _encryptKeyText = string.Empty;
 
         public string EncryptKeyText
@@ -254,6 +276,22 @@ namespace PowerToolbox.Views.Pages
                 {
                     _encryptKeyText = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EncryptKeyText)));
+                }
+            }
+        }
+
+        private string _initializationVectorPHText = string.Empty;
+
+        public string InitializationVectorPHText
+        {
+            get { return _initializationVectorPHText; }
+
+            set
+            {
+                if (!string.Equals(_initializationVectorPHText, value))
+                {
+                    _initializationVectorPHText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InitializationVectorPHText)));
                 }
             }
         }
@@ -414,6 +452,22 @@ namespace PowerToolbox.Views.Pages
                 {
                     _selectedRSAEncryptionPaddingMode = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedRSAEncryptionPaddingMode)));
+                }
+            }
+        }
+
+        private bool _hasRSAEncryptionOtherOptions;
+
+        public bool HasRSAEncryptionOtherOptions
+        {
+            get { return _hasRSAEncryptionOtherOptions; }
+
+            set
+            {
+                if (!Equals(_hasRSAEncryptionOtherOptions, value))
+                {
+                    _hasRSAEncryptionOtherOptions = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasRSAEncryptionOtherOptions)));
                 }
             }
         }
@@ -943,7 +997,9 @@ namespace PowerToolbox.Views.Pages
                 {
                     case DataEncryptType.AES:
                         {
+                            EncryptKeyPHText = EncryptKey162432SizeString;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -962,12 +1018,15 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     case DataEncryptType.CaesarCipher:
                         {
+                            EncryptKeyPHText = string.Empty;
                             SelectedIndex = 1;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -986,11 +1045,14 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     case DataEncryptType.ChaCha20:
                         {
+                            EncryptKeyPHText = EncryptKey32SizeString;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = InitializationVector12SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -1009,11 +1071,14 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     case DataEncryptType.DES:
                         {
+                            EncryptKeyPHText = EncryptKey8SizeString;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = InitializationVector8SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -1032,12 +1097,15 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     case DataEncryptType.MorseCode:
                         {
+                            EncryptKeyPHText = string.Empty;
                             SelectedIndex = 1;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -1056,11 +1124,14 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     case DataEncryptType.Rabbit:
                         {
+                            EncryptKeyPHText = EncryptKey16SizeString;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = InitializationVector8SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -1079,11 +1150,14 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     case DataEncryptType.RC2:
                         {
+                            EncryptKeyPHText = EncryptKey16SizeString;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = InitializationVector8SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -1102,11 +1176,14 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     case DataEncryptType.RC4:
                         {
+                            EncryptKeyPHText = EncryptKey16SizeString;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -1125,11 +1202,14 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     case DataEncryptType.RC5:
                         {
+                            EncryptKeyPHText = EncryptKey16SizeString;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = InitializationVector8SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -1148,11 +1228,14 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     case DataEncryptType.RC6:
                         {
+                            EncryptKeyPHText = EncryptKey16SizeString;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -1172,11 +1255,14 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     case DataEncryptType.Rijndael:
                         {
+                            EncryptKeyPHText = EncryptKey162432SizeString;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -1195,11 +1281,14 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     case DataEncryptType.RSA:
                         {
+                            EncryptKeyPHText = string.Empty;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -1218,11 +1307,14 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = true;
                             HasEncryptPrivateKey = true;
                             HasRSAEncryptionPaddingMode = true;
+                            HasRSAEncryptionOtherOptions = true;
                             break;
                         }
                     case DataEncryptType.SM4:
                         {
+                            EncryptKeyPHText = EncryptKey16SizeString;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -1241,11 +1333,14 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     case DataEncryptType.TripleDES:
                         {
+                            EncryptKeyPHText = EncryptKey1624SizeString;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -1264,12 +1359,15 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     case DataEncryptType.XOR:
                         {
+                            EncryptKeyPHText = string.Empty;
                             SelectedIndex = 1;
                             EncryptKeyText = string.Empty;
+                            InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
@@ -1288,6 +1386,7 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptPublicKey = false;
                             HasEncryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasRSAEncryptionOtherOptions = false;
                             break;
                         }
                     default:
@@ -1404,6 +1503,68 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 生成 RSA 加密算法密钥对
+        /// </summary>
+        private async void OnGenerateRandomRSAKeyPairClicked(object sender, RoutedEventArgs args)
+        {
+            (string publicKey, string privateKey) = await Task.Run(() =>
+            {
+                string publicKey = string.Empty;
+                string privateKey = string.Empty;
+
+                try
+                {
+                    RSA rsa = RSA.Create();
+                    publicKey = rsa.ToXmlString(false);
+                    privateKey = rsa.ToXmlString(true);
+                    rsa.Dispose();
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnGenerateRandomRSAKeyPairClicked), 1, e);
+                }
+
+                return ValueTuple.Create(publicKey, privateKey);
+            });
+
+            if (!string.IsNullOrEmpty(publicKey))
+            {
+                EncryptPublicKeyText = publicKey;
+            }
+
+            if (!string.IsNullOrEmpty(privateKey))
+            {
+                EncryptPrivateKeyText = privateKey;
+            }
+        }
+
+        /// <summary>
+        /// 复制 RSA 加密算法公钥到剪贴板
+        /// </summary>
+        private async void OnCopyRSAPublicKeyClicked(object sender, RoutedEventArgs args)
+        {
+            if (!string.IsNullOrEmpty(EncryptPublicKeyText))
+            {
+                bool copyResult = CopyPasteHelper.CopyToClipboard(EncryptPublicKeyText);
+
+                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+            }
+        }
+
+        /// <summary>
+        /// 复制 RSA 加密算法私钥到剪贴板
+        /// </summary>
+        private async void OnCopyRSAPrivateKeyClicked(object sender, RoutedEventArgs args)
+        {
+            if (!string.IsNullOrEmpty(EncryptPrivateKeyText))
+            {
+                bool copyResult = CopyPasteHelper.CopyToClipboard(EncryptPrivateKeyText);
+
+                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+            }
+        }
+
+        /// <summary>
         /// 选择文字编码类型
         /// </summary>
         private void OnTextEncodingTypeClicked(object sender, RoutedEventArgs args)
@@ -1461,7 +1622,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.AES)
                     {
-                        // TODO：提供更多选项（SplitButton）
                         // 默认密钥支持 16 字节，24 字节和 32 字节，目前使用 16 字节
                         byte[] keyBytes = new byte[16];
                         RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
@@ -1492,9 +1652,40 @@ namespace PowerToolbox.Views.Pages
                         randomNumberGenerator.GetBytes(keyBytes);
                         encryptKey = Convert.ToBase64String(keyBytes);
                     }
+                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC2)
+                    {
+                        // 默认密钥支持 16 字节
+                        byte[] keyBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(keyBytes);
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC4)
+                    {
+                        // 默认密钥支持 16 字节
+                        byte[] keyBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(keyBytes);
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC5)
+                    {
+                        // 默认密钥支持 16 字节
+                        byte[] keyBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(keyBytes);
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC6)
+                    {
+                        // 默认密钥支持 16 字节
+                        byte[] keyBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(keyBytes);
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
                     else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rijndael)
                     {
-                        // TODO：提供更多选项（SplitButton）
                         // 默认密钥支持 16 字节，24 字节和 32 字节，目前使用 16 字节
                         byte[] keyBytes = new byte[16];
                         RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
@@ -1511,7 +1702,6 @@ namespace PowerToolbox.Views.Pages
                     }
                     else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.TripleDES)
                     {
-                        // TODO：提供更多选项（SplitButton）
                         // 默认密钥支持 16 字节和 24 字节，目前使用 16 字节
                         byte[] keyBytes = new byte[16];
                         RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
@@ -1556,7 +1746,55 @@ namespace PowerToolbox.Views.Pages
                         randomNumberGenerator.GetBytes(initializationVectorBytes);
                         initializationVector = Convert.ToBase64String(initializationVectorBytes);
                     }
+                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.DES)
+                    {
+                        // 初始化向量支持 8 字节
+                        byte[] initializationVectorBytes = new byte[8];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rabbit)
+                    {
+                        // 初始化向量支持 8 字节
+                        byte[] initializationVectorBytes = new byte[8];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC2)
+                    {
+                        // 初始化向量支持 8 字节
+                        byte[] initializationVectorBytes = new byte[8];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC5)
+                    {
+                        // 初始化向量支持 8 字节
+                        byte[] initializationVectorBytes = new byte[8];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC6)
+                    {
+                        // 初始化向量支持 16 字节
+                        byte[] initializationVectorBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
                     else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rijndael)
+                    {
+                        // 初始化向量支持 16 字节
+                        byte[] initializationVectorBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.SM4)
                     {
                         // 初始化向量支持 16 字节
                         byte[] initializationVectorBytes = new byte[16];
@@ -1693,6 +1931,13 @@ namespace PowerToolbox.Views.Pages
                                 ResultMessage = EncryptKeyEmptyString;
                                 return;
                             }
+
+                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
+                                return;
+                            }
                             break;
                         }
                     case DataEncryptType.MorseCode:
@@ -1713,6 +1958,13 @@ namespace PowerToolbox.Views.Pages
                                 ResultMessage = EncryptKeyEmptyString;
                                 return;
                             }
+
+                            if (string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
+                                return;
+                            }
                             break;
                         }
                     case DataEncryptType.RC2:
@@ -1721,6 +1973,13 @@ namespace PowerToolbox.Views.Pages
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
+                                return;
+                            }
+
+                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
                                 return;
                             }
                             break;
@@ -1743,6 +2002,13 @@ namespace PowerToolbox.Views.Pages
                                 ResultMessage = EncryptKeyEmptyString;
                                 return;
                             }
+
+                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
+                                return;
+                            }
                             break;
                         }
                     case DataEncryptType.RC6:
@@ -1751,6 +2017,13 @@ namespace PowerToolbox.Views.Pages
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
+                                return;
+                            }
+
+                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
                                 return;
                             }
                             break;
@@ -1788,6 +2061,13 @@ namespace PowerToolbox.Views.Pages
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
+                                return;
+                            }
+
+                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
                                 return;
                             }
                             break;
@@ -2252,9 +2532,7 @@ namespace PowerToolbox.Views.Pages
                             {
                                 if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
                                 {
-                                    rc2.GetType().GetField("KeySizeValue", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(rc2, 192);
-                                    rc2.GetType().GetField("KeyValue", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(rc2, Encoding.UTF8.GetBytes(EncryptKeyText));
-                                    //rc2.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
+                                    rc2.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
                                 }
                                 else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
                                 {
@@ -2523,45 +2801,54 @@ namespace PowerToolbox.Views.Pages
                         try
                         {
                             RSA rsa = RSA.Create();
-                            string privateKey = string.Empty;
-                            string publicKey = string.Empty;
-                            //TODO：提供用于设置公钥和私钥的选项
-                            if (string.IsNullOrEmpty(EncryptKeyText))
-                            {
-                                privateKey = rsa.ToXmlString(true);
-                                publicKey = rsa.ToXmlString(false);
-                            }
-                            else
-                            {
-                                // TODO：未完成
-                            }
 
-                            // TODO：其他选项有待挖掘
                             if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
                             {
                                 FileStream fileStream = File.OpenRead(selectedEncryptFile);
                                 byte[] data = new byte[(int)fileStream.Length];
                                 fileStream.Read(data, 0, data.Length);
                                 fileStream.Dispose();
-                                //TODO：更新公钥加密或私钥加密选项
-                                rsa.FromXmlString(publicKey);
-                                //TODO：更新填充选项
-                                byte[] encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
-                                encryptedData = Convert.ToBase64String(encryptedOutput);
+                                rsa.FromXmlString(EncryptPublicKeyText);
+                                byte[] encryptedOutput = null;
+                                if (SelectedRSAEncryptionPaddingMode.Key is RSAEncryptionPaddingMode.Pkcs1)
+                                {
+                                    encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
+                                }
+                                else if (SelectedRSAEncryptionPaddingMode.Key is RSAEncryptionPaddingMode.Oaep)
+                                {
+                                    encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.OaepSHA1);
+                                }
+
+                                if (encryptedOutput is not null)
+                                {
+                                    encryptedData = Convert.ToBase64String(encryptedOutput);
+                                }
                             }
                             else if (selectedEncryptIndex is 1)
                             {
                                 byte[] data = textEncoding.GetBytes(contentData);
-                                //TODO：更新填充选项
-                                byte[] encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
-                                encryptedData = Convert.ToBase64String(encryptedOutput);
+                                rsa.FromXmlString(EncryptPublicKeyText);
+                                byte[] encryptedOutput = null;
+                                if (SelectedRSAEncryptionPaddingMode.Key is RSAEncryptionPaddingMode.Pkcs1)
+                                {
+                                    encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
+                                }
+                                else if (SelectedRSAEncryptionPaddingMode.Key is RSAEncryptionPaddingMode.Oaep)
+                                {
+                                    encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.OaepSHA1);
+                                }
+
+                                if (encryptedOutput is not null)
+                                {
+                                    encryptedData = Convert.ToBase64String(encryptedOutput);
+                                }
                             }
                             rsa.Dispose();
                         }
                         catch (Exception e)
                         {
                             encryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.SM4) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.RSA) + 1, e);
                         }
                         break;
                     }

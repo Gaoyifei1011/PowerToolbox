@@ -431,7 +431,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
-                                PlaceholderText="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('EncryptKeyPHText')}"
+                                PlaceholderText="{x:Bind EncryptKeyPHText, Mode=OneWay}"
                                 Text="{x:Bind EncryptKeyText, Mode=OneWay}"
                                 TextChanged="{x:Bind OnEncryptKeyTextChanged}">
 
@@ -530,7 +530,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
-                                PlaceholderText="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('InitializationVectorPHText')}"
+                                PlaceholderText="{x:Bind InitializationVectorPHText, Mode=OneWay}"
                                 Text="{x:Bind InitializationVectorText, Mode=OneWay}"
                                 TextChanged="{x:Bind OnInitializationVectorTextChanged}">
 
@@ -857,6 +857,48 @@
                                     </MenuFlyout>
                                 </DropDownButton.Flyout>
                             </DropDownButton>
+                        </Grid>
+
+                        <MenuFlyoutSeparator Visibility="{x:Bind HasRSAEncryptionPaddingMode, Mode=OneWay}" />
+
+                        <!--  RSA 非对称加密其他选项  -->
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            Visibility="{x:Bind HasRSAEncryptionOtherOptions, Mode=OneWay}">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('OtherOptions')}" />
+
+                            <Button
+                                Grid.Column="1"
+                                Click="{x:Bind OnGenerateRandomRSAKeyPairClicked}"
+                                Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('GenerateRandomRSAKeyPair')}" />
+
+                            <Button
+                                Grid.Column="2"
+                                Margin="6,0,0,0"
+                                Click="{x:Bind OnCopyRSAPublicKeyClicked}"
+                                Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('CopyRSAPublicKey')}"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.IsNotEmptyString(EncryptPublicKeyText), Mode=OneWay}" />
+
+                            <Button
+                                Grid.Column="3"
+                                Margin="6,0,0,0"
+                                Click="{x:Bind OnCopyRSAPrivateKeyClicked}"
+                                Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('CopyRSAPrivateKey')}"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.IsNotEmptyString(EncryptPrivateKeyText), Mode=OneWay}" />
                         </Grid>
                     </StackPanel>
                 </Expander.Content>
