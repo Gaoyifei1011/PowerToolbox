@@ -371,6 +371,7 @@
                                 Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('TipContent1')}"
                                 TextAlignment="Justify"
                                 TextWrapping="Wrap" />
+
                             <TextBlock
                                 Margin="44,0,16,10"
                                 FontSize="14"

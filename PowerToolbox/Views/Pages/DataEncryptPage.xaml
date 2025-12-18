@@ -32,6 +32,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <RadioButtons
@@ -1139,6 +1140,7 @@
             <!--  数据加密结果列表  -->
             <Expander
                 Grid.Row="7"
+                Margin="0,0,0,3"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
                 IsExpanded="True"
@@ -1179,6 +1181,168 @@
                                 <Run Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('ViewLocalFile')}" />
                             </Hyperlink>
                         </TextBlock>
+                    </StackPanel>
+                </Expander.Content>
+            </Expander>
+
+            <!--  小提示  -->
+            <Expander
+                Grid.Row="8"
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                IsExpanded="True">
+
+                <Expander.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <FontIcon
+                            Grid.Column="0"
+                            Margin="0,0,12,0"
+                            FontSize="16"
+                            Glyph="&#xE82F;" />
+
+                        <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('Tips')}" />
+                    </Grid>
+                </Expander.Header>
+
+                <Expander.Content>
+                    <StackPanel>
+                        <TextBlock
+                            Margin="44,10,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent1')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent2')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent3')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent4')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent5')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent6')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent7')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent8')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent9')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent10')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent11')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent12')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent13')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent14')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent15')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Margin="44,0,16,10"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('TipContent16')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
                     </StackPanel>
                 </Expander.Content>
             </Expander>
