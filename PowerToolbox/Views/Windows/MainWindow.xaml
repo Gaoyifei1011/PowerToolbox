@@ -334,13 +334,13 @@
                             <NavigationViewItem Tag="{x:Bind PageList[8].Key}">
 
                                 <NavigationViewItem.Icon>
-                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/DataEncryptVerify.png" />
+                                    <ImageIcon Source="ms-appx:///Assets/ControlIcon/DataVerifyEncrypt.png" />
                                 </NavigationViewItem.Icon>
 
                                 <NavigationViewItem.Content>
                                     <TextBlock
-                                        x:Name="WindowDataEncryptVerifyText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataEncryptVerify')}"
+                                        x:Name="WindowDataVerifyEncryptText"
+                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataVerifyEncrypt')}"
                                         TextTrimming="CharacterEllipsis"
                                         TextWrapping="NoWrap" />
                                 </NavigationViewItem.Content>
@@ -348,9 +348,9 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataEncryptVerify')}"
+                                        Content="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataVerifyEncrypt')}"
                                         Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                        Visibility="{x:Bind WindowDataEncryptVerifyText.IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{x:Bind WindowDataVerifyEncryptText.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 

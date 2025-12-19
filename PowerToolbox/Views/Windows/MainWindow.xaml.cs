@@ -163,7 +163,7 @@ namespace PowerToolbox.Views.Windows
             new KeyValuePair<string, Type>("FileCertificate",typeof(FileCertificatePage)),
             new KeyValuePair<string, Type>("FileUnlock",typeof(FileUnlockPage)),
             new KeyValuePair<string, Type>("Resource",null),
-            new KeyValuePair<string, Type>("DataEncryptVerify",typeof(DataEncryptVerifyPage)),
+            new KeyValuePair<string, Type>("DataVerifyEncrypt",typeof(DataVerifyEncryptPage)),
             new KeyValuePair<string, Type>("DownloadManager",typeof(DownloadManagerPage)),
             new KeyValuePair<string, Type>("IconExtract",typeof(IconExtractPage)),
             new KeyValuePair<string, Type>("PriExtract",typeof(PriExtractPage)),
@@ -1122,22 +1122,22 @@ namespace PowerToolbox.Views.Windows
         public async Task SendReceivedFilesListAsync(List<string> filesList)
         {
             Type currentPageType = GetCurrentPageType();
-            if (Equals(currentPageType, typeof(DataEncryptVerifyPage)))
+            if (Equals(currentPageType, typeof(DataVerifyEncryptPage)))
             {
-                DataEncryptVerifyPage dataEncryptVerifyPage = GetFrameContent() as DataEncryptVerifyPage;
-                Type currentDataEncryptVerifyPage = dataEncryptVerifyPage.GetCurrentPageType();
+                DataVerifyEncryptPage dataVerifyEncryptPage = GetFrameContent() as DataVerifyEncryptPage;
+                Type currentDataVerifyEncryptPage = dataVerifyEncryptPage.GetCurrentPageType();
 
-                if (Equals(currentDataEncryptVerifyPage, typeof(DataEncryptPage)))
+                if (Equals(currentDataVerifyEncryptPage, typeof(DataEncryptPage)))
                 {
-                    DataEncryptPage dataEncryptPage = dataEncryptVerifyPage.GetFrameContent() as DataEncryptPage;
+                    DataEncryptPage dataEncryptPage = dataVerifyEncryptPage.GetFrameContent() as DataEncryptPage;
                     if (!dataEncryptPage.IsEncrypting && filesList.Count is 1)
                     {
                         dataEncryptPage.EncryptFile = filesList[0];
                     }
                 }
-                else if (Equals(currentDataEncryptVerifyPage, typeof(DataVerifyPage)))
+                else if (Equals(currentDataVerifyEncryptPage, typeof(DataVerifyPage)))
                 {
-                    DataVerifyPage dataVerifyPage = dataEncryptVerifyPage.GetFrameContent() as DataVerifyPage;
+                    DataVerifyPage dataVerifyPage = dataVerifyEncryptPage.GetFrameContent() as DataVerifyPage;
                     if (!dataVerifyPage.IsVerifying && filesList.Count is 1)
                     {
                         dataVerifyPage.VerifyFile = filesList[0];

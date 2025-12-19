@@ -1,8 +1,8 @@
 AllTools=All tools
 ContextMenuManager=Context menu manager
 ContextMenuManagerDescription=Manage the display status of the right-click menu item
-DataEncryptVerify=Data encrypt verify
-DataEncryptVerifyDescription=Encrypt or verify the data
+DataVerifyEncrypt=Data verify and encrypt
+DataVerifyEncryptDescription=Verify or encrypt the data
 DownloadManager=Download manager
 DownloadManagerDescription=A simple downloader built using the system's built-in delivery optimization
 DriverManager=Driver manager

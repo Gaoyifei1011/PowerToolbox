@@ -1,7 +1,7 @@
 AllTools=All tools
 Close=Close
 ContextMenuManager=Context menu manager
-DataEncryptVerify=Data encrypt verify
+DataVerifyEncrypt=Data verify and encrypt
 DownloadManager=Download manager
 DriverManager=Driver manager
 ExperimentalFeatureManager=Experimental feature manager
