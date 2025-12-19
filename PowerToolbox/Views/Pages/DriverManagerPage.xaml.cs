@@ -1629,7 +1629,7 @@ namespace PowerToolbox.Views.Pages
 
                     foreach (SystemDriverInformation systemDriverInformation in systemDriverInformationList)
                     {
-                        if (Equals(dismDriverPackageItemGuid, systemDriverInformation.DeviceGuid) && string.Equals(driverItem.DriverOEMInfName, systemDriverInformation.InfPath, StringComparison.OrdinalIgnoreCase) && driverItem.DriverDate.Equals(systemDriverInformation.Date) && driverItem.DriverVersion.Equals(systemDriverInformation.Version))
+                        if (Equals(dismDriverPackageItemGuid, systemDriverInformation.DeviceGuid) && string.Equals(driverItem.DriverOEMInfName, systemDriverInformation.InfPath, StringComparison.OrdinalIgnoreCase) && driverItem.DriverDate.Date.Equals(systemDriverInformation.Date.Date) && driverItem.DriverVersion.Equals(systemDriverInformation.Version))
                         {
                             driverItem.DeviceName = string.IsNullOrEmpty(systemDriverInformation.Description) ? NotAvailableString : systemDriverInformation.Description;
                             break;
