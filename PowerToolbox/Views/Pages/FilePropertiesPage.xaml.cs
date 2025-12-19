@@ -476,21 +476,19 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 日期更改时触发的事件
+        /// 创建日期更改时触发的事件
         /// </summary>
-        private void OnDateChanged(object sender, DatePickerValueChangedEventArgs args)
+        private void OnCreateDateChanged(object sender, DatePickerValueChangedEventArgs args)
         {
-            if (sender is DatePicker datePicker && datePicker.Tag is string tag)
-            {
-                if (string.Equals(tag, nameof(CreateDate)))
-                {
-                    CreateDate = args.NewDate;
-                }
-                else if (string.Equals(tag, nameof(ModifyDate)))
-                {
-                    ModifyDate = args.NewDate;
-                }
-            }
+            CreateDate = args.NewDate;
+        }
+
+        /// <summary>
+        /// 修改日期更改时触发的事件
+        /// </summary>
+        private void OnModifyDateChanged(object sender, DatePickerValueChangedEventArgs args)
+        {
+            ModifyDate = args.NewDate;
         }
 
         /// <summary>
@@ -709,23 +707,21 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 取消选中时触发的事件
+        /// 创建日期自定义选择框取消选中时触发的事件
         /// </summary>
-        private void OnUnchecked(object sender, RoutedEventArgs args)
+        private void OnCreateUnchecked(object sender, RoutedEventArgs args)
         {
-            if (sender is Microsoft.UI.Xaml.Controls.CheckBox checkBox && checkBox.Tag is string tag)
-            {
-                if (string.Equals(tag, nameof(CreateDate)))
-                {
-                    CreateDate = DateTimeOffset.Now;
-                    CreateTime = DateTimeOffset.Now.TimeOfDay;
-                }
-                else if (string.Equals(tag, nameof(ModifyDate)))
-                {
-                    ModifyDate = DateTimeOffset.Now;
-                    ModifyTime = DateTimeOffset.Now.TimeOfDay;
-                }
-            }
+            CreateDate = DateTimeOffset.Now;
+            CreateTime = DateTimeOffset.Now.TimeOfDay;
+        }
+
+        /// <summary>
+        /// 修改日期自定义选择框取消选中时触发的事件
+        /// </summary>
+        private void OnModifyUnchecked(object sender, RoutedEventArgs args)
+        {
+            ModifyDate = DateTimeOffset.Now;
+            ModifyTime = DateTimeOffset.Now.TimeOfDay;
         }
 
         /// <summary>

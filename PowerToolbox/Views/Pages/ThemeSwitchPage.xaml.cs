@@ -890,6 +890,14 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 关闭浮出控件
+        /// </summary>
+        private void OnCloseAppThemeSetTimeFlyoutClicked(object sender, RoutedEventArgs args)
+        {
+            AppThemeSetTimeFlyout.Hide();
+        }
+
+        /// <summary>
         /// 显示设置时间控件
         /// </summary>
         private void OnShowSetTimeFlyoutClicked(object sender, RoutedEventArgs args)
@@ -922,19 +930,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 关闭浮出控件
         /// </summary>
-        private void OnCloseFlyoutClicked(object sender, RoutedEventArgs args)
+        private void OnCloseSystemThemeSetTimeFlyoutClicked(object sender, RoutedEventArgs args)
         {
-            if (sender is Button button && button.Tag is string tag && !string.IsNullOrEmpty(tag))
-            {
-                if (string.Equals(tag, "SystemThemeSetTimeFlyout", StringComparison.OrdinalIgnoreCase) && SystemThemeSetTimeFlyout.IsOpen)
-                {
-                    SystemThemeSetTimeFlyout.Hide();
-                }
-                else if (string.Equals(tag, "AppThemeSetTimeFlyout", StringComparison.OrdinalIgnoreCase) && AppThemeSetTimeFlyout.IsOpen)
-                {
-                    AppThemeSetTimeFlyout.Hide();
-                }
-            }
+            SystemThemeSetTimeFlyout.Hide();
         }
 
         /// <summary>

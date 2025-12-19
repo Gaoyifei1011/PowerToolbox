@@ -563,9 +563,8 @@
                                                             Margin="-5,0,0,0"
                                                             HorizontalAlignment="Center"
                                                             VerticalAlignment="Center"
-                                                            Click="{x:Bind OnCloseFlyoutClicked}"
-                                                            Style="{StaticResource AlternateCloseButtonStyle}"
-                                                            Tag="SystemThemeSetTimeFlyout">
+                                                            Click="{x:Bind OnCloseSystemThemeSetTimeFlyoutClicked}"
+                                                            Style="{StaticResource AlternateCloseButtonStyle}">
 
                                                             <Button.Content>
                                                                 <FontIcon
@@ -779,9 +778,8 @@
                                                             Margin="-5,0,0,0"
                                                             HorizontalAlignment="Center"
                                                             VerticalAlignment="Center"
-                                                            Click="{x:Bind OnCloseFlyoutClicked}"
-                                                            Style="{StaticResource AlternateCloseButtonStyle}"
-                                                            Tag="AppThemeSetTimeFlyout">
+                                                            Click="{x:Bind OnCloseAppThemeSetTimeFlyoutClicked}"
+                                                            Style="{StaticResource AlternateCloseButtonStyle}">
 
                                                             <Button.Content>
                                                                 <FontIcon

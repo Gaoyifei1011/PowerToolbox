@@ -96,9 +96,8 @@
                 <TextBox
                     Grid.Column="1"
                     IsEnabled="{x:Bind x:Object.Equals(SelectedKind, enum:ExtensionNameSelectedKind.IsSameExtensionName), Mode=OneWay}"
-                    Tag="ChangeToText"
                     Text="{x:Bind ChangeToText, Mode=OneWay}"
-                    TextChanged="{x:Bind OnTextChanged}" />
+                    TextChanged="{x:Bind OnChangeToTextChanged}" />
             </Grid>
 
             <CheckBox
@@ -124,9 +123,8 @@
                 <TextBox
                     Grid.Column="1"
                     IsEnabled="{x:Bind x:Object.Equals(SelectedKind, enum:ExtensionNameSelectedKind.IsFindAndReplaceExtensionName), Mode=OneWay}"
-                    Tag="SearchText"
                     Text="{x:Bind SearchText, Mode=OneWay}"
-                    TextChanged="{x:Bind OnTextChanged}" />
+                    TextChanged="{x:Bind OnSearchTextChanged}" />
             </Grid>
 
             <Grid Grid.Row="1" Grid.Column="2">
@@ -143,9 +141,8 @@
                 <TextBox
                     Grid.Column="1"
                     IsEnabled="{x:Bind x:Object.Equals(SelectedKind, enum:ExtensionNameSelectedKind.IsFindAndReplaceExtensionName), Mode=OneWay}"
-                    Tag="ReplaceText"
                     Text="{x:Bind ReplaceText, Mode=OneWay}"
-                    TextChanged="{x:Bind OnTextChanged}" />
+                    TextChanged="{x:Bind OnReplaceTextChanged}" />
             </Grid>
         </Grid>
 

@@ -115,15 +115,13 @@
                         Grid.Row="0"
                         Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('CreateDate')}"
                         IsChecked="{x:Bind IsCreateDateChecked, Mode=TwoWay}"
-                        Tag="CreateDate"
-                        Unchecked="{x:Bind OnUnchecked}" />
+                        Unchecked="{x:Bind OnCreateUnchecked}" />
 
                     <CheckBox
                         Grid.Row="1"
                         Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('ModifyDate')}"
                         IsChecked="{x:Bind IsModifyDateChecked, Mode=TwoWay}"
-                        Tag="ModifyDate"
-                        Unchecked="{x:Bind OnUnchecked}" />
+                        Unchecked="{x:Bind OnModifyUnchecked}" />
                 </Grid>
             </Grid>
 
@@ -145,10 +143,9 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Date="{x:Bind CreateDate, Mode=OneWay}"
-                    DateChanged="{x:Bind OnDateChanged}"
+                    DateChanged="{x:Bind OnCreateDateChanged}"
                     IsEnabled="{x:Bind IsCreateDateChecked, Mode=OneWay}"
-                    Style="{StaticResource DatePickerStyle}"
-                    Tag="CreateDate" />
+                    Style="{StaticResource DatePickerStyle}" />
 
                 <TimePicker
                     Grid.Row="0"
@@ -163,10 +160,9 @@
                     Grid.Row="1"
                     Grid.Column="0"
                     Date="{x:Bind ModifyDate, Mode=OneWay}"
-                    DateChanged="{x:Bind OnDateChanged}"
+                    DateChanged="{x:Bind OnModifyDateChanged}"
                     IsEnabled="{x:Bind IsModifyDateChecked, Mode=OneWay}"
-                    Style="{StaticResource DatePickerStyle}"
-                    Tag="ModifyDate" />
+                    Style="{StaticResource DatePickerStyle}" />
 
                 <TimePicker
                     Grid.Row="1"

@@ -363,24 +363,13 @@ namespace PowerToolbox.Views.Pages
         #region 第三部分：扩展名称页面——挂载的事件
 
         /// <summary>
-        /// 当文本框中的内容发生更改时发生的事件。
+        /// 改为文本框中的内容发生更改时发生的事件
         /// </summary>
-        private void OnTextChanged(object sender, TextChangedEventArgs args)
+        private void OnChangeToTextChanged(object sender, TextChangedEventArgs args)
         {
-            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox && textBox.Tag is string tag)
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
-                if (tag is "ChangeToText")
-                {
-                    ChangeToText = textBox.Text;
-                }
-                else if (tag is "SearchText")
-                {
-                    SearchText = textBox.Text;
-                }
-                else if (tag is "ReplaceText")
-                {
-                    ReplaceText = textBox.Text;
-                }
+                ChangeToText = textBox.Text;
             }
         }
 
@@ -392,6 +381,28 @@ namespace PowerToolbox.Views.Pages
             if (sender is Microsoft.UI.Xaml.Controls.CheckBox checkBox && checkBox.Tag is ExtensionNameSelectedKind extensionNameSelectedKind)
             {
                 SelectedKind = extensionNameSelectedKind;
+            }
+        }
+
+        /// <summary>
+        /// 查找文本框中的内容发生更改时发生的事件
+        /// </summary>
+        private void OnSearchTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                SearchText = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// 替换文本框中的内容发生更改时发生的事件
+        /// </summary>
+        private void OnReplaceTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                ReplaceText = textBox.Text;
             }
         }
 

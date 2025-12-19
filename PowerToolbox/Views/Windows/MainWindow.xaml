@@ -138,7 +138,7 @@
 
                 <NavigationView.MenuItems>
                     <!--  所有工具  -->
-                    <NavigationViewItem Tag="AllTools">
+                    <NavigationViewItem Tag="{x:Bind PageList[0].Key}">
 
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/AllTools.png" />
@@ -164,7 +164,7 @@
                     <NavigationViewItemSeparator Margin="0,0,6,0" />
 
                     <!--  休闲工具  -->
-                    <NavigationViewItem Tag="Relaxation">
+                    <NavigationViewItem Tag="{x:Bind PageList[1].Key}">
 
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/Relaxation.png" />
@@ -187,7 +187,7 @@
                         </ToolTipService.ToolTip>
 
                         <NavigationViewItem.MenuItems>
-                            <NavigationViewItem Tag="Loaf">
+                            <NavigationViewItem Tag="{x:Bind PageList[2].Key}">
 
                                 <NavigationViewItem.Content>
                                     <TextBlock
@@ -213,7 +213,7 @@
                     </NavigationViewItem>
 
                     <!--  文件工具  -->
-                    <NavigationViewItem Tag="File">
+                    <NavigationViewItem Tag="{x:Bind PageList[3].Key}">
 
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/File.png" />
@@ -236,7 +236,7 @@
                         </ToolTipService.ToolTip>
 
                         <NavigationViewItem.MenuItems>
-                            <NavigationViewItem Tag="FileManager">
+                            <NavigationViewItem Tag="{x:Bind PageList[4].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/FileManager.png" />
@@ -259,7 +259,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="FileCertificate">
+                            <NavigationViewItem Tag="{x:Bind PageList[5].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/FileCertificate.png" />
@@ -282,7 +282,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="FileUnlock">
+                            <NavigationViewItem Tag="{x:Bind PageList[6].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/FileUnlock.png" />
@@ -308,7 +308,7 @@
                     </NavigationViewItem>
 
                     <!--  资源工具  -->
-                    <NavigationViewItem Tag="Resource">
+                    <NavigationViewItem Tag="{x:Bind PageList[7].Key}">
 
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/Resource.png" />
@@ -331,7 +331,7 @@
                         </ToolTipService.ToolTip>
 
                         <NavigationViewItem.MenuItems>
-                            <NavigationViewItem Tag="DataEncryptVerify">
+                            <NavigationViewItem Tag="{x:Bind PageList[8].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/DataEncryptVerify.png" />
@@ -354,7 +354,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="DownloadManager">
+                            <NavigationViewItem Tag="{x:Bind PageList[9].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/DownloadManager.png" />
@@ -377,7 +377,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="IconExtract">
+                            <NavigationViewItem Tag="{x:Bind PageList[10].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/IconExtract.png" />
@@ -400,7 +400,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="PriExtract">
+                            <NavigationViewItem Tag="{x:Bind PageList[11].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/PriExtract.png" />
@@ -426,7 +426,7 @@
                     </NavigationViewItem>
 
                     <!--  个性化工具  -->
-                    <NavigationViewItem Tag="Personalize">
+                    <NavigationViewItem Tag="{x:Bind PageList[12].Key}">
 
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/Personalize.png" />
@@ -449,7 +449,7 @@
                         </ToolTipService.ToolTip>
 
                         <NavigationViewItem.MenuItems>
-                            <NavigationViewItem Tag="ThemeSwitch">
+                            <NavigationViewItem Tag="{x:Bind PageList[13].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/ThemeSwitch.png" />
@@ -472,7 +472,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="ShellMenu">
+                            <NavigationViewItem Tag="{x:Bind PageList[14].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/ShellMenu.png" />
@@ -495,7 +495,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="ContextMenuManager">
+                            <NavigationViewItem Tag="{x:Bind PageList[15].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/ContextMenuManager.png" />
@@ -518,7 +518,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="ExperimentalFeatureManager" Visibility="Collapsed">
+                            <NavigationViewItem Tag="{x:Bind PageList[16].Key}" Visibility="Collapsed">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/ExperimentalFeatureManager.png" />
@@ -544,7 +544,7 @@
                     </NavigationViewItem>
 
                     <!--  系统工具  -->
-                    <NavigationViewItem Tag="System">
+                    <NavigationViewItem Tag="{x:Bind PageList[17].Key}">
 
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/System.png" />
@@ -567,7 +567,7 @@
                         </ToolTipService.ToolTip>
 
                         <NavigationViewItem.MenuItems>
-                            <NavigationViewItem Tag="LoopbackManager">
+                            <NavigationViewItem Tag="{x:Bind PageList[18].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/LoopbackManager.png" />
@@ -590,7 +590,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="ScheduledTaskManager">
+                            <NavigationViewItem Tag="{x:Bind PageList[19].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/ScheduledTaskManager.png" />
@@ -613,7 +613,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="Hosts" Visibility="Collapsed">
+                            <NavigationViewItem Tag="{x:Bind PageList[20].Key}" Visibility="Collapsed">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/Hosts.png" />
@@ -636,7 +636,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="DriverManager">
+                            <NavigationViewItem Tag="{x:Bind PageList[21].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/DriverManager.png" />
@@ -659,7 +659,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="UpdateManager">
+                            <NavigationViewItem Tag="{x:Bind PageList[22].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/UpdateManager.png" />
@@ -682,7 +682,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="WinFR">
+                            <NavigationViewItem Tag="{x:Bind PageList[23].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/WinFR.png" />
@@ -705,7 +705,7 @@
                                 </ToolTipService.ToolTip>
                             </NavigationViewItem>
 
-                            <NavigationViewItem Tag="WinSAT">
+                            <NavigationViewItem Tag="{x:Bind PageList[24].Key}">
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/WinSAT.png" />
@@ -732,7 +732,7 @@
                 </NavigationView.MenuItems>
 
                 <NavigationView.FooterMenuItems>
-                    <NavigationViewItem Tag="Settings">
+                    <NavigationViewItem Tag="{x:Bind PageList[25].Key}">
 
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/Settings.png" />

@@ -118,34 +118,34 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _lookUpString = string.Empty;
+        private string _lookUpText = string.Empty;
 
-        public string LookUpString
+        public string LookUpText
         {
-            get { return _lookUpString; }
+            get { return _lookUpText; }
 
             set
             {
-                if (!string.Equals(_lookUpString, value))
+                if (!string.Equals(_lookUpText, value))
                 {
-                    _lookUpString = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LookUpString)));
+                    _lookUpText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LookUpText)));
                 }
             }
         }
 
-        private string _replaceString = string.Empty;
+        private string _replaceText = string.Empty;
 
-        public string ReplaceString
+        public string ReplaceText
         {
-            get { return _replaceString; }
+            get { return _replaceText; }
 
             set
             {
-                if (!string.Equals(_replaceString, value))
+                if (!string.Equals(_replaceText, value))
                 {
-                    _replaceString = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReplaceString)));
+                    _replaceText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReplaceText)));
                 }
             }
         }
@@ -420,32 +420,57 @@ namespace PowerToolbox.Views.Pages
         #region 第三部分：文件名称页面——挂载的事件
 
         /// <summary>
-        /// 当文本框中的内容发生更改时发生的事件。
+        /// 改名规则文本框中的内容发生更改时发生的事件
         /// </summary>
-        private void OnTextChanged(object sender, TextChangedEventArgs args)
+        private void OnRenameRuleTextChanged(object sender, TextChangedEventArgs args)
         {
-            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox && textBox.Tag is string tag)
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
-                if (tag is "RenameRule")
-                {
-                    RenameRule = textBox.Text;
-                }
-                else if (tag is "StartNumber")
-                {
-                    StartNumber = textBox.Text;
-                }
-                else if (tag is "ExtensionName")
-                {
-                    ExtensionName = textBox.Text;
-                }
-                else if (tag is "LookUpString")
-                {
-                    LookUpString = textBox.Text;
-                }
-                else if (tag is "ReplaceString")
-                {
-                    ReplaceString = textBox.Text;
-                }
+                RenameRule = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// 起始编号文本框中的内容发生更改时发生的事件
+        /// </summary>
+        private void OnStartNumberTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                StartNumber = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// 扩展名文本框中的内容发生更改时发生的事件
+        /// </summary>
+        private void OnExtensionNameTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                ExtensionName = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// 查找文本框中的内容发生更改时发生的事件
+        /// </summary>
+        private void OnLookUpTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                LookUpText = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// 替换文本框中的内容发生更改时发生的事件
+        /// </summary>
+        private void OnReplaceTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                ReplaceText = textBox.Text;
             }
         }
 
@@ -717,7 +742,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private bool CheckOperationState()
         {
-            return !string.IsNullOrEmpty(RenameRule) || !string.IsNullOrEmpty(StartNumber) || IsChecked || !string.IsNullOrEmpty(LookUpString) || !string.IsNullOrEmpty(ReplaceString);
+            return !string.IsNullOrEmpty(RenameRule) || !string.IsNullOrEmpty(StartNumber) || IsChecked || !string.IsNullOrEmpty(LookUpText) || !string.IsNullOrEmpty(ReplaceText);
         }
 
         /// <summary>
@@ -835,9 +860,9 @@ namespace PowerToolbox.Views.Pages
                     }
 
                     // 查找并替换字符串
-                    if (!string.IsNullOrEmpty(LookUpString) && tempNewFileName.Contains(LookUpString))
+                    if (!string.IsNullOrEmpty(LookUpText) && tempNewFileName.Contains(LookUpText))
                     {
-                        tempNewFileName = tempNewFileName.Replace(LookUpString, ReplaceString);
+                        tempNewFileName = tempNewFileName.Replace(LookUpText, ReplaceText);
                     }
 
                     oldAndNewNameItem.NewFileName = tempNewFileName;

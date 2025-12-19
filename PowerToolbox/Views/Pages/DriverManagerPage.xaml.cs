@@ -722,9 +722,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSortWayClicked(object sender, RoutedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is string tag)
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is bool tag)
             {
-                IsIncrease = Convert.ToBoolean(tag);
+                IsIncrease = tag;
                 GetMatchedDrivers();
             }
         }

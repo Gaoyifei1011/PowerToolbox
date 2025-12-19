@@ -145,15 +145,23 @@
                                             Click="{x:Bind OnSortWayClicked}"
                                             GroupName="SortWayRadioGroup"
                                             IsChecked="{x:Bind IsIncrease, Mode=OneWay}"
-                                            Tag="True"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortIncrease')}" />
+                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortIncrease')}">
+
+                                            <RadioMenuFlyoutItem.Tag>
+                                                <x:Boolean>True</x:Boolean>
+                                            </RadioMenuFlyoutItem.Tag>
+                                        </RadioMenuFlyoutItem>
 
                                         <RadioMenuFlyoutItem
                                             Click="{x:Bind OnSortWayClicked}"
                                             GroupName="SortWayRadioGroup"
                                             IsChecked="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsIncrease), Mode=OneWay}"
-                                            Tag="False"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortDecrease')}" />
+                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortDecrease')}">
+
+                                            <RadioMenuFlyoutItem.Tag>
+                                                <x:Boolean>False</x:Boolean>
+                                            </RadioMenuFlyoutItem.Tag>
+                                        </RadioMenuFlyoutItem>
                                     </MenuFlyoutSubItem>
 
                                     <MenuFlyoutSubItem Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortRule')}">

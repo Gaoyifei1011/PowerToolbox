@@ -78,9 +78,8 @@
                         Grid.Column="1"
                         Height="20"
                         PlaceholderText="{x:Bind rootservice:ResourceService.FileNameResource.GetString('RenameRulePlaceHolderText')}"
-                        Tag="RenameRule"
                         Text="{x:Bind RenameRule, Mode=OneWay}"
-                        TextChanged="{x:Bind OnTextChanged}" />
+                        TextChanged="{x:Bind OnRenameRuleTextChanged}" />
                 </Grid>
 
                 <Grid ColumnSpacing="5">
@@ -97,9 +96,8 @@
                         Grid.Column="1"
                         Height="20"
                         PlaceholderText="{x:Bind rootservice:ResourceService.FileNameResource.GetString('StartNumberPlaceHolderText')}"
-                        Tag="StartNumber"
                         Text="{x:Bind StartNumber, Mode=OneWay}"
-                        TextChanged="{x:Bind OnTextChanged}" />
+                        TextChanged="{x:Bind OnStartNumberTextChanged}" />
                 </Grid>
 
                 <Grid>
@@ -189,9 +187,8 @@
                     <TextBox
                         Grid.Column="3"
                         IsEnabled="{x:Bind IsChecked, Mode=OneWay}"
-                        Tag="ExtensionName"
                         Text="{x:Bind ExtensionName, Mode=OneWay}"
-                        TextChanged="{x:Bind OnTextChanged}" />
+                        TextChanged="{x:Bind OnExtensionNameTextChanged}" />
                 </Grid>
             </StackPanel>
 
@@ -212,9 +209,8 @@
                         Grid.Column="1"
                         Height="20"
                         PlaceholderText="{x:Bind rootservice:ResourceService.FileNameResource.GetString('LookUpStringPlaceHolderText')}"
-                        Tag="LookUpString"
-                        Text="{x:Bind LookUpString, Mode=OneWay}"
-                        TextChanged="{x:Bind OnTextChanged}" />
+                        Text="{x:Bind LookUpText, Mode=OneWay}"
+                        TextChanged="{x:Bind OnLookUpTextChanged}" />
                 </Grid>
 
                 <Grid ColumnSpacing="5">
@@ -231,9 +227,8 @@
                         Grid.Column="1"
                         Height="20"
                         PlaceholderText="{x:Bind rootservice:ResourceService.FileNameResource.GetString('ReplaceStringPlaceHolderText')}"
-                        Tag="ReplaceString"
-                        Text="{x:Bind ReplaceString, Mode=OneWay}"
-                        TextChanged="{x:Bind OnTextChanged}" />
+                        Text="{x:Bind ReplaceText, Mode=OneWay}"
+                        TextChanged="{x:Bind OnReplaceTextChanged}" />
                 </Grid>
 
                 <Button
