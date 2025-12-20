@@ -1,0 +1,129 @@
+﻿<Page
+    x:Class="PowerToolbox.Views.Pages.DataDecryptPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:backdrophelper="using:PowerToolbox.Helpers.Backdrop"
+    xmlns:converter="using:PowerToolbox.Helpers.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:PowerToolbox.Models"
+    xmlns:rootservice="using:PowerToolbox.Services.Root"
+    xmlns:system="using:System"
+    NavigationCacheMode="Enabled"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <CornerRadius x:Key="ListViewItemCornerRadius">0</CornerRadius>
+    </Page.Resources>
+
+    <ScrollViewer
+        HorizontalScrollBarVisibility="Disabled"
+        HorizontalScrollMode="Disabled"
+        VerticalScrollBarVisibility="Auto"
+        VerticalScrollMode="Enabled">
+
+        <Grid Margin="0,0,30,30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <RadioButtons
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                MaxColumns="2"
+                SelectedIndex="{x:Bind SelectedIndex, Mode=OneWay}"
+                SelectionChanged="{x:Bind OnSelectionChanged}">
+
+                <RadioButton
+                    MinWidth="0"
+                    Margin="0,0,20,0"
+                    Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('File')}" />
+
+                <RadioButton
+                    MinWidth="0"
+                    Margin="20,0,0,0"
+                    Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('Content')}" />
+            </RadioButtons>
+
+            <!--  从文件读取字符串，并进行解密  -->
+            <Grid
+                Grid.Row="1"
+                Height="140"
+                Margin="0,5,0,3"
+                AllowDrop="True"
+                Background="Transparent"
+                BorderBrush="{ThemeResource TextFillColorSecondaryBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}"
+                DragEnter="{x:Bind OnDataDragOver}"
+                Drop="{x:Bind OnDataDrop}"
+                Visibility="{x:Bind GetDataDecryptType(SelectedIndex, 0), Mode=OneWay}">
+
+                <StackPanel
+                    Margin="0,15"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="3">
+
+                    <FontIcon
+                        HorizontalAlignment="Center"
+                        FontSize="26"
+                        Glyph="&#xE710;" />
+
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="16"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DragAndDrop')}" />
+
+                    <Button
+                        HorizontalAlignment="Center"
+                        Click="{x:Bind OnOpenLocalFileClicked}"
+                        Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('OpenLocalFile')}" />
+
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('FileNotSelected')}"
+                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityReverseConvert(DecryptFile), Mode=OneWay}" />
+
+                    <TextBlock
+                        x:Name="DecryptFileText"
+                        HorizontalAlignment="Center"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="{x:Bind DecryptFile, Mode=OneWay}"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="NoWrap"
+                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(DecryptFile), Mode=OneWay}">
+
+                        <ToolTipService.ToolTip>
+                            <ToolTip
+                                MaxWidth="9999"
+                                Content="{x:Bind DecryptFile, Mode=OneWay}"
+                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                Visibility="{x:Bind DecryptFileText.IsTextTrimmed, Mode=OneWay}" />
+                        </ToolTipService.ToolTip>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+
+            <!--  对字符串数据进行解密  -->
+            <TextBox
+                Grid.Row="1"
+                Height="140"
+                Margin="0,5,0,3"
+                PlaceholderText="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DecryptPHText')}"
+                Text="{x:Bind DecryptContent, Mode=OneWay}"
+                TextChanged="{x:Bind OnDecryptContentTextChanged}"
+                TextWrapping="Wrap"
+                Visibility="{x:Bind GetDataDecryptType(SelectedIndex, 1), Mode=OneWay}" />
+        </Grid>
+    </ScrollViewer>
+</Page>
