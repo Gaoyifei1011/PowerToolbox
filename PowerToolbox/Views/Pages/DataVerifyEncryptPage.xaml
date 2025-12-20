@@ -62,6 +62,7 @@
 
                     <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.DataVerifyEncryptResource.GetString('DataVerify')}" />
                     <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.DataVerifyEncryptResource.GetString('DataEncrypt')}" />
+                    <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.DataVerifyEncryptResource.GetString('DataDecrypt')}" />
                 </SelectorBar>
 
                 <Frame

@@ -32,7 +32,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<Type> PageList { get; } = [typeof(DataVerifyPage), typeof(DataEncryptPage)];
+        private List<Type> PageList { get; } = [typeof(DataVerifyPage), typeof(DataEncryptPage), typeof(DataDecryptPage)];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -86,6 +86,10 @@ namespace PowerToolbox.Views.Pages
             else if (index is 1 && !Equals(currentPage, PageList[1]))
             {
                 NavigateTo(PageList[1], null, index > currentIndex);
+            }
+            else if (index is 2 && !Equals(currentPage, PageList[2]))
+            {
+                NavigateTo(PageList[2], null, index > currentIndex);
             }
         }
 
