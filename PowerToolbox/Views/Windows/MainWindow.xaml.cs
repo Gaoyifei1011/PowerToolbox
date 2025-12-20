@@ -508,7 +508,7 @@ namespace PowerToolbox.Views.Windows
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainPage), nameof(OnNavigated), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(OnNavigated), 1, e);
             }
         }
 
@@ -518,7 +518,7 @@ namespace PowerToolbox.Views.Windows
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs args)
         {
             args.Handled = true;
-            LogService.WriteLog(TraceEventType.Warning, nameof(PowerToolbox), nameof(LogService), nameof(OnNavigationFailed), 1, args.Exception);
+            LogService.WriteLog(TraceEventType.Warning, nameof(PowerToolbox), nameof(MainWindow), nameof(OnNavigationFailed), 1, args.Exception);
             (Application.Current as MainApp).Dispose();
         }
 
@@ -984,7 +984,7 @@ namespace PowerToolbox.Views.Windows
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainPage), nameof(NavigateTo), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(NavigateTo), 1, e);
             }
         }
 
@@ -1018,7 +1018,7 @@ namespace PowerToolbox.Views.Windows
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainPage), nameof(NavigationFrom), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(NavigationFrom), 1, e);
                 }
 
                 (MainNavigationView.Content as Frame).GoBack();
@@ -1347,7 +1347,7 @@ namespace PowerToolbox.Views.Windows
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainPage), nameof(SendReceivedFilesListAsync), 1, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(SendReceivedFilesListAsync), 1, e);
                             }
                         }
 

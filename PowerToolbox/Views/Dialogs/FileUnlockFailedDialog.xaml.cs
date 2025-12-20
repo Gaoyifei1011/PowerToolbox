@@ -112,7 +112,7 @@ namespace PowerToolbox.Views.Dialogs
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnOpenFilePathExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockFailedDialog), nameof(OnOpenFilePathExecuteRequested), 1, e);
                     }
                 });
             }
@@ -157,7 +157,7 @@ namespace PowerToolbox.Views.Dialogs
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(OnOpenProcessPathExecuteRequested), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockFailedDialog), nameof(OnOpenProcessPathExecuteRequested), 1, e);
                     }
                 });
             }
