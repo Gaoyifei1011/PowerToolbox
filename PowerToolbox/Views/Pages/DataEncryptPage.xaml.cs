@@ -805,7 +805,7 @@ namespace PowerToolbox.Views.Pages
             SelectedTextEncodingType = TextEncodingTypeList[9];
         }
 
-        #region 第一部分：数据校验页面——挂载的事件
+        #region 第一部分：数据加密页面——挂载的事件
 
         /// <summary>
         /// 设置拖动的数据的可视表示形式
@@ -914,11 +914,11 @@ namespace PowerToolbox.Views.Pages
             if (sender is RadioButtons radioButtons && radioButtons.SelectedIndex >= 0)
             {
                 SelectedIndex = radioButtons.SelectedIndex;
-                if (SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
+                if (!IsEncrypting && SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
                 {
                     ResultMessage = FileInitializeString;
                 }
-                else if (SelectedIndex is 1 && ResultSeverity is InfoBarSeverity.Informational)
+                else if (!IsEncrypting && SelectedIndex is 1 && ResultSeverity is InfoBarSeverity.Informational)
                 {
                     ResultMessage = ContentInitializeString;
                 }
@@ -943,7 +943,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 校验内容发生改变时触发的事件
+        /// 加密内容发生改变时触发的事件
         /// </summary>
         private void OnEncryptContentTextChanged(object sender, TextChangedEventArgs args)
         {
@@ -2251,12 +2251,11 @@ namespace PowerToolbox.Views.Pages
             });
         }
 
-        #endregion 第一部分：数据校验页面——挂载的事件
+        #endregion 第一部分：数据加密页面——挂载的事件
 
         /// <summary>
-        /// 获取校验后的数据
+        /// 获取加密后的数据
         /// </summary>
-        /// TODO：未完成
         private (string, Exception) GetEncryptedData(DataEncryptType dataEncryptType, int selectedEncryptIndex, string contentData, Encoding textEncoding, string encryptFile)
         {
             string encryptedData = string.Empty;
@@ -2988,7 +2987,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 获取要校验的类型
+        /// 获取要加密的类型
         /// </summary>
         private Visibility GetDataEncryptType(int selectedIndex, int comparedSelectedIndex)
         {
