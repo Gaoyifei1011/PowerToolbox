@@ -1,0 +1,12 @@
+Content=Content
+ContentInitialize=Please enter the text content for decryption
+Decrypting=Decrypting now, please wait...
+DecryptPHText=Please input the character data to be decrypted
+DragAndDrop=Drag and drop to load and decrypt file data
+DragOverContent=Add to Data Decrpyt page
+File=File
+FileInitialize=Please select the file containing string data for decryption
+FileNotSelected=File not selected
+NoMultiFile=Please do not select multiple files
+OpenLocalFile=Open local file
+SelectFile=Select file

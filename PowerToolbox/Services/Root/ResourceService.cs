@@ -14,6 +14,8 @@ namespace PowerToolbox.Services.Root
 
         public static ResourceManager ContextMenuManagerResource { get; } = new("PowerToolbox.Strings.ContextMenuManager", CurrentAssembly);
 
+        public static ResourceManager DataDecryptResource { get; } = new("PowerToolbox.Strings.DataDecrypt", CurrentAssembly);
+
         public static ResourceManager DataEncryptResource { get; } = new("PowerToolbox.Strings.DataEncrypt", CurrentAssembly);
 
         public static ResourceManager DataVerifyResource { get; } = new("PowerToolbox.Strings.DataVerify", CurrentAssembly);

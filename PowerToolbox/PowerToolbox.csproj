@@ -195,6 +195,9 @@
 		<EmbeddedResource Include="Strings\ContextMenuManager.en-us.restext" />
 		<EmbeddedResource Include="Strings\ContextMenuManager.restext" />
 		<EmbeddedResource Include="Strings\ContextMenuManager.zh-hans.restext" />
+		<EmbeddedResource Include="Strings\DataDecrypt.en-us.restext" />
+		<EmbeddedResource Include="Strings\DataDecrypt.restext" />
+		<EmbeddedResource Include="Strings\DataDecrypt.zh-hans.restext" />
 		<EmbeddedResource Include="Strings\DataEncrypt.en-us.restext" />
 		<EmbeddedResource Include="Strings\DataEncrypt.restext" />
 		<EmbeddedResource Include="Strings\DataEncrypt.zh-hans.restext" />
