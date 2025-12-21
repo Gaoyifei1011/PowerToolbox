@@ -280,38 +280,6 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _initializationVectorPHText = string.Empty;
-
-        public string InitializationVectorPHText
-        {
-            get { return _initializationVectorPHText; }
-
-            set
-            {
-                if (!string.Equals(_initializationVectorPHText, value))
-                {
-                    _initializationVectorPHText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InitializationVectorPHText)));
-                }
-            }
-        }
-
-        private string _initializationVectorText = string.Empty;
-
-        public string InitializationVectorText
-        {
-            get { return _initializationVectorText; }
-
-            set
-            {
-                if (!string.Equals(_initializationVectorText, value))
-                {
-                    _initializationVectorText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InitializationVectorText)));
-                }
-            }
-        }
-
         private KeyValuePair<string, string> _selectedEncryptKeyStringType;
 
         public KeyValuePair<string, string> SelectedEncryptKeyStringType
@@ -340,6 +308,38 @@ namespace PowerToolbox.Views.Pages
                 {
                     _hasInitializationVector = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasInitializationVector)));
+                }
+            }
+        }
+
+        private string _initializationVectorPHText = string.Empty;
+
+        public string InitializationVectorPHText
+        {
+            get { return _initializationVectorPHText; }
+
+            set
+            {
+                if (!string.Equals(_initializationVectorPHText, value))
+                {
+                    _initializationVectorPHText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InitializationVectorPHText)));
+                }
+            }
+        }
+
+        private string _initializationVectorText = string.Empty;
+
+        public string InitializationVectorText
+        {
+            get { return _initializationVectorText; }
+
+            set
+            {
+                if (!string.Equals(_initializationVectorText, value))
+                {
+                    _initializationVectorText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InitializationVectorText)));
                 }
             }
         }
@@ -999,9 +999,9 @@ namespace PowerToolbox.Views.Pages
                         {
                             EncryptKeyPHText = EncryptKey162432SizeString;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1023,12 +1023,12 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.CaesarCipher:
                         {
-                            EncryptKeyPHText = string.Empty;
                             SelectedIndex = 1;
+                            EncryptKeyPHText = string.Empty;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1052,9 +1052,9 @@ namespace PowerToolbox.Views.Pages
                         {
                             EncryptKeyPHText = EncryptKey32SizeString;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = InitializationVector12SizeString;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1078,9 +1078,9 @@ namespace PowerToolbox.Views.Pages
                         {
                             EncryptKeyPHText = EncryptKey8SizeString;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = InitializationVector8SizeString;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1102,12 +1102,12 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.MorseCode:
                         {
-                            EncryptKeyPHText = string.Empty;
                             SelectedIndex = 1;
+                            EncryptKeyPHText = string.Empty;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1131,9 +1131,9 @@ namespace PowerToolbox.Views.Pages
                         {
                             EncryptKeyPHText = EncryptKey16SizeString;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = InitializationVector8SizeString;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1157,9 +1157,9 @@ namespace PowerToolbox.Views.Pages
                         {
                             EncryptKeyPHText = EncryptKey16SizeString;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = InitializationVector8SizeString;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1183,9 +1183,9 @@ namespace PowerToolbox.Views.Pages
                         {
                             EncryptKeyPHText = EncryptKey16SizeString;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1209,9 +1209,9 @@ namespace PowerToolbox.Views.Pages
                         {
                             EncryptKeyPHText = EncryptKey16SizeString;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = InitializationVector8SizeString;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1235,9 +1235,9 @@ namespace PowerToolbox.Views.Pages
                         {
                             EncryptKeyPHText = EncryptKey16SizeString;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1262,9 +1262,9 @@ namespace PowerToolbox.Views.Pages
                         {
                             EncryptKeyPHText = EncryptKey162432SizeString;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1288,9 +1288,9 @@ namespace PowerToolbox.Views.Pages
                         {
                             EncryptKeyPHText = string.Empty;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1314,9 +1314,9 @@ namespace PowerToolbox.Views.Pages
                         {
                             EncryptKeyPHText = EncryptKey16SizeString;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1340,9 +1340,9 @@ namespace PowerToolbox.Views.Pages
                         {
                             EncryptKeyPHText = EncryptKey1624SizeString;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1364,12 +1364,12 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.XOR:
                         {
-                            EncryptKeyPHText = string.Empty;
                             SelectedIndex = 1;
+                            EncryptKeyPHText = string.Empty;
                             EncryptKeyText = string.Empty;
+                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                             SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
                             SelectedPaddingMode = PaddingModeList[0];
@@ -1398,206 +1398,6 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 加密密钥内容发生改变时触发的事件
-        /// </summary>
-        private void OnEncryptKeyTextChanged(object sender, TextChangedEventArgs args)
-        {
-            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
-            {
-                EncryptKeyText = textBox.Text;
-            }
-        }
-
-        /// <summary>
-        /// 初始化向量内容改变时触发的事件
-        /// </summary>
-        private void OnInitializationVectorTextChanged(object sender, TextChangedEventArgs args)
-        {
-            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
-            {
-                InitializationVectorText = textBox.Text;
-            }
-        }
-
-        /// <summary>
-        /// 加密块密码模式发生变化时触发的事件
-        /// </summary>
-        private void OnEncryptedBlockCipherModeClicked(object sender, RoutedEventArgs args)
-        {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<CipherMode, string> encryptedBlockCipherMode)
-            {
-                SelectedEncryptedBlockCipherMode = encryptedBlockCipherMode;
-                if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.AES || SelectedDataEncryptType.DataEncryptType is DataEncryptType.DES || SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC2 ||
-                    SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC5 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC6 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rijndael ||
-                    SelectedDataEncryptType.DataEncryptType is DataEncryptType.SM4 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.TripleDES)
-                {
-                    HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 文字自定义编码类型内容发生变化时触发的事件
-        /// </summary>
-        private void OnTextEncodingCustomTypeTextChanged(object sender, TextChangedEventArgs args)
-        {
-            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
-            {
-                TextEncodingCustomTypeText = textBox.Text;
-            }
-        }
-
-        /// <summary>
-        /// 填充模式发生变化时触发的事件
-        /// </summary>
-        private void OnPaddingModeClicked(object sender, RoutedEventArgs args)
-        {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<PaddingMode, string> encryptedPaddingMode)
-            {
-                SelectedPaddingMode = encryptedPaddingMode;
-            }
-        }
-
-        /// <summary>
-        /// 偏移量值发生变化时触发的事件
-        /// </summary>
-        private void OnOffsetValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
-        {
-            if (args.NewValue is not double.NaN)
-            {
-                Offset = Convert.ToInt32(args.NewValue);
-            }
-        }
-
-        /// <summary>
-        /// 加密公钥内容发生变化时触发的事件
-        /// </summary>
-        private void OnEncryptPublicKeyTextChanged(object sender, TextChangedEventArgs args)
-        {
-            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
-            {
-                EncryptPublicKeyText = textBox.Text;
-            }
-        }
-
-        /// <summary>
-        /// 加密私钥内容发生变化时触发的事件
-        /// </summary>
-        private void OnEncryptPrivateKeyTextChanged(object sender, TextChangedEventArgs args)
-        {
-            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
-            {
-                EncryptPrivateKeyText = textBox.Text;
-            }
-        }
-
-        /// <summary>
-        /// RSA 非对称加密填充模式发生变化时触发的事件
-        /// </summary>
-        private void OnRSAEncryptionPaddingModeClicked(object sender, RoutedEventArgs args)
-        {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<RSAEncryptionPaddingMode, string> encryptedRSAEncryptionPaddingMode)
-            {
-                SelectedRSAEncryptionPaddingMode = encryptedRSAEncryptionPaddingMode;
-            }
-        }
-
-        /// <summary>
-        /// 生成 RSA 加密算法密钥对
-        /// </summary>
-        private async void OnGenerateRandomRSAKeyPairClicked(object sender, RoutedEventArgs args)
-        {
-            (string publicKey, string privateKey) = await Task.Run(() =>
-            {
-                string publicKey = string.Empty;
-                string privateKey = string.Empty;
-
-                try
-                {
-                    RSA rsa = RSA.Create();
-                    publicKey = rsa.ToXmlString(false);
-                    privateKey = rsa.ToXmlString(true);
-                    rsa.Dispose();
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnGenerateRandomRSAKeyPairClicked), 1, e);
-                }
-
-                return ValueTuple.Create(publicKey, privateKey);
-            });
-
-            if (!string.IsNullOrEmpty(publicKey))
-            {
-                EncryptPublicKeyText = publicKey;
-            }
-
-            if (!string.IsNullOrEmpty(privateKey))
-            {
-                EncryptPrivateKeyText = privateKey;
-            }
-        }
-
-        /// <summary>
-        /// 复制 RSA 加密算法公钥到剪贴板
-        /// </summary>
-        private async void OnCopyRSAPublicKeyClicked(object sender, RoutedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(EncryptPublicKeyText))
-            {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(EncryptPublicKeyText);
-
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
-            }
-        }
-
-        /// <summary>
-        /// 复制 RSA 加密算法私钥到剪贴板
-        /// </summary>
-        private async void OnCopyRSAPrivateKeyClicked(object sender, RoutedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(EncryptPrivateKeyText))
-            {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(EncryptPrivateKeyText);
-
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
-            }
-        }
-
-        /// <summary>
-        /// 选择文字编码类型
-        /// </summary>
-        private void OnTextEncodingTypeClicked(object sender, RoutedEventArgs args)
-        {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> textEncodingType)
-            {
-                SelectedTextEncodingType = textEncodingType;
-            }
-        }
-
-        /// <summary>
-        /// 输出格式为大写字母
-        /// </summary>
-        private void OnUseUpperCaseChecked(object sender, RoutedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(EncryptResult))
-            {
-                EncryptResult = EncryptResult.ToUpperInvariant();
-            }
-        }
-
-        /// <summary>
-        /// 输出格式为小写字母
-        /// </summary>
-        private void OnUseUpperCaseUnchecked(object sender, RoutedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(EncryptResult))
-            {
-                EncryptResult = EncryptResult.ToLowerInvariant();
-            }
-        }
-
-        /// <summary>
         /// 加密密钥字符串编码模式发生变化时触发的事件
         /// </summary>
         private void OnEncryptKeyStringTypeClicked(object sender, RoutedEventArgs args)
@@ -1605,6 +1405,17 @@ namespace PowerToolbox.Views.Pages
             if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> encryptKeyStringType)
             {
                 SelectedEncryptKeyStringType = encryptKeyStringType;
+            }
+        }
+
+        /// <summary>
+        /// 加密密钥内容发生改变时触发的事件
+        /// </summary>
+        private void OnEncryptKeyTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                EncryptKeyText = textBox.Text;
             }
         }
 
@@ -1719,6 +1530,28 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 初始化向量字符串编码模式发生变化时触发的事件
+        /// </summary>
+        private void OnInitializationVectorStringTypeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> initializationVectorStringType)
+            {
+                SelectedInitializationVectorStringType = initializationVectorStringType;
+            }
+        }
+
+        /// <summary>
+        /// 初始化向量内容改变时触发的事件
+        /// </summary>
+        private void OnInitializationVectorTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                InitializationVectorText = textBox.Text;
+            }
+        }
+
+        /// <summary>
         /// 生成初始化向量
         /// </summary>
         private async void OnGenerateInitializationVectorClicked(object sender, RoutedEventArgs args)
@@ -1821,13 +1654,180 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 初始化向量字符串编码模式发生变化时触发的事件
+        /// 加密块密码模式发生变化时触发的事件
         /// </summary>
-        private void OnInitializationVectorStringTypeClicked(object sender, RoutedEventArgs args)
+        private void OnEncryptedBlockCipherModeClicked(object sender, RoutedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> initializationVectorStringType)
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<CipherMode, string> encryptedBlockCipherMode)
             {
-                SelectedInitializationVectorStringType = initializationVectorStringType;
+                SelectedEncryptedBlockCipherMode = encryptedBlockCipherMode;
+                if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.AES || SelectedDataEncryptType.DataEncryptType is DataEncryptType.DES || SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC2 ||
+                    SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC5 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC6 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rijndael ||
+                    SelectedDataEncryptType.DataEncryptType is DataEncryptType.SM4 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.TripleDES)
+                {
+                    HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 文字自定义编码类型内容发生变化时触发的事件
+        /// </summary>
+        private void OnTextEncodingCustomTypeTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                TextEncodingCustomTypeText = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// 偏移量值发生变化时触发的事件
+        /// </summary>
+        private void OnOffsetValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+        {
+            if (args.NewValue is not double.NaN)
+            {
+                Offset = Convert.ToInt32(args.NewValue);
+            }
+        }
+
+        /// <summary>
+        /// 加密公钥内容发生变化时触发的事件
+        /// </summary>
+        private void OnEncryptPublicKeyTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                EncryptPublicKeyText = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// 加密私钥内容发生变化时触发的事件
+        /// </summary>
+        private void OnEncryptPrivateKeyTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                EncryptPrivateKeyText = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// RSA 非对称加密填充模式发生变化时触发的事件
+        /// </summary>
+        private void OnRSAEncryptionPaddingModeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<RSAEncryptionPaddingMode, string> encryptedRSAEncryptionPaddingMode)
+            {
+                SelectedRSAEncryptionPaddingMode = encryptedRSAEncryptionPaddingMode;
+            }
+        }
+
+        /// <summary>
+        /// 填充模式发生变化时触发的事件
+        /// </summary>
+        private void OnPaddingModeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<PaddingMode, string> encryptedPaddingMode)
+            {
+                SelectedPaddingMode = encryptedPaddingMode;
+            }
+        }
+
+        /// <summary>
+        /// 生成 RSA 加密算法密钥对
+        /// </summary>
+        private async void OnGenerateRandomRSAKeyPairClicked(object sender, RoutedEventArgs args)
+        {
+            (string publicKey, string privateKey) = await Task.Run(() =>
+            {
+                string publicKey = string.Empty;
+                string privateKey = string.Empty;
+
+                try
+                {
+                    RSA rsa = RSA.Create();
+                    publicKey = rsa.ToXmlString(false);
+                    privateKey = rsa.ToXmlString(true);
+                    rsa.Dispose();
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnGenerateRandomRSAKeyPairClicked), 1, e);
+                }
+
+                return ValueTuple.Create(publicKey, privateKey);
+            });
+
+            if (!string.IsNullOrEmpty(publicKey))
+            {
+                EncryptPublicKeyText = publicKey;
+            }
+
+            if (!string.IsNullOrEmpty(privateKey))
+            {
+                EncryptPrivateKeyText = privateKey;
+            }
+        }
+
+        /// <summary>
+        /// 复制 RSA 加密算法公钥到剪贴板
+        /// </summary>
+        private async void OnCopyRSAPublicKeyClicked(object sender, RoutedEventArgs args)
+        {
+            if (!string.IsNullOrEmpty(EncryptPublicKeyText))
+            {
+                bool copyResult = CopyPasteHelper.CopyToClipboard(EncryptPublicKeyText);
+
+                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+            }
+        }
+
+        /// <summary>
+        /// 复制 RSA 加密算法私钥到剪贴板
+        /// </summary>
+        private async void OnCopyRSAPrivateKeyClicked(object sender, RoutedEventArgs args)
+        {
+            if (!string.IsNullOrEmpty(EncryptPrivateKeyText))
+            {
+                bool copyResult = CopyPasteHelper.CopyToClipboard(EncryptPrivateKeyText);
+
+                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+            }
+        }
+
+        /// <summary>
+        /// 选择文字编码类型
+        /// </summary>
+        private void OnTextEncodingTypeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> textEncodingType)
+            {
+                SelectedTextEncodingType = textEncodingType;
+            }
+        }
+
+        /// <summary>
+        /// 输出格式为大写字母
+        /// </summary>
+        private void OnUseUpperCaseChecked(object sender, RoutedEventArgs args)
+        {
+            if (!string.IsNullOrEmpty(EncryptResult))
+            {
+                EncryptResult = EncryptResult.ToUpperInvariant();
+            }
+        }
+
+        /// <summary>
+        /// 输出格式为小写字母
+        /// </summary>
+        private void OnUseUpperCaseUnchecked(object sender, RoutedEventArgs args)
+        {
+            if (!string.IsNullOrEmpty(EncryptResult))
+            {
+                EncryptResult = EncryptResult.ToLowerInvariant();
             }
         }
 
