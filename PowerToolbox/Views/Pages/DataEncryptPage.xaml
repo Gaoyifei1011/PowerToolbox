@@ -817,7 +817,7 @@
 
                         <MenuFlyoutSeparator Visibility="{x:Bind HasEncryptPrivateKey, Mode=OneWay}" />
 
-                        <!--  RSA 非对称加密模式  -->
+                        <!--  RSA 非对称加密填充模式  -->
                         <Grid
                             Height="52"
                             Padding="44,0,16,0"

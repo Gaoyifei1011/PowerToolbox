@@ -424,70 +424,6 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _hasRSAEncryptionPaddingMode;
-
-        public bool HasRSAEncryptionPaddingMode
-        {
-            get { return _hasRSAEncryptionPaddingMode; }
-
-            set
-            {
-                if (!Equals(_hasRSAEncryptionPaddingMode, value))
-                {
-                    _hasRSAEncryptionPaddingMode = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasRSAEncryptionPaddingMode)));
-                }
-            }
-        }
-
-        private KeyValuePair<RSAEncryptionPaddingMode, string> _selectedRSAEncryptionPaddingMode;
-
-        public KeyValuePair<RSAEncryptionPaddingMode, string> SelectedRSAEncryptionPaddingMode
-        {
-            get { return _selectedRSAEncryptionPaddingMode; }
-
-            set
-            {
-                if (!Equals(_selectedRSAEncryptionPaddingMode, value))
-                {
-                    _selectedRSAEncryptionPaddingMode = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedRSAEncryptionPaddingMode)));
-                }
-            }
-        }
-
-        private bool _hasRSAEncryptionOtherOptions;
-
-        public bool HasRSAEncryptionOtherOptions
-        {
-            get { return _hasRSAEncryptionOtherOptions; }
-
-            set
-            {
-                if (!Equals(_hasRSAEncryptionOtherOptions, value))
-                {
-                    _hasRSAEncryptionOtherOptions = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasRSAEncryptionOtherOptions)));
-                }
-            }
-        }
-
-        private KeyValuePair<string, string> _selectedTextEncodingType;
-
-        public KeyValuePair<string, string> SelectedTextEncodingType
-        {
-            get { return _selectedTextEncodingType; }
-
-            set
-            {
-                if (!Equals(_selectedTextEncodingType, value))
-                {
-                    _selectedTextEncodingType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTextEncodingType)));
-                }
-            }
-        }
-
         private bool _hasOffset;
 
         public bool HasOffset
@@ -580,6 +516,70 @@ namespace PowerToolbox.Views.Pages
                 {
                     _encryptPrivateKeyText = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EncryptPrivateKeyText)));
+                }
+            }
+        }
+
+        private bool _hasRSAEncryptionPaddingMode;
+
+        public bool HasRSAEncryptionPaddingMode
+        {
+            get { return _hasRSAEncryptionPaddingMode; }
+
+            set
+            {
+                if (!Equals(_hasRSAEncryptionPaddingMode, value))
+                {
+                    _hasRSAEncryptionPaddingMode = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasRSAEncryptionPaddingMode)));
+                }
+            }
+        }
+
+        private KeyValuePair<RSAEncryptionPaddingMode, string> _selectedRSAEncryptionPaddingMode;
+
+        public KeyValuePair<RSAEncryptionPaddingMode, string> SelectedRSAEncryptionPaddingMode
+        {
+            get { return _selectedRSAEncryptionPaddingMode; }
+
+            set
+            {
+                if (!Equals(_selectedRSAEncryptionPaddingMode, value))
+                {
+                    _selectedRSAEncryptionPaddingMode = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedRSAEncryptionPaddingMode)));
+                }
+            }
+        }
+
+        private bool _hasRSAEncryptionOtherOptions;
+
+        public bool HasRSAEncryptionOtherOptions
+        {
+            get { return _hasRSAEncryptionOtherOptions; }
+
+            set
+            {
+                if (!Equals(_hasRSAEncryptionOtherOptions, value))
+                {
+                    _hasRSAEncryptionOtherOptions = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasRSAEncryptionOtherOptions)));
+                }
+            }
+        }
+
+        private KeyValuePair<string, string> _selectedTextEncodingType;
+
+        public KeyValuePair<string, string> SelectedTextEncodingType
+        {
+            get { return _selectedTextEncodingType; }
+
+            set
+            {
+                if (!Equals(_selectedTextEncodingType, value))
+                {
+                    _selectedTextEncodingType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTextEncodingType)));
                 }
             }
         }
@@ -1671,13 +1671,13 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 文字自定义编码类型内容发生变化时触发的事件
+        /// 填充模式发生变化时触发的事件
         /// </summary>
-        private void OnTextEncodingCustomTypeTextChanged(object sender, TextChangedEventArgs args)
+        private void OnPaddingModeClicked(object sender, RoutedEventArgs args)
         {
-            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<PaddingMode, string> encryptedPaddingMode)
             {
-                TextEncodingCustomTypeText = textBox.Text;
+                SelectedPaddingMode = encryptedPaddingMode;
             }
         }
 
@@ -1722,17 +1722,6 @@ namespace PowerToolbox.Views.Pages
             if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<RSAEncryptionPaddingMode, string> encryptedRSAEncryptionPaddingMode)
             {
                 SelectedRSAEncryptionPaddingMode = encryptedRSAEncryptionPaddingMode;
-            }
-        }
-
-        /// <summary>
-        /// 填充模式发生变化时触发的事件
-        /// </summary>
-        private void OnPaddingModeClicked(object sender, RoutedEventArgs args)
-        {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<PaddingMode, string> encryptedPaddingMode)
-            {
-                SelectedPaddingMode = encryptedPaddingMode;
             }
         }
 
@@ -1806,6 +1795,17 @@ namespace PowerToolbox.Views.Pages
             if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> textEncodingType)
             {
                 SelectedTextEncodingType = textEncodingType;
+            }
+        }
+
+        /// <summary>
+        /// 文字自定义编码类型内容发生变化时触发的事件
+        /// </summary>
+        private void OnTextEncodingCustomTypeTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                TextEncodingCustomTypeText = textBox.Text;
             }
         }
 
