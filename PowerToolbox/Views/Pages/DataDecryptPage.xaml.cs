@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -28,10 +29,14 @@ namespace PowerToolbox.Views.Pages
     public sealed partial class DataDecryptPage : Page, INotifyPropertyChanged
     {
         private readonly string AESString = ResourceService.DataDecryptResource.GetString("AES");
+        private readonly string ANSIX923String = ResourceService.DataDecryptResource.GetString("ANSIX923");
         private readonly string Base64String = ResourceService.DataDecryptResource.GetString("Base64");
         private readonly string CaesarCipherString = ResourceService.DataDecryptResource.GetString("CaesarCipher");
+        private readonly string CBCString = ResourceService.DataDecryptResource.GetString("CBC");
+        private readonly string CFBString = ResourceService.DataDecryptResource.GetString("CFB");
         private readonly string ChaCha20String = ResourceService.DataDecryptResource.GetString("ChaCha20");
         private readonly string ContentInitializeString = ResourceService.DataDecryptResource.GetString("ContentInitialize");
+        private readonly string CTSString = ResourceService.DataDecryptResource.GetString("CTS");
         private readonly string DecryptingString = ResourceService.DataDecryptResource.GetString("Decrypting");
         private readonly string DecryptKey162432SizeString = ResourceService.DataDecryptResource.GetString("DecryptKey162432Size");
         private readonly string DecryptKey1624SizeString = ResourceService.DataDecryptResource.GetString("DecryptKey1624Size");
@@ -41,13 +46,20 @@ namespace PowerToolbox.Views.Pages
         private readonly string DecryptKeyEmptyString = ResourceService.DataDecryptResource.GetString("DecryptKeyEmpty");
         private readonly string DESString = ResourceService.DataDecryptResource.GetString("DES");
         private readonly string DragOverContentString = ResourceService.DataDecryptResource.GetString("DragOverContent");
+        private readonly string ECBString = ResourceService.DataDecryptResource.GetString("ECB");
         private readonly string FileInitializeString = ResourceService.DataDecryptResource.GetString("FileInitialize");
         private readonly string InitializationVector12SizeString = ResourceService.DataDecryptResource.GetString("InitializationVector12Size");
         private readonly string InitializationVector16SizeString = ResourceService.DataDecryptResource.GetString("InitializationVector16Size");
         private readonly string InitializationVector8SizeString = ResourceService.DataDecryptResource.GetString("InitializationVector8Size");
         private readonly string InitializationVectorEmptyString = ResourceService.DataDecryptResource.GetString("InitializationVectorEmpty");
+        private readonly string ISO10126String = ResourceService.DataDecryptResource.GetString("ISO10126");
         private readonly string MorseCodeString = ResourceService.DataDecryptResource.GetString("MorseCode");
         private readonly string NoMultiFileString = ResourceService.DataDecryptResource.GetString("NoMultiFile");
+        private readonly string NonePaddingString = ResourceService.DataDecryptResource.GetString("NonePadding");
+        private readonly string OaepString = ResourceService.DataDecryptResource.GetString("Oaep");
+        private readonly string OFBString = ResourceService.DataDecryptResource.GetString("OFB");
+        private readonly string Pkcs1String = ResourceService.DataDecryptResource.GetString("Pkcs1");
+        private readonly string Pkcs7String = ResourceService.DataDecryptResource.GetString("Pkcs7");
         private readonly string RabbitString = ResourceService.DataDecryptResource.GetString("Rabbit");
         private readonly string RC2String = ResourceService.DataDecryptResource.GetString("RC2");
         private readonly string RC4String = ResourceService.DataDecryptResource.GetString("RC4");
@@ -61,6 +73,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string TripleDESString = ResourceService.DataDecryptResource.GetString("TripleDES");
         private readonly string UTF8String = ResourceService.DataDecryptResource.GetString("UTF8");
         private readonly string XORString = ResourceService.DataDecryptResource.GetString("XOR");
+        private readonly string ZerosString = ResourceService.DataDecryptResource.GetString("Zeros");
 
         private int _selectedIndex = 0;
 
@@ -318,6 +331,214 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _hasDecryptedBlockCipherMode;
+
+        public bool HasDecryptedBlockCipherMode
+        {
+            get { return _hasDecryptedBlockCipherMode; }
+
+            set
+            {
+                if (!Equals(_hasDecryptedBlockCipherMode, value))
+                {
+                    _hasDecryptedBlockCipherMode = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasDecryptedBlockCipherMode)));
+                }
+            }
+        }
+
+        private KeyValuePair<CipherMode, string> _selectedDecryptedBlockCipherMode;
+
+        public KeyValuePair<CipherMode, string> SelectedDecryptedBlockCipherMode
+        {
+            get { return _selectedDecryptedBlockCipherMode; }
+
+            set
+            {
+                if (!Equals(_selectedDecryptedBlockCipherMode, value))
+                {
+                    _selectedDecryptedBlockCipherMode = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedDecryptedBlockCipherMode)));
+                }
+            }
+        }
+
+        private bool _hasPaddingMode;
+
+        public bool HasPaddingMode
+        {
+            get { return _hasPaddingMode; }
+
+            set
+            {
+                if (!Equals(_hasPaddingMode, value))
+                {
+                    _hasPaddingMode = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasPaddingMode)));
+                }
+            }
+        }
+
+        private KeyValuePair<PaddingMode, string> _selectedPaddingMode;
+
+        public KeyValuePair<PaddingMode, string> SelectedPaddingMode
+        {
+            get { return _selectedPaddingMode; }
+
+            set
+            {
+                if (!Equals(_selectedPaddingMode, value))
+                {
+                    _selectedPaddingMode = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedPaddingMode)));
+                }
+            }
+        }
+
+        private bool _hasOffset;
+
+        public bool HasOffset
+        {
+            get { return _hasOffset; }
+
+            set
+            {
+                if (!Equals(_hasOffset, value))
+                {
+                    _hasOffset = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasOffset)));
+                }
+            }
+        }
+
+        private int _offset;
+
+        public int Offset
+        {
+            get { return _offset; }
+
+            set
+            {
+                if (!Equals(_offset, value))
+                {
+                    _offset = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Offset)));
+                }
+            }
+        }
+
+        private bool _hasDecryptPublicKey;
+
+        public bool HasDecryptPublicKey
+        {
+            get { return _hasDecryptPublicKey; }
+
+            set
+            {
+                if (!Equals(_hasDecryptPublicKey, value))
+                {
+                    _hasDecryptPublicKey = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasDecryptPublicKey)));
+                }
+            }
+        }
+
+        private string _decryptPublicKeyText;
+
+        public string DecryptPublicKeyText
+        {
+            get { return _decryptPublicKeyText; }
+
+            set
+            {
+                if (!Equals(_decryptPublicKeyText, value))
+                {
+                    _decryptPublicKeyText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DecryptPublicKeyText)));
+                }
+            }
+        }
+
+        private bool _hasDecryptPrivateKey;
+
+        public bool HasDecryptPrivateKey
+        {
+            get { return _hasDecryptPrivateKey; }
+
+            set
+            {
+                if (!Equals(_hasDecryptPrivateKey, value))
+                {
+                    _hasDecryptPrivateKey = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasDecryptPrivateKey)));
+                }
+            }
+        }
+
+        private string _decryptPrivateKeyText;
+
+        public string DecryptPrivateKeyText
+        {
+            get { return _decryptPrivateKeyText; }
+
+            set
+            {
+                if (!Equals(_decryptPrivateKeyText, value))
+                {
+                    _decryptPrivateKeyText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DecryptPrivateKeyText)));
+                }
+            }
+        }
+
+        private bool _hasRSAEncryptionPaddingMode;
+
+        public bool HasRSAEncryptionPaddingMode
+        {
+            get { return _hasRSAEncryptionPaddingMode; }
+
+            set
+            {
+                if (!Equals(_hasRSAEncryptionPaddingMode, value))
+                {
+                    _hasRSAEncryptionPaddingMode = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasRSAEncryptionPaddingMode)));
+                }
+            }
+        }
+
+        private KeyValuePair<RSAEncryptionPaddingMode, string> _selectedRSAEncryptionPaddingMode;
+
+        public KeyValuePair<RSAEncryptionPaddingMode, string> SelectedRSAEncryptionPaddingMode
+        {
+            get { return _selectedRSAEncryptionPaddingMode; }
+
+            set
+            {
+                if (!Equals(_selectedRSAEncryptionPaddingMode, value))
+                {
+                    _selectedRSAEncryptionPaddingMode = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedRSAEncryptionPaddingMode)));
+                }
+            }
+        }
+
+        private bool _hasRSADecryptionOtherOptions;
+
+        public bool HasRSADecryptionOtherOptions
+        {
+            get { return _hasRSADecryptionOtherOptions; }
+
+            set
+            {
+                if (!Equals(_hasRSADecryptionOtherOptions, value))
+                {
+                    _hasRSADecryptionOtherOptions = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasRSADecryptionOtherOptions)));
+                }
+            }
+        }
+
         private bool _useUpperCase;
 
         public bool UseUpperCase
@@ -371,6 +592,12 @@ namespace PowerToolbox.Views.Pages
         private List<KeyValuePair<string, string>> DecryptKeyStringTypeList { get; } = [];
 
         private List<KeyValuePair<string, string>> InitializationVectorStringTypeList { get; } = [];
+
+        private List<KeyValuePair<CipherMode, string>> DecryptedBlockCipherModeList { get; } = [];
+
+        private List<KeyValuePair<PaddingMode, string>> PaddingModeList { get; } = [];
+
+        private List<KeyValuePair<RSAEncryptionPaddingMode, string>> RSAEncryptionPaddingModeList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -457,6 +684,18 @@ namespace PowerToolbox.Views.Pages
             DecryptKeyStringTypeList.Add(new KeyValuePair<string, string>("Base64", Base64String));
             InitializationVectorStringTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
             InitializationVectorStringTypeList.Add(new KeyValuePair<string, string>("Base64", Base64String));
+            DecryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CBC, CBCString));
+            DecryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.ECB, ECBString));
+            DecryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.OFB, OFBString));
+            DecryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CFB, CFBString));
+            DecryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CTS, CTSString));
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.None, NonePaddingString));
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.PKCS7, Pkcs7String));
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.Zeros, ZerosString));
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.ANSIX923, ANSIX923String));
+            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.ISO10126, ISO10126String));
+            RSAEncryptionPaddingModeList.Add(new KeyValuePair<RSAEncryptionPaddingMode, string>(RSAEncryptionPaddingMode.Pkcs1, Pkcs1String));
+            RSAEncryptionPaddingModeList.Add(new KeyValuePair<RSAEncryptionPaddingMode, string>(RSAEncryptionPaddingMode.Oaep, OaepString));
         }
 
         #region 第一部分：数据解密页面——挂载的事件
@@ -645,7 +884,7 @@ namespace PowerToolbox.Views.Pages
             {
                 SelectedDataDecryptType = dataDecryptType;
                 DecryptKeyText = string.Empty;
-                //InitializationVectorText = string.Empty;
+                InitializationVectorText = string.Empty;
 
                 switch (SelectedDataDecryptType.DataDecryptType)
                 {
@@ -657,22 +896,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
-                            //HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
-                            //HasDecryptedBlockCipherMode = true;
-                            //HasPaddingMode = true;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasDecryptedBlockCipherMode = true;
+                            HasPaddingMode = true;
+                            HasOffset = false;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.CaesarCipher:
@@ -684,22 +923,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = false;
-                            //HasInitializationVector = false;
-                            //HasDecryptedBlockCipherMode = false;
-                            //HasPaddingMode = false;
-                            //HasOffset = true;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasInitializationVector = false;
+                            HasDecryptedBlockCipherMode = false;
+                            HasPaddingMode = false;
+                            HasOffset = true;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.ChaCha20:
@@ -710,22 +949,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = InitializationVector12SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
-                            //HasInitializationVector = true;
-                            //HasDecryptedBlockCipherMode = false;
-                            //HasPaddingMode = false;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasInitializationVector = true;
+                            HasDecryptedBlockCipherMode = false;
+                            HasPaddingMode = false;
+                            HasOffset = false;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.DES:
@@ -736,22 +975,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = InitializationVector8SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
-                            //HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
-                            //HasDecryptedBlockCipherMode = true;
-                            //HasPaddingMode = true;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasDecryptedBlockCipherMode = true;
+                            HasPaddingMode = true;
+                            HasOffset = false;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.MorseCode:
@@ -763,22 +1002,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = false;
                             HasDecryptKey = false;
-                            //HasInitializationVector = false;
-                            //HasDecryptedBlockCipherMode = false;
-                            //HasPaddingMode = false;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasInitializationVector = false;
+                            HasDecryptedBlockCipherMode = false;
+                            HasPaddingMode = false;
+                            HasOffset = false;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.Rabbit:
@@ -789,22 +1028,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = InitializationVector8SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
-                            //HasInitializationVector = true;
-                            //HasDecryptedBlockCipherMode = false;
-                            //HasPaddingMode = true;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasInitializationVector = true;
+                            HasDecryptedBlockCipherMode = false;
+                            HasPaddingMode = true;
+                            HasOffset = false;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.RC2:
@@ -815,22 +1054,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = InitializationVector8SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
-                            //HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
-                            //HasDecryptedBlockCipherMode = true;
-                            //HasPaddingMode = true;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasDecryptedBlockCipherMode = true;
+                            HasPaddingMode = true;
+                            HasOffset = false;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.RC4:
@@ -841,22 +1080,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
-                            //HasInitializationVector = false;
-                            //HasDecryptedBlockCipherMode = false;
-                            //HasPaddingMode = false;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasInitializationVector = false;
+                            HasDecryptedBlockCipherMode = false;
+                            HasPaddingMode = false;
+                            HasOffset = false;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.RC5:
@@ -867,22 +1106,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = InitializationVector8SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
-                            //HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
-                            //HasDecryptedBlockCipherMode = true;
-                            //HasPaddingMode = true;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasDecryptedBlockCipherMode = true;
+                            HasPaddingMode = true;
+                            HasOffset = false;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.RC6:
@@ -893,23 +1132,23 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
                             HasDecryptKey = true;
-                            //HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
-                            //HasDecryptedBlockCipherMode = true;
-                            //HasPaddingMode = true;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasDecryptedBlockCipherMode = true;
+                            HasPaddingMode = true;
+                            HasOffset = false;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.Rijndael:
@@ -920,22 +1159,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
-                            //HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
-                            //HasDecryptedBlockCipherMode = true;
-                            //HasPaddingMode = true;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasDecryptedBlockCipherMode = true;
+                            HasPaddingMode = true;
+                            HasOffset = false;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.RSA:
@@ -946,22 +1185,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = false;
-                            //HasInitializationVector = false;
-                            //HasDecryptedBlockCipherMode = false;
-                            //HasPaddingMode = false;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = true;
-                            //HasDecryptPrivateKey = true;
-                            //HasRSADecryptionPaddingMode = true;
-                            //HasRSADecryptionOtherOptions = true;
+                            HasInitializationVector = false;
+                            HasDecryptedBlockCipherMode = false;
+                            HasPaddingMode = false;
+                            HasOffset = false;
+                            HasDecryptPublicKey = true;
+                            HasDecryptPrivateKey = true;
+                            HasRSAEncryptionPaddingMode = true;
+                            HasRSADecryptionOtherOptions = true;
                             break;
                         }
                     case DataDecryptType.SM4:
@@ -972,22 +1211,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
-                            //HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
-                            //HasDecryptedBlockCipherMode = true;
-                            //HasPaddingMode = true;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasDecryptedBlockCipherMode = true;
+                            HasPaddingMode = true;
+                            HasOffset = false;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.TripleDES:
@@ -998,22 +1237,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = InitializationVector16SizeString;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
-                            //HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
-                            //HasDecryptedBlockCipherMode = true;
-                            //HasPaddingMode = true;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasDecryptedBlockCipherMode = true;
+                            HasPaddingMode = true;
+                            HasOffset = false;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.XOR:
@@ -1025,22 +1264,22 @@ namespace PowerToolbox.Views.Pages
                             InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
                             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            //SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
-                            //SelectedPaddingMode = PaddingModeList[0];
-                            //SelectedRSADecryptionPaddingMode = RSADecryptionPaddingModeList[0];
-                            //Offset = 0;
-                            //DecryptPublicKeyText = string.Empty;
-                            //DecryptPrivateKeyText = string.Empty;
+                            SelectedDecryptedBlockCipherMode = DecryptedBlockCipherModeList[0];
+                            SelectedPaddingMode = PaddingModeList[0];
+                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                            Offset = 0;
+                            DecryptPublicKeyText = string.Empty;
+                            DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
                             HasInitializationVector = false;
-                            //HasDecryptedBlockCipherMode = false;
-                            //HasPaddingMode = false;
-                            //HasOffset = false;
-                            //HasDecryptPublicKey = false;
-                            //HasDecryptPrivateKey = false;
-                            //HasRSADecryptionPaddingMode = false;
-                            //HasRSADecryptionOtherOptions = false;
+                            HasDecryptedBlockCipherMode = false;
+                            HasPaddingMode = false;
+                            HasOffset = false;
+                            HasDecryptPublicKey = false;
+                            HasDecryptPrivateKey = false;
+                            HasRSAEncryptionPaddingMode = false;
+                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     default:
@@ -1056,9 +1295,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnDecryptKeyStringTypeClicked(object sender, RoutedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> encryptKeyStringType)
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> decryptKeyStringType)
             {
-                SelectedDecryptKeyStringType = encryptKeyStringType;
+                SelectedDecryptKeyStringType = decryptKeyStringType;
             }
         }
 
@@ -1092,6 +1331,104 @@ namespace PowerToolbox.Views.Pages
             if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
                 InitializationVectorText = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// 解密块密码模式发生变化时触发的事件
+        /// </summary>
+        private void OnDecryptedBlockCipherModeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<CipherMode, string> decryptedBlockCipherMode)
+            {
+                SelectedDecryptedBlockCipherMode = decryptedBlockCipherMode;
+                if (SelectedDataDecryptType.DataDecryptType is DataDecryptType.AES || SelectedDataDecryptType.DataDecryptType is DataDecryptType.DES || SelectedDataDecryptType.DataDecryptType is DataDecryptType.RC2 ||
+                    SelectedDataDecryptType.DataDecryptType is DataDecryptType.RC5 || SelectedDataDecryptType.DataDecryptType is DataDecryptType.RC6 || SelectedDataDecryptType.DataDecryptType is DataDecryptType.Rijndael ||
+                    SelectedDataDecryptType.DataDecryptType is DataDecryptType.SM4 || SelectedDataDecryptType.DataDecryptType is DataDecryptType.TripleDES)
+                {
+                    HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 填充模式发生变化时触发的事件
+        /// </summary>
+        private void OnPaddingModeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<PaddingMode, string> decryptedPaddingMode)
+            {
+                SelectedPaddingMode = decryptedPaddingMode;
+            }
+        }
+
+        /// <summary>
+        /// 偏移量值发生变化时触发的事件
+        /// </summary>
+        private void OnOffsetValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+        {
+            if (args.NewValue is not double.NaN)
+            {
+                Offset = Convert.ToInt32(args.NewValue);
+            }
+        }
+
+        /// <summary>
+        /// 解密公钥内容发生变化时触发的事件
+        /// </summary>
+        private void OnDecryptPublicKeyTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                DecryptPublicKeyText = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// 解密私钥内容发生变化时触发的事件
+        /// </summary>
+        private void OnDecryptPrivateKeyTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                DecryptPrivateKeyText = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// RSA 非对称加密填充模式发生变化时触发的事件
+        /// </summary>
+        private void OnRSAEncryptionPaddingModeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<RSAEncryptionPaddingMode, string> encryptedRSAEncryptionPaddingMode)
+            {
+                SelectedRSAEncryptionPaddingMode = encryptedRSAEncryptionPaddingMode;
+            }
+        }
+
+        /// <summary>
+        /// 复制 RSA 加密算法公钥到剪贴板
+        /// </summary>
+        private async void OnCopyRSAPublicKeyClicked(object sender, RoutedEventArgs args)
+        {
+            if (!string.IsNullOrEmpty(DecryptPublicKeyText))
+            {
+                bool copyResult = CopyPasteHelper.CopyToClipboard(DecryptPublicKeyText);
+
+                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+            }
+        }
+
+        /// <summary>
+        /// 复制 RSA 加密算法私钥到剪贴板
+        /// </summary>
+        private async void OnCopyRSAPrivateKeyClicked(object sender, RoutedEventArgs args)
+        {
+            if (!string.IsNullOrEmpty(DecryptPrivateKeyText))
+            {
+                bool copyResult = CopyPasteHelper.CopyToClipboard(DecryptPrivateKeyText);
+
+                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
             }
         }
 
