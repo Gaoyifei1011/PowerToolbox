@@ -87,6 +87,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string RC6String = ResourceService.DataEncryptResource.GetString("RC6");
         private readonly string RijndaelString = ResourceService.DataEncryptResource.GetString("Rijndael");
         private readonly string RSAString = ResourceService.DataEncryptResource.GetString("RSA");
+        private readonly string SelectedDataEncryptInputContentFormatErrorString = ResourceService.DataEncryptResource.GetString("SelectedDataEncryptInputContentFormatError");
         private readonly string SelectFileString = ResourceService.DataEncryptResource.GetString("SelectFile");
         private readonly string SM4String = ResourceService.DataEncryptResource.GetString("SM4");
         private readonly string StringLengthString = ResourceService.DataEncryptResource.GetString("StringLength");
@@ -1844,26 +1845,35 @@ namespace PowerToolbox.Views.Pages
             IsLargeContent = false;
 
             // 检查要加密的文件
-            if (selectEncryptIndex is 0 && string.IsNullOrEmpty(selectedEncryptFile))
+            if (selectEncryptIndex is 0)
             {
-                ResultSeverity = InfoBarSeverity.Error;
                 if (string.IsNullOrEmpty(selectedEncryptFile))
                 {
+                    ResultSeverity = InfoBarSeverity.Error;
                     ResultMessage = FileNotSelectedString;
                     return;
                 }
                 else if (!File.Exists(selectedEncryptFile))
                 {
+                    ResultSeverity = InfoBarSeverity.Error;
                     ResultMessage = FileNotExistedString;
                     return;
                 }
-                return;
             }
             // 检查要加密的字符串
-            else if (selectEncryptIndex is 1 && string.IsNullOrEmpty(inputedEncryptContent))
+            else if (selectEncryptIndex is 1)
+            {
+                if (string.IsNullOrEmpty(inputedEncryptContent))
+                {
+                    ResultSeverity = InfoBarSeverity.Error;
+                    ResultMessage = ContentEmptyString;
+                    return;
+                }
+            }
+            else
             {
                 ResultSeverity = InfoBarSeverity.Error;
-                ResultMessage = ContentEmptyString;
+                ResultMessage = SelectedDataEncryptInputContentFormatErrorString;
                 return;
             }
 
