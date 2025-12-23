@@ -83,6 +83,7 @@ RC6=RC6
 RSAEncryptionPaddingMode=填充模式
 Rijndael=Rijndael
 RSA=RSA
+SelectedDataEncryptInputContentFormatError=选择的加密内容输入格式错误
 SelectFile=选择文件
 SM4=SM4
 StartEncrypt=开始加密

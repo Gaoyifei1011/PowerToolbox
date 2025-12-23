@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using PowerToolbox.Extensions.DataType.Enums;
+using PowerToolbox.Extensions.Encrypt;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
@@ -35,6 +36,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string CBCString = ResourceService.DataDecryptResource.GetString("CBC");
         private readonly string CFBString = ResourceService.DataDecryptResource.GetString("CFB");
         private readonly string ChaCha20String = ResourceService.DataDecryptResource.GetString("ChaCha20");
+        private readonly string ContentEmptyString = ResourceService.DataDecryptResource.GetString("ContentEmpty");
         private readonly string ContentInitializeString = ResourceService.DataDecryptResource.GetString("ContentInitialize");
         private readonly string CTSString = ResourceService.DataDecryptResource.GetString("CTS");
         private readonly string DecryptingString = ResourceService.DataDecryptResource.GetString("Decrypting");
@@ -44,10 +46,15 @@ namespace PowerToolbox.Views.Pages
         private readonly string DecryptKey32SizeString = ResourceService.DataDecryptResource.GetString("DecryptKey32Size");
         private readonly string DecryptKey8SizeString = ResourceService.DataDecryptResource.GetString("DecryptKey8Size");
         private readonly string DecryptKeyEmptyString = ResourceService.DataDecryptResource.GetString("DecryptKeyEmpty");
+        private readonly string DecryptTypeMustContentString = ResourceService.DataDecryptResource.GetString("DecryptTypeMustContent");
+        private readonly string DecryptTypeNotSelectedString = ResourceService.DataDecryptResource.GetString("DecryptTypeNotSelected");
         private readonly string DESString = ResourceService.DataDecryptResource.GetString("DES");
         private readonly string DragOverContentString = ResourceService.DataDecryptResource.GetString("DragOverContent");
         private readonly string ECBString = ResourceService.DataDecryptResource.GetString("ECB");
         private readonly string FileInitializeString = ResourceService.DataDecryptResource.GetString("FileInitialize");
+        private readonly string FileNotExistedString = ResourceService.DataDecryptResource.GetString("FileNotExisted");
+        private readonly string FileNotSelectedString = ResourceService.DataDecryptResource.GetString("FileNotSelected");
+        private readonly string FileNotTextContentString = ResourceService.DataDecryptResource.GetString("FileNotTextContent");
         private readonly string InitializationVector12SizeString = ResourceService.DataDecryptResource.GetString("InitializationVector12Size");
         private readonly string InitializationVector16SizeString = ResourceService.DataDecryptResource.GetString("InitializationVector16Size");
         private readonly string InitializationVector8SizeString = ResourceService.DataDecryptResource.GetString("InitializationVector8Size");
@@ -67,6 +74,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string RC6String = ResourceService.DataDecryptResource.GetString("RC6");
         private readonly string RijndaelString = ResourceService.DataDecryptResource.GetString("Rijndael");
         private readonly string RSAString = ResourceService.DataDecryptResource.GetString("RSA");
+        private readonly string SelectedDataDecryptInputContentFormatErrorString = ResourceService.DataDecryptResource.GetString("SelectedDataDecryptInputContentFormatError");
         private readonly string SelectFileString = ResourceService.DataDecryptResource.GetString("SelectFile");
         private readonly string SM4String = ResourceService.DataDecryptResource.GetString("SM4");
         private readonly string StringLengthString = ResourceService.DataDecryptResource.GetString("StringLength");
@@ -74,6 +82,10 @@ namespace PowerToolbox.Views.Pages
         private readonly string UTF8String = ResourceService.DataDecryptResource.GetString("UTF8");
         private readonly string XORString = ResourceService.DataDecryptResource.GetString("XOR");
         private readonly string ZerosString = ResourceService.DataDecryptResource.GetString("Zeros");
+        private int selectDecryptIndex = -1;
+        private string selectedDecryptFile = string.Empty;
+        private string inputedDecryptContent = string.Empty;
+        private string encryptedLocalFile = string.Empty;
 
         private int _selectedIndex = 0;
 
@@ -1460,9 +1472,318 @@ namespace PowerToolbox.Views.Pages
         private async void OnStartDecryptClicked(object sender, RoutedEventArgs args)
         {
             // TODO：未完成
+            selectDecryptIndex = SelectedIndex;
+            selectedDecryptFile = DecryptFile;
+            inputedDecryptContent = DecryptContent;
+
+            // 检查要读取解密的文件内容
+            if (selectDecryptIndex is 0)
+            {
+                if (string.IsNullOrEmpty(selectedDecryptFile))
+                {
+                    ResultSeverity = InfoBarSeverity.Error;
+                    ResultMessage = FileNotSelectedString;
+                    return;
+                }
+                else if (!File.Exists(selectedDecryptFile))
+                {
+                    ResultSeverity = InfoBarSeverity.Error;
+                    ResultMessage = FileNotExistedString;
+                    return;
+                }
+                else if (!CheckIsTextFile(selectedDecryptFile))
+                {
+                    ResultSeverity = InfoBarSeverity.Error;
+                    ResultMessage = FileNotTextContentString;
+                    return;
+                }
+            }
+            // 检查要解密的字符串
+            else if (selectDecryptIndex is 1)
+            {
+                if (string.IsNullOrEmpty(inputedDecryptContent))
+                {
+                    ResultSeverity = InfoBarSeverity.Error;
+                    ResultMessage = ContentEmptyString;
+                    return;
+                }
+            }
+            else
+            {
+                ResultSeverity = InfoBarSeverity.Error;
+                ResultMessage = SelectedDataDecryptInputContentFormatErrorString;
+                return;
+            }
+
+            // 选择加密的算法为空时的提示
+            if (SelectedDataDecryptType is null)
+            {
+                ResultSeverity = InfoBarSeverity.Error;
+                ResultMessage = DecryptTypeNotSelectedString;
+                return;
+            }
+            else
+            {
+                // 检查对应的加密算法所填充的加密密钥或初始化向量是否为空
+                switch (SelectedDataDecryptType.DataDecryptType)
+                {
+                    case DataDecryptType.AES:
+                        {
+                            if (string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptKeyEmptyString;
+                                return;
+                            }
+
+                            if (SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
+                                return;
+                            }
+                            break;
+                        }
+                    case DataDecryptType.CaesarCipher:
+                        {
+                            if (selectDecryptIndex is not 1)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptTypeMustContentString;
+                                return;
+                            }
+                            break;
+                        }
+                    case DataDecryptType.ChaCha20:
+                        {
+                            if (string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptKeyEmptyString;
+                                return;
+                            }
+
+                            if (SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
+                                return;
+                            }
+                            break;
+                        }
+                    case DataDecryptType.DES:
+                        {
+                            if (string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptKeyEmptyString;
+                                return;
+                            }
+
+                            if (SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
+                                return;
+                            }
+                            break;
+                        }
+                    case DataDecryptType.MorseCode:
+                        {
+                            if (selectDecryptIndex is not 1)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptTypeMustContentString;
+                                return;
+                            }
+                            break;
+                        }
+                    case DataDecryptType.Rabbit:
+                        {
+                            if (string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptKeyEmptyString;
+                                return;
+                            }
+
+                            if (string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
+                                return;
+                            }
+                            break;
+                        }
+                    case DataDecryptType.RC2:
+                        {
+                            if (string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptKeyEmptyString;
+                                return;
+                            }
+
+                            if (SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
+                                return;
+                            }
+                            break;
+                        }
+                    case DataDecryptType.RC4:
+                        {
+                            if (string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptKeyEmptyString;
+                                return;
+                            }
+                            break;
+                        }
+                    case DataDecryptType.RC5:
+                        {
+                            if (string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptKeyEmptyString;
+                                return;
+                            }
+
+                            if (SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
+                                return;
+                            }
+                            break;
+                        }
+                    case DataDecryptType.RC6:
+                        {
+                            if (string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptKeyEmptyString;
+                                return;
+                            }
+
+                            if (SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
+                                return;
+                            }
+                            break;
+                        }
+                    case DataDecryptType.Rijndael:
+                        {
+                            if (string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptKeyEmptyString;
+                                return;
+                            }
+
+                            if (SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
+                                return;
+                            }
+                            break;
+                        }
+                    case DataDecryptType.RSA:
+                        {
+                            // TODO：未完成
+                            break;
+                        }
+                    case DataDecryptType.SM4:
+                        {
+                            if (string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptKeyEmptyString;
+                                return;
+                            }
+
+                            if (SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
+                                return;
+                            }
+                            break;
+                        }
+                    case DataDecryptType.TripleDES:
+                        {
+                            if (string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptKeyEmptyString;
+                                return;
+                            }
+
+                            if (SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = InitializationVectorEmptyString;
+                                return;
+                            }
+                            break;
+                        }
+                    case DataDecryptType.XOR:
+                        {
+                            if (selectDecryptIndex is not 1)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptTypeMustContentString;
+                                return;
+                            }
+
+                            if (string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptKeyEmptyString;
+                                return;
+                            }
+                            break;
+                        }
+                    default:
+                        break;
+                }
+            }
         }
 
         #endregion 第一部分：数据解密页面——挂载的事件
+
+        /// <summary>
+        /// 检查读取的文件是否是文本文件
+        /// </summary>
+        public static bool CheckIsTextFile(string fileName)
+        {
+            bool isTextFile = true;
+            try
+            {
+                using FileStream fileStream = new(fileName, FileMode.Open, FileAccess.Read);
+                int i = 0;
+                int length = (int)fileStream.Length;
+                byte data;
+                while (i < length && isTextFile)
+                {
+                    data = (byte)fileStream.ReadByte();
+                    isTextFile = data is not 0;
+                    i++;
+                }
+                return isTextFile;
+            }
+            catch (Exception e)
+            {
+                isTextFile = false;
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(CheckIsTextFile), 1, e);
+            }
+            return isTextFile;
+        }
 
         /// <summary>
         /// 获取要解密的类型
