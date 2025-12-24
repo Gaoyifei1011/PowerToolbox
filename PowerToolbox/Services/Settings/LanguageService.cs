@@ -131,6 +131,7 @@ namespace PowerToolbox.Services.Settings
                 if (existResult)
                 {
                     SetLanguage(currentLanguage);
+                    CultureInfo.DefaultThreadCurrentUICulture = currentCultureInfo;
                     FlowDirection = currentCultureInfo.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
                     User32Library.SetProcessDefaultLayout(Convert.ToUInt32(currentCultureInfo.TextInfo.IsRightToLeft));
                     return currentLanguage;
@@ -143,6 +144,7 @@ namespace PowerToolbox.Services.Settings
                     if (existResult)
                     {
                         SetLanguage(currentParentLanguage);
+                        CultureInfo.DefaultThreadCurrentUICulture = currentParentCultureInfo;
                         FlowDirection = currentParentCultureInfo.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
                         User32Library.SetProcessDefaultLayout(Convert.ToUInt32(currentParentCultureInfo.TextInfo.IsRightToLeft));
                         return currentParentLanguage;
@@ -153,6 +155,7 @@ namespace PowerToolbox.Services.Settings
                     {
                         SetLanguage(defaultAppLanguage);
                         CultureInfo defaultCultureInfo = CultureInfo.GetCultureInfo(defaultAppLanguage.Key);
+                        CultureInfo.DefaultThreadCurrentUICulture = defaultCultureInfo;
                         FlowDirection = defaultCultureInfo.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
                         User32Library.SetProcessDefaultLayout(Convert.ToUInt32(defaultCultureInfo.TextInfo.IsRightToLeft));
                         return defaultAppLanguage;
@@ -161,6 +164,7 @@ namespace PowerToolbox.Services.Settings
             }
 
             CultureInfo savedCultureInfo = CultureInfo.GetCultureInfo(language);
+            CultureInfo.DefaultThreadCurrentUICulture = savedCultureInfo;
             FlowDirection = savedCultureInfo.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
             return LanguageList.Find(item => string.Equals(language, item.Key, StringComparison.OrdinalIgnoreCase));
         }
