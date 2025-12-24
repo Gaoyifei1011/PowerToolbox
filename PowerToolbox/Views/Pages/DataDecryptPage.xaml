@@ -397,13 +397,15 @@
                             <TextBlock
                                 Grid.Column="1"
                                 VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('StringEncodingType')}" />
+                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('StringEncodingType')}"
+                                Visibility="{x:Bind HasDecryptKeyStringType, Mode=OneWay}" />
 
                             <DropDownButton
                                 Grid.Column="2"
                                 Margin="2,0,0,0"
                                 Content="{x:Bind SelectedDecryptKeyStringType.Value, Mode=OneWay}"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                                Visibility="{x:Bind HasDecryptKeyStringType, Mode=OneWay}">
 
                                 <DropDownButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
@@ -684,46 +686,6 @@
 
                         <MenuFlyoutSeparator Visibility="{x:Bind HasOffset, Mode=OneWay}" />
 
-                        <!--  解密公钥（用于非对称解密）  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center"
-                            Visibility="{x:Bind HasDecryptPublicKey, Mode=OneWay}">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DecryptPublicKey')}" />
-
-                            <TextBox
-                                Grid.Column="1"
-                                Width="350"
-                                Margin="6,0,0,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
-                                PlaceholderText="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DecryptPublicKeyPHText')}"
-                                Text="{x:Bind DecryptPublicKeyText, Mode=OneWay}"
-                                TextChanged="{x:Bind OnDecryptPublicKeyTextChanged}">
-
-                                <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        MaxWidth="9999"
-                                        Content="{x:Bind system:String.Format(StringLengthString, DecryptPublicKeyText.Length), Mode=OneWay}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
-                                </ToolTipService.ToolTip>
-                            </TextBox>
-                        </Grid>
-
-                        <MenuFlyoutSeparator Visibility="{x:Bind HasDecryptPublicKey, Mode=OneWay}" />
-
                         <!--  解密私钥（用于非对称解密）  -->
                         <Grid
                             Height="52"
@@ -805,42 +767,6 @@
                                     </MenuFlyout>
                                 </DropDownButton.Flyout>
                             </DropDownButton>
-                        </Grid>
-
-                        <MenuFlyoutSeparator Visibility="{x:Bind HasRSAEncryptionPaddingMode, Mode=OneWay}" />
-
-                        <!--  RSA 非对称解密其他选项  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center"
-                            Visibility="{x:Bind HasRSADecryptionOtherOptions, Mode=OneWay}">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('OtherOptions')}" />
-
-                            <Button
-                                Grid.Column="1"
-                                Margin="6,0,0,0"
-                                Click="{x:Bind OnCopyRSAPublicKeyClicked}"
-                                Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('CopyRSAPublicKey')}"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.IsNotEmptyString(DecryptPublicKeyText), Mode=OneWay}" />
-
-                            <Button
-                                Grid.Column="2"
-                                Margin="6,0,0,0"
-                                Click="{x:Bind OnCopyRSAPrivateKeyClicked}"
-                                Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('CopyRSAPrivateKey')}"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.IsNotEmptyString(DecryptPrivateKeyText), Mode=OneWay}" />
                         </Grid>
                     </StackPanel>
                 </Expander.Content>

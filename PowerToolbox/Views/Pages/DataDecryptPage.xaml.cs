@@ -46,6 +46,8 @@ namespace PowerToolbox.Views.Pages
         private readonly string DecryptKey32SizeString = ResourceService.DataDecryptResource.GetString("DecryptKey32Size");
         private readonly string DecryptKey8SizeString = ResourceService.DataDecryptResource.GetString("DecryptKey8Size");
         private readonly string DecryptKeyEmptyString = ResourceService.DataDecryptResource.GetString("DecryptKeyEmpty");
+        private readonly string DecryptKeyInitializeString = ResourceService.DataDecryptResource.GetString("DecryptKeyInitialize");
+        private readonly string DecryptPrivateKeyEmptyString = ResourceService.DataDecryptResource.GetString("DecryptPrivateKeyEmpty");
         private readonly string DecryptTypeMustContentString = ResourceService.DataDecryptResource.GetString("DecryptTypeMustContent");
         private readonly string DecryptTypeNotSelectedString = ResourceService.DataDecryptResource.GetString("DecryptTypeNotSelected");
         private readonly string DESString = ResourceService.DataDecryptResource.GetString("DES");
@@ -231,6 +233,38 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _hasDecryptKeyStringType;
+
+        public bool HasDecryptKeyStringType
+        {
+            get { return _hasDecryptKeyStringType; }
+
+            set
+            {
+                if (!Equals(_hasDecryptKeyStringType, value))
+                {
+                    _hasDecryptKeyStringType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasDecryptKeyStringType)));
+                }
+            }
+        }
+
+        private KeyValuePair<string, string> _selectedDecryptKeyStringType;
+
+        public KeyValuePair<string, string> SelectedDecryptKeyStringType
+        {
+            get { return _selectedDecryptKeyStringType; }
+
+            set
+            {
+                if (!Equals(_selectedDecryptKeyStringType, value))
+                {
+                    _selectedDecryptKeyStringType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedDecryptKeyStringType)));
+                }
+            }
+        }
+
         private string _decryptKeyPHText = string.Empty;
 
         public string DecryptKeyPHText
@@ -259,22 +293,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     _decryptKeyText = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DecryptKeyText)));
-                }
-            }
-        }
-
-        private KeyValuePair<string, string> _selectedDecryptKeyStringType;
-
-        public KeyValuePair<string, string> SelectedDecryptKeyStringType
-        {
-            get { return _selectedDecryptKeyStringType; }
-
-            set
-            {
-                if (!Equals(_selectedDecryptKeyStringType, value))
-                {
-                    _selectedDecryptKeyStringType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedDecryptKeyStringType)));
                 }
             }
         }
@@ -439,38 +457,6 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _hasDecryptPublicKey;
-
-        public bool HasDecryptPublicKey
-        {
-            get { return _hasDecryptPublicKey; }
-
-            set
-            {
-                if (!Equals(_hasDecryptPublicKey, value))
-                {
-                    _hasDecryptPublicKey = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasDecryptPublicKey)));
-                }
-            }
-        }
-
-        private string _decryptPublicKeyText;
-
-        public string DecryptPublicKeyText
-        {
-            get { return _decryptPublicKeyText; }
-
-            set
-            {
-                if (!Equals(_decryptPublicKeyText, value))
-                {
-                    _decryptPublicKeyText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DecryptPublicKeyText)));
-                }
-            }
-        }
-
         private bool _hasDecryptPrivateKey;
 
         public bool HasDecryptPrivateKey
@@ -531,22 +517,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     _selectedRSAEncryptionPaddingMode = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedRSAEncryptionPaddingMode)));
-                }
-            }
-        }
-
-        private bool _hasRSADecryptionOtherOptions;
-
-        public bool HasRSADecryptionOtherOptions
-        {
-            get { return _hasRSADecryptionOtherOptions; }
-
-            set
-            {
-                if (!Equals(_hasRSADecryptionOtherOptions, value))
-                {
-                    _hasRSADecryptionOtherOptions = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasRSADecryptionOtherOptions)));
                 }
             }
         }
@@ -912,23 +882,20 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
+                            HasDecryptKeyStringType = true;
                             HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasDecryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.CaesarCipher:
                         {
-                            SelectedIndex = 1;
                             DecryptKeyPHText = string.Empty;
                             DecryptKeyText = string.Empty;
                             SelectedDecryptKeyStringType = DecryptKeyStringTypeList[0];
@@ -939,18 +906,16 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = false;
+                            HasDecryptKeyStringType = false;
                             HasInitializationVector = false;
                             HasDecryptedBlockCipherMode = false;
                             HasPaddingMode = false;
                             HasOffset = true;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.ChaCha20:
@@ -965,18 +930,16 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
+                            HasDecryptKeyStringType = true;
                             HasInitializationVector = true;
                             HasDecryptedBlockCipherMode = false;
                             HasPaddingMode = false;
                             HasOffset = false;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.DES:
@@ -991,23 +954,20 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
+                            HasDecryptKeyStringType = true;
                             HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasDecryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.MorseCode:
                         {
-                            SelectedIndex = 1;
                             DecryptKeyPHText = string.Empty;
                             DecryptKeyText = string.Empty;
                             SelectedDecryptKeyStringType = DecryptKeyStringTypeList[0];
@@ -1018,18 +978,16 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = false;
                             HasDecryptKey = false;
+                            HasDecryptKeyStringType = false;
                             HasInitializationVector = false;
                             HasDecryptedBlockCipherMode = false;
                             HasPaddingMode = false;
                             HasOffset = false;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.Rabbit:
@@ -1044,18 +1002,16 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
+                            HasDecryptKeyStringType = true;
                             HasInitializationVector = true;
                             HasDecryptedBlockCipherMode = false;
                             HasPaddingMode = true;
                             HasOffset = false;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.RC2:
@@ -1070,18 +1026,16 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
+                            HasDecryptKeyStringType = true;
                             HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasDecryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.RC4:
@@ -1096,18 +1050,16 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
+                            HasDecryptKeyStringType = true;
                             HasInitializationVector = false;
                             HasDecryptedBlockCipherMode = false;
                             HasPaddingMode = false;
                             HasOffset = false;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.RC5:
@@ -1122,18 +1074,16 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
+                            HasDecryptKeyStringType = true;
                             HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasDecryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.RC6:
@@ -1148,19 +1098,16 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
-                            HasDecryptKey = true;
+                            HasDecryptKeyStringType = true;
                             HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasDecryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.Rijndael:
@@ -1175,18 +1122,16 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
+                            HasDecryptKeyStringType = true;
                             HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasDecryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.RSA:
@@ -1201,18 +1146,16 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = false;
+                            HasDecryptKeyStringType = false;
                             HasInitializationVector = false;
                             HasDecryptedBlockCipherMode = false;
                             HasPaddingMode = false;
                             HasOffset = false;
-                            HasDecryptPublicKey = true;
                             HasDecryptPrivateKey = true;
                             HasRSAEncryptionPaddingMode = true;
-                            HasRSADecryptionOtherOptions = true;
                             break;
                         }
                     case DataDecryptType.SM4:
@@ -1227,18 +1170,16 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
+                            HasDecryptKeyStringType = true;
                             HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasDecryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.TripleDES:
@@ -1253,25 +1194,22 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
+                            HasDecryptKeyStringType = true;
                             HasInitializationVector = SelectedDecryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasDecryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     case DataDecryptType.XOR:
                         {
-                            SelectedIndex = 1;
                             DecryptKeyPHText = string.Empty;
-                            DecryptKeyText = string.Empty;
+                            DecryptKeyText = DecryptKeyInitializeString;
                             SelectedDecryptKeyStringType = DecryptKeyStringTypeList[0];
                             InitializationVectorPHText = string.Empty;
                             InitializationVectorText = string.Empty;
@@ -1280,18 +1218,16 @@ namespace PowerToolbox.Views.Pages
                             SelectedPaddingMode = PaddingModeList[0];
                             SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
                             Offset = 0;
-                            DecryptPublicKeyText = string.Empty;
                             DecryptPrivateKeyText = string.Empty;
                             HasDecryptOptions = true;
                             HasDecryptKey = true;
+                            HasDecryptKeyStringType = false;
                             HasInitializationVector = false;
                             HasDecryptedBlockCipherMode = false;
                             HasPaddingMode = false;
                             HasOffset = false;
-                            HasDecryptPublicKey = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
-                            HasRSADecryptionOtherOptions = false;
                             break;
                         }
                     default:
@@ -1386,17 +1322,6 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 解密公钥内容发生变化时触发的事件
-        /// </summary>
-        private void OnDecryptPublicKeyTextChanged(object sender, TextChangedEventArgs args)
-        {
-            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
-            {
-                DecryptPublicKeyText = textBox.Text;
-            }
-        }
-
-        /// <summary>
         /// 解密私钥内容发生变化时触发的事件
         /// </summary>
         private void OnDecryptPrivateKeyTextChanged(object sender, TextChangedEventArgs args)
@@ -1415,32 +1340,6 @@ namespace PowerToolbox.Views.Pages
             if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<RSAEncryptionPaddingMode, string> encryptedRSAEncryptionPaddingMode)
             {
                 SelectedRSAEncryptionPaddingMode = encryptedRSAEncryptionPaddingMode;
-            }
-        }
-
-        /// <summary>
-        /// 复制 RSA 加密算法公钥到剪贴板
-        /// </summary>
-        private async void OnCopyRSAPublicKeyClicked(object sender, RoutedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(DecryptPublicKeyText))
-            {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(DecryptPublicKeyText);
-
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
-            }
-        }
-
-        /// <summary>
-        /// 复制 RSA 加密算法私钥到剪贴板
-        /// </summary>
-        private async void OnCopyRSAPrivateKeyClicked(object sender, RoutedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(DecryptPrivateKeyText))
-            {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(DecryptPrivateKeyText);
-
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
             }
         }
 
@@ -1695,7 +1594,12 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataDecryptType.RSA:
                         {
-                            // TODO：未完成
+                            if (string.IsNullOrEmpty(DecryptPrivateKeyText))
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = DecryptPrivateKeyEmptyString;
+                                return;
+                            }
                             break;
                         }
                     case DataDecryptType.SM4:
@@ -1750,12 +1654,742 @@ namespace PowerToolbox.Views.Pages
                             break;
                         }
                     default:
-                        break;
+                        {
+                            break;
+                        }
                 }
             }
+
+            // 解密内容
+            IsDecrypting = true;
+            ResultSeverity = InfoBarSeverity.Informational;
+            ResultMessage = DecryptingString;
+
+            // TODO：未完成
         }
 
         #endregion 第一部分：数据解密页面——挂载的事件
+
+        /// <summary>
+        /// 获取解密后的数据
+        /// </summary>
+        private (string, Exception) GetDecryptedData(DataDecryptType dataDecryptType, int selectedDecryptIndex, string contentData, string encryptFile)
+        {
+            // TODO：未完成
+            string decryptedData = string.Empty;
+            Exception decryptException = null;
+
+            switch (dataDecryptType)
+            {
+                case DataDecryptType.AES:
+                    try
+                    {
+                        Aes aes = Aes.Create();
+                        if (!string.IsNullOrEmpty(DecryptKeyText))
+                        {
+                            if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[0]))
+                            {
+                                aes.Key = Encoding.UTF8.GetBytes(DecryptKeyText);
+                            }
+                            else if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[1]))
+                            {
+                                aes.Key = Convert.FromBase64String(DecryptKeyText);
+                            }
+                        }
+
+                        if (!string.IsNullOrEmpty(InitializationVectorText))
+                        {
+                            if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                            {
+                                aes.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                            }
+                            else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                            {
+                                aes.IV = Convert.FromBase64String(InitializationVectorText);
+                            }
+                        }
+
+                        aes.Mode = SelectedDecryptedBlockCipherMode.Key;
+                        aes.Padding = SelectedPaddingMode.Key;
+                        byte[] contentDataBytes = null;
+                        if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
+                        {
+                            contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                        }
+                        else if (selectedDecryptIndex is 1)
+                        {
+                            contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                        }
+
+                        if (contentDataBytes is not null)
+                        {
+                            ICryptoTransform cryptoTransform = aes.CreateDecryptor(aes.Key, aes.IV);
+                            MemoryStream memoryStream = new(contentDataBytes);
+                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
+                            StreamReader streamReader = new(cryptoStream);
+                            decryptedData = streamReader.ReadToEnd();
+                            streamReader.Dispose();
+                            cryptoStream.Dispose();
+                            memoryStream.Dispose();
+                            cryptoTransform.Dispose();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        decryptException = e;
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.AES) + 1, e);
+                    }
+                    break;
+
+                case DataDecryptType.CaesarCipher:
+                    {
+                        if (selectedDecryptIndex is 0)
+                        {
+                            contentData = File.ReadAllText(selectedDecryptFile);
+                        }
+
+                        try
+                        {
+                            decryptedData = CaesarCipher.CaesarDecrypt(contentData, Offset);
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataEncryptType.CaesarCipher) + 1, e);
+                        }
+                        break;
+                    }
+                case DataDecryptType.ChaCha20:
+                    {
+                        try
+                        {
+                            byte[] decryptedKey = null;
+                            byte[] decryptedIV = null;
+                            if (!string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[0]))
+                                {
+                                    decryptedKey = Encoding.UTF8.GetBytes(DecryptKeyText);
+                                }
+                                else if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[1]))
+                                {
+                                    decryptedKey = Convert.FromBase64String(DecryptKeyText);
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    decryptedIV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    decryptedIV = Convert.FromBase64String(InitializationVectorText);
+                                }
+                            }
+
+                            byte[] contentDataBytes = null;
+                            if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                            }
+                            else if (selectedDecryptIndex is 1)
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                            }
+
+                            if (contentDataBytes is not null)
+                            {
+                                decryptedData = Convert.ToBase64String(ChaCha20.Decrypt(decryptedKey, decryptedIV, contentDataBytes));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.ChaCha20) + 1, e);
+                        }
+                        break;
+                    }
+                case DataDecryptType.DES:
+                    {
+                        try
+                        {
+                            DES des = DES.Create();
+                            if (!string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[0]))
+                                {
+                                    des.Key = Encoding.UTF8.GetBytes(DecryptKeyText);
+                                }
+                                else if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[1]))
+                                {
+                                    des.Key = Convert.FromBase64String(DecryptKeyText);
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    des.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    des.IV = Convert.FromBase64String(InitializationVectorText);
+                                }
+                            }
+
+                            des.Mode = SelectedDecryptedBlockCipherMode.Key;
+                            des.Padding = SelectedPaddingMode.Key;
+                            byte[] contentDataBytes = null;
+                            if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                            }
+                            else if (selectedDecryptIndex is 1)
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                            }
+
+                            if (contentDataBytes is not null)
+                            {
+                                ICryptoTransform cryptoTransform = des.CreateDecryptor(des.Key, des.IV);
+                                MemoryStream memoryStream = new(contentDataBytes);
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
+                                StreamReader streamReader = new(cryptoStream);
+                                decryptedData = streamReader.ReadToEnd();
+                                streamReader.Dispose();
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.DES) + 1, e);
+                        }
+                        break;
+                    }
+                case DataDecryptType.MorseCode:
+                    {
+                        if (selectedDecryptIndex is 0)
+                        {
+                            contentData = File.ReadAllText(selectedDecryptFile);
+                        }
+
+                        try
+                        {
+                            decryptedData = MorseCode.MorseDecode(contentData.ToUpperInvariant());
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataEncryptType.MorseCode) + 1, e);
+                        }
+                        break;
+                    }
+                case DataDecryptType.Rabbit:
+                    {
+                        try
+                        {
+                            Rabbit rabbit = new();
+                            if (!string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[0]))
+                                {
+                                    rabbit.Key = Encoding.UTF8.GetBytes(DecryptKeyText);
+                                }
+                                else if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[1]))
+                                {
+                                    rabbit.Key = Convert.FromBase64String(DecryptKeyText);
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    rabbit.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    rabbit.IV = Convert.FromBase64String(InitializationVectorText);
+                                }
+                            }
+
+                            rabbit.Mode = CipherMode.CBC;
+                            rabbit.Padding = SelectedPaddingMode.Key;
+                            byte[] contentDataBytes = null;
+                            if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                            }
+                            else if (selectedDecryptIndex is 1)
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                            }
+
+                            if (contentDataBytes is not null)
+                            {
+                                ICryptoTransform cryptoTransform = rabbit.CreateDecryptor(rabbit.Key, rabbit.IV);
+                                MemoryStream memoryStream = new(contentDataBytes);
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
+                                StreamReader streamReader = new(cryptoStream);
+                                decryptedData = streamReader.ReadToEnd();
+                                streamReader.Dispose();
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.Rabbit) + 1, e);
+                        }
+                        break;
+                    }
+                case DataDecryptType.RC2:
+                    {
+                        try
+                        {
+                            RC2 rc2 = RC2.Create();
+                            if (!string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[0]))
+                                {
+                                    rc2.Key = Encoding.UTF8.GetBytes(DecryptKeyText);
+                                }
+                                else if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[1]))
+                                {
+                                    rc2.Key = Convert.FromBase64String(DecryptKeyText);
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    rc2.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    rc2.IV = Convert.FromBase64String(InitializationVectorText);
+                                }
+                            }
+
+                            rc2.Mode = SelectedDecryptedBlockCipherMode.Key;
+                            rc2.Padding = SelectedPaddingMode.Key;
+                            byte[] contentDataBytes = null;
+                            if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                            }
+                            else if (selectedDecryptIndex is 1)
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                            }
+
+                            if (contentDataBytes is not null)
+                            {
+                                ICryptoTransform cryptoTransform = rc2.CreateDecryptor(rc2.Key, rc2.IV);
+                                MemoryStream memoryStream = new(contentDataBytes);
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
+                                StreamReader streamReader = new(cryptoStream);
+                                decryptedData = streamReader.ReadToEnd();
+                                streamReader.Dispose();
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.RC2) + 1, e);
+                        }
+                        break;
+                    }
+                case DataDecryptType.RC4:
+                    {
+                        try
+                        {
+                            RC4 rc4 = RC4.Create();
+                            if (!string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[0]))
+                                {
+                                    rc4.Key = Encoding.UTF8.GetBytes(DecryptKeyText);
+                                }
+                                else if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[1]))
+                                {
+                                    rc4.Key = Convert.FromBase64String(DecryptKeyText);
+                                }
+                            }
+
+                            rc4.Mode = SelectedDecryptedBlockCipherMode.Key;
+                            rc4.Padding = SelectedPaddingMode.Key;
+                            byte[] contentDataBytes = null;
+                            if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                            }
+                            else if (selectedDecryptIndex is 1)
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                            }
+
+                            if (contentDataBytes is not null)
+                            {
+                                ICryptoTransform cryptoTransform = rc4.CreateDecryptor(rc4.Key, rc4.IV);
+                                MemoryStream memoryStream = new(contentDataBytes);
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
+                                StreamReader streamReader = new(cryptoStream);
+                                decryptedData = streamReader.ReadToEnd();
+                                streamReader.Dispose();
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.RC4) + 1, e);
+                        }
+                        break;
+                    }
+                case DataDecryptType.RC5:
+                    {
+                        try
+                        {
+                            RC5 rc5 = new();
+                            if (!string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[0]))
+                                {
+                                    rc5.Key = Encoding.UTF8.GetBytes(DecryptKeyText);
+                                }
+                                else if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[1]))
+                                {
+                                    rc5.Key = Convert.FromBase64String(DecryptKeyText);
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    rc5.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    rc5.IV = Convert.FromBase64String(InitializationVectorText);
+                                }
+                            }
+
+                            rc5.Mode = SelectedDecryptedBlockCipherMode.Key;
+                            rc5.Padding = SelectedPaddingMode.Key;
+                            byte[] contentDataBytes = null;
+                            if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                            }
+                            else if (selectedDecryptIndex is 1)
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                            }
+
+                            if (contentDataBytes is not null)
+                            {
+                                ICryptoTransform cryptoTransform = rc5.CreateDecryptor(rc5.Key, rc5.IV);
+                                MemoryStream memoryStream = new(contentDataBytes);
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
+                                StreamReader streamReader = new(cryptoStream);
+                                decryptedData = streamReader.ReadToEnd();
+                                streamReader.Dispose();
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.RC5) + 1, e);
+                        }
+                        break;
+                    }
+                case DataDecryptType.RC6:
+                    {
+                        try
+                        {
+                            RC6 rc6 = new();
+                            if (!string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[0]))
+                                {
+                                    rc6.Key = Encoding.UTF8.GetBytes(DecryptKeyText);
+                                }
+                                else if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[1]))
+                                {
+                                    rc6.Key = Convert.FromBase64String(DecryptKeyText);
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    rc6.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    rc6.IV = Convert.FromBase64String(InitializationVectorText);
+                                }
+                            }
+
+                            rc6.Mode = SelectedDecryptedBlockCipherMode.Key;
+                            rc6.Padding = SelectedPaddingMode.Key;
+                            byte[] contentDataBytes = null;
+                            if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                            }
+                            else if (selectedDecryptIndex is 1)
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                            }
+
+                            if (contentDataBytes is not null)
+                            {
+                                ICryptoTransform cryptoTransform = rc6.CreateDecryptor(rc6.Key, rc6.IV);
+                                MemoryStream memoryStream = new(contentDataBytes);
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
+                                StreamReader streamReader = new(cryptoStream);
+                                decryptedData = streamReader.ReadToEnd();
+                                streamReader.Dispose();
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.RC6) + 1, e);
+                        }
+                        break;
+                    }
+                case DataDecryptType.Rijndael:
+                    {
+                        try
+                        {
+                            Rijndael rijndael = Rijndael.Create();
+                            if (!string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[0]))
+                                {
+                                    rijndael.Key = Encoding.UTF8.GetBytes(DecryptKeyText);
+                                }
+                                else if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[1]))
+                                {
+                                    rijndael.Key = Convert.FromBase64String(DecryptKeyText);
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    rijndael.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    rijndael.IV = Convert.FromBase64String(InitializationVectorText);
+                                }
+                            }
+
+                            rijndael.Mode = SelectedDecryptedBlockCipherMode.Key;
+                            rijndael.Padding = SelectedPaddingMode.Key;
+                            byte[] contentDataBytes = null;
+                            if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                            }
+                            else if (selectedDecryptIndex is 1)
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                            }
+
+                            if (contentDataBytes is not null)
+                            {
+                                ICryptoTransform cryptoTransform = rijndael.CreateDecryptor(rijndael.Key, rijndael.IV);
+                                MemoryStream memoryStream = new(contentDataBytes);
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
+                                StreamReader streamReader = new(cryptoStream);
+                                decryptedData = streamReader.ReadToEnd();
+                                streamReader.Dispose();
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.Rijndael) + 1, e);
+                        }
+                        break;
+                    }
+                case DataDecryptType.RSA:
+                    break;
+
+                case DataDecryptType.SM4:
+                    {
+                        try
+                        {
+                            SM4 sm4 = new();
+                            if (!string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[0]))
+                                {
+                                    sm4.Key = Encoding.UTF8.GetBytes(DecryptKeyText);
+                                }
+                                else if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[1]))
+                                {
+                                    sm4.Key = Convert.FromBase64String(DecryptKeyText);
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    sm4.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    sm4.IV = Convert.FromBase64String(InitializationVectorText);
+                                }
+                            }
+
+                            sm4.Mode = SelectedDecryptedBlockCipherMode.Key;
+                            sm4.Padding = SelectedPaddingMode.Key;
+                            byte[] contentDataBytes = null;
+                            if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                            }
+                            else if (selectedDecryptIndex is 1)
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                            }
+
+                            if (contentDataBytes is not null)
+                            {
+                                ICryptoTransform cryptoTransform = sm4.CreateDecryptor(sm4.Key, sm4.IV);
+                                MemoryStream memoryStream = new(contentDataBytes);
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
+                                StreamReader streamReader = new(cryptoStream);
+                                decryptedData = streamReader.ReadToEnd();
+                                streamReader.Dispose();
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.SM4) + 1, e);
+                        }
+                        break;
+                    }
+                case DataDecryptType.TripleDES:
+                    {
+                        try
+                        {
+                            TripleDES tripleDes = TripleDES.Create();
+                            if (!string.IsNullOrEmpty(DecryptKeyText))
+                            {
+                                if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[0]))
+                                {
+                                    tripleDes.Key = Encoding.UTF8.GetBytes(DecryptKeyText);
+                                }
+                                else if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[1]))
+                                {
+                                    tripleDes.Key = Convert.FromBase64String(DecryptKeyText);
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(InitializationVectorText))
+                            {
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    tripleDes.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    tripleDes.IV = Convert.FromBase64String(InitializationVectorText);
+                                }
+                            }
+
+                            tripleDes.Mode = SelectedDecryptedBlockCipherMode.Key;
+                            tripleDes.Padding = SelectedPaddingMode.Key;
+                            byte[] contentDataBytes = null;
+                            if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                            }
+                            else if (selectedDecryptIndex is 1)
+                            {
+                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                            }
+
+                            if (contentDataBytes is not null)
+                            {
+                                ICryptoTransform cryptoTransform = tripleDes.CreateDecryptor(tripleDes.Key, tripleDes.IV);
+                                MemoryStream memoryStream = new(contentDataBytes);
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
+                                StreamReader streamReader = new(cryptoStream);
+                                decryptedData = streamReader.ReadToEnd();
+                                streamReader.Dispose();
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.TripleDES) + 1, e);
+                        }
+                        break;
+                    }
+                case DataDecryptType.XOR:
+                    {
+                        if (selectedDecryptIndex is 0)
+                        {
+                            contentData = File.ReadAllText(selectedDecryptFile);
+                        }
+
+                        try
+                        {
+                            decryptedData = XOR.XORDecrypt(contentData, DecryptKeyText);
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataEncryptType.MorseCode) + 1, e);
+                        }
+                        break;
+                    }
+            }
+            return ValueTuple.Create(decryptedData, decryptException);
+        }
 
         /// <summary>
         /// 检查读取的文件是否是文本文件
