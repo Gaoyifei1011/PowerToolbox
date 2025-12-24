@@ -55,6 +55,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string EncryptKey32SizeString = ResourceService.DataEncryptResource.GetString("EncryptKey32Size");
         private readonly string EncryptKey8SizeString = ResourceService.DataEncryptResource.GetString("EncryptKey8Size");
         private readonly string EncryptKeyEmptyString = ResourceService.DataEncryptResource.GetString("EncryptKeyEmpty");
+        private readonly string EncryptKeyInitializeString = ResourceService.DataEncryptResource.GetString("EncryptKeyInitialize");
         private readonly string EncryptPublicKeyEmptyString = ResourceService.DataEncryptResource.GetString("EncryptPublicKeyEmpty");
         private readonly string EncryptTypeMustContentString = ResourceService.DataEncryptResource.GetString("EncryptTypeMustContent");
         private readonly string EncryptTypeNotSelectedString = ResourceService.DataEncryptResource.GetString("EncryptTypeNotSelected");
@@ -249,6 +250,38 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _hasEncryptKeyStringType;
+
+        public bool HasEncryptKeyStringType
+        {
+            get { return _hasEncryptKeyStringType; }
+
+            set
+            {
+                if (!Equals(_hasEncryptKeyStringType, value))
+                {
+                    _hasEncryptKeyStringType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasEncryptKeyStringType)));
+                }
+            }
+        }
+
+        private KeyValuePair<string, string> _selectedEncryptKeyStringType;
+
+        public KeyValuePair<string, string> SelectedEncryptKeyStringType
+        {
+            get { return _selectedEncryptKeyStringType; }
+
+            set
+            {
+                if (!Equals(_selectedEncryptKeyStringType, value))
+                {
+                    _selectedEncryptKeyStringType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedEncryptKeyStringType)));
+                }
+            }
+        }
+
         private string _encryptKeyPHText = string.Empty;
 
         public string EncryptKeyPHText
@@ -277,22 +310,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     _encryptKeyText = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EncryptKeyText)));
-                }
-            }
-        }
-
-        private KeyValuePair<string, string> _selectedEncryptKeyStringType;
-
-        public KeyValuePair<string, string> SelectedEncryptKeyStringType
-        {
-            get { return _selectedEncryptKeyStringType; }
-
-            set
-            {
-                if (!Equals(_selectedEncryptKeyStringType, value))
-                {
-                    _selectedEncryptKeyStringType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedEncryptKeyStringType)));
                 }
             }
         }
@@ -1012,6 +1029,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
+                            HasEncryptKeyStringType = true;
                             HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
@@ -1039,6 +1057,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = false;
+                            HasEncryptKeyStringType = false;
                             HasInitializationVector = false;
                             HasEncryptedBlockCipherMode = false;
                             HasPaddingMode = false;
@@ -1065,6 +1084,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
+                            HasEncryptKeyStringType = true;
                             HasInitializationVector = true;
                             HasEncryptedBlockCipherMode = false;
                             HasPaddingMode = false;
@@ -1091,6 +1111,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
+                            HasEncryptKeyStringType = true;
                             HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
@@ -1118,6 +1139,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = false;
                             HasEncryptKey = false;
+                            HasEncryptKeyStringType = false;
                             HasInitializationVector = false;
                             HasEncryptedBlockCipherMode = false;
                             HasPaddingMode = false;
@@ -1144,6 +1166,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
+                            HasEncryptKeyStringType = true;
                             HasInitializationVector = true;
                             HasEncryptedBlockCipherMode = false;
                             HasPaddingMode = true;
@@ -1170,6 +1193,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
+                            HasEncryptKeyStringType = true;
                             HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
@@ -1196,6 +1220,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
+                            HasEncryptKeyStringType = true;
                             HasInitializationVector = false;
                             HasEncryptedBlockCipherMode = false;
                             HasPaddingMode = false;
@@ -1222,6 +1247,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
+                            HasEncryptKeyStringType = true;
                             HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
@@ -1248,7 +1274,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
-                            HasEncryptKey = true;
+                            HasEncryptKeyStringType = true;
                             HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
@@ -1275,6 +1301,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
+                            HasEncryptKeyStringType = true;
                             HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
@@ -1301,6 +1328,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = false;
+                            HasEncryptKeyStringType = false;
                             HasInitializationVector = false;
                             HasEncryptedBlockCipherMode = false;
                             HasPaddingMode = false;
@@ -1327,6 +1355,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
+                            HasEncryptKeyStringType = true;
                             HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
@@ -1353,6 +1382,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
+                            HasEncryptKeyStringType = true;
                             HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
@@ -1366,7 +1396,7 @@ namespace PowerToolbox.Views.Pages
                     case DataEncryptType.XOR:
                         {
                             SelectedIndex = 1;
-                            EncryptKeyPHText = string.Empty;
+                            EncryptKeyPHText = EncryptKeyInitializeString;
                             EncryptKeyText = string.Empty;
                             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
                             InitializationVectorPHText = string.Empty;
@@ -1380,6 +1410,7 @@ namespace PowerToolbox.Views.Pages
                             EncryptPrivateKeyText = string.Empty;
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
+                            HasEncryptKeyStringType = false;
                             HasInitializationVector = false;
                             HasEncryptedBlockCipherMode = false;
                             HasPaddingMode = false;
@@ -2117,7 +2148,9 @@ namespace PowerToolbox.Views.Pages
                             break;
                         }
                     default:
-                        break;
+                        {
+                            break;
+                        }
                 }
             }
 
@@ -2322,6 +2355,7 @@ namespace PowerToolbox.Views.Pages
                             encryptedData = Convert.ToBase64String(memoryStream.ToArray());
                             cryptoStream.Dispose();
                             memoryStream.Dispose();
+                            cryptoTransform.Dispose();
                         }
                         catch (Exception e)
                         {
@@ -2399,7 +2433,6 @@ namespace PowerToolbox.Views.Pages
                             encryptException = e;
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.ChaCha20) + 1, e);
                         }
-
                         break;
                     }
                 case DataEncryptType.DES:
@@ -2451,6 +2484,7 @@ namespace PowerToolbox.Views.Pages
                             encryptedData = Convert.ToBase64String(memoryStream.ToArray());
                             cryptoStream.Dispose();
                             memoryStream.Dispose();
+                            cryptoTransform.Dispose();
                         }
                         catch (Exception e)
                         {
@@ -2524,6 +2558,7 @@ namespace PowerToolbox.Views.Pages
                             encryptedData = Convert.ToBase64String(memoryStream.ToArray());
                             cryptoStream.Dispose();
                             memoryStream.Dispose();
+                            cryptoTransform.Dispose();
                         }
                         catch (Exception e)
                         {
@@ -2581,6 +2616,7 @@ namespace PowerToolbox.Views.Pages
                             encryptedData = Convert.ToBase64String(memoryStream.ToArray());
                             cryptoStream.Dispose();
                             memoryStream.Dispose();
+                            cryptoTransform.Dispose();
                         }
                         catch (Exception e)
                         {
@@ -2626,6 +2662,7 @@ namespace PowerToolbox.Views.Pages
                             encryptedData = Convert.ToBase64String(memoryStream.ToArray());
                             cryptoStream.Dispose();
                             memoryStream.Dispose();
+                            cryptoTransform.Dispose();
                         }
                         catch (Exception e)
                         {
@@ -2683,6 +2720,7 @@ namespace PowerToolbox.Views.Pages
                             encryptedData = Convert.ToBase64String(memoryStream.ToArray());
                             cryptoStream.Dispose();
                             memoryStream.Dispose();
+                            cryptoTransform.Dispose();
                         }
                         catch (Exception e)
                         {
@@ -2740,6 +2778,7 @@ namespace PowerToolbox.Views.Pages
                             encryptedData = Convert.ToBase64String(memoryStream.ToArray());
                             cryptoStream.Dispose();
                             memoryStream.Dispose();
+                            cryptoTransform.Dispose();
                         }
                         catch (Exception e)
                         {
@@ -2797,6 +2836,7 @@ namespace PowerToolbox.Views.Pages
                             encryptedData = Convert.ToBase64String(memoryStream.ToArray());
                             cryptoStream.Dispose();
                             memoryStream.Dispose();
+                            cryptoTransform.Dispose();
                         }
                         catch (Exception e)
                         {
@@ -2810,7 +2850,6 @@ namespace PowerToolbox.Views.Pages
                         try
                         {
                             RSA rsa = RSA.Create();
-
                             if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
                             {
                                 FileStream fileStream = File.OpenRead(selectedEncryptFile);
@@ -2910,6 +2949,7 @@ namespace PowerToolbox.Views.Pages
                             encryptedData = Convert.ToBase64String(memoryStream.ToArray());
                             cryptoStream.Dispose();
                             memoryStream.Dispose();
+                            cryptoTransform.Dispose();
                         }
                         catch (Exception e)
                         {
@@ -2967,6 +3007,7 @@ namespace PowerToolbox.Views.Pages
                             encryptedData = Convert.ToBase64String(memoryStream.ToArray());
                             cryptoStream.Dispose();
                             memoryStream.Dispose();
+                            cryptoTransform.Dispose();
                         }
                         catch (Exception e)
                         {
@@ -2992,7 +3033,6 @@ namespace PowerToolbox.Views.Pages
                         break;
                     }
             }
-
             return ValueTuple.Create(encryptedData, encryptException);
         }
 

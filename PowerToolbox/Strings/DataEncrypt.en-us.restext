@@ -32,6 +32,7 @@ EncryptKey1624Size=The encryption key supports 16 or 24 bytes
 EncryptKey16Size=The encryption key supports 16 bytes
 EncryptKey32Size=The encryption key supports 32 bytes
 EncryptKey8Size=The encryption key supports 8 bytes
+EncryptKeyInitialize=Please input the encryption key
 EncryptKeyEmpty=The encryption key is empty
 EncryptPHText=Please input the encrypt content
 EncryptPrivateKey=Encrypt private key

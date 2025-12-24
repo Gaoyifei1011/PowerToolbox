@@ -33,6 +33,7 @@ EncryptKey16Size=加密密钥支持 16 字节
 EncryptKey32Size=加密密钥支持 32 字节
 EncryptKey8Size=加密密钥支持 8 字节
 EncryptKeyEmpty=加密密钥为空
+EncryptKeyInitialize=请输入加密密钥
 EncryptPHText=请输入要加密的内容
 EncryptPrivateKey=加密私钥
 EncryptPrivateKeyPHText=请输入要加密的私钥
