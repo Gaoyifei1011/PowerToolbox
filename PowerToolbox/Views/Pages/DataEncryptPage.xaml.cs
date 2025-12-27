@@ -8,6 +8,7 @@ using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
+using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,8 +21,8 @@ using System.Windows.Forms;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 
-// 抑制 CA1822，CA2022，IDE0060 警告
-#pragma warning disable CA1822,CA2022,IDE0060
+// 抑制 CA1806，CA1822，CA2022，IDE0060 警告
+#pragma warning disable CA1806,CA1822,CA2022,IDE0060
 
 namespace PowerToolbox.Views.Pages
 {
@@ -30,6 +31,7 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class DataEncryptPage : Page, INotifyPropertyChanged
     {
+        private readonly string AllFilesString = ResourceService.DataEncryptResource.GetString("AllFiles");
         private readonly string AESString = ResourceService.DataEncryptResource.GetString("AES");
         private readonly string ANSIX923String = ResourceService.DataEncryptResource.GetString("ANSIX923");
         private readonly string ASCIIString = ResourceService.DataEncryptResource.GetString("ASCII");
@@ -39,6 +41,8 @@ namespace PowerToolbox.Views.Pages
         private readonly string CBCString = ResourceService.DataEncryptResource.GetString("CBC");
         private readonly string CFBString = ResourceService.DataEncryptResource.GetString("CFB");
         private readonly string ChaCha20String = ResourceService.DataEncryptResource.GetString("ChaCha20");
+        private readonly string ContentEncryptedDataSaveFailedString = ResourceService.DataEncryptResource.GetString("ContentEncryptedDataSaveFailed");
+        private readonly string ContentEncryptedDataSaveSuccessfullyString = ResourceService.DataEncryptResource.GetString("ContentEncryptedDataSaveSuccessfully");
         private readonly string ContentEncryptFailedString = ResourceService.DataEncryptResource.GetString("ContentEncryptFailed");
         private readonly string ContentEncryptSuccessfullyString = ResourceService.DataEncryptResource.GetString("ContentEncryptSuccessfully");
         private readonly string ContentEmptyString = ResourceService.DataEncryptResource.GetString("ContentEmpty");
@@ -59,6 +63,8 @@ namespace PowerToolbox.Views.Pages
         private readonly string EncryptPublicKeyEmptyString = ResourceService.DataEncryptResource.GetString("EncryptPublicKeyEmpty");
         private readonly string EncryptTypeMustContentString = ResourceService.DataEncryptResource.GetString("EncryptTypeMustContent");
         private readonly string EncryptTypeNotSelectedString = ResourceService.DataEncryptResource.GetString("EncryptTypeNotSelected");
+        private readonly string FileEncryptedDataSaveFailedString = ResourceService.DataEncryptResource.GetString("FileEncryptedDataSaveFailed");
+        private readonly string FileEncryptedDataSaveSuccessfullyString = ResourceService.DataEncryptResource.GetString("FileEncryptedDataSaveSuccessfully");
         private readonly string FileEncryptFailedString = ResourceService.DataEncryptResource.GetString("FileEncryptFailed");
         private readonly string FileEncryptSuccessfullyString = ResourceService.DataEncryptResource.GetString("FileEncryptSuccessfully");
         private readonly string FileInitializeString = ResourceService.DataEncryptResource.GetString("FileInitialize");
@@ -103,7 +109,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string ZerosString = ResourceService.DataEncryptResource.GetString("Zeros");
         private int selectEncryptIndex = -1;
         private string selectedEncryptFile = string.Empty;
-        private string inputedEncryptContent = string.Empty;
+        private string inputtedEncryptContent = string.Empty;
         private string encryptedLocalFile = string.Empty;
 
         private int _selectedIndex = 0;
@@ -614,6 +620,38 @@ namespace PowerToolbox.Views.Pages
                 {
                     _textEncodingCustomTypeText = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TextEncodingCustomTypeText)));
+                }
+            }
+        }
+
+        private bool _saveEncryptedDataToLocalFile;
+
+        public bool SaveEncryptedDataToLocalFile
+        {
+            get { return _saveEncryptedDataToLocalFile; }
+
+            set
+            {
+                if (!Equals(_saveEncryptedDataToLocalFile, value))
+                {
+                    _saveEncryptedDataToLocalFile = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SaveEncryptedDataToLocalFile)));
+                }
+            }
+        }
+
+        private string _saveEncryptedFilePath = string.Empty;
+
+        public string SaveEncryptedFilePath
+        {
+            get { return _saveEncryptedFilePath; }
+
+            set
+            {
+                if (!Equals(_saveEncryptedFilePath, value))
+                {
+                    _saveEncryptedFilePath = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SaveEncryptedFilePath)));
                 }
             }
         }
@@ -1842,6 +1880,78 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 保存解密的数据到本地文件中
+        /// </summary>
+        private void OnSaveEncryptedDataToLocalFileToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch)
+            {
+                SaveEncryptedDataToLocalFile = toggleSwitch.IsOn;
+            }
+        }
+
+        /// <summary>
+        /// 打开文件所对应的文件夹
+        /// </summary>
+        private void OnSaveEncryptedFilePathClicked(object sender, RoutedEventArgs args)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(SaveEncryptedFilePath))
+                    {
+                        if (File.Exists(SaveEncryptedFilePath))
+                        {
+                            nint pidlList = Shell32Library.ILCreateFromPath(SaveEncryptedFilePath);
+                            if (pidlList is not 0)
+                            {
+                                Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
+                                Shell32Library.ILFree(pidlList);
+                            }
+                        }
+                        else
+                        {
+                            string directoryPath = Path.GetDirectoryName(SaveEncryptedFilePath);
+
+                            if (Directory.Exists(directoryPath))
+                            {
+                                Process.Start(directoryPath);
+                            }
+                            else
+                            {
+                                Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnSaveEncryptedFilePathClicked), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 修改文件存储路径
+        /// </summary>
+        private void OnChangeFolderClicked(object sender, RoutedEventArgs args)
+        {
+            SaveFileDialog saveFileDialog = new()
+            {
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                Filter = string.Format(".*|{0}", AllFilesString),
+                DefaultExt = ".*",
+                Title = SelectFileString
+            };
+            if (saveFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(saveFileDialog.FileName))
+            {
+                SaveEncryptedFilePath = saveFileDialog.FileName;
+            }
+            saveFileDialog.Dispose();
+        }
+
+        /// <summary>
         /// 输出格式为大写字母
         /// </summary>
         private void OnUseUpperCaseChecked(object sender, RoutedEventArgs args)
@@ -1870,7 +1980,7 @@ namespace PowerToolbox.Views.Pages
         {
             selectEncryptIndex = SelectedIndex;
             selectedEncryptFile = EncryptFile;
-            inputedEncryptContent = EncryptContent;
+            inputtedEncryptContent = EncryptContent;
             EncryptResult = string.Empty;
             encryptedLocalFile = string.Empty;
             IsLargeContent = false;
@@ -1894,7 +2004,7 @@ namespace PowerToolbox.Views.Pages
             // 检查要加密的字符串
             else if (selectEncryptIndex is 1)
             {
-                if (string.IsNullOrEmpty(inputedEncryptContent))
+                if (string.IsNullOrEmpty(inputtedEncryptContent))
                 {
                     ResultSeverity = InfoBarSeverity.Error;
                     ResultMessage = ContentEmptyString;
@@ -2217,7 +2327,7 @@ namespace PowerToolbox.Views.Pages
             ResultMessage = EncryptingString;
             (string encryptedData, Exception encryptException) = await Task.Run(() =>
             {
-                return GetEncryptedData(SelectedDataEncryptType.DataEncryptType, selectEncryptIndex, inputedEncryptContent, textEncoding, selectedEncryptFile);
+                return GetEncryptedData(SelectedDataEncryptType.DataEncryptType, selectEncryptIndex, inputtedEncryptContent, textEncoding, selectedEncryptFile);
             });
 
             // 加密失败
@@ -2235,39 +2345,122 @@ namespace PowerToolbox.Views.Pages
 
                 EncryptFailedInformation = encryptException is not null && !string.IsNullOrEmpty(encryptException.Message) ? encryptException.Message : UnknownErrorString;
             }
+            // 加密成功
             else
             {
-                ResultSeverity = InfoBarSeverity.Success;
+                bool isSaved = false;
+                Exception exception = null;
+                if (SaveEncryptedDataToLocalFile)
+                {
+                    await Task.Run(() =>
+                    {
+                        // 保存到选择的本地文件中
+                        try
+                        {
+                            encryptedLocalFile = SaveEncryptedFilePath;
+                            File.AppendAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
+                            isSaved = true;
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 2, e);
+                            exception = e;
+                        }
+
+                        // 保存到选定的本地文件失败，自动保存到临时文件目录中
+                        if (!isSaved)
+                        {
+                            try
+                            {
+                                encryptedLocalFile = Path.GetTempFileName();
+                                File.AppendAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
+                                isSaved = true;
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 3, e);
+                                exception = e;
+                            }
+                        }
+                    });
+                }
+
+                // 加密后的字符串数据太长
                 if (encryptedData.Length > 1024)
                 {
                     EncryptResult = LargeContentString;
                     IsLargeContent = true;
 
-                    await Task.Run(() =>
+                    if (!SaveEncryptedDataToLocalFile)
                     {
-                        try
+                        await Task.Run(() =>
                         {
-                            encryptedLocalFile = Path.GetTempFileName();
-                            File.AppendAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 2, e);
-                        }
-                    });
+                            try
+                            {
+                                encryptedLocalFile = Path.GetTempFileName();
+                                File.AppendAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 4, e);
+                            }
+                        });
+                    }
                 }
                 else
                 {
                     EncryptResult = UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant();
                     IsLargeContent = false;
                 }
+
+                // 显示加密结果
                 if (selectEncryptIndex is 0)
                 {
-                    ResultMessage = FileEncryptSuccessfullyString;
+                    if (SaveEncryptedDataToLocalFile)
+                    {
+                        if (isSaved)
+                        {
+                            ResultSeverity = InfoBarSeverity.Success;
+                            ResultMessage = FileEncryptedDataSaveSuccessfullyString;
+                            EncryptFailedInformation = string.Empty;
+                        }
+                        else
+                        {
+                            ResultSeverity = InfoBarSeverity.Error;
+                            ResultMessage = FileEncryptedDataSaveFailedString;
+                            EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
+                        }
+                    }
+                    else
+                    {
+                        ResultSeverity = InfoBarSeverity.Success;
+                        ResultMessage = FileEncryptSuccessfullyString;
+                        EncryptFailedInformation = string.Empty;
+                    }
                 }
                 else if (selectEncryptIndex is 1)
                 {
-                    ResultMessage = ContentEncryptSuccessfullyString;
+                    if (SaveEncryptedDataToLocalFile)
+                    {
+                        if (isSaved)
+                        {
+                            ResultSeverity = InfoBarSeverity.Success;
+                            ResultMessage = ContentEncryptedDataSaveSuccessfullyString;
+                            EncryptFailedInformation = string.Empty;
+                        }
+                        else
+                        {
+                            ResultSeverity = InfoBarSeverity.Error;
+                            ResultMessage = ContentEncryptedDataSaveFailedString;
+                            EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
+                        }
+                    }
+                    else
+                    {
+                        ResultSeverity = InfoBarSeverity.Success;
+                        ResultMessage = ContentEncryptSuccessfullyString;
+                        EncryptFailedInformation = string.Empty;
+                    }
                 }
             }
             IsEncrypting = false;
