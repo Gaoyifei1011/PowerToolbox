@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Documents;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Extensions.Encrypt;
 using PowerToolbox.Helpers.Root;
@@ -7,6 +8,7 @@ using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
+using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,8 +21,8 @@ using System.Windows.Forms;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 
-// 抑制 CA1822，CA2022，IDE0060 警告
-#pragma warning disable CA1822,CA2022,IDE0060
+// 抑制 CA1806，CA1822，CA2022，IDE0060 警告
+#pragma warning disable CA1806,CA1822,CA2022,IDE0060
 
 namespace PowerToolbox.Views.Pages
 {
@@ -29,16 +31,21 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class DataDecryptPage : Page, INotifyPropertyChanged
     {
+        private readonly string AllFilesString = ResourceService.DataDecryptResource.GetString("AllFiles");
+        private readonly string ASCIIString = ResourceService.DataDecryptResource.GetString("ASCII");
         private readonly string AESString = ResourceService.DataDecryptResource.GetString("AES");
         private readonly string ANSIX923String = ResourceService.DataDecryptResource.GetString("ANSIX923");
         private readonly string Base64String = ResourceService.DataDecryptResource.GetString("Base64");
+        private readonly string BigEndianUnicodeString = ResourceService.DataDecryptResource.GetString("BigEndianUnicode");
         private readonly string CaesarCipherString = ResourceService.DataDecryptResource.GetString("CaesarCipher");
         private readonly string CBCString = ResourceService.DataDecryptResource.GetString("CBC");
         private readonly string CFBString = ResourceService.DataDecryptResource.GetString("CFB");
         private readonly string ChaCha20String = ResourceService.DataDecryptResource.GetString("ChaCha20");
+        private readonly string ContentDecryptFailedString = ResourceService.DataDecryptResource.GetString("ContentDecryptFailed");
         private readonly string ContentEmptyString = ResourceService.DataDecryptResource.GetString("ContentEmpty");
         private readonly string ContentInitializeString = ResourceService.DataDecryptResource.GetString("ContentInitialize");
         private readonly string CTSString = ResourceService.DataDecryptResource.GetString("CTS");
+        private readonly string CustomString = ResourceService.DataDecryptResource.GetString("Custom");
         private readonly string DecryptingString = ResourceService.DataDecryptResource.GetString("Decrypting");
         private readonly string DecryptKey162432SizeString = ResourceService.DataDecryptResource.GetString("DecryptKey162432Size");
         private readonly string DecryptKey1624SizeString = ResourceService.DataDecryptResource.GetString("DecryptKey1624Size");
@@ -53,15 +60,21 @@ namespace PowerToolbox.Views.Pages
         private readonly string DESString = ResourceService.DataDecryptResource.GetString("DES");
         private readonly string DragOverContentString = ResourceService.DataDecryptResource.GetString("DragOverContent");
         private readonly string ECBString = ResourceService.DataDecryptResource.GetString("ECB");
+        private readonly string FileDecryptFailedString = ResourceService.DataDecryptResource.GetString("FileDecryptFailed");
         private readonly string FileInitializeString = ResourceService.DataDecryptResource.GetString("FileInitialize");
         private readonly string FileNotExistedString = ResourceService.DataDecryptResource.GetString("FileNotExisted");
         private readonly string FileNotSelectedString = ResourceService.DataDecryptResource.GetString("FileNotSelected");
         private readonly string FileNotTextContentString = ResourceService.DataDecryptResource.GetString("FileNotTextContent");
+        private readonly string GB18030String = ResourceService.DataDecryptResource.GetString("GB18030");
+        private readonly string GB2312String = ResourceService.DataDecryptResource.GetString("GB2312");
+        private readonly string GBKString = ResourceService.DataDecryptResource.GetString("GBK");
         private readonly string InitializationVector12SizeString = ResourceService.DataDecryptResource.GetString("InitializationVector12Size");
         private readonly string InitializationVector16SizeString = ResourceService.DataDecryptResource.GetString("InitializationVector16Size");
         private readonly string InitializationVector8SizeString = ResourceService.DataDecryptResource.GetString("InitializationVector8Size");
         private readonly string InitializationVectorEmptyString = ResourceService.DataDecryptResource.GetString("InitializationVectorEmpty");
         private readonly string ISO10126String = ResourceService.DataDecryptResource.GetString("ISO10126");
+        private readonly string ISO88591String = ResourceService.DataDecryptResource.GetString("ISO88591");
+        private readonly string LargeContentString = ResourceService.DataDecryptResource.GetString("LargeContent");
         private readonly string MorseCodeString = ResourceService.DataDecryptResource.GetString("MorseCode");
         private readonly string NoMultiFileString = ResourceService.DataDecryptResource.GetString("NoMultiFile");
         private readonly string NonePaddingString = ResourceService.DataDecryptResource.GetString("NonePadding");
@@ -81,13 +94,17 @@ namespace PowerToolbox.Views.Pages
         private readonly string SM4String = ResourceService.DataDecryptResource.GetString("SM4");
         private readonly string StringLengthString = ResourceService.DataDecryptResource.GetString("StringLength");
         private readonly string TripleDESString = ResourceService.DataDecryptResource.GetString("TripleDES");
+        private readonly string UnicodeString = ResourceService.DataDecryptResource.GetString("Unicode");
+        private readonly string UnknownErrorString = ResourceService.DataDecryptResource.GetString("UnknownError");
+        private readonly string UTF32String = ResourceService.DataDecryptResource.GetString("UTF32");
+        private readonly string UTF7String = ResourceService.DataDecryptResource.GetString("UTF7");
         private readonly string UTF8String = ResourceService.DataDecryptResource.GetString("UTF8");
         private readonly string XORString = ResourceService.DataDecryptResource.GetString("XOR");
         private readonly string ZerosString = ResourceService.DataDecryptResource.GetString("Zeros");
         private int selectDecryptIndex = -1;
         private string selectedDecryptFile = string.Empty;
-        private string inputedDecryptContent = string.Empty;
-        private string encryptedLocalFile = string.Empty;
+        private string inputtedDecryptContent = string.Empty;
+        private string decryptedLocalFile = string.Empty;
 
         private int _selectedIndex = 0;
 
@@ -521,6 +538,102 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _hasParseAsTextData;
+
+        public bool HasParseAsTextData
+        {
+            get { return _hasParseAsTextData; }
+
+            set
+            {
+                if (!Equals(_hasParseAsTextData, value))
+                {
+                    _hasParseAsTextData = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasParseAsTextData)));
+                }
+            }
+        }
+
+        private bool _parseAsTextData;
+
+        public bool ParseAsTextData
+        {
+            get { return _parseAsTextData; }
+
+            set
+            {
+                if (!Equals(_parseAsTextData, value))
+                {
+                    _parseAsTextData = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ParseAsTextData)));
+                }
+            }
+        }
+
+        private KeyValuePair<string, string> _selectedTextDecodingType;
+
+        public KeyValuePair<string, string> SelectedTextDecodingType
+        {
+            get { return _selectedTextDecodingType; }
+
+            set
+            {
+                if (!Equals(_selectedTextDecodingType, value))
+                {
+                    _selectedTextDecodingType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTextDecodingType)));
+                }
+            }
+        }
+
+        private string _textDecodingCustomTypeText;
+
+        public string TextDecodingCustomTypeText
+        {
+            get { return _textDecodingCustomTypeText; }
+
+            set
+            {
+                if (!Equals(_textDecodingCustomTypeText, value))
+                {
+                    _textDecodingCustomTypeText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TextDecodingCustomTypeText)));
+                }
+            }
+        }
+
+        private bool _saveDecryptedDataToLocalFile;
+
+        public bool SaveDecryptedDataToLocalFile
+        {
+            get { return _saveDecryptedDataToLocalFile; }
+
+            set
+            {
+                if (!Equals(_saveDecryptedDataToLocalFile, value))
+                {
+                    _saveDecryptedDataToLocalFile = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SaveDecryptedDataToLocalFile)));
+                }
+            }
+        }
+
+        private string _saveDecryptedFilePath = string.Empty;
+
+        public string SaveDecryptedFilePath
+        {
+            get { return _saveDecryptedFilePath; }
+
+            set
+            {
+                if (!Equals(_saveDecryptedFilePath, value))
+                {
+                    _saveDecryptedFilePath = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SaveDecryptedFilePath)));
+                }
+            }
+        }
+
         private bool _useUpperCase;
 
         public bool UseUpperCase
@@ -569,6 +682,38 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isLargeContent;
+
+        public bool IsLargeContent
+        {
+            get { return _isLargeContent; }
+
+            set
+            {
+                if (!Equals(_isLargeContent, value))
+                {
+                    _isLargeContent = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLargeContent)));
+                }
+            }
+        }
+
+        private bool _isBinaryFile;
+
+        public bool IsBinaryFile
+        {
+            get { return _isBinaryFile; }
+
+            set
+            {
+                if (!Equals(_isBinaryFile, value))
+                {
+                    _isBinaryFile = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsBinaryFile)));
+                }
+            }
+        }
+
         private List<DataDecryptTypeModel> DataDecryptTypeList { get; } = [];
 
         private List<KeyValuePair<string, string>> DecryptKeyStringTypeList { get; } = [];
@@ -580,6 +725,8 @@ namespace PowerToolbox.Views.Pages
         private List<KeyValuePair<PaddingMode, string>> PaddingModeList { get; } = [];
 
         private List<KeyValuePair<RSAEncryptionPaddingMode, string>> RSAEncryptionPaddingModeList { get; } = [];
+
+        private List<KeyValuePair<string, string>> TextDecodingTypeList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -678,6 +825,18 @@ namespace PowerToolbox.Views.Pages
             PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.ISO10126, ISO10126String));
             RSAEncryptionPaddingModeList.Add(new KeyValuePair<RSAEncryptionPaddingMode, string>(RSAEncryptionPaddingMode.Pkcs1, Pkcs1String));
             RSAEncryptionPaddingModeList.Add(new KeyValuePair<RSAEncryptionPaddingMode, string>(RSAEncryptionPaddingMode.Oaep, OaepString));
+            TextDecodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.ASCII), ASCIIString));
+            TextDecodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.BigEndianUnicode), BigEndianUnicodeString));
+            TextDecodingTypeList.Add(new KeyValuePair<string, string>("ISO-8859-1", ISO88591String));
+            TextDecodingTypeList.Add(new KeyValuePair<string, string>("GB18030", GB18030String));
+            TextDecodingTypeList.Add(new KeyValuePair<string, string>("GB2312", GB2312String));
+            TextDecodingTypeList.Add(new KeyValuePair<string, string>("GBK", GBKString));
+            TextDecodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.Unicode), UnicodeString));
+            TextDecodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF32), UTF32String));
+            TextDecodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF7), UTF7String));
+            TextDecodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
+            TextDecodingTypeList.Add(new KeyValuePair<string, string>("Custom", CustomString));
+            SelectedTextDecodingType = TextDecodingTypeList[9];
         }
 
         #region 第一部分：数据解密页面——挂载的事件
@@ -892,6 +1051,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = true;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.CaesarCipher:
@@ -916,6 +1079,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = true;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = false;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.ChaCha20:
@@ -940,6 +1107,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = false;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.DES:
@@ -964,6 +1135,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = true;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.MorseCode:
@@ -988,6 +1163,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = false;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.Rabbit:
@@ -1012,6 +1191,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = true;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.RC2:
@@ -1036,6 +1219,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = true;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.RC4:
@@ -1060,6 +1247,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = false;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.RC5:
@@ -1084,6 +1275,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = true;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.RC6:
@@ -1108,6 +1303,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = true;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.Rijndael:
@@ -1132,6 +1331,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = true;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.RSA:
@@ -1156,6 +1359,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = true;
                             HasRSAEncryptionPaddingMode = true;
+                            HasParseAsTextData = true;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.SM4:
@@ -1180,6 +1387,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = true;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.TripleDES:
@@ -1204,6 +1415,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = true;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.XOR:
@@ -1228,6 +1443,10 @@ namespace PowerToolbox.Views.Pages
                             HasOffset = false;
                             HasDecryptPrivateKey = false;
                             HasRSAEncryptionPaddingMode = false;
+                            HasParseAsTextData = false;
+                            ParseAsTextData = false;
+                            SelectedTextDecodingType = TextDecodingTypeList[0];
+                            TextDecodingCustomTypeText = string.Empty;
                             break;
                         }
                     default:
@@ -1239,7 +1458,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 解密密钥字符串编码模式发生变化时触发的事件
+        /// 解密密钥字符串解码模式发生变化时触发的事件
         /// </summary>
         private void OnDecryptKeyStringTypeClicked(object sender, RoutedEventArgs args)
         {
@@ -1261,7 +1480,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 初始化向量字符串编码模式发生变化时触发的事件
+        /// 初始化向量字符串解码模式发生变化时触发的事件
         /// </summary>
         private void OnInitializationVectorStringTypeClicked(object sender, RoutedEventArgs args)
         {
@@ -1344,6 +1563,111 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 以文本方式解析解密后的数据
+        /// </summary>
+        private void OnParseAsTextDataToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch)
+            {
+                ParseAsTextData = toggleSwitch.IsOn;
+            }
+        }
+
+        /// <summary>
+        /// 选择文字解码类型
+        /// </summary>
+        private void OnTextDecodingTypeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> textDecodingType)
+            {
+                SelectedTextDecodingType = textDecodingType;
+            }
+        }
+
+        /// <summary>
+        /// 文字自定义解码类型内容发生变化时触发的事件
+        /// </summary>
+        private void OnTextDecodingCustomTypeTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                TextDecodingCustomTypeText = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// 保存解密的数据到本地文件中
+        /// </summary>
+        private void OnSaveDecryptedDataToLocalFileToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch)
+            {
+                SaveDecryptedDataToLocalFile = toggleSwitch.IsOn;
+            }
+        }
+
+        /// <summary>
+        /// 修改文件存储路径
+        /// </summary>
+        private void OnChangeFolderClicked(object sender, RoutedEventArgs args)
+        {
+            SaveFileDialog saveFileDialog = new()
+            {
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                Filter = string.Format(".*|{0}", AllFilesString),
+                DefaultExt = ".*",
+                Title = SelectFileString
+            };
+            if (saveFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(saveFileDialog.FileName))
+            {
+                SaveDecryptedFilePath = saveFileDialog.FileName;
+            }
+            saveFileDialog.Dispose();
+        }
+
+        /// <summary>
+        /// 打开文件所对应的文件夹
+        /// </summary>
+        private void OnSaveDecryptedFilePathClicked(object sender, RoutedEventArgs args)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(SaveDecryptedFilePath))
+                    {
+                        if (File.Exists(SaveDecryptedFilePath))
+                        {
+                            nint pidlList = Shell32Library.ILCreateFromPath(SaveDecryptedFilePath);
+                            if (pidlList is not 0)
+                            {
+                                Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
+                                Shell32Library.ILFree(pidlList);
+                            }
+                        }
+                        else
+                        {
+                            string directoryPath = Path.GetDirectoryName(SaveDecryptedFilePath);
+
+                            if (Directory.Exists(directoryPath))
+                            {
+                                Process.Start(directoryPath);
+                            }
+                            else
+                            {
+                                Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnSaveDecryptedFilePathClicked), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
         /// 输出格式为大写字母
         /// </summary>
         private void OnUseUpperCaseChecked(object sender, RoutedEventArgs args)
@@ -1373,7 +1697,9 @@ namespace PowerToolbox.Views.Pages
             // TODO：未完成
             selectDecryptIndex = SelectedIndex;
             selectedDecryptFile = DecryptFile;
-            inputedDecryptContent = DecryptContent;
+            inputtedDecryptContent = DecryptContent;
+            DecryptResult = string.Empty;
+            decryptedLocalFile = string.Empty;
 
             // 检查要读取解密的文件内容
             if (selectDecryptIndex is 0)
@@ -1400,7 +1726,7 @@ namespace PowerToolbox.Views.Pages
             // 检查要解密的字符串
             else if (selectDecryptIndex is 1)
             {
-                if (string.IsNullOrEmpty(inputedDecryptContent))
+                if (string.IsNullOrEmpty(inputtedDecryptContent))
                 {
                     ResultSeverity = InfoBarSeverity.Error;
                     ResultMessage = ContentEmptyString;
@@ -1414,7 +1740,7 @@ namespace PowerToolbox.Views.Pages
                 return;
             }
 
-            // 选择加密的算法为空时的提示
+            // 选择解密的算法为空时的提示
             if (SelectedDataDecryptType is null)
             {
                 ResultSeverity = InfoBarSeverity.Error;
@@ -1423,7 +1749,7 @@ namespace PowerToolbox.Views.Pages
             }
             else
             {
-                // 检查对应的加密算法所填充的加密密钥或初始化向量是否为空
+                // 检查对应的加密算法所填充的解密密钥或初始化向量是否为空
                 switch (SelectedDataDecryptType.DataDecryptType)
                 {
                     case DataDecryptType.AES:
@@ -1664,8 +1990,222 @@ namespace PowerToolbox.Views.Pages
             IsDecrypting = true;
             ResultSeverity = InfoBarSeverity.Informational;
             ResultMessage = DecryptingString;
+            (object decryptedData, Exception decryptException) = await Task.Run(() =>
+            {
+                return GetDecryptedData(SelectedDataDecryptType.DataDecryptType, selectDecryptIndex, inputtedDecryptContent, selectedDecryptFile);
+            });
 
-            // TODO：未完成
+            // 解密失败
+            if (decryptedData is null)
+            {
+                ResultSeverity = InfoBarSeverity.Error;
+                if (selectDecryptIndex is 0)
+                {
+                    ResultMessage = FileDecryptFailedString;
+                }
+                else if (selectDecryptIndex is 1)
+                {
+                    ResultMessage = ContentDecryptFailedString;
+                }
+
+                DecryptFailedInformation = decryptException is not null && !string.IsNullOrEmpty(decryptException.Message) ? decryptException.Message : UnknownErrorString;
+            }
+            // 解密成功
+            else
+            {
+                bool isSaved = false;
+                Exception exception = null;
+                if (SaveDecryptedDataToLocalFile)
+                {
+                    await Task.Run(() =>
+                    {
+                        // 保存到选择的本地文件中
+                        try
+                        {
+                            decryptedLocalFile = SaveDecryptedFilePath;
+                            if (Equals(decryptedData.GetType(), typeof(string)))
+                            {
+                                File.WriteAllText(decryptedLocalFile, UseUpperCase ? Convert.ToString(decryptedData).ToUpperInvariant() : Convert.ToString(decryptedData).ToLowerInvariant());
+                                isSaved = true;
+                            }
+                            else if (Equals(decryptedData.GetType(), typeof(byte[])))
+                            {
+                                File.WriteAllBytes(decryptedLocalFile, decryptedData as byte[]);
+                                isSaved = true;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 1, e);
+                            exception = e;
+                        }
+
+                        // 保存到选定的本地文件失败，自动保存到临时文件目录中
+                        if (!isSaved)
+                        {
+                            try
+                            {
+                                decryptedLocalFile = Path.GetTempFileName();
+                                // 解密后的数据是字符串
+                                if (Equals(decryptedData.GetType(), typeof(string)))
+                                {
+                                    File.WriteAllText(decryptedLocalFile, UseUpperCase ? Convert.ToString(decryptedData).ToUpperInvariant() : Convert.ToString(decryptedData).ToLowerInvariant());
+                                    isSaved = true;
+                                }
+                                // 解密后的数据是字节数组
+                                else if (Equals(decryptedData.GetType(), typeof(byte[])))
+                                {
+                                    // 以文本方式解析数据
+                                    if (ParseAsTextData)
+                                    {
+                                        string decryptedString = Encoding.UTF8.GetString(decryptedData as byte[]);
+                                        File.WriteAllText(decryptedLocalFile, UseUpperCase ? Convert.ToString(decryptedString).ToUpperInvariant() : Convert.ToString(decryptedString).ToLowerInvariant());
+                                        isSaved = true;
+                                    }
+                                    // 以二进制方式解析数据
+                                    else
+                                    {
+                                        File.WriteAllBytes(decryptedLocalFile, decryptedData as byte[]);
+                                        isSaved = true;
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartDecryptClicked), 2, e);
+                                exception = e;
+                            }
+                        }
+                    });
+                }
+
+                // 解密后的数据是字符串
+                if (Equals(decryptedData.GetType(), typeof(string)))
+                {
+                    string decryptedString = Convert.ToString(decryptedData);
+
+                    // 解密后的字符串数据太长
+                    if (decryptedString.Length > 1024)
+                    {
+                        DecryptResult = LargeContentString;
+                        IsLargeContent = true;
+                        IsBinaryFile = false;
+
+                        if (!SaveDecryptedDataToLocalFile)
+                        {
+                            await Task.Run(() =>
+                            {
+                                try
+                                {
+                                    decryptedLocalFile = Path.GetTempFileName();
+                                    File.WriteAllText(decryptedLocalFile, UseUpperCase ? Convert.ToString(decryptedData).ToUpperInvariant() : Convert.ToString(decryptedData).ToLowerInvariant());
+                                }
+                                catch (Exception e)
+                                {
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 3, e);
+                                }
+                            });
+                        }
+                    }
+                    else
+                    {
+                        DecryptResult = UseUpperCase ? decryptedString.ToUpperInvariant() : decryptedString.ToLowerInvariant();
+                        IsLargeContent = false;
+                        IsBinaryFile = false;
+                    }
+                }
+                // 解密后的数据是字节数组
+                else if (Equals(decryptedData.GetType(), typeof(byte[])))
+                {
+                    // 以文本方式解析数据
+                    if (ParseAsTextData)
+                    {
+                        try
+                        {
+                            string decryptedString = Encoding.UTF8.GetString(decryptedData as byte[]);
+
+                            // 解密后的字符串数据太长
+                            if (decryptedString.Length > 1024)
+                            {
+                                DecryptResult = LargeContentString;
+                                IsLargeContent = true;
+                                IsBinaryFile = false;
+
+                                if (!SaveDecryptedDataToLocalFile)
+                                {
+                                    await Task.Run(() =>
+                                    {
+                                        try
+                                        {
+                                            decryptedLocalFile = Path.GetTempFileName();
+                                            File.WriteAllText(decryptedLocalFile, UseUpperCase ? decryptedString.ToUpperInvariant() : decryptedString.ToLowerInvariant());
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 4, e);
+                                        }
+                                    });
+                                }
+                            }
+                            else
+                            {
+                                DecryptResult = UseUpperCase ? decryptedString.ToUpperInvariant() : decryptedString.ToLowerInvariant();
+                                IsLargeContent = false;
+                                IsBinaryFile = false;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 5, e);
+                        }
+                    }
+                    // 以二进制方式解析数据
+                    else
+                    {
+                        // TODO：请打开本地文件查看解密后的二进制文件
+                        DecryptResult = string.Empty;
+                        IsLargeContent = false;
+                        IsBinaryFile = true;
+
+                        if (!SaveDecryptedDataToLocalFile)
+                        {
+                            await Task.Run(() =>
+                            {
+                                try
+                                {
+                                    decryptedLocalFile = Path.GetTempFileName();
+                                    File.WriteAllBytes(decryptedLocalFile, decryptedData as byte[]);
+                                }
+                                catch (Exception e)
+                                {
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 6, e);
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 查看本地文件
+        /// </summary>
+        private async void OnViewLocalFileClicked(Hyperlink sender, HyperlinkClickEventArgs args)
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    if (File.Exists(decryptedLocalFile))
+                    {
+                        Process.Start(decryptedLocalFile);
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnViewLocalFileClicked), 1, e);
+                }
+            });
         }
 
         #endregion 第一部分：数据解密页面——挂载的事件
@@ -1673,10 +2213,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取解密后的数据
         /// </summary>
-        private (string, Exception) GetDecryptedData(DataDecryptType dataDecryptType, int selectedDecryptIndex, string contentData, string encryptFile)
+        private (object, Exception) GetDecryptedData(DataDecryptType dataDecryptType, int selectedDecryptIndex, string contentData, string encryptFile)
         {
-            // TODO：未完成
-            string decryptedData = string.Empty;
+            object decryptedData = null;
             Exception decryptException = null;
 
             switch (dataDecryptType)
@@ -1724,11 +2263,11 @@ namespace PowerToolbox.Views.Pages
                         if (contentDataBytes is not null)
                         {
                             ICryptoTransform cryptoTransform = aes.CreateDecryptor(aes.Key, aes.IV);
-                            MemoryStream memoryStream = new(contentDataBytes);
-                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
-                            StreamReader streamReader = new(cryptoStream);
-                            decryptedData = streamReader.ReadToEnd();
-                            streamReader.Dispose();
+                            MemoryStream memoryStream = new();
+                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                            cryptoStream.Write(contentDataBytes, 0, contentDataBytes.Length);
+                            cryptoStream.FlushFinalBlock();
+                            decryptedData = memoryStream.ToArray();
                             cryptoStream.Dispose();
                             memoryStream.Dispose();
                             cryptoTransform.Dispose();
@@ -1855,11 +2394,11 @@ namespace PowerToolbox.Views.Pages
                             if (contentDataBytes is not null)
                             {
                                 ICryptoTransform cryptoTransform = des.CreateDecryptor(des.Key, des.IV);
-                                MemoryStream memoryStream = new(contentDataBytes);
-                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
-                                StreamReader streamReader = new(cryptoStream);
-                                decryptedData = streamReader.ReadToEnd();
-                                streamReader.Dispose();
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                cryptoStream.Write(contentDataBytes, 0, contentDataBytes.Length);
+                                cryptoStream.FlushFinalBlock();
+                                decryptedData = memoryStream.ToArray();
                                 cryptoStream.Dispose();
                                 memoryStream.Dispose();
                                 cryptoTransform.Dispose();
@@ -1934,11 +2473,11 @@ namespace PowerToolbox.Views.Pages
                             if (contentDataBytes is not null)
                             {
                                 ICryptoTransform cryptoTransform = rabbit.CreateDecryptor(rabbit.Key, rabbit.IV);
-                                MemoryStream memoryStream = new(contentDataBytes);
-                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
-                                StreamReader streamReader = new(cryptoStream);
-                                decryptedData = streamReader.ReadToEnd();
-                                streamReader.Dispose();
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                cryptoStream.Write(contentDataBytes, 0, contentDataBytes.Length);
+                                cryptoStream.FlushFinalBlock();
+                                decryptedData = memoryStream.ToArray();
                                 cryptoStream.Dispose();
                                 memoryStream.Dispose();
                                 cryptoTransform.Dispose();
@@ -1995,11 +2534,11 @@ namespace PowerToolbox.Views.Pages
                             if (contentDataBytes is not null)
                             {
                                 ICryptoTransform cryptoTransform = rc2.CreateDecryptor(rc2.Key, rc2.IV);
-                                MemoryStream memoryStream = new(contentDataBytes);
-                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
-                                StreamReader streamReader = new(cryptoStream);
-                                decryptedData = streamReader.ReadToEnd();
-                                streamReader.Dispose();
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                cryptoStream.Write(contentDataBytes, 0, contentDataBytes.Length);
+                                cryptoStream.FlushFinalBlock();
+                                decryptedData = memoryStream.ToArray();
                                 cryptoStream.Dispose();
                                 memoryStream.Dispose();
                                 cryptoTransform.Dispose();
@@ -2044,11 +2583,11 @@ namespace PowerToolbox.Views.Pages
                             if (contentDataBytes is not null)
                             {
                                 ICryptoTransform cryptoTransform = rc4.CreateDecryptor(rc4.Key, rc4.IV);
-                                MemoryStream memoryStream = new(contentDataBytes);
-                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
-                                StreamReader streamReader = new(cryptoStream);
-                                decryptedData = streamReader.ReadToEnd();
-                                streamReader.Dispose();
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                cryptoStream.Write(contentDataBytes, 0, contentDataBytes.Length);
+                                cryptoStream.FlushFinalBlock();
+                                decryptedData = memoryStream.ToArray();
                                 cryptoStream.Dispose();
                                 memoryStream.Dispose();
                                 cryptoTransform.Dispose();
@@ -2105,11 +2644,11 @@ namespace PowerToolbox.Views.Pages
                             if (contentDataBytes is not null)
                             {
                                 ICryptoTransform cryptoTransform = rc5.CreateDecryptor(rc5.Key, rc5.IV);
-                                MemoryStream memoryStream = new(contentDataBytes);
-                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
-                                StreamReader streamReader = new(cryptoStream);
-                                decryptedData = streamReader.ReadToEnd();
-                                streamReader.Dispose();
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                cryptoStream.Write(contentDataBytes, 0, contentDataBytes.Length);
+                                cryptoStream.FlushFinalBlock();
+                                decryptedData = memoryStream.ToArray();
                                 cryptoStream.Dispose();
                                 memoryStream.Dispose();
                                 cryptoTransform.Dispose();
@@ -2166,11 +2705,11 @@ namespace PowerToolbox.Views.Pages
                             if (contentDataBytes is not null)
                             {
                                 ICryptoTransform cryptoTransform = rc6.CreateDecryptor(rc6.Key, rc6.IV);
-                                MemoryStream memoryStream = new(contentDataBytes);
-                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
-                                StreamReader streamReader = new(cryptoStream);
-                                decryptedData = streamReader.ReadToEnd();
-                                streamReader.Dispose();
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                cryptoStream.Write(contentDataBytes, 0, contentDataBytes.Length);
+                                cryptoStream.FlushFinalBlock();
+                                decryptedData = memoryStream.ToArray();
                                 cryptoStream.Dispose();
                                 memoryStream.Dispose();
                                 cryptoTransform.Dispose();
@@ -2227,11 +2766,11 @@ namespace PowerToolbox.Views.Pages
                             if (contentDataBytes is not null)
                             {
                                 ICryptoTransform cryptoTransform = rijndael.CreateDecryptor(rijndael.Key, rijndael.IV);
-                                MemoryStream memoryStream = new(contentDataBytes);
-                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
-                                StreamReader streamReader = new(cryptoStream);
-                                decryptedData = streamReader.ReadToEnd();
-                                streamReader.Dispose();
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                cryptoStream.Write(contentDataBytes, 0, contentDataBytes.Length);
+                                cryptoStream.FlushFinalBlock();
+                                decryptedData = memoryStream.ToArray();
                                 cryptoStream.Dispose();
                                 memoryStream.Dispose();
                                 cryptoTransform.Dispose();
@@ -2291,11 +2830,11 @@ namespace PowerToolbox.Views.Pages
                             if (contentDataBytes is not null)
                             {
                                 ICryptoTransform cryptoTransform = sm4.CreateDecryptor(sm4.Key, sm4.IV);
-                                MemoryStream memoryStream = new(contentDataBytes);
-                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
-                                StreamReader streamReader = new(cryptoStream);
-                                decryptedData = streamReader.ReadToEnd();
-                                streamReader.Dispose();
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                cryptoStream.Write(contentDataBytes, 0, contentDataBytes.Length);
+                                cryptoStream.FlushFinalBlock();
+                                decryptedData = memoryStream.ToArray();
                                 cryptoStream.Dispose();
                                 memoryStream.Dispose();
                                 cryptoTransform.Dispose();
@@ -2352,11 +2891,11 @@ namespace PowerToolbox.Views.Pages
                             if (contentDataBytes is not null)
                             {
                                 ICryptoTransform cryptoTransform = tripleDes.CreateDecryptor(tripleDes.Key, tripleDes.IV);
-                                MemoryStream memoryStream = new(contentDataBytes);
-                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Read);
-                                StreamReader streamReader = new(cryptoStream);
-                                decryptedData = streamReader.ReadToEnd();
-                                streamReader.Dispose();
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                cryptoStream.Write(contentDataBytes, 0, contentDataBytes.Length);
+                                cryptoStream.FlushFinalBlock();
+                                decryptedData = memoryStream.ToArray();
                                 cryptoStream.Dispose();
                                 memoryStream.Dispose();
                                 cryptoTransform.Dispose();
@@ -2445,6 +2984,34 @@ namespace PowerToolbox.Views.Pages
         private Visibility GetDecryptFailedInfoButtonState(InfoBarSeverity resultSeverity, bool isDecrypting, string decryptFailedInformation)
         {
             return resultSeverity is InfoBarSeverity.Error && !isDecrypting && !string.IsNullOrEmpty(decryptFailedInformation) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private Visibility GetHasParseAsTextData(bool hasParseAsTextData, bool parseAsTextData)
+        {
+            return hasParseAsTextData && parseAsTextData ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private Visibility GetCustomTextDecodingType(bool hasParseAsTextData, bool parseAsTextData, string selectedTextDecodingType, string comparedTextDecodingType)
+        {
+            return hasParseAsTextData && parseAsTextData && string.Equals(selectedTextDecodingType, comparedTextDecodingType) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 获取解密结果
+        /// </summary>
+        private Visibility GetDecryptResult(InfoBarSeverity resultSeverity)
+        {
+            return resultSeverity is InfoBarSeverity.Success ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private bool GetIsNotDecryptedResultString(bool isLargeContent, bool isBinaryFile)
+        {
+            return !(isLargeContent || isBinaryFile);
+        }
+
+        private Visibility GetIsDecryptedResultString(bool isLargeContent, bool isBinaryFile)
+        {
+            return isLargeContent || isBinaryFile ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }
