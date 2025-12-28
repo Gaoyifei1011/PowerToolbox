@@ -37,11 +37,15 @@ namespace PowerToolbox.Views.Pages
         private readonly string ANSIX923String = ResourceService.DataDecryptResource.GetString("ANSIX923");
         private readonly string Base64String = ResourceService.DataDecryptResource.GetString("Base64");
         private readonly string BigEndianUnicodeString = ResourceService.DataDecryptResource.GetString("BigEndianUnicode");
+        private readonly string BinaryFileString = ResourceService.DataDecryptResource.GetString("BinaryFile");
         private readonly string CaesarCipherString = ResourceService.DataDecryptResource.GetString("CaesarCipher");
         private readonly string CBCString = ResourceService.DataDecryptResource.GetString("CBC");
         private readonly string CFBString = ResourceService.DataDecryptResource.GetString("CFB");
         private readonly string ChaCha20String = ResourceService.DataDecryptResource.GetString("ChaCha20");
+        private readonly string ContentDecryptedDataSaveFailedString = ResourceService.DataDecryptResource.GetString("ContentDecryptedDataSaveFailed");
+        private readonly string ContentDecryptedDataSaveSuccessfullyString = ResourceService.DataDecryptResource.GetString("ContentDecryptedDataSaveSuccessfully");
         private readonly string ContentDecryptFailedString = ResourceService.DataDecryptResource.GetString("ContentDecryptFailed");
+        private readonly string ContentDecryptSuccessfullyString = ResourceService.DataDecryptResource.GetString("ContentDecryptSuccessfully");
         private readonly string ContentEmptyString = ResourceService.DataDecryptResource.GetString("ContentEmpty");
         private readonly string ContentInitializeString = ResourceService.DataDecryptResource.GetString("ContentInitialize");
         private readonly string CTSString = ResourceService.DataDecryptResource.GetString("CTS");
@@ -60,7 +64,10 @@ namespace PowerToolbox.Views.Pages
         private readonly string DESString = ResourceService.DataDecryptResource.GetString("DES");
         private readonly string DragOverContentString = ResourceService.DataDecryptResource.GetString("DragOverContent");
         private readonly string ECBString = ResourceService.DataDecryptResource.GetString("ECB");
+        private readonly string FileDecryptedDataSaveFailedString = ResourceService.DataDecryptResource.GetString("FileDecryptedDataSaveFailed");
+        private readonly string FileDecryptedDataSaveSuccessfullyString = ResourceService.DataDecryptResource.GetString("FileDecryptedDataSaveSuccessfully");
         private readonly string FileDecryptFailedString = ResourceService.DataDecryptResource.GetString("FileDecryptFailed");
+        private readonly string FileDecryptSuccessfullyString = ResourceService.DataDecryptResource.GetString("FileDecryptSuccessfully");
         private readonly string FileInitializeString = ResourceService.DataDecryptResource.GetString("FileInitialize");
         private readonly string FileNotExistedString = ResourceService.DataDecryptResource.GetString("FileNotExisted");
         private readonly string FileNotSelectedString = ResourceService.DataDecryptResource.GetString("FileNotSelected");
@@ -2162,8 +2169,7 @@ namespace PowerToolbox.Views.Pages
                     // 以二进制方式解析数据
                     else
                     {
-                        // TODO：请打开本地文件查看解密后的二进制文件
-                        DecryptResult = string.Empty;
+                        DecryptResult = BinaryFileString;
                         IsLargeContent = false;
                         IsBinaryFile = true;
 
@@ -2184,7 +2190,58 @@ namespace PowerToolbox.Views.Pages
                         }
                     }
                 }
+
+                // 显示解密结果
+                if (selectDecryptIndex is 0)
+                {
+                    if (SaveDecryptedDataToLocalFile)
+                    {
+                        if (isSaved)
+                        {
+                            ResultSeverity = InfoBarSeverity.Success;
+                            ResultMessage = FileDecryptedDataSaveSuccessfullyString;
+                            DecryptFailedInformation = string.Empty;
+                        }
+                        else
+                        {
+                            ResultSeverity = InfoBarSeverity.Error;
+                            ResultMessage = FileDecryptedDataSaveFailedString;
+                            DecryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
+                        }
+                    }
+                    else
+                    {
+                        ResultSeverity = InfoBarSeverity.Success;
+                        ResultMessage = FileDecryptSuccessfullyString;
+                        DecryptFailedInformation = string.Empty;
+                    }
+                }
+                else if (selectDecryptIndex is 1)
+                {
+                    if (SaveDecryptedDataToLocalFile)
+                    {
+                        if (isSaved)
+                        {
+                            ResultSeverity = InfoBarSeverity.Success;
+                            ResultMessage = ContentDecryptedDataSaveSuccessfullyString;
+                            DecryptFailedInformation = string.Empty;
+                        }
+                        else
+                        {
+                            ResultSeverity = InfoBarSeverity.Error;
+                            ResultMessage = ContentDecryptedDataSaveFailedString;
+                            DecryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
+                        }
+                    }
+                    else
+                    {
+                        ResultSeverity = InfoBarSeverity.Success;
+                        ResultMessage = ContentDecryptSuccessfullyString;
+                        DecryptFailedInformation = string.Empty;
+                    }
+                }
             }
+            IsDecrypting = false;
         }
 
         /// <summary>
