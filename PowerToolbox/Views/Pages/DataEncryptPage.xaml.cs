@@ -44,6 +44,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string ContentEncryptedDataSaveFailedString = ResourceService.DataEncryptResource.GetString("ContentEncryptedDataSaveFailed");
         private readonly string ContentEncryptedDataSaveSuccessfullyString = ResourceService.DataEncryptResource.GetString("ContentEncryptedDataSaveSuccessfully");
         private readonly string ContentEncryptFailedString = ResourceService.DataEncryptResource.GetString("ContentEncryptFailed");
+        private readonly string ContentEncryptedDataSaveFailedToTempFileString = ResourceService.DataEncryptResource.GetString("ContentEncryptedDataSaveFailedToTempFile");
         private readonly string ContentEncryptSuccessfullyString = ResourceService.DataEncryptResource.GetString("ContentEncryptSuccessfully");
         private readonly string ContentEmptyString = ResourceService.DataEncryptResource.GetString("ContentEmpty");
         private readonly string ContentInitializeString = ResourceService.DataEncryptResource.GetString("ContentInitialize");
@@ -64,6 +65,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string EncryptTypeMustContentString = ResourceService.DataEncryptResource.GetString("EncryptTypeMustContent");
         private readonly string EncryptTypeNotSelectedString = ResourceService.DataEncryptResource.GetString("EncryptTypeNotSelected");
         private readonly string FileEncryptedDataSaveFailedString = ResourceService.DataEncryptResource.GetString("FileEncryptedDataSaveFailed");
+        private readonly string FileEncryptedDataSaveFailedToTempFileString = ResourceService.DataEncryptResource.GetString("FileEncryptedDataSaveFailedToTempFile");
         private readonly string FileEncryptedDataSaveSuccessfullyString = ResourceService.DataEncryptResource.GetString("FileEncryptedDataSaveSuccessfully");
         private readonly string FileEncryptFailedString = ResourceService.DataEncryptResource.GetString("FileEncryptFailed");
         private readonly string FileEncryptSuccessfullyString = ResourceService.DataEncryptResource.GetString("FileEncryptSuccessfully");
@@ -684,22 +686,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     _isEncrypting = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsEncrypting)));
-                }
-            }
-        }
-
-        private string _encryptType;
-
-        public string EncryptType
-        {
-            get { return _encryptType; }
-
-            set
-            {
-                if (!string.Equals(_encryptType, value))
-                {
-                    _encryptType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EncryptType)));
                 }
             }
         }
@@ -1933,9 +1919,9 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 修改文件存储路径
+        /// 设置文件存储路径
         /// </summary>
-        private void OnChangeFolderClicked(object sender, RoutedEventArgs args)
+        private void OnSetFilePathClicked(object sender, RoutedEventArgs args)
         {
             SaveFileDialog saveFileDialog = new()
             {
@@ -1981,6 +1967,7 @@ namespace PowerToolbox.Views.Pages
             selectEncryptIndex = SelectedIndex;
             selectedEncryptFile = EncryptFile;
             inputtedEncryptContent = EncryptContent;
+            EncryptFailedInformation = string.Empty;
             EncryptResult = string.Empty;
             encryptedLocalFile = string.Empty;
             IsLargeContent = false;
@@ -2331,7 +2318,7 @@ namespace PowerToolbox.Views.Pages
             });
 
             // 加密失败
-            if (string.IsNullOrEmpty(encryptedData))
+            if (encryptException is not null)
             {
                 ResultSeverity = InfoBarSeverity.Error;
                 if (selectEncryptIndex is 0)
@@ -2343,12 +2330,13 @@ namespace PowerToolbox.Views.Pages
                     ResultMessage = ContentEncryptFailedString;
                 }
 
-                EncryptFailedInformation = encryptException is not null && !string.IsNullOrEmpty(encryptException.Message) ? encryptException.Message : UnknownErrorString;
+                EncryptFailedInformation = !string.IsNullOrEmpty(encryptException.Message) ? encryptException.Message : UnknownErrorString;
             }
             // 加密成功
             else
             {
-                bool isSaved = false;
+                bool isSavedToSelectedFile = false;
+                bool isSavedToTempFile = false;
                 Exception exception = null;
                 if (SaveEncryptedDataToLocalFile)
                 {
@@ -2358,8 +2346,8 @@ namespace PowerToolbox.Views.Pages
                         try
                         {
                             encryptedLocalFile = SaveEncryptedFilePath;
-                            File.AppendAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
-                            isSaved = true;
+                            File.WriteAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
+                            isSavedToSelectedFile = true;
                         }
                         catch (Exception e)
                         {
@@ -2368,13 +2356,13 @@ namespace PowerToolbox.Views.Pages
                         }
 
                         // 保存到选定的本地文件失败，自动保存到临时文件目录中
-                        if (!isSaved)
+                        if (!isSavedToSelectedFile)
                         {
                             try
                             {
                                 encryptedLocalFile = Path.GetTempFileName();
-                                File.AppendAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
-                                isSaved = true;
+                                File.WriteAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
+                                isSavedToTempFile = true;
                             }
                             catch (Exception e)
                             {
@@ -2398,7 +2386,7 @@ namespace PowerToolbox.Views.Pages
                             try
                             {
                                 encryptedLocalFile = Path.GetTempFileName();
-                                File.AppendAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
+                                File.WriteAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
                             }
                             catch (Exception e)
                             {
@@ -2418,7 +2406,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (SaveEncryptedDataToLocalFile)
                     {
-                        if (isSaved)
+                        if (isSavedToSelectedFile)
                         {
                             ResultSeverity = InfoBarSeverity.Success;
                             ResultMessage = FileEncryptedDataSaveSuccessfullyString;
@@ -2426,9 +2414,9 @@ namespace PowerToolbox.Views.Pages
                         }
                         else
                         {
-                            ResultSeverity = InfoBarSeverity.Error;
-                            ResultMessage = FileEncryptedDataSaveFailedString;
+                            ResultSeverity = isSavedToTempFile ? InfoBarSeverity.Warning : InfoBarSeverity.Error;
                             EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
+                            ResultMessage = isSavedToTempFile ? FileEncryptedDataSaveFailedToTempFileString : FileEncryptedDataSaveFailedString;
                         }
                     }
                     else
@@ -2442,17 +2430,17 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (SaveEncryptedDataToLocalFile)
                     {
-                        if (isSaved)
+                        if (isSavedToSelectedFile)
                         {
-                            ResultSeverity = InfoBarSeverity.Success;
+                            ResultSeverity = InfoBarSeverity.Warning;
                             ResultMessage = ContentEncryptedDataSaveSuccessfullyString;
                             EncryptFailedInformation = string.Empty;
                         }
                         else
                         {
-                            ResultSeverity = InfoBarSeverity.Error;
-                            ResultMessage = ContentEncryptedDataSaveFailedString;
+                            ResultSeverity = isSavedToTempFile ? InfoBarSeverity.Warning : InfoBarSeverity.Error;
                             EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
+                            ResultMessage = isSavedToTempFile ? ContentEncryptedDataSaveFailedToTempFileString : ContentEncryptedDataSaveFailedString;
                         }
                     }
                     else
@@ -3263,12 +3251,12 @@ namespace PowerToolbox.Views.Pages
 
         private bool GetEncryptInfoButtonHitTestState(InfoBarSeverity resultSeverity, bool isEncrypting)
         {
-            return resultSeverity is InfoBarSeverity.Error && !isEncrypting;
+            return (resultSeverity is InfoBarSeverity.Warning || resultSeverity is InfoBarSeverity.Error) && !isEncrypting;
         }
 
         private Visibility GetEncryptInfoButtonVisibility(InfoBarSeverity resultSeverity)
         {
-            return resultSeverity is InfoBarSeverity.Informational || resultSeverity is InfoBarSeverity.Error ? Visibility.Visible : Visibility.Collapsed;
+            return resultSeverity is InfoBarSeverity.Informational || resultSeverity is InfoBarSeverity.Warning || resultSeverity is InfoBarSeverity.Error ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private bool GetEncryptInfoProgressRingActiveState(InfoBarSeverity resultSeverity, bool isEncrypting)
@@ -3278,7 +3266,7 @@ namespace PowerToolbox.Views.Pages
 
         private Visibility GetEncryptFailedInfoButtonState(InfoBarSeverity resultSeverity, bool isEncrypting, string encryptFailedInformation)
         {
-            return resultSeverity is InfoBarSeverity.Error && !isEncrypting && !string.IsNullOrEmpty(encryptFailedInformation) ? Visibility.Visible : Visibility.Collapsed;
+            return (resultSeverity is InfoBarSeverity.Warning || resultSeverity is InfoBarSeverity.Error) && !isEncrypting && !string.IsNullOrEmpty(encryptFailedInformation) ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

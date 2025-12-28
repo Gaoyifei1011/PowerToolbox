@@ -1225,8 +1225,8 @@
                             <Button
                                 Grid.Column="1"
                                 Margin="6,0,0,0"
-                                Click="{x:Bind OnChangeFolderClicked}"
-                                Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('ChangeFilePath')}" />
+                                Click="{x:Bind OnSetFilePathClicked}"
+                                Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('SetFilePath')}" />
                         </Grid>
                     </StackPanel>
                 </Expander.Content>
