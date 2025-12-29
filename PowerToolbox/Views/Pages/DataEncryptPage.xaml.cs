@@ -658,22 +658,6 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _useUpperCase;
-
-        public bool UseUpperCase
-        {
-            get { return _useUpperCase; }
-
-            set
-            {
-                if (!Equals(_useUpperCase, value))
-                {
-                    _useUpperCase = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UseUpperCase)));
-                }
-            }
-        }
-
         private bool _isEncrypting;
 
         public bool IsEncrypting
@@ -1938,28 +1922,6 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 输出格式为大写字母
-        /// </summary>
-        private void OnUseUpperCaseChecked(object sender, RoutedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(EncryptResult))
-            {
-                EncryptResult = EncryptResult.ToUpperInvariant();
-            }
-        }
-
-        /// <summary>
-        /// 输出格式为小写字母
-        /// </summary>
-        private void OnUseUpperCaseUnchecked(object sender, RoutedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(EncryptResult))
-            {
-                EncryptResult = EncryptResult.ToLowerInvariant();
-            }
-        }
-
-        /// <summary>
         /// 开始数据加密
         /// </summary>
         private async void OnStartEncryptClicked(object sender, RoutedEventArgs args)
@@ -2346,7 +2308,7 @@ namespace PowerToolbox.Views.Pages
                         try
                         {
                             encryptedLocalFile = SaveEncryptedFilePath;
-                            File.WriteAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
+                            File.WriteAllText(encryptedLocalFile, encryptedData);
                             isSavedToSelectedFile = true;
                         }
                         catch (Exception e)
@@ -2361,7 +2323,7 @@ namespace PowerToolbox.Views.Pages
                             try
                             {
                                 encryptedLocalFile = Path.GetTempFileName();
-                                File.WriteAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
+                                File.WriteAllText(encryptedLocalFile, encryptedData);
                                 isSavedToTempFile = true;
                             }
                             catch (Exception e)
@@ -2386,7 +2348,7 @@ namespace PowerToolbox.Views.Pages
                             try
                             {
                                 encryptedLocalFile = Path.GetTempFileName();
-                                File.WriteAllText(encryptedLocalFile, UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant());
+                                File.WriteAllText(encryptedLocalFile, encryptedData);
                             }
                             catch (Exception e)
                             {
@@ -2397,7 +2359,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 else
                 {
-                    EncryptResult = UseUpperCase ? encryptedData.ToUpperInvariant() : encryptedData.ToLowerInvariant();
+                    EncryptResult = encryptedData;
                     IsLargeContent = false;
                 }
 
@@ -2415,8 +2377,8 @@ namespace PowerToolbox.Views.Pages
                         else
                         {
                             ResultSeverity = isSavedToTempFile ? InfoBarSeverity.Warning : InfoBarSeverity.Error;
-                            EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
                             ResultMessage = isSavedToTempFile ? FileEncryptedDataSaveFailedToTempFileString : FileEncryptedDataSaveFailedString;
+                            EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
                         }
                     }
                     else
@@ -3246,7 +3208,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private Visibility GetEncryptResult(InfoBarSeverity resultSeverity)
         {
-            return resultSeverity is InfoBarSeverity.Success ? Visibility.Visible : Visibility.Collapsed;
+            return resultSeverity is InfoBarSeverity.Success || resultSeverity is InfoBarSeverity.Warning ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private bool GetEncryptInfoButtonHitTestState(InfoBarSeverity resultSeverity, bool isEncrypting)

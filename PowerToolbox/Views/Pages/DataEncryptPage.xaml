@@ -1261,22 +1261,8 @@
                     VerticalAlignment="Center"
                     Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('Operation')}" />
 
-                <CheckBox
-                    Grid.Column="2"
-                    MinWidth="0"
-                    Margin="0,0,10,0"
-                    Checked="{x:Bind OnUseUpperCaseChecked}"
-                    IsChecked="{x:Bind UseUpperCase, Mode=TwoWay}"
-                    Unchecked="{x:Bind OnUseUpperCaseUnchecked}">
-
-                    <Grid>
-                        <TextBlock Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('UseUpperCaseString')}" Visibility="{x:Bind UseUpperCase, Mode=OneWay}" />
-                        <TextBlock Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('UseLowerCaseString')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseUpperCase), Mode=OneWay}" />
-                    </Grid>
-                </CheckBox>
-
                 <Button
-                    Grid.Column="3"
+                    Grid.Column="2"
                     Click="{x:Bind OnStartEncryptClicked}"
                     Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('StartEncrypt')}"
                     IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
