@@ -43,6 +43,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string CFBString = ResourceService.DataDecryptResource.GetString("CFB");
         private readonly string ChaCha20String = ResourceService.DataDecryptResource.GetString("ChaCha20");
         private readonly string ContentDecryptedDataSaveFailedString = ResourceService.DataDecryptResource.GetString("ContentDecryptedDataSaveFailed");
+        private readonly string ContentDecryptedDataSaveFailedToTempFileString = ResourceService.DataDecryptResource.GetString("ContentDecryptedDataSaveFailedToTempFile");
         private readonly string ContentDecryptedDataSaveSuccessfullyString = ResourceService.DataDecryptResource.GetString("ContentDecryptedDataSaveSuccessfully");
         private readonly string ContentDecryptFailedString = ResourceService.DataDecryptResource.GetString("ContentDecryptFailed");
         private readonly string ContentDecryptSuccessfullyString = ResourceService.DataDecryptResource.GetString("ContentDecryptSuccessfully");
@@ -65,6 +66,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string DragOverContentString = ResourceService.DataDecryptResource.GetString("DragOverContent");
         private readonly string ECBString = ResourceService.DataDecryptResource.GetString("ECB");
         private readonly string FileDecryptedDataSaveFailedString = ResourceService.DataDecryptResource.GetString("FileDecryptedDataSaveFailed");
+        private readonly string FileDecryptedDataSaveFailedToTempFileString = ResourceService.DataDecryptResource.GetString("FileDecryptedDataSaveFailedToTempFile");
         private readonly string FileDecryptedDataSaveSuccessfullyString = ResourceService.DataDecryptResource.GetString("FileDecryptedDataSaveSuccessfully");
         private readonly string FileDecryptFailedString = ResourceService.DataDecryptResource.GetString("FileDecryptFailed");
         private readonly string FileDecryptSuccessfullyString = ResourceService.DataDecryptResource.GetString("FileDecryptSuccessfully");
@@ -637,22 +639,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     _saveDecryptedFilePath = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SaveDecryptedFilePath)));
-                }
-            }
-        }
-
-        private bool _useUpperCase;
-
-        public bool UseUpperCase
-        {
-            get { return _useUpperCase; }
-
-            set
-            {
-                if (!Equals(_useUpperCase, value))
-                {
-                    _useUpperCase = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UseUpperCase)));
                 }
             }
         }
@@ -1675,38 +1661,17 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 输出格式为大写字母
-        /// </summary>
-        private void OnUseUpperCaseChecked(object sender, RoutedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(DecryptResult))
-            {
-                DecryptResult = DecryptResult.ToUpperInvariant();
-            }
-        }
-
-        /// <summary>
-        /// 输出格式为小写字母
-        /// </summary>
-        private void OnUseUpperCaseUnchecked(object sender, RoutedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(DecryptResult))
-            {
-                DecryptResult = DecryptResult.ToLowerInvariant();
-            }
-        }
-
-        /// <summary>
         /// 开始数据解密
         /// </summary>
         private async void OnStartDecryptClicked(object sender, RoutedEventArgs args)
         {
-            // TODO：未完成
             selectDecryptIndex = SelectedIndex;
             selectedDecryptFile = DecryptFile;
             inputtedDecryptContent = DecryptContent;
+            DecryptFailedInformation = string.Empty;
             DecryptResult = string.Empty;
             decryptedLocalFile = string.Empty;
+            IsLargeContent = false;
 
             // 检查要读取解密的文件内容
             if (selectDecryptIndex is 0)
@@ -2003,7 +1968,7 @@ namespace PowerToolbox.Views.Pages
             });
 
             // 解密失败
-            if (decryptedData is null)
+            if (decryptException is not null)
             {
                 ResultSeverity = InfoBarSeverity.Error;
                 if (selectDecryptIndex is 0)
@@ -2015,12 +1980,13 @@ namespace PowerToolbox.Views.Pages
                     ResultMessage = ContentDecryptFailedString;
                 }
 
-                DecryptFailedInformation = decryptException is not null && !string.IsNullOrEmpty(decryptException.Message) ? decryptException.Message : UnknownErrorString;
+                DecryptFailedInformation = !string.IsNullOrEmpty(decryptException.Message) ? decryptException.Message : UnknownErrorString;
             }
             // 解密成功
             else
             {
-                bool isSaved = false;
+                bool isSavedToSelectedFile = false;
+                bool isSavedToTempFile = false;
                 Exception exception = null;
                 if (SaveDecryptedDataToLocalFile)
                 {
@@ -2032,13 +1998,13 @@ namespace PowerToolbox.Views.Pages
                             decryptedLocalFile = SaveDecryptedFilePath;
                             if (Equals(decryptedData.GetType(), typeof(string)))
                             {
-                                File.WriteAllText(decryptedLocalFile, UseUpperCase ? Convert.ToString(decryptedData).ToUpperInvariant() : Convert.ToString(decryptedData).ToLowerInvariant());
-                                isSaved = true;
+                                File.WriteAllText(decryptedLocalFile, Convert.ToString(decryptedData));
+                                isSavedToSelectedFile = true;
                             }
                             else if (Equals(decryptedData.GetType(), typeof(byte[])))
                             {
                                 File.WriteAllBytes(decryptedLocalFile, decryptedData as byte[]);
-                                isSaved = true;
+                                isSavedToSelectedFile = true;
                             }
                         }
                         catch (Exception e)
@@ -2048,7 +2014,7 @@ namespace PowerToolbox.Views.Pages
                         }
 
                         // 保存到选定的本地文件失败，自动保存到临时文件目录中
-                        if (!isSaved)
+                        if (!isSavedToSelectedFile)
                         {
                             try
                             {
@@ -2056,8 +2022,8 @@ namespace PowerToolbox.Views.Pages
                                 // 解密后的数据是字符串
                                 if (Equals(decryptedData.GetType(), typeof(string)))
                                 {
-                                    File.WriteAllText(decryptedLocalFile, UseUpperCase ? Convert.ToString(decryptedData).ToUpperInvariant() : Convert.ToString(decryptedData).ToLowerInvariant());
-                                    isSaved = true;
+                                    File.WriteAllText(decryptedLocalFile, Convert.ToString(decryptedData));
+                                    isSavedToTempFile = true;
                                 }
                                 // 解密后的数据是字节数组
                                 else if (Equals(decryptedData.GetType(), typeof(byte[])))
@@ -2065,15 +2031,15 @@ namespace PowerToolbox.Views.Pages
                                     // 以文本方式解析数据
                                     if (ParseAsTextData)
                                     {
-                                        string decryptedString = Encoding.UTF8.GetString(decryptedData as byte[]);
-                                        File.WriteAllText(decryptedLocalFile, UseUpperCase ? Convert.ToString(decryptedString).ToUpperInvariant() : Convert.ToString(decryptedString).ToLowerInvariant());
-                                        isSaved = true;
+                                        string decryptedString = Encoding.UTF8.GetString(decryptedData as byte[]).TrimEnd();
+                                        File.WriteAllText(decryptedLocalFile, Convert.ToString(decryptedString));
+                                        isSavedToSelectedFile = true;
                                     }
                                     // 以二进制方式解析数据
                                     else
                                     {
                                         File.WriteAllBytes(decryptedLocalFile, decryptedData as byte[]);
-                                        isSaved = true;
+                                        isSavedToSelectedFile = true;
                                     }
                                 }
                             }
@@ -2089,7 +2055,7 @@ namespace PowerToolbox.Views.Pages
                 // 解密后的数据是字符串
                 if (Equals(decryptedData.GetType(), typeof(string)))
                 {
-                    string decryptedString = Convert.ToString(decryptedData);
+                    string decryptedString = Convert.ToString(decryptedData).TrimEnd();
 
                     // 解密后的字符串数据太长
                     if (decryptedString.Length > 1024)
@@ -2105,7 +2071,7 @@ namespace PowerToolbox.Views.Pages
                                 try
                                 {
                                     decryptedLocalFile = Path.GetTempFileName();
-                                    File.WriteAllText(decryptedLocalFile, UseUpperCase ? Convert.ToString(decryptedData).ToUpperInvariant() : Convert.ToString(decryptedData).ToLowerInvariant());
+                                    File.WriteAllText(decryptedLocalFile, Convert.ToString(decryptedData));
                                 }
                                 catch (Exception e)
                                 {
@@ -2116,7 +2082,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     else
                     {
-                        DecryptResult = UseUpperCase ? decryptedString.ToUpperInvariant() : decryptedString.ToLowerInvariant();
+                        DecryptResult = decryptedString;
                         IsLargeContent = false;
                         IsBinaryFile = false;
                     }
@@ -2129,7 +2095,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         try
                         {
-                            string decryptedString = Encoding.UTF8.GetString(decryptedData as byte[]);
+                            string decryptedString = Encoding.UTF8.GetString(decryptedData as byte[]).TrimEnd();
 
                             // 解密后的字符串数据太长
                             if (decryptedString.Length > 1024)
@@ -2145,7 +2111,7 @@ namespace PowerToolbox.Views.Pages
                                         try
                                         {
                                             decryptedLocalFile = Path.GetTempFileName();
-                                            File.WriteAllText(decryptedLocalFile, UseUpperCase ? decryptedString.ToUpperInvariant() : decryptedString.ToLowerInvariant());
+                                            File.WriteAllText(decryptedLocalFile, decryptedString);
                                         }
                                         catch (Exception e)
                                         {
@@ -2156,7 +2122,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             else
                             {
-                                DecryptResult = UseUpperCase ? decryptedString.ToUpperInvariant() : decryptedString.ToLowerInvariant();
+                                DecryptResult = decryptedString;
                                 IsLargeContent = false;
                                 IsBinaryFile = false;
                             }
@@ -2196,7 +2162,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (SaveDecryptedDataToLocalFile)
                     {
-                        if (isSaved)
+                        if (isSavedToSelectedFile)
                         {
                             ResultSeverity = InfoBarSeverity.Success;
                             ResultMessage = FileDecryptedDataSaveSuccessfullyString;
@@ -2204,8 +2170,8 @@ namespace PowerToolbox.Views.Pages
                         }
                         else
                         {
-                            ResultSeverity = InfoBarSeverity.Error;
-                            ResultMessage = FileDecryptedDataSaveFailedString;
+                            ResultSeverity = isSavedToTempFile ? InfoBarSeverity.Warning : InfoBarSeverity.Error;
+                            ResultMessage = isSavedToTempFile ? FileDecryptedDataSaveFailedToTempFileString : FileDecryptedDataSaveFailedString;
                             DecryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
                         }
                     }
@@ -2220,7 +2186,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (SaveDecryptedDataToLocalFile)
                     {
-                        if (isSaved)
+                        if (isSavedToSelectedFile)
                         {
                             ResultSeverity = InfoBarSeverity.Success;
                             ResultMessage = ContentDecryptedDataSaveSuccessfullyString;
@@ -2228,9 +2194,9 @@ namespace PowerToolbox.Views.Pages
                         }
                         else
                         {
-                            ResultSeverity = InfoBarSeverity.Error;
-                            ResultMessage = ContentDecryptedDataSaveFailedString;
+                            ResultSeverity = isSavedToTempFile ? InfoBarSeverity.Warning : InfoBarSeverity.Error;
                             DecryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
+                            ResultMessage = isSavedToTempFile ? ContentDecryptedDataSaveFailedToTempFileString : ContentDecryptedDataSaveFailedString;
                         }
                     }
                     else
@@ -2278,65 +2244,63 @@ namespace PowerToolbox.Views.Pages
             switch (dataDecryptType)
             {
                 case DataDecryptType.AES:
-                    try
                     {
-                        Aes aes = Aes.Create();
-                        if (!string.IsNullOrEmpty(DecryptKeyText))
+                        try
                         {
-                            if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[0]))
+                            Aes aes = Aes.Create();
+                            if (!string.IsNullOrEmpty(DecryptKeyText))
                             {
-                                aes.Key = Encoding.UTF8.GetBytes(DecryptKeyText);
+                                if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[0]))
+                                {
+                                    aes.Key = Encoding.UTF8.GetBytes(DecryptKeyText);
+                                }
+                                else if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[1]))
+                                {
+                                    aes.Key = Convert.FromBase64String(DecryptKeyText);
+                                }
                             }
-                            else if (Equals(SelectedDecryptKeyStringType, DecryptKeyStringTypeList[1]))
-                            {
-                                aes.Key = Convert.FromBase64String(DecryptKeyText);
-                            }
-                        }
 
-                        if (!string.IsNullOrEmpty(InitializationVectorText))
-                        {
-                            if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                            if (!string.IsNullOrEmpty(InitializationVectorText))
                             {
-                                aes.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
+                                {
+                                    aes.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
+                                }
+                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+                                {
+                                    aes.IV = Convert.FromBase64String(InitializationVectorText);
+                                }
                             }
-                            else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
+
+                            aes.Mode = SelectedDecryptedBlockCipherMode.Key;
+                            aes.Padding = SelectedPaddingMode.Key;
+                            byte[] contentDataBytes = null;
+                            if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                aes.IV = Convert.FromBase64String(InitializationVectorText);
+                                contentDataBytes = Convert.FromBase64String(File.ReadAllText(selectedDecryptFile));
+                            }
+                            else if (selectedDecryptIndex is 1)
+                            {
+                                contentDataBytes = Convert.FromBase64String(contentData);
+                            }
+
+                            if (contentDataBytes is not null)
+                            {
+                                ICryptoTransform cryptoTransform = aes.CreateDecryptor(aes.Key, aes.IV);
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                cryptoStream.Write(contentDataBytes, 0, contentDataBytes.Length);
+                                cryptoStream.FlushFinalBlock();
+                                decryptedData = memoryStream.ToArray();
                             }
                         }
-
-                        aes.Mode = SelectedDecryptedBlockCipherMode.Key;
-                        aes.Padding = SelectedPaddingMode.Key;
-                        byte[] contentDataBytes = null;
-                        if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
+                        catch (Exception e)
                         {
-                            contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.AES) + 1, e);
                         }
-                        else if (selectedDecryptIndex is 1)
-                        {
-                            contentDataBytes = Encoding.UTF8.GetBytes(contentData);
-                        }
-
-                        if (contentDataBytes is not null)
-                        {
-                            ICryptoTransform cryptoTransform = aes.CreateDecryptor(aes.Key, aes.IV);
-                            MemoryStream memoryStream = new();
-                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
-                            cryptoStream.Write(contentDataBytes, 0, contentDataBytes.Length);
-                            cryptoStream.FlushFinalBlock();
-                            decryptedData = memoryStream.ToArray();
-                            cryptoStream.Dispose();
-                            memoryStream.Dispose();
-                            cryptoTransform.Dispose();
-                        }
+                        break;
                     }
-                    catch (Exception e)
-                    {
-                        decryptException = e;
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.AES) + 1, e);
-                    }
-                    break;
-
                 case DataDecryptType.CaesarCipher:
                     {
                         if (selectedDecryptIndex is 0)
@@ -2477,7 +2441,7 @@ namespace PowerToolbox.Views.Pages
 
                         try
                         {
-                            decryptedData = MorseCode.MorseDecode(contentData.ToUpperInvariant());
+                            decryptedData = MorseCode.MorseDecode(contentData);
                         }
                         catch (Exception e)
                         {
@@ -3058,7 +3022,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private Visibility GetDecryptResult(InfoBarSeverity resultSeverity)
         {
-            return resultSeverity is InfoBarSeverity.Success ? Visibility.Visible : Visibility.Collapsed;
+            return resultSeverity is InfoBarSeverity.Success || resultSeverity is InfoBarSeverity.Warning ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private bool GetIsNotDecryptedResultString(bool isLargeContent, bool isBinaryFile)
