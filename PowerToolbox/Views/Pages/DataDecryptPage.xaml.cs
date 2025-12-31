@@ -2056,7 +2056,7 @@ namespace PowerToolbox.Views.Pages
                             decryptedLocalFile = SaveDecryptedFilePath;
                             if (decryptedData is string decryptedDataString)
                             {
-                                File.WriteAllText(decryptedLocalFile, decryptedDataString);
+                                File.WriteAllText(decryptedLocalFile, decryptedDataString.TrimEnd());
                                 isSavedToSelectedFile = true;
                             }
                             else if (decryptedData is byte[] decryptedDataBytes)
@@ -2080,7 +2080,7 @@ namespace PowerToolbox.Views.Pages
                                 // 解密后的数据是字符串
                                 if (decryptedData is string decryptedDataString)
                                 {
-                                    File.WriteAllText(decryptedLocalFile, decryptedDataString);
+                                    File.WriteAllText(decryptedLocalFile, decryptedDataString.TrimEnd());
                                     isSavedToTempFile = true;
                                 }
                                 // 解密后的数据是字节数组
@@ -2113,7 +2113,7 @@ namespace PowerToolbox.Views.Pages
                 // 解密后的数据是字符串
                 if (decryptedData is string decryptedDataString)
                 {
-                    string decryptedString = Convert.ToString(decryptedData).TrimEnd();
+                    string decryptedString = decryptedDataString.TrimEnd();
 
                     // 解密后的字符串数据太长
                     if (decryptedString.Length > 1024)
@@ -2129,7 +2129,7 @@ namespace PowerToolbox.Views.Pages
                                 try
                                 {
                                     decryptedLocalFile = Path.GetTempFileName();
-                                    File.WriteAllText(decryptedLocalFile, decryptedDataString);
+                                    File.WriteAllText(decryptedLocalFile, decryptedDataString.TrimEnd());
                                 }
                                 catch (Exception e)
                                 {
@@ -2410,11 +2410,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = Convert.FromBase64String(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = textEncoding.GetBytes(contentData);
+                                contentDataBytes = Convert.FromBase64String(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2463,11 +2463,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = Convert.FromBase64String(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = textEncoding.GetBytes(contentData);
+                                contentDataBytes = Convert.FromBase64String(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2542,11 +2542,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = Convert.FromBase64String(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = textEncoding.GetBytes(contentData);
+                                contentDataBytes = Convert.FromBase64String(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2603,11 +2603,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = Convert.FromBase64String(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = textEncoding.GetBytes(contentData);
+                                contentDataBytes = Convert.FromBase64String(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2652,11 +2652,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = Convert.FromBase64String(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = textEncoding.GetBytes(contentData);
+                                contentDataBytes = Convert.FromBase64String(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2713,11 +2713,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = Convert.FromBase64String(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = textEncoding.GetBytes(contentData);
+                                contentDataBytes = Convert.FromBase64String(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2774,11 +2774,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = Convert.FromBase64String(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = textEncoding.GetBytes(contentData);
+                                contentDataBytes = Convert.FromBase64String(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2835,11 +2835,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = Convert.FromBase64String(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = textEncoding.GetBytes(contentData);
+                                contentDataBytes = Convert.FromBase64String(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2932,11 +2932,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = Convert.FromBase64String(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = textEncoding.GetBytes(contentData);
+                                contentDataBytes = Convert.FromBase64String(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2993,11 +2993,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = Convert.FromBase64String(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = textEncoding.GetBytes(contentData);
+                                contentDataBytes = Convert.FromBase64String(contentData);
                             }
 
                             if (contentDataBytes is not null)
