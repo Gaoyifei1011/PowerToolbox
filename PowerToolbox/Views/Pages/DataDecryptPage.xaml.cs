@@ -2863,8 +2863,41 @@ namespace PowerToolbox.Views.Pages
                         break;
                     }
                 case DataDecryptType.RSA:
-                    break;
+                    {
+                        try
+                        {
+                            RSA rsa = RSA.Create();
+                            byte[] contentDataBytes = null;
+                            if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
+                            {
+                                contentDataBytes = Convert.FromBase64String(File.ReadAllText(selectedDecryptFile));
+                            }
+                            else if (selectedDecryptIndex is 1)
+                            {
+                                contentDataBytes = Convert.FromBase64String(contentData);
+                            }
 
+                            if (contentDataBytes is not null)
+                            {
+                                rsa.FromXmlString(DecryptPrivateKeyText);
+                                if (SelectedRSAEncryptionPaddingMode.Key is RSAEncryptionPaddingMode.Pkcs1)
+                                {
+                                    decryptedData = rsa.Decrypt(contentDataBytes, RSAEncryptionPadding.Pkcs1);
+                                }
+                                else if (SelectedRSAEncryptionPaddingMode.Key is RSAEncryptionPaddingMode.Oaep)
+                                {
+                                    decryptedData = rsa.Decrypt(contentDataBytes, RSAEncryptionPadding.OaepSHA1);
+                                }
+                            }
+                            rsa.Dispose();
+                        }
+                        catch (Exception e)
+                        {
+                            decryptException = e;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.RSA) + 1, e);
+                        }
+                        break;
+                    }
                 case DataDecryptType.SM4:
                     {
                         try
