@@ -804,7 +804,7 @@ namespace PowerToolbox.Views.Windows
                                 }
                                 else if (contentDialogResult is ContentDialogResult.Secondary)
                                 {
-                                    if (!Equals(GetCurrentPageType(), typeof(DownloadManagerPage)))
+                                    if (GetFrameContent() is not DownloadManagerPage)
                                     {
                                         NavigateTo(typeof(DownloadManagerPage));
                                     }
@@ -1121,37 +1121,30 @@ namespace PowerToolbox.Views.Windows
         /// </summary>
         public async Task SendReceivedFilesListAsync(List<string> filesList)
         {
-            Type currentPageType = GetCurrentPageType();
-            if (Equals(currentPageType, typeof(DataVerifyEncryptPage)))
+            object currentFrameContent = GetFrameContent();
+            if (currentFrameContent is DataVerifyEncryptPage dataVerifyEncryptPage)
             {
-                DataVerifyEncryptPage dataVerifyEncryptPage = GetFrameContent() as DataVerifyEncryptPage;
-                Type currentDataVerifyEncryptPage = dataVerifyEncryptPage.GetCurrentPageType();
-
-                if (Equals(currentDataVerifyEncryptPage, typeof(DataEncryptPage)))
+                object currentDataVerifyEncryptContent = dataVerifyEncryptPage.GetFrameContent();
+                if (currentDataVerifyEncryptContent is DataEncryptPage dataEncryptPage)
                 {
-                    DataEncryptPage dataEncryptPage = dataVerifyEncryptPage.GetFrameContent() as DataEncryptPage;
                     if (!dataEncryptPage.IsEncrypting && filesList.Count is 1)
                     {
                         dataEncryptPage.EncryptFile = filesList[0];
                     }
                 }
-                else if (Equals(currentDataVerifyEncryptPage, typeof(DataVerifyPage)))
+                else if (currentDataVerifyEncryptContent is DataVerifyPage dataVerifyPage)
                 {
-                    DataVerifyPage dataVerifyPage = dataVerifyEncryptPage.GetFrameContent() as DataVerifyPage;
                     if (!dataVerifyPage.IsVerifying && filesList.Count is 1)
                     {
                         dataVerifyPage.VerifyFile = filesList[0];
                     }
                 }
             }
-            else if (Equals(currentPageType, typeof(FileManagerPage)))
+            else if (currentFrameContent is FileManagerPage fileManagerPage)
             {
-                FileManagerPage fileManagerPage = GetFrameContent() as FileManagerPage;
-                Type currentFileManagerPageType = fileManagerPage.GetCurrentPageType();
-
-                if (Equals(currentFileManagerPageType, typeof(FileNamePage)))
+                object currentFileManagerContent = fileManagerPage.GetFrameContent();
+                if (currentFileManagerContent is FileNamePage fileNamePage)
                 {
-                    FileNamePage fileNamePage = fileManagerPage.GetFrameContent() as FileNamePage;
                     if (!fileNamePage.IsModifyingNow)
                     {
                         List<OldAndNewNameModel> fileNameList = await Task.Run(() =>
@@ -1179,9 +1172,8 @@ namespace PowerToolbox.Views.Windows
                         fileNamePage.AddToFileNamePage(fileNameList);
                     }
                 }
-                else if (Equals(currentFileManagerPageType, typeof(ExtensionNamePage)))
+                else if (currentFileManagerContent is ExtensionNamePage extensionNamePage)
                 {
-                    ExtensionNamePage extensionNamePage = fileManagerPage.GetFrameContent() as ExtensionNamePage;
                     if (!extensionNamePage.IsModifyingNow)
                     {
                         List<OldAndNewNameModel> extensionNameList = await Task.Run(() =>
@@ -1212,9 +1204,8 @@ namespace PowerToolbox.Views.Windows
                         extensionNamePage.AddToExtensionNamePage(extensionNameList);
                     }
                 }
-                else if (Equals(currentFileManagerPageType, typeof(UpperAndLowerCasePage)))
+                else if (currentFileManagerContent is UpperAndLowerCasePage upperAndLowerCasePage)
                 {
-                    UpperAndLowerCasePage upperAndLowerCasePage = fileManagerPage.GetFrameContent() as UpperAndLowerCasePage;
                     if (!upperAndLowerCasePage.IsModifyingNow)
                     {
                         List<OldAndNewNameModel> upperAndLowerCaseList = await Task.Run(() =>
@@ -1242,9 +1233,8 @@ namespace PowerToolbox.Views.Windows
                         upperAndLowerCasePage.AddToUpperAndLowerCasePage(upperAndLowerCaseList);
                     }
                 }
-                else if (Equals(currentFileManagerPageType, typeof(FilePropertiesPage)))
+                else if (currentFileManagerContent is FilePropertiesPage filePropertiesPage)
                 {
-                    FilePropertiesPage filePropertiesPage = fileManagerPage.GetFrameContent() as FilePropertiesPage;
                     if (!filePropertiesPage.IsModifyingNow)
                     {
                         List<OldAndNewPropertiesModel> filePropertiesList = await Task.Run(() =>
@@ -1273,9 +1263,8 @@ namespace PowerToolbox.Views.Windows
                     }
                 }
             }
-            else if (Equals(currentPageType, typeof(FileCertificatePage)))
+            else if (currentFrameContent is FileCertificatePage fileCertificatePage)
             {
-                FileCertificatePage fileCertificatePage = GetFrameContent() as FileCertificatePage;
                 if (!fileCertificatePage.IsModifyingNow)
                 {
                     List<CertificateResultModel> fileCertificateList = await Task.Run(() =>
@@ -1306,25 +1295,22 @@ namespace PowerToolbox.Views.Windows
                     fileCertificatePage.AddToFileCertificatePage(fileCertificateList);
                 }
             }
-            else if (Equals(currentPageType, typeof(IconExtractPage)))
+            else if (currentFrameContent is IconExtractPage iconExtractPage)
             {
-                IconExtractPage iconExtractPage = GetFrameContent() as IconExtractPage;
                 if (iconExtractPage.GetIsNotParsingOrSaving(iconExtractPage.IconExtractResultKind, iconExtractPage.IsSaving) && filesList.Count is 1 && (string.Equals(Path.GetExtension(filesList[0]), ".exe") || string.Equals(Path.GetExtension(filesList[0]), ".dll")))
                 {
                     await iconExtractPage.ParseIconFileAsync(filesList[0]);
                 }
             }
-            else if (Equals(currentPageType, typeof(PriExtractPage)))
+            else if (currentFrameContent is PriExtractPage priExtractPage)
             {
-                PriExtractPage priExtractPage = GetFrameContent() as PriExtractPage;
                 if (!priExtractPage.IsProcessing && filesList.Count is 1 && string.Equals(Path.GetExtension(filesList[0]), ".pri"))
                 {
                     await priExtractPage.ParseResourceFileAsync(filesList[0]);
                 }
             }
-            else if (Equals(currentPageType, typeof(FileUnlockPage)))
+            else if (currentFrameContent is FileUnlockPage fileUnlockPage)
             {
-                FileUnlockPage fileUnlockPage = GetFrameContent() as FileUnlockPage;
                 if (!fileUnlockPage.IsModifyingNow)
                 {
                     List<FileUnlockModel> fileUnlockList = await Task.Run(() =>
