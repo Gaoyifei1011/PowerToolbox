@@ -102,6 +102,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string SelectFileString = ResourceService.DataDecryptResource.GetString("SelectFile");
         private readonly string SM4String = ResourceService.DataDecryptResource.GetString("SM4");
         private readonly string StringLengthString = ResourceService.DataDecryptResource.GetString("StringLength");
+        private readonly string TextEncodingInvalidString = ResourceService.DataDecryptResource.GetString("TextEncodingInvalid");
         private readonly string TripleDESString = ResourceService.DataDecryptResource.GetString("TripleDES");
         private readonly string UnicodeString = ResourceService.DataDecryptResource.GetString("Unicode");
         private readonly string UnknownErrorString = ResourceService.DataDecryptResource.GetString("UnknownError");
@@ -579,25 +580,25 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedTextDecodingType;
+        private KeyValuePair<string, string> _selectedTextEncodingType;
 
-        public KeyValuePair<string, string> SelectedTextDecodingType
+        public KeyValuePair<string, string> SelectedTextEncodingType
         {
-            get { return _selectedTextDecodingType; }
+            get { return _selectedTextEncodingType; }
 
             set
             {
-                if (!Equals(_selectedTextDecodingType, value))
+                if (!Equals(_selectedTextEncodingType, value))
                 {
-                    _selectedTextDecodingType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTextDecodingType)));
+                    _selectedTextEncodingType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTextEncodingType)));
                 }
             }
         }
 
         private string _textDecodingCustomTypeText;
 
-        public string TextDecodingCustomTypeText
+        public string TextEncodingCustomTypeText
         {
             get { return _textDecodingCustomTypeText; }
 
@@ -606,7 +607,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_textDecodingCustomTypeText, value))
                 {
                     _textDecodingCustomTypeText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TextDecodingCustomTypeText)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TextEncodingCustomTypeText)));
                 }
             }
         }
@@ -719,7 +720,7 @@ namespace PowerToolbox.Views.Pages
 
         private List<KeyValuePair<RSAEncryptionPaddingMode, string>> RSAEncryptionPaddingModeList { get; } = [];
 
-        private List<KeyValuePair<string, string>> TextDecodingTypeList { get; } = [];
+        private List<KeyValuePair<string, string>> TextEncodingTypeList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -818,18 +819,18 @@ namespace PowerToolbox.Views.Pages
             PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.ISO10126, ISO10126String));
             RSAEncryptionPaddingModeList.Add(new KeyValuePair<RSAEncryptionPaddingMode, string>(RSAEncryptionPaddingMode.Pkcs1, Pkcs1String));
             RSAEncryptionPaddingModeList.Add(new KeyValuePair<RSAEncryptionPaddingMode, string>(RSAEncryptionPaddingMode.Oaep, OaepString));
-            TextDecodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.ASCII), ASCIIString));
-            TextDecodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.BigEndianUnicode), BigEndianUnicodeString));
-            TextDecodingTypeList.Add(new KeyValuePair<string, string>("ISO-8859-1", ISO88591String));
-            TextDecodingTypeList.Add(new KeyValuePair<string, string>("GB18030", GB18030String));
-            TextDecodingTypeList.Add(new KeyValuePair<string, string>("GB2312", GB2312String));
-            TextDecodingTypeList.Add(new KeyValuePair<string, string>("GBK", GBKString));
-            TextDecodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.Unicode), UnicodeString));
-            TextDecodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF32), UTF32String));
-            TextDecodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF7), UTF7String));
-            TextDecodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
-            TextDecodingTypeList.Add(new KeyValuePair<string, string>("Custom", CustomString));
-            SelectedTextDecodingType = TextDecodingTypeList[9];
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.ASCII), ASCIIString));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.BigEndianUnicode), BigEndianUnicodeString));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("ISO-8859-1", ISO88591String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GB18030", GB18030String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GB2312", GB2312String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GBK", GBKString));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.Unicode), UnicodeString));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF32), UTF32String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF7), UTF7String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
+            TextEncodingTypeList.Add(new KeyValuePair<string, string>("Custom", CustomString));
+            SelectedTextEncodingType = TextEncodingTypeList[9];
         }
 
         #region 第一部分：数据解密页面——挂载的事件
@@ -1046,8 +1047,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = true;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.CaesarCipher:
@@ -1074,8 +1075,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = false;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.ChaCha20:
@@ -1102,8 +1103,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = false;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.DES:
@@ -1130,8 +1131,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = true;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.MorseCode:
@@ -1158,8 +1159,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = false;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.Rabbit:
@@ -1186,8 +1187,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = true;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.RC2:
@@ -1214,8 +1215,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = true;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.RC4:
@@ -1242,8 +1243,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = false;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.RC5:
@@ -1270,8 +1271,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = true;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.RC6:
@@ -1298,8 +1299,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = true;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.Rijndael:
@@ -1326,8 +1327,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = true;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.RSA:
@@ -1354,8 +1355,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = true;
                             HasParseAsTextData = true;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.SM4:
@@ -1382,8 +1383,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = true;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.TripleDES:
@@ -1410,8 +1411,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = true;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     case DataDecryptType.XOR:
@@ -1438,8 +1439,8 @@ namespace PowerToolbox.Views.Pages
                             HasRSAEncryptionPaddingMode = false;
                             HasParseAsTextData = false;
                             ParseAsTextData = false;
-                            SelectedTextDecodingType = TextDecodingTypeList[0];
-                            TextDecodingCustomTypeText = string.Empty;
+                            SelectedTextEncodingType = TextEncodingTypeList[0];
+                            TextEncodingCustomTypeText = string.Empty;
                             break;
                         }
                     default:
@@ -1569,22 +1570,22 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 选择文字解码类型
         /// </summary>
-        private void OnTextDecodingTypeClicked(object sender, RoutedEventArgs args)
+        private void OnTextEncodingTypeClicked(object sender, RoutedEventArgs args)
         {
             if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> textDecodingType)
             {
-                SelectedTextDecodingType = textDecodingType;
+                SelectedTextEncodingType = textDecodingType;
             }
         }
 
         /// <summary>
         /// 文字自定义解码类型内容发生变化时触发的事件
         /// </summary>
-        private void OnTextDecodingCustomTypeTextChanged(object sender, TextChangedEventArgs args)
+        private void OnTextEncodingCustomTypeTextChanged(object sender, TextChangedEventArgs args)
         {
             if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
             {
-                TextDecodingCustomTypeText = textBox.Text;
+                TextEncodingCustomTypeText = textBox.Text;
             }
         }
 
@@ -1958,13 +1959,70 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
+            // 获取具体的文字编码选项
+            Encoding textEncoding = await Task.Run(() =>
+            {
+                Encoding textEncoding = null;
+                if (Equals(SelectedTextEncodingType, TextEncodingTypeList[0]))
+                {
+                    textEncoding = Encoding.ASCII;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[1]))
+                {
+                    textEncoding = Encoding.BigEndianUnicode;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[6]))
+                {
+                    textEncoding = Encoding.Unicode;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[7]))
+                {
+                    textEncoding = Encoding.UTF32;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[8]))
+                {
+                    textEncoding = Encoding.UTF7;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[9]))
+                {
+                    textEncoding = Encoding.UTF8;
+                }
+                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[10]))
+                {
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(TextEncodingCustomTypeText))
+                        {
+                            textEncoding = int.TryParse(TextEncodingCustomTypeText, out int textEncodingCustomType) ? Encoding.GetEncoding(textEncodingCustomType) : Encoding.GetEncoding(TextEncodingCustomTypeText);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 1, e);
+                    }
+                }
+                else
+                {
+                    textEncoding = Encoding.GetEncoding(SelectedTextEncodingType.Key);
+                }
+                return textEncoding;
+            });
+
+            // 文字编码异常时的提示
+            if (textEncoding is null)
+            {
+                ResultSeverity = InfoBarSeverity.Error;
+                ResultMessage = TextEncodingInvalidString;
+                return;
+            }
+
             // 解密内容
             IsDecrypting = true;
             ResultSeverity = InfoBarSeverity.Informational;
             ResultMessage = DecryptingString;
             (object decryptedData, Exception decryptException) = await Task.Run(() =>
             {
-                return GetDecryptedData(SelectedDataDecryptType.DataDecryptType, selectDecryptIndex, inputtedDecryptContent, selectedDecryptFile);
+                return GetDecryptedData(SelectedDataDecryptType.DataDecryptType, selectDecryptIndex, inputtedDecryptContent, textEncoding, selectedDecryptFile);
             });
 
             // 解密失败
@@ -1996,20 +2054,20 @@ namespace PowerToolbox.Views.Pages
                         try
                         {
                             decryptedLocalFile = SaveDecryptedFilePath;
-                            if (Equals(decryptedData.GetType(), typeof(string)))
+                            if (decryptedData is string decryptedDataString)
                             {
-                                File.WriteAllText(decryptedLocalFile, Convert.ToString(decryptedData));
+                                File.WriteAllText(decryptedLocalFile, decryptedDataString);
                                 isSavedToSelectedFile = true;
                             }
-                            else if (Equals(decryptedData.GetType(), typeof(byte[])))
+                            else if (decryptedData is byte[] decryptedDataBytes)
                             {
-                                File.WriteAllBytes(decryptedLocalFile, decryptedData as byte[]);
+                                File.WriteAllBytes(decryptedLocalFile, decryptedDataBytes);
                                 isSavedToSelectedFile = true;
                             }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 2, e);
                             exception = e;
                         }
 
@@ -2020,32 +2078,32 @@ namespace PowerToolbox.Views.Pages
                             {
                                 decryptedLocalFile = Path.GetTempFileName();
                                 // 解密后的数据是字符串
-                                if (Equals(decryptedData.GetType(), typeof(string)))
+                                if (decryptedData is string decryptedDataString)
                                 {
-                                    File.WriteAllText(decryptedLocalFile, Convert.ToString(decryptedData));
+                                    File.WriteAllText(decryptedLocalFile, decryptedDataString);
                                     isSavedToTempFile = true;
                                 }
                                 // 解密后的数据是字节数组
-                                else if (Equals(decryptedData.GetType(), typeof(byte[])))
+                                else if (decryptedData is byte[] decryptedDataBytes)
                                 {
                                     // 以文本方式解析数据
                                     if (ParseAsTextData)
                                     {
-                                        string decryptedString = Encoding.UTF8.GetString(decryptedData as byte[]).TrimEnd();
+                                        string decryptedString = textEncoding.GetString(decryptedDataBytes).TrimEnd();
                                         File.WriteAllText(decryptedLocalFile, Convert.ToString(decryptedString));
                                         isSavedToSelectedFile = true;
                                     }
                                     // 以二进制方式解析数据
                                     else
                                     {
-                                        File.WriteAllBytes(decryptedLocalFile, decryptedData as byte[]);
+                                        File.WriteAllBytes(decryptedLocalFile, decryptedDataBytes);
                                         isSavedToSelectedFile = true;
                                     }
                                 }
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartDecryptClicked), 2, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 3, e);
                                 exception = e;
                             }
                         }
@@ -2053,7 +2111,7 @@ namespace PowerToolbox.Views.Pages
                 }
 
                 // 解密后的数据是字符串
-                if (Equals(decryptedData.GetType(), typeof(string)))
+                if (decryptedData is string decryptedDataString)
                 {
                     string decryptedString = Convert.ToString(decryptedData).TrimEnd();
 
@@ -2071,11 +2129,11 @@ namespace PowerToolbox.Views.Pages
                                 try
                                 {
                                     decryptedLocalFile = Path.GetTempFileName();
-                                    File.WriteAllText(decryptedLocalFile, Convert.ToString(decryptedData));
+                                    File.WriteAllText(decryptedLocalFile, decryptedDataString);
                                 }
                                 catch (Exception e)
                                 {
-                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 3, e);
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 4, e);
                                 }
                             });
                         }
@@ -2088,14 +2146,14 @@ namespace PowerToolbox.Views.Pages
                     }
                 }
                 // 解密后的数据是字节数组
-                else if (Equals(decryptedData.GetType(), typeof(byte[])))
+                else if (decryptedData is byte[] decryptedDataBytes)
                 {
                     // 以文本方式解析数据
                     if (ParseAsTextData)
                     {
                         try
                         {
-                            string decryptedString = Encoding.UTF8.GetString(decryptedData as byte[]).TrimEnd();
+                            string decryptedString = textEncoding.GetString(decryptedDataBytes).TrimEnd();
 
                             // 解密后的字符串数据太长
                             if (decryptedString.Length > 1024)
@@ -2115,7 +2173,7 @@ namespace PowerToolbox.Views.Pages
                                         }
                                         catch (Exception e)
                                         {
-                                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 4, e);
+                                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 5, e);
                                         }
                                     });
                                 }
@@ -2129,7 +2187,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 5, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 6, e);
                         }
                     }
                     // 以二进制方式解析数据
@@ -2146,11 +2204,11 @@ namespace PowerToolbox.Views.Pages
                                 try
                                 {
                                     decryptedLocalFile = Path.GetTempFileName();
-                                    File.WriteAllBytes(decryptedLocalFile, decryptedData as byte[]);
+                                    File.WriteAllBytes(decryptedLocalFile, decryptedDataBytes);
                                 }
                                 catch (Exception e)
                                 {
-                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 6, e);
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(OnStartDecryptClicked), 7, e);
                                 }
                             });
                         }
@@ -2236,7 +2294,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取解密后的数据
         /// </summary>
-        private (object, Exception) GetDecryptedData(DataDecryptType dataDecryptType, int selectedDecryptIndex, string contentData, string encryptFile)
+        private (object, Exception) GetDecryptedData(DataDecryptType dataDecryptType, int selectedDecryptIndex, string contentData, Encoding textEncoding, string selectedDecryptFile)
         {
             object decryptedData = null;
             Exception decryptException = null;
@@ -2315,7 +2373,7 @@ namespace PowerToolbox.Views.Pages
                         catch (Exception e)
                         {
                             decryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataEncryptType.CaesarCipher) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.CaesarCipher) + 1, e);
                         }
                         break;
                     }
@@ -2352,11 +2410,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                                contentDataBytes = textEncoding.GetBytes(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2405,11 +2463,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                                contentDataBytes = textEncoding.GetBytes(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2446,7 +2504,7 @@ namespace PowerToolbox.Views.Pages
                         catch (Exception e)
                         {
                             decryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataEncryptType.MorseCode) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.MorseCode) + 1, e);
                         }
                         break;
                     }
@@ -2484,11 +2542,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                                contentDataBytes = textEncoding.GetBytes(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2545,11 +2603,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                                contentDataBytes = textEncoding.GetBytes(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2594,11 +2652,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                                contentDataBytes = textEncoding.GetBytes(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2655,11 +2713,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                                contentDataBytes = textEncoding.GetBytes(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2716,11 +2774,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                                contentDataBytes = textEncoding.GetBytes(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2777,11 +2835,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                                contentDataBytes = textEncoding.GetBytes(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2841,11 +2899,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                                contentDataBytes = textEncoding.GetBytes(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2902,11 +2960,11 @@ namespace PowerToolbox.Views.Pages
                             byte[] contentDataBytes = null;
                             if (selectedDecryptIndex is 0 && File.Exists(selectedDecryptFile))
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(File.ReadAllText(selectedDecryptFile));
+                                contentDataBytes = textEncoding.GetBytes(File.ReadAllText(selectedDecryptFile));
                             }
                             else if (selectedDecryptIndex is 1)
                             {
-                                contentDataBytes = Encoding.UTF8.GetBytes(contentData);
+                                contentDataBytes = textEncoding.GetBytes(contentData);
                             }
 
                             if (contentDataBytes is not null)
@@ -2943,7 +3001,7 @@ namespace PowerToolbox.Views.Pages
                         catch (Exception e)
                         {
                             decryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataEncryptType.MorseCode) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataDecryptPage), nameof(GetDecryptedData), Convert.ToInt32(DataDecryptType.MorseCode) + 1, e);
                         }
                         break;
                     }
@@ -3012,9 +3070,9 @@ namespace PowerToolbox.Views.Pages
             return hasParseAsTextData && parseAsTextData ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private Visibility GetCustomTextDecodingType(bool hasParseAsTextData, bool parseAsTextData, string selectedTextDecodingType, string comparedTextDecodingType)
+        private Visibility GetCustomTextEncodingType(bool hasParseAsTextData, bool parseAsTextData, string selectedTextEncodingType, string comparedTextEncodingType)
         {
-            return hasParseAsTextData && parseAsTextData && string.Equals(selectedTextDecodingType, comparedTextDecodingType) ? Visibility.Visible : Visibility.Collapsed;
+            return hasParseAsTextData && parseAsTextData && string.Equals(selectedTextEncodingType, comparedTextEncodingType) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
