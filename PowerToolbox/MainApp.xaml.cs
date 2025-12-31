@@ -4,9 +4,9 @@ using Microsoft.UI.Xaml;
 using PowerToolbox.Services.Download;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Windows;
-using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 
 // 抑制 CA1822 警告
 #pragma warning disable CA1822
@@ -54,22 +54,18 @@ namespace PowerToolbox
         /// </summary>
         private void SetAppIcon(AppWindow appWindow)
         {
-            // 选中文件中的图标总数
-            int iconTotalCount = User32Library.PrivateExtractIcons(System.Windows.Forms.Application.ExecutablePath, 0, 0, 0, null, null, 0, 0);
-
-            // 用于接收获取到的图标指针
-            nint[] hIcons = new nint[iconTotalCount];
-
-            // 对应的图标id
-            int[] ids = new int[iconTotalCount];
-
-            // 成功获取到的图标个数
-            int successCount = User32Library.PrivateExtractIcons(System.Windows.Forms.Application.ExecutablePath, 0, 256, 256, hIcons, ids, iconTotalCount, 0);
-
-            // GetStoreApp.exe 应用程序只有一个图标
-            if (successCount >= 1 && hIcons[0] is not 0)
+            try
             {
-                appWindow.SetIcon(new IconId() { Value = (ulong)hIcons[0] });
+                Icon icon = Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
+
+                if (icon is not null)
+                {
+                    appWindow.SetIcon(new IconId() { Value = (ulong)icon.Handle });
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainApp), nameof(SetAppIcon), 1, e);
             }
         }
 
