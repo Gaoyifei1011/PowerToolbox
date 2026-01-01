@@ -4,7 +4,6 @@ using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.NotificationTips;
-using PowerToolbox.Views.Pages;
 using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
