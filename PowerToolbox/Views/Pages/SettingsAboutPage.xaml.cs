@@ -51,6 +51,7 @@ namespace PowerToolbox.Views.Pages
             { "Microsoft.Windows.SDK.NET.Ref", new Uri("https://aka.ms/WinSDKProjectURL") },
             { "Microsoft.WindowsAppSDK", new Uri("https://github.com/microsoft/windowsappsdk") },
             { "Mile.Aria2", new Uri("https://github.com/ProjectMile/Mile.Aria2") },
+            { "System.Runtime.WindowsRuntime", new Uri("https://github.com/dotnet/corefx") }
         };
 
         //项目感谢者信息

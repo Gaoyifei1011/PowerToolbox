@@ -130,6 +130,7 @@ A toolbox that integrates multiple gadgets
 > * [Microsoft.Windows.SDK.NET.Ref](https://aka.ms/WinSDKProjectURL)&emsp;
 > * [Microsoft.WindowsAppSDK](https://github.com/microsoft/windowsappsdk)&emsp;
 > * [Mile.Aria2](https://github.com/ProjectMile/Mile.Aria2)&emsp;
+> * [System.Runtime.WindowsRuntime](https://github.com/dotnet/corefx)&emsp;
 
 [Code referenced or used during the learning process](https://github.com/Gaoyifei1011/PowerToolbox/blob/main/Description/StudyReferenceCode.md)&emsp;
 
