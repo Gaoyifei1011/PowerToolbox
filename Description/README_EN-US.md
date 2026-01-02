@@ -104,7 +104,7 @@ A toolbox that integrates multiple gadgets
 | Batch modify file properties                              | Finished                                                             |
 | Batch delete the certificates of signed files             | Finished                                                             |
 | File unlock                                               | Finished                                                             |
-| Data encrypt and verify                                   | Developing                                                           |
+| Data encrypt and verify                                   | Finished                                                             |
 | Download manager                                          | Finished                                                             |
 | Extract file icons                                        | Finished                                                             |
 | Extract the package resource index(.pri) file content     | Finished                                                             |
