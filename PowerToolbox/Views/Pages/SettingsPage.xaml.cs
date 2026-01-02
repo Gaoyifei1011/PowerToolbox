@@ -53,7 +53,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<Type> PageList { get; } = [typeof(SettingsPage), typeof(SettingsAdvancedPage), typeof(SettingsAboutPage)];
+        private List<Type> PageList { get; } = [typeof(SettingsGeneralPage), typeof(SettingsAdvancedPage), typeof(SettingsAboutPage)];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -294,22 +294,6 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(OnAppSettingsClicked), 1, e);
                 }
             });
-        }
-
-        /// <summary>
-        /// 了解传递优化
-        /// </summary>
-        private void OnLearnDeliveryOptimizationClicked(Hyperlink sender, HyperlinkClickEventArgs args)
-        {
-            SettingsSplitView.IsPaneOpen = false;
-        }
-
-        /// <summary>
-        /// 了解后台智能传输服务
-        /// </summary>
-        private void OnLearnBitsClicked(Hyperlink sender, HyperlinkClickEventArgs args)
-        {
-            SettingsSplitView.IsPaneOpen = false;
         }
 
         /// <summary>
