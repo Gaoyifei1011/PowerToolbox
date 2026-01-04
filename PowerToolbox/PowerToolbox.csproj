@@ -309,6 +309,7 @@
 		<None Remove="Styles\Main\ProgressRing.xaml" />
 		<None Remove="Styles\Main\TextBlock.xaml" />
 		<None Remove="Styles\Main\TimePicker.xaml" />
+                <None Remove="MainApp.xaml" />
 		<None Remove="Views\Dialogs\AddDownloadTaskDialog.xaml" />
 		<None Remove="Views\Dialogs\AppInformationDialog.xaml" />
 		<None Remove="Views\Dialogs\ClosingWindowDialog.xaml" />
@@ -359,7 +360,6 @@
 		<None Remove="Views\Pages\WinSATPage.xaml" />
 		<None Remove="Views\Windows\MainWindow.xaml" />
 		<None Remove="Views\Windows\SimulateUpdateWindow.xaml" />
-		<None Remove="MainApp.xaml" />
 		
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools.MSIX" Version="1.7.20250829.1" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
