@@ -148,13 +148,13 @@ A toolbox that integrates multiple gadgets
 
 #### <p align="center">Tools that must be installed</p>
 
-> * [Microsoft Visual Studio 2022](https://visualstudio.microsoft.com/) 
+> * [Microsoft Visual Studio 2026](https://visualstudio.microsoft.com/) 
 > * .NET desktop development (install according to Visual Studio tooltip content after opening the solution, .NET Framework SDK version 4.8.1)
 
 #### <p align="center">Compilation steps</p>
 
 > * Clone the project and download the code locally
-> * Open the PowerToolbox.sln file using Visual Studio 2022, and if the solution prompts that some tools are not installed, open the solution again after completing the installation tool steps.
+> * Open the PowerToolbox.sln file using Visual Studio 2026, and if the solution prompts that some tools are not installed, open the solution again after completing the installation tool steps.
 > * Restore the project's Nuget package.
 > * After the restore is complete, right-click PowerToolboxPackage, set the project as the startup project, and click Deploy.
 > * After the deployment is complete, open the Start menu to run the app.

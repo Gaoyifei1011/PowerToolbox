@@ -155,13 +155,13 @@
 
 #### <p align="center">必须安装的工具</p>
 
-> * [Microsoft Visual Studio 2022](https://visualstudio.microsoft.com/) 
+> * [Microsoft Visual Studio 2026](https://visualstudio.microsoft.com/) 
 > * .NET桌面开发（打开解决方案后根据Visual Studio的工具提示内容进行安装，.NET Framework SDK 版本 4.8.1）
 
 #### <p align="center">编译步骤</p>
 
 > * 克隆项目并下载代码到本地
-> * 使用Visual Studio 2022打开PowerToolbox.sln文件，如果解决方案提示部分工具没有安装，请完成安装工具步骤后再次打开该解决方案。
+> * 使用Visual Studio 2026 打开PowerToolbox.sln文件，如果解决方案提示部分工具没有安装，请完成安装工具步骤后再次打开该解决方案。
 > * 还原项目的Nuget包。
 > * 还原完成后，右键PowerToolboxPackage，将该项目设为启动项目，并点击部署。
 > * 部署完成后打开“开始”菜单即可运行应用。
