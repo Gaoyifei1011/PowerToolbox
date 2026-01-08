@@ -26,9 +26,9 @@ namespace PowerToolbox.Views.Dialogs
     /// </summary>
     public sealed partial class AppInformationDialog : ContentDialog, INotifyPropertyChanged
     {
+        private readonly string DoNetVersionString = ResourceService.DialogResource.GetString("DoNetVersion");
         private readonly string WindowsAppSDKVersionString = ResourceService.DialogResource.GetString("WindowsAppSDKVersion");
         private readonly string WinUIVersionString = ResourceService.DialogResource.GetString("WinUIVersion");
-        private readonly string DoNetVersionString = ResourceService.DialogResource.GetString("DoNetVersion");
 
         private bool _isLoadCompleted = false;
 
