@@ -16,6 +16,7 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -24,6 +25,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 
@@ -245,16 +247,19 @@ namespace PowerToolbox.Views.Pages
             {
                 Task.Run(() =>
                 {
-                    SHELLEXECUTEINFO info = new()
+                    try
                     {
-                        cbSize = Marshal.SizeOf<SHELLEXECUTEINFO>(),
-                        lpVerb = "properties",
-                        lpFile = filePath,
-                        nShow = 5,
-                        fMask = ShellExecuteMaskFlags.SEE_MASK_INVOKEIDLIST,
-                        hwnd = 0
-                    };
-                    Shell32Library.ShellExecuteEx(ref info);
+                        StringCollection stringCollection = [filePath];
+                        DataObject data = new();
+                        data.SetData("Preferred DropEffect", true, new MemoryStream([5, 0, 0, 0]));
+                        data.SetData("Shell IDList Array", true, CreateShellIDList(stringCollection));
+                        data.SetFileDropList(stringCollection);
+                        Shell32Library.SHMultiFileProperties(data, 0);
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnFileInformationExecuteRequested), 1, e);
+                    }
                 });
             }
         }
@@ -598,5 +603,39 @@ namespace PowerToolbox.Views.Pages
         }
 
         #endregion 第三部分：下载管理页面——自定义事件
+
+        private static MemoryStream CreateShellIDList(StringCollection fileNameCollection)
+        {
+            int pos = 0;
+            byte[][] pidls = new byte[fileNameCollection.Count][];
+            foreach (object filename in fileNameCollection)
+            {
+                nint pidl = Shell32Library.ILCreateFromPath(filename.ToString());
+                int pidlSize = Shell32Library.ILGetSize(pidl);
+                pidls[pos] = new byte[pidlSize];
+                Marshal.Copy(pidl, pidls[pos++], 0, pidlSize);
+                Shell32Library.ILFree(pidl);
+            }
+
+            int pidlOffset = 4 * (fileNameCollection.Count + 2);
+            MemoryStream memoryStream = new();
+            BinaryWriter binaryWriter = new(memoryStream);
+            binaryWriter.Write(fileNameCollection.Count);
+            binaryWriter.Write(pidlOffset);
+            pidlOffset += 4;
+            foreach (byte[] pidl in pidls)
+            {
+                binaryWriter.Write(pidlOffset);
+                pidlOffset += pidl.Length;
+            }
+
+            binaryWriter.Write(0);
+            foreach (byte[] pidl in pidls)
+            {
+                binaryWriter.Write(pidl);
+            }
+
+            return memoryStream;
+        }
     }
 }

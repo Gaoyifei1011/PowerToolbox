@@ -73,13 +73,12 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         public static extern void ILFree(nint pidl);
 
         /// <summary>
-        /// 对指定文件执行操作。
+        /// 返回 ITEMIDLIST 结构的大小（以字节为单位）。
         /// </summary>
-        /// <param name="lpExecInfo">指向 SHELLEXECUTEINFO 结构的指针，该结构包含并接收有关正在执行的应用程序的信息。</param>
-        /// <returns>如果成功，则返回 TRUE ;否则为 FALSE。 调用 GetLastError 获取扩展错误信息。</returns>
-        [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "ShellExecuteExW", PreserveSig = true, SetLastError = false)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool ShellExecuteEx(ref SHELLEXECUTEINFO lpExecInfo);
+        /// <param name="pidl">指向 ITEMIDLIST 结构的指针。</param>
+        /// <returns>pidl 指定的 ITEMIDLIST 结构的大小（以字节为单位）。</returns>
+        [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "ILGetSize", PreserveSig = true, SetLastError = false)]
+        public static extern int ILGetSize(IntPtr pidl);
 
         /// <summary>
         /// 从分析名称创建和初始化命令行管理程序项对象。
@@ -116,6 +115,15 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// <returns>如果成功，则返回S_OK，否则返回错误值</returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "SHGetKnownFolderPath", PreserveSig = true, SetLastError = false)]
         public static extern int SHGetKnownFolderPath(Guid rfid, KNOWN_FOLDER_FLAG dwFlags, nint hToken, [MarshalAs(UnmanagedType.LPWStr)] out string pszPath);
+
+        /// <summary>
+        /// 显示一组文件的合并属性表。 显示所有文件通用的属性值，而不同的属性值显示字符串 (多个值) 。
+        /// </summary>
+        /// <param name="pdtobj">指向数据对象的指针，该对象提供要显示合并属性表的所有文件的 PIDL。 数据对象必须使用 CFSTR_SHELLIDLIST 剪贴板格式。 父文件夹的 IShellFolder：：GetDisplayNameOf 实现必须为每个项返回一个完全限定的文件系统路径，以响应 SHGDN_FORPARSING 标志。</param>
+        /// <param name="dwFlags">保留。 必须设置为 0。</param>
+        /// <returns>如果此函数成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
+        [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "SHMultiFileProperties", PreserveSig = true, SetLastError = false)]
+        public static extern IntPtr SHMultiFileProperties(IDataObject pdtobj, int dwFlags);
 
         /// <summary>
         /// 打开 Windows 资源管理器窗口，其中选定了特定文件夹中的指定项目。
