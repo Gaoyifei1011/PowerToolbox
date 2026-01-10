@@ -361,7 +361,7 @@
 		<None Remove="Views\Windows\MainWindow.xaml" />
 		<None Remove="Views\Windows\SimulateUpdateWindow.xaml" />
 		
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7463" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools.MSIX" Version="1.7.20250829.1" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     <PackageReference Include="Microsoft.Windows.SDK.NET.Ref" Version="10.0.26100.81" PrivateAssets="none" IncludeAssets="none" GeneratePathProperty="true" />
 		<PackageReference Include="Microsoft.WindowsAppSDK.Base" Version="1.8.250831001" />
