@@ -1,4 +1,4 @@
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -627,7 +627,7 @@ namespace PowerToolbox.Views.Pages
             if (!string.IsNullOrEmpty(filePath))
             {
                 IList<object> selectedItemsList = IconsGridView.SelectedItems;
-                if (!(Is16SizeEnabled || Is24SizeEnabled || Is32SizeEnabled || Is48SizeEnabled || Is64SizeEnabled || Is72SizeEnabled || Is96SizeEnabled || Is128SizeEnabled || Is256SizeEnabled))
+                if (Equals(SelectedIconFormat, IconFormatList[0]) && !(Is16SizeEnabled || Is24SizeEnabled || Is32SizeEnabled || Is48SizeEnabled || Is64SizeEnabled || Is72SizeEnabled || Is96SizeEnabled || Is128SizeEnabled || Is256SizeEnabled))
                 {
                     await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IcoSizeNotSelected));
                     return;
@@ -751,6 +751,11 @@ namespace PowerToolbox.Views.Pages
         {
             if (!string.IsNullOrEmpty(filePath))
             {
+                if (Equals(SelectedIconFormat, IconFormatList[0]) && !(Is16SizeEnabled || Is24SizeEnabled || Is32SizeEnabled || Is48SizeEnabled || Is64SizeEnabled || Is72SizeEnabled || Is96SizeEnabled || Is128SizeEnabled || Is256SizeEnabled))
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IcoSizeNotSelected));
+                    return;
+                }
                 OpenFolderDialog openFolderDialog = new((nint)MainWindow.Current.AppWindow.Id.Value)
                 {
                     Description = SelectFolderString,
