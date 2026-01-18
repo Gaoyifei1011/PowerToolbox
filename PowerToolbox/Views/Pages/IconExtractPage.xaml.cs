@@ -9,6 +9,7 @@ using PowerToolbox.Services.Root;
 using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
+using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows.ApplicationModel.DataTransfer;
@@ -34,17 +36,22 @@ namespace PowerToolbox.Views.Pages
     public sealed partial class IconExtractPage : Page, INotifyPropertyChanged
     {
         private readonly string DragOverContentString = ResourceService.IconExtractResource.GetString("DragOverContent");
-        private readonly string FilterConditionString = ResourceService.IconExtractResource.GetString("FilterCondition");
-        private readonly string GetResultsString = ResourceService.IconExtractResource.GetString("GetResults");
+        private readonly string FileAssociatedString = ResourceService.IconExtractResource.GetString("FileAssociated");
+        private readonly string FileAssociatedFilterConditionString = ResourceService.IconExtractResource.GetString("FileAssociatedFilterCondition");
+        private readonly string FileContainedString = ResourceService.IconExtractResource.GetString("FileContained");
+        private readonly string FileContainedFilterConditionString = ResourceService.IconExtractResource.GetString("FileContainedFilterCondition");
+        private readonly string GetFileAssociatedResultsFailedString = ResourceService.IconExtractResource.GetString("GetFileAssociatedResultsFailed");
+        private readonly string GetFileAssociatedResultsSuccessfullyString = ResourceService.IconExtractResource.GetString("GetFileAssociatedResultsSuccessfully");
+        private readonly string GetFileContainedResultsString = ResourceService.IconExtractResource.GetString("GetFileContainedResults");
         private readonly string NoOtherExtensionNameFileString = ResourceService.IconExtractResource.GetString("NoOtherExtensionNameFile");
         private readonly string NoMultiFileString = ResourceService.IconExtractResource.GetString("NoMultiFile");
         private readonly string NoResourcesString = ResourceService.IconExtractResource.GetString("NoResources");
         private readonly string NoSelectedFileString = ResourceService.IconExtractResource.GetString("NoSelectedFile");
+        private readonly string NotSupportedString = ResourceService.IconExtractResource.GetString("NotSupported");
         private readonly string ParsingIconString = ResourceService.IconExtractResource.GetString("ParsingIcon");
         private readonly string SelectFileString = ResourceService.IconExtractResource.GetString("SelectFile");
         private readonly string SelectFolderString = ResourceService.IconExtractResource.GetString("SelectFolder");
         private readonly string SavingNowString = ResourceService.IconExtractResource.GetString("SavingNow");
-        private readonly object iconExtractLock = new();
 
         private string filePath;
 
@@ -140,6 +147,22 @@ namespace PowerToolbox.Views.Pages
                 {
                     _noResources = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NoResources)));
+                }
+            }
+        }
+
+        private KeyValuePair<string, string> _selectedGetIconType;
+
+        public KeyValuePair<string, string> SelectedGetIconType
+        {
+            get { return _selectedGetIconType; }
+
+            set
+            {
+                if (!Equals(_selectedGetIconType, value))
+                {
+                    _selectedGetIconType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedGetIconType)));
                 }
             }
         }
@@ -336,6 +359,8 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        public List<KeyValuePair<string, string>> GetIconTypeList { get; } = [];
+
         private List<KeyValuePair<string, string>> IconFormatList { get; } =
         [
             new KeyValuePair<string,string>(".ico", ".ico" ),
@@ -362,6 +387,9 @@ namespace PowerToolbox.Views.Pages
         public IconExtractPage()
         {
             InitializeComponent();
+            GetIconTypeList.Add(new KeyValuePair<string, string>("FileContained", FileContainedString));
+            GetIconTypeList.Add(new KeyValuePair<string, string>("FileAssociated", FileAssociatedString));
+            SelectedGetIconType = GetIconTypeList[0];
             SelectedIconFormat = IconFormatList[1];
             SelectedIconSize = IconSizeList[8];
             IsSelected = false;
@@ -407,7 +435,26 @@ namespace PowerToolbox.Views.Pages
                         {
                             string extensionName = Path.GetExtension(dragItemsList[0].Name);
 
-                            if (string.Equals(extensionName, ".exe", StringComparison.OrdinalIgnoreCase) || string.Equals(extensionName, ".dll", StringComparison.OrdinalIgnoreCase))
+                            if (Equals(SelectedGetIconType, GetIconTypeList[0]))
+                            {
+                                if (string.Equals(extensionName, ".exe", StringComparison.OrdinalIgnoreCase) || string.Equals(extensionName, ".dll", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    args.AcceptedOperation = DataPackageOperation.Copy;
+                                    args.DragUIOverride.IsCaptionVisible = true;
+                                    args.DragUIOverride.IsContentVisible = false;
+                                    args.DragUIOverride.IsGlyphVisible = true;
+                                    args.DragUIOverride.Caption = DragOverContentString;
+                                }
+                                else
+                                {
+                                    args.AcceptedOperation = DataPackageOperation.None;
+                                    args.DragUIOverride.IsCaptionVisible = true;
+                                    args.DragUIOverride.IsContentVisible = false;
+                                    args.DragUIOverride.IsGlyphVisible = true;
+                                    args.DragUIOverride.Caption = NoOtherExtensionNameFileString;
+                                }
+                            }
+                            else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
                             {
                                 args.AcceptedOperation = DataPackageOperation.Copy;
                                 args.DragUIOverride.IsCaptionVisible = true;
@@ -421,7 +468,7 @@ namespace PowerToolbox.Views.Pages
                                 args.DragUIOverride.IsCaptionVisible = true;
                                 args.DragUIOverride.IsContentVisible = false;
                                 args.DragUIOverride.IsGlyphVisible = true;
-                                args.DragUIOverride.Caption = NoOtherExtensionNameFileString;
+                                args.DragUIOverride.Caption = NotSupportedString;
                             }
                         }
                         else
@@ -490,7 +537,14 @@ namespace PowerToolbox.Views.Pages
 
             if (File.Exists(filePath))
             {
-                await ParseIconFileAsync(filePath);
+                if (Equals(SelectedGetIconType, GetIconTypeList[0]))
+                {
+                    await ParseIconFileAsync(filePath);
+                }
+                else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
+                {
+                    await GetFileAssociatedIconAsync(filePath);
+                }
             }
         }
 
@@ -508,21 +562,13 @@ namespace PowerToolbox.Views.Pages
             {
                 IsSelected = true;
 
-                nint[] phicon = new nint[1];
-                int[] piconid = new int[1];
-                int iconIndex = Convert.ToInt32((selectedItemsList.Last() as IconModel).DisplayIndex);
-                int nIcons = User32Library.PrivateExtractIcons(filePath, iconIndex, Convert.ToInt32(SelectedIconSize.Key), Convert.ToInt32(SelectedIconSize.Key), phicon, piconid, 1, 0);
+                if (Equals(SelectedGetIconType, GetIconTypeList[0]))
+                {
+                    int iconIndex = Convert.ToInt32((selectedItemsList.Last() as IconModel).DisplayIndex);
 
-                if (nIcons is 0)
-                {
-                    ImageSource = null;
-                    IsImageEmpty = true;
-                }
-                else
-                {
                     try
                     {
-                        Icon icon = Icon.FromHandle(phicon[0]);
+                        Icon icon = GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.Key));
                         MemoryStream memoryStream = new();
                         icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
                         memoryStream.Seek(0, SeekOrigin.Begin);
@@ -538,10 +584,69 @@ namespace PowerToolbox.Views.Pages
                         LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnSelectionChanged), 1, e);
                     }
                 }
+                else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
+                {
+                    try
+                    {
+                        int size = Convert.ToInt32(SelectedIconSize.Key);
+                        Icon icon = null;
+                        if (size is 16)
+                        {
+                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_SMALL);
+                        }
+                        else if (size is 32)
+                        {
+                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_LARGE);
+                        }
+                        else if (size is 48)
+                        {
+                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_EXTRALARGE);
+                        }
+                        else if (size is 256)
+                        {
+                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_JUMBO);
+                        }
+
+                        if (icon is not null)
+                        {
+                            MemoryStream memoryStream = new();
+                            icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+                            BitmapImage bitmapImage = new();
+                            bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
+                            ImageSource = bitmapImage;
+                            IsImageEmpty = false;
+                            memoryStream.Dispose();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnSelectionChanged), 2, e);
+                    }
+                }
             }
             else
             {
                 IsSelected = false;
+            }
+        }
+
+        /// <summary>
+        /// 选择获取的图标类型
+        /// </summary>
+        private void OnGetIconTypeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> getIconType)
+            {
+                SelectedGetIconType = getIconType;
+                IsSelected = false;
+                IconExtractResultKind = IconExtractResultKind.Welcome;
+                IsImageEmpty = true;
+                GetResults = NoSelectedFileString;
+                ImageSource = null;
+                NoResources = string.Empty;
+                SelectedIconSize = IconSizeList[8];
+                IconCollection.Clear();
             }
         }
 
@@ -565,23 +670,15 @@ namespace PowerToolbox.Views.Pages
             {
                 SelectedIconSize = iconSize;
 
-                if (IconsGridView.SelectedItem is not null)
+                if (Equals(SelectedGetIconType, GetIconTypeList[0]))
                 {
-                    nint[] phicon = new nint[1];
-                    int[] piconid = new int[1];
-                    int iconIndex = Convert.ToInt32((IconsGridView.SelectedItem as IconModel).DisplayIndex);
-                    int nIcons = User32Library.PrivateExtractIcons(filePath, iconIndex, Convert.ToInt32(SelectedIconSize.Key), Convert.ToInt32(SelectedIconSize.Key), phicon, piconid, 1, 0);
+                    if (IconsGridView.SelectedItem is not null)
+                    {
+                        int iconIndex = Convert.ToInt32((IconsGridView.SelectedItem as IconModel).DisplayIndex);
 
-                    if (nIcons is 0)
-                    {
-                        ImageSource = null;
-                        IsImageEmpty = true;
-                    }
-                    else
-                    {
                         try
                         {
-                            Icon icon = Icon.FromHandle(phicon[0]);
+                            Icon icon = GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.Key));
                             MemoryStream memoryStream = new();
                             icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
                             memoryStream.Seek(0, SeekOrigin.Begin);
@@ -598,6 +695,46 @@ namespace PowerToolbox.Views.Pages
                         }
                     }
                 }
+                else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
+                {
+                    try
+                    {
+                        int size = Convert.ToInt32(SelectedIconSize.Key);
+                        Icon icon = null;
+                        if (size is 16)
+                        {
+                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_SMALL);
+                        }
+                        else if (size is 32)
+                        {
+                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_LARGE);
+                        }
+                        else if (size is 48)
+                        {
+                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_EXTRALARGE);
+                        }
+                        else if (size is 256)
+                        {
+                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_JUMBO);
+                        }
+
+                        if (icon is not null)
+                        {
+                            MemoryStream memoryStream = new();
+                            icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
+                            memoryStream.Seek(0, SeekOrigin.Begin);
+                            BitmapImage bitmapImage = new();
+                            bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
+                            ImageSource = bitmapImage;
+                            IsImageEmpty = false;
+                            memoryStream.Dispose();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnIconSizeClicked), 2, e);
+                    }
+                }
             }
         }
 
@@ -606,17 +743,37 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnSelectFileClicked(object sender, RoutedEventArgs args)
         {
-            OpenFileDialog openFileDialog = new()
+            string filterString = string.Empty;
+            if (Equals(SelectedGetIconType, GetIconTypeList[0]))
             {
-                Multiselect = false,
-                Filter = FilterConditionString,
-                Title = SelectFileString
-            };
-            if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
-            {
-                await ParseIconFileAsync(openFileDialog.FileName);
+                filterString = FileContainedFilterConditionString;
             }
-            openFileDialog.Dispose();
+            else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
+            {
+                filterString = FileAssociatedFilterConditionString;
+            }
+
+            if (!string.IsNullOrEmpty(filterString))
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Multiselect = false,
+                    Filter = filterString,
+                    Title = SelectFileString
+                };
+                if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
+                {
+                    if (Equals(SelectedGetIconType, GetIconTypeList[0]))
+                    {
+                        await ParseIconFileAsync(openFileDialog.FileName);
+                    }
+                    else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
+                    {
+                        await GetFileAssociatedIconAsync(openFileDialog.FileName);
+                    }
+                }
+                openFileDialog.Dispose();
+            }
         }
 
         /// <summary>
@@ -643,95 +800,183 @@ namespace PowerToolbox.Views.Pages
                     IsSaving = false;
                     int saveFailedCount = 0;
 
-                    await Task.Run(() =>
+                    if (Equals(SelectedGetIconType, GetIconTypeList[0]))
                     {
-                        for (int index = 0; index < selectedItemsList.Count; index++)
+                        await Task.Run(() =>
                         {
-                            if (selectedItemsList[index] is object selectedItem)
+                            for (int index = 0; index < selectedItemsList.Count; index++)
                             {
-                                int iconIndex = Convert.ToInt32((selectedItem as IconModel).DisplayIndex);
-
-                                // 提取 Ico 图标文件
-                                if (Equals(SelectedIconFormat, IconFormatList[0]))
+                                if (selectedItemsList[index] is object selectedItem)
                                 {
-                                    try
+                                    int iconIndex = Convert.ToInt32((selectedItem as IconModel).DisplayIndex);
+
+                                    // 提取 Ico 图标文件
+                                    if (Equals(SelectedIconFormat, IconFormatList[0]))
                                     {
-                                        List<Bitmap> icoList = [];
-
-                                        if (Is256SizeEnabled && GetFixedSizeIcon(iconIndex, 256) is Icon size256Icon)
+                                        try
                                         {
-                                            icoList.Add(size256Icon.ToBitmap());
-                                        }
+                                            List<Bitmap> icoList = [];
 
-                                        if (Is128SizeEnabled && GetFixedSizeIcon(iconIndex, 128) is Icon size128Icon)
-                                        {
-                                            icoList.Add(size128Icon.ToBitmap());
-                                        }
+                                            if (Is256SizeEnabled && GetFixedSizeIcon(iconIndex, 256) is Icon size256Icon)
+                                            {
+                                                icoList.Add(size256Icon.ToBitmap());
+                                            }
 
-                                        if (Is96SizeEnabled && GetFixedSizeIcon(iconIndex, 96) is Icon size96Icon)
-                                        {
-                                            icoList.Add(size96Icon.ToBitmap());
-                                        }
+                                            if (Is128SizeEnabled && GetFixedSizeIcon(iconIndex, 128) is Icon size128Icon)
+                                            {
+                                                icoList.Add(size128Icon.ToBitmap());
+                                            }
 
-                                        if (Is72SizeEnabled && GetFixedSizeIcon(iconIndex, 72) is Icon size72Icon)
-                                        {
-                                            icoList.Add(size72Icon.ToBitmap());
-                                        }
+                                            if (Is96SizeEnabled && GetFixedSizeIcon(iconIndex, 96) is Icon size96Icon)
+                                            {
+                                                icoList.Add(size96Icon.ToBitmap());
+                                            }
 
-                                        if (Is64SizeEnabled && GetFixedSizeIcon(iconIndex, 64) is Icon size64Icon)
-                                        {
-                                            icoList.Add(size64Icon.ToBitmap());
-                                        }
+                                            if (Is72SizeEnabled && GetFixedSizeIcon(iconIndex, 72) is Icon size72Icon)
+                                            {
+                                                icoList.Add(size72Icon.ToBitmap());
+                                            }
 
-                                        if (Is48SizeEnabled && GetFixedSizeIcon(iconIndex, 48) is Icon size48Icon)
-                                        {
-                                            icoList.Add(size48Icon.ToBitmap());
-                                        }
+                                            if (Is64SizeEnabled && GetFixedSizeIcon(iconIndex, 64) is Icon size64Icon)
+                                            {
+                                                icoList.Add(size64Icon.ToBitmap());
+                                            }
 
-                                        if (Is32SizeEnabled && GetFixedSizeIcon(iconIndex, 32) is Icon size32Icon)
-                                        {
-                                            icoList.Add(size32Icon.ToBitmap());
-                                        }
+                                            if (Is48SizeEnabled && GetFixedSizeIcon(iconIndex, 48) is Icon size48Icon)
+                                            {
+                                                icoList.Add(size48Icon.ToBitmap());
+                                            }
 
-                                        if (Is24SizeEnabled && GetFixedSizeIcon(iconIndex, 24) is Icon size24Icon)
-                                        {
-                                            icoList.Add(size24Icon.ToBitmap());
-                                        }
+                                            if (Is32SizeEnabled && GetFixedSizeIcon(iconIndex, 32) is Icon size32Icon)
+                                            {
+                                                icoList.Add(size32Icon.ToBitmap());
+                                            }
 
-                                        if (Is16SizeEnabled && GetFixedSizeIcon(iconIndex, 16) is Icon size16Icon)
-                                        {
-                                            icoList.Add(size16Icon.ToBitmap());
-                                        }
+                                            if (Is24SizeEnabled && GetFixedSizeIcon(iconIndex, 24) is Icon size24Icon)
+                                            {
+                                                icoList.Add(size24Icon.ToBitmap());
+                                            }
 
-                                        if (!(icoList.Count > 0 && SaveIcon(icoList, Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.ico", Path.GetFileName(filePath), iconIndex))) is true))
+                                            if (Is16SizeEnabled && GetFixedSizeIcon(iconIndex, 16) is Icon size16Icon)
+                                            {
+                                                icoList.Add(size16Icon.ToBitmap());
+                                            }
+
+                                            if (!(icoList.Count > 0 && SaveIcon(icoList, Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.ico", Path.GetFileName(filePath), iconIndex))) is true))
+                                            {
+                                                saveFailedCount++;
+                                            }
+                                        }
+                                        catch (Exception e)
                                         {
                                             saveFailedCount++;
+                                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 1, e);
                                         }
                                     }
-                                    catch (Exception e)
+                                    else if (SelectedIconFormat.Equals(IconFormatList[1]))
                                     {
-                                        saveFailedCount++;
-                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 1, e);
-                                    }
-                                }
-                                else if (SelectedIconFormat.Equals(IconFormatList[1]))
-                                {
-                                    try
-                                    {
-                                        if (GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.Key)) is Icon icon)
+                                        try
                                         {
-                                            icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1} - {2}.png", Path.GetFileName(filePath), iconIndex, Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                            if (GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.Key)) is Icon icon)
+                                            {
+                                                icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1} - {2}.png", Path.GetFileName(filePath), iconIndex, Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                                icon.Dispose();
+                                            }
                                         }
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        saveFailedCount++;
-                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 2, e);
+                                        catch (Exception e)
+                                        {
+                                            saveFailedCount++;
+                                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 2, e);
+                                        }
                                     }
                                 }
                             }
+                        });
+                    }
+                    else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
+                    {
+                        // 提取 Ico 图标文件
+                        if (Equals(SelectedIconFormat, IconFormatList[0]))
+                        {
+                            try
+                            {
+                                List<Bitmap> icoList = [];
+
+                                if (Is256SizeEnabled && GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_JUMBO) is Icon size256Icon)
+                                {
+                                    icoList.Add(size256Icon.ToBitmap());
+                                }
+
+                                if (Is48SizeEnabled && GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_EXTRALARGE) is Icon size48Icon)
+                                {
+                                    icoList.Add(size48Icon.ToBitmap());
+                                }
+
+                                if (Is32SizeEnabled && GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_LARGE) is Icon size32Icon)
+                                {
+                                    icoList.Add(size32Icon.ToBitmap());
+                                }
+
+                                if (Is16SizeEnabled && GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_SMALL) is Icon size16Icon)
+                                {
+                                    icoList.Add(size16Icon.ToBitmap());
+                                }
+
+                                if (!(icoList.Count > 0 && SaveIcon(icoList, Path.Combine(openFolderDialog.SelectedPath, string.Format("{0}.ico", Path.GetFileName(filePath)))) is true))
+                                {
+                                    saveFailedCount++;
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                saveFailedCount++;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 3, e);
+                            }
                         }
-                    });
+                        else if (SelectedIconFormat.Equals(IconFormatList[1]))
+                        {
+                            try
+                            {
+                                if (Convert.ToInt32(SelectedIconSize.Key) is 16)
+                                {
+                                    if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_SMALL) is Icon icon)
+                                    {
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.Dispose();
+                                    }
+                                }
+                                else if (Convert.ToInt32(SelectedIconSize.Key) is 32)
+                                {
+                                    if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_LARGE) is Icon icon)
+                                    {
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.Dispose();
+                                    }
+                                }
+                                else if (Convert.ToInt32(SelectedIconSize.Key) is 48)
+                                {
+                                    if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_EXTRALARGE) is Icon icon)
+                                    {
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.Dispose();
+                                    }
+                                }
+                                else if (Convert.ToInt32(SelectedIconSize.Key) is 256)
+                                {
+                                    if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_JUMBO) is Icon icon)
+                                    {
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.Dispose();
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                saveFailedCount++;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 4, e);
+                            }
+                        }
+                    }
 
                     openFolderDialog.Dispose();
                     IsSaving = false;
@@ -768,95 +1013,183 @@ namespace PowerToolbox.Views.Pages
                     IsSaving = false;
                     int saveFailedCount = 0;
 
-                    await Task.Run(() =>
+                    if (Equals(SelectedGetIconType, GetIconTypeList[0]))
                     {
-                        for (int index = 0; index < iconList.Count; index++)
+                        await Task.Run(() =>
                         {
-                            if (IconCollection[index] is object selectedItem)
+                            for (int index = 0; index < iconList.Count; index++)
                             {
-                                int iconIndex = Convert.ToInt32((selectedItem as IconModel).DisplayIndex);
-
-                                // 提取 Ico 图标文件
-                                if (Equals(SelectedIconFormat, IconFormatList[0]))
+                                if (IconCollection[index] is object selectedItem)
                                 {
-                                    try
+                                    int iconIndex = Convert.ToInt32((selectedItem as IconModel).DisplayIndex);
+
+                                    // 提取 Ico 图标文件
+                                    if (Equals(SelectedIconFormat, IconFormatList[0]))
                                     {
-                                        List<Bitmap> icoList = [];
-
-                                        if (Is256SizeEnabled && GetFixedSizeIcon(iconIndex, 256) is Icon size256Icon)
+                                        try
                                         {
-                                            icoList.Add(size256Icon.ToBitmap());
-                                        }
+                                            List<Bitmap> icoList = [];
 
-                                        if (Is128SizeEnabled && GetFixedSizeIcon(iconIndex, 128) is Icon size128Icon)
-                                        {
-                                            icoList.Add(size128Icon.ToBitmap());
-                                        }
+                                            if (Is256SizeEnabled && GetFixedSizeIcon(iconIndex, 256) is Icon size256Icon)
+                                            {
+                                                icoList.Add(size256Icon.ToBitmap());
+                                            }
 
-                                        if (Is96SizeEnabled && GetFixedSizeIcon(iconIndex, 96) is Icon size96Icon)
-                                        {
-                                            icoList.Add(size96Icon.ToBitmap());
-                                        }
+                                            if (Is128SizeEnabled && GetFixedSizeIcon(iconIndex, 128) is Icon size128Icon)
+                                            {
+                                                icoList.Add(size128Icon.ToBitmap());
+                                            }
 
-                                        if (Is72SizeEnabled && GetFixedSizeIcon(iconIndex, 72) is Icon size72Icon)
-                                        {
-                                            icoList.Add(size72Icon.ToBitmap());
-                                        }
+                                            if (Is96SizeEnabled && GetFixedSizeIcon(iconIndex, 96) is Icon size96Icon)
+                                            {
+                                                icoList.Add(size96Icon.ToBitmap());
+                                            }
 
-                                        if (Is64SizeEnabled && GetFixedSizeIcon(iconIndex, 64) is Icon size64Icon)
-                                        {
-                                            icoList.Add(size64Icon.ToBitmap());
-                                        }
+                                            if (Is72SizeEnabled && GetFixedSizeIcon(iconIndex, 72) is Icon size72Icon)
+                                            {
+                                                icoList.Add(size72Icon.ToBitmap());
+                                            }
 
-                                        if (Is48SizeEnabled && GetFixedSizeIcon(iconIndex, 48) is Icon size48Icon)
-                                        {
-                                            icoList.Add(size48Icon.ToBitmap());
-                                        }
+                                            if (Is64SizeEnabled && GetFixedSizeIcon(iconIndex, 64) is Icon size64Icon)
+                                            {
+                                                icoList.Add(size64Icon.ToBitmap());
+                                            }
 
-                                        if (Is32SizeEnabled && GetFixedSizeIcon(iconIndex, 32) is Icon size32Icon)
-                                        {
-                                            icoList.Add(size32Icon.ToBitmap());
-                                        }
+                                            if (Is48SizeEnabled && GetFixedSizeIcon(iconIndex, 48) is Icon size48Icon)
+                                            {
+                                                icoList.Add(size48Icon.ToBitmap());
+                                            }
 
-                                        if (Is24SizeEnabled && GetFixedSizeIcon(iconIndex, 24) is Icon size24Icon)
-                                        {
-                                            icoList.Add(size24Icon.ToBitmap());
-                                        }
+                                            if (Is32SizeEnabled && GetFixedSizeIcon(iconIndex, 32) is Icon size32Icon)
+                                            {
+                                                icoList.Add(size32Icon.ToBitmap());
+                                            }
 
-                                        if (Is16SizeEnabled && GetFixedSizeIcon(iconIndex, 16) is Icon size16Icon)
-                                        {
-                                            icoList.Add(size16Icon.ToBitmap());
-                                        }
+                                            if (Is24SizeEnabled && GetFixedSizeIcon(iconIndex, 24) is Icon size24Icon)
+                                            {
+                                                icoList.Add(size24Icon.ToBitmap());
+                                            }
 
-                                        if (!(icoList.Count > 0 && SaveIcon(icoList, Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.ico", Path.GetFileName(filePath), iconIndex))) is true))
+                                            if (Is16SizeEnabled && GetFixedSizeIcon(iconIndex, 16) is Icon size16Icon)
+                                            {
+                                                icoList.Add(size16Icon.ToBitmap());
+                                            }
+
+                                            if (!(icoList.Count > 0 && SaveIcon(icoList, Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.ico", Path.GetFileName(filePath), iconIndex))) is true))
+                                            {
+                                                saveFailedCount++;
+                                            }
+                                        }
+                                        catch (Exception e)
                                         {
                                             saveFailedCount++;
+                                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 1, e);
                                         }
                                     }
-                                    catch (Exception e)
+                                    else if (SelectedIconFormat.Equals(IconFormatList[1]))
                                     {
-                                        saveFailedCount++;
-                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 1, e);
-                                    }
-                                }
-                                else if (SelectedIconFormat.Equals(IconFormatList[1]))
-                                {
-                                    try
-                                    {
-                                        if (GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.Key)) is Icon icon)
+                                        try
                                         {
-                                            icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1} - {2}.png", Path.GetFileName(filePath), iconIndex, Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                            if (GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.Key)) is Icon icon)
+                                            {
+                                                icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1} - {2}.png", Path.GetFileName(filePath), iconIndex, Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                                icon.Dispose();
+                                            }
                                         }
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        saveFailedCount++;
-                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 2, e);
+                                        catch (Exception e)
+                                        {
+                                            saveFailedCount++;
+                                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 2, e);
+                                        }
                                     }
                                 }
                             }
+                        });
+                    }
+                    else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
+                    {
+                        // 提取 Ico 图标文件
+                        if (Equals(SelectedIconFormat, IconFormatList[0]))
+                        {
+                            try
+                            {
+                                List<Bitmap> icoList = [];
+
+                                if (Is256SizeEnabled && GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_JUMBO) is Icon size256Icon)
+                                {
+                                    icoList.Add(size256Icon.ToBitmap());
+                                }
+
+                                if (Is48SizeEnabled && GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_EXTRALARGE) is Icon size48Icon)
+                                {
+                                    icoList.Add(size48Icon.ToBitmap());
+                                }
+
+                                if (Is32SizeEnabled && GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_LARGE) is Icon size32Icon)
+                                {
+                                    icoList.Add(size32Icon.ToBitmap());
+                                }
+
+                                if (Is16SizeEnabled && GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_SMALL) is Icon size16Icon)
+                                {
+                                    icoList.Add(size16Icon.ToBitmap());
+                                }
+
+                                if (!(icoList.Count > 0 && SaveIcon(icoList, Path.Combine(openFolderDialog.SelectedPath, string.Format("{0}.ico", Path.GetFileName(filePath)))) is true))
+                                {
+                                    saveFailedCount++;
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                saveFailedCount++;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 1, e);
+                            }
                         }
-                    });
+                        else if (SelectedIconFormat.Equals(IconFormatList[1]))
+                        {
+                            try
+                            {
+                                if (Convert.ToInt32(SelectedIconSize.Key) is 16)
+                                {
+                                    if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_SMALL) is Icon icon)
+                                    {
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.Dispose();
+                                    }
+                                }
+                                else if (Convert.ToInt32(SelectedIconSize.Key) is 32)
+                                {
+                                    if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_LARGE) is Icon icon)
+                                    {
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.Dispose();
+                                    }
+                                }
+                                else if (Convert.ToInt32(SelectedIconSize.Key) is 48)
+                                {
+                                    if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_EXTRALARGE) is Icon icon)
+                                    {
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.Dispose();
+                                    }
+                                }
+                                else if (Convert.ToInt32(SelectedIconSize.Key) is 256)
+                                {
+                                    if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_JUMBO) is Icon icon)
+                                    {
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.Dispose();
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                saveFailedCount++;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 2, e);
+                            }
+                        }
+                    }
 
                     openFolderDialog.Dispose();
                     IsSaving = false;
@@ -923,7 +1256,7 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
-                    GetResults = string.Format(GetResultsString, Path.GetFileName(filePath), iconsNum);
+                    GetResults = string.Format(GetFileContainedResultsString, Path.GetFileName(filePath), iconsNum);
                     NoResources = string.Format(NoResourcesString, Path.GetFileName(filePath));
                     ImageSource = null;
                     IsImageEmpty = true;
@@ -946,11 +1279,94 @@ namespace PowerToolbox.Views.Pages
                 catch (Exception e)
                 {
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(ParseIconFileAsync), 2, e);
+                    GetResults = string.Format(GetFileContainedResultsString, Path.GetFileName(filePath), 0);
+                    NoResources = string.Format(NoResourcesString, Path.GetFileName(filePath));
+                    ImageSource = null;
+                    IsImageEmpty = true;
+                    IconExtractResultKind = IconExtractResultKind.Failed;
                 }
             }
             else
             {
-                GetResults = string.Format(GetResultsString, Path.GetFileName(filePath), 0);
+                GetResults = string.Format(GetFileContainedResultsString, Path.GetFileName(filePath), 0);
+                NoResources = string.Format(NoResourcesString, Path.GetFileName(filePath));
+                ImageSource = null;
+                IsImageEmpty = true;
+                IconExtractResultKind = IconExtractResultKind.Failed;
+            }
+        }
+
+        /// <summary>
+        /// 获取文件关联的图标
+        /// </summary>
+        public async Task GetFileAssociatedIconAsync(string iconFilePath)
+        {
+            IconCollection.Clear();
+            IconExtractResultKind = IconExtractResultKind.Parsing;
+
+            List<IconModel> iconsList = [];
+
+            try
+            {
+                filePath = iconFilePath;
+                Icon icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_EXTRALARGE);
+                if (icon is not null)
+                {
+                    MemoryStream memoryStream = new();
+                    icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+
+                    iconsList.Add(new IconModel()
+                    {
+                        DisplayIndex = "0",
+                        IconMemoryStream = memoryStream,
+                    });
+
+                    icon.Dispose();
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(GetFileAssociatedIconAsync), 1, e);
+            }
+
+            if (iconsList.Count > 0)
+            {
+                try
+                {
+                    GetResults = string.Format(GetFileAssociatedResultsSuccessfullyString, Path.GetFileName(filePath));
+                    NoResources = string.Format(NoResourcesString, Path.GetFileName(filePath));
+                    ImageSource = null;
+                    IsImageEmpty = true;
+
+                    foreach (IconModel iconItem in iconsList)
+                    {
+                        BitmapImage bitmapImage = new();
+                        bitmapImage.SetSource(iconItem.IconMemoryStream.AsRandomAccessStream());
+                        IconCollection.Add(new IconModel()
+                        {
+                            DisplayIndex = iconItem.DisplayIndex,
+                            IconImage = bitmapImage
+                        });
+
+                        iconItem.IconMemoryStream.Dispose();
+                    }
+
+                    IconExtractResultKind = IconExtractResultKind.Successfully;
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(GetFileAssociatedIconAsync), 2, e);
+                    GetResults = string.Format(GetFileAssociatedResultsFailedString, Path.GetFileName(filePath), 0);
+                    NoResources = string.Format(NoResourcesString, Path.GetFileName(filePath));
+                    ImageSource = null;
+                    IsImageEmpty = true;
+                    IconExtractResultKind = IconExtractResultKind.Failed;
+                }
+            }
+            else
+            {
+                GetResults = string.Format(GetFileAssociatedResultsFailedString, Path.GetFileName(filePath), 0);
                 NoResources = string.Format(NoResourcesString, Path.GetFileName(filePath));
                 ImageSource = null;
                 IsImageEmpty = true;
@@ -1062,7 +1478,6 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取固定大小图标资源
         /// </summary>
-
         private Icon GetFixedSizeIcon(int iconIndex, int size)
         {
             try
@@ -1070,19 +1485,35 @@ namespace PowerToolbox.Views.Pages
                 nint[] phicon = new nint[1];
                 int[] piconid = new int[1];
                 int nIcons = User32Library.PrivateExtractIcons(filePath, iconIndex, size, size, phicon, piconid, 1, 0);
-
-                if (nIcons is not 0)
-                {
-                    return Icon.FromHandle(phicon[0]);
-                }
-                else
-                {
-                    return null;
-                }
+                return nIcons is not 0 ? Icon.FromHandle(phicon[0]) : null;
             }
             catch (Exception e)
             {
                 LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(GetFixedSizeIcon), 1, e);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 获取固定大小文件关联图标资源
+        /// </summary>
+        private Icon GetFixedSizeAssociatedIcon(string filePath, SHIL shil)
+        {
+            if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+            {
+                try
+                {
+                    Shell32Library.SHGetFileInfo(filePath, 0, out SHFILEINFO shellInfo, (uint)Marshal.SizeOf<SHFILEINFO>(), SHGFI.SHGFI_SYSICONINDEX);
+                    return Shell32Library.SHGetImageList(shil, typeof(IImageList).GUID, out IImageList imageList) is 0 && imageList.GetIcon(shellInfo.iIcon, 0, out nint hIcon) is 0 ? Icon.FromHandle(hIcon) : null;
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(GetFileAssociatedIconAsync), 1, e);
+                    return null;
+                }
+            }
+            else
+            {
                 return null;
             }
         }
@@ -1093,6 +1524,11 @@ namespace PowerToolbox.Views.Pages
         private Visibility CheckIconExtractState(IconExtractResultKind iconResultResultKind, IconExtractResultKind comparedIconExtractResultKind)
         {
             return Equals(iconResultResultKind, comparedIconExtractResultKind) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private Visibility GetSelectedFileAssociatedIconSize(KeyValuePair<string, string> selectedGetIconType, KeyValuePair<string, string> comparedGetIconType)
+        {
+            return Equals(selectedGetIconType, comparedGetIconType) ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

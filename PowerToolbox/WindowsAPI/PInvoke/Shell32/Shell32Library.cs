@@ -128,7 +128,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// <param name="ppvObj">此方法返回时，包含 riid 中请求的接口指针。 这通常是 IImageList。</param>
         /// <returns>如果此函数成功，它将返回 S_OK。 否则，它将返回 HRESULT 错误代码。</returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "SHGetImageList", PreserveSig = true, SetLastError = false)]
-        public static extern int SHGetImageList(SHIL iImageList, ref Guid riid, [MarshalAs(UnmanagedType.Interface)] out IImageList ppvObj);
+        public static extern int SHGetImageList(SHIL iImageList, Guid riid, [MarshalAs(UnmanagedType.Interface)] out IImageList ppvObj);
 
         /// <summary>
         /// 检索由文件夹的 KNOWNFOLDERID 标识的已知文件夹的完整路径。

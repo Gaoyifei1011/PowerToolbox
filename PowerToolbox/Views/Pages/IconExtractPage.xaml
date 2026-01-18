@@ -190,6 +190,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <Grid.ColumnDefinitions>
@@ -201,14 +202,46 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('SaveIconFormat')}" />
+                            Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('GetIconType')}" />
 
                         <DropDownButton
                             Grid.Row="0"
                             Grid.Column="1"
                             Margin="0,0,0,3"
                             HorizontalAlignment="Stretch"
-                            Content="{x:Bind SelectedIconFormat.Key, Mode=OneWay}">
+                            Content="{x:Bind SelectedGetIconType.Value, Mode=OneWay}">
+
+                            <DropDownButton.Flyout>
+                                <MenuFlyout Placement="Bottom">
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnGetIconTypeClicked}"
+                                        GroupName="GetIconTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedGetIconType.Key, GetIconTypeList[0].Key), Mode=OneWay}"
+                                        Tag="{x:Bind GetIconTypeList[0]}"
+                                        Text="{x:Bind system:Convert.ToString(GetIconTypeList[0].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnGetIconTypeClicked}"
+                                        GroupName="GetIconTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedGetIconType.Key, GetIconTypeList[1].Key), Mode=OneWay}"
+                                        Tag="{x:Bind GetIconTypeList[1]}"
+                                        Text="{x:Bind system:Convert.ToString(GetIconTypeList[1].Value)}" />
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('SaveIconFormat')}" />
+
+                        <DropDownButton
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="0,0,0,3"
+                            HorizontalAlignment="Stretch"
+                            Content="{x:Bind SelectedIconFormat.Value, Mode=OneWay}">
 
                             <DropDownButton.Flyout>
                                 <MenuFlyout Placement="Bottom">
@@ -230,13 +263,13 @@
                         </DropDownButton>
 
                         <TextBlock
-                            Grid.Row="1"
+                            Grid.Row="2"
                             Grid.Column="0"
                             VerticalAlignment="Center"
                             Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('SaveIconSize')}" />
 
                         <DropDownButton
-                            Grid.Row="1"
+                            Grid.Row="2"
                             Grid.Column="1"
                             HorizontalAlignment="Stretch"
                             Content="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('SetIconSize')}"
@@ -257,78 +290,116 @@
                                     </Flyout.FlyoutPresenterStyle>
 
                                     <Grid Padding="12" RowSpacing="5">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
+                                        <Grid Visibility="{x:Bind GetSelectedFileAssociatedIconSize(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
 
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
 
-                                        <CheckBox
-                                            Grid.Row="0"
-                                            Grid.Column="0"
-                                            Content="{x:Bind IconSizeList[0].Value}"
-                                            IsChecked="{x:Bind Is16SizeEnabled, Mode=TwoWay}" />
+                                            <CheckBox
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Content="{x:Bind IconSizeList[0].Value}"
+                                                IsChecked="{x:Bind Is16SizeEnabled, Mode=TwoWay}" />
 
-                                        <CheckBox
-                                            Grid.Row="0"
-                                            Grid.Column="1"
-                                            Content="{x:Bind IconSizeList[1].Value}"
-                                            IsChecked="{x:Bind Is24SizeEnabled, Mode=TwoWay}" />
+                                            <CheckBox
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Content="{x:Bind IconSizeList[1].Value}"
+                                                IsChecked="{x:Bind Is24SizeEnabled, Mode=TwoWay}" />
 
-                                        <CheckBox
-                                            Grid.Row="0"
-                                            Grid.Column="2"
-                                            Content="{x:Bind IconSizeList[2].Value}"
-                                            IsChecked="{x:Bind Is32SizeEnabled, Mode=TwoWay}" />
+                                            <CheckBox
+                                                Grid.Row="0"
+                                                Grid.Column="2"
+                                                Content="{x:Bind IconSizeList[2].Value}"
+                                                IsChecked="{x:Bind Is32SizeEnabled, Mode=TwoWay}" />
 
-                                        <CheckBox
-                                            Grid.Row="1"
-                                            Grid.Column="0"
-                                            Content="{x:Bind IconSizeList[3].Value}"
-                                            IsChecked="{x:Bind Is48SizeEnabled, Mode=TwoWay}" />
+                                            <CheckBox
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Content="{x:Bind IconSizeList[3].Value}"
+                                                IsChecked="{x:Bind Is48SizeEnabled, Mode=TwoWay}" />
 
-                                        <CheckBox
-                                            Grid.Row="1"
-                                            Grid.Column="1"
-                                            Content="{x:Bind IconSizeList[4].Value}"
-                                            IsChecked="{x:Bind Is64SizeEnabled, Mode=TwoWay}" />
+                                            <CheckBox
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Content="{x:Bind IconSizeList[4].Value}"
+                                                IsChecked="{x:Bind Is64SizeEnabled, Mode=TwoWay}" />
 
-                                        <CheckBox
-                                            Grid.Row="1"
-                                            Grid.Column="2"
-                                            Content="{x:Bind IconSizeList[5].Value}"
-                                            IsChecked="{x:Bind Is72SizeEnabled, Mode=TwoWay}" />
+                                            <CheckBox
+                                                Grid.Row="1"
+                                                Grid.Column="2"
+                                                Content="{x:Bind IconSizeList[5].Value}"
+                                                IsChecked="{x:Bind Is72SizeEnabled, Mode=TwoWay}" />
 
-                                        <CheckBox
-                                            Grid.Row="2"
-                                            Grid.Column="0"
-                                            Content="{x:Bind IconSizeList[6].Value}"
-                                            IsChecked="{x:Bind Is96SizeEnabled, Mode=TwoWay}" />
+                                            <CheckBox
+                                                Grid.Row="2"
+                                                Grid.Column="0"
+                                                Content="{x:Bind IconSizeList[6].Value}"
+                                                IsChecked="{x:Bind Is96SizeEnabled, Mode=TwoWay}" />
 
-                                        <CheckBox
-                                            Grid.Row="2"
-                                            Grid.Column="1"
-                                            Content="{x:Bind IconSizeList[7].Value}"
-                                            IsChecked="{x:Bind Is128SizeEnabled, Mode=TwoWay}" />
+                                            <CheckBox
+                                                Grid.Row="2"
+                                                Grid.Column="1"
+                                                Content="{x:Bind IconSizeList[7].Value}"
+                                                IsChecked="{x:Bind Is128SizeEnabled, Mode=TwoWay}" />
 
-                                        <CheckBox
-                                            Grid.Row="2"
-                                            Grid.Column="2"
-                                            Content="{x:Bind IconSizeList[8].Value}"
-                                            IsChecked="{x:Bind Is256SizeEnabled, Mode=TwoWay}" />
+                                            <CheckBox
+                                                Grid.Row="2"
+                                                Grid.Column="2"
+                                                Content="{x:Bind IconSizeList[8].Value}"
+                                                IsChecked="{x:Bind Is256SizeEnabled, Mode=TwoWay}" />
+                                        </Grid>
+
+                                        <Grid Visibility="{x:Bind GetSelectedFileAssociatedIconSize(SelectedGetIconType, GetIconTypeList[1]), Mode=OneWay}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <CheckBox
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Content="{x:Bind IconSizeList[0].Value}"
+                                                IsChecked="{x:Bind Is16SizeEnabled, Mode=TwoWay}" />
+
+                                            <CheckBox
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Content="{x:Bind IconSizeList[2].Value}"
+                                                IsChecked="{x:Bind Is32SizeEnabled, Mode=TwoWay}" />
+
+                                            <CheckBox
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Content="{x:Bind IconSizeList[3].Value}"
+                                                IsChecked="{x:Bind Is48SizeEnabled, Mode=TwoWay}" />
+
+                                            <CheckBox
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Content="{x:Bind IconSizeList[8].Value}"
+                                                IsChecked="{x:Bind Is256SizeEnabled, Mode=TwoWay}" />
+                                        </Grid>
                                     </Grid>
                                 </Flyout>
                             </DropDownButton.Flyout>
                         </DropDownButton>
 
                         <DropDownButton
-                            Grid.Row="1"
+                            Grid.Row="2"
                             Grid.Column="1"
                             HorizontalAlignment="Stretch"
                             Content="{x:Bind SelectedIconSize.Value, Mode=OneWay}"
@@ -348,7 +419,8 @@
                                         GroupName="IconSizeRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[1].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[1]}"
-                                        Text="{x:Bind system:Convert.ToString(IconSizeList[1].Value)}" />
+                                        Text="{x:Bind system:Convert.ToString(IconSizeList[1].Value)}"
+                                        Visibility="{x:Bind GetSelectedFileAssociatedIconSize(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}" />
 
                                     <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconSizeClicked}"
@@ -369,28 +441,32 @@
                                         GroupName="IconSizeRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[4].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[4]}"
-                                        Text="{x:Bind system:Convert.ToString(IconSizeList[4].Value)}" />
+                                        Text="{x:Bind system:Convert.ToString(IconSizeList[4].Value)}"
+                                        Visibility="{x:Bind GetSelectedFileAssociatedIconSize(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}" />
 
                                     <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconSizeClicked}"
                                         GroupName="IconSizeRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[5].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[5]}"
-                                        Text="{x:Bind system:Convert.ToString(IconSizeList[5].Value)}" />
+                                        Text="{x:Bind system:Convert.ToString(IconSizeList[5].Value)}"
+                                        Visibility="{x:Bind GetSelectedFileAssociatedIconSize(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}" />
 
                                     <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconSizeClicked}"
                                         GroupName="IconSizeRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[6].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[6]}"
-                                        Text="{x:Bind system:Convert.ToString(IconSizeList[6].Value)}" />
+                                        Text="{x:Bind system:Convert.ToString(IconSizeList[6].Value)}"
+                                        Visibility="{x:Bind GetSelectedFileAssociatedIconSize(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}" />
 
                                     <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconSizeClicked}"
                                         GroupName="IconSizeRadioGroup"
                                         IsChecked="{x:Bind x:Object.Equals(SelectedIconSize.Key, IconSizeList[7].Key), Mode=OneWay}"
                                         Tag="{x:Bind IconSizeList[7]}"
-                                        Text="{x:Bind system:Convert.ToString(IconSizeList[7].Value)}" />
+                                        Text="{x:Bind system:Convert.ToString(IconSizeList[7].Value)}"
+                                        Visibility="{x:Bind GetSelectedFileAssociatedIconSize(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}" />
 
                                     <RadioMenuFlyoutItem
                                         Click="{x:Bind OnIconSizeClicked}"

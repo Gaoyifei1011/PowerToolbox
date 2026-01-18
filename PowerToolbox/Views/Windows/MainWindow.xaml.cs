@@ -1299,7 +1299,14 @@ namespace PowerToolbox.Views.Windows
             {
                 if (iconExtractPage.GetIsNotParsingOrSaving(iconExtractPage.IconExtractResultKind, iconExtractPage.IsSaving) && filesList.Count is 1 && (string.Equals(Path.GetExtension(filesList[0]), ".exe") || string.Equals(Path.GetExtension(filesList[0]), ".dll")))
                 {
-                    await iconExtractPage.ParseIconFileAsync(filesList[0]);
+                    if (Equals(iconExtractPage.SelectedGetIconType, iconExtractPage.GetIconTypeList[0]))
+                    {
+                        await iconExtractPage.ParseIconFileAsync(filesList[0]);
+                    }
+                    else if (Equals(iconExtractPage.SelectedGetIconType, iconExtractPage.GetIconTypeList[1]))
+                    {
+                        await iconExtractPage.ParseIconFileAsync(filesList[1]);
+                    }
                 }
             }
             else if (currentFrameContent is PriExtractPage priExtractPage)
