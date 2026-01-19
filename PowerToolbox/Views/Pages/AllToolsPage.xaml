@@ -99,7 +99,7 @@
 
         <StackPanel Padding="30,0,0,30" Spacing="3">
 
-            <!--  主页面颜色背景  -->
+            <!--  所有工具页面颜色背景  -->
             <Grid BorderBrush="{ThemeResource NavigationViewContentGridBorderBrush}" CornerRadius="8,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

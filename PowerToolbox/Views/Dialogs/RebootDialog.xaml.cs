@@ -1,4 +1,4 @@
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Services.Root;
 

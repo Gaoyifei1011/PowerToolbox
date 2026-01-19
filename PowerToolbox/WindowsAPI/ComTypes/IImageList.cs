@@ -1,5 +1,4 @@
-﻿using Microsoft.UI.Xaml.Shapes;
-using PowerToolbox.WindowsAPI.PInvoke.User32;
+﻿using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;

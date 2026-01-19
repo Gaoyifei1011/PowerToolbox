@@ -1,4 +1,4 @@
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Windows;
@@ -15,6 +15,7 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class AllToolsPage : Page
     {
+        // 休闲工具列表
         private List<ControlItemModel> RelaxToolsList { get; } =
         [
             new ControlItemModel()
