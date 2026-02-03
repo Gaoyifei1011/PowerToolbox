@@ -17,7 +17,7 @@ namespace PowerToolbox.Helpers.Root
         /// <summary>
         /// 获取文件缩略图
         /// </summary>
-        public static Bitmap GetThumbnailBitmap(string filePath)
+        public static Bitmap GetThumbnailBitmap(string filePath, int size)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace PowerToolbox.Helpers.Root
 
                 if (result is 0)
                 {
-                    result = ((IShellItemImageFactory)shellItem).GetImage(new Size(256, 256), SIIGBF.SIIGBF_RESIZETOFIT, out nint hBitmap);
+                    result = ((IShellItemImageFactory)shellItem).GetImage(new Size(size, size), SIIGBF.SIIGBF_RESIZETOFIT, out nint hBitmap);
                     Marshal.ReleaseComObject(shellItem);
 
                     if (result is 0)

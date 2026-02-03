@@ -497,7 +497,7 @@ namespace PowerToolbox.Views.Pages
                 MemoryStream memoryStream = null;
                 try
                 {
-                    Bitmap thumbnailBitmap = ThumbnailHelper.GetThumbnailBitmap(downloadScheduler.FilePath);
+                    Bitmap thumbnailBitmap = ThumbnailHelper.GetThumbnailBitmap(downloadScheduler.FilePath, 256);
 
                     if (thumbnailBitmap is not null)
                     {

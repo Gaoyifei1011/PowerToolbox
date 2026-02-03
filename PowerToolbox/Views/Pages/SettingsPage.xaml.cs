@@ -108,7 +108,7 @@ namespace PowerToolbox.Views.Pages
             {
                 NavigateTo(PageList[1], null, index > currentIndex);
             }
-            else if (index is 2 && !Equals(GetCurrentPageType(), PageList[2]))
+            else if (index is 2 && !Equals(currentPage, PageList[2]))
             {
                 NavigateTo(PageList[2], null, index > currentIndex);
             }

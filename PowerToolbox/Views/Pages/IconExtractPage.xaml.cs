@@ -52,7 +52,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string SelectFileString = ResourceService.IconExtractResource.GetString("SelectFile");
         private readonly string SelectFolderString = ResourceService.IconExtractResource.GetString("SelectFolder");
         private readonly string SavingNowString = ResourceService.IconExtractResource.GetString("SavingNow");
-
         private string filePath;
 
         private bool _isSelected;
@@ -500,7 +499,8 @@ namespace PowerToolbox.Views.Pages
         {
             base.OnDrop(args);
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
-            string filePath = string.Empty;
+            filePath = string.Empty;
+
             try
             {
                 DataPackageView dataPackageView = args.DataView;

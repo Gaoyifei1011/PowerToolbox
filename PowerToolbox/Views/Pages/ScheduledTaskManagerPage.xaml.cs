@@ -1011,7 +1011,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             if (!string.IsNullOrEmpty(scheduledTaskItem.ProcessPath) && !string.Equals(scheduledTaskItem.ProcessPath, NotAvailableString, StringComparison.OrdinalIgnoreCase))
                             {
-                                Bitmap thumbnailBitmap = ThumbnailHelper.GetThumbnailBitmap(scheduledTaskItem.ProcessPath);
+                                Bitmap thumbnailBitmap = ThumbnailHelper.GetThumbnailBitmap(scheduledTaskItem.ProcessPath, 256);
 
                                 if (thumbnailBitmap is not null)
                                 {
