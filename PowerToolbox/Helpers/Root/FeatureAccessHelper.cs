@@ -42,10 +42,7 @@ namespace PowerToolbox.Helpers.Root
         public static string GenerateTokenFromFeatureId(string feature, string featureId)
         {
             string generatedContent = string.Format("{0}!{1}!{2}", feature, featureId, packageFamilyName);
-            byte[] computedHash = HashAlgorithmHelper.ComputeSHA256Hash(generatedContent);
-            byte[] tokenBytes = new byte[16];
-            Array.Copy(computedHash, tokenBytes, tokenBytes.Length);
-            return Convert.ToBase64String(tokenBytes);
+            return HashAlgorithmHelper.ComputeSHA256Hash(generatedContent);
         }
 
         /// <summary>
