@@ -257,12 +257,20 @@ namespace PowerToolbox.Views.Pages
             {
                 if (Marshal.QueryInterface(Marshal.GetIUnknownForObject(WindowsRuntimeMarshal.GetActivationFactory(typeof(TaskbarManager))), ref IID_ITaskbarManagerDesktopAppSupportStatics, out _) is 0)
                 {
-                    string featureId = "com.microsoft.windows.taskbar.pin";
-                    string token = FeatureAccessHelper.GenerateTokenFromFeatureId(featureId);
-                    string attestation = FeatureAccessHelper.GenerateAttestation(featureId);
-                    LimitedAccessFeatureRequestResult accessResult = LimitedAccessFeatures.TryUnlockFeature(featureId, token, attestation);
+                    string feature = "com.microsoft.windows.taskbar.pin";
+                    string featureId = FeatureAccessHelper.GetFeatureId(feature);
+                    if (!string.IsNullOrEmpty(featureId))
+                    {
+                        string token = FeatureAccessHelper.GenerateTokenFromFeatureId(feature, featureId);
+                        string attestation = FeatureAccessHelper.GenerateAttestation(featureId);
+                        LimitedAccessFeatureRequestResult accessResult = LimitedAccessFeatures.TryUnlockFeature(featureId, token, attestation);
 
-                    if (accessResult.Status is LimitedAccessFeatureStatus.Available)
+                        if (accessResult.Status is LimitedAccessFeatureStatus.Available || accessResult.Status is LimitedAccessFeatureStatus.AvailableWithoutToken)
+                        {
+                            isPinnedSuccessfully = await TaskbarManager.GetDefault().RequestPinCurrentAppAsync();
+                        }
+                    }
+                    else
                     {
                         isPinnedSuccessfully = await TaskbarManager.GetDefault().RequestPinCurrentAppAsync();
                     }
