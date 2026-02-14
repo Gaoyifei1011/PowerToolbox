@@ -369,7 +369,7 @@
 		<PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="1.8.260125001" GeneratePathProperty="True" />
 		<PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="1.8.260209005" />
 		<PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="1.8.260204000" GeneratePathProperty="True" IncludeAssets="none" PrivateAssets="all" />
-		<PackageReference Include="Mile.Aria2" Version="1.0.230" />
+		<PackageReference Include="Mile.Aria2" Version="1.0.1050" />
 		<PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
 		
 		<Page Include="Styles\DateTimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
