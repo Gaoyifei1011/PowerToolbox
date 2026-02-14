@@ -744,51 +744,28 @@ namespace PowerToolbox.Views.Pages
             DataVerifyResultCollection.Clear();
             List<DataVerifyResultModel> dataVerifyResultList = await Task.Run(async () =>
             {
-                byte[] contentData = null;
                 List<DataVerifyResultModel> dataVerifyResultList = [];
 
-                try
+                foreach (DataVerifyTypeModel dataVerifyTypeItem in selectedDataVerifyTypeList)
                 {
+                    string verifyResultContent = string.Empty;
                     if (selectVerifyIndex is 0)
                     {
-                        FileStream fileStream = File.OpenRead(selectedVerifyFile);
-                        contentData = new byte[(int)fileStream.Length];
-                        fileStream.Read(contentData, 0, contentData.Length);
-                        fileStream.Dispose();
+                        verifyResultContent = GetVerifiedData(dataVerifyTypeItem.DataVerifyType, selectVerifyIndex, selectedVerifyFile);
                     }
                     else if (selectVerifyIndex is 1)
                     {
-                        contentData = textEncoding.GetBytes(selectedVerifyContent);
+                        verifyResultContent = GetVerifiedData(dataVerifyTypeItem.DataVerifyType, selectVerifyIndex, selectedVerifyContent);
                     }
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnStartVerifyClicked), 2, e);
-                }
 
-                if (contentData is not null && (selectVerifyIndex is 0 || selectVerifyIndex is 1))
-                {
-                    List<Task> verifyingTaskList = [];
-                    object verifyingLock = new();
-                    foreach (DataVerifyTypeModel dataVerifyTypeItem in selectedDataVerifyTypeList)
+                    if (!string.IsNullOrEmpty(verifyResultContent))
                     {
-                        verifyingTaskList.Add(Task.Run(() =>
+                        dataVerifyResultList.Add(new DataVerifyResultModel()
                         {
-                            string verifyResultContent = GetVerifiedData(dataVerifyTypeItem.DataVerifyType, selectVerifyIndex, contentData);
-                            if (!string.IsNullOrEmpty(verifyResultContent))
-                            {
-                                lock (verifyingLock)
-                                {
-                                    dataVerifyResultList.Add(new DataVerifyResultModel()
-                                    {
-                                        Name = dataVerifyTypeItem.Name,
-                                        Result = verifyResultContent
-                                    });
-                                }
-                            }
-                        }));
+                            Name = dataVerifyTypeItem.Name,
+                            Result = verifyResultContent
+                        });
                     }
-                    await Task.WhenAll(verifyingTaskList);
                 }
 
                 dataVerifyResultList.Sort((item1, item2) => item1.Name.CompareTo(item2.Name));
@@ -858,7 +835,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取校验后的数据
         /// </summary>
-        private string GetVerifiedData(DataVerifyType dataVerifyType, int selectedVerifyIndex, byte[] contentData)
+        private string GetVerifiedData(DataVerifyType dataVerifyType, int selectedVerifyIndex, string contentData)
         {
             string verifiedData = string.Empty;
 
@@ -872,7 +849,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = blake2b.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = blake2b.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = blake2b.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             blake2b.Dispose();
 
@@ -895,7 +884,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = blake3.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = blake3.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = blake3.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             blake3.Dispose();
 
@@ -918,7 +919,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = crc32.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = crc32.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = crc32.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             crc32.Dispose();
 
@@ -941,7 +954,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = crc64.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = crc64.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = crc64.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             crc64.Dispose();
 
@@ -964,7 +989,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = ed2k.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = ed2k.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = ed2k.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             ed2k.Dispose();
 
@@ -987,7 +1024,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = has160.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = has160.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = has160.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             has160.Dispose();
 
@@ -1010,7 +1059,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = md2.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = md2.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = md2.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             md2.Dispose();
 
@@ -1033,7 +1094,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = md4.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = md4.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = md4.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             md4.Dispose();
 
@@ -1056,7 +1129,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = md5.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = md5.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = md5.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             md5.Dispose();
 
@@ -1079,7 +1164,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = ripemd160.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = ripemd160.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = ripemd160.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             ripemd160.Dispose();
 
@@ -1102,7 +1199,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = sha1.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = sha1.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = sha1.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             sha1.Dispose();
 
@@ -1125,7 +1234,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = sha224.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = sha224.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = sha224.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             sha224.Dispose();
 
@@ -1148,7 +1269,8 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = sha256.ComputeHash(contentData);
+                                FileStream fileStream = new(@"E:\28020.1362.251205-1009.BR_RELEASE_SVC_BETAFLT_PROD1_CLIENTMULTI_X64FRE_ZH-CN.ISO", FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                hashBytes = sha256.ComputeHash(fileStream);
                             }
                             sha256.Dispose();
 
@@ -1171,7 +1293,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = sha384.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = sha384.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = sha384.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             sha384.Dispose();
 
@@ -1194,7 +1328,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = sha512.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = sha512.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = sha512.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             sha512.Dispose();
 
@@ -1217,7 +1363,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = sha3_224.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = sha3_224.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = sha3_224.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             sha3_224.Dispose();
 
@@ -1240,7 +1398,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = sha3_256.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = sha3_256.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = sha3_256.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             sha3_256.Dispose();
 
@@ -1263,7 +1433,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = sha3_384.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = sha3_384.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = sha3_384.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             sha3_384.Dispose();
 
@@ -1286,7 +1468,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = sha3_512.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = sha3_512.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = sha3_512.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             sha3_512.Dispose();
 
@@ -1309,7 +1503,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = shake128.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = shake128.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = shake128.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             shake128.Dispose();
 
@@ -1332,7 +1538,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = shake256.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = shake256.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = shake256.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             shake256.Dispose();
 
@@ -1355,7 +1573,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = sm3.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = sm3.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = sm3.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             sm3.Dispose();
 
@@ -1378,7 +1608,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = tiger.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = tiger.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = tiger.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             tiger.Dispose();
 
@@ -1401,7 +1643,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = tiger.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = tiger.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = tiger.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             tiger.Dispose();
 
@@ -1424,7 +1678,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = whirlpool.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = whirlpool.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = whirlpool.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             whirlpool.Dispose();
 
@@ -1447,7 +1713,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = xxHash32.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = xxHash32.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = xxHash32.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             xxHash32.Dispose();
 
@@ -1470,7 +1748,19 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                hashBytes = xxhash64.ComputeHash(contentData);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = xxhash64.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = xxhash64.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             xxhash64.Dispose();
 
@@ -1489,12 +1779,25 @@ namespace PowerToolbox.Views.Pages
                     {
                         try
                         {
-                            XxHash128 xxhash128 = new(0);
+                            XxHash128 xxhash128 = new();
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                xxhash128.Append(contentData);
-                                hashBytes = xxhash128.GetCurrentHash();
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        xxhash128.Append(fileStream);
+                                        hashBytes = xxhash128.GetCurrentHash();
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    xxhash128.Append(Encoding.UTF8.GetBytes(contentData));
+                                    hashBytes = xxhash128.GetCurrentHash();
+                                }
                             }
 
                             if (hashBytes is not null)

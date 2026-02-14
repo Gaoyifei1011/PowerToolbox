@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using static PowerToolbox.Extensions.Hashing.XxHashShared;
 
 namespace PowerToolbox.Extensions.Hashing
@@ -137,6 +138,44 @@ namespace PowerToolbox.Extensions.Hashing
         public void Reset()
         {
             XxHashShared.Reset(ref _state);
+        }
+
+        /// <summary>
+        /// 将源的内容追加到当前哈希计算已处理的数据中
+        /// </summary>
+        public void Append(Stream stream, int bufferSize = 1024 * 64)
+        {
+            if (stream is null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+
+            if (!stream.CanRead)
+            {
+                throw new ArgumentException("Stream must be readable.", nameof(stream));
+            }
+
+            if (bufferSize <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(bufferSize));
+            }
+
+            byte[] buffer = new byte[bufferSize];
+
+            int bytesRead;
+            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                if (bytesRead == buffer.Length)
+                {
+                    Append(buffer);
+                }
+                else
+                {
+                    byte[] partial = new byte[bytesRead];
+                    Buffer.BlockCopy(buffer, 0, partial, 0, bytesRead);
+                    Append(partial);
+                }
+            }
         }
 
         /// <summary>
