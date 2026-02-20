@@ -351,6 +351,14 @@ namespace PowerToolbox.Views.Windows
         #region 第四部分：导航控件及其内容挂载的事件
 
         /// <summary>
+        /// 当后退按钮收到交互（如单击或点击）时发生
+        /// </summary>
+        private void OnBackClicked(object sender, RoutedEventArgs args)
+        {
+            NavigationFrom();
+        }
+
+        /// <summary>
         /// 导航控件加载完成后初始化内容，初始化导航控件属性、屏幕缩放比例值和应用的背景色
         /// </summary>
         private async void OnLoaded(object sender, RoutedEventArgs args)
@@ -427,14 +435,6 @@ namespace PowerToolbox.Views.Windows
             NavigateTo(typeof(AllToolsPage));
             IsBackEnabled = CanGoBack();
             SetPopupControlTheme(WindowTheme);
-        }
-
-        /// <summary>
-        /// 当后退按钮收到交互（如单击或点击）时发生
-        /// </summary>
-        private void OnBackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
-        {
-            NavigationFrom();
         }
 
         /// <summary>
@@ -794,10 +794,6 @@ namespace PowerToolbox.Views.Windows
                                     TopMostService.PropertyChanged -= OnServicePropertyChanged;
                                     inputKeyboardSource.SystemKeyDown -= OnSystemKeyDown;
                                     inputPointerSource.PointerReleased -= OnPointerReleased;
-                                    if (navigationViewBackButtonToolTip is not null)
-                                    {
-                                        navigationViewBackButtonToolTip.Loaded -= ToolTipBackdropHelper.OnLoaded;
-                                    }
                                     DownloadSchedulerService.TerminateDownload();
                                     Comctl32Library.RemoveWindowSubclass((nint)AppWindow.Id.Value, mainWindowSubClassProc, 0);
                                     (Application.Current as MainApp).Dispose();
@@ -824,10 +820,6 @@ namespace PowerToolbox.Views.Windows
                                 TopMostService.PropertyChanged -= OnServicePropertyChanged;
                                 inputKeyboardSource.SystemKeyDown -= OnSystemKeyDown;
                                 inputPointerSource.PointerReleased -= OnPointerReleased;
-                                if (navigationViewBackButtonToolTip is not null)
-                                {
-                                    navigationViewBackButtonToolTip.Loaded -= ToolTipBackdropHelper.OnLoaded;
-                                }
                                 Comctl32Library.RemoveWindowSubclass((nint)AppWindow.Id.Value, mainWindowSubClassProc, 0);
                                 (Application.Current as MainApp).Dispose();
                             }
