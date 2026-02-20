@@ -168,8 +168,7 @@
                                     <Flyout
                                         x:Name="ViewErrorInformationFlyout"
                                         Placement="Bottom"
-                                        ShouldConstrainToRootBounds="False"
-                                        SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}">
+                                        ShouldConstrainToRootBounds="False">
 
                                         <Flyout.FlyoutPresenterStyle>
                                             <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
@@ -180,98 +179,102 @@
                                         </Flyout.FlyoutPresenterStyle>
 
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="40" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
+                                            <SystemBackdropElement CornerRadius="{StaticResource OverlayCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
 
-                                            <Grid
-                                                Grid.Row="0"
-                                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                                BorderThickness="0,0,0,1">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="40" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
 
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
+                                                <Grid
+                                                    Grid.Row="0"
+                                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                                    BorderThickness="0,0,0,1">
 
-                                                <FontIcon
-                                                    Grid.Column="0"
-                                                    Margin="16,0,6,0"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="16"
-                                                    Glyph="&#xE783;" />
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
 
-                                                <TextBlock
-                                                    Grid.Column="1"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="14"
-                                                    Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ErrorInformation')}" />
+                                                    <FontIcon
+                                                        Grid.Column="0"
+                                                        Margin="16,0,6,0"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="16"
+                                                        Glyph="&#xE783;" />
 
-                                                <Button
-                                                    Grid.Column="2"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Click="{x:Bind OnCopyErrorInformationClicked}"
-                                                    IsEnabled="{x:Bind converter:ValueConverterHelper.IsNotEmptyString(DecryptFailedInformation), Mode=OneWay}"
-                                                    Style="{StaticResource AlternateCloseButtonStyle}">
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        VerticalAlignment="Center"
+                                                        FontSize="14"
+                                                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ErrorInformation')}" />
 
-                                                    <Button.Content>
-                                                        <FontIcon
-                                                            Margin="4"
-                                                            FontSize="16"
-                                                            Glyph="&#xE8C8;" />
-                                                    </Button.Content>
+                                                    <Button
+                                                        Grid.Column="2"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Click="{x:Bind OnCopyErrorInformationClicked}"
+                                                        IsEnabled="{x:Bind converter:ValueConverterHelper.IsNotEmptyString(DecryptFailedInformation), Mode=OneWay}"
+                                                        Style="{StaticResource AlternateCloseButtonStyle}">
 
-                                                    <ToolTipService.ToolTip>
-                                                        <ToolTip
-                                                            MaxWidth="9999"
-                                                            Background="Transparent"
-                                                            Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('CopyErrorInformation')}"
-                                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
-                                                    </ToolTipService.ToolTip>
-                                                </Button>
+                                                        <Button.Content>
+                                                            <FontIcon
+                                                                Margin="4"
+                                                                FontSize="16"
+                                                                Glyph="&#xE8C8;" />
+                                                        </Button.Content>
 
-                                                <Button
-                                                    Grid.Column="3"
-                                                    Margin="-5,0,0,0"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Click="{x:Bind OnCloseFlyoutClicked}"
-                                                    Style="{StaticResource AlternateCloseButtonStyle}"
-                                                    Tag="{x:Bind ViewErrorInformationFlyout}">
+                                                        <ToolTipService.ToolTip>
+                                                            <ToolTip
+                                                                MaxWidth="9999"
+                                                                Background="Transparent"
+                                                                Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('CopyErrorInformation')}"
+                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                        </ToolTipService.ToolTip>
+                                                    </Button>
 
-                                                    <Button.Content>
-                                                        <FontIcon
-                                                            Margin="4"
-                                                            FontSize="16"
-                                                            Glyph="&#xE711;" />
-                                                    </Button.Content>
+                                                    <Button
+                                                        Grid.Column="3"
+                                                        Margin="-5,0,0,0"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Click="{x:Bind OnCloseFlyoutClicked}"
+                                                        Style="{StaticResource AlternateCloseButtonStyle}"
+                                                        Tag="{x:Bind ViewErrorInformationFlyout}">
 
-                                                    <ToolTipService.ToolTip>
-                                                        <ToolTip
-                                                            MaxWidth="9999"
-                                                            Background="Transparent"
-                                                            Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('CloseFlyout')}"
-                                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
-                                                    </ToolTipService.ToolTip>
-                                                </Button>
-                                            </Grid>
+                                                        <Button.Content>
+                                                            <FontIcon
+                                                                Margin="4"
+                                                                FontSize="16"
+                                                                Glyph="&#xE711;" />
+                                                        </Button.Content>
 
-                                            <Grid
-                                                Grid.Row="1"
-                                                Width="450"
-                                                MinHeight="100"
-                                                Padding="16,8,16,8">
+                                                        <ToolTipService.ToolTip>
+                                                            <ToolTip
+                                                                MaxWidth="9999"
+                                                                Background="Transparent"
+                                                                Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('CloseFlyout')}"
+                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                        </ToolTipService.ToolTip>
+                                                    </Button>
+                                                </Grid>
 
-                                                <TextBlock
-                                                    HorizontalAlignment="Left"
-                                                    IsTextSelectionEnabled="True"
-                                                    Text="{x:Bind DecryptFailedInformation, Mode=OneWay}"
-                                                    TextWrapping="Wrap" />
+                                                <Grid
+                                                    Grid.Row="1"
+                                                    Width="450"
+                                                    MinHeight="100"
+                                                    Padding="16,8,16,8">
+
+                                                    <TextBlock
+                                                        HorizontalAlignment="Left"
+                                                        IsTextSelectionEnabled="True"
+                                                        Text="{x:Bind DecryptFailedInformation, Mode=OneWay}"
+                                                        TextWrapping="Wrap" />
+                                                </Grid>
                                             </Grid>
                                         </Grid>
                                     </Flyout>

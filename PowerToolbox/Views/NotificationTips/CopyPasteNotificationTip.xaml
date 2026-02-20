@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
+    Background="Transparent"
     CloseButtonContent="TeachingTip"
     IsLightDismissEnabled="False"
     PlacementMargin="0,20,0,0"
@@ -23,19 +24,17 @@
         </Style>
     </TeachingTip.CloseButtonStyle>
 
-    <TeachingTip.Resources>
-        <ResourceDictionary>
-            <StaticResource x:Key="TeachingTipBackgroundBrush" ResourceKey="SystemControlTransientBackgroundBrush" />
-        </ResourceDictionary>
-    </TeachingTip.Resources>
-
     <Grid>
+        <SystemBackdropElement CornerRadius="{StaticResource OverlayCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
         <TextBlock
+            Padding="12"
             Foreground="{ThemeResource SystemFillColorSuccessBrush}"
             Text="{x:Bind rootservice:ResourceService.NotificationTipResource.GetString('CopyToClipboardSuccessfully')}"
             Visibility="{x:Bind IsSuccessfully, Mode=OneWay}" />
 
         <TextBlock
+            Padding="12"
             Foreground="{ThemeResource SystemFillColorCriticalBrush}"
             Text="{x:Bind rootservice:ResourceService.NotificationTipResource.GetString('CopyToClipboardFailed')}"
             Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSuccessfully), Mode=OneWay}" />

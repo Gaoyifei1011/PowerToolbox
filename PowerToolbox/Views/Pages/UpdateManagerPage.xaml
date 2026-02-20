@@ -119,27 +119,30 @@
                 </Button.Flyout>
 
                 <FlyoutBase.AttachedFlyout>
-                    <Flyout
-                        Placement="Bottom"
-                        ShouldConstrainToRootBounds="False"
-                        SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}">
+                    <Flyout Placement="Bottom" ShouldConstrainToRootBounds="False">
+
                         <Flyout.FlyoutPresenterStyle>
                             <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
                                 <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Padding" Value="0" />
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
 
-                        <StackPanel Spacing="3">
-                            <TextBlock>
-                                <Run Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('WindowsUpdateVersion')}" />
-                                <Run Text="{x:Bind WindowsUpdateVersion, Mode=OneWay}" />
-                            </TextBlock>
+                        <Grid>
+                            <SystemBackdropElement CornerRadius="{StaticResource OverlayCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
 
-                            <TextBlock>
-                                <Run Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('WuapiDllVersion')}" />
-                                <Run Text="{x:Bind WuapiDllVersion, Mode=OneWay}" />
-                            </TextBlock>
-                        </StackPanel>
+                            <StackPanel Padding="{StaticResource FlyoutContentPadding}" Spacing="3">
+                                <TextBlock>
+                                    <Run Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('WindowsUpdateVersion')}" />
+                                    <Run Text="{x:Bind WindowsUpdateVersion, Mode=OneWay}" />
+                                </TextBlock>
+
+                                <TextBlock>
+                                    <Run Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('WuapiDllVersion')}" />
+                                    <Run Text="{x:Bind WuapiDllVersion, Mode=OneWay}" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
                     </Flyout>
                 </FlyoutBase.AttachedFlyout>
 

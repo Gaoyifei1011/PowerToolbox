@@ -5,6 +5,7 @@
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="Transparent"
     CloseButtonContent="TeachingTip"
     IsLightDismissEnabled="False"
     PlacementMargin="0,20,0,0"
@@ -22,21 +23,17 @@
         </Style>
     </TeachingTip.CloseButtonStyle>
 
-    <TeachingTip.Resources>
-        <ResourceDictionary>
-            <StaticResource x:Key="TeachingTipBackgroundBrush" ResourceKey="SystemControlTransientBackgroundBrush" />
-        </ResourceDictionary>
-    </TeachingTip.Resources>
-
     <Grid>
+        <SystemBackdropElement CornerRadius="{StaticResource OverlayCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
         <TextBlock
-            x:Name="OperationResultSuccess"
+            Padding="12"
             Foreground="{ThemeResource SystemFillColorSuccessBrush}"
             Text="{x:Bind OperationContent, Mode=OneWay}"
             Visibility="{x:Bind IsSuccessOperation, Mode=OneWay}" />
 
         <TextBlock
-            x:Name="OperationResultFailed"
+            Padding="12"
             Foreground="{ThemeResource SystemFillColorCriticalBrush}"
             Text="{x:Bind OperationContent, Mode=OneWay}"
             Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSuccessOperation), Mode=OneWay}" />

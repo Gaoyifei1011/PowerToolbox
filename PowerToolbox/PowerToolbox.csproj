@@ -364,11 +364,11 @@
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7705" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools.MSIX" Version="1.7.251221100" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     <PackageReference Include="Microsoft.Windows.SDK.NET.Ref" Version="10.0.26100.84" PrivateAssets="none" IncludeAssets="none" GeneratePathProperty="true" />
-		<PackageReference Include="Microsoft.WindowsAppSDK.Base" Version="1.8.251216001" />
-		<PackageReference Include="Microsoft.WindowsAppSDK.Foundation" Version="1.8.260203002" />
-		<PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="1.8.260125001" GeneratePathProperty="True" />
-		<PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="1.8.260209005" />
-		<PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="1.8.260204000" GeneratePathProperty="True" IncludeAssets="none" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.Base" Version="2.0.2-preview" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.Foundation" Version="2.0.15-preview" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="2.0.6-preview" GeneratePathProperty="True" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="2.0.0-preview1" />
+		<PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="2.0.7-preview" GeneratePathProperty="True" IncludeAssets="none" PrivateAssets="all" />
 		<PackageReference Include="Mile.Aria2" Version="1.0.1050" />
 		<PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
 		

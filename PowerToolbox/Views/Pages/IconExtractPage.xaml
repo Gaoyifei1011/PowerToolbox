@@ -276,10 +276,7 @@
                             Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckIconFormat(SelectedIconFormat.Key, IconFormatList[0].Key), Mode=OneWay}">
 
                             <DropDownButton.Flyout>
-                                <Flyout
-                                    Placement="Bottom"
-                                    ShouldConstrainToRootBounds="False"
-                                    SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}">
+                                <Flyout Placement="Bottom" ShouldConstrainToRootBounds="False">
 
                                     <Flyout.FlyoutPresenterStyle>
                                         <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
@@ -289,109 +286,113 @@
                                         </Style>
                                     </Flyout.FlyoutPresenterStyle>
 
-                                    <Grid Padding="12" RowSpacing="5">
-                                        <Grid Visibility="{x:Bind GetSelectedFileAssociatedIconSize(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
+                                    <Grid>
+                                        <SystemBackdropElement CornerRadius="{StaticResource OverlayCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
 
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
+                                        <Grid Padding="12" RowSpacing="5">
+                                            <Grid Visibility="{x:Bind GetSelectedFileAssociatedIconSize(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
 
-                                            <CheckBox
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Content="{x:Bind IconSizeList[0].Value}"
-                                                IsChecked="{x:Bind Is16SizeEnabled, Mode=TwoWay}" />
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
 
-                                            <CheckBox
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Content="{x:Bind IconSizeList[1].Value}"
-                                                IsChecked="{x:Bind Is24SizeEnabled, Mode=TwoWay}" />
+                                                <CheckBox
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Content="{x:Bind IconSizeList[0].Value}"
+                                                    IsChecked="{x:Bind Is16SizeEnabled, Mode=TwoWay}" />
 
-                                            <CheckBox
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                Content="{x:Bind IconSizeList[2].Value}"
-                                                IsChecked="{x:Bind Is32SizeEnabled, Mode=TwoWay}" />
+                                                <CheckBox
+                                                    Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    Content="{x:Bind IconSizeList[1].Value}"
+                                                    IsChecked="{x:Bind Is24SizeEnabled, Mode=TwoWay}" />
 
-                                            <CheckBox
-                                                Grid.Row="1"
-                                                Grid.Column="0"
-                                                Content="{x:Bind IconSizeList[3].Value}"
-                                                IsChecked="{x:Bind Is48SizeEnabled, Mode=TwoWay}" />
+                                                <CheckBox
+                                                    Grid.Row="0"
+                                                    Grid.Column="2"
+                                                    Content="{x:Bind IconSizeList[2].Value}"
+                                                    IsChecked="{x:Bind Is32SizeEnabled, Mode=TwoWay}" />
 
-                                            <CheckBox
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Content="{x:Bind IconSizeList[4].Value}"
-                                                IsChecked="{x:Bind Is64SizeEnabled, Mode=TwoWay}" />
+                                                <CheckBox
+                                                    Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Content="{x:Bind IconSizeList[3].Value}"
+                                                    IsChecked="{x:Bind Is48SizeEnabled, Mode=TwoWay}" />
 
-                                            <CheckBox
-                                                Grid.Row="1"
-                                                Grid.Column="2"
-                                                Content="{x:Bind IconSizeList[5].Value}"
-                                                IsChecked="{x:Bind Is72SizeEnabled, Mode=TwoWay}" />
+                                                <CheckBox
+                                                    Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Content="{x:Bind IconSizeList[4].Value}"
+                                                    IsChecked="{x:Bind Is64SizeEnabled, Mode=TwoWay}" />
 
-                                            <CheckBox
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                Content="{x:Bind IconSizeList[6].Value}"
-                                                IsChecked="{x:Bind Is96SizeEnabled, Mode=TwoWay}" />
+                                                <CheckBox
+                                                    Grid.Row="1"
+                                                    Grid.Column="2"
+                                                    Content="{x:Bind IconSizeList[5].Value}"
+                                                    IsChecked="{x:Bind Is72SizeEnabled, Mode=TwoWay}" />
 
-                                            <CheckBox
-                                                Grid.Row="2"
-                                                Grid.Column="1"
-                                                Content="{x:Bind IconSizeList[7].Value}"
-                                                IsChecked="{x:Bind Is128SizeEnabled, Mode=TwoWay}" />
+                                                <CheckBox
+                                                    Grid.Row="2"
+                                                    Grid.Column="0"
+                                                    Content="{x:Bind IconSizeList[6].Value}"
+                                                    IsChecked="{x:Bind Is96SizeEnabled, Mode=TwoWay}" />
 
-                                            <CheckBox
-                                                Grid.Row="2"
-                                                Grid.Column="2"
-                                                Content="{x:Bind IconSizeList[8].Value}"
-                                                IsChecked="{x:Bind Is256SizeEnabled, Mode=TwoWay}" />
-                                        </Grid>
+                                                <CheckBox
+                                                    Grid.Row="2"
+                                                    Grid.Column="1"
+                                                    Content="{x:Bind IconSizeList[7].Value}"
+                                                    IsChecked="{x:Bind Is128SizeEnabled, Mode=TwoWay}" />
 
-                                        <Grid Visibility="{x:Bind GetSelectedFileAssociatedIconSize(SelectedGetIconType, GetIconTypeList[1]), Mode=OneWay}">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
+                                                <CheckBox
+                                                    Grid.Row="2"
+                                                    Grid.Column="2"
+                                                    Content="{x:Bind IconSizeList[8].Value}"
+                                                    IsChecked="{x:Bind Is256SizeEnabled, Mode=TwoWay}" />
+                                            </Grid>
 
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
+                                            <Grid Visibility="{x:Bind GetSelectedFileAssociatedIconSize(SelectedGetIconType, GetIconTypeList[1]), Mode=OneWay}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
 
-                                            <CheckBox
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Content="{x:Bind IconSizeList[0].Value}"
-                                                IsChecked="{x:Bind Is16SizeEnabled, Mode=TwoWay}" />
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
 
-                                            <CheckBox
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Content="{x:Bind IconSizeList[2].Value}"
-                                                IsChecked="{x:Bind Is32SizeEnabled, Mode=TwoWay}" />
+                                                <CheckBox
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Content="{x:Bind IconSizeList[0].Value}"
+                                                    IsChecked="{x:Bind Is16SizeEnabled, Mode=TwoWay}" />
 
-                                            <CheckBox
-                                                Grid.Row="1"
-                                                Grid.Column="0"
-                                                Content="{x:Bind IconSizeList[3].Value}"
-                                                IsChecked="{x:Bind Is48SizeEnabled, Mode=TwoWay}" />
+                                                <CheckBox
+                                                    Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    Content="{x:Bind IconSizeList[2].Value}"
+                                                    IsChecked="{x:Bind Is32SizeEnabled, Mode=TwoWay}" />
 
-                                            <CheckBox
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Content="{x:Bind IconSizeList[8].Value}"
-                                                IsChecked="{x:Bind Is256SizeEnabled, Mode=TwoWay}" />
+                                                <CheckBox
+                                                    Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Content="{x:Bind IconSizeList[3].Value}"
+                                                    IsChecked="{x:Bind Is48SizeEnabled, Mode=TwoWay}" />
+
+                                                <CheckBox
+                                                    Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Content="{x:Bind IconSizeList[8].Value}"
+                                                    IsChecked="{x:Bind Is256SizeEnabled, Mode=TwoWay}" />
+                                            </Grid>
                                         </Grid>
                                     </Grid>
                                 </Flyout>
