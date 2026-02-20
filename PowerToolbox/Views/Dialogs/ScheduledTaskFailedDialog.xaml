@@ -76,8 +76,15 @@
                     <ToolTipService.ToolTip>
                         <ToolTip
                             MaxWidth="9999"
-                            Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ScheduledTaskName')}"
-                            Visibility="{x:Bind ScheduledTaskNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                            Padding="0"
+                            Background="Transparent"
+                            Visibility="{x:Bind ScheduledTaskNameHeaderText.IsTextTrimmed, Mode=OneWay}">
+
+                            <Grid>
+                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('ScheduledTaskName')}" />
+                            </Grid>
+                        </ToolTip>
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -93,9 +100,15 @@
                     <ToolTipService.ToolTip>
                         <ToolTip
                             MaxWidth="9999"
-                            Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ScheduledTaskPath')}"
-                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                            Visibility="{x:Bind ScheduledTaskPathHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                            Padding="0"
+                            Background="Transparent"
+                            Visibility="{x:Bind ScheduledTaskPathHeaderText.IsTextTrimmed, Mode=OneWay}">
+
+                            <Grid>
+                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('ScheduledTaskPath')}" />
+                            </Grid>
+                        </ToolTip>
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -111,9 +124,15 @@
                     <ToolTipService.ToolTip>
                         <ToolTip
                             MaxWidth="9999"
-                            Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ErrorMessage')}"
-                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                            Visibility="{x:Bind ErrorMessageHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                            Padding="0"
+                            Background="Transparent"
+                            Visibility="{x:Bind ErrorMessageHeaderText.IsTextTrimmed, Mode=OneWay}">
+
+                            <Grid>
+                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('ErrorMessage')}" />
+                            </Grid>
+                        </ToolTip>
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -129,9 +148,15 @@
                     <ToolTipService.ToolTip>
                         <ToolTip
                             MaxWidth="9999"
-                            Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ErrorCode')}"
-                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                            Visibility="{x:Bind ErrorCodeHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                            Padding="0"
+                            Background="Transparent"
+                            Visibility="{x:Bind ErrorCodeHeaderText.IsTextTrimmed, Mode=OneWay}">
+
+                            <Grid>
+                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('ErrorCode')}" />
+                            </Grid>
+                        </ToolTip>
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -168,9 +193,15 @@
                         <ToolTipService.ToolTip>
                             <ToolTip
                                 MaxWidth="9999"
-                                Content="{x:Bind Name}"
-                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                Visibility="{Binding ElementName=ScheduledTaskNameText, Path=IsTextTrimmed}" />
+                                Padding="0"
+                                Background="Transparent"
+                                Visibility="{Binding ElementName=ScheduledTaskNameText, Path=IsTextTrimmed}">
+
+                                <Grid>
+                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Name}" />
+                                </Grid>
+                            </ToolTip>
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
@@ -189,9 +220,15 @@
                         <ToolTipService.ToolTip>
                             <ToolTip
                                 MaxWidth="9999"
-                                Content="{x:Bind Path}"
-                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                Visibility="{Binding ElementName=ScheduledTaskPathText, Path=IsTextTrimmed}" />
+                                Padding="0"
+                                Background="Transparent"
+                                Visibility="{Binding ElementName=ScheduledTaskPathText, Path=IsTextTrimmed}">
+
+                                <Grid>
+                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Path}" />
+                                </Grid>
+                            </ToolTip>
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
@@ -210,9 +247,15 @@
                         <ToolTipService.ToolTip>
                             <ToolTip
                                 MaxWidth="9999"
-                                Content="{x:Bind Exception.Message}"
-                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                Visibility="{Binding ElementName=MessageText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                Padding="0"
+                                Background="Transparent"
+                                Visibility="{Binding ElementName=ErrorMessageText, Path=IsTextTrimmed}">
+
+                                <Grid>
+                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Exception.Message}" />
+                                </Grid>
+                            </ToolTip>
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
@@ -231,9 +274,15 @@
                         <ToolTipService.ToolTip>
                             <ToolTip
                                 MaxWidth="9999"
-                                Content="{x:Bind system:Convert.ToString(Exception.HResult)}"
-                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                Visibility="{Binding ElementName=HResultText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                Padding="0"
+                                Background="Transparent"
+                                Visibility="{Binding ElementName=ErrorCodeText, Path=IsTextTrimmed}">
+
+                                <Grid>
+                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind system:Convert.ToString(Exception.HResult)}" />
+                                </Grid>
+                            </ToolTip>
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
