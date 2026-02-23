@@ -129,8 +129,14 @@
                         <ToolTipService.ToolTip>
                             <ToolTip
                                 MaxWidth="9999"
-                                Content="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('Close')}"
-                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                Padding="0"
+                                Background="Transparent">
+
+                                <Grid>
+                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('Close')}" />
+                                </Grid>
+                            </ToolTip>
                         </ToolTipService.ToolTip>
                     </Button>
                 </Grid>
@@ -272,9 +278,15 @@
                                         <ToolTipService.ToolTip>
                                             <ToolTip
                                                 MaxWidth="9999"
-                                                Content="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('OriginalName')}"
-                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                Visibility="{Binding ElementName=OriginalNameHeaderText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                Padding="0"
+                                                Background="Transparent"
+                                                Visibility="{Binding ElementName=OriginalNameHeaderText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('OriginalName')}" />
+                                                </Grid>
+                                            </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
 
@@ -290,9 +302,15 @@
                                         <ToolTipService.ToolTip>
                                             <ToolTip
                                                 MaxWidth="9999"
-                                                Content="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('ChangedName')}"
-                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                Visibility="{Binding ElementName=ChangedNameHeaderText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                Padding="0"
+                                                Background="Transparent"
+                                                Visibility="{Binding ElementName=ChangedNameHeaderText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('ChangedName')}" />
+                                                </Grid>
+                                            </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
                                 </Grid>
@@ -326,9 +344,15 @@
                                             <ToolTipService.ToolTip>
                                                 <ToolTip
                                                     MaxWidth="9999"
-                                                    Content="{x:Bind OriginalFileName}"
-                                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                    Visibility="{Binding ElementName=OriginalFileNameText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                    Padding="0"
+                                                    Background="Transparent"
+                                                    Visibility="{Binding ElementName=OriginalFileNameText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                    <Grid>
+                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind OriginalFileName}" />
+                                                    </Grid>
+                                                </ToolTip>
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
 
@@ -347,9 +371,15 @@
                                             <ToolTipService.ToolTip>
                                                 <ToolTip
                                                     MaxWidth="9999"
-                                                    Content="{x:Bind OriginalFileName}"
-                                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                    Visibility="{Binding ElementName=NewFileNameText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                    Padding="0"
+                                                    Background="Transparent"
+                                                    Visibility="{Binding ElementName=NewFileNameText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                    <Grid>
+                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind NewFileName, Mode=OneWay}" />
+                                                    </Grid>
+                                                </ToolTip>
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
                                     </Grid>
@@ -377,8 +407,14 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('ForwardNavigate')}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                        Padding="0"
+                                        Background="Transparent">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('ForwardNavigate')}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </Button>
 
@@ -396,8 +432,14 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('NextNavigate')}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                        Padding="0"
+                                        Background="Transparent">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('NextNavigate')}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </Button>
                         </StackPanel>

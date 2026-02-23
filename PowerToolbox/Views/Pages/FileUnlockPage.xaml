@@ -89,9 +89,15 @@
                     <ToolTipService.ToolTip>
                         <ToolTip
                             MaxWidth="9999"
-                            Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderName')}"
-                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                            Visibility="{x:Bind FileFolderNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                            Padding="0"
+                            Background="Transparent"
+                            Visibility="{x:Bind FileFolderNameHeaderText.IsTextTrimmed, Mode=OneWay}">
+
+                            <Grid>
+                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderName')}" />
+                            </Grid>
+                        </ToolTip>
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -108,9 +114,15 @@
                     <ToolTipService.ToolTip>
                         <ToolTip
                             MaxWidth="9999"
-                            Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderType')}"
-                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                            Visibility="{x:Bind FileFolderTypeHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                            Padding="0"
+                            Background="Transparent"
+                            Visibility="{x:Bind FileFolderTypeHeaderText.IsTextTrimmed, Mode=OneWay}">
+
+                            <Grid>
+                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderType')}" />
+                            </Grid>
+                        </ToolTip>
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -125,14 +137,20 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
-                            <ToolTip.Content>
-                                <StackPanel>
+                        <ToolTip
+                            MaxWidth="9999"
+                            Padding="0"
+                            Background="Transparent">
+
+                            <Grid>
+                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                <StackPanel Padding="{StaticResource ToolTipBorderPadding}">
                                     <TextBlock Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderAmount')}" />
                                     <TextBlock Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileAmount')}" />
                                     <TextBlock Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FolderAmount')}" />
                                 </StackPanel>
-                            </ToolTip.Content>
+                            </Grid>
                         </ToolTip>
                     </ToolTipService.ToolTip>
                 </TextBlock>
@@ -150,9 +168,15 @@
                     <ToolTipService.ToolTip>
                         <ToolTip
                             MaxWidth="9999"
-                            Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderStatus')}"
-                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                            Visibility="{x:Bind FileFolderStatusHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                            Padding="0"
+                            Background="Transparent"
+                            Visibility="{x:Bind FileFolderStatusHeaderText.IsTextTrimmed, Mode=OneWay}">
+
+                            <Grid>
+                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderStatus')}" />
+                            </Grid>
+                        </ToolTip>
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -209,10 +233,16 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind FileFolderPath, Mode=OneWay}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Padding="0"
+                                        Background="Transparent"
                                         Placement="Mouse"
-                                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(FileFolderPath), Mode=OneWay}" />
+                                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(FileFolderPath), Mode=OneWay}">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind FileFolderPath, Mode=OneWay}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
@@ -232,10 +262,16 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind FileFolderType}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Padding="0"
+                                        Background="Transparent"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=FileFolderTypeText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=FileFolderTypeText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind FileFolderType}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
@@ -255,10 +291,16 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind FileFolderAmount}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Padding="0"
+                                        Background="Transparent"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=FileFolderAmountText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=FileFolderAmountText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind FileFolderAmount}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
@@ -279,10 +321,16 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderNotStarted')}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Padding="0"
+                                        Background="Transparent"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=FileFolderNotStartedText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=FileFolderNotStartedText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderNotStarted')}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
@@ -320,14 +368,20 @@
                                     <ToolTipService.ToolTip>
                                         <ToolTip
                                             MaxWidth="9999"
-                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                            Padding="0"
+                                            Background="Transparent"
                                             Placement="Mouse">
-                                            <TextBlock>
-                                                <Run Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderProcessing')}" />
-                                                <Run Text="{x:Bind sys:Convert.ToString(FileUnlockFinishedCount), Mode=OneWay}" />
-                                                <Run Text="/" />
-                                                <Run Text="{x:Bind sys:Convert.ToString(SubFileList.Count)}" />
-                                            </TextBlock>
+
+                                            <Grid>
+                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}">
+                                                    <Run Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderProcessing')}" />
+                                                    <Run Text="{x:Bind sys:Convert.ToString(FileUnlockFinishedCount), Mode=OneWay}" />
+                                                    <Run Text="/" />
+                                                    <Run Text="{x:Bind sys:Convert.ToString(SubFileList.Count)}" />
+                                                </TextBlock>
+                                            </Grid>
                                         </ToolTip>
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
@@ -350,10 +404,16 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderCancelled')}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Padding="0"
+                                        Background="Transparent"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=FileFolderCancelledText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=FileFolderCancelledText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderCancelled')}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
@@ -374,10 +434,16 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderFailed')}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Padding="0"
+                                        Background="Transparent"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=FileFolderFailedText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=FileFolderFailedText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderFailed')}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
@@ -398,10 +464,16 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderSuccessfully')}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
+                                        Padding="0"
+                                        Background="Transparent"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=FileFolderSuccessfullyText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=FileFolderSuccessfullyText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderSuccessfully')}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
@@ -431,8 +503,15 @@
                                     <ToolTipService.ToolTip>
                                         <ToolTip
                                             MaxWidth="9999"
-                                            Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('Delete')}"
-                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                            Padding="0"
+                                            Background="Transparent"
+                                            Placement="Mouse">
+
+                                            <Grid>
+                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('Delete')}" />
+                                            </Grid>
+                                        </ToolTip>
                                     </ToolTipService.ToolTip>
                                 </Button>
                             </StackPanel>

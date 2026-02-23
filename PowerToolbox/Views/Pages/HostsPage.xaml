@@ -406,8 +406,14 @@
                 <ToolTipService.ToolTip>
                     <ToolTip
                         MaxWidth="9999"
-                        Content="{x:Bind rootservice:ResourceService.HostsResource.GetString('ViewMore')}"
-                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                        Padding="0"
+                        Background="Transparent">
+
+                        <Grid>
+                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('ViewMore')}" />
+                        </Grid>
+                    </ToolTip>
                 </ToolTipService.ToolTip>
             </Button>
         </Grid>
@@ -515,28 +521,36 @@
                             </TextBlock>
 
                             <ToolTipService.ToolTip>
-                                <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
-                                    <StackPanel>
-                                        <TextBlock>
-                                            <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('AddressName')}" />
-                                            <Run Text="{x:Bind Address}" />
-                                        </TextBlock>
+                                <ToolTip
+                                    MaxWidth="9999"
+                                    Padding="0"
+                                    Background="Transparent">
 
-                                        <TextBlock>
-                                            <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('HostsName')}" />
-                                            <Run Text="{x:Bind Hosts}" />
-                                        </TextBlock>
+                                    <Grid>
+                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
 
-                                        <TextBlock>
-                                            <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('AnnotationName')}" />
-                                            <Run Text="{x:Bind Annotation}" />
-                                        </TextBlock>
+                                        <StackPanel Padding="{StaticResource ToolTipBorderPadding}">
+                                            <TextBlock>
+                                                <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('AddressName')}" />
+                                                <Run Text="{x:Bind Address}" />
+                                            </TextBlock>
 
-                                        <TextBlock>
-                                            <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('IsAvailableName')}" />
-                                            <Run Text="{x:Bind IsAvailableString}" />
-                                        </TextBlock>
-                                    </StackPanel>
+                                            <TextBlock>
+                                                <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('HostsName')}" />
+                                                <Run Text="{x:Bind Hosts}" />
+                                            </TextBlock>
+
+                                            <TextBlock>
+                                                <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('AnnotationName')}" />
+                                                <Run Text="{x:Bind Annotation}" />
+                                            </TextBlock>
+
+                                            <TextBlock>
+                                                <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('IsAvailableName')}" />
+                                                <Run Text="{x:Bind IsAvailableString}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
                                 </ToolTip>
                             </ToolTipService.ToolTip>
                         </StackPanel>
@@ -587,8 +601,14 @@
                             <ToolTipService.ToolTip>
                                 <ToolTip
                                     MaxWidth="9999"
-                                    Content="{x:Bind rootservice:ResourceService.HostsResource.GetString('ViewMore')}"
-                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                    Padding="0"
+                                    Background="Transparent">
+
+                                    <Grid>
+                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('ViewMore')}" />
+                                    </Grid>
+                                </ToolTip>
                             </ToolTipService.ToolTip>
                         </Button>
                     </Grid>

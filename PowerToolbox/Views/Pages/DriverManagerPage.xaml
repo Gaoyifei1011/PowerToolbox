@@ -300,8 +300,14 @@
                         <ToolTipService.ToolTip>
                             <ToolTip
                                 MaxWidth="9999"
-                                Content="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ViewMore')}"
-                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                Padding="0"
+                                Background="Transparent">
+
+                                <Grid>
+                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ViewMore')}" />
+                                </Grid>
+                            </ToolTip>
                         </ToolTipService.ToolTip>
                     </Button>
                 </Grid>
@@ -423,10 +429,18 @@
                                             IsChecked="{x:Bind IsSelected, Mode=TwoWay}">
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
+                                                <ToolTip
+                                                    MaxWidth="9999"
+                                                    Padding="0"
+                                                    Background="Transparent">
+
                                                     <Grid>
-                                                        <TextBlock Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                        <TextBlock Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
+                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                                        <Grid Padding="{StaticResource ToolTipBorderPadding}">
+                                                            <TextBlock Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
+                                                            <TextBlock Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
+                                                        </Grid>
                                                     </Grid>
                                                 </ToolTip>
                                             </ToolTipService.ToolTip>
@@ -450,9 +464,15 @@
                                                 <ToolTipService.ToolTip>
                                                     <ToolTip
                                                         MaxWidth="9999"
-                                                        Content="{x:Bind DeviceName}"
-                                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                        Visibility="{Binding ElementName=DeviceNameText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                        Padding="0"
+                                                        Background="Transparent"
+                                                        Visibility="{Binding ElementName=DeviceNameText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                        <Grid>
+                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind DeviceName}" />
+                                                        </Grid>
+                                                    </ToolTip>
                                                 </ToolTipService.ToolTip>
                                             </TextBlock>
 
@@ -469,9 +489,15 @@
                                                 <ToolTipService.ToolTip>
                                                     <ToolTip
                                                         MaxWidth="9999"
-                                                        Content="{x:Bind DriverManufacturer}"
-                                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                        Visibility="{Binding ElementName=DriverManufacturerText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                        Padding="0"
+                                                        Background="Transparent"
+                                                        Visibility="{Binding ElementName=DriverManufacturerText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                        <Grid>
+                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind DriverManufacturer}" />
+                                                        </Grid>
+                                                    </ToolTip>
                                                 </ToolTipService.ToolTip>
                                             </TextBlock>
                                         </StackPanel>
@@ -536,8 +562,14 @@
                                             <ToolTipService.ToolTip>
                                                 <ToolTip
                                                     MaxWidth="9999"
-                                                    Content="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ViewMore')}"
-                                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                    Padding="0"
+                                                    Background="Transparent">
+
+                                                    <Grid>
+                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ViewMore')}" />
+                                                    </Grid>
+                                                </ToolTip>
                                             </ToolTipService.ToolTip>
                                         </Button>
                                     </Grid>
@@ -744,8 +776,14 @@
                             <ToolTipService.ToolTip>
                                 <ToolTip
                                     MaxWidth="9999"
-                                    Content="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Close')}"
-                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                    Padding="0"
+                                    Background="Transparent">
+
+                                    <Grid>
+                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Close')}" />
+                                    </Grid>
+                                </ToolTip>
                             </ToolTipService.ToolTip>
                         </Button>
                     </Grid>
@@ -875,8 +913,14 @@
                             <ToolTipService.ToolTip>
                                 <ToolTip
                                     MaxWidth="9999"
-                                    Content="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ClearDriverOperationTask')}"
-                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                    Padding="0"
+                                    Background="Transparent">
+
+                                    <Grid>
+                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ClearDriverOperationTask')}" />
+                                    </Grid>
+                                </ToolTip>
                             </ToolTipService.ToolTip>
                         </Button>
 
@@ -897,8 +941,14 @@
                             <ToolTipService.ToolTip>
                                 <ToolTip
                                     MaxWidth="9999"
-                                    Content="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Close')}"
-                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                    Padding="0"
+                                    Background="Transparent">
+
+                                    <Grid>
+                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Close')}" />
+                                    </Grid>
+                                </ToolTip>
                             </ToolTipService.ToolTip>
                         </Button>
                     </Grid>
@@ -977,9 +1027,15 @@
                                             <ToolTipService.ToolTip>
                                                 <ToolTip
                                                     MaxWidth="9999"
-                                                    Content="{x:Bind DriverInfName}"
-                                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                    Visibility="{Binding ElementName=DriverInfNameText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                    Padding="0"
+                                                    Background="Transparent"
+                                                    Visibility="{Binding ElementName=DriverInfNameText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                    <Grid>
+                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind DriverInfName}" />
+                                                    </Grid>
+                                                </ToolTip>
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
 
@@ -997,9 +1053,15 @@
                                             <ToolTipService.ToolTip>
                                                 <ToolTip
                                                     MaxWidth="9999"
-                                                    Content="{x:Bind DriverOperation, Mode=OneWay}"
-                                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                    Visibility="{Binding ElementName=DriverOperationText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                    Padding="0"
+                                                    Background="Transparent"
+                                                    Visibility="{Binding ElementName=DriverOperationText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                    <Grid>
+                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind DriverOperation, Mode=OneWay}" />
+                                                    </Grid>
+                                                </ToolTip>
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
                                     </Grid>
@@ -1034,8 +1096,14 @@
                                         <ToolTipService.ToolTip>
                                             <ToolTip
                                                 MaxWidth="9999"
-                                                Content="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('RemoveTask')}"
-                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('RemoveTask')}" />
+                                                </Grid>
+                                            </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </Button>
                                 </Grid>

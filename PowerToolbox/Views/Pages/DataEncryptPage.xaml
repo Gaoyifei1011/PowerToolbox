@@ -107,9 +107,15 @@
                         <ToolTipService.ToolTip>
                             <ToolTip
                                 MaxWidth="9999"
-                                Content="{x:Bind EncryptFile, Mode=OneWay}"
-                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                Visibility="{x:Bind EncryptFileText.IsTextTrimmed, Mode=OneWay}" />
+                                Padding="0"
+                                Background="Transparent"
+                                Visibility="{x:Bind EncryptFileText.IsTextTrimmed, Mode=OneWay}">
+
+                                <Grid>
+                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind EncryptFile, Mode=OneWay}" />
+                                </Grid>
+                            </ToolTip>
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -231,9 +237,14 @@
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
                                                                 MaxWidth="9999"
-                                                                Background="Transparent"
-                                                                Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('CopyErrorInformation')}"
-                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                                Padding="0"
+                                                                Background="Transparent">
+
+                                                                <Grid>
+                                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('CopyErrorInformation')}" />
+                                                                </Grid>
+                                                            </ToolTip>
                                                         </ToolTipService.ToolTip>
                                                     </Button>
 
@@ -256,9 +267,14 @@
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
                                                                 MaxWidth="9999"
-                                                                Background="Transparent"
-                                                                Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('CloseFlyout')}"
-                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                                Padding="0"
+                                                                Background="Transparent">
+
+                                                                <Grid>
+                                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('CloseFlyout')}" />
+                                                                </Grid>
+                                                            </ToolTip>
                                                         </ToolTipService.ToolTip>
                                                     </Button>
                                                 </Grid>
@@ -283,9 +299,14 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Background="Transparent"
-                                        Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('ViewErrorInformation')}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                        Padding="0"
+                                        Background="Transparent">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('ViewErrorInformation')}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </Button>
                         </Grid>
@@ -445,8 +466,14 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind system:String.Format(StringLengthString, EncryptKeyText.Length), Mode=OneWay}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                        Padding="0"
+                                        Background="Transparent">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind system:String.Format(StringLengthString, EncryptKeyText.Length), Mode=OneWay}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </TextBox>
 
@@ -471,9 +498,14 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Background="Transparent"
-                                        Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('GenerateRandomKey')}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                        Padding="0"
+                                        Background="Transparent">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('GenerateRandomKey')}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </Button>
                         </Grid>
@@ -545,8 +577,14 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind system:String.Format(StringLengthString, InitializationVectorText.Length), Mode=OneWay}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                        Padding="0"
+                                        Background="Transparent">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind system:String.Format(StringLengthString, InitializationVectorText.Length), Mode=OneWay}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </TextBox>
 
@@ -570,9 +608,14 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Background="Transparent"
-                                        Content="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('GenerateInitializationVector')}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                        Padding="0"
+                                        Background="Transparent">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('GenerateInitializationVector')}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </Button>
                         </Grid>
@@ -776,8 +819,14 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind system:String.Format(StringLengthString, EncryptPublicKeyText.Length), Mode=OneWay}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                        Padding="0"
+                                        Background="Transparent">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind system:String.Format(StringLengthString, EncryptPublicKeyText.Length), Mode=OneWay}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </TextBox>
                         </Grid>
@@ -816,8 +865,14 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind system:String.Format(StringLengthString, EncryptPrivateKeyText.Length), Mode=OneWay}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                        Padding="0"
+                                        Background="Transparent">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind system:String.Format(StringLengthString, EncryptPrivateKeyText.Length), Mode=OneWay}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </TextBox>
                         </Grid>
@@ -1211,15 +1266,19 @@
                                     <ToolTipService.ToolTip>
                                         <ToolTip
                                             MaxWidth="9999"
-                                            Background="Transparent"
-                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
+                                            Padding="0"
+                                            Background="Transparent">
 
-                                            <StackPanel HorizontalAlignment="Stretch">
-                                                <TextBlock Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('FileStoragePath')}" />
-                                                <TextBlock Text="{x:Bind SaveEncryptedFilePath, Mode=OneWay}" />
-                                                <MenuFlyoutSeparator Margin="4,3" />
-                                                <TextBlock Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('OpenFolder')}" />
-                                            </StackPanel>
+                                            <Grid>
+                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                                <StackPanel Padding="{StaticResource ToolTipBorderPadding}" HorizontalAlignment="Stretch">
+                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('FileStoragePath')}" />
+                                                    <TextBlock Text="{x:Bind SaveEncryptedFilePath, Mode=OneWay}" />
+                                                    <MenuFlyoutSeparator Margin="4,3" />
+                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('OpenFolder')}" />
+                                                </StackPanel>
+                                            </Grid>
                                         </ToolTip>
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
