@@ -355,8 +355,14 @@
                                 <ToolTipService.ToolTip>
                                     <ToolTip
                                         MaxWidth="9999"
-                                        Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SaveToolTip')}"
-                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                        Padding="0"
+                                        Background="Transparent">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SaveToolTip')}" />
+                                        </Grid>
+                                    </ToolTip>
                                 </ToolTipService.ToolTip>
                             </SplitButton>
                         </Grid>
@@ -578,8 +584,14 @@
                                                                 <ToolTipService.ToolTip>
                                                                     <ToolTip
                                                                         MaxWidth="9999"
-                                                                        Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('CloseFlyout')}"
-                                                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                                        Padding="0"
+                                                                        Background="Transparent">
+
+                                                                        <Grid>
+                                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('CloseFlyout')}" />
+                                                                        </Grid>
+                                                                    </ToolTip>
                                                                 </ToolTipService.ToolTip>
                                                             </Button>
                                                         </Grid>
@@ -796,8 +808,14 @@
                                                                 <ToolTipService.ToolTip>
                                                                     <ToolTip
                                                                         MaxWidth="9999"
-                                                                        Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('CloseFlyout')}"
-                                                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                                        Padding="0"
+                                                                        Background="Transparent">
+
+                                                                        <Grid>
+                                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('CloseFlyout')}" />
+                                                                        </Grid>
+                                                                    </ToolTip>
                                                                 </ToolTipService.ToolTip>
                                                             </Button>
                                                         </Grid>
@@ -988,8 +1006,14 @@
                                         <ToolTipService.ToolTip>
                                             <ToolTip
                                                 MaxWidth="9999"
-                                                Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('LocatePosition')}"
-                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('LocatePosition')}" />
+                                                </Grid>
+                                            </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </Button>
                                 </Grid>

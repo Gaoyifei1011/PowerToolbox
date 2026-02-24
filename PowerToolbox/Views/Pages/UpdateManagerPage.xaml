@@ -104,8 +104,14 @@
                             <ToolTipService.ToolTip>
                                 <ToolTip
                                     MaxWidth="9999"
-                                    Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('WIPSettingsToolTip')}"
-                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                    Padding="0"
+                                    Background="Transparent">
+
+                                    <Grid>
+                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('WIPSettingsToolTip')}" />
+                                    </Grid>
+                                </ToolTip>
                             </ToolTipService.ToolTip>
                         </MenuFlyoutItem>
 
@@ -149,8 +155,14 @@
                 <ToolTipService.ToolTip>
                     <ToolTip
                         MaxWidth="9999"
-                        Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMore')}"
-                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                        Padding="0"
+                        Background="Transparent">
+
+                        <Grid>
+                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMore')}" />
+                        </Grid>
+                    </ToolTip>
                 </ToolTipService.ToolTip>
             </Button>
         </StackPanel>
@@ -246,8 +258,14 @@
                                     <ToolTipService.ToolTip>
                                         <ToolTip
                                             MaxWidth="9999"
-                                            Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('InstallSelectedUpdate')}"
-                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                            Padding="0"
+                                            Background="Transparent">
+
+                                            <Grid>
+                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('InstallSelectedUpdate')}" />
+                                            </Grid>
+                                        </ToolTip>
                                     </ToolTipService.ToolTip>
                                 </AppBarButton>
                             </CommandBar.PrimaryCommands>
@@ -286,8 +304,14 @@
                                         <ToolTipService.ToolTip>
                                             <ToolTip
                                                 MaxWidth="9999"
-                                                Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('HideSelectedUpdate')}"
-                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('HideSelectedUpdate')}" />
+                                                </Grid>
+                                            </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </MenuFlyoutItem>
 
@@ -303,8 +327,14 @@
                                         <ToolTipService.ToolTip>
                                             <ToolTip
                                                 MaxWidth="9999"
-                                                Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('CancelInstallSelectedUpdate')}"
-                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('CancelInstallSelectedUpdate')}" />
+                                                </Grid>
+                                            </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </MenuFlyoutItem>
                                 </MenuFlyout>
@@ -313,8 +343,14 @@
                             <ToolTipService.ToolTip>
                                 <ToolTip
                                     MaxWidth="9999"
-                                    Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMore')}"
-                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                    Padding="0"
+                                    Background="Transparent">
+
+                                    <Grid>
+                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMore')}" />
+                                    </Grid>
+                                </ToolTip>
                             </ToolTipService.ToolTip>
                         </Button>
                     </Grid>
@@ -391,10 +427,18 @@
                                                     IsChecked="{x:Bind IsSelected, Mode=OneWay}">
 
                                                     <ToolTipService.ToolTip>
-                                                        <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
+                                                        <ToolTip
+                                                            MaxWidth="9999"
+                                                            Padding="0"
+                                                            Background="Transparent">
+
                                                             <Grid>
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
+                                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                                                <Grid Padding="{StaticResource ToolTipBorderPadding}">
+                                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
+                                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
+                                                                </Grid>
                                                             </Grid>
                                                         </ToolTip>
                                                     </ToolTipService.ToolTip>
@@ -419,9 +463,15 @@
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
                                                                 MaxWidth="9999"
-                                                                Content="{x:Bind Title}"
-                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                                Visibility="{Binding ElementName=TitleText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                                Padding="0"
+                                                                Background="Transparent"
+                                                                Visibility="{Binding ElementName=TitleText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                                <Grid>
+                                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Title}" />
+                                                                </Grid>
+                                                            </ToolTip>
                                                         </ToolTipService.ToolTip>
                                                     </TextBlock>
 
@@ -438,9 +488,15 @@
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
                                                                 MaxWidth="9999"
-                                                                Content="{x:Bind UpdateProgress, Mode=OneWay}"
-                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                                Visibility="{Binding ElementName=UpdateProgressText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                                Padding="0"
+                                                                Background="Transparent"
+                                                                Visibility="{Binding ElementName=UpdateProgressText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                                <Grid>
+                                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind UpdateProgress, Mode=OneWay}" />
+                                                                </Grid>
+                                                            </ToolTip>
                                                         </ToolTipService.ToolTip>
                                                     </TextBlock>
                                                 </StackPanel>
@@ -477,8 +533,14 @@
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
                                                                 MaxWidth="9999"
-                                                                Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('InstallCurrentUpdate')}"
-                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                                Padding="0"
+                                                                Background="Transparent">
+
+                                                                <Grid>
+                                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('InstallCurrentUpdate')}" />
+                                                                </Grid>
+                                                            </ToolTip>
                                                         </ToolTipService.ToolTip>
                                                     </Button>
 
@@ -496,8 +558,14 @@
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
                                                                 MaxWidth="9999"
-                                                                Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('CancelInstallCurrentUpdate')}"
-                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                                Padding="0"
+                                                                Background="Transparent">
+
+                                                                <Grid>
+                                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('CancelInstallCurrentUpdate')}" />
+                                                                </Grid>
+                                                            </ToolTip>
                                                         </ToolTipService.ToolTip>
                                                     </Button>
 
@@ -566,8 +634,14 @@
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
                                                                 MaxWidth="9999"
-                                                                Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMore')}"
-                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                                Padding="0"
+                                                                Background="Transparent">
+
+                                                                <Grid>
+                                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMore')}" />
+                                                                </Grid>
+                                                            </ToolTip>
                                                         </ToolTipService.ToolTip>
                                                     </Button>
                                                 </StackPanel>
@@ -1384,8 +1458,14 @@
                                     <ToolTipService.ToolTip>
                                         <ToolTip
                                             MaxWidth="9999"
-                                            Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UninstallSelectedUpdate')}"
-                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                            Padding="0"
+                                            Background="Transparent">
+
+                                            <Grid>
+                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UninstallSelectedUpdate')}" />
+                                            </Grid>
+                                        </ToolTip>
                                     </ToolTipService.ToolTip>
                                 </AppBarButton>
                             </CommandBar.PrimaryCommands>
@@ -1424,8 +1504,14 @@
                                         <ToolTipService.ToolTip>
                                             <ToolTip
                                                 MaxWidth="9999"
-                                                Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('CancelUninstallSelectedUpdate')}"
-                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('CancelUninstallSelectedUpdate')}" />
+                                                </Grid>
+                                            </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </MenuFlyoutItem>
                                 </MenuFlyout>
@@ -1434,8 +1520,14 @@
                             <ToolTipService.ToolTip>
                                 <ToolTip
                                     MaxWidth="9999"
-                                    Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMore')}"
-                                    Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                    Padding="0"
+                                    Background="Transparent">
+
+                                    <Grid>
+                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMore')}" />
+                                    </Grid>
+                                </ToolTip>
                             </ToolTipService.ToolTip>
                         </Button>
                     </Grid>
@@ -1511,10 +1603,18 @@
                                                     IsChecked="{x:Bind IsSelected, Mode=OneWay}">
 
                                                     <ToolTipService.ToolTip>
-                                                        <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
+                                                        <ToolTip
+                                                            MaxWidth="9999"
+                                                            Padding="0"
+                                                            Background="Transparent">
+
                                                             <Grid>
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
+                                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                                                <Grid Padding="{StaticResource ToolTipBorderPadding}">
+                                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
+                                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
+                                                                </Grid>
                                                             </Grid>
                                                         </ToolTip>
                                                     </ToolTipService.ToolTip>
@@ -1537,9 +1637,15 @@
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
                                                                 MaxWidth="9999"
-                                                                Content="{x:Bind Title}"
-                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                                Visibility="{Binding ElementName=TitleText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                                Padding="0"
+                                                                Background="Transparent"
+                                                                Visibility="{Binding ElementName=TitleText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                                <Grid>
+                                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Title}" />
+                                                                </Grid>
+                                                            </ToolTip>
                                                         </ToolTipService.ToolTip>
                                                     </TextBlock>
 
@@ -1556,9 +1662,15 @@
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
                                                                 MaxWidth="9999"
-                                                                Content="{x:Bind UpdateProgress, Mode=OneWay}"
-                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                                Visibility="{Binding ElementName=UpdateProgressText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                                Padding="0"
+                                                                Background="Transparent"
+                                                                Visibility="{Binding ElementName=UpdateProgressText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                                <Grid>
+                                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind UpdateProgress, Mode=OneWay}" />
+                                                                </Grid>
+                                                            </ToolTip>
                                                         </ToolTipService.ToolTip>
                                                     </TextBlock>
                                                 </StackPanel>
@@ -1588,8 +1700,14 @@
                                                                 <ToolTipService.ToolTip>
                                                                     <ToolTip
                                                                         MaxWidth="9999"
-                                                                        Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UninstallCurrentUpdate')}"
-                                                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                                        Padding="0"
+                                                                        Background="Transparent">
+
+                                                                        <Grid>
+                                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UninstallCurrentUpdate')}" />
+                                                                        </Grid>
+                                                                    </ToolTip>
                                                                 </ToolTipService.ToolTip>
                                                             </Button>
 
@@ -1607,8 +1725,14 @@
                                                                 <ToolTipService.ToolTip>
                                                                     <ToolTip
                                                                         MaxWidth="9999"
-                                                                        Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('CancelUninstallCurrentUpdate')}"
-                                                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                                        Padding="0"
+                                                                        Background="Transparent">
+
+                                                                        <Grid>
+                                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('CancelUninstallCurrentUpdate')}" />
+                                                                        </Grid>
+                                                                    </ToolTip>
                                                                 </ToolTipService.ToolTip>
                                                             </Button>
                                                         </Grid>
@@ -1678,8 +1802,14 @@
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
                                                                 MaxWidth="9999"
-                                                                Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMoreOptions')}"
-                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                                Padding="0"
+                                                                Background="Transparent">
+
+                                                                <Grid>
+                                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMore')}" />
+                                                                </Grid>
+                                                            </ToolTip>
                                                         </ToolTipService.ToolTip>
                                                     </Button>
                                                 </StackPanel>
@@ -2526,8 +2656,14 @@
                                     <ToolTipService.ToolTip>
                                         <ToolTip
                                             MaxWidth="9999"
-                                            Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ShowSelectedUpdate')}"
-                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                            Padding="0"
+                                            Background="Transparent">
+
+                                            <Grid>
+                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ShowSelectedUpdate')}" />
+                                            </Grid>
+                                        </ToolTip>
                                     </ToolTipService.ToolTip>
                                 </AppBarButton>
                             </CommandBar.PrimaryCommands>
@@ -2605,10 +2741,18 @@
                                                     IsChecked="{x:Bind IsSelected, Mode=OneWay}">
 
                                                     <ToolTipService.ToolTip>
-                                                        <ToolTip MaxWidth="9999" Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}">
+                                                        <ToolTip
+                                                            MaxWidth="9999"
+                                                            Padding="0"
+                                                            Background="Transparent">
+
                                                             <Grid>
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
+                                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                                                <Grid Padding="{StaticResource ToolTipBorderPadding}">
+                                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
+                                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
+                                                                </Grid>
                                                             </Grid>
                                                         </ToolTip>
                                                     </ToolTipService.ToolTip>
@@ -2628,9 +2772,15 @@
                                                     <ToolTipService.ToolTip>
                                                         <ToolTip
                                                             MaxWidth="9999"
-                                                            Content="{x:Bind Title}"
-                                                            Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                            Visibility="{Binding ElementName=TitleText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                            Padding="0"
+                                                            Background="Transparent"
+                                                            Visibility="{Binding ElementName=TitleText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                            <Grid>
+                                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Title}" />
+                                                            </Grid>
+                                                        </ToolTip>
                                                     </ToolTipService.ToolTip>
                                                 </TextBlock>
 
@@ -2655,8 +2805,14 @@
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
                                                                 MaxWidth="9999"
-                                                                Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ShowCurrentUpdate')}"
-                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                                Padding="0"
+                                                                Background="Transparent">
+
+                                                                <Grid>
+                                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ShowCurrentUpdate')}" />
+                                                                </Grid>
+                                                            </ToolTip>
                                                         </ToolTipService.ToolTip>
                                                     </Button>
 
@@ -2702,8 +2858,14 @@
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
                                                                 MaxWidth="9999"
-                                                                Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMoreOptions')}"
-                                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                                Padding="0"
+                                                                Background="Transparent">
+
+                                                                <Grid>
+                                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMore')}" />
+                                                                </Grid>
+                                                            </ToolTip>
                                                         </ToolTipService.ToolTip>
                                                     </Button>
                                                 </StackPanel>
@@ -3559,9 +3721,15 @@
                                                 <ToolTipService.ToolTip>
                                                     <ToolTip
                                                         MaxWidth="9999"
-                                                        Content="{x:Bind Title}"
-                                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                        Visibility="{Binding ElementName=TitleText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                        Padding="0"
+                                                        Background="Transparent"
+                                                        Visibility="{Binding ElementName=TitleText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                        <Grid>
+                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Title}" />
+                                                        </Grid>
+                                                    </ToolTip>
                                                 </ToolTipService.ToolTip>
                                             </TextBlock>
 
@@ -3578,9 +3746,15 @@
                                                 <ToolTipService.ToolTip>
                                                     <ToolTip
                                                         MaxWidth="9999"
-                                                        Content="{x:Bind HistoryUpdateResult, Mode=OneWay}"
-                                                        Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}"
-                                                        Visibility="{Binding ElementName=HistoryUpdateResultText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                        Padding="0"
+                                                        Background="Transparent"
+                                                        Visibility="{Binding ElementName=HistoryUpdateResultText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                        <Grid>
+                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind HistoryUpdateResult, Mode=OneWay}" />
+                                                        </Grid>
+                                                    </ToolTip>
                                                 </ToolTipService.ToolTip>
                                             </TextBlock>
                                         </StackPanel>
@@ -3636,8 +3810,14 @@
                                         <ToolTipService.ToolTip>
                                             <ToolTip
                                                 MaxWidth="9999"
-                                                Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('RebootFinishUpdate')}"
-                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('RebootFinishUpdate')}" />
+                                                </Grid>
+                                            </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </Button>
 
@@ -3681,8 +3861,14 @@
                                         <ToolTipService.ToolTip>
                                             <ToolTip
                                                 MaxWidth="9999"
-                                                Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMoreOptions')}"
-                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMore')}" />
+                                                </Grid>
+                                            </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </Button>
                                 </StackPanel>
@@ -3727,8 +3913,14 @@
                                         <ToolTipService.ToolTip>
                                             <ToolTip
                                                 MaxWidth="9999"
-                                                Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('RebootFinishChange')}"
-                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('RebootFinishChange')}" />
+                                                </Grid>
+                                            </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </Button>
 
@@ -3772,8 +3964,14 @@
                                         <ToolTipService.ToolTip>
                                             <ToolTip
                                                 MaxWidth="9999"
-                                                Content="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMoreOptions')}"
-                                                Loaded="{x:Bind backdrophelper:ToolTipBackdropHelper.OnLoaded}" />
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ViewMore')}" />
+                                                </Grid>
+                                            </ToolTip>
                                         </ToolTipService.ToolTip>
                                     </Button>
                                 </StackPanel>
