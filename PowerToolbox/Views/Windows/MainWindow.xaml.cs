@@ -10,8 +10,6 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using PowerToolbox.Extensions.Backdrop;
-using PowerToolbox.Helpers.Backdrop;
-using PowerToolbox.Helpers.Controls;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Download;
@@ -53,7 +51,6 @@ namespace PowerToolbox.Views.Windows
         private readonly ContentIsland contentIsland;
         private readonly InputKeyboardSource inputKeyboardSource;
         private readonly InputPointerSource inputPointerSource;
-        private ToolTip navigationViewBackButtonToolTip;
 
         public new static MainWindow Current { get; private set; }
 
@@ -369,17 +366,6 @@ namespace PowerToolbox.Views.Windows
             // 导航控件加载完成后初始化内容
             if (sender is NavigationView navigationView)
             {
-                if (XamlTreeHelper.FindDescendant<Button>(navigationView, "NavigationViewBackButton") is Button navigationViewBackButton)
-                {
-                    navigationViewBackButtonToolTip = ToolTipService.GetToolTip(navigationViewBackButton) as ToolTip;
-
-                    if (navigationViewBackButtonToolTip is not null)
-                    {
-                        navigationViewBackButtonToolTip.Background = new SolidColorBrush(Colors.Transparent);
-                        navigationViewBackButtonToolTip.Loaded += ToolTipBackdropHelper.OnLoaded;
-                    }
-                }
-
                 foreach (object menuItem in navigationView.MenuItems)
                 {
                     if (menuItem is NavigationViewItem navigationViewItem && navigationViewItem.Tag is string tag)
