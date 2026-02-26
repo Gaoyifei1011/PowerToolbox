@@ -724,392 +724,393 @@
 
         <SplitView.Pane>
             <Grid>
-                <!--  使用说明  -->
-                <Grid
-                    Margin="0,10,0,0"
-                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                    CornerRadius="4,0,0,0"
-                    Visibility="{x:Bind CheckDriverPaneKindState(DriverPaneKind, enum:DriverPaneKind.UseInstruction), Mode=OneWay}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
 
-                    <Grid
-                        Grid.Row="0"
-                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                        BorderThickness="0,0,0,1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                <Grid Margin="0,10,0,0" CornerRadius="4,0,0,0">
+                    <SystemBackdropElement CornerRadius="4,0,0,0" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
 
-                        <FontIcon
-                            Grid.Column="0"
-                            Margin="16,0,6,0"
-                            VerticalAlignment="Center"
-                            FontSize="16"
-                            Glyph="&#xE946;" />
+                    <!--  使用说明  -->
+                    <Grid Visibility="{x:Bind CheckDriverPaneKindState(DriverPaneKind, enum:DriverPaneKind.UseInstruction), Mode=OneWay}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                        <TextBlock
-                            Grid.Column="1"
-                            VerticalAlignment="Center"
-                            FontSize="14"
-                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('UseInstruction')}" />
+                        <Grid
+                            Grid.Row="0"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="0,0,0,1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                        <Button
-                            Grid.Column="2"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Click="{x:Bind OnCloseClicked}"
-                            Style="{StaticResource AlternateCloseButtonStyle}">
-
-                            <Button.Content>
-                                <FontIcon
-                                    Margin="4"
-                                    FontSize="16"
-                                    Glyph="&#xE711;" />
-                            </Button.Content>
-
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Padding="0"
-                                    Background="Transparent">
-
-                                    <Grid>
-                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Close')}" />
-                                    </Grid>
-                                </ToolTip>
-                            </ToolTipService.ToolTip>
-                        </Button>
-                    </Grid>
-
-                    <ScrollViewer
-                        Grid.Row="1"
-                        HorizontalScrollBarVisibility="Disabled"
-                        HorizontalScrollMode="Disabled"
-                        VerticalScrollBarVisibility="Visible"
-                        VerticalScrollMode="Enabled">
-
-                        <Grid Margin="0,0,0,30">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
+                            <FontIcon
+                                Grid.Column="0"
+                                Margin="16,0,6,0"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Glyph="&#xE946;" />
 
                             <TextBlock
-                                Grid.Row="0"
-                                Margin="16,10,16,10"
-                                FontSize="15"
-                                FontWeight="Normal"
-                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverInstruction')}"
-                                TextAlignment="Left" />
-
-                            <TextBlock
-                                Grid.Row="1"
-                                Margin="16,0,16,5"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
                                 FontSize="14"
-                                FontWeight="Normal"
-                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverDescriptionContent1')}"
-                                TextAlignment="Justify"
-                                TextWrapping="Wrap" />
+                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('UseInstruction')}" />
 
-                            <TextBlock
-                                Grid.Row="2"
-                                Margin="16,0,16,5"
-                                FontSize="14"
-                                FontWeight="Normal"
-                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverDescriptionContent2')}"
-                                TextAlignment="Justify"
-                                TextWrapping="Wrap" />
+                            <Button
+                                Grid.Column="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Click="{x:Bind OnCloseClicked}"
+                                Style="{StaticResource AlternateCloseButtonStyle}">
 
-                            <StackPanel
-                                Grid.Row="4"
-                                Margin="16,0,16,5"
-                                Spacing="5">
+                                <Button.Content>
+                                    <FontIcon
+                                        Margin="4"
+                                        FontSize="16"
+                                        Glyph="&#xE711;" />
+                                </Button.Content>
 
-                                <TextBlock HorizontalAlignment="Left">
-                                    <Hyperlink NavigateUri="https://learn.microsoft.com/windows-hardware/drivers/kernel/introduction-to-plug-and-play" UnderlineStyle="None">
-                                        <Run Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('LearnPnpDriver')}" />
-                                    </Hyperlink>
-                                </TextBlock>
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Padding="0"
+                                        Background="Transparent">
 
-                                <TextBlock HorizontalAlignment="Left">
-                                    <Hyperlink Click="{x:Bind OnRunAsAdministratorClicked}" UnderlineStyle="None">
-                                        <Run Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('RunAsAdministrator')}" />
-                                    </Hyperlink>
-                                </TextBlock>
-                            </StackPanel>
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Close')}" />
+                                        </Grid>
+                                    </ToolTip>
+                                </ToolTipService.ToolTip>
+                            </Button>
                         </Grid>
-                    </ScrollViewer>
-                </Grid>
 
-                <!--  任务管理  -->
-                <Grid
-                    Margin="0,10,0,0"
-                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                    CornerRadius="4,0,0,0"
-                    Visibility="{x:Bind CheckDriverPaneKindState(DriverPaneKind, enum:DriverPaneKind.TaskManager), Mode=OneWay}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                        <ScrollViewer
+                            Grid.Row="1"
+                            HorizontalScrollBarVisibility="Disabled"
+                            HorizontalScrollMode="Disabled"
+                            VerticalScrollBarVisibility="Visible"
+                            VerticalScrollMode="Enabled">
 
-                    <Grid
-                        Grid.Row="0"
-                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                        BorderThickness="0,0,0,1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                            <Grid Margin="0,0,0,30">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
-                        <FontIcon
-                            Grid.Column="0"
-                            Margin="16,0,6,0"
-                            VerticalAlignment="Center"
-                            FontSize="16"
-                            Glyph="&#xE71D;" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Margin="16,10,16,10"
+                                    FontSize="15"
+                                    FontWeight="Normal"
+                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverInstruction')}"
+                                    TextAlignment="Left" />
 
-                        <TextBlock
-                            Grid.Column="1"
-                            VerticalAlignment="Center"
-                            FontSize="14"
-                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('TaskManager')}" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Margin="16,0,16,5"
+                                    FontSize="14"
+                                    FontWeight="Normal"
+                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverDescriptionContent1')}"
+                                    TextAlignment="Justify"
+                                    TextWrapping="Wrap" />
 
-                        <InfoBadge
-                            Grid.Column="2"
-                            Margin="6,2,0,0"
-                            HorizontalAlignment="Left"
-                            Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(DriverOperationCollection.Count), Mode=OneWay}"
-                            Value="{x:Bind DriverOperationCollection.Count, Mode=OneWay}" />
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Margin="16,0,16,5"
+                                    FontSize="14"
+                                    FontWeight="Normal"
+                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverDescriptionContent2')}"
+                                    TextAlignment="Justify"
+                                    TextWrapping="Wrap" />
 
-                        <Button
-                            Grid.Column="3"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Click="{x:Bind OnClearDriverOperationTaskClicked}"
-                            IsEnabled="{x:Bind system:Convert.ToBoolean(DriverOperationCollection.Count), Mode=OneWay}"
-                            Style="{StaticResource AlternateCloseButtonStyle}">
+                                <StackPanel
+                                    Grid.Row="4"
+                                    Margin="16,0,16,5"
+                                    Spacing="5">
 
-                            <Button.Content>
-                                <FontIcon
-                                    Margin="4"
-                                    FontSize="16"
-                                    Glyph="&#xE74D;" />
-                            </Button.Content>
+                                    <TextBlock HorizontalAlignment="Left">
+                                        <Hyperlink NavigateUri="https://learn.microsoft.com/windows-hardware/drivers/kernel/introduction-to-plug-and-play" UnderlineStyle="None">
+                                            <Run Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('LearnPnpDriver')}" />
+                                        </Hyperlink>
+                                    </TextBlock>
 
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Padding="0"
-                                    Background="Transparent">
-
-                                    <Grid>
-                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ClearDriverOperationTask')}" />
-                                    </Grid>
-                                </ToolTip>
-                            </ToolTipService.ToolTip>
-                        </Button>
-
-                        <Button
-                            Grid.Column="4"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Click="{x:Bind OnCloseClicked}"
-                            Style="{StaticResource AlternateCloseButtonStyle}">
-
-                            <Button.Content>
-                                <FontIcon
-                                    Margin="4"
-                                    FontSize="16"
-                                    Glyph="&#xE711;" />
-                            </Button.Content>
-
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Padding="0"
-                                    Background="Transparent">
-
-                                    <Grid>
-                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Close')}" />
-                                    </Grid>
-                                </ToolTip>
-                            </ToolTipService.ToolTip>
-                        </Button>
+                                    <TextBlock HorizontalAlignment="Left">
+                                        <Hyperlink Click="{x:Bind OnRunAsAdministratorClicked}" UnderlineStyle="None">
+                                            <Run Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('RunAsAdministrator')}" />
+                                        </Hyperlink>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </ScrollViewer>
                     </Grid>
 
+                    <!--  任务管理  -->
                     <Grid
-                        Grid.Row="1"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(DriverOperationCollection.Count), Mode=OneWay}">
+                        Margin="0,10,0,0"
+                        CornerRadius="4,0,0,0"
+                        Visibility="{x:Bind CheckDriverPaneKindState(DriverPaneKind, enum:DriverPaneKind.TaskManager), Mode=OneWay}">
 
-                        <TextBlock
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid
+                            Grid.Row="0"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="0,0,0,1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <FontIcon
+                                Grid.Column="0"
+                                Margin="16,0,6,0"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Glyph="&#xE71D;" />
+
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('TaskManager')}" />
+
+                            <InfoBadge
+                                Grid.Column="2"
+                                Margin="6,2,0,0"
+                                HorizontalAlignment="Left"
+                                Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(DriverOperationCollection.Count), Mode=OneWay}"
+                                Value="{x:Bind DriverOperationCollection.Count, Mode=OneWay}" />
+
+                            <Button
+                                Grid.Column="3"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Click="{x:Bind OnClearDriverOperationTaskClicked}"
+                                IsEnabled="{x:Bind system:Convert.ToBoolean(DriverOperationCollection.Count), Mode=OneWay}"
+                                Style="{StaticResource AlternateCloseButtonStyle}">
+
+                                <Button.Content>
+                                    <FontIcon
+                                        Margin="4"
+                                        FontSize="16"
+                                        Glyph="&#xE74D;" />
+                                </Button.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Padding="0"
+                                        Background="Transparent">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ClearDriverOperationTask')}" />
+                                        </Grid>
+                                    </ToolTip>
+                                </ToolTipService.ToolTip>
+                            </Button>
+
+                            <Button
+                                Grid.Column="4"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Click="{x:Bind OnCloseClicked}"
+                                Style="{StaticResource AlternateCloseButtonStyle}">
+
+                                <Button.Content>
+                                    <FontIcon
+                                        Margin="4"
+                                        FontSize="16"
+                                        Glyph="&#xE711;" />
+                                </Button.Content>
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Padding="0"
+                                        Background="Transparent">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Close')}" />
+                                        </Grid>
+                                    </ToolTip>
+                                </ToolTipService.ToolTip>
+                            </Button>
+                        </Grid>
+
+                        <Grid
+                            Grid.Row="1"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverOperationTaskEmpty')}"
-                            TextAlignment="Center"
-                            TextWrapping="WrapWholeWords" />
-                    </Grid>
+                            Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(DriverOperationCollection.Count), Mode=OneWay}">
 
-                    <ListView
-                        Grid.Row="1"
-                        Margin="0,2,0,0"
-                        Padding="0,0,0,30"
-                        ItemsSource="{x:Bind DriverOperationCollection}"
-                        SelectionMode="None"
-                        Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(DriverOperationCollection.Count), Mode=OneWay}">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverOperationTaskEmpty')}"
+                                TextAlignment="Center"
+                                TextWrapping="WrapWholeWords" />
+                        </Grid>
 
-                        <ListView.ItemContainerStyle>
-                            <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="Margin" Value="0" />
-                                <Setter Property="MinHeight" Value="0" />
-                                <Setter Property="Padding" Value="0" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
+                        <ListView
+                            Grid.Row="1"
+                            Margin="0,2,0,0"
+                            Padding="0,0,0,30"
+                            ItemsSource="{x:Bind DriverOperationCollection}"
+                            SelectionMode="None"
+                            Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(DriverOperationCollection.Count), Mode=OneWay}">
 
-                        <ItemsControl.ItemContainerTransitions>
-                            <TransitionCollection />
-                        </ItemsControl.ItemContainerTransitions>
+                            <ListView.ItemContainerStyle>
+                                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="Margin" Value="0" />
+                                    <Setter Property="MinHeight" Value="0" />
+                                    <Setter Property="Padding" Value="0" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
 
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="model:DriverOperationModel">
-                                <Grid
-                                    Height="60"
-                                    Margin="2,0,2,2"
-                                    Padding="16,0,6,0"
-                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="{StaticResource ControlCornerRadius}">
+                            <ItemsControl.ItemContainerTransitions>
+                                <TransitionCollection />
+                            </ItemsControl.ItemContainerTransitions>
 
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="model:DriverOperationModel">
                                     <Grid
-                                        Grid.Column="0"
-                                        VerticalAlignment="Center"
-                                        RowSpacing="2">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
+                                        Height="60"
+                                        Margin="2,0,2,2"
+                                        Padding="16,0,6,0"
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="{StaticResource ControlCornerRadius}">
 
-                                        <TextBlock
-                                            x:Name="DriverInfNameText"
-                                            Grid.Row="0"
-                                            MinWidth="50"
-                                            Margin="0,0,5,0"
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid
+                                            Grid.Column="0"
                                             VerticalAlignment="Center"
-                                            FontSize="14"
-                                            Text="{x:Bind DriverInfName}"
-                                            TextAlignment="Left"
-                                            TextTrimming="CharacterEllipsis">
+                                            RowSpacing="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock
+                                                x:Name="DriverInfNameText"
+                                                Grid.Row="0"
+                                                MinWidth="50"
+                                                Margin="0,0,5,0"
+                                                VerticalAlignment="Center"
+                                                FontSize="14"
+                                                Text="{x:Bind DriverInfName}"
+                                                TextAlignment="Left"
+                                                TextTrimming="CharacterEllipsis">
+
+                                                <ToolTipService.ToolTip>
+                                                    <ToolTip
+                                                        MaxWidth="9999"
+                                                        Padding="0"
+                                                        Background="Transparent"
+                                                        Visibility="{Binding ElementName=DriverInfNameText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                        <Grid>
+                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind DriverInfName}" />
+                                                        </Grid>
+                                                    </ToolTip>
+                                                </ToolTipService.ToolTip>
+                                            </TextBlock>
+
+                                            <TextBlock
+                                                x:Name="DriverOperationText"
+                                                Grid.Row="1"
+                                                MinWidth="50"
+                                                Margin="0,0,5,0"
+                                                VerticalAlignment="Center"
+                                                FontSize="14"
+                                                Text="{x:Bind DriverOperation, Mode=OneWay}"
+                                                TextAlignment="Left"
+                                                TextTrimming="CharacterEllipsis">
+
+                                                <ToolTipService.ToolTip>
+                                                    <ToolTip
+                                                        MaxWidth="9999"
+                                                        Padding="0"
+                                                        Background="Transparent"
+                                                        Visibility="{Binding ElementName=DriverOperationText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                        <Grid>
+                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind DriverOperation, Mode=OneWay}" />
+                                                        </Grid>
+                                                    </ToolTip>
+                                                </ToolTipService.ToolTip>
+                                            </TextBlock>
+                                        </Grid>
+
+                                        <ProgressRing
+                                            Grid.Column="1"
+                                            Width="20"
+                                            Height="20"
+                                            Margin="10,0,8,0"
+                                            IsActive="True"
+                                            Visibility="{x:Bind IsOperating, Mode=OneWay}" />
+
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="Auto"
+                                            Height="Auto"
+                                            Margin="10,0,0,0"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Command="{StaticResource RemoveTaskCommand}"
+                                            CommandParameter="{x:Bind DriverOperationGuid}"
+                                            Style="{StaticResource AlternateCloseButtonStyle}"
+                                            Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsOperating), Mode=OneWay}">
+
+                                            <Button.Content>
+                                                <FontIcon
+                                                    Margin="4"
+                                                    FontSize="16"
+                                                    Glyph="&#xE711;" />
+                                            </Button.Content>
 
                                             <ToolTipService.ToolTip>
                                                 <ToolTip
                                                     MaxWidth="9999"
                                                     Padding="0"
-                                                    Background="Transparent"
-                                                    Visibility="{Binding ElementName=DriverInfNameText, Path=IsTextTrimmed, Mode=OneWay}">
+                                                    Background="Transparent">
 
                                                     <Grid>
                                                         <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind DriverInfName}" />
+                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('RemoveTask')}" />
                                                     </Grid>
                                                 </ToolTip>
                                             </ToolTipService.ToolTip>
-                                        </TextBlock>
-
-                                        <TextBlock
-                                            x:Name="DriverOperationText"
-                                            Grid.Row="1"
-                                            MinWidth="50"
-                                            Margin="0,0,5,0"
-                                            VerticalAlignment="Center"
-                                            FontSize="14"
-                                            Text="{x:Bind DriverOperation, Mode=OneWay}"
-                                            TextAlignment="Left"
-                                            TextTrimming="CharacterEllipsis">
-
-                                            <ToolTipService.ToolTip>
-                                                <ToolTip
-                                                    MaxWidth="9999"
-                                                    Padding="0"
-                                                    Background="Transparent"
-                                                    Visibility="{Binding ElementName=DriverOperationText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                                    <Grid>
-                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind DriverOperation, Mode=OneWay}" />
-                                                    </Grid>
-                                                </ToolTip>
-                                            </ToolTipService.ToolTip>
-                                        </TextBlock>
+                                        </Button>
                                     </Grid>
-
-                                    <ProgressRing
-                                        Grid.Column="1"
-                                        Width="20"
-                                        Height="20"
-                                        Margin="10,0,8,0"
-                                        IsActive="True"
-                                        Visibility="{x:Bind IsOperating, Mode=OneWay}" />
-
-                                    <Button
-                                        Grid.Column="1"
-                                        Width="Auto"
-                                        Height="Auto"
-                                        Margin="10,0,0,0"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Command="{StaticResource RemoveTaskCommand}"
-                                        CommandParameter="{x:Bind DriverOperationGuid}"
-                                        Style="{StaticResource AlternateCloseButtonStyle}"
-                                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsOperating), Mode=OneWay}">
-
-                                        <Button.Content>
-                                            <FontIcon
-                                                Margin="4"
-                                                FontSize="16"
-                                                Glyph="&#xE711;" />
-                                        </Button.Content>
-
-                                        <ToolTipService.ToolTip>
-                                            <ToolTip
-                                                MaxWidth="9999"
-                                                Padding="0"
-                                                Background="Transparent">
-
-                                                <Grid>
-                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('RemoveTask')}" />
-                                                </Grid>
-                                            </ToolTip>
-                                        </ToolTipService.ToolTip>
-                                    </Button>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
                 </Grid>
             </Grid>
         </SplitView.Pane>
