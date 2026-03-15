@@ -54,21 +54,21 @@
                 <SelectorBar
                     x:Name="DataVerifyEncryptSelctorBar"
                     Grid.Row="0"
-                    Margin="4,10,30,3"
+                    Margin="18,5,30,3"
                     Padding="0"
                     HorizontalAlignment="Left"
                     SelectedItem="{x:Bind SelectedItem, Mode=OneWay}"
                     SelectionChanged="{x:Bind OnSelectorBarSelectionChanged}">
 
-                    <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.DataVerifyEncryptResource.GetString('DataVerify')}" />
-                    <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.DataVerifyEncryptResource.GetString('DataEncrypt')}" />
-                    <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.DataVerifyEncryptResource.GetString('DataDecrypt')}" />
+                    <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.DataVerifyEncryptResource.GetString('DataVerify')}" />
+                    <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.DataVerifyEncryptResource.GetString('DataEncrypt')}" />
+                    <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.DataVerifyEncryptResource.GetString('DataDecrypt')}" />
                 </SelectorBar>
 
                 <Frame
                     x:Name="DataVerifyEncryptFrame"
                     Grid.Row="1"
-                    Margin="16,0,0,0"
+                    Margin="30,0,0,0"
                     NavigationFailed="{x:Bind OnNavigationFailed}" />
             </Grid>
         </SplitView.Content>

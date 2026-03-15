@@ -176,16 +176,16 @@
             <SelectorBar
                 x:Name="UpdateManagerSelctorBar"
                 Grid.Row="0"
-                Margin="4,6,30,5"
+                Margin="4,0,30,5"
                 Padding="0"
                 HorizontalAlignment="Left"
                 SelectedItem="{x:Bind SelectedItem, Mode=OneWay}"
                 SelectionChanged="{x:Bind OnSelectorBarSelectionChanged}">
 
-                <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('AvailableUpdate')}" />
-                <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('InstalledUpdate')}" />
-                <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('HiddenUpdate')}" />
-                <SelectorBarItem Padding="12,5" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UpdateHistory')}" />
+                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('AvailableUpdate')}" />
+                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('InstalledUpdate')}" />
+                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('HiddenUpdate')}" />
+                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UpdateHistory')}" />
             </SelectorBar>
 
             <ScrollViewer Grid.Row="1">
