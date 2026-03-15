@@ -28,698 +28,690 @@
         PaneBackground="Transparent"
         PanePlacement="Right">
 
-        <SplitView.Content>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                <StackPanel
-                    Grid.Row="0"
-                    Margin="30,15,30,0"
-                    Orientation="Horizontal"
-                    Spacing="5">
+            <StackPanel
+                Grid.Row="0"
+                Margin="30,15,30,0"
+                Orientation="Horizontal"
+                Spacing="5">
 
-                    <TextBlock
-                        HorizontalAlignment="Left"
-                        FontSize="22"
-                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverManager')}" />
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    FontSize="22"
+                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverManager')}" />
 
-                    <TextBlock VerticalAlignment="Bottom" Text="{x:Bind DriverDescription, Mode=OneWay}" />
-                </StackPanel>
+                <TextBlock VerticalAlignment="Bottom" Text="{x:Bind DriverDescription, Mode=OneWay}" />
+            </StackPanel>
 
-                <!--  驱动管理控制栏  -->
-                <Grid
-                    Grid.Row="1"
-                    Height="60"
-                    Margin="30,5,30,3"
-                    Padding="12,0,0,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="{StaticResource ControlCornerRadius}">
+            <!--  驱动管理控制栏  -->
+            <Grid
+                Grid.Row="1"
+                Height="60"
+                Margin="30,5,30,3"
+                Padding="12,0,0,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}">
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                    <AutoSuggestBox
-                        Grid.Column="0"
-                        Margin="0,0,2,0"
+                <AutoSuggestBox
+                    Grid.Column="0"
+                    Margin="0,0,2,0"
+                    VerticalAlignment="Center"
+                    IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                    PlaceholderText="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SearchDriverNamePHText')}"
+                    QueryIcon="Find"
+                    QuerySubmitted="{x:Bind OnQuerySubmitted}"
+                    Text="{x:Bind SearchText, Mode=OneWay}"
+                    TextChanged="{x:Bind OnTextChanged}" />
+
+                <CommandBar
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    DefaultLabelPosition="Right">
+
+                    <CommandBar.PrimaryCommands>
+                        <AppBarButton
+                            Click="{x:Bind OnSelectAllClicked}"
+                            IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SelectAll')}">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE8B3;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton
+                            Click="{x:Bind OnSelectNoneClicked}"
+                            IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SelectNone')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE8E6;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton Click="{x:Bind OnTaskManagerClicked}" Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('TaskManager')}">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE71D;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </CommandBar.PrimaryCommands>
+                </CommandBar>
+
+                <Button
+                    Grid.Column="2"
+                    MinHeight="{ThemeResource AppBarThemeCompactHeight}"
+                    Margin="-6,0,0,0"
+                    Padding="{ThemeResource CommandBarMoreButtonMargin}"
+                    VerticalAlignment="Center"
+                    Foreground="{ThemeResource CommandBarForeground}"
+                    IsAccessKeyScope="True"
+                    Style="{ThemeResource EllipsisButton}">
+
+                    <FontIcon
+                        Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
                         VerticalAlignment="Center"
-                        IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                        PlaceholderText="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SearchDriverNamePHText')}"
-                        QueryIcon="Find"
-                        QuerySubmitted="{x:Bind OnQuerySubmitted}"
-                        Text="{x:Bind SearchText, Mode=OneWay}"
-                        TextChanged="{x:Bind OnTextChanged}" />
+                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        FontSize="20"
+                        Glyph="&#xE712;" />
 
-                    <CommandBar
-                        Grid.Column="1"
-                        VerticalAlignment="Center"
-                        DefaultLabelPosition="Right">
+                    <Button.Flyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuFlyoutSubItem IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Sort')}">
+                                <MenuFlyoutSubItem.Icon>
+                                    <FontIcon Glyph="&#xE8CB;" />
+                                </MenuFlyoutSubItem.Icon>
 
-                        <CommandBar.PrimaryCommands>
-                            <AppBarButton
-                                Click="{x:Bind OnSelectAllClicked}"
-                                IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SelectAll')}">
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE8B3;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
+                                <MenuFlyoutSubItem Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortWay')}">
 
-                            <AppBarButton
-                                Click="{x:Bind OnSelectNoneClicked}"
-                                IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SelectNone')}">
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnSortWayClicked}"
+                                        GroupName="SortWayRadioGroup"
+                                        IsChecked="{x:Bind IsIncrease, Mode=OneWay}"
+                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortIncrease')}">
 
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE8E6;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
+                                        <RadioMenuFlyoutItem.Tag>
+                                            <x:Boolean>True</x:Boolean>
+                                        </RadioMenuFlyoutItem.Tag>
+                                    </RadioMenuFlyoutItem>
 
-                            <AppBarButton Click="{x:Bind OnTaskManagerClicked}" Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('TaskManager')}">
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE71D;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                        </CommandBar.PrimaryCommands>
-                    </CommandBar>
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnSortWayClicked}"
+                                        GroupName="SortWayRadioGroup"
+                                        IsChecked="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsIncrease), Mode=OneWay}"
+                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortDecrease')}">
 
-                    <Button
-                        Grid.Column="2"
-                        MinHeight="{ThemeResource AppBarThemeCompactHeight}"
-                        Margin="-6,0,0,0"
-                        Padding="{ThemeResource CommandBarMoreButtonMargin}"
-                        VerticalAlignment="Center"
-                        Foreground="{ThemeResource CommandBarForeground}"
-                        IsAccessKeyScope="True"
-                        Style="{ThemeResource EllipsisButton}">
-
-                        <Button.Content>
-                            <FontIcon
-                                Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
-                                VerticalAlignment="Center"
-                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                FontSize="20"
-                                Glyph="&#xE712;" />
-                        </Button.Content>
-
-                        <Button.Flyout>
-                            <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutSubItem IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Sort')}">
-                                    <MenuFlyoutSubItem.Icon>
-                                        <FontIcon Glyph="&#xE8CB;" />
-                                    </MenuFlyoutSubItem.Icon>
-
-                                    <MenuFlyoutSubItem Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortWay')}">
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSortWayClicked}"
-                                            GroupName="SortWayRadioGroup"
-                                            IsChecked="{x:Bind IsIncrease, Mode=OneWay}"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortIncrease')}">
-
-                                            <RadioMenuFlyoutItem.Tag>
-                                                <x:Boolean>True</x:Boolean>
-                                            </RadioMenuFlyoutItem.Tag>
-                                        </RadioMenuFlyoutItem>
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSortWayClicked}"
-                                            GroupName="SortWayRadioGroup"
-                                            IsChecked="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsIncrease), Mode=OneWay}"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortDecrease')}">
-
-                                            <RadioMenuFlyoutItem.Tag>
-                                                <x:Boolean>False</x:Boolean>
-                                            </RadioMenuFlyoutItem.Tag>
-                                        </RadioMenuFlyoutItem>
-                                    </MenuFlyoutSubItem>
-
-                                    <MenuFlyoutSubItem Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortRule')}">
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSortRuleClicked}"
-                                            GroupName="SortRuleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.DeviceName), Mode=OneWay}"
-                                            Tag="{x:Bind enum:DriverSortRuleKind.DeviceName}"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByDeviceName')}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSortRuleClicked}"
-                                            GroupName="SortRuleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.InfName), Mode=OneWay}"
-                                            Tag="{x:Bind enum:DriverSortRuleKind.InfName}"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByInfName')}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSortRuleClicked}"
-                                            GroupName="SortRuleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.OEMInfName), Mode=OneWay}"
-                                            Tag="{x:Bind enum:DriverSortRuleKind.OEMInfName}"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByOEMInfName')}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSortRuleClicked}"
-                                            GroupName="SortRuleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.DeviceType), Mode=OneWay}"
-                                            Tag="{x:Bind enum:DriverSortRuleKind.DeviceType}"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByDeviceType')}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSortRuleClicked}"
-                                            GroupName="SortRuleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.Manufacturer), Mode=OneWay}"
-                                            Tag="{x:Bind enum:DriverSortRuleKind.Manufacturer}"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByManufacturer')}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSortRuleClicked}"
-                                            GroupName="SortRuleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.Version), Mode=OneWay}"
-                                            Tag="{x:Bind enum:DriverSortRuleKind.Version}"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByVersion')}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSortRuleClicked}"
-                                            GroupName="SortRuleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.Date), Mode=OneWay}"
-                                            Tag="{x:Bind enum:DriverSortRuleKind.Date}"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByDate')}" />
-                                    </MenuFlyoutSubItem>
+                                        <RadioMenuFlyoutItem.Tag>
+                                            <x:Boolean>False</x:Boolean>
+                                        </RadioMenuFlyoutItem.Tag>
+                                    </RadioMenuFlyoutItem>
                                 </MenuFlyoutSubItem>
 
-                                <MenuFlyoutItem
-                                    Click="{x:Bind OnRefreshClicked}"
-                                    IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Refresh')}">
+                                <MenuFlyoutSubItem Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortRule')}">
 
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE72C;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnSortRuleClicked}"
+                                        GroupName="SortRuleRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.DeviceName), Mode=OneWay}"
+                                        Tag="{x:Bind enum:DriverSortRuleKind.DeviceName}"
+                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByDeviceName')}" />
 
-                                <MenuFlyoutSeparator />
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnSortRuleClicked}"
+                                        GroupName="SortRuleRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.InfName), Mode=OneWay}"
+                                        Tag="{x:Bind enum:DriverSortRuleKind.InfName}"
+                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByInfName')}" />
 
-                                <MenuFlyoutItem
-                                    Click="{x:Bind OnAddDriverClicked}"
-                                    IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('AddDriver')}">
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnSortRuleClicked}"
+                                        GroupName="SortRuleRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.OEMInfName), Mode=OneWay}"
+                                        Tag="{x:Bind enum:DriverSortRuleKind.OEMInfName}"
+                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByOEMInfName')}" />
 
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE710;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnSortRuleClicked}"
+                                        GroupName="SortRuleRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.DeviceType), Mode=OneWay}"
+                                        Tag="{x:Bind enum:DriverSortRuleKind.DeviceType}"
+                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByDeviceType')}" />
 
-                                <MenuFlyoutItem
-                                    Click="{x:Bind OnAddInstallDriverClicked}"
-                                    IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('AddInstallDriver')}">
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnSortRuleClicked}"
+                                        GroupName="SortRuleRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.Manufacturer), Mode=OneWay}"
+                                        Tag="{x:Bind enum:DriverSortRuleKind.Manufacturer}"
+                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByManufacturer')}" />
 
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE710;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnSortRuleClicked}"
+                                        GroupName="SortRuleRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.Version), Mode=OneWay}"
+                                        Tag="{x:Bind enum:DriverSortRuleKind.Version}"
+                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByVersion')}" />
 
-                                <MenuFlyoutItem
-                                    Click="{x:Bind OnDeleteDriverClicked}"
-                                    IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DeleteDriver')}">
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnSortRuleClicked}"
+                                        GroupName="SortRuleRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.Date), Mode=OneWay}"
+                                        Tag="{x:Bind enum:DriverSortRuleKind.Date}"
+                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByDate')}" />
+                                </MenuFlyoutSubItem>
+                            </MenuFlyoutSubItem>
 
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE711;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
+                            <MenuFlyoutItem
+                                Click="{x:Bind OnRefreshClicked}"
+                                IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Refresh')}">
 
-                                <MenuFlyoutItem
-                                    Click="{x:Bind OnForceDeleteDriverClicked}"
-                                    IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ForceDeleteDriver')}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE72C;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
 
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE711;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
+                            <MenuFlyoutSeparator />
 
-                                <MenuFlyoutSeparator />
+                            <MenuFlyoutItem
+                                Click="{x:Bind OnAddDriverClicked}"
+                                IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('AddDriver')}">
 
-                                <MenuFlyoutItem
-                                    Click="{x:Bind OnSelectOldDriverClicked}"
-                                    IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SelectOldDriver')}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE710;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
 
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE74D;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
+                            <MenuFlyoutItem
+                                Click="{x:Bind OnAddInstallDriverClicked}"
+                                IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('AddInstallDriver')}">
 
-                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE710;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
 
-                                <MenuFlyoutItem Click="{x:Bind OnUseInstructionClicked}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('UseInstruction')}">
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE946;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
+                            <MenuFlyoutItem
+                                Click="{x:Bind OnDeleteDriverClicked}"
+                                IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DeleteDriver')}">
 
-                                <MenuFlyoutItem Click="{x:Bind OnOpenDeviceManagementClicked}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DeviceManagement')}">
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE7F8;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-                            </MenuFlyout>
-                        </Button.Flyout>
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE711;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
 
-                        <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent">
+                            <MenuFlyoutItem
+                                Click="{x:Bind OnForceDeleteDriverClicked}"
+                                IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ForceDeleteDriver')}">
 
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ViewMore')}" />
-                                </Grid>
-                            </ToolTip>
-                        </ToolTipService.ToolTip>
-                    </Button>
-                </Grid>
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE711;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
 
-                <!--  驱动管理状态显示栏  -->
-                <Grid
-                    Grid.Row="2"
-                    Height="60"
-                    Margin="30,0,30,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="{StaticResource ControlCornerRadius}"
-                    Visibility="{x:Bind GetDriverSuccessfullyState(DriverResultKind, x:False), Mode=OneWay}">
+                            <MenuFlyoutSeparator />
 
-                    <!--  正在加载中  -->
-                    <StackPanel
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal"
-                        Spacing="10"
-                        Visibility="{x:Bind CheckDriverState(DriverResultKind, enum:DriverResultKind.Loading), Mode=OneWay}">
+                            <MenuFlyoutItem
+                                Click="{x:Bind OnSelectOldDriverClicked}"
+                                IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SelectOldDriver')}">
 
-                        <ProgressRing IsActive="True" IsEnabled="True" />
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE74D;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
 
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('LoadingDriver')}"
-                            TextAlignment="Center" />
-                    </StackPanel>
+                            <MenuFlyoutSeparator />
 
-                    <!--  加载失败（包含搜索结果为空）  -->
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind DriverFailedContent, Mode=OneWay}"
-                        TextAlignment="Center"
-                        Visibility="{x:Bind CheckDriverState(DriverResultKind, enum:DriverResultKind.Failed), Mode=OneWay}" />
-                </Grid>
+                            <MenuFlyoutItem Click="{x:Bind OnUseInstructionClicked}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('UseInstruction')}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE946;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
 
-                <!--  正在操作中  -->
-                <Grid
-                    Grid.Row="3"
-                    Padding="40"
+                            <MenuFlyoutItem Click="{x:Bind OnOpenDeviceManagementClicked}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DeviceManagement')}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE7F8;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Button.Flyout>
+
+                    <ToolTipService.ToolTip>
+                        <ToolTip
+                            MaxWidth="9999"
+                            Padding="0"
+                            Background="Transparent">
+
+                            <Grid>
+                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ViewMore')}" />
+                            </Grid>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                </Button>
+            </Grid>
+
+            <!--  驱动管理状态显示栏  -->
+            <Grid
+                Grid.Row="2"
+                Height="60"
+                Margin="30,0,30,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}"
+                Visibility="{x:Bind GetDriverSuccessfullyState(DriverResultKind, x:False), Mode=OneWay}">
+
+                <!--  正在加载中  -->
+                <StackPanel
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Background="{ThemeResource LayerFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    ColumnSpacing="10"
-                    CornerRadius="{StaticResource OverlayCornerRadius}"
-                    Visibility="{x:Bind CheckDriverState(DriverResultKind, enum:DriverResultKind.Operating), Mode=OneWay}">
+                    Orientation="Horizontal"
+                    Spacing="10"
+                    Visibility="{x:Bind CheckDriverState(DriverResultKind, enum:DriverResultKind.Loading), Mode=OneWay}">
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <ProgressRing
-                        Grid.Column="0"
-                        Width="26"
-                        Height="26"
-                        IsActive="{x:Bind x:Object.Equals(DriverResultKind, enum:DriverResultKind.Operating), Mode=OneWay}" />
+                    <ProgressRing IsActive="True" IsEnabled="True" />
 
                     <TextBlock
-                        Grid.Column="1"
                         VerticalAlignment="Center"
-                        FontSize="20"
-                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Operating')}"
-                        TextAlignment="Center"
-                        TextWrapping="Wrap" />
-                </Grid>
+                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('LoadingDriver')}"
+                        TextAlignment="Center" />
+                </StackPanel>
 
-                <!--  驱动理结果展示项目控件  -->
-                <ListView
-                    Grid.Row="3"
-                    Padding="30,0,30,30"
-                    IsEnabled="{x:Bind GetIsOperating(DriverResultKind), Mode=OneWay}"
-                    ItemsSource="{x:Bind DriverCollection}"
-                    SelectionMode="None"
-                    Visibility="{x:Bind GetDriverSuccessfullyState(DriverResultKind, x:True), Mode=OneWay}">
-
-                    <ListView.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="MinHeight" Value="0 " />
-                        </Style>
-                    </ListView.ItemContainerStyle>
-
-                    <ItemsControl.ItemContainerTransitions>
-                        <TransitionCollection />
-                    </ItemsControl.ItemContainerTransitions>
-
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="model:DriverModel">
-                            <Expander
-                                Margin="0,0,0,2"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Stretch"
-                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                IsExpanded="False">
-
-                                <Expander.Header>
-                                    <Grid Height="60">
-
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <CheckBox
-                                            Grid.Column="0"
-                                            MinWidth="0"
-                                            Margin="0,0,12,0"
-                                            Command="{StaticResource CheckBoxClickCommand}"
-                                            IsChecked="{x:Bind IsSelected, Mode=TwoWay}">
-
-                                            <ToolTipService.ToolTip>
-                                                <ToolTip
-                                                    MaxWidth="9999"
-                                                    Padding="0"
-                                                    Background="Transparent">
-
-                                                    <Grid>
-                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-
-                                                        <Grid Padding="{StaticResource ToolTipBorderPadding}">
-                                                            <TextBlock Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                            <TextBlock Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
-                                                        </Grid>
-                                                    </Grid>
-                                                </ToolTip>
-                                            </ToolTipService.ToolTip>
-                                        </CheckBox>
-
-                                        <StackPanel
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            Orientation="Vertical">
-
-                                            <TextBlock
-                                                x:Name="DeviceNameText"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Style="{StaticResource BodyTextBlockStyle}"
-                                                Text="{x:Bind DeviceName}"
-                                                TextTrimming="CharacterEllipsis"
-                                                TextWrapping="NoWrap">
-
-                                                <ToolTipService.ToolTip>
-                                                    <ToolTip
-                                                        MaxWidth="9999"
-                                                        Padding="0"
-                                                        Background="Transparent"
-                                                        Visibility="{Binding ElementName=DeviceNameText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                                        <Grid>
-                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind DeviceName}" />
-                                                        </Grid>
-                                                    </ToolTip>
-                                                </ToolTipService.ToolTip>
-                                            </TextBlock>
-
-                                            <TextBlock
-                                                x:Name="DriverManufacturerText"
-                                                HorizontalAlignment="Left"
-                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                                IsTextSelectionEnabled="True"
-                                                Style="{StaticResource CaptionTextBlockStyle}"
-                                                Text="{x:Bind DriverManufacturer}"
-                                                TextTrimming="CharacterEllipsis"
-                                                TextWrapping="NoWrap">
-
-                                                <ToolTipService.ToolTip>
-                                                    <ToolTip
-                                                        MaxWidth="9999"
-                                                        Padding="0"
-                                                        Background="Transparent"
-                                                        Visibility="{Binding ElementName=DriverManufacturerText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                                        <Grid>
-                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind DriverManufacturer}" />
-                                                        </Grid>
-                                                    </ToolTip>
-                                                </ToolTipService.ToolTip>
-                                            </TextBlock>
-                                        </StackPanel>
-
-                                        <Button
-                                            Grid.Column="2"
-                                            MinHeight="{ThemeResource AppBarThemeCompactHeight}"
-                                            Margin="-6,0,-15,0"
-                                            Padding="{ThemeResource CommandBarMoreButtonMargin}"
-                                            VerticalAlignment="Center"
-                                            Foreground="{ThemeResource CommandBarForeground}"
-                                            IsAccessKeyScope="True"
-                                            Style="{ThemeResource EllipsisButton}">
-
-                                            <Button.Content>
-                                                <FontIcon
-                                                    Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
-                                                    VerticalAlignment="Center"
-                                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                                    FontSize="20"
-                                                    Glyph="&#xE712;" />
-                                            </Button.Content>
-
-                                            <Button.Flyout>
-                                                <MenuFlyout Placement="Bottom">
-                                                    <MenuFlyoutItem
-                                                        Command="{StaticResource OpenFolderCommand}"
-                                                        CommandParameter="{x:Bind DriverLocation}"
-                                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('OpenFolder')}">
-
-                                                        <MenuFlyoutItem.Icon>
-                                                            <FontIcon FontSize="14" Glyph="&#xE8B7;" />
-                                                        </MenuFlyoutItem.Icon>
-                                                    </MenuFlyoutItem>
-
-                                                    <MenuFlyoutSeparator />
-
-                                                    <MenuFlyoutItem
-                                                        Command="{StaticResource DeleteDriverCommand}"
-                                                        CommandParameter="{x:Bind}"
-                                                        IsEnabled="{x:Bind roothelper:RuntimeHelper.IsElevated}"
-                                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DeleteDriver')}">
-
-                                                        <MenuFlyoutItem.Icon>
-                                                            <FontIcon FontSize="14" Glyph="&#xE711;" />
-                                                        </MenuFlyoutItem.Icon>
-                                                    </MenuFlyoutItem>
-
-                                                    <MenuFlyoutItem
-                                                        Command="{StaticResource ForceDeleteDriverCommand}"
-                                                        CommandParameter="{x:Bind}"
-                                                        IsEnabled="{x:Bind roothelper:RuntimeHelper.IsElevated}"
-                                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ForceDeleteDriver')}">
-
-                                                        <MenuFlyoutItem.Icon>
-                                                            <FontIcon FontSize="14" Glyph="&#xE711;" />
-                                                        </MenuFlyoutItem.Icon>
-                                                    </MenuFlyoutItem>
-                                                </MenuFlyout>
-                                            </Button.Flyout>
-
-                                            <ToolTipService.ToolTip>
-                                                <ToolTip
-                                                    MaxWidth="9999"
-                                                    Padding="0"
-                                                    Background="Transparent">
-
-                                                    <Grid>
-                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ViewMore')}" />
-                                                    </Grid>
-                                                </ToolTip>
-                                            </ToolTipService.ToolTip>
-                                        </Button>
-                                    </Grid>
-                                </Expander.Header>
-
-                                <Expander.Content>
-                                    <Grid
-                                        Margin="40,0,0,0"
-                                        ColumnSpacing="15"
-                                        RowSpacing="3">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <TextBlock
-                                            Grid.Row="0"
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverInfName')}" />
-
-                                        <TextBlock
-                                            Grid.Row="0"
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind DriverInfName}"
-                                            TextWrapping="Wrap" />
-
-                                        <TextBlock
-                                            Grid.Row="1"
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverOEMInfName')}" />
-
-                                        <TextBlock
-                                            Grid.Row="1"
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind DriverOEMInfName}"
-                                            TextWrapping="Wrap" />
-
-                                        <TextBlock
-                                            Grid.Row="2"
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverType')}" />
-
-                                        <TextBlock
-                                            Grid.Row="2"
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind DriverType}"
-                                            TextWrapping="Wrap" />
-
-                                        <TextBlock
-                                            Grid.Row="3"
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverVersion')}" />
-
-                                        <TextBlock
-                                            Grid.Row="3"
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind system:Convert.ToString(DriverVersion)}"
-                                            TextWrapping="Wrap" />
-
-                                        <TextBlock
-                                            Grid.Row="4"
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverDate')}" />
-
-                                        <TextBlock
-                                            Grid.Row="4"
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind DriverDate.ToString('yyyy/MM/dd')}"
-                                            TextWrapping="Wrap" />
-
-                                        <TextBlock
-                                            Grid.Row="5"
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverSize')}" />
-
-                                        <TextBlock
-                                            Grid.Row="5"
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind DriverSize}"
-                                            TextWrapping="Wrap" />
-
-                                        <TextBlock
-                                            Grid.Row="6"
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SignatureName')}" />
-
-                                        <TextBlock
-                                            Grid.Row="6"
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Left"
-                                            FontSize="14"
-                                            IsTextSelectionEnabled="True"
-                                            Text="{x:Bind SignatureName}"
-                                            TextWrapping="Wrap" />
-                                    </Grid>
-                                </Expander.Content>
-                            </Expander>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <!--  加载失败（包含搜索结果为空）  -->
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind DriverFailedContent, Mode=OneWay}"
+                    TextAlignment="Center"
+                    Visibility="{x:Bind CheckDriverState(DriverResultKind, enum:DriverResultKind.Failed), Mode=OneWay}" />
             </Grid>
-        </SplitView.Content>
+
+            <!--  正在操作中  -->
+            <Grid
+                Grid.Row="3"
+                Padding="40"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                ColumnSpacing="10"
+                CornerRadius="{StaticResource OverlayCornerRadius}"
+                Visibility="{x:Bind CheckDriverState(DriverResultKind, enum:DriverResultKind.Operating), Mode=OneWay}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <ProgressRing
+                    Grid.Column="0"
+                    Width="26"
+                    Height="26"
+                    IsActive="{x:Bind x:Object.Equals(DriverResultKind, enum:DriverResultKind.Operating), Mode=OneWay}" />
+
+                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Operating')}"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+            </Grid>
+
+            <!--  驱动理结果展示项目控件  -->
+            <ListView
+                Grid.Row="3"
+                Padding="30,0,30,30"
+                IsEnabled="{x:Bind GetIsOperating(DriverResultKind), Mode=OneWay}"
+                ItemsSource="{x:Bind DriverCollection}"
+                SelectionMode="None"
+                Visibility="{x:Bind GetDriverSuccessfullyState(DriverResultKind, x:True), Mode=OneWay}">
+
+                <ListView.ItemContainerStyle>
+                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="MinHeight" Value="0 " />
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ItemsControl.ItemContainerTransitions>
+                    <TransitionCollection />
+                </ItemsControl.ItemContainerTransitions>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:DriverModel">
+                        <Expander
+                            Margin="0,0,0,2"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            IsExpanded="False">
+
+                            <Expander.Header>
+                                <Grid Height="60">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        MinWidth="0"
+                                        Margin="0,0,12,0"
+                                        Command="{StaticResource CheckBoxClickCommand}"
+                                        IsChecked="{x:Bind IsSelected, Mode=TwoWay}">
+
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip
+                                                MaxWidth="9999"
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                                    <Grid Padding="{StaticResource ToolTipBorderPadding}">
+                                                        <TextBlock Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
+                                                        <TextBlock Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
+                                                    </Grid>
+                                                </Grid>
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </CheckBox>
+
+                                    <StackPanel
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Orientation="Vertical">
+
+                                        <TextBlock
+                                            x:Name="DeviceNameText"
+                                            HorizontalAlignment="Left"
+                                            IsTextSelectionEnabled="True"
+                                            Style="{StaticResource BodyTextBlockStyle}"
+                                            Text="{x:Bind DeviceName}"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="NoWrap">
+
+                                            <ToolTipService.ToolTip>
+                                                <ToolTip
+                                                    MaxWidth="9999"
+                                                    Padding="0"
+                                                    Background="Transparent"
+                                                    Visibility="{Binding ElementName=DeviceNameText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                    <Grid>
+                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind DeviceName}" />
+                                                    </Grid>
+                                                </ToolTip>
+                                            </ToolTipService.ToolTip>
+                                        </TextBlock>
+
+                                        <TextBlock
+                                            x:Name="DriverManufacturerText"
+                                            HorizontalAlignment="Left"
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            IsTextSelectionEnabled="True"
+                                            Style="{StaticResource CaptionTextBlockStyle}"
+                                            Text="{x:Bind DriverManufacturer}"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="NoWrap">
+
+                                            <ToolTipService.ToolTip>
+                                                <ToolTip
+                                                    MaxWidth="9999"
+                                                    Padding="0"
+                                                    Background="Transparent"
+                                                    Visibility="{Binding ElementName=DriverManufacturerText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                    <Grid>
+                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind DriverManufacturer}" />
+                                                    </Grid>
+                                                </ToolTip>
+                                            </ToolTipService.ToolTip>
+                                        </TextBlock>
+                                    </StackPanel>
+
+                                    <Button
+                                        Grid.Column="2"
+                                        MinHeight="{ThemeResource AppBarThemeCompactHeight}"
+                                        Margin="-6,0,-15,0"
+                                        Padding="{ThemeResource CommandBarMoreButtonMargin}"
+                                        VerticalAlignment="Center"
+                                        Foreground="{ThemeResource CommandBarForeground}"
+                                        IsAccessKeyScope="True"
+                                        Style="{ThemeResource EllipsisButton}">
+
+                                        <FontIcon
+                                            Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
+                                            VerticalAlignment="Center"
+                                            FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                                            FontSize="20"
+                                            Glyph="&#xE712;" />
+
+                                        <Button.Flyout>
+                                            <MenuFlyout Placement="Bottom">
+                                                <MenuFlyoutItem
+                                                    Command="{StaticResource OpenFolderCommand}"
+                                                    CommandParameter="{x:Bind DriverLocation}"
+                                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('OpenFolder')}">
+
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon FontSize="14" Glyph="&#xE8B7;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+
+                                                <MenuFlyoutSeparator />
+
+                                                <MenuFlyoutItem
+                                                    Command="{StaticResource DeleteDriverCommand}"
+                                                    CommandParameter="{x:Bind}"
+                                                    IsEnabled="{x:Bind roothelper:RuntimeHelper.IsElevated}"
+                                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DeleteDriver')}">
+
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon FontSize="14" Glyph="&#xE711;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+
+                                                <MenuFlyoutItem
+                                                    Command="{StaticResource ForceDeleteDriverCommand}"
+                                                    CommandParameter="{x:Bind}"
+                                                    IsEnabled="{x:Bind roothelper:RuntimeHelper.IsElevated}"
+                                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ForceDeleteDriver')}">
+
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon FontSize="14" Glyph="&#xE711;" />
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                            </MenuFlyout>
+                                        </Button.Flyout>
+
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip
+                                                MaxWidth="9999"
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ViewMore')}" />
+                                                </Grid>
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </Button>
+                                </Grid>
+                            </Expander.Header>
+
+                            <Grid
+                                Margin="40,0,0,0"
+                                ColumnSpacing="15"
+                                RowSpacing="3">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverInfName')}" />
+
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind DriverInfName}"
+                                    TextWrapping="Wrap" />
+
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverOEMInfName')}" />
+
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind DriverOEMInfName}"
+                                    TextWrapping="Wrap" />
+
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverType')}" />
+
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind DriverType}"
+                                    TextWrapping="Wrap" />
+
+                                <TextBlock
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverVersion')}" />
+
+                                <TextBlock
+                                    Grid.Row="3"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind system:Convert.ToString(DriverVersion)}"
+                                    TextWrapping="Wrap" />
+
+                                <TextBlock
+                                    Grid.Row="4"
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverDate')}" />
+
+                                <TextBlock
+                                    Grid.Row="4"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind DriverDate.ToString('yyyy/MM/dd')}"
+                                    TextWrapping="Wrap" />
+
+                                <TextBlock
+                                    Grid.Row="5"
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverSize')}" />
+
+                                <TextBlock
+                                    Grid.Row="5"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind DriverSize}"
+                                    TextWrapping="Wrap" />
+
+                                <TextBlock
+                                    Grid.Row="6"
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SignatureName')}" />
+
+                                <TextBlock
+                                    Grid.Row="6"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Left"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind SignatureName}"
+                                    TextWrapping="Wrap" />
+                            </Grid>
+                        </Expander>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
 
         <SplitView.Pane>
             <Grid>
@@ -765,12 +757,10 @@
                                 Click="{x:Bind OnCloseClicked}"
                                 Style="{StaticResource AlternateCloseButtonStyle}">
 
-                                <Button.Content>
-                                    <FontIcon
-                                        Margin="4"
-                                        FontSize="16"
-                                        Glyph="&#xE711;" />
-                                </Button.Content>
+                                <FontIcon
+                                    Margin="4"
+                                    FontSize="16"
+                                    Glyph="&#xE711;" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -902,12 +892,10 @@
                                 IsEnabled="{x:Bind system:Convert.ToBoolean(DriverOperationCollection.Count), Mode=OneWay}"
                                 Style="{StaticResource AlternateCloseButtonStyle}">
 
-                                <Button.Content>
-                                    <FontIcon
-                                        Margin="4"
-                                        FontSize="16"
-                                        Glyph="&#xE74D;" />
-                                </Button.Content>
+                                <FontIcon
+                                    Margin="4"
+                                    FontSize="16"
+                                    Glyph="&#xE74D;" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -930,12 +918,10 @@
                                 Click="{x:Bind OnCloseClicked}"
                                 Style="{StaticResource AlternateCloseButtonStyle}">
 
-                                <Button.Content>
-                                    <FontIcon
-                                        Margin="4"
-                                        FontSize="16"
-                                        Glyph="&#xE711;" />
-                                </Button.Content>
+                                <FontIcon
+                                    Margin="4"
+                                    FontSize="16"
+                                    Glyph="&#xE711;" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -1085,12 +1071,10 @@
                                             Style="{StaticResource AlternateCloseButtonStyle}"
                                             Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsOperating), Mode=OneWay}">
 
-                                            <Button.Content>
-                                                <FontIcon
-                                                    Margin="4"
-                                                    FontSize="16"
-                                                    Glyph="&#xE711;" />
-                                            </Button.Content>
+                                            <FontIcon
+                                                Margin="4"
+                                                FontSize="16"
+                                                Glyph="&#xE711;" />
 
                                             <ToolTipService.ToolTip>
                                                 <ToolTip

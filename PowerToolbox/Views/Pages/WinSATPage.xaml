@@ -717,25 +717,23 @@
                 </Grid>
             </Expander.Header>
 
-            <Expander.Content>
-                <StackPanel Margin="0">
-                    <TextBlock
-                        Margin="44,10,16,5"
-                        FontSize="14"
-                        FontWeight="Normal"
-                        Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('TipContent1')}"
-                        TextAlignment="Justify"
-                        TextWrapping="Wrap" />
+            <StackPanel Margin="0">
+                <TextBlock
+                    Margin="44,10,16,5"
+                    FontSize="14"
+                    FontWeight="Normal"
+                    Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('TipContent1')}"
+                    TextAlignment="Justify"
+                    TextWrapping="Wrap" />
 
-                    <TextBlock
-                        Margin="44,0,16,10"
-                        FontSize="14"
-                        FontWeight="Normal"
-                        Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('TipContent2')}"
-                        TextAlignment="Justify"
-                        TextWrapping="Wrap" />
-                </StackPanel>
-            </Expander.Content>
+                <TextBlock
+                    Margin="44,0,16,10"
+                    FontSize="14"
+                    FontWeight="Normal"
+                    Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('TipContent2')}"
+                    TextAlignment="Justify"
+                    TextWrapping="Wrap" />
+            </StackPanel>
         </Expander>
     </Grid>
 </Page>

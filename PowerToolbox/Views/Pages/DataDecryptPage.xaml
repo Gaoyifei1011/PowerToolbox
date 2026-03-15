@@ -165,9 +165,7 @@
                                 VerticalAlignment="Center"
                                 Visibility="{x:Bind GetDecryptFailedInfoButtonState(ResultSeverity, IsDecrypting, DecryptFailedInformation), Mode=OneWay}">
 
-                                <Button.Content>
-                                    <FontIcon FontSize="16" Glyph="&#xE783;" />
-                                </Button.Content>
+                                <FontIcon FontSize="16" Glyph="&#xE783;" />
 
                                 <Button.Flyout>
                                     <Flyout
@@ -226,12 +224,10 @@
                                                         IsEnabled="{x:Bind converter:ValueConverterHelper.IsNotEmptyString(DecryptFailedInformation), Mode=OneWay}"
                                                         Style="{StaticResource AlternateCloseButtonStyle}">
 
-                                                        <Button.Content>
-                                                            <FontIcon
-                                                                Margin="4"
-                                                                FontSize="16"
-                                                                Glyph="&#xE8C8;" />
-                                                        </Button.Content>
+                                                        <FontIcon
+                                                            Margin="4"
+                                                            FontSize="16"
+                                                            Glyph="&#xE8C8;" />
 
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
@@ -256,12 +252,10 @@
                                                         Style="{StaticResource AlternateCloseButtonStyle}"
                                                         Tag="{x:Bind ViewErrorInformationFlyout}">
 
-                                                        <Button.Content>
-                                                            <FontIcon
-                                                                Margin="4"
-                                                                FontSize="16"
-                                                                Glyph="&#xE711;" />
-                                                        </Button.Content>
+                                                        <FontIcon
+                                                            Margin="4"
+                                                            FontSize="16"
+                                                            Glyph="&#xE711;" />
 
                                                         <ToolTipService.ToolTip>
                                                             <ToolTip
@@ -343,26 +337,24 @@
                     </Grid>
                 </Expander.Header>
 
-                <Expander.Content>
-                    <RadioButtons
-                        Margin="8,0,0,8"
-                        Padding="12,10,0,10"
-                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
-                        ItemsSource="{x:Bind DataDecryptTypeList}"
-                        SelectedItem="{x:Bind SelectedDataDecryptType, Mode=OneWay}"
-                        SelectionChanged="{x:Bind OnDecryptSelectionChanged}"
-                        Style="{StaticResource RadioButtonsStyle}">
+                <RadioButtons
+                    Margin="8,0,0,8"
+                    Padding="12,10,0,10"
+                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                    ItemsSource="{x:Bind DataDecryptTypeList}"
+                    SelectedItem="{x:Bind SelectedDataDecryptType, Mode=OneWay}"
+                    SelectionChanged="{x:Bind OnDecryptSelectionChanged}"
+                    Style="{StaticResource RadioButtonsStyle}">
 
-                        <RadioButtons.ItemTemplate>
-                            <DataTemplate x:DataType="model:DataDecryptTypeModel">
-                                <RadioButton
-                                    MinWidth="0"
-                                    Margin="8,0,0,0"
-                                    Content="{x:Bind Name}" />
-                            </DataTemplate>
-                        </RadioButtons.ItemTemplate>
-                    </RadioButtons>
-                </Expander.Content>
+                    <RadioButtons.ItemTemplate>
+                        <DataTemplate x:DataType="model:DataDecryptTypeModel">
+                            <RadioButton
+                                MinWidth="0"
+                                Margin="8,0,0,0"
+                                Content="{x:Bind Name}" />
+                        </DataTemplate>
+                    </RadioButtons.ItemTemplate>
+                </RadioButtons>
             </Expander>
 
             <!--  解密算法选项  -->
@@ -396,617 +388,615 @@
                     </Grid>
                 </Expander.Header>
 
-                <Expander.Content>
-                    <StackPanel Padding="0">
-                        <!--  解密密钥  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
+                <StackPanel Padding="0">
+                    <!--  解密密钥  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind HasDecryptKey, Mode=OneWay}">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
                             VerticalAlignment="Center"
-                            Visibility="{x:Bind HasDecryptKey, Mode=OneWay}">
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DecryptKey')}" />
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('StringEncodingType')}"
+                            Visibility="{x:Bind HasDecryptKeyStringType, Mode=OneWay}" />
+
+                        <DropDownButton
+                            Grid.Column="2"
+                            Margin="2,0,0,0"
+                            Content="{x:Bind SelectedDecryptKeyStringType.Value, Mode=OneWay}"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                            Visibility="{x:Bind HasDecryptKeyStringType, Mode=OneWay}">
+
+                            <DropDownButton.Flyout>
+                                <MenuFlyout Placement="Bottom">
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnDecryptKeyStringTypeClicked}"
+                                        GroupName="DecryptKeyStringTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptKeyStringType.Key, DecryptKeyStringTypeList[0].Key), Mode=OneWay}"
+                                        Tag="{x:Bind DecryptKeyStringTypeList[0]}"
+                                        Text="{x:Bind system:Convert.ToString(DecryptKeyStringTypeList[0].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnDecryptKeyStringTypeClicked}"
+                                        GroupName="DecryptKeyStringTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptKeyStringType.Key, DecryptKeyStringTypeList[1].Key), Mode=OneWay}"
+                                        Tag="{x:Bind DecryptKeyStringTypeList[1]}"
+                                        Text="{x:Bind system:Convert.ToString(DecryptKeyStringTypeList[1].Value)}" />
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+
+                        <TextBox
+                            Grid.Column="3"
+                            Width="350"
+                            Margin="6,0,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                            PlaceholderText="{x:Bind DecryptKeyPHText, Mode=OneWay}"
+                            Text="{x:Bind DecryptKeyText, Mode=OneWay}"
+                            TextChanged="{x:Bind OnDecryptKeyTextChanged}">
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip
+                                    MaxWidth="9999"
+                                    Padding="0"
+                                    Background="Transparent">
+
+                                    <Grid>
+                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind system:String.Format(StringLengthString, DecryptKeyText.Length), Mode=OneWay}" />
+                                    </Grid>
+                                </ToolTip>
+                            </ToolTipService.ToolTip>
+                        </TextBox>
+                    </Grid>
+
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasDecryptKey, Mode=OneWay}" />
+
+                    <!--  初始化向量  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind HasInitializationVector, Mode=OneWay}">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('InitializationVector')}" />
+
+                        <TextBlock
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('StringEncodingType')}" />
+
+                        <DropDownButton
+                            Grid.Column="2"
+                            Margin="2,0,0,0"
+                            Content="{x:Bind SelectedInitializationVectorStringType.Value, Mode=OneWay}"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
+
+                            <DropDownButton.Flyout>
+                                <MenuFlyout Placement="Bottom">
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnInitializationVectorStringTypeClicked}"
+                                        GroupName="InitializationVectorStringTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedInitializationVectorStringType.Key, InitializationVectorStringTypeList[0].Key), Mode=OneWay}"
+                                        Tag="{x:Bind InitializationVectorStringTypeList[0]}"
+                                        Text="{x:Bind system:Convert.ToString(InitializationVectorStringTypeList[0].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnInitializationVectorStringTypeClicked}"
+                                        GroupName="InitializationVectorStringTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedInitializationVectorStringType.Key, InitializationVectorStringTypeList[1].Key), Mode=OneWay}"
+                                        Tag="{x:Bind InitializationVectorStringTypeList[1]}"
+                                        Text="{x:Bind system:Convert.ToString(InitializationVectorStringTypeList[1].Value)}" />
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+
+                        <TextBox
+                            Grid.Column="3"
+                            Width="350"
+                            Margin="6,0,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                            PlaceholderText="{x:Bind InitializationVectorPHText, Mode=OneWay}"
+                            Text="{x:Bind InitializationVectorText, Mode=OneWay}"
+                            TextChanged="{x:Bind OnInitializationVectorTextChanged}">
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip
+                                    MaxWidth="9999"
+                                    Padding="0"
+                                    Background="Transparent">
+
+                                    <Grid>
+                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind system:String.Format(StringLengthString, InitializationVectorText.Length), Mode=OneWay}" />
+                                    </Grid>
+                                </ToolTip>
+                            </ToolTipService.ToolTip>
+                        </TextBox>
+                    </Grid>
+
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasInitializationVector, Mode=OneWay}" />
+
+                    <!--  解密的块密码模式  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind HasDecryptedBlockCipherMode, Mode=OneWay}">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DecryptedBlockCipherMode')}" />
+
+                        <DropDownButton
+                            Grid.Column="1"
+                            Content="{x:Bind SelectedDecryptedBlockCipherMode.Value, Mode=OneWay}"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
+
+                            <DropDownButton.Flyout>
+                                <MenuFlyout Placement="Bottom">
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
+                                        GroupName="DecryptedBlockCipherModeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[0].Key), Mode=OneWay}"
+                                        Tag="{x:Bind DecryptedBlockCipherModeList[0]}"
+                                        Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[0].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
+                                        GroupName="DecryptedBlockCipherModeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[1].Key), Mode=OneWay}"
+                                        Tag="{x:Bind DecryptedBlockCipherModeList[1]}"
+                                        Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[1].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
+                                        GroupName="DecryptedBlockCipherModeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[2].Key), Mode=OneWay}"
+                                        Tag="{x:Bind DecryptedBlockCipherModeList[2]}"
+                                        Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[2].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
+                                        GroupName="DecryptedBlockCipherModeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[3].Key), Mode=OneWay}"
+                                        Tag="{x:Bind DecryptedBlockCipherModeList[3]}"
+                                        Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[3].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
+                                        GroupName="DecryptedBlockCipherModeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[4].Key), Mode=OneWay}"
+                                        Tag="{x:Bind DecryptedBlockCipherModeList[4]}"
+                                        Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[4].Value)}" />
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+                    </Grid>
+
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasDecryptedBlockCipherMode, Mode=OneWay}" />
+
+                    <!--  填充模式  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind HasPaddingMode, Mode=OneWay}">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('PaddingMode')}" />
+
+                        <DropDownButton
+                            Grid.Column="1"
+                            Content="{x:Bind SelectedPaddingMode.Value, Mode=OneWay}"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
+
+                            <DropDownButton.Flyout>
+                                <MenuFlyout Placement="Bottom">
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnPaddingModeClicked}"
+                                        GroupName="PaddingModeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[0].Key), Mode=OneWay}"
+                                        Tag="{x:Bind PaddingModeList[0]}"
+                                        Text="{x:Bind system:Convert.ToString(PaddingModeList[0].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnPaddingModeClicked}"
+                                        GroupName="PaddingModeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[1].Key), Mode=OneWay}"
+                                        Tag="{x:Bind PaddingModeList[1]}"
+                                        Text="{x:Bind system:Convert.ToString(PaddingModeList[1].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnPaddingModeClicked}"
+                                        GroupName="PaddingModeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[2].Key), Mode=OneWay}"
+                                        Tag="{x:Bind PaddingModeList[2]}"
+                                        Text="{x:Bind system:Convert.ToString(PaddingModeList[2].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnPaddingModeClicked}"
+                                        GroupName="PaddingModeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[3].Key), Mode=OneWay}"
+                                        Tag="{x:Bind PaddingModeList[3]}"
+                                        Text="{x:Bind system:Convert.ToString(PaddingModeList[3].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnPaddingModeClicked}"
+                                        GroupName="PaddingModeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[4].Key), Mode=OneWay}"
+                                        Tag="{x:Bind PaddingModeList[4]}"
+                                        Text="{x:Bind system:Convert.ToString(PaddingModeList[4].Value)}" />
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+                    </Grid>
+
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasPaddingMode, Mode=OneWay}" />
+
+                    <!--  偏移量  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind HasOffset, Mode=OneWay}">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('Offset')}" />
+
+                        <NumberBox
+                            Grid.Column="1"
+                            Margin="6,0,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                            LargeChange="1"
+                            SmallChange="1"
+                            SpinButtonPlacementMode="Inline"
+                            ValueChanged="{x:Bind OnOffsetValueChanged}"
+                            Value="{x:Bind Offset, Mode=OneWay}" />
+                    </Grid>
+
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasOffset, Mode=OneWay}" />
+
+                    <!--  解密私钥（用于非对称解密）  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind HasDecryptPrivateKey, Mode=OneWay}">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DecryptPrivateKey')}" />
+
+                        <TextBox
+                            Grid.Column="1"
+                            Width="350"
+                            Margin="6,0,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                            PlaceholderText="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DecryptPrivateKeyPHText')}"
+                            Text="{x:Bind DecryptPrivateKeyText, Mode=OneWay}"
+                            TextChanged="{x:Bind OnDecryptPrivateKeyTextChanged}">
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip
+                                    MaxWidth="9999"
+                                    Padding="0"
+                                    Background="Transparent">
+
+                                    <Grid>
+                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind system:String.Format(StringLengthString, DecryptPrivateKeyText.Length), Mode=OneWay}" />
+                                    </Grid>
+                                </ToolTip>
+                            </ToolTipService.ToolTip>
+                        </TextBox>
+                    </Grid>
+
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasDecryptPrivateKey, Mode=OneWay}" />
+
+                    <!--  RSA 非对称加密填充模式  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind HasRSAEncryptionPaddingMode, Mode=OneWay}">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('RSAEncryptionPaddingMode')}" />
+
+                        <DropDownButton
+                            Grid.Column="1"
+                            Content="{x:Bind SelectedRSAEncryptionPaddingMode.Value, Mode=OneWay}"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
+
+                            <DropDownButton.Flyout>
+                                <MenuFlyout Placement="Bottom">
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnRSAEncryptionPaddingModeClicked}"
+                                        GroupName="RSAEncryptionPaddingModeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedRSAEncryptionPaddingMode.Key, RSAEncryptionPaddingModeList[0].Key), Mode=OneWay}"
+                                        Tag="{x:Bind RSAEncryptionPaddingModeList[0]}"
+                                        Text="{x:Bind system:Convert.ToString(RSAEncryptionPaddingModeList[0].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnRSAEncryptionPaddingModeClicked}"
+                                        GroupName="RSAEncryptionPaddingModeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedRSAEncryptionPaddingMode.Key, RSAEncryptionPaddingModeList[1].Key), Mode=OneWay}"
+                                        Tag="{x:Bind RSAEncryptionPaddingModeList[1]}"
+                                        Text="{x:Bind system:Convert.ToString(RSAEncryptionPaddingModeList[1].Value)}" />
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+                    </Grid>
+
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasRSAEncryptionPaddingMode, Mode=OneWay}" />
+
+                    <!--  以文本方式解析解密后的数据  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind HasParseAsTextData, Mode=OneWay}">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ParseAsTextData')}" />
+
+                        <StackPanel
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
 
                             <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DecryptKey')}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('StringEncodingType')}"
-                                Visibility="{x:Bind HasDecryptKeyStringType, Mode=OneWay}" />
-
-                            <DropDownButton
-                                Grid.Column="2"
-                                Margin="2,0,0,0"
-                                Content="{x:Bind SelectedDecryptKeyStringType.Value, Mode=OneWay}"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
-                                Visibility="{x:Bind HasDecryptKeyStringType, Mode=OneWay}">
-
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnDecryptKeyStringTypeClicked}"
-                                            GroupName="DecryptKeyStringTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedDecryptKeyStringType.Key, DecryptKeyStringTypeList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind DecryptKeyStringTypeList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(DecryptKeyStringTypeList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnDecryptKeyStringTypeClicked}"
-                                            GroupName="DecryptKeyStringTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedDecryptKeyStringType.Key, DecryptKeyStringTypeList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind DecryptKeyStringTypeList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(DecryptKeyStringTypeList[1].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
-
-                            <TextBox
-                                Grid.Column="3"
-                                Width="350"
-                                Margin="6,0,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
-                                PlaceholderText="{x:Bind DecryptKeyPHText, Mode=OneWay}"
-                                Text="{x:Bind DecryptKeyText, Mode=OneWay}"
-                                TextChanged="{x:Bind OnDecryptKeyTextChanged}">
-
-                                <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        MaxWidth="9999"
-                                        Padding="0"
-                                        Background="Transparent">
-
-                                        <Grid>
-                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind system:String.Format(StringLengthString, DecryptKeyText.Length), Mode=OneWay}" />
-                                        </Grid>
-                                    </ToolTip>
-                                </ToolTipService.ToolTip>
-                            </TextBox>
-                        </Grid>
-
-                        <MenuFlyoutSeparator Visibility="{x:Bind HasDecryptKey, Mode=OneWay}" />
-
-                        <!--  初始化向量  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center"
-                            Visibility="{x:Bind HasInitializationVector, Mode=OneWay}">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                                Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('ParseAsTextDataOffContent')}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(ParseAsTextData), Mode=OneWay}" />
 
                             <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('InitializationVector')}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('StringEncodingType')}" />
-
-                            <DropDownButton
-                                Grid.Column="2"
-                                Margin="2,0,0,0"
-                                Content="{x:Bind SelectedInitializationVectorStringType.Value, Mode=OneWay}"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
-
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnInitializationVectorStringTypeClicked}"
-                                            GroupName="InitializationVectorStringTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedInitializationVectorStringType.Key, InitializationVectorStringTypeList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind InitializationVectorStringTypeList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(InitializationVectorStringTypeList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnInitializationVectorStringTypeClicked}"
-                                            GroupName="InitializationVectorStringTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedInitializationVectorStringType.Key, InitializationVectorStringTypeList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind InitializationVectorStringTypeList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(InitializationVectorStringTypeList[1].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
-
-                            <TextBox
-                                Grid.Column="3"
-                                Width="350"
-                                Margin="6,0,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
-                                PlaceholderText="{x:Bind InitializationVectorPHText, Mode=OneWay}"
-                                Text="{x:Bind InitializationVectorText, Mode=OneWay}"
-                                TextChanged="{x:Bind OnInitializationVectorTextChanged}">
+                                Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('ParseAsTextDataOnContent')}"
+                                Visibility="{x:Bind ParseAsTextData, Mode=OneWay}" />
 
-                                <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        MaxWidth="9999"
-                                        Padding="0"
-                                        Background="Transparent">
+                            <ToggleSwitch
+                                MinWidth="0"
+                                Margin="10,-2,-10,0"
+                                IsOn="{x:Bind ParseAsTextData, Mode=OneWay}"
+                                OffContent=""
+                                OnContent=""
+                                Toggled="{x:Bind OnParseAsTextDataToggled}" />
+                        </StackPanel>
+                    </Grid>
 
-                                        <Grid>
-                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind system:String.Format(StringLengthString, InitializationVectorText.Length), Mode=OneWay}" />
-                                        </Grid>
-                                    </ToolTip>
-                                </ToolTipService.ToolTip>
-                            </TextBox>
-                        </Grid>
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasParseAsTextData, Mode=OneWay}" />
 
-                        <MenuFlyoutSeparator Visibility="{x:Bind HasInitializationVector, Mode=OneWay}" />
+                    <!--  文字解码类型  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind GetHasParseAsTextData(HasParseAsTextData, ParseAsTextData), Mode=OneWay}">
 
-                        <!--  解密的块密码模式  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
                             VerticalAlignment="Center"
-                            Visibility="{x:Bind HasDecryptedBlockCipherMode, Mode=OneWay}">
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TextEncodingType')}" />
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                        <DropDownButton
+                            Grid.Column="1"
+                            Margin="2,0,0,0"
+                            Content="{x:Bind SelectedTextEncodingType.Value, Mode=OneWay}"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
 
-                            <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DecryptedBlockCipherMode')}" />
+                            <DropDownButton.Flyout>
+                                <MenuFlyout Placement="Bottom">
+                                    <MenuFlyout.MenuFlyoutPresenterStyle>
+                                        <Style BasedOn="{StaticResource DefaultMenuFlyoutPresenterStyle}" TargetType="MenuFlyoutPresenter">
+                                            <Setter Property="MaxHeight" Value="300" />
+                                        </Style>
+                                    </MenuFlyout.MenuFlyoutPresenterStyle>
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[0].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[0]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[0].Value)}" />
 
-                            <DropDownButton
-                                Grid.Column="1"
-                                Content="{x:Bind SelectedDecryptedBlockCipherMode.Value, Mode=OneWay}"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[1].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[1]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[1].Value)}" />
 
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
-                                            GroupName="DecryptedBlockCipherModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind DecryptedBlockCipherModeList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[0].Value)}" />
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[2].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[2]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[2].Value)}" />
 
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
-                                            GroupName="DecryptedBlockCipherModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind DecryptedBlockCipherModeList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[1].Value)}" />
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[3].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[3]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[3].Value)}" />
 
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
-                                            GroupName="DecryptedBlockCipherModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[2].Key), Mode=OneWay}"
-                                            Tag="{x:Bind DecryptedBlockCipherModeList[2]}"
-                                            Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[2].Value)}" />
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[4].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[4]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[4].Value)}" />
 
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
-                                            GroupName="DecryptedBlockCipherModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[3].Key), Mode=OneWay}"
-                                            Tag="{x:Bind DecryptedBlockCipherModeList[3]}"
-                                            Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[3].Value)}" />
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[5].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[5]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[5].Value)}" />
 
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
-                                            GroupName="DecryptedBlockCipherModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[4].Key), Mode=OneWay}"
-                                            Tag="{x:Bind DecryptedBlockCipherModeList[4]}"
-                                            Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[4].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
-                        </Grid>
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[6].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[6]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[6].Value)}" />
 
-                        <MenuFlyoutSeparator Visibility="{x:Bind HasDecryptedBlockCipherMode, Mode=OneWay}" />
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[7].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[7]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[7].Value)}" />
 
-                        <!--  填充模式  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[8].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[8]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[8].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[9].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[9]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[9].Value)}" />
+
+                                    <MenuFlyoutSeparator />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[10].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[10]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[10].Value)}" />
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+                    </Grid>
+
+                    <MenuFlyoutSeparator Visibility="{x:Bind GetHasParseAsTextData(HasParseAsTextData, ParseAsTextData), Mode=OneWay}" />
+
+                    <!--  文字编码类型为自定义时手动设置编码类型  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind GetCustomTextEncodingType(HasParseAsTextData, ParseAsTextData, SelectedTextEncodingType.Key, TextEncodingTypeList[10].Key), Mode=OneWay}">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
                             VerticalAlignment="Center"
-                            Visibility="{x:Bind HasPaddingMode, Mode=OneWay}">
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TextEncodingCustomType')}" />
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('PaddingMode')}" />
-
-                            <DropDownButton
-                                Grid.Column="1"
-                                Content="{x:Bind SelectedPaddingMode.Value, Mode=OneWay}"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
-
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnPaddingModeClicked}"
-                                            GroupName="PaddingModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind PaddingModeList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(PaddingModeList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnPaddingModeClicked}"
-                                            GroupName="PaddingModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind PaddingModeList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(PaddingModeList[1].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnPaddingModeClicked}"
-                                            GroupName="PaddingModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[2].Key), Mode=OneWay}"
-                                            Tag="{x:Bind PaddingModeList[2]}"
-                                            Text="{x:Bind system:Convert.ToString(PaddingModeList[2].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnPaddingModeClicked}"
-                                            GroupName="PaddingModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[3].Key), Mode=OneWay}"
-                                            Tag="{x:Bind PaddingModeList[3]}"
-                                            Text="{x:Bind system:Convert.ToString(PaddingModeList[3].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnPaddingModeClicked}"
-                                            GroupName="PaddingModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[4].Key), Mode=OneWay}"
-                                            Tag="{x:Bind PaddingModeList[4]}"
-                                            Text="{x:Bind system:Convert.ToString(PaddingModeList[4].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
-                        </Grid>
-
-                        <MenuFlyoutSeparator Visibility="{x:Bind HasPaddingMode, Mode=OneWay}" />
-
-                        <!--  偏移量  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
+                        <TextBox
+                            Grid.Column="1"
+                            Width="350"
+                            Margin="6,0,0,0"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Center"
-                            Visibility="{x:Bind HasOffset, Mode=OneWay}">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('Offset')}" />
-
-                            <NumberBox
-                                Grid.Column="1"
-                                Margin="6,0,0,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
-                                LargeChange="1"
-                                SmallChange="1"
-                                SpinButtonPlacementMode="Inline"
-                                ValueChanged="{x:Bind OnOffsetValueChanged}"
-                                Value="{x:Bind Offset, Mode=OneWay}" />
-                        </Grid>
-
-                        <MenuFlyoutSeparator Visibility="{x:Bind HasOffset, Mode=OneWay}" />
-
-                        <!--  解密私钥（用于非对称解密）  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center"
-                            Visibility="{x:Bind HasDecryptPrivateKey, Mode=OneWay}">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DecryptPrivateKey')}" />
-
-                            <TextBox
-                                Grid.Column="1"
-                                Width="350"
-                                Margin="6,0,0,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
-                                PlaceholderText="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DecryptPrivateKeyPHText')}"
-                                Text="{x:Bind DecryptPrivateKeyText, Mode=OneWay}"
-                                TextChanged="{x:Bind OnDecryptPrivateKeyTextChanged}">
-
-                                <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        MaxWidth="9999"
-                                        Padding="0"
-                                        Background="Transparent">
-
-                                        <Grid>
-                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind system:String.Format(StringLengthString, DecryptPrivateKeyText.Length), Mode=OneWay}" />
-                                        </Grid>
-                                    </ToolTip>
-                                </ToolTipService.ToolTip>
-                            </TextBox>
-                        </Grid>
-
-                        <MenuFlyoutSeparator Visibility="{x:Bind HasDecryptPrivateKey, Mode=OneWay}" />
-
-                        <!--  RSA 非对称加密填充模式  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center"
-                            Visibility="{x:Bind HasRSAEncryptionPaddingMode, Mode=OneWay}">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('RSAEncryptionPaddingMode')}" />
-
-                            <DropDownButton
-                                Grid.Column="1"
-                                Content="{x:Bind SelectedRSAEncryptionPaddingMode.Value, Mode=OneWay}"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
-
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnRSAEncryptionPaddingModeClicked}"
-                                            GroupName="RSAEncryptionPaddingModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRSAEncryptionPaddingMode.Key, RSAEncryptionPaddingModeList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind RSAEncryptionPaddingModeList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(RSAEncryptionPaddingModeList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnRSAEncryptionPaddingModeClicked}"
-                                            GroupName="RSAEncryptionPaddingModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRSAEncryptionPaddingMode.Key, RSAEncryptionPaddingModeList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind RSAEncryptionPaddingModeList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(RSAEncryptionPaddingModeList[1].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
-                        </Grid>
-
-                        <MenuFlyoutSeparator Visibility="{x:Bind HasRSAEncryptionPaddingMode, Mode=OneWay}" />
-
-                        <!--  以文本方式解析解密后的数据  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center"
-                            Visibility="{x:Bind HasParseAsTextData, Mode=OneWay}">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ParseAsTextData')}" />
-
-                            <StackPanel
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                Orientation="Horizontal">
-
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('ParseAsTextDataOffContent')}"
-                                    Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(ParseAsTextData), Mode=OneWay}" />
-
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('ParseAsTextDataOnContent')}"
-                                    Visibility="{x:Bind ParseAsTextData, Mode=OneWay}" />
-
-                                <ToggleSwitch
-                                    MinWidth="0"
-                                    Margin="10,-2,-10,0"
-                                    IsOn="{x:Bind ParseAsTextData, Mode=OneWay}"
-                                    OffContent=""
-                                    OnContent=""
-                                    Toggled="{x:Bind OnParseAsTextDataToggled}" />
-                            </StackPanel>
-                        </Grid>
-
-                        <MenuFlyoutSeparator Visibility="{x:Bind HasParseAsTextData, Mode=OneWay}" />
-
-                        <!--  文字解码类型  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center"
-                            Visibility="{x:Bind GetHasParseAsTextData(HasParseAsTextData, ParseAsTextData), Mode=OneWay}">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TextEncodingType')}" />
-
-                            <DropDownButton
-                                Grid.Column="1"
-                                Margin="2,0,0,0"
-                                Content="{x:Bind SelectedTextEncodingType.Value, Mode=OneWay}"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
-
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <MenuFlyout.MenuFlyoutPresenterStyle>
-                                            <Style BasedOn="{StaticResource DefaultMenuFlyoutPresenterStyle}" TargetType="MenuFlyoutPresenter">
-                                                <Setter Property="MaxHeight" Value="300" />
-                                            </Style>
-                                        </MenuFlyout.MenuFlyoutPresenterStyle>
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[1].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[2].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[2]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[2].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[3].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[3]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[3].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[4].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[4]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[4].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[5].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[5]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[5].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[6].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[6]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[6].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[7].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[7]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[7].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[8].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[8]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[8].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[9].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[9]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[9].Value)}" />
-
-                                        <MenuFlyoutSeparator />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[10].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[10]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[10].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
-                        </Grid>
-
-                        <MenuFlyoutSeparator Visibility="{x:Bind GetHasParseAsTextData(HasParseAsTextData, ParseAsTextData), Mode=OneWay}" />
-
-                        <!--  文字编码类型为自定义时手动设置编码类型  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center"
-                            Visibility="{x:Bind GetCustomTextEncodingType(HasParseAsTextData, ParseAsTextData, SelectedTextEncodingType.Key, TextEncodingTypeList[10].Key), Mode=OneWay}">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TextEncodingCustomType')}" />
-
-                            <TextBox
-                                Grid.Column="1"
-                                Width="350"
-                                Margin="6,0,0,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
-                                PlaceholderText="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TextEncodingCustomTypePHText')}"
-                                Text="{x:Bind TextEncodingCustomTypeText}"
-                                TextChanged="{x:Bind OnTextEncodingCustomTypeTextChanged}" />
-                        </Grid>
-                    </StackPanel>
-                </Expander.Content>
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                            PlaceholderText="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TextEncodingCustomTypePHText')}"
+                            Text="{x:Bind TextEncodingCustomTypeText}"
+                            TextChanged="{x:Bind OnTextEncodingCustomTypeTextChanged}" />
+                    </Grid>
+                </StackPanel>
             </Expander>
 
             <!--  保存选项  -->
@@ -1039,120 +1029,118 @@
                     </Grid>
                 </Expander.Header>
 
-                <Expander.Content>
-                    <StackPanel Padding="0">
-                        <!--  保存解密的数据到本地文件中  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center">
+                <StackPanel Padding="0">
+                    <!--  保存解密的数据到本地文件中  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center">
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('SaveDecryptedDataToLocalFile')}" />
+
+                        <StackPanel
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
 
                             <TextBlock
-                                Grid.Column="0"
+                                HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('SaveDecryptedDataToLocalFile')}" />
+                                Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('SaveDecryptedDataToLocalFileOffContent')}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(SaveDecryptedDataToLocalFile), Mode=OneWay}" />
 
-                            <StackPanel
-                                Grid.Column="1"
+                            <TextBlock
+                                HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
-                                Orientation="Horizontal">
+                                Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('SaveDecryptedDataToLocalFileOnContent')}"
+                                Visibility="{x:Bind SaveDecryptedDataToLocalFile, Mode=OneWay}" />
 
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('SaveDecryptedDataToLocalFileOffContent')}"
-                                    Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(SaveDecryptedDataToLocalFile), Mode=OneWay}" />
+                            <ToggleSwitch
+                                MinWidth="0"
+                                Margin="10,-2,-10,0"
+                                IsOn="{x:Bind SaveDecryptedDataToLocalFile, Mode=OneWay}"
+                                OffContent=""
+                                OnContent=""
+                                Toggled="{x:Bind OnSaveDecryptedDataToLocalFileToggled}" />
+                        </StackPanel>
+                    </Grid>
 
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('SaveDecryptedDataToLocalFileOnContent')}"
-                                    Visibility="{x:Bind SaveDecryptedDataToLocalFile, Mode=OneWay}" />
+                    <MenuFlyoutSeparator Visibility="{x:Bind SaveDecryptedDataToLocalFile, Mode=OneWay}" />
 
-                                <ToggleSwitch
-                                    MinWidth="0"
-                                    Margin="10,-2,-10,0"
-                                    IsOn="{x:Bind SaveDecryptedDataToLocalFile, Mode=OneWay}"
-                                    OffContent=""
-                                    OnContent=""
-                                    Toggled="{x:Bind OnSaveDecryptedDataToLocalFileToggled}" />
-                            </StackPanel>
-                        </Grid>
+                    <!--  设置要保存的文件  -->
+                    <Grid
+                        Grid.Row="0"
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        BorderThickness="1"
+                        Visibility="{x:Bind SaveDecryptedDataToLocalFile, Mode=OneWay}">
 
-                        <MenuFlyoutSeparator Visibility="{x:Bind SaveDecryptedDataToLocalFile, Mode=OneWay}" />
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                        <!--  设置要保存的文件  -->
-                        <Grid
-                            Grid.Row="0"
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
+                        <StackPanel
+                            Grid.Column="0"
                             VerticalAlignment="Center"
-                            BorderThickness="1"
-                            Visibility="{x:Bind SaveDecryptedDataToLocalFile, Mode=OneWay}">
+                            Orientation="Vertical">
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <StackPanel
-                                Grid.Column="0"
+                            <TextBlock
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                Orientation="Vertical">
+                                Style="{StaticResource BodyTextBlockStyle}"
+                                Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('FileStoragePath')}" />
 
-                                <TextBlock
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource BodyTextBlockStyle}"
-                                    Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('FileStoragePath')}" />
+                            <TextBlock
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap"
+                                Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(SaveDecryptedFilePath), Mode=OneWay}">
 
-                                <TextBlock
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    TextTrimming="CharacterEllipsis"
-                                    TextWrapping="NoWrap"
-                                    Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(SaveDecryptedFilePath), Mode=OneWay}">
+                                <Hyperlink Click="{x:Bind OnSaveDecryptedFilePathClicked}" UnderlineStyle="None">
+                                    <Run Text="{x:Bind SaveDecryptedFilePath, Mode=OneWay}" />
+                                </Hyperlink>
 
-                                    <Hyperlink Click="{x:Bind OnSaveDecryptedFilePathClicked}" UnderlineStyle="None">
-                                        <Run Text="{x:Bind SaveDecryptedFilePath, Mode=OneWay}" />
-                                    </Hyperlink>
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Padding="0"
+                                        Background="Transparent">
 
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent">
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
 
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <StackPanel Padding="{StaticResource ToolTipBorderPadding}" HorizontalAlignment="Stretch">
+                                                <TextBlock Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('FileStoragePath')}" />
+                                                <TextBlock Text="{x:Bind SaveDecryptedFilePath, Mode=OneWay}" />
+                                                <MenuFlyoutSeparator Margin="4,3" />
+                                                <TextBlock Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('OpenFolder')}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </ToolTip>
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+                        </StackPanel>
 
-                                                <StackPanel Padding="{StaticResource ToolTipBorderPadding}" HorizontalAlignment="Stretch">
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('FileStoragePath')}" />
-                                                    <TextBlock Text="{x:Bind SaveDecryptedFilePath, Mode=OneWay}" />
-                                                    <MenuFlyoutSeparator Margin="4,3" />
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('OpenFolder')}" />
-                                                </StackPanel>
-                                            </Grid>
-                                        </ToolTip>
-                                    </ToolTipService.ToolTip>
-                                </TextBlock>
-                            </StackPanel>
-
-                            <Button
-                                Grid.Column="1"
-                                Margin="6,0,0,0"
-                                Click="{x:Bind OnChangeFolderClicked}"
-                                Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ChangeFilePath')}" />
-                        </Grid>
-                    </StackPanel>
-                </Expander.Content>
+                        <Button
+                            Grid.Column="1"
+                            Margin="6,0,0,0"
+                            Click="{x:Bind OnChangeFolderClicked}"
+                            Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ChangeFilePath')}" />
+                    </Grid>
+                </StackPanel>
             </Expander>
 
             <!--  数据解密控制栏  -->
@@ -1220,23 +1208,21 @@
                     </Grid>
                 </Expander.Header>
 
-                <Expander.Content>
-                    <StackPanel>
-                        <TextBlock
-                            IsTextSelectionEnabled="{x:Bind GetIsNotDecryptedResultString(IsLargeContent, IsBinaryFile), Mode=OneWay}"
-                            MaxLines="5"
-                            Text="{x:Bind DecryptResult, Mode=OneWay}"
-                            TextAlignment="Justify"
-                            TextTrimming="CharacterEllipsis"
-                            TextWrapping="Wrap" />
+                <StackPanel>
+                    <TextBlock
+                        IsTextSelectionEnabled="{x:Bind GetIsNotDecryptedResultString(IsLargeContent, IsBinaryFile), Mode=OneWay}"
+                        MaxLines="5"
+                        Text="{x:Bind DecryptResult, Mode=OneWay}"
+                        TextAlignment="Justify"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock HorizontalAlignment="Left" Visibility="{x:Bind GetIsDecryptedResultString(IsLargeContent, IsBinaryFile), Mode=OneWay}">
-                            <Hyperlink Click="{x:Bind OnViewLocalFileClicked}" UnderlineStyle="None">
-                                <Run Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ViewLocalFile')}" />
-                            </Hyperlink>
-                        </TextBlock>
-                    </StackPanel>
-                </Expander.Content>
+                    <TextBlock HorizontalAlignment="Left" Visibility="{x:Bind GetIsDecryptedResultString(IsLargeContent, IsBinaryFile), Mode=OneWay}">
+                        <Hyperlink Click="{x:Bind OnViewLocalFileClicked}" UnderlineStyle="None">
+                            <Run Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ViewLocalFile')}" />
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
             </Expander>
 
             <!--  小提示  -->
@@ -1268,137 +1254,135 @@
                     </Grid>
                 </Expander.Header>
 
-                <Expander.Content>
-                    <StackPanel>
-                        <TextBlock
-                            Margin="44,10,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent1')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                <StackPanel>
+                    <TextBlock
+                        Margin="44,10,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent1')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent2')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent2')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent3')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent3')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent4')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent4')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent5')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent5')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent6')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent6')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent7')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent7')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent8')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent8')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent9')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent9')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent10')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent10')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent11')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent11')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent12')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent12')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent13')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent13')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent14')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent14')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,5"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent15')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="44,0,16,5"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent15')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
 
-                        <TextBlock
-                            Margin="44,0,16,10"
-                            FontSize="14"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent16')}"
-                            TextAlignment="Justify"
-                            TextWrapping="Wrap" />
-                    </StackPanel>
-                </Expander.Content>
+                    <TextBlock
+                        Margin="44,0,16,10"
+                        FontSize="14"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TipContent16')}"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap" />
+                </StackPanel>
             </Expander>
         </Grid>
     </ScrollViewer>

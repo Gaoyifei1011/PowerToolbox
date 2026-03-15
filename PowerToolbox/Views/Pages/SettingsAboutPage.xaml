@@ -357,13 +357,99 @@
                         Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('Reference')}" />
                 </Expander.Header>
 
-                <Expander.Content>
+                <GridView
+                    Margin="26,0,16,0"
+                    Padding="5"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    ItemsSource="{x:Bind ReferenceList}"
+                    SelectionMode="None">
+
+                    <GridView.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="MinHeight" Value="0" />
+                            <Setter Property="Padding" Value="0" />
+                        </Style>
+                    </GridView.ItemContainerStyle>
+
+                    <ItemsControl.ItemContainerTransitions>
+                        <TransitionCollection />
+                    </ItemsControl.ItemContainerTransitions>
+
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="collection:DictionaryEntry">
+                            <StackPanel
+                                Width="320"
+                                Padding="0,8"
+                                HorizontalAlignment="Left"
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap">
+
+                                    <Hyperlink NavigateUri="{x:Bind (system:Uri)Value}" UnderlineStyle="None">
+                                        <Run Text="{x:Bind system:Convert.ToString(Key)}" />
+                                    </Hyperlink>
+
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip
+                                            MaxWidth="9999"
+                                            Padding="0"
+                                            Background="Transparent">
+
+                                            <Grid>
+                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}">
+                                                    <Run Text="{x:Bind system:Convert.ToString(Key)}" />
+                                                    <LineBreak />
+                                                    <Run Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ReferenceToolTip')}" />
+                                                </TextBlock>
+                                            </Grid>
+                                        </ToolTip>
+                                    </ToolTipService.ToolTip>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </Expander>
+
+            <!--  感谢用户信息  -->
+            <Expander
+                Grid.Row="3"
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                IsExpanded="True">
+
+                <Expander.Header>
+                    <TextBlock
+                        Padding="15,0,0,0"
+                        FontSize="16"
+                        FontWeight="Medium"
+                        Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('Thanks')}" />
+                </Expander.Header>
+
+                <StackPanel Margin="0">
+                    <TextBlock
+                        Margin="30,10,16,5"
+                        FontSize="15"
+                        FontWeight="Normal"
+                        Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ThanksDescription')}"
+                        TextAlignment="Left" />
+
+                    <MenuFlyoutSeparator />
+
                     <GridView
                         Margin="26,0,16,0"
                         Padding="5"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Stretch"
-                        ItemsSource="{x:Bind ReferenceList}"
+                        ItemsSource="{x:Bind ThanksList}"
                         SelectionMode="None">
 
                         <GridView.ItemContainerStyle>
@@ -382,12 +468,12 @@
                         <GridView.ItemTemplate>
                             <DataTemplate x:DataType="collection:DictionaryEntry">
                                 <StackPanel
-                                    Width="320"
+                                    Width="150"
                                     Padding="0,8"
                                     HorizontalAlignment="Left"
                                     Orientation="Horizontal">
                                     <TextBlock
-                                        HorizontalAlignment="Center"
+                                        HorizontalAlignment="Left"
                                         TextTrimming="CharacterEllipsis"
                                         TextWrapping="NoWrap">
 
@@ -407,7 +493,7 @@
                                                     <TextBlock Padding="{StaticResource ToolTipBorderPadding}">
                                                         <Run Text="{x:Bind system:Convert.ToString(Key)}" />
                                                         <LineBreak />
-                                                        <Run Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ReferenceToolTip')}" />
+                                                        <Run Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ThanksToolTip')}" />
                                                     </TextBlock>
                                                 </Grid>
                                             </ToolTip>
@@ -417,97 +503,7 @@
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
-                </Expander.Content>
-            </Expander>
-
-            <!--  感谢用户信息  -->
-            <Expander
-                Grid.Row="3"
-                Padding="0"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                IsExpanded="True">
-
-                <Expander.Header>
-                    <TextBlock
-                        Padding="15,0,0,0"
-                        FontSize="16"
-                        FontWeight="Medium"
-                        Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('Thanks')}" />
-                </Expander.Header>
-
-                <Expander.Content>
-                    <StackPanel Margin="0">
-                        <TextBlock
-                            Margin="30,10,16,5"
-                            FontSize="15"
-                            FontWeight="Normal"
-                            Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ThanksDescription')}"
-                            TextAlignment="Left" />
-
-                        <MenuFlyoutSeparator />
-
-                        <GridView
-                            Margin="26,0,16,0"
-                            Padding="5"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Stretch"
-                            ItemsSource="{x:Bind ThanksList}"
-                            SelectionMode="None">
-
-                            <GridView.ItemContainerStyle>
-                                <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Setter Property="Margin" Value="0" />
-                                    <Setter Property="MinHeight" Value="0" />
-                                    <Setter Property="Padding" Value="0" />
-                                </Style>
-                            </GridView.ItemContainerStyle>
-
-                            <ItemsControl.ItemContainerTransitions>
-                                <TransitionCollection />
-                            </ItemsControl.ItemContainerTransitions>
-
-                            <GridView.ItemTemplate>
-                                <DataTemplate x:DataType="collection:DictionaryEntry">
-                                    <StackPanel
-                                        Width="150"
-                                        Padding="0,8"
-                                        HorizontalAlignment="Left"
-                                        Orientation="Horizontal">
-                                        <TextBlock
-                                            HorizontalAlignment="Left"
-                                            TextTrimming="CharacterEllipsis"
-                                            TextWrapping="NoWrap">
-
-                                            <Hyperlink NavigateUri="{x:Bind (system:Uri)Value}" UnderlineStyle="None">
-                                                <Run Text="{x:Bind system:Convert.ToString(Key)}" />
-                                            </Hyperlink>
-
-                                            <ToolTipService.ToolTip>
-                                                <ToolTip
-                                                    MaxWidth="9999"
-                                                    Padding="0"
-                                                    Background="Transparent">
-
-                                                    <Grid>
-                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-
-                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}">
-                                                            <Run Text="{x:Bind system:Convert.ToString(Key)}" />
-                                                            <LineBreak />
-                                                            <Run Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ThanksToolTip')}" />
-                                                        </TextBlock>
-                                                    </Grid>
-                                                </ToolTip>
-                                            </ToolTipService.ToolTip>
-                                        </TextBlock>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </GridView.ItemTemplate>
-                        </GridView>
-                    </StackPanel>
-                </Expander.Content>
+                </StackPanel>
             </Expander>
         </Grid>
     </ScrollViewer>

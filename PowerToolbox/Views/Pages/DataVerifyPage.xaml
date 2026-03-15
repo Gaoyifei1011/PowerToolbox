@@ -211,33 +211,31 @@
                     </Grid>
                 </Expander.Header>
 
-                <Expander.Content>
-                    <GridView
-                        Padding="12,10,0,10"
-                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}"
-                        ItemsSource="{x:Bind DataVerifyTypeList}"
-                        SelectionMode="None">
+                <GridView
+                    Padding="12,10,0,10"
+                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}"
+                    ItemsSource="{x:Bind DataVerifyTypeList}"
+                    SelectionMode="None">
 
-                        <GridView.ItemContainerStyle>
-                            <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
-                                <Setter Property="MinHeight" Value="0" />
-                                <Setter Property="Margin" Value="5,5,0,5" />
-                            </Style>
-                        </GridView.ItemContainerStyle>
+                    <GridView.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
+                            <Setter Property="MinHeight" Value="0" />
+                            <Setter Property="Margin" Value="5,5,0,5" />
+                        </Style>
+                    </GridView.ItemContainerStyle>
 
-                        <GridView.ItemTemplate>
-                            <DataTemplate x:DataType="model:DataVerifyTypeModel">
-                                <CheckBox
-                                    MinWidth="120"
-                                    MinHeight="0"
-                                    Padding="8,0,0,0"
-                                    Command="{StaticResource DataVerifyCheckCommand}"
-                                    Content="{x:Bind Name}"
-                                    IsChecked="{x:Bind IsSelected, Mode=TwoWay}" />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-                    </GridView>
-                </Expander.Content>
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="model:DataVerifyTypeModel">
+                            <CheckBox
+                                MinWidth="120"
+                                MinHeight="0"
+                                Padding="8,0,0,0"
+                                Command="{StaticResource DataVerifyCheckCommand}"
+                                Content="{x:Bind Name}"
+                                IsChecked="{x:Bind IsSelected, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
             </Expander>
 
             <!--  文字编码选项  -->
@@ -271,154 +269,152 @@
                     </Grid>
                 </Expander.Header>
 
-                <Expander.Content>
-                    <StackPanel Padding="0">
-                        <!--  文字编码类型  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center">
+                <StackPanel Padding="0">
+                    <!--  文字编码类型  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center">
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                            <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('TextEncodingType')}" />
-
-                            <DropDownButton
-                                Grid.Column="1"
-                                Margin="2,0,0,0"
-                                Content="{x:Bind SelectedTextEncodingType.Value, Mode=OneWay}"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}">
-
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <MenuFlyout.MenuFlyoutPresenterStyle>
-                                            <Style BasedOn="{StaticResource DefaultMenuFlyoutPresenterStyle}" TargetType="MenuFlyoutPresenter">
-                                                <Setter Property="MaxHeight" Value="300" />
-                                            </Style>
-                                        </MenuFlyout.MenuFlyoutPresenterStyle>
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[1].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[2].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[2]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[2].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[3].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[3]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[3].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[4].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[4]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[4].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[5].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[5]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[5].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[6].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[6]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[6].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[7].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[7]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[7].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[8].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[8]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[8].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[9].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[9]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[9].Value)}" />
-
-                                        <MenuFlyoutSeparator />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnTextEncodingTypeClicked}"
-                                            GroupName="TextEncodingTypeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[10].Key), Mode=OneWay}"
-                                            Tag="{x:Bind TextEncodingTypeList[10]}"
-                                            Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[10].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
-                        </Grid>
-
-                        <MenuFlyoutSeparator Visibility="{x:Bind GetTextEncodingType(SelectedTextEncodingType.Key, TextEncodingTypeList[10].Key), Mode=OneWay}" />
-
-                        <!--  文字编码类型为自定义时手动设置编码类型  -->
-                        <Grid
-                            Height="52"
-                            Padding="44,0,16,0"
-                            HorizontalAlignment="Stretch"
+                        <TextBlock
+                            Grid.Column="0"
                             VerticalAlignment="Center"
-                            Visibility="{x:Bind GetTextEncodingType(SelectedTextEncodingType.Key, TextEncodingTypeList[10].Key), Mode=OneWay}">
+                            Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('TextEncodingType')}" />
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                        <DropDownButton
+                            Grid.Column="1"
+                            Margin="2,0,0,0"
+                            Content="{x:Bind SelectedTextEncodingType.Value, Mode=OneWay}"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}">
 
-                            <TextBlock
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('TextEncodingCustomType')}" />
+                            <DropDownButton.Flyout>
+                                <MenuFlyout Placement="Bottom">
+                                    <MenuFlyout.MenuFlyoutPresenterStyle>
+                                        <Style BasedOn="{StaticResource DefaultMenuFlyoutPresenterStyle}" TargetType="MenuFlyoutPresenter">
+                                            <Setter Property="MaxHeight" Value="300" />
+                                        </Style>
+                                    </MenuFlyout.MenuFlyoutPresenterStyle>
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[0].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[0]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[0].Value)}" />
 
-                            <TextBox
-                                Grid.Column="1"
-                                Width="350"
-                                Margin="6,0,0,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}"
-                                PlaceholderText="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('TextEncodingCustomTypePHText')}"
-                                Text="{x:Bind TextEncodingCustomTypeText}"
-                                TextChanged="{x:Bind OnTextEncodingCustomTypeTextChanged}" />
-                        </Grid>
-                    </StackPanel>
-                </Expander.Content>
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[1].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[1]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[1].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[2].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[2]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[2].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[3].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[3]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[3].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[4].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[4]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[4].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[5].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[5]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[5].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[6].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[6]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[6].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[7].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[7]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[7].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[8].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[8]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[8].Value)}" />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[9].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[9]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[9].Value)}" />
+
+                                    <MenuFlyoutSeparator />
+
+                                    <RadioMenuFlyoutItem
+                                        Click="{x:Bind OnTextEncodingTypeClicked}"
+                                        GroupName="TextEncodingTypeRadioGroup"
+                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[10].Key), Mode=OneWay}"
+                                        Tag="{x:Bind TextEncodingTypeList[10]}"
+                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[10].Value)}" />
+                                </MenuFlyout>
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+                    </Grid>
+
+                    <MenuFlyoutSeparator Visibility="{x:Bind GetTextEncodingType(SelectedTextEncodingType.Key, TextEncodingTypeList[10].Key), Mode=OneWay}" />
+
+                    <!--  文字编码类型为自定义时手动设置编码类型  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind GetTextEncodingType(SelectedTextEncodingType.Key, TextEncodingTypeList[10].Key), Mode=OneWay}">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('TextEncodingCustomType')}" />
+
+                        <TextBox
+                            Grid.Column="1"
+                            Width="350"
+                            Margin="6,0,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}"
+                            PlaceholderText="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('TextEncodingCustomTypePHText')}"
+                            Text="{x:Bind TextEncodingCustomTypeText}"
+                            TextChanged="{x:Bind OnTextEncodingCustomTypeTextChanged}" />
+                    </Grid>
+                </StackPanel>
             </Expander>
 
             <!--  数据加密控制栏  -->

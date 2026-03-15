@@ -115,14 +115,12 @@
                 IsAccessKeyScope="True"
                 Style="{ThemeResource EllipsisButton}">
 
-                <Button.Content>
-                    <FontIcon
-                        Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
-                        VerticalAlignment="Center"
-                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                        FontSize="20"
-                        Glyph="&#xE712;" />
-                </Button.Content>
+                <FontIcon
+                    Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
+                    VerticalAlignment="Center"
+                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                    FontSize="20"
+                    Glyph="&#xE712;" />
 
                 <Button.Flyout>
                     <MenuFlyout Placement="Bottom">
@@ -349,9 +347,7 @@
                                     CommandParameter="{x:Bind WorkingDirectory}"
                                     CornerRadius="{StaticResource ControlCornerRadius}">
 
-                                    <Button.Content>
-                                        <FontIcon FontSize="14" Glyph="&#xE8B7;" />
-                                    </Button.Content>
+                                    <FontIcon FontSize="14" Glyph="&#xE8B7;" />
 
                                     <ToolTipService.ToolTip>
                                         <ToolTip
@@ -369,128 +365,126 @@
                             </Grid>
                         </Expander.Header>
 
-                        <Expander.Content>
-                            <Grid
-                                Margin="40,0,0,0"
-                                ColumnSpacing="15"
-                                RowSpacing="3">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+                        <Grid
+                            Margin="40,0,0,0"
+                            ColumnSpacing="15"
+                            RowSpacing="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('Description')}" />
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                IsTextSelectionEnabled="True"
+                                Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('Description')}" />
 
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind Description}"
-                                    TextWrapping="Wrap" />
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                IsTextSelectionEnabled="True"
+                                Text="{x:Bind Description}"
+                                TextWrapping="Wrap" />
 
-                                <TextBlock
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('AppContainerName')}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                IsTextSelectionEnabled="True"
+                                Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('AppContainerName')}" />
 
-                                <TextBlock
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind AppContainerName}"
-                                    TextWrapping="Wrap" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                IsTextSelectionEnabled="True"
+                                Text="{x:Bind AppContainerName}"
+                                TextWrapping="Wrap" />
 
-                                <TextBlock
-                                    Grid.Row="2"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('AppContainerUser')}" />
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                IsTextSelectionEnabled="True"
+                                Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('AppContainerUser')}" />
 
-                                <TextBlock
-                                    Grid.Row="2"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind AppContainerUserName}"
-                                    TextWrapping="Wrap" />
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                IsTextSelectionEnabled="True"
+                                Text="{x:Bind AppContainerUserName}"
+                                TextWrapping="Wrap" />
 
-                                <TextBlock
-                                    Grid.Row="3"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('AppContainerSID')}" />
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                IsTextSelectionEnabled="True"
+                                Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('AppContainerSID')}" />
 
-                                <TextBlock
-                                    Grid.Row="3"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind AppContainerSID}"
-                                    TextWrapping="Wrap" />
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                IsTextSelectionEnabled="True"
+                                Text="{x:Bind AppContainerSID}"
+                                TextWrapping="Wrap" />
 
-                                <TextBlock
-                                    Grid.Row="4"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('WorkingDirectory')}" />
+                            <TextBlock
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                IsTextSelectionEnabled="True"
+                                Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('WorkingDirectory')}" />
 
-                                <TextBlock
-                                    Grid.Row="4"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind WorkingDirectory}"
-                                    TextWrapping="Wrap" />
+                            <TextBlock
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                IsTextSelectionEnabled="True"
+                                Text="{x:Bind WorkingDirectory}"
+                                TextWrapping="Wrap" />
 
-                                <TextBlock
-                                    Grid.Row="5"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('AppBinariesPath')}" />
+                            <TextBlock
+                                Grid.Row="5"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                IsTextSelectionEnabled="True"
+                                Text="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('AppBinariesPath')}" />
 
-                                <TextBlock
-                                    Grid.Row="5"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind AppBinariesPath}"
-                                    TextWrapping="Wrap" />
-                            </Grid>
-                        </Expander.Content>
+                            <TextBlock
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                HorizontalAlignment="Left"
+                                FontSize="14"
+                                IsTextSelectionEnabled="True"
+                                Text="{x:Bind AppBinariesPath}"
+                                TextWrapping="Wrap" />
+                        </Grid>
                     </Expander>
                 </DataTemplate>
             </ListView.ItemTemplate>

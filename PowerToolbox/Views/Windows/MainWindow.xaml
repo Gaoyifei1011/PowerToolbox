@@ -189,13 +189,11 @@
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/AllTools.png" />
                         </NavigationViewItem.Icon>
 
-                        <NavigationViewItem.Content>
-                            <TextBlock
-                                x:Name="WindowAllToolsText"
-                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('AllTools')}"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap" />
-                        </NavigationViewItem.Content>
+                        <TextBlock
+                            x:Name="WindowAllToolsText"
+                            Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('AllTools')}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
 
                         <ToolTipService.ToolTip>
                             <ToolTip
@@ -221,13 +219,11 @@
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/Relaxation.png" />
                         </NavigationViewItem.Icon>
 
-                        <NavigationViewItem.Content>
-                            <TextBlock
-                                x:Name="WindowRelaxationText"
-                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Relaxation')}"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap" />
-                        </NavigationViewItem.Content>
+                        <TextBlock
+                            x:Name="WindowRelaxationText"
+                            Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Relaxation')}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
 
                         <ToolTipService.ToolTip>
                             <ToolTip
@@ -246,13 +242,11 @@
                         <NavigationViewItem.MenuItems>
                             <NavigationViewItem Tag="{x:Bind PageList[2].Key}">
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowLoafText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Loaf')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowLoafText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Loaf')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <NavigationViewItem.Icon>
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/Loaf.png" />
@@ -282,13 +276,11 @@
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/File.png" />
                         </NavigationViewItem.Icon>
 
-                        <NavigationViewItem.Content>
-                            <TextBlock
-                                x:Name="WindowFileText"
-                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('File')}"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap" />
-                        </NavigationViewItem.Content>
+                        <TextBlock
+                            x:Name="WindowFileText"
+                            Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('File')}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
 
                         <ToolTipService.ToolTip>
                             <ToolTip
@@ -311,13 +303,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/FileManager.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowFileManagerText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('FileManager')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowFileManagerText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('FileManager')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -340,13 +330,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/FileCertificate.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowFileCertificateText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('FileCertificate')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowFileCertificateText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('FileCertificate')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -369,13 +357,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/FileUnlock.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowFileUnlockText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('FileUnlock')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowFileUnlockText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('FileUnlock')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -401,13 +387,11 @@
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/Resource.png" />
                         </NavigationViewItem.Icon>
 
-                        <NavigationViewItem.Content>
-                            <TextBlock
-                                x:Name="WindowResourceText"
-                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Resource')}"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap" />
-                        </NavigationViewItem.Content>
+                        <TextBlock
+                            x:Name="WindowResourceText"
+                            Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Resource')}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
 
                         <ToolTipService.ToolTip>
                             <ToolTip
@@ -430,13 +414,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/DataVerifyEncrypt.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowDataVerifyEncryptText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataVerifyEncrypt')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowDataVerifyEncryptText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DataVerifyEncrypt')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -459,13 +441,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/DownloadManager.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowDownloadManagerText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DownloadManager')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowDownloadManagerText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DownloadManager')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -488,13 +468,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/IconExtract.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowIconExtractText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('IconExtract')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowIconExtractText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('IconExtract')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -517,13 +495,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/PriExtract.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowPriExtractText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('PriExtract')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowPriExtractText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('PriExtract')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -549,13 +525,11 @@
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/Personalize.png" />
                         </NavigationViewItem.Icon>
 
-                        <NavigationViewItem.Content>
-                            <TextBlock
-                                x:Name="WindowPersonalizeText"
-                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Personalize')}"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap" />
-                        </NavigationViewItem.Content>
+                        <TextBlock
+                            x:Name="WindowPersonalizeText"
+                            Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Personalize')}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
 
                         <ToolTipService.ToolTip>
                             <ToolTip
@@ -578,13 +552,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/ThemeSwitch.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowThemeSwitchText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ThemeSwitch')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowThemeSwitchText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ThemeSwitch')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -607,13 +579,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/ShellMenu.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowShellMenuText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ShellMenu')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowShellMenuText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ShellMenu')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -636,13 +606,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/ContextMenuManager.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowContextMenuManagerText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ContextMenuManager')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowContextMenuManagerText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ContextMenuManager')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -665,13 +633,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/ExperimentalFeatureManager.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowExperimentalFeatureManagerText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ExperimentalFeatureManager')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowExperimentalFeatureManagerText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ExperimentalFeatureManager')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -697,13 +663,11 @@
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/System.png" />
                         </NavigationViewItem.Icon>
 
-                        <NavigationViewItem.Content>
-                            <TextBlock
-                                x:Name="WindowSystemText"
-                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('System')}"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap" />
-                        </NavigationViewItem.Content>
+                        <TextBlock
+                            x:Name="WindowSystemText"
+                            Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('System')}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
 
                         <ToolTipService.ToolTip>
                             <ToolTip
@@ -726,13 +690,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/LoopbackManager.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowLoopbackManagerText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('LoopbackManager')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowLoopbackManagerText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('LoopbackManager')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -755,13 +717,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/ScheduledTaskManager.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowScheduledTaskManagerText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ScheduledTaskManager')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowScheduledTaskManagerText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('ScheduledTaskManager')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -784,13 +744,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/Hosts.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowHostsText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Hosts')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowHostsText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Hosts')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -813,13 +771,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/DriverManager.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowDriverManagerText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DriverManager')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowDriverManagerText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('DriverManager')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -842,13 +798,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/UpdateManager.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowUpdateManagerText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('UpdateManager')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowUpdateManagerText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('UpdateManager')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -871,13 +825,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/WinFR.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowWinFRText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('WinFR')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowWinFRText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('WinFR')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -900,13 +852,11 @@
                                     <ImageIcon Source="ms-appx:///Assets/ControlIcon/WinSAT.png" />
                                 </NavigationViewItem.Icon>
 
-                                <NavigationViewItem.Content>
-                                    <TextBlock
-                                        x:Name="WindowWinSATText"
-                                        Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('WinSAT')}"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap" />
-                                </NavigationViewItem.Content>
+                                <TextBlock
+                                    x:Name="WindowWinSATText"
+                                    Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('WinSAT')}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap" />
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -933,13 +883,11 @@
                             <ImageIcon Source="ms-appx:///Assets/ControlIcon/Settings.png" />
                         </NavigationViewItem.Icon>
 
-                        <NavigationViewItem.Content>
-                            <TextBlock
-                                x:Name="WindowSettingsText"
-                                Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Settings')}"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap" />
-                        </NavigationViewItem.Content>
+                        <TextBlock
+                            x:Name="WindowSettingsText"
+                            Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Settings')}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap" />
 
                         <ToolTipService.ToolTip>
                             <ToolTip

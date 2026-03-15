@@ -140,9 +140,57 @@
                         </Grid>
                     </Expander.Header>
 
-                    <Expander.Content>
-                        <StackPanel Padding="0" HorizontalAlignment="Stretch">
-                            <!--  使用图标  -->
+                    <StackPanel Padding="0" HorizontalAlignment="Stretch">
+                        <!--  使用图标  -->
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyTextBlockStyle}"
+                                Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseIcon')}" />
+
+                            <StackPanel
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+
+                                <TextBlock
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseIconOffContent')}"
+                                    Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseIcon), Mode=OneWay}" />
+
+                                <TextBlock
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseIconOnContent')}"
+                                    Visibility="{x:Bind UseIcon, Mode=OneWay}" />
+
+                                <ToggleSwitch
+                                    MinWidth="0"
+                                    Margin="10,-2,-10,0"
+                                    IsOn="{x:Bind UseIcon, Mode=OneWay}"
+                                    OffContent=""
+                                    OnContent=""
+                                    Toggled="{x:Bind OnUseIconToggled}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <StackPanel Visibility="{x:Bind UseIcon, Mode=OneWay}">
+
+                            <MenuFlyoutSeparator />
+
+                            <!--  是否使用应用程序图标  -->
                             <Grid
                                 Height="52"
                                 Padding="44,0,16,0"
@@ -158,7 +206,7 @@
                                     Grid.Column="0"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource BodyTextBlockStyle}"
-                                    Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseIcon')}" />
+                                    Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseProgramIcon')}" />
 
                                 <StackPanel
                                     Grid.Column="1"
@@ -168,30 +216,30 @@
                                     <TextBlock
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseIconOffContent')}"
-                                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseIcon), Mode=OneWay}" />
+                                        Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseProgramIconOffContent')}"
+                                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseProgramIcon), Mode=OneWay}" />
 
                                     <TextBlock
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseIconOnContent')}"
-                                        Visibility="{x:Bind UseIcon, Mode=OneWay}" />
+                                        Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseProgramIconOnContent')}"
+                                        Visibility="{x:Bind UseProgramIcon, Mode=OneWay}" />
 
                                     <ToggleSwitch
                                         MinWidth="0"
                                         Margin="10,-2,-10,0"
-                                        IsOn="{x:Bind UseIcon, Mode=OneWay}"
+                                        IsOn="{x:Bind UseProgramIcon, Mode=OneWay}"
                                         OffContent=""
                                         OnContent=""
-                                        Toggled="{x:Bind OnUseIconToggled}" />
+                                        Toggled="{x:Bind OnUseProgramIconToggled}" />
                                 </StackPanel>
                             </Grid>
 
-                            <StackPanel Visibility="{x:Bind UseIcon, Mode=OneWay}">
+                            <StackPanel Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseProgramIcon), Mode=OneWay}">
 
                                 <MenuFlyoutSeparator />
 
-                                <!--  是否使用应用程序图标  -->
+                                <!--  是否启用主题图标  -->
                                 <Grid
                                     Height="52"
                                     Padding="44,0,16,0"
@@ -207,7 +255,7 @@
                                         Grid.Column="0"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource BodyTextBlockStyle}"
-                                        Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseProgramIcon')}" />
+                                        Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseThemeIcon')}" />
 
                                     <StackPanel
                                         Grid.Column="1"
@@ -217,84 +265,86 @@
                                         <TextBlock
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Center"
-                                            Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseProgramIconOffContent')}"
+                                            Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseThemeIconOffContent')}"
                                             Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseProgramIcon), Mode=OneWay}" />
 
                                         <TextBlock
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Center"
-                                            Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseProgramIconOnContent')}"
-                                            Visibility="{x:Bind UseProgramIcon, Mode=OneWay}" />
+                                            Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseThemeIconOnContent')}"
+                                            Visibility="{x:Bind UseThemeIcon, Mode=OneWay}" />
 
                                         <ToggleSwitch
                                             MinWidth="0"
                                             Margin="10,-2,-10,0"
-                                            IsOn="{x:Bind UseProgramIcon, Mode=OneWay}"
+                                            IsOn="{x:Bind UseThemeIcon, Mode=OneWay}"
                                             OffContent=""
                                             OnContent=""
-                                            Toggled="{x:Bind OnUseProgramIconToggled}" />
+                                            Toggled="{x:Bind OnUseThemeIconToggled}" />
                                     </StackPanel>
                                 </Grid>
 
-                                <StackPanel Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseProgramIcon), Mode=OneWay}">
+                                <MenuFlyoutSeparator />
 
-                                    <MenuFlyoutSeparator />
+                                <!--  默认图标  -->
+                                <Grid
+                                    Height="52"
+                                    Padding="44,0,16,0"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    ColumnSpacing="10"
+                                    Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseThemeIcon), Mode=OneWay}">
 
-                                    <!--  是否启用主题图标  -->
-                                    <Grid
-                                        Height="52"
-                                        Padding="44,0,16,0"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
 
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource BodyTextBlockStyle}"
+                                        Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('DefaultIcon')}" />
 
-                                        <TextBlock
-                                            Grid.Column="0"
+                                    <StackPanel
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        Orientation="Horizontal">
+
+                                        <ImageIcon
+                                            Width="28"
+                                            Height="28"
                                             VerticalAlignment="Center"
-                                            Style="{StaticResource BodyTextBlockStyle}"
-                                            Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseThemeIcon')}" />
+                                            Source="{x:Bind DefaultIconImage, Mode=OneWay}" />
 
-                                        <StackPanel
-                                            Grid.Column="1"
+                                        <TextBox
+                                            Width="300"
+                                            Margin="10,0,0,0"
                                             VerticalAlignment="Center"
-                                            Orientation="Horizontal">
+                                            IsReadOnly="True"
+                                            PlaceholderText="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UnknownDefaultIconPath')}"
+                                            Text="{x:Bind DefaultIconPath, Mode=OneWay}" />
+                                    </StackPanel>
 
-                                            <TextBlock
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Center"
-                                                Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseThemeIconOffContent')}"
-                                                Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseProgramIcon), Mode=OneWay}" />
+                                    <Button
+                                        x:Name="MenuDefaultIconBrowserButton"
+                                        Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        Click="{x:Bind OnDefaultIconBrowserClicked}"
+                                        Content="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('Browser')}" />
+                                </Grid>
 
-                                            <TextBlock
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Center"
-                                                Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseThemeIconOnContent')}"
-                                                Visibility="{x:Bind UseThemeIcon, Mode=OneWay}" />
+                                <StackPanel Visibility="{x:Bind UseThemeIcon, Mode=OneWay}">
 
-                                            <ToggleSwitch
-                                                MinWidth="0"
-                                                Margin="10,-2,-10,0"
-                                                IsOn="{x:Bind UseThemeIcon, Mode=OneWay}"
-                                                OffContent=""
-                                                OnContent=""
-                                                Toggled="{x:Bind OnUseThemeIconToggled}" />
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <MenuFlyoutSeparator />
-
-                                    <!--  默认图标  -->
+                                    <!--  浅色主题图标  -->
                                     <Grid
                                         Height="52"
                                         Padding="44,0,16,0"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Center"
                                         ColumnSpacing="10"
-                                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseThemeIcon), Mode=OneWay}">
+                                        Visibility="{x:Bind UseThemeIcon, Mode=OneWay}">
 
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="180" />
@@ -306,7 +356,7 @@
                                             Grid.Column="0"
                                             VerticalAlignment="Center"
                                             Style="{StaticResource BodyTextBlockStyle}"
-                                            Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('DefaultIcon')}" />
+                                            Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('LightThemeIcon')}" />
 
                                         <StackPanel
                                             Grid.Column="1"
@@ -317,132 +367,80 @@
                                                 Width="28"
                                                 Height="28"
                                                 VerticalAlignment="Center"
-                                                Source="{x:Bind DefaultIconImage, Mode=OneWay}" />
+                                                Source="{x:Bind LightThemeIconImage, Mode=OneWay}" />
 
                                             <TextBox
                                                 Width="300"
                                                 Margin="10,0,0,0"
                                                 VerticalAlignment="Center"
                                                 IsReadOnly="True"
-                                                PlaceholderText="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UnknownDefaultIconPath')}"
-                                                Text="{x:Bind DefaultIconPath, Mode=OneWay}" />
+                                                PlaceholderText="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UnknownLightThemeIconPath')}"
+                                                Text="{x:Bind LightThemeIconPath, Mode=OneWay}" />
                                         </StackPanel>
 
                                         <Button
-                                            x:Name="MenuDefaultIconBrowserButton"
+                                            x:Name="MenuLigthThemeIconBrowserButton"
                                             Grid.Column="2"
                                             VerticalAlignment="Center"
-                                            Click="{x:Bind OnDefaultIconBrowserClicked}"
+                                            Click="{x:Bind OnLightThemeIconBrowserClicked}"
                                             Content="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('Browser')}" />
                                     </Grid>
 
-                                    <StackPanel Visibility="{x:Bind UseThemeIcon, Mode=OneWay}">
+                                    <MenuFlyoutSeparator Visibility="{x:Bind UseThemeIcon, Mode=OneWay}" />
 
-                                        <!--  浅色主题图标  -->
-                                        <Grid
-                                            Height="52"
-                                            Padding="44,0,16,0"
-                                            HorizontalAlignment="Stretch"
+                                    <!--  深色主题图标  -->
+                                    <Grid
+                                        Height="52"
+                                        Padding="44,0,16,0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        ColumnSpacing="10"
+                                        Visibility="{x:Bind UseThemeIcon, Mode=OneWay}">
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="180" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Column="0"
                                             VerticalAlignment="Center"
-                                            ColumnSpacing="10"
-                                            Visibility="{x:Bind UseThemeIcon, Mode=OneWay}">
+                                            Style="{StaticResource BodyTextBlockStyle}"
+                                            Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('DarkThemeIcon')}" />
 
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="180" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
+                                        <StackPanel
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            Orientation="Horizontal">
 
-                                            <TextBlock
-                                                Grid.Column="0"
+                                            <ImageIcon
+                                                Width="28"
+                                                Height="28"
                                                 VerticalAlignment="Center"
-                                                Style="{StaticResource BodyTextBlockStyle}"
-                                                Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('LightThemeIcon')}" />
+                                                Source="{x:Bind DarkThemeIconImage, Mode=OneWay}" />
 
-                                            <StackPanel
-                                                Grid.Column="1"
+                                            <TextBox
+                                                Width="300"
+                                                Margin="10,0,0,0"
                                                 HorizontalAlignment="Right"
-                                                Orientation="Horizontal">
-
-                                                <ImageIcon
-                                                    Width="28"
-                                                    Height="28"
-                                                    VerticalAlignment="Center"
-                                                    Source="{x:Bind LightThemeIconImage, Mode=OneWay}" />
-
-                                                <TextBox
-                                                    Width="300"
-                                                    Margin="10,0,0,0"
-                                                    VerticalAlignment="Center"
-                                                    IsReadOnly="True"
-                                                    PlaceholderText="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UnknownLightThemeIconPath')}"
-                                                    Text="{x:Bind LightThemeIconPath, Mode=OneWay}" />
-                                            </StackPanel>
-
-                                            <Button
-                                                x:Name="MenuLigthThemeIconBrowserButton"
-                                                Grid.Column="2"
                                                 VerticalAlignment="Center"
-                                                Click="{x:Bind OnLightThemeIconBrowserClicked}"
-                                                Content="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('Browser')}" />
-                                        </Grid>
+                                                IsReadOnly="True"
+                                                PlaceholderText="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UnknownDarkThemeIconPath')}"
+                                                Text="{x:Bind DarkThemeIconPath, Mode=OneWay}" />
+                                        </StackPanel>
 
-                                        <MenuFlyoutSeparator Visibility="{x:Bind UseThemeIcon, Mode=OneWay}" />
-
-                                        <!--  深色主题图标  -->
-                                        <Grid
-                                            Height="52"
-                                            Padding="44,0,16,0"
-                                            HorizontalAlignment="Stretch"
+                                        <Button
+                                            x:Name="MenuDarkThemeIconBrowserButton"
+                                            Grid.Column="2"
                                             VerticalAlignment="Center"
-                                            ColumnSpacing="10"
-                                            Visibility="{x:Bind UseThemeIcon, Mode=OneWay}">
-
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="180" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-
-                                            <TextBlock
-                                                Grid.Column="0"
-                                                VerticalAlignment="Center"
-                                                Style="{StaticResource BodyTextBlockStyle}"
-                                                Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('DarkThemeIcon')}" />
-
-                                            <StackPanel
-                                                Grid.Column="1"
-                                                HorizontalAlignment="Right"
-                                                Orientation="Horizontal">
-
-                                                <ImageIcon
-                                                    Width="28"
-                                                    Height="28"
-                                                    VerticalAlignment="Center"
-                                                    Source="{x:Bind DarkThemeIconImage, Mode=OneWay}" />
-
-                                                <TextBox
-                                                    Width="300"
-                                                    Margin="10,0,0,0"
-                                                    HorizontalAlignment="Right"
-                                                    VerticalAlignment="Center"
-                                                    IsReadOnly="True"
-                                                    PlaceholderText="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UnknownDarkThemeIconPath')}"
-                                                    Text="{x:Bind DarkThemeIconPath, Mode=OneWay}" />
-                                            </StackPanel>
-
-                                            <Button
-                                                x:Name="MenuDarkThemeIconBrowserButton"
-                                                Grid.Column="2"
-                                                VerticalAlignment="Center"
-                                                Click="{x:Bind OnDarkThemeIconBrowserClicked}"
-                                                Content="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('Browser')}" />
-                                        </Grid>
-                                    </StackPanel>
+                                            Click="{x:Bind OnDarkThemeIconBrowserClicked}"
+                                            Content="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('Browser')}" />
+                                    </Grid>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                    </Expander.Content>
+                    </StackPanel>
                 </Expander>
 
                 <!--  程序路径  -->
@@ -674,9 +672,72 @@
                         </Grid>
                     </Expander.Header>
 
-                    <Expander.Content>
-                        <StackPanel Padding="0" HorizontalAlignment="Stretch">
-                            <!--  文件匹配规则选择  -->
+                    <StackPanel Padding="0" HorizontalAlignment="Stretch">
+                        <!--  文件匹配规则选择  -->
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource BodyTextBlockStyle}"
+                                Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('MenuFileMatchRule')}" />
+
+                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedFileMatchRule.Value, Mode=OneWay}">
+                                <DropDownButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnFileMatchRuleClicked}"
+                                            GroupName="FileMatchRuleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[0].Key), Mode=OneWay}"
+                                            Tag="{x:Bind FileMatchRuleList[0]}"
+                                            Text="{x:Bind system:Convert.ToString(FileMatchRuleList[0].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnFileMatchRuleClicked}"
+                                            GroupName="FileMatchRuleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[1].Key), Mode=OneWay}"
+                                            Tag="{x:Bind FileMatchRuleList[1]}"
+                                            Text="{x:Bind system:Convert.ToString(FileMatchRuleList[1].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnFileMatchRuleClicked}"
+                                            GroupName="FileMatchRuleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[2].Key), Mode=OneWay}"
+                                            Tag="{x:Bind FileMatchRuleList[2]}"
+                                            Text="{x:Bind system:Convert.ToString(FileMatchRuleList[2].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnFileMatchRuleClicked}"
+                                            GroupName="FileMatchRuleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[3].Key), Mode=OneWay}"
+                                            Tag="{x:Bind FileMatchRuleList[3]}"
+                                            Text="{x:Bind system:Convert.ToString(FileMatchRuleList[3].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnFileMatchRuleClicked}"
+                                            GroupName="FileMatchRuleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[4].Key), Mode=OneWay}"
+                                            Tag="{x:Bind FileMatchRuleList[4]}"
+                                            Text="{x:Bind system:Convert.ToString(FileMatchRuleList[4].Value)}" />
+                                    </MenuFlyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+                        </Grid>
+
+                        <StackPanel Visibility="{x:Bind NeedInputMatchFormat, Mode=OneWay}">
+
+                            <!--  文件匹配格式  -->
+                            <MenuFlyoutSeparator />
+
                             <Grid
                                 Height="52"
                                 Padding="44,0,16,0"
@@ -692,86 +753,21 @@
                                     Grid.Column="0"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource BodyTextBlockStyle}"
-                                    Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('MenuFileMatchRule')}" />
+                                    Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('MenuFileMatchFormat')}" />
 
-                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedFileMatchRule.Value, Mode=OneWay}">
-                                    <DropDownButton.Flyout>
-                                        <MenuFlyout Placement="Bottom">
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnFileMatchRuleClicked}"
-                                                GroupName="FileMatchRuleRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[0].Key), Mode=OneWay}"
-                                                Tag="{x:Bind FileMatchRuleList[0]}"
-                                                Text="{x:Bind system:Convert.ToString(FileMatchRuleList[0].Value)}" />
-
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnFileMatchRuleClicked}"
-                                                GroupName="FileMatchRuleRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[1].Key), Mode=OneWay}"
-                                                Tag="{x:Bind FileMatchRuleList[1]}"
-                                                Text="{x:Bind system:Convert.ToString(FileMatchRuleList[1].Value)}" />
-
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnFileMatchRuleClicked}"
-                                                GroupName="FileMatchRuleRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[2].Key), Mode=OneWay}"
-                                                Tag="{x:Bind FileMatchRuleList[2]}"
-                                                Text="{x:Bind system:Convert.ToString(FileMatchRuleList[2].Value)}" />
-
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnFileMatchRuleClicked}"
-                                                GroupName="FileMatchRuleRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[3].Key), Mode=OneWay}"
-                                                Tag="{x:Bind FileMatchRuleList[3]}"
-                                                Text="{x:Bind system:Convert.ToString(FileMatchRuleList[3].Value)}" />
-
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnFileMatchRuleClicked}"
-                                                GroupName="FileMatchRuleRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[4].Key), Mode=OneWay}"
-                                                Tag="{x:Bind FileMatchRuleList[4]}"
-                                                Text="{x:Bind system:Convert.ToString(FileMatchRuleList[4].Value)}" />
-                                        </MenuFlyout>
-                                    </DropDownButton.Flyout>
-                                </DropDownButton>
+                                <TextBox
+                                    x:Name="MenuFileMatchFormatTextBox"
+                                    Grid.Column="1"
+                                    Width="350"
+                                    Margin="10,0,0,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    PlaceholderText="{x:Bind MenuFileMatchFormatPHText, Mode=OneWay}"
+                                    Text="{x:Bind MenuFileMatchFormatText, Mode=OneWay}"
+                                    TextChanged="{x:Bind OnMenuFileMatchFormatTextChanged}" />
                             </Grid>
-
-                            <StackPanel Visibility="{x:Bind NeedInputMatchFormat, Mode=OneWay}">
-
-                                <!--  文件匹配格式  -->
-                                <MenuFlyoutSeparator />
-
-                                <Grid
-                                    Height="52"
-                                    Padding="44,0,16,0"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Center">
-
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <TextBlock
-                                        Grid.Column="0"
-                                        VerticalAlignment="Center"
-                                        Style="{StaticResource BodyTextBlockStyle}"
-                                        Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('MenuFileMatchFormat')}" />
-
-                                    <TextBox
-                                        x:Name="MenuFileMatchFormatTextBox"
-                                        Grid.Column="1"
-                                        Width="350"
-                                        Margin="10,0,0,0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        PlaceholderText="{x:Bind MenuFileMatchFormatPHText, Mode=OneWay}"
-                                        Text="{x:Bind MenuFileMatchFormatText, Mode=OneWay}"
-                                        TextChanged="{x:Bind OnMenuFileMatchFormatTextChanged}" />
-                                </Grid>
-                            </StackPanel>
                         </StackPanel>
-                    </Expander.Content>
+                    </StackPanel>
                 </Expander>
 
                 <!--  菜单设置说明  -->
@@ -805,38 +801,36 @@
                         </Grid>
                     </Expander.Header>
 
-                    <Expander.Content>
-                        <StackPanel Margin="0">
-                            <TextBlock
-                                Margin="44,10,16,5"
-                                FontSize="14"
-                                FontWeight="Normal"
-                                Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('TipContent1')}"
-                                TextAlignment="Justify"
-                                TextWrapping="Wrap" />
-                            <TextBlock
-                                Margin="44,0,16,5"
-                                FontSize="14"
-                                FontWeight="Normal"
-                                Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('TipContent2')}"
-                                TextAlignment="Justify"
-                                TextWrapping="Wrap" />
-                            <TextBlock
-                                Margin="44,0,16,5"
-                                FontSize="14"
-                                FontWeight="Normal"
-                                Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('TipContent3')}"
-                                TextAlignment="Justify"
-                                TextWrapping="Wrap" />
-                            <TextBlock
-                                Margin="44,0,16,10"
-                                FontSize="14"
-                                FontWeight="Normal"
-                                Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('TipContent4')}"
-                                TextAlignment="Justify"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
-                    </Expander.Content>
+                    <StackPanel Margin="0">
+                        <TextBlock
+                            Margin="44,10,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('TipContent1')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('TipContent2')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Margin="44,0,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('TipContent3')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Margin="44,0,16,10"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('TipContent4')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
                 </Expander>
             </StackPanel>
         </ScrollViewer>

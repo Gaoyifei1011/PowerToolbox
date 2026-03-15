@@ -146,199 +146,197 @@
                         </Grid>
                     </Expander.Header>
 
-                    <Expander.Content>
-                        <StackPanel Padding="0">
-                            <Grid
-                                Height="52"
-                                Padding="44,0,16,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center">
+                    <StackPanel Padding="0">
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                                <TextBlock
-                                    Grid.Column="0"
-                                    VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('UpdateStyle')}" />
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('UpdateStyle')}" />
 
-                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedSimulateUpdateStyle.Value, Mode=OneWay}">
+                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedSimulateUpdateStyle.Value, Mode=OneWay}">
 
-                                    <DropDownButton.Flyout>
-                                        <MenuFlyout Placement="Bottom">
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnUpdateStyleClicked}"
-                                                GroupName="UpdateStyleRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedSimulateUpdateStyle.Key, SimulateUpdateStyleList[0].Key), Mode=OneWay}"
-                                                Tag="{x:Bind SimulateUpdateStyleList[0]}"
-                                                Text="{x:Bind system:Convert.ToString(SimulateUpdateStyleList[0].Value)}" />
+                                <DropDownButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnUpdateStyleClicked}"
+                                            GroupName="UpdateStyleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedSimulateUpdateStyle.Key, SimulateUpdateStyleList[0].Key), Mode=OneWay}"
+                                            Tag="{x:Bind SimulateUpdateStyleList[0]}"
+                                            Text="{x:Bind system:Convert.ToString(SimulateUpdateStyleList[0].Value)}" />
 
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnUpdateStyleClicked}"
-                                                GroupName="UpdateStyleRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedSimulateUpdateStyle.Key, SimulateUpdateStyleList[1].Key), Mode=OneWay}"
-                                                Tag="{x:Bind SimulateUpdateStyleList[1]}"
-                                                Text="{x:Bind system:Convert.ToString(SimulateUpdateStyleList[1].Value)}" />
-                                        </MenuFlyout>
-                                    </DropDownButton.Flyout>
-                                </DropDownButton>
-                            </Grid>
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnUpdateStyleClicked}"
+                                            GroupName="UpdateStyleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedSimulateUpdateStyle.Key, SimulateUpdateStyleList[1].Key), Mode=OneWay}"
+                                            Tag="{x:Bind SimulateUpdateStyleList[1]}"
+                                            Text="{x:Bind system:Convert.ToString(SimulateUpdateStyleList[1].Value)}" />
+                                    </MenuFlyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+                        </Grid>
 
-                            <MenuFlyoutSeparator />
+                        <MenuFlyoutSeparator />
 
-                            <Grid
-                                Height="52"
-                                Padding="44,0,16,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center">
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                                <TextBlock
-                                    Grid.Column="0"
-                                    VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('BlockAllKeys')}" />
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('BlockAllKeys')}" />
 
-                                <StackPanel
-                                    Grid.Column="1"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal">
-
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('BlockAllKeysOffContent')}"
-                                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(BlockAllKeys), Mode=OneWay}" />
-
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('BlockAllKeysOnContent')}"
-                                        Visibility="{x:Bind BlockAllKeys, Mode=OneWay}" />
-
-                                    <ToggleSwitch
-                                        MinWidth="0"
-                                        Margin="10,-2,-10,0"
-                                        IsOn="{x:Bind BlockAllKeys, Mode=OneWay}"
-                                        OffContent=""
-                                        OnContent=""
-                                        Toggled="{x:Bind OnBlockAllKeysToggled}" />
-                                </StackPanel>
-                            </Grid>
-
-                            <MenuFlyoutSeparator />
-
-                            <Grid
-                                Height="52"
-                                Padding="44,0,16,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center">
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+                            <StackPanel
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
 
                                 <TextBlock
-                                    Grid.Column="0"
+                                    HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('DurationTime')}" />
-
-                                <TimePicker
-                                    Grid.Column="1"
-                                    ClockIdentifier="24HourClock"
-                                    Style="{StaticResource TimePickerStyle}"
-                                    Time="{x:Bind DurationTime, Mode=OneWay}"
-                                    TimeChanged="{x:Bind OnTimeChanged}">
-
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind x:String.Format(LoafTimeString, DurationTime.Hours, DurationTime.Minutes), Mode=OneWay}" />
-                                            </Grid>
-                                        </ToolTip>
-                                    </ToolTipService.ToolTip>
-                                </TimePicker>
-                            </Grid>
-
-                            <MenuFlyoutSeparator />
-
-                            <Grid
-                                Height="52"
-                                Padding="44,0,16,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center">
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+                                    Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('BlockAllKeysOffContent')}"
+                                    Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(BlockAllKeys), Mode=OneWay}" />
 
                                 <TextBlock
-                                    Grid.Column="0"
+                                    HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('AfterSimulateOperation')}" />
+                                    Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('BlockAllKeysOnContent')}"
+                                    Visibility="{x:Bind BlockAllKeys, Mode=OneWay}" />
 
-                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedAfterSimulateOperation.Value, Mode=OneWay}">
-                                    <DropDownButton.Flyout>
-                                        <MenuFlyout Placement="Bottom">
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnAfterSimulateOperationClicked}"
-                                                GroupName="AfterSimulateOperationRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[0].Key), Mode=OneWay}"
-                                                Tag="{x:Bind AfterSimulateOperationList[0]}"
-                                                Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[0].Value)}" />
+                                <ToggleSwitch
+                                    MinWidth="0"
+                                    Margin="10,-2,-10,0"
+                                    IsOn="{x:Bind BlockAllKeys, Mode=OneWay}"
+                                    OffContent=""
+                                    OnContent=""
+                                    Toggled="{x:Bind OnBlockAllKeysToggled}" />
+                            </StackPanel>
+                        </Grid>
 
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnAfterSimulateOperationClicked}"
-                                                GroupName="AfterSimulateOperationRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[1].Key), Mode=OneWay}"
-                                                Tag="{x:Bind AfterSimulateOperationList[1]}"
-                                                Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[1].Value)}" />
+                        <MenuFlyoutSeparator />
 
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnAfterSimulateOperationClicked}"
-                                                GroupName="AfterSimulateOperationRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[2].Key), Mode=OneWay}"
-                                                Tag="{x:Bind AfterSimulateOperationList[2]}"
-                                                Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[2].Value)}" />
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
 
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnAfterSimulateOperationClicked}"
-                                                GroupName="AfterSimulateOperationRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[3].Key), Mode=OneWay}"
-                                                Tag="{x:Bind AfterSimulateOperationList[3]}"
-                                                Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[3].Value)}" />
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnAfterSimulateOperationClicked}"
-                                                GroupName="AfterSimulateOperationRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[4].Key), Mode=OneWay}"
-                                                Tag="{x:Bind AfterSimulateOperationList[4]}"
-                                                Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[4].Value)}" />
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('DurationTime')}" />
 
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnAfterSimulateOperationClicked}"
-                                                GroupName="AfterSimulateOperationRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[5].Key), Mode=OneWay}"
-                                                Tag="{x:Bind AfterSimulateOperationList[5]}"
-                                                Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[5].Value)}" />
-                                        </MenuFlyout>
-                                    </DropDownButton.Flyout>
-                                </DropDownButton>
-                            </Grid>
-                        </StackPanel>
-                    </Expander.Content>
+                            <TimePicker
+                                Grid.Column="1"
+                                ClockIdentifier="24HourClock"
+                                Style="{StaticResource TimePickerStyle}"
+                                Time="{x:Bind DurationTime, Mode=OneWay}"
+                                TimeChanged="{x:Bind OnTimeChanged}">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Padding="0"
+                                        Background="Transparent">
+
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind x:String.Format(LoafTimeString, DurationTime.Hours, DurationTime.Minutes), Mode=OneWay}" />
+                                        </Grid>
+                                    </ToolTip>
+                                </ToolTipService.ToolTip>
+                            </TimePicker>
+                        </Grid>
+
+                        <MenuFlyoutSeparator />
+
+                        <Grid
+                            Height="52"
+                            Padding="44,0,16,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('AfterSimulateOperation')}" />
+
+                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedAfterSimulateOperation.Value, Mode=OneWay}">
+                                <DropDownButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnAfterSimulateOperationClicked}"
+                                            GroupName="AfterSimulateOperationRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[0].Key), Mode=OneWay}"
+                                            Tag="{x:Bind AfterSimulateOperationList[0]}"
+                                            Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[0].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnAfterSimulateOperationClicked}"
+                                            GroupName="AfterSimulateOperationRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[1].Key), Mode=OneWay}"
+                                            Tag="{x:Bind AfterSimulateOperationList[1]}"
+                                            Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[1].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnAfterSimulateOperationClicked}"
+                                            GroupName="AfterSimulateOperationRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[2].Key), Mode=OneWay}"
+                                            Tag="{x:Bind AfterSimulateOperationList[2]}"
+                                            Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[2].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnAfterSimulateOperationClicked}"
+                                            GroupName="AfterSimulateOperationRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[3].Key), Mode=OneWay}"
+                                            Tag="{x:Bind AfterSimulateOperationList[3]}"
+                                            Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[3].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnAfterSimulateOperationClicked}"
+                                            GroupName="AfterSimulateOperationRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[4].Key), Mode=OneWay}"
+                                            Tag="{x:Bind AfterSimulateOperationList[4]}"
+                                            Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[4].Value)}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnAfterSimulateOperationClicked}"
+                                            GroupName="AfterSimulateOperationRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedAfterSimulateOperation.Key, AfterSimulateOperationList[5].Key), Mode=OneWay}"
+                                            Tag="{x:Bind AfterSimulateOperationList[5]}"
+                                            Text="{x:Bind system:Convert.ToString(AfterSimulateOperationList[5].Value)}" />
+                                    </MenuFlyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+                        </Grid>
+                    </StackPanel>
                 </Expander>
 
                 <!--  小提示  -->
@@ -371,25 +369,23 @@
                         </Grid>
                     </Expander.Header>
 
-                    <Expander.Content>
-                        <StackPanel>
-                            <TextBlock
-                                Margin="44,10,16,5"
-                                FontSize="14"
-                                FontWeight="Normal"
-                                Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('TipContent1')}"
-                                TextAlignment="Justify"
-                                TextWrapping="Wrap" />
+                    <StackPanel>
+                        <TextBlock
+                            Margin="44,10,16,5"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('TipContent1')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
 
-                            <TextBlock
-                                Margin="44,0,16,10"
-                                FontSize="14"
-                                FontWeight="Normal"
-                                Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('TipContent2')}"
-                                TextAlignment="Justify"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
-                    </Expander.Content>
+                        <TextBlock
+                            Margin="44,0,16,10"
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('TipContent2')}"
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
                 </Expander>
             </Grid>
         </ScrollViewer>

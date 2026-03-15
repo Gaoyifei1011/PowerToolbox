@@ -70,9 +70,7 @@
                 Click="{x:Bind OnSelectFolderClicked}"
                 CornerRadius="{StaticResource ControlCornerRadius}">
 
-                <Button.Content>
-                    <FontIcon FontSize="14" Glyph="&#xE8B7;" />
-                </Button.Content>
+                <FontIcon FontSize="14" Glyph="&#xE8B7;" />
 
                 <ToolTipService.ToolTip>
                     <ToolTip

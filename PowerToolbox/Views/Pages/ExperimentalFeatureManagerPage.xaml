@@ -14,29 +14,27 @@
         PaneBackground="Transparent"
         PanePlacement="Right">
 
-        <SplitView.Content>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                <StackPanel
-                    Grid.Row="0"
-                    Margin="30,15,30,0"
-                    Orientation="Horizontal"
-                    Spacing="5">
+            <StackPanel
+                Grid.Row="0"
+                Margin="30,15,30,0"
+                Orientation="Horizontal"
+                Spacing="5">
 
-                    <TextBlock
-                        HorizontalAlignment="Left"
-                        FontSize="22"
-                        Text="{x:Bind rootservice:ResourceService.ExperimentalFeatureManagerResource.GetString('ExperimentalFeatureManager')}" />
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    FontSize="22"
+                    Text="{x:Bind rootservice:ResourceService.ExperimentalFeatureManagerResource.GetString('ExperimentalFeatureManager')}" />
 
-                    <TextBlock VerticalAlignment="Bottom" Text="{x:Bind ExperimentalFeatureDescription, Mode=OneWay}" />
-                </StackPanel>
-            </Grid>
-        </SplitView.Content>
+                <TextBlock VerticalAlignment="Bottom" Text="{x:Bind ExperimentalFeatureDescription, Mode=OneWay}" />
+            </StackPanel>
+        </Grid>
     </SplitView>
 </Page>

@@ -24,363 +24,355 @@
         PaneBackground="Transparent"
         PanePlacement="Right">
 
-        <SplitView.Content>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                <TextBlock
-                    Grid.Row="0"
-                    Margin="30,15,30,0"
-                    HorizontalAlignment="Left"
-                    FontSize="22"
-                    Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('ContextMenuManager')}" />
+            <TextBlock
+                Grid.Row="0"
+                Margin="30,15,30,0"
+                HorizontalAlignment="Left"
+                FontSize="22"
+                Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('ContextMenuManager')}" />
 
-                <!--  右键菜单管理控制栏  -->
-                <Grid
-                    Grid.Row="1"
-                    Height="60"
-                    Margin="30,5,30,3"
-                    Padding="12,0,0,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="{StaticResource ControlCornerRadius}">
+            <!--  右键菜单管理控制栏  -->
+            <Grid
+                Grid.Row="1"
+                Height="60"
+                Margin="30,5,30,3"
+                Padding="12,0,0,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}">
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                    <AutoSuggestBox
-                        Grid.Column="0"
-                        Margin="0,0,2,0"
+                <AutoSuggestBox
+                    Grid.Column="0"
+                    Margin="0,0,2,0"
+                    VerticalAlignment="Center"
+                    IsEnabled="{x:Bind GetIsLoading(ContextMenuResultKind), Mode=OneWay}"
+                    PlaceholderText="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('SearchAppNamePHText')}"
+                    QueryIcon="Find"
+                    QuerySubmitted="{x:Bind OnQuerySubmitted}"
+                    Text="{x:Bind SearchText, Mode=OneWay}"
+                    TextChanged="{x:Bind OnTextChanged}" />
+
+                <CommandBar
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    DefaultLabelPosition="Right">
+
+                    <CommandBar.PrimaryCommands>
+                        <AppBarButton
+                            Click="{x:Bind OnRefreshClicked}"
+                            IsEnabled="{x:Bind GetIsLoading(ContextMenuResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('Refresh')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE72C;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton
+                            Click="{x:Bind OnRestoreDefaultClicked}"
+                            IsEnabled="{x:Bind GetIsLoading(ContextMenuResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('RestoreDefault')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE777;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </CommandBar.PrimaryCommands>
+                </CommandBar>
+
+                <Button
+                    Grid.Column="2"
+                    MinHeight="{ThemeResource AppBarThemeCompactHeight}"
+                    Margin="-6,0,0,0"
+                    Padding="{ThemeResource CommandBarMoreButtonMargin}"
+                    VerticalAlignment="Center"
+                    Foreground="{ThemeResource CommandBarForeground}"
+                    IsAccessKeyScope="True"
+                    Style="{ThemeResource EllipsisButton}">
+
+                    <FontIcon
+                        Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
                         VerticalAlignment="Center"
-                        IsEnabled="{x:Bind GetIsLoading(ContextMenuResultKind), Mode=OneWay}"
-                        PlaceholderText="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('SearchAppNamePHText')}"
-                        QueryIcon="Find"
-                        QuerySubmitted="{x:Bind OnQuerySubmitted}"
-                        Text="{x:Bind SearchText, Mode=OneWay}"
-                        TextChanged="{x:Bind OnTextChanged}" />
+                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        FontSize="20"
+                        Glyph="&#xE712;" />
 
-                    <CommandBar
-                        Grid.Column="1"
-                        VerticalAlignment="Center"
-                        DefaultLabelPosition="Right">
+                    <Button.Flyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuFlyoutItem Click="{x:Bind OnUseInstructionClicked}" Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('UseInstruction')}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE946;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Button.Flyout>
 
-                        <CommandBar.PrimaryCommands>
-                            <AppBarButton
-                                Click="{x:Bind OnRefreshClicked}"
-                                IsEnabled="{x:Bind GetIsLoading(ContextMenuResultKind), Mode=OneWay}"
-                                Label="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('Refresh')}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip
+                            MaxWidth="9999"
+                            Padding="0"
+                            Background="Transparent">
 
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE72C;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
+                            <Grid>
+                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('ViewMore')}" />
+                            </Grid>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                </Button>
+            </Grid>
 
-                            <AppBarButton
-                                Click="{x:Bind OnRestoreDefaultClicked}"
-                                IsEnabled="{x:Bind GetIsLoading(ContextMenuResultKind), Mode=OneWay}"
-                                Label="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('RestoreDefault')}">
+            <!--  右键菜单状态显示栏  -->
+            <Grid
+                Grid.Row="2"
+                Height="60"
+                Margin="30,0,30,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}"
+                Visibility="{x:Bind GetContextMenuSuccessfullyState(ContextMenuResultKind, x:False), Mode=OneWay}">
 
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE777;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                        </CommandBar.PrimaryCommands>
-                    </CommandBar>
+                <!--  正在加载中  -->
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="10"
+                    Visibility="{x:Bind CheckContextMenuState(ContextMenuResultKind, enum:ContextMenuResultKind.Loading), Mode=OneWay}">
 
-                    <Button
-                        Grid.Column="2"
-                        MinHeight="{ThemeResource AppBarThemeCompactHeight}"
-                        Margin="-6,0,0,0"
-                        Padding="{ThemeResource CommandBarMoreButtonMargin}"
-                        VerticalAlignment="Center"
-                        Foreground="{ThemeResource CommandBarForeground}"
-                        IsAccessKeyScope="True"
-                        Style="{ThemeResource EllipsisButton}">
+                    <ProgressRing IsActive="True" IsEnabled="True" />
 
-                        <Button.Content>
-                            <FontIcon
-                                Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
-                                VerticalAlignment="Center"
-                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                FontSize="20"
-                                Glyph="&#xE712;" />
-                        </Button.Content>
-
-                        <Button.Flyout>
-                            <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem Click="{x:Bind OnUseInstructionClicked}" Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('UseInstruction')}">
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE946;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-                            </MenuFlyout>
-                        </Button.Flyout>
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('ViewMore')}" />
-                                </Grid>
-                            </ToolTip>
-                        </ToolTipService.ToolTip>
-                    </Button>
-                </Grid>
-
-                <!--  右键菜单状态显示栏  -->
-                <Grid
-                    Grid.Row="2"
-                    Height="60"
-                    Margin="30,0,30,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="{StaticResource ControlCornerRadius}"
-                    Visibility="{x:Bind GetContextMenuSuccessfullyState(ContextMenuResultKind, x:False), Mode=OneWay}">
-
-                    <!--  正在加载中  -->
-                    <StackPanel
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal"
-                        Spacing="10"
-                        Visibility="{x:Bind CheckContextMenuState(ContextMenuResultKind, enum:ContextMenuResultKind.Loading), Mode=OneWay}">
-
-                        <ProgressRing IsActive="True" IsEnabled="True" />
-
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('LoadingContextMenuInformation')}"
-                            TextAlignment="Center" />
-                    </StackPanel>
-
-                    <!--  加载失败（包含搜索结果为空）  -->
                     <TextBlock
-                        HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Text="{x:Bind ContextMenuFailedContent, Mode=OneWay}"
-                        TextAlignment="Center"
-                        Visibility="{x:Bind CheckContextMenuState(ContextMenuResultKind, enum:ContextMenuResultKind.Failed), Mode=OneWay}" />
-                </Grid>
+                        Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('LoadingContextMenuInformation')}"
+                        TextAlignment="Center" />
+                </StackPanel>
 
-                <!--  右键菜单结果展示项目控件  -->
-                <ListView
-                    Grid.Row="3"
-                    Padding="30,0,30,30"
-                    ItemsSource="{x:Bind ContextMenuCollection}"
-                    SelectionMode="None"
-                    Visibility="{x:Bind GetContextMenuSuccessfullyState(ContextMenuResultKind, x:True), Mode=OneWay}">
+                <!--  加载失败（包含搜索结果为空）  -->
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind ContextMenuFailedContent, Mode=OneWay}"
+                    TextAlignment="Center"
+                    Visibility="{x:Bind CheckContextMenuState(ContextMenuResultKind, enum:ContextMenuResultKind.Failed), Mode=OneWay}" />
+            </Grid>
 
-                    <ListView.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="MinHeight" Value="0 " />
-                        </Style>
-                    </ListView.ItemContainerStyle>
+            <!--  右键菜单结果展示项目控件  -->
+            <ListView
+                Grid.Row="3"
+                Padding="30,0,30,30"
+                ItemsSource="{x:Bind ContextMenuCollection}"
+                SelectionMode="None"
+                Visibility="{x:Bind GetContextMenuSuccessfullyState(ContextMenuResultKind, x:True), Mode=OneWay}">
 
-                    <ItemsControl.ItemContainerTransitions>
-                        <TransitionCollection />
-                    </ItemsControl.ItemContainerTransitions>
+                <ListView.ItemContainerStyle>
+                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="MinHeight" Value="0 " />
+                    </Style>
+                </ListView.ItemContainerStyle>
 
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="model:ContextMenuModel">
-                            <Expander
-                                Margin="0,0,0,2"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Stretch"
-                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                IsExpanded="False">
+                <ItemsControl.ItemContainerTransitions>
+                    <TransitionCollection />
+                </ItemsControl.ItemContainerTransitions>
 
-                                <Expander.Header>
-                                    <Grid Height="60">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:ContextMenuModel">
+                        <Expander
+                            Margin="0,0,0,2"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            IsExpanded="False">
 
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
+                            <Expander.Header>
+                                <Grid Height="60">
 
-                                        <Grid
-                                            Grid.Column="0"
-                                            Width="30"
-                                            Height="30"
-                                            Margin="0,0,12,0"
-                                            Padding="2"
-                                            Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
-                                            BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
-                                            BorderThickness="1"
-                                            CornerRadius="{StaticResource ControlCornerRadius}">
-                                            <ImageIcon Source="{x:Bind PackageIcon}" />
-                                        </Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
 
-                                        <StackPanel
-                                            Grid.Column="1"
+                                    <Grid
+                                        Grid.Column="0"
+                                        Width="30"
+                                        Height="30"
+                                        Margin="0,0,12,0"
+                                        Padding="2"
+                                        Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
+                                        BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="{StaticResource ControlCornerRadius}">
+                                        <ImageIcon Source="{x:Bind PackageIcon}" />
+                                    </Grid>
+
+                                    <StackPanel
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Orientation="Vertical">
+
+                                        <TextBlock
+                                            x:Name="PackageDisplayNameText"
                                             HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            Orientation="Vertical">
-
-                                            <TextBlock
-                                                x:Name="PackageDisplayNameText"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Style="{StaticResource BodyTextBlockStyle}"
-                                                Text="{x:Bind PackageDisplayName}"
-                                                TextTrimming="CharacterEllipsis"
-                                                TextWrapping="NoWrap">
-
-                                                <ToolTipService.ToolTip>
-                                                    <ToolTip
-                                                        MaxWidth="9999"
-                                                        Padding="0"
-                                                        Background="Transparent"
-                                                        Visibility="{Binding ElementName=PackageDisplayNameText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                                        <Grid>
-                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind PackageDisplayName}" />
-                                                        </Grid>
-                                                    </ToolTip>
-                                                </ToolTipService.ToolTip>
-                                            </TextBlock>
-
-                                            <TextBlock
-                                                x:Name="PackageFullNameText"
-                                                HorizontalAlignment="Left"
-                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                                IsTextSelectionEnabled="True"
-                                                Style="{StaticResource CaptionTextBlockStyle}"
-                                                Text="{x:Bind PackageFullName}"
-                                                TextTrimming="CharacterEllipsis"
-                                                TextWrapping="NoWrap">
-
-                                                <ToolTipService.ToolTip>
-                                                    <ToolTip
-                                                        MaxWidth="9999"
-                                                        Padding="0"
-                                                        Background="Transparent"
-                                                        Visibility="{Binding ElementName=PackageFullNameText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                                        <Grid>
-                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind PackageFullName}" />
-                                                        </Grid>
-                                                    </ToolTip>
-                                                </ToolTipService.ToolTip>
-                                            </TextBlock>
-                                        </StackPanel>
-
-                                        <Button
-                                            Grid.Column="2"
-                                            Width="32"
-                                            Height="32"
-                                            Margin="5,0,0,0"
-                                            Padding="0"
-                                            Command="{StaticResource OpenPackagePathCommand}"
-                                            CommandParameter="{x:Bind PackagePath}"
-                                            CornerRadius="{StaticResource ControlCornerRadius}">
-
-                                            <Button.Content>
-                                                <FontIcon FontSize="14" Glyph="&#xE8B7;" />
-                                            </Button.Content>
+                                            IsTextSelectionEnabled="True"
+                                            Style="{StaticResource BodyTextBlockStyle}"
+                                            Text="{x:Bind PackageDisplayName}"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="NoWrap">
 
                                             <ToolTipService.ToolTip>
                                                 <ToolTip
                                                     MaxWidth="9999"
                                                     Padding="0"
-                                                    Background="Transparent">
+                                                    Background="Transparent"
+                                                    Visibility="{Binding ElementName=PackageDisplayNameText, Path=IsTextTrimmed, Mode=OneWay}">
 
                                                     <Grid>
                                                         <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('OpenPackagePath')}" />
+                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind PackageDisplayName}" />
                                                     </Grid>
                                                 </ToolTip>
                                             </ToolTipService.ToolTip>
-                                        </Button>
-                                    </Grid>
-                                </Expander.Header>
+                                        </TextBlock>
 
-                                <Expander.Content>
-                                    <ListView ItemsSource="{x:Bind ContextMenuItemCollection}" SelectionMode="None">
+                                        <TextBlock
+                                            x:Name="PackageFullNameText"
+                                            HorizontalAlignment="Left"
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            IsTextSelectionEnabled="True"
+                                            Style="{StaticResource CaptionTextBlockStyle}"
+                                            Text="{x:Bind PackageFullName}"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="NoWrap">
 
-                                        <ListView.ItemContainerStyle>
-                                            <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                                                <Setter Property="Padding" Value="0" />
-                                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                                <Setter Property="Margin" Value="0" />
-                                                <Setter Property="MinHeight" Value="0 " />
-                                            </Style>
-                                        </ListView.ItemContainerStyle>
+                                            <ToolTipService.ToolTip>
+                                                <ToolTip
+                                                    MaxWidth="9999"
+                                                    Padding="0"
+                                                    Background="Transparent"
+                                                    Visibility="{Binding ElementName=PackageFullNameText, Path=IsTextTrimmed, Mode=OneWay}">
 
-                                        <ItemsControl.ItemContainerTransitions>
-                                            <TransitionCollection />
-                                        </ItemsControl.ItemContainerTransitions>
+                                                    <Grid>
+                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind PackageFullName}" />
+                                                    </Grid>
+                                                </ToolTip>
+                                            </ToolTipService.ToolTip>
+                                        </TextBlock>
+                                    </StackPanel>
 
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate x:DataType="model:ContextMenuItemModel">
-                                                <Grid Margin="0,1">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
+                                    <Button
+                                        Grid.Column="2"
+                                        Width="32"
+                                        Height="32"
+                                        Margin="5,0,0,0"
+                                        Padding="0"
+                                        Command="{StaticResource OpenPackagePathCommand}"
+                                        CommandParameter="{x:Bind PackagePath}"
+                                        CornerRadius="{StaticResource ControlCornerRadius}">
 
-                                                    <CheckBox
-                                                        Grid.Column="0"
-                                                        MinWidth="0"
-                                                        Margin="4,0,9,0"
-                                                        Command="{StaticResource CheckBoxClickCommand}"
-                                                        CommandParameter="{x:Bind}"
-                                                        IsChecked="{x:Bind IsEnabled, Mode=OneWay}">
+                                        <FontIcon FontSize="14" Glyph="&#xE8B7;" />
 
-                                                        <ToolTipService.ToolTip>
-                                                            <ToolTip
-                                                                MaxWidth="9999"
-                                                                Padding="0"
-                                                                Background="Transparent">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip
+                                                MaxWidth="9999"
+                                                Padding="0"
+                                                Background="Transparent">
 
-                                                                <Grid>
-                                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-
-                                                                    <Grid Padding="{StaticResource ToolTipBorderPadding}">
-                                                                        <TextBlock Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('Selected')}" Visibility="{x:Bind IsEnabled, Mode=OneWay}" />
-                                                                        <TextBlock Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsEnabled), Mode=OneWay}" />
-                                                                    </Grid>
-                                                                </Grid>
-                                                            </ToolTip>
-                                                        </ToolTipService.ToolTip>
-                                                    </CheckBox>
-
-                                                    <TextBlock
-                                                        Grid.Column="1"
-                                                        HorizontalAlignment="Left"
-                                                        VerticalAlignment="Center"
-                                                        IsTextSelectionEnabled="True"
-                                                        Text="{x:Bind ClsidString}" />
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('OpenPackagePath')}" />
                                                 </Grid>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
-                                </Expander.Content>
-                            </Expander>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-        </SplitView.Content>
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </Button>
+                                </Grid>
+                            </Expander.Header>
+
+                            <ListView ItemsSource="{x:Bind ContextMenuItemCollection}" SelectionMode="None">
+
+                                <ListView.ItemContainerStyle>
+                                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                        <Setter Property="Margin" Value="0" />
+                                        <Setter Property="MinHeight" Value="0 " />
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+
+                                <ItemsControl.ItemContainerTransitions>
+                                    <TransitionCollection />
+                                </ItemsControl.ItemContainerTransitions>
+
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:ContextMenuItemModel">
+                                        <Grid Margin="0,1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <CheckBox
+                                                Grid.Column="0"
+                                                MinWidth="0"
+                                                Margin="4,0,9,0"
+                                                Command="{StaticResource CheckBoxClickCommand}"
+                                                CommandParameter="{x:Bind}"
+                                                IsChecked="{x:Bind IsEnabled, Mode=OneWay}">
+
+                                                <ToolTipService.ToolTip>
+                                                    <ToolTip
+                                                        MaxWidth="9999"
+                                                        Padding="0"
+                                                        Background="Transparent">
+
+                                                        <Grid>
+                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                                            <Grid Padding="{StaticResource ToolTipBorderPadding}">
+                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('Selected')}" Visibility="{x:Bind IsEnabled, Mode=OneWay}" />
+                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsEnabled), Mode=OneWay}" />
+                                                            </Grid>
+                                                        </Grid>
+                                                    </ToolTip>
+                                                </ToolTipService.ToolTip>
+                                            </CheckBox>
+
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                IsTextSelectionEnabled="True"
+                                                Text="{x:Bind ClsidString}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Expander>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
 
         <SplitView.Pane>
             <!--  使用说明  -->
@@ -424,12 +416,10 @@
                             Click="{x:Bind OnCloseClicked}"
                             Style="{StaticResource AlternateCloseButtonStyle}">
 
-                            <Button.Content>
-                                <FontIcon
-                                    Margin="4"
-                                    FontSize="16"
-                                    Glyph="&#xE711;" />
-                            </Button.Content>
+                            <FontIcon
+                                Margin="4"
+                                FontSize="16"
+                                Glyph="&#xE711;" />
 
                             <ToolTipService.ToolTip>
                                 <ToolTip

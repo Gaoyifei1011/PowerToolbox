@@ -44,37 +44,35 @@
         PaneBackground="Transparent"
         PanePlacement="Right">
 
-        <SplitView.Content>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                <!--  文件管理控制栏  -->
-                <SelectorBar
-                    x:Name="FileManagerSelctorBar"
-                    Grid.Row="0"
-                    Margin="18,5,30,3"
-                    Padding="0"
-                    HorizontalAlignment="Left"
-                    SelectedItem="{x:Bind SelectedItem, Mode=OneWay}"
-                    SelectionChanged="{x:Bind OnSelectorBarSelectionChanged}">
+            <!--  文件管理控制栏  -->
+            <SelectorBar
+                x:Name="FileManagerSelctorBar"
+                Grid.Row="0"
+                Margin="18,5,30,3"
+                Padding="0"
+                HorizontalAlignment="Left"
+                SelectedItem="{x:Bind SelectedItem, Mode=OneWay}"
+                SelectionChanged="{x:Bind OnSelectorBarSelectionChanged}">
 
-                    <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('FileName')}" />
-                    <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('ExtensionName')}" />
-                    <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('UpperAndLowerCase')}" />
-                    <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('FileProperties')}" />
-                </SelectorBar>
+                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('FileName')}" />
+                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('ExtensionName')}" />
+                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('UpperAndLowerCase')}" />
+                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('FileProperties')}" />
+            </SelectorBar>
 
-                <!--  文件管理内容  -->
-                <Frame
-                    x:Name="FileManagerFrame"
-                    Grid.Row="1"
-                    Margin="30,0,30,0"
-                    NavigationFailed="{x:Bind OnNavigationFailed}" />
-            </Grid>
-        </SplitView.Content>
+            <!--  文件管理内容  -->
+            <Frame
+                x:Name="FileManagerFrame"
+                Grid.Row="1"
+                Margin="30,0,30,0"
+                NavigationFailed="{x:Bind OnNavigationFailed}" />
+        </Grid>
 
         <SplitView.Pane>
             <!--  使用说明  -->
@@ -118,12 +116,10 @@
                             Click="{x:Bind OnCloseClicked}"
                             Style="{StaticResource AlternateCloseButtonStyle}">
 
-                            <Button.Content>
-                                <FontIcon
-                                    Margin="4"
-                                    FontSize="16"
-                                    Glyph="&#xE711;" />
-                            </Button.Content>
+                            <FontIcon
+                                Margin="4"
+                                FontSize="16"
+                                Glyph="&#xE711;" />
 
                             <ToolTipService.ToolTip>
                                 <ToolTip
@@ -399,9 +395,7 @@
                                     Click="{x:Bind OnForwardNavigateClicked}"
                                     CornerRadius="{StaticResource ControlCornerRadius}">
 
-                                    <Button.Content>
-                                        <FontIcon FontSize="16" Glyph="&#xE76B;" />
-                                    </Button.Content>
+                                    <FontIcon FontSize="16" Glyph="&#xE76B;" />
 
                                     <ToolTipService.ToolTip>
                                         <ToolTip
@@ -424,9 +418,7 @@
                                     Click="{x:Bind OnNextNavigateClicked}"
                                     CornerRadius="{StaticResource ControlCornerRadius}">
 
-                                    <Button.Content>
-                                        <FontIcon FontSize="16" Glyph="&#xE76C;" />
-                                    </Button.Content>
+                                    <FontIcon FontSize="16" Glyph="&#xE76C;" />
 
                                     <ToolTipService.ToolTip>
                                         <ToolTip

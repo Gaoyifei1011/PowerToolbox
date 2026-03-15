@@ -31,137 +31,507 @@
         PaneBackground="Transparent"
         PanePlacement="Right">
 
-        <SplitView.Content>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                Margin="30,15,30,0"
+                FontSize="22"
+                Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadManager')}" />
+
+            <!--  下载管理控制栏  -->
+            <Grid
+                Grid.Row="1"
+                Height="60"
+                Margin="30,5,30,3"
+                Padding="16,0,0,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <FontIcon
+                    Grid.Column="0"
+                    Margin="0,0,12,0"
+                    FontSize="16"
+                    Glyph="&#xE74C;" />
 
                 <TextBlock
-                    Grid.Row="0"
-                    Margin="30,15,30,0"
-                    FontSize="22"
-                    Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadManager')}" />
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Operation')}" />
 
-                <!--  下载管理控制栏  -->
-                <Grid
-                    Grid.Row="1"
-                    Height="60"
-                    Margin="30,5,30,3"
-                    Padding="16,0,0,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="{StaticResource ControlCornerRadius}">
+                <AppBarSeparator Grid.Column="2" Margin="10,0,10,0" />
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="3"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadEmpty')}"
+                    Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(DownloadCollection.Count), Mode=OneWay}" />
+
+                <TextBlock
+                    Grid.Column="3"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind x:String.Format(DownloadingCountInfoString, DownloadCollection.Count), Mode=OneWay}"
+                    Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(DownloadCollection.Count), Mode=OneWay}" />
+
+                <CommandBar
+                    Grid.Column="4"
+                    VerticalAlignment="Center"
+                    DefaultLabelPosition="Right">
+
+                    <CommandBar.PrimaryCommands>
+                        <AppBarButton Click="{x:Bind OnAddTaskClicked}" Label="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('AddTask')}">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE710;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton
+                            Click="{x:Bind OnContinueAllClicked}"
+                            IsEnabled="{x:Bind system:Convert.ToBoolean(DownloadCollection.Count), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('ContinueAll')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE74B;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton
+                            Click="{x:Bind OnPauseDownloadClicked}"
+                            IsEnabled="{x:Bind system:Convert.ToBoolean(DownloadCollection.Count), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('PauseDownload')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE769;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </CommandBar.PrimaryCommands>
+                </CommandBar>
+
+                <Button
+                    Grid.Column="5"
+                    MinHeight="{ThemeResource AppBarThemeCompactHeight}"
+                    Margin="-6,0,0,0"
+                    Padding="{ThemeResource CommandBarMoreButtonMargin}"
+                    VerticalAlignment="Center"
+                    Foreground="{ThemeResource CommandBarForeground}"
+                    IsAccessKeyScope="True"
+                    Style="{ThemeResource EllipsisButton}">
 
                     <FontIcon
-                        Grid.Column="0"
-                        Margin="0,0,12,0"
-                        FontSize="16"
-                        Glyph="&#xE74C;" />
-
-                    <TextBlock
-                        Grid.Column="1"
+                        Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
                         VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Operation')}" />
+                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        FontSize="20"
+                        Glyph="&#xE712;" />
 
-                    <AppBarSeparator Grid.Column="2" Margin="10,0,10,0" />
-
-                    <TextBlock
-                        Grid.Column="3"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadEmpty')}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(DownloadCollection.Count), Mode=OneWay}" />
-
-                    <TextBlock
-                        Grid.Column="3"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind x:String.Format(DownloadingCountInfoString, DownloadCollection.Count), Mode=OneWay}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(DownloadCollection.Count), Mode=OneWay}" />
-
-                    <CommandBar
-                        Grid.Column="4"
-                        VerticalAlignment="Center"
-                        DefaultLabelPosition="Right">
-
-                        <CommandBar.PrimaryCommands>
-                            <AppBarButton Click="{x:Bind OnAddTaskClicked}" Label="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('AddTask')}">
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE710;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-
-                            <AppBarButton
-                                Click="{x:Bind OnContinueAllClicked}"
+                    <Button.Flyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuFlyoutItem
+                                Click="{x:Bind OnDeleteDownloadClicked}"
                                 IsEnabled="{x:Bind system:Convert.ToBoolean(DownloadCollection.Count), Mode=OneWay}"
-                                Label="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('ContinueAll')}">
+                                Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DeleteDownload')}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE74D;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
 
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE74B;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
+                            <MenuFlyoutItem Click="{x:Bind OnOpenFolderClicked}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('OpenFolder')}">
 
-                            <AppBarButton
-                                Click="{x:Bind OnPauseDownloadClicked}"
-                                IsEnabled="{x:Bind system:Convert.ToBoolean(DownloadCollection.Count), Mode=OneWay}"
-                                Label="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('PauseDownload')}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE8B7;" />
+                                </MenuFlyoutItem.Icon>
 
-                                <AppBarButton.Icon>
-                                    <FontIcon Glyph="&#xE769;" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                        </CommandBar.PrimaryCommands>
-                    </CommandBar>
+                                <ToolTipService.ToolTip>
+                                    <ToolTip
+                                        MaxWidth="9999"
+                                        Padding="0"
+                                        Background="Transparent">
 
-                    <Button
-                        Grid.Column="5"
-                        MinHeight="{ThemeResource AppBarThemeCompactHeight}"
-                        Margin="-6,0,0,0"
-                        Padding="{ThemeResource CommandBarMoreButtonMargin}"
-                        VerticalAlignment="Center"
-                        Foreground="{ThemeResource CommandBarForeground}"
-                        IsAccessKeyScope="True"
-                        Style="{ThemeResource EllipsisButton}">
+                                        <Grid>
+                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('OpenFolderToolTip')}" />
+                                        </Grid>
+                                    </ToolTip>
+                                </ToolTipService.ToolTip>
+                            </MenuFlyoutItem>
 
-                        <Button.Content>
+                            <MenuFlyoutItem Click="{x:Bind OnUseInstructionClicked}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('UseInstruction')}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE946;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+
+                            <MenuFlyoutSeparator />
+
+                            <MenuFlyoutItem Click="{x:Bind OnDownloadSettingsClicked}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadSettings')}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE713;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Button.Flyout>
+
+                    <ToolTipService.ToolTip>
+                        <ToolTip
+                            MaxWidth="9999"
+                            Padding="0"
+                            Background="Transparent">
+
+                            <Grid>
+                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('ViewMore')}" />
+                            </Grid>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                </Button>
+            </Grid>
+
+            <!--  下载内容空提示栏  -->
+            <Grid
+                Grid.Row="2"
+                Height="60"
+                Margin="30,0,30,0"
+                Padding="16,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}"
+                Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(DownloadCollection.Count), Mode=OneWay}">
+
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('EmptyDescription')}"
+                    TextAlignment="Center" />
+            </Grid>
+
+            <!--  下载内容列表控件  -->
+            <ListView
+                Grid.Row="3"
+                Padding="30,0,30,30"
+                ItemsSource="{x:Bind DownloadCollection}"
+                SelectionMode="None"
+                Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(DownloadCollection.Count), Mode=OneWay}">
+
+                <ListView.ItemContainerStyle>
+                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="MinHeight" Value="0 " />
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ItemsControl.ItemContainerTransitions>
+                    <TransitionCollection />
+                </ItemsControl.ItemContainerTransitions>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:DownloadModel">
+                        <Grid
+                            Height="60"
+                            Margin="0,0,0,2"
+                            Padding="16,0"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="{StaticResource ControlCornerRadius}">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
                             <FontIcon
-                                Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
+                                Grid.Column="0"
+                                Margin="6,0,18,0"
+                                FontSize="18"
+                                FontWeight="Thin"
+                                Glyph="&#xE958;"
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Queued, x:False), Mode=OneWay}" />
+
+                            <FontIcon
+                                Grid.Column="0"
+                                Margin="6,0,18,0"
+                                FontSize="18"
+                                FontWeight="Thin"
+                                Glyph="&#xE896;"
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
+
+                            <FontIcon
+                                Grid.Column="0"
+                                Margin="6,0,18,0"
+                                FontSize="18"
+                                FontWeight="Thin"
+                                Glyph="&#xE769;"
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Paused, x:False), Mode=OneWay}" />
+
+                            <FontIcon
+                                Grid.Column="0"
+                                Margin="6,0,18,0"
+                                FontSize="18"
+                                FontWeight="Thin"
+                                Glyph="&#xEA39;"
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Failed, x:False), Mode=OneWay}" />
+
+                            <Grid
+                                Grid.Column="0"
+                                Width="30"
+                                Height="30"
+                                Margin="0,0,12,0"
+                                HorizontalAlignment="Left"
+                                Background="{ThemeResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1"
+                                CornerRadius="{StaticResource ControlCornerRadius}"
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:False), Mode=OneWay}">
+
+                                <ImageIcon Source="{x:Bind IconImage, Mode=OneWay}" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Column="2"
+                                Margin="0,0,10,0"
                                 VerticalAlignment="Center"
-                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                FontSize="20"
-                                Glyph="&#xE712;" />
-                        </Button.Content>
+                                RowSpacing="4">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
-                        <Button.Flyout>
-                            <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem
-                                    Click="{x:Bind OnDeleteDownloadClicked}"
-                                    IsEnabled="{x:Bind system:Convert.ToBoolean(DownloadCollection.Count), Mode=OneWay}"
-                                    Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DeleteDownload')}">
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE74D;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
 
-                                <MenuFlyoutItem Click="{x:Bind OnOpenFolderClicked}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('OpenFolder')}">
+                                    <TextBlock
+                                        x:Name="FileNameText"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Text="{x:Bind FileName}"
+                                        TextAlignment="Left"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap">
 
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE8B7;" />
-                                    </MenuFlyoutItem.Icon>
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip
+                                                MaxWidth="9999"
+                                                Padding="0"
+                                                Background="Transparent"
+                                                Visibility="{Binding ElementName=FileNameText, Path=IsTextTrimmed, Mode=OneWay}">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind FileName}" />
+                                                </Grid>
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </TextBlock>
+
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Text="{x:Bind roothelper:SpeedHelper.ConvertSpeedToString(DownloadSpeed), Mode=OneWay}"
+                                        TextAlignment="Right"
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}">
+
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip
+                                                MaxWidth="9999"
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}">
+                                                        <Run Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('CurrentSpeed')}" />
+                                                        <Run Text="{x:Bind roothelper:SpeedHelper.ConvertSpeedToString(DownloadSpeed), Mode=OneWay}" />
+                                                    </TextBlock>
+                                                </Grid>
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </TextBlock>
+
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        Margin="4,0,4,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        FontSize="14"
+                                        Text="|"
+                                        TextAlignment="Right"
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
+
+                                    <TextBlock
+                                        Grid.Column="3"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Text="{x:Bind roothelper:VolumeSizeHelper.ConvertVolumeSizeToString(CompletedSize), Mode=OneWay}"
+                                        TextAlignment="Right"
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}">
+
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip
+                                                MaxWidth="9999"
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}">
+                                                        <Run Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('CompletedSize')}" />
+                                                        <Run Text="{x:Bind roothelper:VolumeSizeHelper.ConvertVolumeSizeToString(CompletedSize), Mode=OneWay}" />
+                                                    </TextBlock>
+                                                </Grid>
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </TextBlock>
+
+                                    <TextBlock
+                                        Grid.Column="4"
+                                        Margin="4,0,4,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        FontSize="14"
+                                        Text="|"
+                                        TextAlignment="Right"
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
+
+                                    <TextBlock
+                                        Grid.Column="5"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Text="{x:Bind roothelper:VolumeSizeHelper.ConvertVolumeSizeToString(TotalSize), Mode=OneWay}"
+                                        TextAlignment="Right">
+
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip
+                                                MaxWidth="9999"
+                                                Padding="0"
+                                                Background="Transparent">
+
+                                                <Grid>
+                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}">
+                                                        <Run Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('FileSize')}" />
+                                                        <Run Text="{x:Bind roothelper:VolumeSizeHelper.ConvertVolumeSizeToString(TotalSize), Mode=OneWay}" />
+                                                    </TextBlock>
+                                                </Grid>
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </TextBlock>
+                                </Grid>
+
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadQueued')}"
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Queued, x:False), Mode=OneWay}" />
+
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Downloading')}"
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
+
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadPaused')}"
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Paused, x:False), Mode=OneWay}" />
+
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadFailed')}"
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Failed, x:False), Mode=OneWay}" />
+
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        Style="{StaticResource CaptionTextBlockStyle}"
+                                        Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadFinished')}"
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:False), Mode=OneWay}" />
+
+                                    <ProgressBar
+                                        Grid.Column="1"
+                                        Margin="10,0,0,0"
+                                        IsIndeterminate="{x:Bind x:Object.Equals(DownloadProgressState, enum:DownloadProgressState.Queued), Mode=OneWay}"
+                                        ShowError="{x:Bind x:Object.Equals(DownloadProgressState, enum:DownloadProgressState.Failed), Mode=OneWay}"
+                                        ShowPaused="{x:Bind x:Object.Equals(DownloadProgressState, enum:DownloadProgressState.Paused), Mode=OneWay}"
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:True), Mode=OneWay}"
+                                        Value="{x:Bind converter:ValueConverterHelper.DownloadProgress(CompletedSize, TotalSize), Mode=OneWay}" />
+                                </Grid>
+                            </Grid>
+
+                            <StackPanel
+                                Grid.Column="3"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:True), Mode=OneWay}">
+
+                                <Button
+                                    Width="32"
+                                    Height="32"
+                                    Margin="5,0,0,0"
+                                    Padding="0"
+                                    Command="{StaticResource ContinueCommand}"
+                                    CommandParameter="{x:Bind}"
+                                    CornerRadius="{StaticResource ControlCornerRadius}"
+                                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsOperating), Mode=OneWay}"
+                                    Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Paused, x:False), Mode=OneWay}">
+
+                                    <FontIcon FontSize="14" Glyph="&#xE768;" />
 
                                     <ToolTipService.ToolTip>
                                         <ToolTip
@@ -171,571 +541,187 @@
 
                                             <Grid>
                                                 <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('OpenFolderToolTip')}" />
+                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Continue')}" />
                                             </Grid>
                                         </ToolTip>
                                     </ToolTipService.ToolTip>
-                                </MenuFlyoutItem>
+                                </Button>
 
-                                <MenuFlyoutItem Click="{x:Bind OnUseInstructionClicked}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('UseInstruction')}">
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE946;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-
-                                <MenuFlyoutSeparator />
-
-                                <MenuFlyoutItem Click="{x:Bind OnDownloadSettingsClicked}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadSettings')}">
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon Glyph="&#xE713;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-                            </MenuFlyout>
-                        </Button.Flyout>
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('ViewMore')}" />
-                                </Grid>
-                            </ToolTip>
-                        </ToolTipService.ToolTip>
-                    </Button>
-                </Grid>
-
-                <!--  下载内容空提示栏  -->
-                <Grid
-                    Grid.Row="2"
-                    Height="60"
-                    Margin="30,0,30,0"
-                    Padding="16,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="{StaticResource ControlCornerRadius}"
-                    Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(DownloadCollection.Count), Mode=OneWay}">
-
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('EmptyDescription')}"
-                        TextAlignment="Center" />
-                </Grid>
-
-                <!--  下载内容列表控件  -->
-                <ListView
-                    Grid.Row="3"
-                    Padding="30,0,30,30"
-                    ItemsSource="{x:Bind DownloadCollection}"
-                    SelectionMode="None"
-                    Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(DownloadCollection.Count), Mode=OneWay}">
-
-                    <ListView.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="MinHeight" Value="0 " />
-                        </Style>
-                    </ListView.ItemContainerStyle>
-
-                    <ItemsControl.ItemContainerTransitions>
-                        <TransitionCollection />
-                    </ItemsControl.ItemContainerTransitions>
-
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="model:DownloadModel">
-                            <Grid
-                                Height="60"
-                                Margin="0,0,0,2"
-                                Padding="16,0"
-                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                BorderThickness="1"
-                                CornerRadius="{StaticResource ControlCornerRadius}">
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <FontIcon
-                                    Grid.Column="0"
-                                    Margin="6,0,18,0"
-                                    FontSize="18"
-                                    FontWeight="Thin"
-                                    Glyph="&#xE958;"
-                                    Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Queued, x:False), Mode=OneWay}" />
-
-                                <FontIcon
-                                    Grid.Column="0"
-                                    Margin="6,0,18,0"
-                                    FontSize="18"
-                                    FontWeight="Thin"
-                                    Glyph="&#xE896;"
-                                    Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
-
-                                <FontIcon
-                                    Grid.Column="0"
-                                    Margin="6,0,18,0"
-                                    FontSize="18"
-                                    FontWeight="Thin"
-                                    Glyph="&#xE769;"
-                                    Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Paused, x:False), Mode=OneWay}" />
-
-                                <FontIcon
-                                    Grid.Column="0"
-                                    Margin="6,0,18,0"
-                                    FontSize="18"
-                                    FontWeight="Thin"
-                                    Glyph="&#xEA39;"
-                                    Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Failed, x:False), Mode=OneWay}" />
-
-                                <Grid
-                                    Grid.Column="0"
-                                    Width="30"
-                                    Height="30"
-                                    Margin="0,0,12,0"
-                                    HorizontalAlignment="Left"
-                                    Background="{ThemeResource CardStrokeColorDefaultBrush}"
-                                    BorderThickness="1"
+                                <Button
+                                    Width="32"
+                                    Height="32"
+                                    Margin="5,0,0,0"
+                                    Padding="0"
+                                    Command="{StaticResource PauseCommand}"
+                                    CommandParameter="{x:Bind}"
                                     CornerRadius="{StaticResource ControlCornerRadius}"
-                                    Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:False), Mode=OneWay}">
+                                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsOperating), Mode=OneWay}"
+                                    Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadingState(DownloadProgressState), Mode=OneWay}">
 
-                                    <ImageIcon Source="{x:Bind IconImage, Mode=OneWay}" />
-                                </Grid>
+                                    <FontIcon FontSize="14" Glyph="&#xE769;" />
 
-                                <Grid
-                                    Grid.Column="2"
-                                    Margin="0,0,10,0"
-                                    VerticalAlignment="Center"
-                                    RowSpacing="4">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip
+                                            MaxWidth="9999"
+                                            Padding="0"
+                                            Background="Transparent">
 
-                                    <Grid Grid.Row="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
+                                            <Grid>
+                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Pause')}" />
+                                            </Grid>
+                                        </ToolTip>
+                                    </ToolTipService.ToolTip>
+                                </Button>
 
-                                        <TextBlock
-                                            x:Name="FileNameText"
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            FontSize="16"
-                                            Text="{x:Bind FileName}"
-                                            TextAlignment="Left"
-                                            TextTrimming="CharacterEllipsis"
-                                            TextWrapping="NoWrap">
+                                <Button
+                                    Width="32"
+                                    Height="32"
+                                    Margin="5,0,0,0"
+                                    Padding="0"
+                                    Command="{StaticResource DeleteCommand}"
+                                    CommandParameter="{x:Bind}"
+                                    CornerRadius="{StaticResource ControlCornerRadius}"
+                                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsOperating), Mode=OneWay}">
 
-                                            <ToolTipService.ToolTip>
-                                                <ToolTip
-                                                    MaxWidth="9999"
-                                                    Padding="0"
-                                                    Background="Transparent"
-                                                    Visibility="{Binding ElementName=FileNameText, Path=IsTextTrimmed, Mode=OneWay}">
+                                    <FontIcon FontSize="14" Glyph="&#xE711;" />
+                                </Button>
+                            </StackPanel>
 
-                                                    <Grid>
-                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind FileName}" />
-                                                    </Grid>
-                                                </ToolTip>
-                                            </ToolTipService.ToolTip>
-                                        </TextBlock>
+                            <StackPanel
+                                Grid.Column="3"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal"
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:False), Mode=OneWay}">
 
-                                        <TextBlock
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            FontSize="16"
-                                            Text="{x:Bind roothelper:SpeedHelper.ConvertSpeedToString(DownloadSpeed), Mode=OneWay}"
-                                            TextAlignment="Right"
-                                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}">
+                                <Button
+                                    Width="32"
+                                    Height="32"
+                                    Margin="5,0,0,0"
+                                    Padding="0"
+                                    Command="{StaticResource OpenFolderCommand}"
+                                    CommandParameter="{x:Bind FilePath}"
+                                    CornerRadius="{StaticResource ControlCornerRadius}"
+                                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsOperating), Mode=OneWay}">
 
-                                            <ToolTipService.ToolTip>
-                                                <ToolTip
-                                                    MaxWidth="9999"
-                                                    Padding="0"
-                                                    Background="Transparent">
+                                    <FontIcon FontSize="14" Glyph="&#xEC50;" />
 
-                                                    <Grid>
-                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip
+                                            MaxWidth="9999"
+                                            Padding="0"
+                                            Background="Transparent">
 
-                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}">
-                                                            <Run Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('CurrentSpeed')}" />
-                                                            <Run Text="{x:Bind roothelper:SpeedHelper.ConvertSpeedToString(DownloadSpeed), Mode=OneWay}" />
-                                                        </TextBlock>
-                                                    </Grid>
-                                                </ToolTip>
-                                            </ToolTipService.ToolTip>
-                                        </TextBlock>
+                                            <Grid>
+                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('OpenFolder')}" />
+                                            </Grid>
+                                        </ToolTip>
+                                    </ToolTipService.ToolTip>
+                                </Button>
 
-                                        <TextBlock
-                                            Grid.Column="2"
-                                            Margin="4,0,4,0"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            FontSize="14"
-                                            Text="|"
-                                            TextAlignment="Right"
-                                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
+                                <Button
+                                    Width="32"
+                                    Height="32"
+                                    Margin="5,0,0,0"
+                                    Padding="0"
+                                    CornerRadius="{StaticResource ControlCornerRadius}">
 
-                                        <TextBlock
-                                            Grid.Column="3"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            FontSize="16"
-                                            Text="{x:Bind roothelper:VolumeSizeHelper.ConvertVolumeSizeToString(CompletedSize), Mode=OneWay}"
-                                            TextAlignment="Right"
-                                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}">
+                                    <FontIcon FontSize="14" Glyph="&#xE712;" />
 
-                                            <ToolTipService.ToolTip>
-                                                <ToolTip
-                                                    MaxWidth="9999"
-                                                    Padding="0"
-                                                    Background="Transparent">
+                                    <Button.Flyout>
+                                        <MenuFlyout Placement="Bottom">
+                                            <MenuFlyoutItem
+                                                Command="{StaticResource DeleteCommand}"
+                                                CommandParameter="{x:Bind}"
+                                                Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Delete')}">
 
-                                                    <Grid>
-                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE74D;" />
+                                                </MenuFlyoutItem.Icon>
 
-                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}">
-                                                            <Run Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('CompletedSize')}" />
-                                                            <Run Text="{x:Bind roothelper:VolumeSizeHelper.ConvertVolumeSizeToString(CompletedSize), Mode=OneWay}" />
-                                                        </TextBlock>
-                                                    </Grid>
-                                                </ToolTip>
-                                            </ToolTipService.ToolTip>
-                                        </TextBlock>
+                                                <ToolTipService.ToolTip>
+                                                    <ToolTip
+                                                        MaxWidth="9999"
+                                                        Padding="0"
+                                                        Background="Transparent">
 
-                                        <TextBlock
-                                            Grid.Column="4"
-                                            Margin="4,0,4,0"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            FontSize="14"
-                                            Text="|"
-                                            TextAlignment="Right"
-                                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
+                                                        <Grid>
+                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DeleteToolTip')}" />
+                                                        </Grid>
+                                                    </ToolTip>
+                                                </ToolTipService.ToolTip>
+                                            </MenuFlyoutItem>
 
-                                        <TextBlock
-                                            Grid.Column="5"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            FontSize="16"
-                                            Text="{x:Bind roothelper:VolumeSizeHelper.ConvertVolumeSizeToString(TotalSize), Mode=OneWay}"
-                                            TextAlignment="Right">
+                                            <MenuFlyoutItem
+                                                Command="{StaticResource DeleteWithFileCommand}"
+                                                CommandParameter="{x:Bind}"
+                                                Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DeleteWithFile')}">
 
-                                            <ToolTipService.ToolTip>
-                                                <ToolTip
-                                                    MaxWidth="9999"
-                                                    Padding="0"
-                                                    Background="Transparent">
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE74D;" />
+                                                </MenuFlyoutItem.Icon>
 
-                                                    <Grid>
-                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                <ToolTipService.ToolTip>
+                                                    <ToolTip
+                                                        MaxWidth="9999"
+                                                        Padding="0"
+                                                        Background="Transparent">
 
-                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}">
-                                                            <Run Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('FileSize')}" />
-                                                            <Run Text="{x:Bind roothelper:VolumeSizeHelper.ConvertVolumeSizeToString(TotalSize), Mode=OneWay}" />
-                                                        </TextBlock>
-                                                    </Grid>
-                                                </ToolTip>
-                                            </ToolTipService.ToolTip>
-                                        </TextBlock>
-                                    </Grid>
+                                                        <Grid>
+                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DeleteWithFileToolTip')}" />
+                                                        </Grid>
+                                                    </ToolTip>
+                                                </ToolTipService.ToolTip>
+                                            </MenuFlyoutItem>
 
-                                    <Grid Grid.Row="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
+                                            <MenuFlyoutSeparator />
 
-                                        <TextBlock
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                            Style="{StaticResource CaptionTextBlockStyle}"
-                                            Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadQueued')}"
-                                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Queued, x:False), Mode=OneWay}" />
+                                            <MenuFlyoutItem
+                                                Command="{StaticResource ShareFileCommand}"
+                                                CommandParameter="{x:Bind FilePath}"
+                                                Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('ShareFile')}">
 
-                                        <TextBlock
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                            Style="{StaticResource CaptionTextBlockStyle}"
-                                            Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Downloading')}"
-                                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE72D;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
 
-                                        <TextBlock
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                            Style="{StaticResource CaptionTextBlockStyle}"
-                                            Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadPaused')}"
-                                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Paused, x:False), Mode=OneWay}" />
+                                            <MenuFlyoutItem
+                                                Command="{StaticResource FileInformationCommand}"
+                                                CommandParameter="{x:Bind FilePath}"
+                                                Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('FileInformation')}">
 
-                                        <TextBlock
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                            Style="{StaticResource CaptionTextBlockStyle}"
-                                            Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadFailed')}"
-                                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Failed, x:False), Mode=OneWay}" />
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE946;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </Button.Flyout>
 
-                                        <TextBlock
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                            Style="{StaticResource CaptionTextBlockStyle}"
-                                            Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadFinished')}"
-                                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:False), Mode=OneWay}" />
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip
+                                            MaxWidth="9999"
+                                            Padding="0"
+                                            Background="Transparent">
 
-                                        <ProgressBar
-                                            Grid.Column="1"
-                                            Margin="10,0,0,0"
-                                            IsIndeterminate="{x:Bind x:Object.Equals(DownloadProgressState, enum:DownloadProgressState.Queued), Mode=OneWay}"
-                                            ShowError="{x:Bind x:Object.Equals(DownloadProgressState, enum:DownloadProgressState.Failed), Mode=OneWay}"
-                                            ShowPaused="{x:Bind x:Object.Equals(DownloadProgressState, enum:DownloadProgressState.Paused), Mode=OneWay}"
-                                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:True), Mode=OneWay}"
-                                            Value="{x:Bind converter:ValueConverterHelper.DownloadProgress(CompletedSize, TotalSize), Mode=OneWay}" />
-                                    </Grid>
-                                </Grid>
-
-                                <StackPanel
-                                    Grid.Column="3"
-                                    Margin="10,0,0,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal"
-                                    Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:True), Mode=OneWay}">
-
-                                    <Button
-                                        Width="32"
-                                        Height="32"
-                                        Margin="5,0,0,0"
-                                        Padding="0"
-                                        Command="{StaticResource ContinueCommand}"
-                                        CommandParameter="{x:Bind}"
-                                        CornerRadius="{StaticResource ControlCornerRadius}"
-                                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsOperating), Mode=OneWay}"
-                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Paused, x:False), Mode=OneWay}">
-
-                                        <Button.Content>
-                                            <FontIcon FontSize="14" Glyph="&#xE768;" />
-                                        </Button.Content>
-
-                                        <ToolTipService.ToolTip>
-                                            <ToolTip
-                                                MaxWidth="9999"
-                                                Padding="0"
-                                                Background="Transparent">
-
-                                                <Grid>
-                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Continue')}" />
-                                                </Grid>
-                                            </ToolTip>
-                                        </ToolTipService.ToolTip>
-                                    </Button>
-
-                                    <Button
-                                        Width="32"
-                                        Height="32"
-                                        Margin="5,0,0,0"
-                                        Padding="0"
-                                        Command="{StaticResource PauseCommand}"
-                                        CommandParameter="{x:Bind}"
-                                        CornerRadius="{StaticResource ControlCornerRadius}"
-                                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsOperating), Mode=OneWay}"
-                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadingState(DownloadProgressState), Mode=OneWay}">
-
-                                        <Button.Content>
-                                            <FontIcon FontSize="14" Glyph="&#xE769;" />
-                                        </Button.Content>
-
-                                        <ToolTipService.ToolTip>
-                                            <ToolTip
-                                                MaxWidth="9999"
-                                                Padding="0"
-                                                Background="Transparent">
-
-                                                <Grid>
-                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Pause')}" />
-                                                </Grid>
-                                            </ToolTip>
-                                        </ToolTipService.ToolTip>
-                                    </Button>
-
-                                    <Button
-                                        Width="32"
-                                        Height="32"
-                                        Margin="5,0,0,0"
-                                        Padding="0"
-                                        Command="{StaticResource DeleteCommand}"
-                                        CommandParameter="{x:Bind}"
-                                        CornerRadius="{StaticResource ControlCornerRadius}"
-                                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsOperating), Mode=OneWay}">
-
-                                        <Button.Content>
-                                            <FontIcon FontSize="14" Glyph="&#xE711;" />
-                                        </Button.Content>
-                                    </Button>
-                                </StackPanel>
-
-                                <StackPanel
-                                    Grid.Column="3"
-                                    Margin="10,0,0,0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal"
-                                    Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:False), Mode=OneWay}">
-
-                                    <Button
-                                        Width="32"
-                                        Height="32"
-                                        Margin="5,0,0,0"
-                                        Padding="0"
-                                        Command="{StaticResource OpenFolderCommand}"
-                                        CommandParameter="{x:Bind FilePath}"
-                                        CornerRadius="{StaticResource ControlCornerRadius}"
-                                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsOperating), Mode=OneWay}">
-
-                                        <Button.Content>
-                                            <FontIcon FontSize="14" Glyph="&#xEC50;" />
-                                        </Button.Content>
-
-                                        <ToolTipService.ToolTip>
-                                            <ToolTip
-                                                MaxWidth="9999"
-                                                Padding="0"
-                                                Background="Transparent">
-
-                                                <Grid>
-                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('OpenFolder')}" />
-                                                </Grid>
-                                            </ToolTip>
-                                        </ToolTipService.ToolTip>
-                                    </Button>
-
-                                    <Button
-                                        Width="32"
-                                        Height="32"
-                                        Margin="5,0,0,0"
-                                        Padding="0"
-                                        CornerRadius="{StaticResource ControlCornerRadius}">
-
-                                        <Button.Content>
-                                            <FontIcon FontSize="14" Glyph="&#xE712;" />
-                                        </Button.Content>
-
-                                        <Button.Flyout>
-                                            <MenuFlyout Placement="Bottom">
-                                                <MenuFlyoutItem
-                                                    Command="{StaticResource DeleteCommand}"
-                                                    CommandParameter="{x:Bind}"
-                                                    Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Delete')}">
-
-                                                    <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE74D;" />
-                                                    </MenuFlyoutItem.Icon>
-
-                                                    <ToolTipService.ToolTip>
-                                                        <ToolTip
-                                                            MaxWidth="9999"
-                                                            Padding="0"
-                                                            Background="Transparent">
-
-                                                            <Grid>
-                                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DeleteToolTip')}" />
-                                                            </Grid>
-                                                        </ToolTip>
-                                                    </ToolTipService.ToolTip>
-                                                </MenuFlyoutItem>
-
-                                                <MenuFlyoutItem
-                                                    Command="{StaticResource DeleteWithFileCommand}"
-                                                    CommandParameter="{x:Bind}"
-                                                    Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DeleteWithFile')}">
-
-                                                    <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE74D;" />
-                                                    </MenuFlyoutItem.Icon>
-
-                                                    <ToolTipService.ToolTip>
-                                                        <ToolTip
-                                                            MaxWidth="9999"
-                                                            Padding="0"
-                                                            Background="Transparent">
-
-                                                            <Grid>
-                                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DeleteWithFileToolTip')}" />
-                                                            </Grid>
-                                                        </ToolTip>
-                                                    </ToolTipService.ToolTip>
-                                                </MenuFlyoutItem>
-
-                                                <MenuFlyoutSeparator />
-
-                                                <MenuFlyoutItem
-                                                    Command="{StaticResource ShareFileCommand}"
-                                                    CommandParameter="{x:Bind FilePath}"
-                                                    Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('ShareFile')}">
-
-                                                    <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE72D;" />
-                                                    </MenuFlyoutItem.Icon>
-                                                </MenuFlyoutItem>
-
-                                                <MenuFlyoutItem
-                                                    Command="{StaticResource FileInformationCommand}"
-                                                    CommandParameter="{x:Bind FilePath}"
-                                                    Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('FileInformation')}">
-
-                                                    <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE946;" />
-                                                    </MenuFlyoutItem.Icon>
-                                                </MenuFlyoutItem>
-                                            </MenuFlyout>
-                                        </Button.Flyout>
-
-                                        <ToolTipService.ToolTip>
-                                            <ToolTip
-                                                MaxWidth="9999"
-                                                Padding="0"
-                                                Background="Transparent">
-
-                                                <Grid>
-                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('ViewMore')}" />
-                                                </Grid>
-                                            </ToolTip>
-                                        </ToolTipService.ToolTip>
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-        </SplitView.Content>
+                                            <Grid>
+                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('ViewMore')}" />
+                                            </Grid>
+                                        </ToolTip>
+                                    </ToolTipService.ToolTip>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
 
         <SplitView.Pane>
             <!--  使用说明  -->
@@ -779,12 +765,10 @@
                             Click="{x:Bind OnCloseClicked}"
                             Style="{StaticResource AlternateCloseButtonStyle}">
 
-                            <Button.Content>
-                                <FontIcon
-                                    Margin="4"
-                                    FontSize="16"
-                                    Glyph="&#xE711;" />
-                            </Button.Content>
+                            <FontIcon
+                                Margin="4"
+                                FontSize="16"
+                                Glyph="&#xE711;" />
 
                             <ToolTipService.ToolTip>
                                 <ToolTip
