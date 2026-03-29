@@ -1,4 +1,4 @@
-AppThemeDarkTime=应用深色主题时间
+﻿AppThemeDarkTime=应用深色主题时间
 AppThemeLightTime=应用浅色主题时间
 AppThemeStyle=应用主题样式
 AutoSwitchAppTheme=自动切换应用主题
@@ -12,6 +12,7 @@ AutoThemeSwitchEnableOffContent=否
 AutoThemeSwitchEnableOnContent=是
 AutoThemeSwitchSettings=自动切换主题设置
 AutoThemeSwitchType=自动切换主题类型
+AutoThemeSwitchTypeDarkMode=夜间模式
 AutoThemeSwitchTypeFixedTime=固定时间段
 AutoThemeSwitchTypeSunriseSunset=日落日出
 CloseFlyout=关闭浮出控件

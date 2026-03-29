@@ -1,4 +1,4 @@
-AppThemeDarkTime=App dark theme time
+﻿AppThemeDarkTime=App dark theme time
 AppThemeLightTime=App light theme time
 AppThemeStyle=App theme style
 AutoSwitchAppTheme=Auto switch app theme
@@ -12,6 +12,7 @@ AutoThemeSwitchEnableOffContent=No
 AutoThemeSwitchEnableOnContent=Yes
 AutoThemeSwitchSettings=Auto switch theme settings
 AutoThemeSwitchType=Auto switch theme type
+AutoThemeSwitchTypeDarkMode=Dark mode
 AutoThemeSwitchTypeFixedTime=Fixed time
 AutoThemeSwitchTypeSunriseSunset=Sun rise and sun set
 CloseFlyout=Close flyout

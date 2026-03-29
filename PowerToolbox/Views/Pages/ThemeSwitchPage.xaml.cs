@@ -39,6 +39,7 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class ThemeSwitchPage : Page, INotifyPropertyChanged
     {
+        private readonly string AutoThemeSwitchTypeDarkModeString = ResourceService.ThemeSwitchResource.GetString("AutoThemeSwitchTypeDarkMode");
         private readonly string AutoThemeSwitchTypeFixedTimeString = ResourceService.ThemeSwitchResource.GetString("AutoThemeSwitchTypeFixedTime");
         private readonly string AutoThemeSwitchTypeSunriseSunsetString = ResourceService.ThemeSwitchResource.GetString("AutoThemeSwitchTypeSunriseSunset");
         private readonly string DarkString = ResourceService.ThemeSwitchResource.GetString("Dark");
@@ -501,6 +502,7 @@ namespace PowerToolbox.Views.Pages
             AppThemeStyleList.Add(new KeyValuePair<ElementTheme, string>(ElementTheme.Dark, DarkString));
             AutoThemeSwitchTypeList.Add(new KeyValuePair<string, string>(AutoThemeSwitchService.AutoThemeSwitchTypeList[0], AutoThemeSwitchTypeFixedTimeString));
             AutoThemeSwitchTypeList.Add(new KeyValuePair<string, string>(AutoThemeSwitchService.AutoThemeSwitchTypeList[1], AutoThemeSwitchTypeSunriseSunsetString));
+            AutoThemeSwitchTypeList.Add(new KeyValuePair<string, string>(AutoThemeSwitchService.AutoThemeSwitchTypeList[2], AutoThemeSwitchTypeDarkModeString));
             SelectedSystemThemeStyle = SystemThemeStyleList[0];
             SelectedAppThemeStyle = AppThemeStyleList[0];
             SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList[0];

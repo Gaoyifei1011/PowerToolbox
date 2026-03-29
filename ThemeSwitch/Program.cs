@@ -300,6 +300,61 @@ namespace ThemeSwitch
                         await InitializeDeviceServiceAsync();
                     }
                 }
+                // 夜间模式
+                else if (Equals(AutoThemeSwitchService.AutoThemeSwitchTypeValue, AutoThemeSwitchService.AutoThemeSwitchTypeList[2]))
+                {
+                    // 如果地理位置服务开启，关闭地理位置服务
+                    if (DevicePositionService.IsInitialized)
+                    {
+                        await UnInitializeDeviceServiceAsync();
+                    }
+
+                    // 自动切换系统主题
+                    if (AutoThemeSwitchService.AutoSwitchSystemThemeValue)
+                    {
+                        if (IsNightLightEnabled())
+                        {
+                            bool isModified = SetSystemDarkTheme(AutoThemeSwitchService.IsShowColorInDarkThemeValue);
+
+                            if (isModified)
+                            {
+                                User32Library.SendMessageTimeout(0xffff, WindowMessage.WM_SETTINGCHANGE, 0, Marshal.StringToHGlobalUni("ImmersiveColorSet"), SMTO.SMTO_ABORTIFHUNG, 50, out _);
+                            }
+                        }
+                        else
+                        {
+                            bool isModified = SetSystemLightTheme();
+
+                            if (isModified)
+                            {
+                                User32Library.SendMessageTimeout(0xffff, WindowMessage.WM_SETTINGCHANGE, 0, Marshal.StringToHGlobalUni("ImmersiveColorSet"), SMTO.SMTO_ABORTIFHUNG, 50, out _);
+                            }
+                        }
+
+                        // 自动切换应用主题
+                        if (AutoThemeSwitchService.AutoSwitchAppThemeValue)
+                        {
+                            if (IsNightLightEnabled())
+                            {
+                                bool isModified = SetAppDarkTheme();
+
+                                if (isModified)
+                                {
+                                    User32Library.SendMessageTimeout(0xffff, WindowMessage.WM_SETTINGCHANGE, 0, Marshal.StringToHGlobalUni("ImmersiveColorSet"), SMTO.SMTO_ABORTIFHUNG, 50, out _);
+                                }
+                            }
+                            else
+                            {
+                                bool isModified = SetAppLightTheme();
+
+                                if (isModified)
+                                {
+                                    User32Library.SendMessageTimeout(0xffff, WindowMessage.WM_SETTINGCHANGE, 0, Marshal.StringToHGlobalUni("ImmersiveColorSet"), SMTO.SMTO_ABORTIFHUNG, 50, out _);
+                                }
+                            }
+                        }
+                    }
+                }
             }
             else
             {
@@ -744,6 +799,22 @@ namespace ThemeSwitch
         private static ElementTheme GetAppTheme()
         {
             return RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme") ? ElementTheme.Light : ElementTheme.Dark;
+        }
+
+        /// <summary>
+        /// 获取系统夜间模式状态
+        /// </summary>
+        private static bool IsNightLightEnabled()
+        {
+            string blueLightReductionStateKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\CloudStore\Store\DefaultAccount\Current\default$windows.data.bluelightreduction.bluelightreductionstate\windows.data.bluelightreduction.bluelightreductionstate";
+            using RegistryKey key = Registry.CurrentUser.OpenSubKey(blueLightReductionStateKey);
+            object data = key?.GetValue("Data");
+            if (data is null)
+            {
+                return false;
+            }
+            byte[] byteData = (byte[])data;
+            return byteData.Length > 24 && byteData[23] == 0x10 && byteData[24] == 0x00;
         }
     }
 }

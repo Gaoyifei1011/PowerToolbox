@@ -66,7 +66,7 @@ namespace PowerToolbox.Services.Settings
 
         public static int SunsetOffset { get; set; }
 
-        public static List<string> AutoThemeSwitchTypeList { get; } = ["FixedTime", "SunriseSunset"];
+        public static List<string> AutoThemeSwitchTypeList { get; } = ["FixedTime", "SunriseSunset", "DarkMode"];
 
         /// <summary>
         /// 应用在初始化前获取设置存储的自动切换主题所有选项值

@@ -459,6 +459,13 @@
                                                 IsChecked="{x:Bind x:Object.Equals(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}"
                                                 Tag="{x:Bind AutoThemeSwitchTypeList[1]}"
                                                 Text="{x:Bind AutoThemeSwitchTypeList[1].Value}" />
+
+                                            <RadioMenuFlyoutItem
+                                                Click="{x:Bind OnAutoThemeSwitchTypeSelectClicked}"
+                                                GroupName="AutoThemeSwitchTypeRadioGroup"
+                                                IsChecked="{x:Bind x:Object.Equals(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[2].Key), Mode=OneWay}"
+                                                Tag="{x:Bind AutoThemeSwitchTypeList[2]}"
+                                                Text="{x:Bind AutoThemeSwitchTypeList[2].Value}" />
                                         </MenuFlyout>
                                     </DropDownButton.Flyout>
                                 </DropDownButton>
