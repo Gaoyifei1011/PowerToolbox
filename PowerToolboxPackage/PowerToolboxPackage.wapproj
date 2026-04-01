@@ -72,8 +72,8 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="Package.StoreAssociation.xml" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7705" />
-    <PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="2.0.0-preview1" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.1721" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="2.0.0-preview2" />
     <ProjectReference Include="..\PowerToolbox\PowerToolbox.csproj" />
     <ProjectReference Include="..\PowerToolboxShellExtension\PowerToolboxShellExtension.csproj" />
     <ProjectReference Include="..\ThemeSwitch\ThemeSwitch.csproj" />
