@@ -1,7 +1,9 @@
 ﻿using Microsoft.UI.Xaml;
+using Microsoft.Win32;
 using PowerToolbox.Extensions.DataType.Constant;
 using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.ComTypes;
+using PowerToolbox.WindowsAPI.PInvoke.Kernel32;
 using PowerToolbox.WindowsAPI.PInvoke.Shlwapi;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
@@ -11,7 +13,10 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using Windows.Globalization;
+using System.Text;
+
+// 抑制 CA1806 警告
+#pragma warning disable CA1806
 
 namespace PowerToolbox.Services.Settings
 {
@@ -23,6 +28,7 @@ namespace PowerToolbox.Services.Settings
         private static readonly string settingsKey = ConfigKey.LanguageKey;
         private static readonly Guid CLSID_AppxFactory = new("5842A140-FF9F-4166-8F5C-62F5B7B0C781");
         private static readonly IAppxFactory appxFactory = Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_AppxFactory)) as IAppxFactory;
+        private static readonly string resourceKey = @"Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\{0}\ResourcesConfig";
         private static KeyValuePair<string, string> defaultAppLanguage;
 
         public static KeyValuePair<string, string> AppLanguage { get; private set; }
@@ -176,7 +182,23 @@ namespace PowerToolbox.Services.Settings
         {
             AppLanguage = language;
             LocalSettingsService.SaveSetting(settingsKey, language.Key);
-            ApplicationLanguages.PrimaryLanguageOverride = language.Key;
+
+            try
+            {
+                int length = 0;
+                if (Kernel32Library.GetCurrentPackageFamilyName(ref length, null) is not (int)Kernel32Library.APPMODEL_ERROR_NO_PACKAGE)
+                {
+                    StringBuilder packageFamilyNameBuilder = new(length + 1);
+                    Kernel32Library.GetCurrentPackageFamilyName(ref length, packageFamilyNameBuilder);
+                    RegistryKey resourceRegistry = Registry.CurrentUser.OpenSubKey(string.Format(resourceKey, Convert.ToString(packageFamilyNameBuilder)), true);
+                    resourceRegistry?.SetValue("OverrideLanguagesList", language.Key);
+                    resourceRegistry?.Dispose();
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LanguageService), nameof(SetLanguage), 1, e);
+            }
         }
     }
 }
