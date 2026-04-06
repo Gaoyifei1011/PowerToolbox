@@ -309,7 +309,7 @@
 		<None Remove="Styles\Main\ProgressRing.xaml" />
 		<None Remove="Styles\Main\TextBlock.xaml" />
 		<None Remove="Styles\Main\TimePicker.xaml" />
-                <None Remove="MainApp.xaml" />
+    <None Remove="MainApp.xaml" />
 		<None Remove="Views\Dialogs\AddDownloadTaskDialog.xaml" />
 		<None Remove="Views\Dialogs\AppInformationDialog.xaml" />
 		<None Remove="Views\Dialogs\ClosingWindowDialog.xaml" />
