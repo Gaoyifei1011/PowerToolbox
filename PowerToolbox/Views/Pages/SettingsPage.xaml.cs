@@ -332,10 +332,7 @@ namespace PowerToolbox.Views.Pages
         {
             try
             {
-                if (slideDirection.HasValue)
-                {
-                    SettingsFrame.ContentTransitions = slideDirection.Value ? RightSlideNavigationTransitionCollection : LeftSlideNavigationTransitionCollection;
-                }
+                SettingsFrame.ContentTransitions = slideDirection.HasValue ? slideDirection.Value ? RightSlideNavigationTransitionCollection : LeftSlideNavigationTransitionCollection : SuppressNavigationTransitionCollection;
 
                 // 导航到该项目对应的页面
                 SettingsFrame.Navigate(navigationPageType, parameter);

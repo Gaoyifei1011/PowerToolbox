@@ -118,10 +118,7 @@ namespace PowerToolbox.Views.Pages
         {
             try
             {
-                if (slideDirection.HasValue)
-                {
-                    DataVerifyEncryptFrame.ContentTransitions = slideDirection.Value ? RightSlideNavigationTransitionCollection : LeftSlideNavigationTransitionCollection;
-                }
+                DataVerifyEncryptFrame.ContentTransitions = slideDirection.HasValue ? slideDirection.Value ? RightSlideNavigationTransitionCollection : LeftSlideNavigationTransitionCollection : SuppressNavigationTransitionCollection;
 
                 // 导航到该项目对应的页面
                 DataVerifyEncryptFrame.Navigate(navigationPageType, parameter);

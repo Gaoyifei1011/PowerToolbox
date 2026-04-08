@@ -105,10 +105,7 @@ namespace PowerToolbox.Views.Pages
         {
             try
             {
-                if (slideDirection.HasValue)
-                {
-                    ShellMenuFrame.ContentTransitions = slideDirection.Value ? RightSlideNavigationTransitionCollection : LeftSlideNavigationTransitionCollection;
-                }
+                ShellMenuFrame.ContentTransitions = slideDirection.HasValue ? slideDirection.Value ? RightSlideNavigationTransitionCollection : LeftSlideNavigationTransitionCollection : SuppressNavigationTransitionCollection;
 
                 // 导航到该项目对应的页面
                 ShellMenuFrame.Navigate(navigationPageType, parameter);
