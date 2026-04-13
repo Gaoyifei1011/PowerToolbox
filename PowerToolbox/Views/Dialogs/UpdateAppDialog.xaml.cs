@@ -282,7 +282,7 @@ namespace PowerToolbox.Views.Dialogs
             catch (OperationCanceledException e)
             {
                 UpdateAppResultKind = UpdateAppResultKind.Canceled;
-                cancellationTokenSource.Dispose();
+                cancellationTokenSource?.Dispose();
                 cancellationTokenSource = null;
                 CloseText = CloseString;
                 LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateAppDialog), nameof(OnUpdateClicked), 1, e);
@@ -290,7 +290,7 @@ namespace PowerToolbox.Views.Dialogs
             catch (Exception e)
             {
                 UpdateAppResultKind = UpdateAppResultKind.Failed;
-                cancellationTokenSource.Dispose();
+                cancellationTokenSource?.Dispose();
                 cancellationTokenSource = null;
                 CloseText = CloseString;
                 LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateAppDialog), nameof(OnUpdateClicked), 2, e);

@@ -207,7 +207,10 @@ namespace PowerToolbox.Views.Pages
                     {
                         LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnCheckUpdateClicked), 1, e);
                         IsChecking = false;
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CheckUpdate, 2));
+                        synchronizationContext.Post(async (_) =>
+                        {
+                            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CheckUpdate, 2));
+                        }, null);
                     }
 
                     if (!isNewest)
