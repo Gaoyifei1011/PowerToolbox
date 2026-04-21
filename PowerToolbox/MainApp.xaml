@@ -13,6 +13,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources>
                     <XamlControlsResources.MergedDictionaries>
+                        <ResourceDictionary Source="ms-appx:///Styles/ComboBox.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/DateTimePicker.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/InfoBar.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/NavigationView.xaml" />
