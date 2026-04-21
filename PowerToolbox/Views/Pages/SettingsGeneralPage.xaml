@@ -13,10 +13,6 @@
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
-    <Page.Resources>
-        <class:ExecuteCommand x:Name="LanguageCommand" ExecuteRequested="{x:Bind OnLanguageExecuteRequested}" />
-    </Page.Resources>
-
     <ScrollViewer
         HorizontalScrollBarVisibility="Disabled"
         HorizontalScrollMode="Disabled"
@@ -93,36 +89,14 @@
                     Click="{x:Bind OnSystemThemeSettingsClicked}"
                     Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('SystemThemeSettings')}" />
 
-                <DropDownButton
+                <ComboBox
                     Grid.Column="3"
                     VerticalAlignment="Center"
-                    Content="{x:Bind Theme.Value, Mode=OneWay}">
-
-                    <DropDownButton.Flyout>
-                        <MenuFlyout Placement="Bottom">
-                            <RadioMenuFlyoutItem
-                                Click="{x:Bind OnThemeSelectClicked}"
-                                GroupName="ThemeRadioGroup"
-                                IsChecked="{x:Bind x:Object.Equals(Theme.Key, ThemeList[0].Key), Mode=OneWay}"
-                                Tag="{x:Bind ThemeList[0]}"
-                                Text="{x:Bind system:Convert.ToString(ThemeList[0].Value)}" />
-
-                            <RadioMenuFlyoutItem
-                                Click="{x:Bind OnThemeSelectClicked}"
-                                GroupName="ThemeRadioGroup"
-                                IsChecked="{x:Bind x:Object.Equals(Theme.Key, ThemeList[1].Key), Mode=OneWay}"
-                                Tag="{x:Bind ThemeList[1]}"
-                                Text="{x:Bind system:Convert.ToString(ThemeList[1].Value)}" />
-
-                            <RadioMenuFlyoutItem
-                                Click="{x:Bind OnThemeSelectClicked}"
-                                GroupName="ThemeRadioGroup"
-                                IsChecked="{x:Bind x:Object.Equals(Theme.Key, ThemeList[2].Key), Mode=OneWay}"
-                                Tag="{x:Bind ThemeList[2]}"
-                                Text="{x:Bind system:Convert.ToString(ThemeList[2].Value)}" />
-                        </MenuFlyout>
-                    </DropDownButton.Flyout>
-                </DropDownButton>
+                    DisplayMemberPath="DisplayMember"
+                    ItemsSource="{x:Bind ThemeList}"
+                    SelectedItem="{x:Bind Theme, Mode=OneWay}"
+                    SelectionChanged="{x:Bind OnThemeSelectionChanged}"
+                    Style="{StaticResource ComboBoxStyle}" />
             </Grid>
 
             <!--  窗口背景材质设置  -->
@@ -186,70 +160,15 @@
                     Click="{x:Bind OnSystemBackdropSettingsClicked}"
                     Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('SystemBackdropSettings')}" />
 
-                <DropDownButton
+                <ComboBox
                     Grid.Column="3"
                     VerticalAlignment="Center"
-                    Content="{x:Bind LocalizeDisplayNumber(Backdrop), Mode=OneWay}"
-                    IsEnabled="{x:Bind AdvancedEffectsEnabled, Mode=OneWay}">
-
-                    <DropDownButton.Flyout>
-                        <MenuFlyout Placement="Bottom">
-                            <RadioMenuFlyoutItem
-                                Click="{x:Bind OnBackdropSelectClicked}"
-                                GroupName="BackdropRadioGroup"
-                                IsChecked="{x:Bind x:Object.Equals(Backdrop.Key, BackdropList[0].Key), Mode=OneWay}"
-                                Tag="{x:Bind BackdropList[0]}"
-                                Text="{x:Bind system:Convert.ToString(BackdropList[0].Value)}" />
-
-                            <MenuFlyoutSubItem
-                                x:Name="MicaFlyoutItem"
-                                x:Load="{x:Bind systembackdrop:MicaController.IsSupported()}"
-                                Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('Mica')}">
-
-                                <RadioMenuFlyoutItem
-                                    Click="{x:Bind OnBackdropSelectClicked}"
-                                    GroupName="BackdropRadioGroup"
-                                    IsChecked="{x:Bind x:Object.Equals(Backdrop.Key, BackdropList[1].Key), Mode=OneWay}"
-                                    Tag="{x:Bind BackdropList[1]}"
-                                    Text="{x:Bind system:Convert.ToString(BackdropList[1].Value)}" />
-
-                                <RadioMenuFlyoutItem
-                                    Click="{x:Bind OnBackdropSelectClicked}"
-                                    GroupName="BackdropRadioGroup"
-                                    IsChecked="{x:Bind x:Object.Equals(Backdrop.Key, BackdropList[2].Key), Mode=OneWay}"
-                                    Tag="{x:Bind BackdropList[2]}"
-                                    Text="{x:Bind system:Convert.ToString(BackdropList[2].Value)}" />
-                            </MenuFlyoutSubItem>
-
-                            <MenuFlyoutSubItem
-                                x:Name="DesktopAcrylicFlyoutItem"
-                                x:Load="{x:Bind systembackdrop:DesktopAcrylicController.IsSupported()}"
-                                Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('DesktopAcrylic')}">
-
-                                <RadioMenuFlyoutItem
-                                    Click="{x:Bind OnBackdropSelectClicked}"
-                                    GroupName="BackdropRadioGroup"
-                                    IsChecked="{x:Bind x:Object.Equals(Backdrop.Key, BackdropList[3].Key), Mode=OneWay}"
-                                    Tag="{x:Bind BackdropList[3]}"
-                                    Text="{x:Bind system:Convert.ToString(BackdropList[3].Value)}" />
-
-                                <RadioMenuFlyoutItem
-                                    Click="{x:Bind OnBackdropSelectClicked}"
-                                    GroupName="BackdropRadioGroup"
-                                    IsChecked="{x:Bind x:Object.Equals(Backdrop.Key, BackdropList[4].Key), Mode=OneWay}"
-                                    Tag="{x:Bind BackdropList[4]}"
-                                    Text="{x:Bind system:Convert.ToString(BackdropList[4].Value)}" />
-
-                                <RadioMenuFlyoutItem
-                                    Click="{x:Bind OnBackdropSelectClicked}"
-                                    GroupName="BackdropRadioGroup"
-                                    IsChecked="{x:Bind x:Object.Equals(Backdrop.Key, BackdropList[5].Key), Mode=OneWay}"
-                                    Tag="{x:Bind BackdropList[5]}"
-                                    Text="{x:Bind system:Convert.ToString(BackdropList[5].Value)}" />
-                            </MenuFlyoutSubItem>
-                        </MenuFlyout>
-                    </DropDownButton.Flyout>
-                </DropDownButton>
+                    DisplayMemberPath="DisplayMember"
+                    IsEnabled="{x:Bind AdvancedEffectsEnabled, Mode=OneWay}"
+                    ItemsSource="{x:Bind BackdropList}"
+                    SelectedItem="{x:Bind Backdrop, Mode=OneWay}"
+                    SelectionChanged="{x:Bind OnBackdropSelectionChanged}"
+                    Style="{StaticResource ComboBoxStyle}" />
             </Grid>
 
             <!--  始终显示背景色设置  -->
@@ -397,67 +316,14 @@
                     Click="{x:Bind OnSystemLanguageSettingsClicked}"
                     Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('SystemLanguageSettings')}" />
 
-                <DropDownButton
+                <ComboBox
                     Grid.Column="3"
                     VerticalAlignment="Center"
-                    Content="{x:Bind AppLanguage.Value, Mode=OneWay}">
-
-                    <DropDownButton.Flyout>
-                        <Flyout
-                            x:Name="LanguageFlyout"
-                            Opened="{x:Bind OnOpened}"
-                            Placement="Bottom"
-                            ShouldConstrainToRootBounds="False">
-
-                            <Flyout.FlyoutPresenterStyle>
-                                <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
-                                    <Setter Property="Padding" Value="0" />
-                                    <Setter Property="MinHeight" Value="0" />
-                                    <Setter Property="Background" Value="Transparent" />
-                                </Style>
-                            </Flyout.FlyoutPresenterStyle>
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource OverlayCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-
-                                <ListView
-                                    x:Name="LanguageListView"
-                                    MaxHeight="300"
-                                    Background="Transparent"
-                                    ItemsSource="{x:Bind LanguageCollection}"
-                                    SelectionMode="None">
-
-                                    <ListView.ItemContainerStyle>
-                                        <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                                            <Setter Property="Padding" Value="0" />
-                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                            <Setter Property="Margin" Value="0,1" />
-                                            <Setter Property="MinHeight" Value="0 " />
-                                        </Style>
-                                    </ListView.ItemContainerStyle>
-
-                                    <ItemsControl.ItemContainerTransitions>
-                                        <TransitionCollection />
-                                    </ItemsControl.ItemContainerTransitions>
-
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate x:DataType="model:LanguageModel">
-                                            <RadioMenuFlyoutItem
-                                                Height="32"
-                                                Padding="11,0"
-                                                Command="{StaticResource LanguageCommand}"
-                                                CommandParameter="{x:Bind}"
-                                                GroupName="LanguageRadioGroup"
-                                                IsChecked="{x:Bind IsChecked, Mode=OneWay}"
-                                                Language="{x:Bind LanguageInfo.Key}"
-                                                Text="{x:Bind system:Convert.ToString(LanguageInfo.Value)}" />
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </Grid>
-                        </Flyout>
-                    </DropDownButton.Flyout>
-                </DropDownButton>
+                    DisplayMemberPath="DisplayMember"
+                    ItemsSource="{x:Bind LanguageCollection}"
+                    SelectedItem="{x:Bind AppLanguage, Mode=OneWay}"
+                    SelectionChanged="{x:Bind OnLanguageSelectionChanged}"
+                    Style="{StaticResource ComboBoxStyle}" />
             </Grid>
 
             <!--  窗口置顶设置  -->

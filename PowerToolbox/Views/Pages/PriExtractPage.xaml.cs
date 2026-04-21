@@ -119,9 +119,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedLanguage;
+        private ComboBoxItemModel _selectedLanguage;
 
-        public KeyValuePair<string, string> SelectedLanguage
+        public ComboBoxItemModel SelectedLanguage
         {
             get { return _selectedLanguage; }
 
@@ -183,9 +183,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedResourceCandidateKind;
+        private ComboBoxItemModel _selectedResourceCandidateKind;
 
-        public KeyValuePair<string, string> SelectedResourceCandidateKind
+        public ComboBoxItemModel SelectedResourceCandidateKind
         {
             get { return _selectedResourceCandidateKind; }
 
@@ -295,7 +295,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<KeyValuePair<string, string>> ResourceCandidateKindList { get; } = [];
+        private List<ComboBoxItemModel> ResourceCandidateKindList { get; } = [];
 
         private List<StringModel> StringList { get; } = [];
 
@@ -303,7 +303,7 @@ namespace PowerToolbox.Views.Pages
 
         private List<EmbeddedDataModel> EmbeddedDataList { get; } = [];
 
-        private WinRTObservableCollection<LanguageModel> LanguageCollection { get; } = [];
+        private WinRTObservableCollection<ComboBoxItemModel> LanguageCollection { get; } = [];
 
         private WinRTObservableCollection<StringModel> StringCollection { get; } = [];
 
@@ -317,9 +317,9 @@ namespace PowerToolbox.Views.Pages
         {
             InitializeComponent();
             GetResults = NoSelectedFileString;
-            ResourceCandidateKindList.Add(new KeyValuePair<string, string>("String", StringString));
-            ResourceCandidateKindList.Add(new KeyValuePair<string, string>("FilePath", FilePathString));
-            ResourceCandidateKindList.Add(new KeyValuePair<string, string>("EmbeddedData", EmbeddedDataString));
+            ResourceCandidateKindList.Add(new ComboBoxItemModel() { SelectedValue = "String", DisplayMember = StringString });
+            ResourceCandidateKindList.Add(new ComboBoxItemModel() { SelectedValue = "FilePath", DisplayMember = FilePathString });
+            ResourceCandidateKindList.Add(new ComboBoxItemModel() { SelectedValue = "EmbeddedData", DisplayMember = EmbeddedDataString });
             SelectedResourceCandidateKind = ResourceCandidateKindList[0];
             Shell32Library.SHGetKnownFolderPath(new("374DE290-123F-4565-9164-39C4925E467B"), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, 0, out string downloadFolder);
             SelectedSaveFolder = downloadFolder;
@@ -448,32 +448,6 @@ namespace PowerToolbox.Views.Pages
         #endregion 第一部分：重写父类事件
 
         #region 第二部分：ExecuteCommand 命令调用时挂载的事件
-
-        /// <summary>
-        /// 选择语言
-        /// </summary>
-        private async void OnLanguageExecuteRequested(object sender, ExecuteRequestedEventArgs args)
-        {
-            if (LanguageFlyout.IsOpen)
-            {
-                LanguageFlyout.Hide();
-            }
-
-            if (args.Parameter is LanguageModel language && isLoadCompleted)
-            {
-                foreach (LanguageModel languageItem in LanguageCollection)
-                {
-                    languageItem.IsChecked = false;
-                    if (string.Equals(language.LanguageInfo.Key, languageItem.LanguageInfo.Key))
-                    {
-                        SelectedLanguage = languageItem.LanguageInfo;
-                        languageItem.IsChecked = true;
-                    }
-                }
-
-                await GetFilteredStringAsync();
-            }
-        }
 
         /// <summary>
         /// 复制字符串到剪贴板
@@ -690,17 +664,14 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 语言选择菜单打开时自动定位到选中项
+        /// 语言设置选项修改后触发的事件
         /// </summary>
-        private void OnOpened(object sender, object args)
+        private async void OnLanguageSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            foreach (LanguageModel languageItem in LanguageCollection)
+            if (isLoadCompleted && args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel language && !Equals(SelectedLanguage, language))
             {
-                if (languageItem.IsChecked)
-                {
-                    LanguageListView.ScrollIntoView(languageItem);
-                    break;
-                }
+                SelectedLanguage = language;
+                await GetFilteredStringAsync();
             }
         }
 
@@ -726,9 +697,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 选择要显示的封装的资源类型数据的格式
         /// </summary>
-        private void OnSelectedResourceCandidateKindClicked(object sender, RoutedEventArgs args)
+        private void OnResourceCandidateKindSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> resourceCandidateKind)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel resourceCandidateKind && !Equals(SelectedResourceCandidateKind, resourceCandidateKind))
             {
                 SelectedResourceCandidateKind = resourceCandidateKind;
             }
@@ -1402,24 +1373,16 @@ namespace PowerToolbox.Views.Pages
 
             if (result)
             {
-                LanguageCollection.Add(new LanguageModel()
-                {
-                    IsChecked = true,
-                    LanguageInfo = new KeyValuePair<string, string>("AllLanguage", AllLanguageString)
-                });
+                LanguageCollection.Add(new ComboBoxItemModel() { SelectedValue = "AllLanguage", DisplayMember = AllLanguageString });
 
                 // 显示获取到的所有内容
                 foreach (string languageItem in languageList)
                 {
                     CultureInfo cultureInfo = CultureInfo.GetCultureInfo(languageItem);
-                    LanguageCollection.Add(new LanguageModel()
-                    {
-                        IsChecked = false,
-                        LanguageInfo = new KeyValuePair<string, string>(cultureInfo.Name, string.Format("{0}[{1}]", cultureInfo.DisplayName, languageItem))
-                    });
+                    LanguageCollection.Add(new ComboBoxItemModel() { SelectedValue = cultureInfo.Name, DisplayMember = string.Format("{0}[{1}]", cultureInfo.DisplayName, languageItem) });
                 }
 
-                SelectedLanguage = LanguageCollection[0].LanguageInfo;
+                SelectedLanguage = LanguageCollection[0];
                 HasStringResource = StringList.Count > 0;
                 HasFilePathResource = FilePathList.Count > 0;
                 HasEmbeddedDataResource = EmbeddedDataList.Count > 0;
@@ -1454,7 +1417,7 @@ namespace PowerToolbox.Views.Pages
             {
                 List<StringModel> filteredStringList = [];
 
-                if (Equals(SelectedLanguage, LanguageCollection[0].LanguageInfo))
+                if (Equals(SelectedLanguage, LanguageCollection[0]))
                 {
                     if (string.IsNullOrEmpty(StringSearchText))
                     {
@@ -1477,7 +1440,7 @@ namespace PowerToolbox.Views.Pages
                 // 某一语言
                 else
                 {
-                    List<StringModel> coincidentStringList = [.. StringList.Where(item => string.Equals(item.Language, SelectedLanguage.Key, StringComparison.OrdinalIgnoreCase))];
+                    List<StringModel> coincidentStringList = [.. StringList.Where(item => string.Equals(item.Language, Convert.ToString(SelectedLanguage.SelectedValue), StringComparison.OrdinalIgnoreCase))];
 
                     if (string.IsNullOrEmpty(StringSearchText))
                     {

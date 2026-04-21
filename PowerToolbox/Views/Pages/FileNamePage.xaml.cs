@@ -150,9 +150,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedNumberFormat;
+        private ComboBoxItemModel _selectedNumberFormat;
 
-        public KeyValuePair<string, string> SelectedNumberFormat
+        public ComboBoxItemModel SelectedNumberFormat
         {
             get { return _selectedNumberFormat; }
 
@@ -182,7 +182,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<KeyValuePair<string, string>> NumberFormatList { get; } = [];
+        private List<ComboBoxItemModel> NumberFormatList { get; } = [];
 
         private List<OperationFailedModel> OperationFailedList { get; } = [];
 
@@ -193,14 +193,14 @@ namespace PowerToolbox.Views.Pages
         public FileNamePage()
         {
             InitializeComponent();
-            NumberFormatList.Add(new KeyValuePair<string, string>("Auto", AutoString));
-            NumberFormatList.Add(new KeyValuePair<string, string>("0", "0"));
-            NumberFormatList.Add(new KeyValuePair<string, string>("00", "00"));
-            NumberFormatList.Add(new KeyValuePair<string, string>("000", "000"));
-            NumberFormatList.Add(new KeyValuePair<string, string>("0000", "0000"));
-            NumberFormatList.Add(new KeyValuePair<string, string>("00000", "00000"));
-            NumberFormatList.Add(new KeyValuePair<string, string>("000000", "000000"));
-            NumberFormatList.Add(new KeyValuePair<string, string>("0000000", "0000000"));
+            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "Auto", DisplayMember = AutoString });
+            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "0", DisplayMember = "0" });
+            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "00", DisplayMember = "00" });
+            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "000", DisplayMember = "000" });
+            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "0000", DisplayMember = "0000" });
+            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "00000", DisplayMember = "00000" });
+            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "000000", DisplayMember = "000000" });
+            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "0000000", DisplayMember = "0000000" });
             SelectedNumberFormat = NumberFormatList[0];
         }
 
@@ -490,9 +490,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 选择编号格式
         /// </summary>
-        private void OnNumberFormatClicked(object sender, RoutedEventArgs args)
+        private void OnNumberFormatSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> numberFormat)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel numberFormat && !Equals(SelectedNumberFormat, numberFormat))
             {
                 SelectedNumberFormat = numberFormat;
             }

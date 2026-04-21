@@ -195,26 +195,14 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SystemThemeStyle')}" />
 
-                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedSystemThemeStyle.Value, Mode=OneWay}">
-
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSystemThemeStyleClicked}"
-                                            GroupName="SystemThemeStyleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedSystemThemeStyle.Key, SystemThemeStyleList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind SystemThemeStyleList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(SystemThemeStyleList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSystemThemeStyleClicked}"
-                                            GroupName="SystemThemeStyleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedSystemThemeStyle.Key, SystemThemeStyleList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind SystemThemeStyleList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(SystemThemeStyleList[1].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
+                            <ComboBox
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                DisplayMemberPath="DisplayMember"
+                                ItemsSource="{x:Bind SystemThemeStyleList}"
+                                SelectedItem="{x:Bind SelectedSystemThemeStyle, Mode=OneWay}"
+                                SelectionChanged="{x:Bind OnSystemThemeStyleSelectionChanged}"
+                                Style="{StaticResource ComboBoxStyle}" />
                         </Grid>
 
                         <MenuFlyoutSeparator />
@@ -235,26 +223,14 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AppThemeStyle')}" />
 
-                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedAppThemeStyle.Value, Mode=OneWay}">
-
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnAppThemeStyleClicked}"
-                                            GroupName="AppThemeStyleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedAppThemeStyle.Key, AppThemeStyleList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind AppThemeStyleList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(AppThemeStyleList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnAppThemeStyleClicked}"
-                                            GroupName="AppThemeStyleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedAppThemeStyle.Key, AppThemeStyleList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind AppThemeStyleList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(AppThemeStyleList[1].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
+                            <ComboBox
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                DisplayMemberPath="DisplayMember"
+                                ItemsSource="{x:Bind AppThemeStyleList}"
+                                SelectedItem="{x:Bind SelectedAppThemeStyle, Mode=OneWay}"
+                                SelectionChanged="{x:Bind OnAppThemeStyleSelectionChanged}"
+                                Style="{StaticResource ComboBoxStyle}" />
                         </Grid>
 
                         <MenuFlyoutSeparator />
@@ -439,36 +415,14 @@
                                     VerticalAlignment="Center"
                                     Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoThemeSwitchType')}" />
 
-                                <DropDownButton
+                                <ComboBox
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
-                                    Content="{x:Bind SelectedAutoThemeSwitchType.Value, Mode=OneWay}">
-
-                                    <DropDownButton.Flyout>
-                                        <MenuFlyout Placement="Bottom">
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnAutoThemeSwitchTypeSelectClicked}"
-                                                GroupName="AutoThemeSwitchTypeRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[0].Key), Mode=OneWay}"
-                                                Tag="{x:Bind AutoThemeSwitchTypeList[0]}"
-                                                Text="{x:Bind AutoThemeSwitchTypeList[0].Value}" />
-
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnAutoThemeSwitchTypeSelectClicked}"
-                                                GroupName="AutoThemeSwitchTypeRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}"
-                                                Tag="{x:Bind AutoThemeSwitchTypeList[1]}"
-                                                Text="{x:Bind AutoThemeSwitchTypeList[1].Value}" />
-
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnAutoThemeSwitchTypeSelectClicked}"
-                                                GroupName="AutoThemeSwitchTypeRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[2].Key), Mode=OneWay}"
-                                                Tag="{x:Bind AutoThemeSwitchTypeList[2]}"
-                                                Text="{x:Bind AutoThemeSwitchTypeList[2].Value}" />
-                                        </MenuFlyout>
-                                    </DropDownButton.Flyout>
-                                </DropDownButton>
+                                    DisplayMemberPath="DisplayMember"
+                                    ItemsSource="{x:Bind AutoThemeSwitchTypeList}"
+                                    SelectedItem="{x:Bind SelectedAutoThemeSwitchType, Mode=OneWay}"
+                                    SelectionChanged="{x:Bind OnAutoThemeSwitchTypeSelectionChanged}"
+                                    Style="{StaticResource ComboBoxStyle}" />
                             </Grid>
 
                             <MenuFlyoutSeparator />
@@ -495,7 +449,7 @@
                                     Grid.Column="1"
                                     Margin="0,0,6,0"
                                     Click="{x:Bind OnShowSetTimeFlyoutClicked}"
-                                    Visibility="{x:Bind GetAutoSwitchSystemThemeTimeState(SelectedAutoThemeSwitchType.Key, IsAutoSwitchSystemThemeValue), Mode=OneWay}">
+                                    Visibility="{x:Bind GetAutoSwitchSystemThemeTimeState(SelectedAutoThemeSwitchType.SelectedValue, IsAutoSwitchSystemThemeValue), Mode=OneWay}">
 
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SetTime')}" />
@@ -715,7 +669,7 @@
                                     Grid.Column="1"
                                     Margin="0,0,6,0"
                                     Click="{x:Bind OnShowSetTimeFlyoutClicked}"
-                                    Visibility="{x:Bind GetAutoSwitchAppThemeTimeState(SelectedAutoThemeSwitchType.Key, IsAutoSwitchAppThemeValue), Mode=OneWay}">
+                                    Visibility="{x:Bind GetAutoSwitchAppThemeTimeState(SelectedAutoThemeSwitchType.SelectedValue, IsAutoSwitchAppThemeValue), Mode=OneWay}">
 
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SetTime')}" />
@@ -957,14 +911,14 @@
                                 </StackPanel>
                             </Grid>
 
-                            <MenuFlyoutSeparator Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}" />
+                            <MenuFlyoutSeparator Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.SelectedValue, AutoThemeSwitchTypeList[1].SelectedValue), Mode=OneWay}" />
 
                             <!--  获取位置  -->
                             <Grid
                                 Height="52"
                                 Padding="44,0,16,0"
                                 HorizontalAlignment="Stretch"
-                                Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}">
+                                Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.SelectedValue, AutoThemeSwitchTypeList[1].SelectedValue), Mode=OneWay}">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -1011,14 +965,14 @@
                                 </Button>
                             </Grid>
 
-                            <MenuFlyoutSeparator Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}" />
+                            <MenuFlyoutSeparator Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.SelectedValue, AutoThemeSwitchTypeList[1].SelectedValue), Mode=OneWay}" />
 
                             <!--  时间偏移  -->
                             <Grid
                                 Height="52"
                                 Padding="44,0,16,0"
                                 HorizontalAlignment="Stretch"
-                                Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}">
+                                Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.SelectedValue, AutoThemeSwitchTypeList[1].SelectedValue), Mode=OneWay}">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -1067,10 +1021,10 @@
                                     Value="{x:Bind SunsetOffset, Mode=OneWay}" />
                             </Grid>
 
-                            <MenuFlyoutSeparator Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}" />
+                            <MenuFlyoutSeparator Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.SelectedValue, AutoThemeSwitchTypeList[1].SelectedValue), Mode=OneWay}" />
 
                             <!--  位置 / 日出日落信息展示  -->
-                            <Grid Height="140" Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.Key, AutoThemeSwitchTypeList[1].Key), Mode=OneWay}">
+                            <Grid Height="140" Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.SelectedValue, AutoThemeSwitchTypeList[1].SelectedValue), Mode=OneWay}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />

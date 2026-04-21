@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
+using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Shell;
 using PowerToolbox.Views.NotificationTips;
@@ -322,9 +323,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedFileMatchRule;
+        private ComboBoxItemModel _selectedFileMatchRule;
 
-        public KeyValuePair<string, string> SelectedFileMatchRule
+        public ComboBoxItemModel SelectedFileMatchRule
         {
             get { return _selectedFileMatchRule; }
 
@@ -386,7 +387,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<KeyValuePair<string, string>> FileMatchRuleList { get; } = [];
+        private List<ComboBoxItemModel> FileMatchRuleList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -394,11 +395,11 @@ namespace PowerToolbox.Views.Pages
         {
             InitializeComponent();
 
-            FileMatchRuleList.Add(new KeyValuePair<string, string>("None", NoneString));
-            FileMatchRuleList.Add(new KeyValuePair<string, string>("Name", NameString));
-            FileMatchRuleList.Add(new KeyValuePair<string, string>("NameRegex", NameRegexString));
-            FileMatchRuleList.Add(new KeyValuePair<string, string>("Extension", ExtensionString));
-            FileMatchRuleList.Add(new KeyValuePair<string, string>("All", AllString));
+            FileMatchRuleList.Add(new ComboBoxItemModel() { SelectedValue = "None", DisplayMember = NoneString });
+            FileMatchRuleList.Add(new ComboBoxItemModel() { SelectedValue = "Name", DisplayMember = NameString });
+            FileMatchRuleList.Add(new ComboBoxItemModel() { SelectedValue = "NameRegex", DisplayMember = NameRegexString });
+            FileMatchRuleList.Add(new ComboBoxItemModel() { SelectedValue = "Extension", DisplayMember = ExtensionString });
+            FileMatchRuleList.Add(new ComboBoxItemModel() { SelectedValue = "All", DisplayMember = AllString });
             SelectedFileMatchRule = FileMatchRuleList[4];
         }
 
@@ -482,7 +483,7 @@ namespace PowerToolbox.Views.Pages
 
                     for (int index = 0; index < FileMatchRuleList.Count; index++)
                     {
-                        if (Equals(shellMenuItem.MenuFileMatchRule, FileMatchRuleList[index].Key))
+                        if (Equals(shellMenuItem.MenuFileMatchRule, FileMatchRuleList[index].SelectedValue))
                         {
                             SelectedFileMatchRule = FileMatchRuleList[index];
                         }
@@ -645,7 +646,7 @@ namespace PowerToolbox.Views.Pages
                 FolderDesktop = FolderDesktopMatch,
                 FolderDirectory = FolderDirectoryMatch,
                 FolderDrive = FolderDriveMatch,
-                MenuFileMatchRule = SelectedFileMatchRule.Key,
+                MenuFileMatchRule = Convert.ToString(SelectedFileMatchRule.SelectedValue),
                 MenuFileMatchFormatText = MenuFileMatchFormatText
             };
 
@@ -901,9 +902,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 修改菜单文件匹配规则
         /// </summary>
-        private void OnFileMatchRuleClicked(object sender, RoutedEventArgs args)
+        private void OnFileMatchRuleSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> fileMatchRule)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel fileMatchRule && !Equals(SelectedFileMatchRule, fileMatchRule))
             {
                 SelectedFileMatchRule = fileMatchRule;
                 MenuFileMatchFormatText = string.Empty;

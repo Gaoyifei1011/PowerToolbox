@@ -4073,39 +4073,14 @@
                                     VerticalAlignment="Center"
                                     Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UpdateSource')}" />
 
-                                <DropDownButton Grid.Column="1" Content="{x:Bind SelectedUpdateSource.Value, Mode=OneWay}">
-                                    <DropDownButton.Flyout>
-                                        <MenuFlyout Placement="Bottom">
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnUpdateSourceSelectClicked}"
-                                                GroupName="UpdateSourceRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedUpdateSource.Key, UpdateSourceList[0].Key), Mode=OneWay}"
-                                                Tag="{x:Bind UpdateSourceList[0]}"
-                                                Text="{x:Bind system:Convert.ToString(UpdateSourceList[0].Value)}" />
-
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnUpdateSourceSelectClicked}"
-                                                GroupName="UpdateSourceRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedUpdateSource.Key, UpdateSourceList[1].Key), Mode=OneWay}"
-                                                Tag="{x:Bind UpdateSourceList[1]}"
-                                                Text="{x:Bind system:Convert.ToString(UpdateSourceList[1].Value)}" />
-
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnUpdateSourceSelectClicked}"
-                                                GroupName="UpdateSourceRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedUpdateSource.Key, UpdateSourceList[2].Key), Mode=OneWay}"
-                                                Tag="{x:Bind UpdateSourceList[2]}"
-                                                Text="{x:Bind system:Convert.ToString(UpdateSourceList[2].Value)}" />
-
-                                            <RadioMenuFlyoutItem
-                                                Click="{x:Bind OnUpdateSourceSelectClicked}"
-                                                GroupName="UpdateSourceRadioGroup"
-                                                IsChecked="{x:Bind x:Object.Equals(SelectedUpdateSource.Key, UpdateSourceList[3].Key), Mode=OneWay}"
-                                                Tag="{x:Bind UpdateSourceList[3]}"
-                                                Text="{x:Bind system:Convert.ToString(UpdateSourceList[3].Value)}" />
-                                        </MenuFlyout>
-                                    </DropDownButton.Flyout>
-                                </DropDownButton>
+                                <ComboBox
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    DisplayMemberPath="DisplayMember"
+                                    ItemsSource="{x:Bind UpdateSourceList}"
+                                    SelectedItem="{x:Bind SelectedUpdateSource, Mode=OneWay}"
+                                    SelectionChanged="{x:Bind OnUpdateSourceSelectionChanged}"
+                                    Style="{StaticResource ComboBoxStyle}" />
                             </Grid>
                         </StackPanel>
                     </Expander>

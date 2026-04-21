@@ -415,31 +415,17 @@
                             Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('StringEncodingType')}"
                             Visibility="{x:Bind HasDecryptKeyStringType, Mode=OneWay}" />
 
-                        <DropDownButton
+                        <ComboBox
                             Grid.Column="2"
                             Margin="2,0,0,0"
-                            Content="{x:Bind SelectedDecryptKeyStringType.Value, Mode=OneWay}"
+                            VerticalAlignment="Center"
+                            DisplayMemberPath="DisplayMember"
                             IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
-                            Visibility="{x:Bind HasDecryptKeyStringType, Mode=OneWay}">
-
-                            <DropDownButton.Flyout>
-                                <MenuFlyout Placement="Bottom">
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnDecryptKeyStringTypeClicked}"
-                                        GroupName="DecryptKeyStringTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptKeyStringType.Key, DecryptKeyStringTypeList[0].Key), Mode=OneWay}"
-                                        Tag="{x:Bind DecryptKeyStringTypeList[0]}"
-                                        Text="{x:Bind system:Convert.ToString(DecryptKeyStringTypeList[0].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnDecryptKeyStringTypeClicked}"
-                                        GroupName="DecryptKeyStringTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptKeyStringType.Key, DecryptKeyStringTypeList[1].Key), Mode=OneWay}"
-                                        Tag="{x:Bind DecryptKeyStringTypeList[1]}"
-                                        Text="{x:Bind system:Convert.ToString(DecryptKeyStringTypeList[1].Value)}" />
-                                </MenuFlyout>
-                            </DropDownButton.Flyout>
-                        </DropDownButton>
+                            ItemsSource="{x:Bind DecryptKeyStringTypeList}"
+                            SelectedItem="{x:Bind SelectedDecryptKeyStringType, Mode=OneWay}"
+                            SelectionChanged="{x:Bind OnDecryptKeyStringTypeSelectionChanged}"
+                            Style="{StaticResource ComboBoxStyle}"
+                            Visibility="{x:Bind HasDecryptKeyStringType, Mode=OneWay}" />
 
                         <TextBox
                             Grid.Column="3"
@@ -495,30 +481,17 @@
                             VerticalAlignment="Center"
                             Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('StringEncodingType')}" />
 
-                        <DropDownButton
+                        <ComboBox
                             Grid.Column="2"
                             Margin="2,0,0,0"
-                            Content="{x:Bind SelectedInitializationVectorStringType.Value, Mode=OneWay}"
-                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
-
-                            <DropDownButton.Flyout>
-                                <MenuFlyout Placement="Bottom">
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnInitializationVectorStringTypeClicked}"
-                                        GroupName="InitializationVectorStringTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedInitializationVectorStringType.Key, InitializationVectorStringTypeList[0].Key), Mode=OneWay}"
-                                        Tag="{x:Bind InitializationVectorStringTypeList[0]}"
-                                        Text="{x:Bind system:Convert.ToString(InitializationVectorStringTypeList[0].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnInitializationVectorStringTypeClicked}"
-                                        GroupName="InitializationVectorStringTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedInitializationVectorStringType.Key, InitializationVectorStringTypeList[1].Key), Mode=OneWay}"
-                                        Tag="{x:Bind InitializationVectorStringTypeList[1]}"
-                                        Text="{x:Bind system:Convert.ToString(InitializationVectorStringTypeList[1].Value)}" />
-                                </MenuFlyout>
-                            </DropDownButton.Flyout>
-                        </DropDownButton>
+                            VerticalAlignment="Center"
+                            DisplayMemberPath="DisplayMember"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                            ItemsSource="{x:Bind InitializationVectorStringTypeList}"
+                            SelectedItem="{x:Bind SelectedInitializationVectorStringType, Mode=OneWay}"
+                            SelectionChanged="{x:Bind OnInitializationVectorStringTypeSelectionChanged}"
+                            Style="{StaticResource ComboBoxStyle}"
+                            Visibility="{x:Bind HasDecryptKeyStringType, Mode=OneWay}" />
 
                         <TextBox
                             Grid.Column="3"
@@ -566,50 +539,15 @@
                             VerticalAlignment="Center"
                             Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DecryptedBlockCipherMode')}" />
 
-                        <DropDownButton
+                        <ComboBox
                             Grid.Column="1"
-                            Content="{x:Bind SelectedDecryptedBlockCipherMode.Value, Mode=OneWay}"
-                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
-
-                            <DropDownButton.Flyout>
-                                <MenuFlyout Placement="Bottom">
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
-                                        GroupName="DecryptedBlockCipherModeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[0].Key), Mode=OneWay}"
-                                        Tag="{x:Bind DecryptedBlockCipherModeList[0]}"
-                                        Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[0].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
-                                        GroupName="DecryptedBlockCipherModeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[1].Key), Mode=OneWay}"
-                                        Tag="{x:Bind DecryptedBlockCipherModeList[1]}"
-                                        Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[1].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
-                                        GroupName="DecryptedBlockCipherModeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[2].Key), Mode=OneWay}"
-                                        Tag="{x:Bind DecryptedBlockCipherModeList[2]}"
-                                        Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[2].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
-                                        GroupName="DecryptedBlockCipherModeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[3].Key), Mode=OneWay}"
-                                        Tag="{x:Bind DecryptedBlockCipherModeList[3]}"
-                                        Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[3].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnDecryptedBlockCipherModeClicked}"
-                                        GroupName="DecryptedBlockCipherModeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedDecryptedBlockCipherMode.Key, DecryptedBlockCipherModeList[4].Key), Mode=OneWay}"
-                                        Tag="{x:Bind DecryptedBlockCipherModeList[4]}"
-                                        Text="{x:Bind system:Convert.ToString(DecryptedBlockCipherModeList[4].Value)}" />
-                                </MenuFlyout>
-                            </DropDownButton.Flyout>
-                        </DropDownButton>
+                            VerticalAlignment="Center"
+                            DisplayMemberPath="DisplayMember"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                            ItemsSource="{x:Bind DecryptedBlockCipherModeList}"
+                            SelectedItem="{x:Bind SelectedDecryptedBlockCipherMode, Mode=OneWay}"
+                            SelectionChanged="{x:Bind OnDecryptedBlockCipherModeSelectionChanged}"
+                            Style="{StaticResource ComboBoxStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind HasDecryptedBlockCipherMode, Mode=OneWay}" />
@@ -632,50 +570,15 @@
                             VerticalAlignment="Center"
                             Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('PaddingMode')}" />
 
-                        <DropDownButton
+                        <ComboBox
                             Grid.Column="1"
-                            Content="{x:Bind SelectedPaddingMode.Value, Mode=OneWay}"
-                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
-
-                            <DropDownButton.Flyout>
-                                <MenuFlyout Placement="Bottom">
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnPaddingModeClicked}"
-                                        GroupName="PaddingModeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[0].Key), Mode=OneWay}"
-                                        Tag="{x:Bind PaddingModeList[0]}"
-                                        Text="{x:Bind system:Convert.ToString(PaddingModeList[0].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnPaddingModeClicked}"
-                                        GroupName="PaddingModeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[1].Key), Mode=OneWay}"
-                                        Tag="{x:Bind PaddingModeList[1]}"
-                                        Text="{x:Bind system:Convert.ToString(PaddingModeList[1].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnPaddingModeClicked}"
-                                        GroupName="PaddingModeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[2].Key), Mode=OneWay}"
-                                        Tag="{x:Bind PaddingModeList[2]}"
-                                        Text="{x:Bind system:Convert.ToString(PaddingModeList[2].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnPaddingModeClicked}"
-                                        GroupName="PaddingModeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[3].Key), Mode=OneWay}"
-                                        Tag="{x:Bind PaddingModeList[3]}"
-                                        Text="{x:Bind system:Convert.ToString(PaddingModeList[3].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnPaddingModeClicked}"
-                                        GroupName="PaddingModeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedPaddingMode.Key, PaddingModeList[4].Key), Mode=OneWay}"
-                                        Tag="{x:Bind PaddingModeList[4]}"
-                                        Text="{x:Bind system:Convert.ToString(PaddingModeList[4].Value)}" />
-                                </MenuFlyout>
-                            </DropDownButton.Flyout>
-                        </DropDownButton>
+                            VerticalAlignment="Center"
+                            DisplayMemberPath="DisplayMember"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                            ItemsSource="{x:Bind PaddingModeList}"
+                            SelectedItem="{x:Bind SelectedPaddingMode, Mode=OneWay}"
+                            SelectionChanged="{x:Bind OnPaddingModeSelectionChanged}"
+                            Style="{StaticResource ComboBoxStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind HasPaddingMode, Mode=OneWay}" />
@@ -777,29 +680,15 @@
                             VerticalAlignment="Center"
                             Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('RSAEncryptionPaddingMode')}" />
 
-                        <DropDownButton
+                        <ComboBox
                             Grid.Column="1"
-                            Content="{x:Bind SelectedRSAEncryptionPaddingMode.Value, Mode=OneWay}"
-                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
-
-                            <DropDownButton.Flyout>
-                                <MenuFlyout Placement="Bottom">
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnRSAEncryptionPaddingModeClicked}"
-                                        GroupName="RSAEncryptionPaddingModeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedRSAEncryptionPaddingMode.Key, RSAEncryptionPaddingModeList[0].Key), Mode=OneWay}"
-                                        Tag="{x:Bind RSAEncryptionPaddingModeList[0]}"
-                                        Text="{x:Bind system:Convert.ToString(RSAEncryptionPaddingModeList[0].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnRSAEncryptionPaddingModeClicked}"
-                                        GroupName="RSAEncryptionPaddingModeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedRSAEncryptionPaddingMode.Key, RSAEncryptionPaddingModeList[1].Key), Mode=OneWay}"
-                                        Tag="{x:Bind RSAEncryptionPaddingModeList[1]}"
-                                        Text="{x:Bind system:Convert.ToString(RSAEncryptionPaddingModeList[1].Value)}" />
-                                </MenuFlyout>
-                            </DropDownButton.Flyout>
-                        </DropDownButton>
+                            VerticalAlignment="Center"
+                            DisplayMemberPath="DisplayMember"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                            ItemsSource="{x:Bind RSAEncryptionPaddingModeList}"
+                            SelectedItem="{x:Bind SelectedRSAEncryptionPaddingMode, Mode=OneWay}"
+                            SelectionChanged="{x:Bind OnRSAEncryptionPaddingModeSelectionChanged}"
+                            Style="{StaticResource ComboBoxStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind HasRSAEncryptionPaddingMode, Mode=OneWay}" />
@@ -869,100 +758,15 @@
                             VerticalAlignment="Center"
                             Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('TextEncodingType')}" />
 
-                        <DropDownButton
+                        <ComboBox
                             Grid.Column="1"
-                            Margin="2,0,0,0"
-                            Content="{x:Bind SelectedTextEncodingType.Value, Mode=OneWay}"
-                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}">
-
-                            <DropDownButton.Flyout>
-                                <MenuFlyout Placement="Bottom">
-                                    <MenuFlyout.MenuFlyoutPresenterStyle>
-                                        <Style BasedOn="{StaticResource DefaultMenuFlyoutPresenterStyle}" TargetType="MenuFlyoutPresenter">
-                                            <Setter Property="MaxHeight" Value="300" />
-                                        </Style>
-                                    </MenuFlyout.MenuFlyoutPresenterStyle>
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnTextEncodingTypeClicked}"
-                                        GroupName="TextEncodingTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[0].Key), Mode=OneWay}"
-                                        Tag="{x:Bind TextEncodingTypeList[0]}"
-                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[0].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnTextEncodingTypeClicked}"
-                                        GroupName="TextEncodingTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[1].Key), Mode=OneWay}"
-                                        Tag="{x:Bind TextEncodingTypeList[1]}"
-                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[1].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnTextEncodingTypeClicked}"
-                                        GroupName="TextEncodingTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[2].Key), Mode=OneWay}"
-                                        Tag="{x:Bind TextEncodingTypeList[2]}"
-                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[2].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnTextEncodingTypeClicked}"
-                                        GroupName="TextEncodingTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[3].Key), Mode=OneWay}"
-                                        Tag="{x:Bind TextEncodingTypeList[3]}"
-                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[3].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnTextEncodingTypeClicked}"
-                                        GroupName="TextEncodingTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[4].Key), Mode=OneWay}"
-                                        Tag="{x:Bind TextEncodingTypeList[4]}"
-                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[4].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnTextEncodingTypeClicked}"
-                                        GroupName="TextEncodingTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[5].Key), Mode=OneWay}"
-                                        Tag="{x:Bind TextEncodingTypeList[5]}"
-                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[5].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnTextEncodingTypeClicked}"
-                                        GroupName="TextEncodingTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[6].Key), Mode=OneWay}"
-                                        Tag="{x:Bind TextEncodingTypeList[6]}"
-                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[6].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnTextEncodingTypeClicked}"
-                                        GroupName="TextEncodingTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[7].Key), Mode=OneWay}"
-                                        Tag="{x:Bind TextEncodingTypeList[7]}"
-                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[7].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnTextEncodingTypeClicked}"
-                                        GroupName="TextEncodingTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[8].Key), Mode=OneWay}"
-                                        Tag="{x:Bind TextEncodingTypeList[8]}"
-                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[8].Value)}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnTextEncodingTypeClicked}"
-                                        GroupName="TextEncodingTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[9].Key), Mode=OneWay}"
-                                        Tag="{x:Bind TextEncodingTypeList[9]}"
-                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[9].Value)}" />
-
-                                    <MenuFlyoutSeparator />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnTextEncodingTypeClicked}"
-                                        GroupName="TextEncodingTypeRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedTextEncodingType.Key, TextEncodingTypeList[10].Key), Mode=OneWay}"
-                                        Tag="{x:Bind TextEncodingTypeList[10]}"
-                                        Text="{x:Bind system:Convert.ToString(TextEncodingTypeList[10].Value)}" />
-                                </MenuFlyout>
-                            </DropDownButton.Flyout>
-                        </DropDownButton>
+                            VerticalAlignment="Center"
+                            DisplayMemberPath="DisplayMember"
+                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                            ItemsSource="{x:Bind TextEncodingTypeList}"
+                            SelectedItem="{x:Bind SelectedTextEncodingType, Mode=OneWay}"
+                            SelectionChanged="{x:Bind OnTextEncodingTypeSelectionChanged}"
+                            Style="{StaticResource ComboBoxStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind GetHasParseAsTextData(HasParseAsTextData, ParseAsTextData), Mode=OneWay}" />
@@ -973,7 +777,7 @@
                         Padding="44,0,16,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
-                        Visibility="{x:Bind GetCustomTextEncodingType(HasParseAsTextData, ParseAsTextData, SelectedTextEncodingType.Key, TextEncodingTypeList[10].Key), Mode=OneWay}">
+                        Visibility="{x:Bind GetCustomTextEncodingType(HasParseAsTextData, ParseAsTextData, SelectedTextEncodingType.SelectedValue, TextEncodingTypeList[10].SelectedValue), Mode=OneWay}">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />

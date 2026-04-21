@@ -263,36 +263,14 @@
                         </TextBlock>
                     </StackPanel>
 
-                    <DropDownButton
+                    <ComboBox
                         Grid.Column="2"
                         VerticalAlignment="Center"
-                        Content="{x:Bind DoEngineMode.Value, Mode=OneWay}">
-
-                        <DropDownButton.Flyout>
-                            <MenuFlyout Placement="Bottom">
-                                <RadioMenuFlyoutItem
-                                    Click="{x:Bind OnDoEngineModeSelectClicked}"
-                                    GroupName="DoEngineModeModeRadioGroup"
-                                    IsChecked="{x:Bind x:Object.Equals(DoEngineMode.Key, DoEngineModeList[0].Key), Mode=OneWay}"
-                                    Tag="{x:Bind DoEngineModeList[0]}"
-                                    Text="{x:Bind DoEngineModeList[0].Value}" />
-
-                                <RadioMenuFlyoutItem
-                                    Click="{x:Bind OnDoEngineModeSelectClicked}"
-                                    GroupName="DoEngineModeModeRadioGroup"
-                                    IsChecked="{x:Bind x:Object.Equals(DoEngineMode.Key, DoEngineModeList[1].Key), Mode=OneWay}"
-                                    Tag="{x:Bind DoEngineModeList[1]}"
-                                    Text="{x:Bind DoEngineModeList[1].Value}" />
-
-                                <RadioMenuFlyoutItem
-                                    Click="{x:Bind OnDoEngineModeSelectClicked}"
-                                    GroupName="DoEngineModeModeRadioGroup"
-                                    IsChecked="{x:Bind x:Object.Equals(DoEngineMode.Key, DoEngineModeList[2].Key), Mode=OneWay}"
-                                    Tag="{x:Bind DoEngineModeList[2]}"
-                                    Text="{x:Bind DoEngineModeList[2].Value}" />
-                            </MenuFlyout>
-                        </DropDownButton.Flyout>
-                    </DropDownButton>
+                        DisplayMemberPath="DisplayMember"
+                        ItemsSource="{x:Bind DoEngineModeList}"
+                        SelectedItem="{x:Bind DoEngineMode, Mode=OneWay}"
+                        SelectionChanged="{x:Bind OnDoEngineModeSelectChanged}"
+                        Style="{StaticResource ComboBoxStyle}" />
                 </Grid>
 
                 <!--  传递优化设置  -->

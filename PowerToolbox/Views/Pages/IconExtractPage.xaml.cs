@@ -150,9 +150,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedGetIconType;
+        private ComboBoxItemModel _selectedGetIconType;
 
-        public KeyValuePair<string, string> SelectedGetIconType
+        public ComboBoxItemModel SelectedGetIconType
         {
             get { return _selectedGetIconType; }
 
@@ -166,9 +166,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedIconFormat;
+        private ComboBoxItemModel _selectedIconFormat;
 
-        public KeyValuePair<string, string> SelectedIconFormat
+        public ComboBoxItemModel SelectedIconFormat
         {
             get { return _selectedIconFormat; }
 
@@ -182,9 +182,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<int, string> _selectedIconSize;
+        private ComboBoxItemModel _selectedIconSize;
 
-        public KeyValuePair<int, string> SelectedIconSize
+        public ComboBoxItemModel SelectedIconSize
         {
             get { return _selectedIconSize; }
 
@@ -358,25 +358,25 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        public List<KeyValuePair<string, string>> GetIconTypeList { get; } = [];
+        public List<ComboBoxItemModel> GetIconTypeList { get; } = [];
 
-        private List<KeyValuePair<string, string>> IconFormatList { get; } =
+        private List<ComboBoxItemModel> IconFormatList { get; } =
         [
-            new KeyValuePair<string,string>(".ico", ".ico" ),
-            new KeyValuePair<string,string>(".png", ".png" )
+            new ComboBoxItemModel() { SelectedValue = ".ico", DisplayMember = ".ico" },
+            new ComboBoxItemModel() { SelectedValue = ".png", DisplayMember = ".png" }
         ];
 
-        private List<KeyValuePair<int, string>> IconSizeList { get; set; } =
+        private List<ComboBoxItemModel> IconSizeList { get; set; } =
         [
-            new KeyValuePair<int,string>(16, "16 * 16" ),
-            new KeyValuePair<int,string>(24, "24 * 24" ),
-            new KeyValuePair<int,string>(32, "32 * 32" ),
-            new KeyValuePair<int,string>(48, "48 * 48" ),
-            new KeyValuePair<int,string>(64, "64 * 64" ),
-            new KeyValuePair<int,string>(72, "72 * 72" ),
-            new KeyValuePair<int,string>(96, "96 * 96" ),
-            new KeyValuePair<int,string>(128, "128 * 128" ),
-            new KeyValuePair<int,string>(256, "256 * 256" )
+            new ComboBoxItemModel() { SelectedValue = 16, DisplayMember = "16 * 16" },
+            new ComboBoxItemModel() { SelectedValue = 24, DisplayMember = "24 * 24" },
+            new ComboBoxItemModel() { SelectedValue = 32, DisplayMember = "32 * 32" },
+            new ComboBoxItemModel() { SelectedValue = 48, DisplayMember = "48 * 48" },
+            new ComboBoxItemModel() { SelectedValue = 64, DisplayMember = "64 * 64" },
+            new ComboBoxItemModel() { SelectedValue = 72, DisplayMember = "72 * 72" },
+            new ComboBoxItemModel() { SelectedValue = 96, DisplayMember = "96 * 96" },
+            new ComboBoxItemModel() { SelectedValue = 128, DisplayMember = "128 * 128" },
+            new ComboBoxItemModel() { SelectedValue = 256, DisplayMember = "256 * 256" }
         ];
 
         private WinRTObservableCollection<IconModel> IconCollection { get; } = [];
@@ -386,8 +386,8 @@ namespace PowerToolbox.Views.Pages
         public IconExtractPage()
         {
             InitializeComponent();
-            GetIconTypeList.Add(new KeyValuePair<string, string>("FileContained", FileContainedString));
-            GetIconTypeList.Add(new KeyValuePair<string, string>("FileAssociated", FileAssociatedString));
+            GetIconTypeList.Add(new ComboBoxItemModel() { SelectedValue = "FileContained", DisplayMember = FileContainedString });
+            GetIconTypeList.Add(new ComboBoxItemModel() { SelectedValue = "FileAssociated", DisplayMember = FileAssociatedString });
             SelectedGetIconType = GetIconTypeList[0];
             SelectedIconFormat = IconFormatList[1];
             SelectedIconSize = IconSizeList[8];
@@ -568,7 +568,7 @@ namespace PowerToolbox.Views.Pages
 
                     try
                     {
-                        Icon icon = GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.Key));
+                        Icon icon = GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.SelectedValue));
                         MemoryStream memoryStream = new();
                         icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
                         memoryStream.Seek(0, SeekOrigin.Begin);
@@ -588,7 +588,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     try
                     {
-                        int size = Convert.ToInt32(SelectedIconSize.Key);
+                        int size = Convert.ToInt32(SelectedIconSize.SelectedValue);
                         Icon icon = null;
                         if (size is 16)
                         {
@@ -634,9 +634,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 选择获取的图标类型
         /// </summary>
-        private void OnGetIconTypeClicked(object sender, RoutedEventArgs args)
+        private void OnGetIconTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> getIconType)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel getIconType && !Equals(SelectedGetIconType, getIconType))
             {
                 SelectedGetIconType = getIconType;
                 IsSelected = false;
@@ -653,9 +653,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 选择图标格式
         /// </summary>
-        private void OnIconFormatClicked(object sender, RoutedEventArgs args)
+        private void OnIconFormatSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> iconFormat)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel iconFormat && !Equals(SelectedIconFormat, iconFormat))
             {
                 SelectedIconFormat = iconFormat;
             }
@@ -664,9 +664,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 选择图标尺寸
         /// </summary>
-        private void OnIconSizeClicked(object sender, RoutedEventArgs args)
+        private void OnIconSizeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<int, string> iconSize)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel iconSize && !Equals(SelectedIconSize, iconSize))
             {
                 SelectedIconSize = iconSize;
 
@@ -678,7 +678,7 @@ namespace PowerToolbox.Views.Pages
 
                         try
                         {
-                            Icon icon = GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.Key));
+                            Icon icon = GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.SelectedValue));
                             MemoryStream memoryStream = new();
                             icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
                             memoryStream.Seek(0, SeekOrigin.Begin);
@@ -691,7 +691,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnIconSizeClicked), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnIconSizeSelectionChanged), 1, e);
                         }
                     }
                 }
@@ -699,7 +699,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     try
                     {
-                        int size = Convert.ToInt32(SelectedIconSize.Key);
+                        int size = Convert.ToInt32(SelectedIconSize.SelectedValue);
                         Icon icon = null;
                         if (size is 16)
                         {
@@ -732,7 +732,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnIconSizeClicked), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnIconSizeSelectionChanged), 2, e);
                     }
                 }
             }
@@ -877,9 +877,9 @@ namespace PowerToolbox.Views.Pages
                                     {
                                         try
                                         {
-                                            if (GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.Key)) is Icon icon)
+                                            if (GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.SelectedValue)) is Icon icon)
                                             {
-                                                icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1} - {2}.png", Path.GetFileName(filePath), iconIndex, Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                                icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1} - {2}.png", Path.GetFileName(filePath), iconIndex, Convert.ToInt32(SelectedIconSize.SelectedValue))), ImageFormat.Png);
                                                 icon.Dispose();
                                             }
                                         }
@@ -937,35 +937,35 @@ namespace PowerToolbox.Views.Pages
                         {
                             try
                             {
-                                if (Convert.ToInt32(SelectedIconSize.Key) is 16)
+                                if (Convert.ToInt32(SelectedIconSize.SelectedValue) is 16)
                                 {
                                     if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_SMALL) is Icon icon)
                                     {
-                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.SelectedValue))), ImageFormat.Png);
                                         icon.Dispose();
                                     }
                                 }
-                                else if (Convert.ToInt32(SelectedIconSize.Key) is 32)
+                                else if (Convert.ToInt32(SelectedIconSize.SelectedValue) is 32)
                                 {
                                     if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_LARGE) is Icon icon)
                                     {
-                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.SelectedValue))), ImageFormat.Png);
                                         icon.Dispose();
                                     }
                                 }
-                                else if (Convert.ToInt32(SelectedIconSize.Key) is 48)
+                                else if (Convert.ToInt32(SelectedIconSize.SelectedValue) is 48)
                                 {
                                     if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_EXTRALARGE) is Icon icon)
                                     {
-                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.SelectedValue))), ImageFormat.Png);
                                         icon.Dispose();
                                     }
                                 }
-                                else if (Convert.ToInt32(SelectedIconSize.Key) is 256)
+                                else if (Convert.ToInt32(SelectedIconSize.SelectedValue) is 256)
                                 {
                                     if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_JUMBO) is Icon icon)
                                     {
-                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.SelectedValue))), ImageFormat.Png);
                                         icon.Dispose();
                                     }
                                 }
@@ -1090,9 +1090,9 @@ namespace PowerToolbox.Views.Pages
                                     {
                                         try
                                         {
-                                            if (GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.Key)) is Icon icon)
+                                            if (GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.SelectedValue)) is Icon icon)
                                             {
-                                                icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1} - {2}.png", Path.GetFileName(filePath), iconIndex, Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                                icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1} - {2}.png", Path.GetFileName(filePath), iconIndex, Convert.ToInt32(SelectedIconSize.SelectedValue))), ImageFormat.Png);
                                                 icon.Dispose();
                                             }
                                         }
@@ -1150,35 +1150,35 @@ namespace PowerToolbox.Views.Pages
                         {
                             try
                             {
-                                if (Convert.ToInt32(SelectedIconSize.Key) is 16)
+                                if (Convert.ToInt32(SelectedIconSize.SelectedValue) is 16)
                                 {
                                     if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_SMALL) is Icon icon)
                                     {
-                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.SelectedValue))), ImageFormat.Png);
                                         icon.Dispose();
                                     }
                                 }
-                                else if (Convert.ToInt32(SelectedIconSize.Key) is 32)
+                                else if (Convert.ToInt32(SelectedIconSize.SelectedValue) is 32)
                                 {
                                     if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_LARGE) is Icon icon)
                                     {
-                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.SelectedValue))), ImageFormat.Png);
                                         icon.Dispose();
                                     }
                                 }
-                                else if (Convert.ToInt32(SelectedIconSize.Key) is 48)
+                                else if (Convert.ToInt32(SelectedIconSize.SelectedValue) is 48)
                                 {
                                     if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_EXTRALARGE) is Icon icon)
                                     {
-                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.SelectedValue))), ImageFormat.Png);
                                         icon.Dispose();
                                     }
                                 }
-                                else if (Convert.ToInt32(SelectedIconSize.Key) is 256)
+                                else if (Convert.ToInt32(SelectedIconSize.SelectedValue) is 256)
                                 {
                                     if (GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_JUMBO) is Icon icon)
                                     {
-                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.Key))), ImageFormat.Png);
+                                        icon.ToBitmap().Save(Path.Combine(openFolderDialog.SelectedPath, string.Format("{0} - {1}.png", Path.GetFileName(filePath), Convert.ToInt32(SelectedIconSize.SelectedValue))), ImageFormat.Png);
                                         icon.Dispose();
                                     }
                                 }
@@ -1526,7 +1526,7 @@ namespace PowerToolbox.Views.Pages
             return Equals(iconResultResultKind, comparedIconExtractResultKind) ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private Visibility GetSelectedFileAssociatedIconSize(KeyValuePair<string, string> selectedGetIconType, KeyValuePair<string, string> comparedGetIconType)
+        private Visibility GetSelectedFileAssociatedIconSize(ComboBoxItemModel selectedGetIconType, ComboBoxItemModel comparedGetIconType)
         {
             return Equals(selectedGetIconType, comparedGetIconType) ? Visibility.Visible : Visibility.Collapsed;
         }

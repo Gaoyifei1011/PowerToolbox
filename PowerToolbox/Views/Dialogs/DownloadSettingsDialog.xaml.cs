@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Documents;
+using PowerToolbox.Models;
 using PowerToolbox.Services.Download;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
@@ -47,9 +48,9 @@ namespace PowerToolbox.Views.Dialogs
             }
         }
 
-        private KeyValuePair<string, string> _doEngineMode;
+        private ComboBoxItemModel _doEngineMode;
 
-        public KeyValuePair<string, string> DoEngineMode
+        public ComboBoxItemModel DoEngineMode
         {
             get { return _doEngineMode; }
 
@@ -63,17 +64,18 @@ namespace PowerToolbox.Views.Dialogs
             }
         }
 
-        private List<KeyValuePair<string, string>> DoEngineModeList { get; } = [];
+        private List<ComboBoxItemModel> DoEngineModeList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public DownloadSettingsDialog()
         {
             InitializeComponent();
-            DoEngineModeList.Add(new KeyValuePair<string, string>(DownloadOptionsService.DoEngineModeList[0], DoEngineDoString));
-            DoEngineModeList.Add(new KeyValuePair<string, string>(DownloadOptionsService.DoEngineModeList[1], DoEngineBitsString));
-            DoEngineModeList.Add(new KeyValuePair<string, string>(DownloadOptionsService.DoEngineModeList[2], DoEngineAria2String));
-            DoEngineMode = DoEngineModeList.Find(item => string.Equals(item.Key, DownloadOptionsService.DoEngineMode, StringComparison.OrdinalIgnoreCase));
+
+            DoEngineModeList.Add(new ComboBoxItemModel() { SelectedValue = DownloadOptionsService.DoEngineModeList[0], DisplayMember = DoEngineDoString });
+            DoEngineModeList.Add(new ComboBoxItemModel() { SelectedValue = DownloadOptionsService.DoEngineModeList[1], DisplayMember = DoEngineBitsString });
+            DoEngineModeList.Add(new ComboBoxItemModel() { SelectedValue = DownloadOptionsService.DoEngineModeList[2], DisplayMember = DoEngineAria2String });
+            DoEngineMode = DoEngineModeList.Find(item => string.Equals(Convert.ToString(item.SelectedValue), DownloadOptionsService.DoEngineMode, StringComparison.OrdinalIgnoreCase));
         }
 
         #region 第一部分：下载设置对话框——挂载的事件
@@ -172,26 +174,15 @@ namespace PowerToolbox.Views.Dialogs
         }
 
         /// <summary>
-        /// 下载引擎说明
-        /// </summary>
-        private void OnLearnDoEngineClicked(object sender, RoutedEventArgs args)
-        {
-            if (MainWindow.Current.GetFrameContent() is SettingsPage settingsPage)
-            {
-                settingsPage.ShowSettingsInstruction();
-            }
-        }
-
-        /// <summary>
         /// 下载引擎方式设置
         /// </summary>
 
-        private void OnDoEngineModeSelectClicked(object sender, RoutedEventArgs args)
+        private void OnDoEngineModeSelectChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> doEngineMode)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel doEngineMode && !Equals(DoEngineMode, doEngineMode))
             {
                 DoEngineMode = doEngineMode;
-                DownloadOptionsService.SetDoEngineMode(DoEngineMode.Key);
+                DownloadOptionsService.SetDoEngineMode(Convert.ToString(DoEngineMode.SelectedValue));
             }
         }
 

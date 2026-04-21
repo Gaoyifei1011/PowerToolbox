@@ -185,9 +185,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedTextEncodingType;
+        private ComboBoxItemModel _selectedTextEncodingType;
 
-        public KeyValuePair<string, string> SelectedTextEncodingType
+        public ComboBoxItemModel SelectedTextEncodingType
         {
             get { return _selectedTextEncodingType; }
 
@@ -249,7 +249,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<KeyValuePair<string, string>> TextEncodingTypeList { get; } = [];
+        private List<ComboBoxItemModel> TextEncodingTypeList { get; } = [];
 
         private List<DataVerifyTypeModel> DataVerifyTypeList { get; } = [];
 
@@ -260,17 +260,17 @@ namespace PowerToolbox.Views.Pages
         public DataVerifyPage()
         {
             InitializeComponent();
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.ASCII), ASCIIString));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.BigEndianUnicode), BigEndianUnicodeString));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>("ISO-8859-1", ISO88591String));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GB18030", GB18030String));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GB2312", GB2312String));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GBK", GBKString));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.Unicode), UnicodeString));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF32), UTF32String));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF7), UTF7String));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>("Custom", CustomString));
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.ASCII), DisplayMember = ASCIIString });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.BigEndianUnicode), DisplayMember = BigEndianUnicodeString });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "ISO-8859-1", DisplayMember = ISO88591String });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "GB18030", DisplayMember = GB18030String });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "GB2312", DisplayMember = GB2312String });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "GBK", DisplayMember = GBKString });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.Unicode), DisplayMember = UnicodeString });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF32), DisplayMember = UTF32String });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF7), DisplayMember = UTF7String });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "Custom", DisplayMember = CustomString });
             SelectedTextEncodingType = TextEncodingTypeList[9];
             DataVerifyTypeList.Add(new DataVerifyTypeModel()
             {
@@ -603,9 +603,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 选择文字编码类型
         /// </summary>
-        private void OnTextEncodingTypeClicked(object sender, RoutedEventArgs args)
+        private void OnTextEncodingTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> textEncodingType)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel textEncodingType && !Equals(SelectedTextEncodingType, textEncodingType))
             {
                 SelectedTextEncodingType = textEncodingType;
             }
@@ -719,7 +719,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 else
                 {
-                    textEncoding = Encoding.GetEncoding(SelectedTextEncodingType.Key);
+                    textEncoding = Encoding.GetEncoding(Convert.ToString(SelectedTextEncodingType.SelectedValue));
                 }
                 return textEncoding;
             });
@@ -1827,9 +1827,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取对应的文字编码类型
         /// </summary>
-        private Visibility GetTextEncodingType(string textEncodingType, string comparedTextEncodingType)
+        private Visibility GetTextEncodingType(object textEncodingType, object comparedTextEncodingType)
         {
-            return string.Equals(textEncodingType, comparedTextEncodingType) ? Visibility.Visible : Visibility.Collapsed;
+            return string.Equals(Convert.ToString(textEncodingType), Convert.ToString(comparedTextEncodingType)) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

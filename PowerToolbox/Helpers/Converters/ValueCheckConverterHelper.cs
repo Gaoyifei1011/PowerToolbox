@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using PowerToolbox.Extensions.DataType.Enums;
+using System;
 
 namespace PowerToolbox.Helpers.Converters
 {
@@ -57,9 +58,9 @@ namespace PowerToolbox.Helpers.Converters
         /// <summary>
         /// 检查选择的保存图标格式
         /// </summary>
-        public static Visibility CheckIconFormat(string iconFormatKey, string comparedIconFormatKey)
+        public static Visibility CheckIconFormat(object iconFormatKey, object comparedIconFormatKey)
         {
-            return string.Equals(iconFormatKey, comparedIconFormatKey) ? Visibility.Visible : Visibility.Collapsed;
+            return string.Equals(Convert.ToString(iconFormatKey), Convert.ToString(comparedIconFormatKey)) ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

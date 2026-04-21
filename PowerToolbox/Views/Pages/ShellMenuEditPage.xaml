@@ -691,46 +691,14 @@
                                 Style="{StaticResource BodyTextBlockStyle}"
                                 Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('MenuFileMatchRule')}" />
 
-                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedFileMatchRule.Value, Mode=OneWay}">
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnFileMatchRuleClicked}"
-                                            GroupName="FileMatchRuleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind FileMatchRuleList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(FileMatchRuleList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnFileMatchRuleClicked}"
-                                            GroupName="FileMatchRuleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind FileMatchRuleList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(FileMatchRuleList[1].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnFileMatchRuleClicked}"
-                                            GroupName="FileMatchRuleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[2].Key), Mode=OneWay}"
-                                            Tag="{x:Bind FileMatchRuleList[2]}"
-                                            Text="{x:Bind system:Convert.ToString(FileMatchRuleList[2].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnFileMatchRuleClicked}"
-                                            GroupName="FileMatchRuleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[3].Key), Mode=OneWay}"
-                                            Tag="{x:Bind FileMatchRuleList[3]}"
-                                            Text="{x:Bind system:Convert.ToString(FileMatchRuleList[3].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnFileMatchRuleClicked}"
-                                            GroupName="FileMatchRuleRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedFileMatchRule.Key, FileMatchRuleList[4].Key), Mode=OneWay}"
-                                            Tag="{x:Bind FileMatchRuleList[4]}"
-                                            Text="{x:Bind system:Convert.ToString(FileMatchRuleList[4].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
+                            <ComboBox
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                DisplayMemberPath="DisplayMember"
+                                ItemsSource="{x:Bind FileMatchRuleList}"
+                                SelectedItem="{x:Bind SelectedFileMatchRule, Mode=OneWay}"
+                                SelectionChanged="{x:Bind OnFileMatchRuleSelectionChanged}"
+                                Style="{StaticResource ComboBoxStyle}" />
                         </Grid>
 
                         <StackPanel Visibility="{x:Bind NeedInputMatchFormat, Mode=OneWay}">

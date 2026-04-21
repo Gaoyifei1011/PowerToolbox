@@ -9,6 +9,7 @@ using Microsoft.Win32;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
+using PowerToolbox.Models;
 using PowerToolbox.Services.Position;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
@@ -132,9 +133,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<ElementTheme, string> _selectedSystemThemeStyle;
+        private ComboBoxItemModel _selectedSystemThemeStyle;
 
-        public KeyValuePair<ElementTheme, string> SelectedSystemThemeStyle
+        public ComboBoxItemModel SelectedSystemThemeStyle
         {
             get { return _selectedSystemThemeStyle; }
 
@@ -148,9 +149,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<ElementTheme, string> _selectedAppThemeStyle;
+        private ComboBoxItemModel _selectedAppThemeStyle;
 
-        public KeyValuePair<ElementTheme, string> SelectedAppThemeStyle
+        public ComboBoxItemModel SelectedAppThemeStyle
         {
             get { return _selectedAppThemeStyle; }
 
@@ -212,9 +213,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedAutoThemeSwitchType;
+        private ComboBoxItemModel _selectedAutoThemeSwitchType;
 
-        public KeyValuePair<string, string> SelectedAutoThemeSwitchType
+        public ComboBoxItemModel SelectedAutoThemeSwitchType
         {
             get { return _selectedAutoThemeSwitchType; }
 
@@ -484,11 +485,11 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<KeyValuePair<string, string>> AutoThemeSwitchTypeList { get; } = [];
+        private List<ComboBoxItemModel> AutoThemeSwitchTypeList { get; } = [];
 
-        private List<KeyValuePair<ElementTheme, string>> SystemThemeStyleList { get; } = [];
+        private List<ComboBoxItemModel> SystemThemeStyleList { get; } = [];
 
-        private List<KeyValuePair<ElementTheme, string>> AppThemeStyleList { get; } = [];
+        private List<ComboBoxItemModel> AppThemeStyleList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -496,13 +497,13 @@ namespace PowerToolbox.Views.Pages
         {
             InitializeComponent();
 
-            SystemThemeStyleList.Add(new KeyValuePair<ElementTheme, string>(ElementTheme.Light, LightString));
-            SystemThemeStyleList.Add(new KeyValuePair<ElementTheme, string>(ElementTheme.Dark, DarkString));
-            AppThemeStyleList.Add(new KeyValuePair<ElementTheme, string>(ElementTheme.Light, LightString));
-            AppThemeStyleList.Add(new KeyValuePair<ElementTheme, string>(ElementTheme.Dark, DarkString));
-            AutoThemeSwitchTypeList.Add(new KeyValuePair<string, string>(AutoThemeSwitchService.AutoThemeSwitchTypeList[0], AutoThemeSwitchTypeFixedTimeString));
-            AutoThemeSwitchTypeList.Add(new KeyValuePair<string, string>(AutoThemeSwitchService.AutoThemeSwitchTypeList[1], AutoThemeSwitchTypeSunriseSunsetString));
-            AutoThemeSwitchTypeList.Add(new KeyValuePair<string, string>(AutoThemeSwitchService.AutoThemeSwitchTypeList[2], AutoThemeSwitchTypeDarkModeString));
+            SystemThemeStyleList.Add(new ComboBoxItemModel() { SelectedValue = ElementTheme.Light, DisplayMember = LightString });
+            SystemThemeStyleList.Add(new ComboBoxItemModel() { SelectedValue = ElementTheme.Dark, DisplayMember = DarkString });
+            AppThemeStyleList.Add(new ComboBoxItemModel() { SelectedValue = ElementTheme.Light, DisplayMember = LightString });
+            AppThemeStyleList.Add(new ComboBoxItemModel() { SelectedValue = ElementTheme.Dark, DisplayMember = DarkString });
+            AutoThemeSwitchTypeList.Add(new ComboBoxItemModel() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[0], DisplayMember = AutoThemeSwitchTypeFixedTimeString });
+            AutoThemeSwitchTypeList.Add(new ComboBoxItemModel() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[1], DisplayMember = AutoThemeSwitchTypeSunriseSunsetString });
+            AutoThemeSwitchTypeList.Add(new ComboBoxItemModel() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[2], DisplayMember = AutoThemeSwitchTypeDarkModeString });
             SelectedSystemThemeStyle = SystemThemeStyleList[0];
             SelectedAppThemeStyle = AppThemeStyleList[0];
             SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList[0];
@@ -628,9 +629,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 修改系统主题样式
         /// </summary>
-        private void OnSystemThemeStyleClicked(object sender, RoutedEventArgs args)
+        private void OnSystemThemeStyleSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<ElementTheme, string> systemThemeStyle)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel systemThemeStyle && !Equals(SelectedSystemThemeStyle, systemThemeStyle))
             {
                 SelectedSystemThemeStyle = systemThemeStyle;
                 int systemTheme = 0;
@@ -659,9 +660,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 修改应用主题样式
         /// </summary>
-        private void OnAppThemeStyleClicked(object sender, RoutedEventArgs args)
+        private void OnAppThemeStyleSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<ElementTheme, string> appTheme)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel appTheme && !Equals(SelectedAppThemeStyle, appTheme))
             {
                 SelectedAppThemeStyle = appTheme;
                 int apptheme = 0;
@@ -719,7 +720,7 @@ namespace PowerToolbox.Views.Pages
             await Task.Run(() =>
             {
                 AutoThemeSwitchService.SetAutoThemeSwitchEnableValue(IsAutoThemeSwitchEnableValue);
-                AutoThemeSwitchService.SetAutoThemeSwitchTypeValue(SelectedAutoThemeSwitchType.Key);
+                AutoThemeSwitchService.SetAutoThemeSwitchTypeValue(Convert.ToString(SelectedAutoThemeSwitchType.SelectedValue));
                 AutoThemeSwitchService.SetAutoSwitchSystemThemeValue(IsAutoSwitchSystemThemeValue);
                 AutoThemeSwitchService.SetAutoSwitchAppThemeValue(IsAutoSwitchAppThemeValue);
                 AutoThemeSwitchService.SetIsShowColorInDarkThemeValue(IsShowColorInDarkThemeValue);
@@ -850,9 +851,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 自动切换主题类型发生改变时触发的事件
         /// </summary>
-        private async void OnAutoThemeSwitchTypeSelectClicked(object sender, RoutedEventArgs args)
+        private async void OnAutoThemeSwitchTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> autoThemeSwitchType)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel autoThemeSwitchType && !Equals(SelectedAutoThemeSwitchType, autoThemeSwitchType))
             {
                 SelectedAutoThemeSwitchType = autoThemeSwitchType;
             }
@@ -1362,13 +1363,13 @@ namespace PowerToolbox.Views.Pages
             SystemAppBackground = new SolidColorBrush((Color)wallpaperDict["Color"]);
 
             ElementTheme systemTheme = await Task.Run(GetSystemTheme);
-            SelectedSystemThemeStyle = SystemThemeStyleList.Find(item => Equals(item.Key, systemTheme));
+            SelectedSystemThemeStyle = SystemThemeStyleList.Find(item => Equals(item.SelectedValue, systemTheme));
 
             ElementTheme appTheme = await Task.Run(GetAppTheme);
             SystemAppTheme = appTheme;
-            SelectedAppThemeStyle = AppThemeStyleList.Find(item => Equals(item.Key, appTheme));
+            SelectedAppThemeStyle = AppThemeStyleList.Find(item => Equals(item.SelectedValue, appTheme));
 
-            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList.Find(item => string.Equals(item.Key, AutoThemeSwitchService.AutoThemeSwitchTypeValue, StringComparison.OrdinalIgnoreCase));
+            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList.Find(item => string.Equals(Convert.ToString(item.SelectedValue), AutoThemeSwitchService.AutoThemeSwitchTypeValue, StringComparison.OrdinalIgnoreCase));
             IsShowThemeColorInStartAndTaskbarEnabled = Equals(SelectedSystemThemeStyle, SystemThemeStyleList[1]);
             bool showThemeColorInStartAndTaskbar = await Task.Run(GetShowThemeColorInStartAndTaskbar);
             IsShowThemeColorInStartAndTaskbar = showThemeColorInStartAndTaskbar;
@@ -1616,25 +1617,25 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取自动切换系统主题时间显示状态值
         /// </summary>
-        private Visibility GetAutoSwitchSystemThemeTimeState(string selectedAutoThemeSwitchType, bool isAutoSwitchSystemThemeValue)
+        private Visibility GetAutoSwitchSystemThemeTimeState(object selectedAutoThemeSwitchType, bool isAutoSwitchSystemThemeValue)
         {
-            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].Key) && isAutoSwitchSystemThemeValue ? Visibility.Visible : Visibility.Collapsed;
+            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].SelectedValue) && isAutoSwitchSystemThemeValue ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
         /// 获取自动切换应用主题时间显示状态值
         /// </summary>
-        private Visibility GetAutoSwitchAppThemeTimeState(string selectedAutoThemeSwitchType, bool isAutoSwitchAppThemeValue)
+        private Visibility GetAutoSwitchAppThemeTimeState(object selectedAutoThemeSwitchType, bool isAutoSwitchAppThemeValue)
         {
-            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].Key) && isAutoSwitchAppThemeValue ? Visibility.Visible : Visibility.Collapsed;
+            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].SelectedValue) && isAutoSwitchAppThemeValue ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
         /// 获取自动切换主题类型值
         /// </summary>
-        private Visibility GetAutoThemeSwitchTypeState(string selectedAutoThemeSwitchType, string comparedAutoThemeSwitchType)
+        private Visibility GetAutoThemeSwitchTypeState(object selectedAutoThemeSwitchType, object comparedAutoThemeSwitchType)
         {
-            return string.Equals(selectedAutoThemeSwitchType, comparedAutoThemeSwitchType) ? Visibility.Visible : Visibility.Collapsed;
+            return string.Equals(Convert.ToString(selectedAutoThemeSwitchType), Convert.ToString(comparedAutoThemeSwitchType)) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private bool GetIsNotPolarRegion(bool isPolarDayRegion, bool isPolarNightRegion)

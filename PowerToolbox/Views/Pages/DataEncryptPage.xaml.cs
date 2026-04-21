@@ -274,9 +274,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedEncryptKeyStringType;
+        private ComboBoxItemModel _selectedEncryptKeyStringType;
 
-        public KeyValuePair<string, string> SelectedEncryptKeyStringType
+        public ComboBoxItemModel SelectedEncryptKeyStringType
         {
             get { return _selectedEncryptKeyStringType; }
 
@@ -370,9 +370,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedInitializationVectorStringType;
+        private ComboBoxItemModel _selectedInitializationVectorStringType;
 
-        public KeyValuePair<string, string> SelectedInitializationVectorStringType
+        public ComboBoxItemModel SelectedInitializationVectorStringType
         {
             get { return _selectedInitializationVectorStringType; }
 
@@ -402,9 +402,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<CipherMode, string> _selectedEncryptedBlockCipherMode;
+        private ComboBoxItemModel _selectedEncryptedBlockCipherMode;
 
-        public KeyValuePair<CipherMode, string> SelectedEncryptedBlockCipherMode
+        public ComboBoxItemModel SelectedEncryptedBlockCipherMode
         {
             get { return _selectedEncryptedBlockCipherMode; }
 
@@ -434,9 +434,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<PaddingMode, string> _selectedPaddingMode;
+        private ComboBoxItemModel _selectedPaddingMode;
 
-        public KeyValuePair<PaddingMode, string> SelectedPaddingMode
+        public ComboBoxItemModel SelectedPaddingMode
         {
             get { return _selectedPaddingMode; }
 
@@ -562,9 +562,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<RSAEncryptionPaddingMode, string> _selectedRSAEncryptionPaddingMode;
+        private ComboBoxItemModel _selectedRSAEncryptionPaddingMode;
 
-        public KeyValuePair<RSAEncryptionPaddingMode, string> SelectedRSAEncryptionPaddingMode
+        public ComboBoxItemModel SelectedRSAEncryptionPaddingMode
         {
             get { return _selectedRSAEncryptionPaddingMode; }
 
@@ -594,9 +594,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedTextEncodingType;
+        private ComboBoxItemModel _selectedTextEncodingType;
 
-        public KeyValuePair<string, string> SelectedTextEncodingType
+        public ComboBoxItemModel SelectedTextEncodingType
         {
             get { return _selectedTextEncodingType; }
 
@@ -708,17 +708,17 @@ namespace PowerToolbox.Views.Pages
 
         private List<DataEncryptTypeModel> DataEncryptTypeList { get; } = [];
 
-        private List<KeyValuePair<string, string>> EncryptKeyStringTypeList { get; } = [];
+        private List<ComboBoxItemModel> EncryptKeyStringTypeList { get; } = [];
 
-        private List<KeyValuePair<string, string>> InitializationVectorStringTypeList { get; } = [];
+        private List<ComboBoxItemModel> InitializationVectorStringTypeList { get; } = [];
 
-        private List<KeyValuePair<CipherMode, string>> EncryptedBlockCipherModeList { get; } = [];
+        private List<ComboBoxItemModel> EncryptedBlockCipherModeList { get; } = [];
 
-        private List<KeyValuePair<PaddingMode, string>> PaddingModeList { get; } = [];
+        private List<ComboBoxItemModel> PaddingModeList { get; } = [];
 
-        private List<KeyValuePair<RSAEncryptionPaddingMode, string>> RSAEncryptionPaddingModeList { get; } = [];
+        private List<ComboBoxItemModel> RSAEncryptionPaddingModeList { get; } = [];
 
-        private List<KeyValuePair<string, string>> TextEncodingTypeList { get; } = [];
+        private List<ComboBoxItemModel> TextEncodingTypeList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -801,33 +801,33 @@ namespace PowerToolbox.Views.Pages
                 Name = XORString
             });
             SelectedDataEncryptType = DataEncryptTypeList[0];
-            EncryptKeyStringTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
-            EncryptKeyStringTypeList.Add(new KeyValuePair<string, string>("Base64", Base64String));
-            InitializationVectorStringTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
-            InitializationVectorStringTypeList.Add(new KeyValuePair<string, string>("Base64", Base64String));
-            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CBC, CBCString));
-            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.ECB, ECBString));
-            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.OFB, OFBString));
-            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CFB, CFBString));
-            EncryptedBlockCipherModeList.Add(new KeyValuePair<CipherMode, string>(CipherMode.CTS, CTSString));
-            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.None, NonePaddingString));
-            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.PKCS7, Pkcs7String));
-            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.Zeros, ZerosString));
-            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.ANSIX923, ANSIX923String));
-            PaddingModeList.Add(new KeyValuePair<PaddingMode, string>(PaddingMode.ISO10126, ISO10126String));
-            RSAEncryptionPaddingModeList.Add(new KeyValuePair<RSAEncryptionPaddingMode, string>(RSAEncryptionPaddingMode.Pkcs1, Pkcs1String));
-            RSAEncryptionPaddingModeList.Add(new KeyValuePair<RSAEncryptionPaddingMode, string>(RSAEncryptionPaddingMode.Oaep, OaepString));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.ASCII), ASCIIString));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.BigEndianUnicode), BigEndianUnicodeString));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>("ISO-8859-1", ISO88591String));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GB18030", GB18030String));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GB2312", GB2312String));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>("GBK", GBKString));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.Unicode), UnicodeString));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF32), UTF32String));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF7), UTF7String));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>(nameof(Encoding.UTF8), UTF8String));
-            TextEncodingTypeList.Add(new KeyValuePair<string, string>("Custom", CustomString));
+            EncryptKeyStringTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
+            EncryptKeyStringTypeList.Add(new ComboBoxItemModel() { SelectedValue = "Base64", DisplayMember = Base64String });
+            InitializationVectorStringTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
+            InitializationVectorStringTypeList.Add(new ComboBoxItemModel() { SelectedValue = "Base64", DisplayMember = Base64String });
+            EncryptedBlockCipherModeList.Add(new ComboBoxItemModel() { SelectedValue = CipherMode.CBC, DisplayMember = CBCString });
+            EncryptedBlockCipherModeList.Add(new ComboBoxItemModel() { SelectedValue = CipherMode.ECB, DisplayMember = ECBString });
+            EncryptedBlockCipherModeList.Add(new ComboBoxItemModel() { SelectedValue = CipherMode.OFB, DisplayMember = OFBString });
+            EncryptedBlockCipherModeList.Add(new ComboBoxItemModel() { SelectedValue = CipherMode.CFB, DisplayMember = CFBString });
+            EncryptedBlockCipherModeList.Add(new ComboBoxItemModel() { SelectedValue = CipherMode.CTS, DisplayMember = CTSString });
+            PaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = PaddingMode.None, DisplayMember = NonePaddingString });
+            PaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = PaddingMode.PKCS7, DisplayMember = Pkcs7String });
+            PaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = PaddingMode.Zeros, DisplayMember = ZerosString });
+            PaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = PaddingMode.ANSIX923, DisplayMember = ANSIX923String });
+            PaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = PaddingMode.ISO10126, DisplayMember = ISO10126String });
+            RSAEncryptionPaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = RSAEncryptionPaddingMode.Pkcs1, DisplayMember = Pkcs1String });
+            RSAEncryptionPaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = RSAEncryptionPaddingMode.Oaep, DisplayMember = OaepString });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.ASCII), DisplayMember = ASCIIString });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.BigEndianUnicode), DisplayMember = BigEndianUnicodeString });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "ISO-8859-1", DisplayMember = ISO88591String });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "GB18030", DisplayMember = GB18030String });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "GB2312", DisplayMember = GB2312String });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "GBK", DisplayMember = GBKString });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.Unicode), DisplayMember = UnicodeString });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF32), DisplayMember = UTF32String });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF7), DisplayMember = UTF7String });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
+            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "Custom", DisplayMember = CustomString });
             SelectedTextEncodingType = TextEncodingTypeList[9];
         }
 
@@ -1038,7 +1038,7 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
                             HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
@@ -1120,7 +1120,7 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
                             HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
@@ -1202,7 +1202,7 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
                             HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
@@ -1256,7 +1256,7 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
                             HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
@@ -1283,7 +1283,7 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
                             HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
@@ -1310,7 +1310,7 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
                             HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
@@ -1364,7 +1364,7 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
                             HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
@@ -1391,7 +1391,7 @@ namespace PowerToolbox.Views.Pages
                             HasEncryptOptions = true;
                             HasEncryptKey = true;
                             HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
+                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
                             HasEncryptedBlockCipherMode = true;
                             HasPaddingMode = true;
                             HasOffset = false;
@@ -1440,9 +1440,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 加密密钥字符串编码模式发生变化时触发的事件
         /// </summary>
-        private void OnEncryptKeyStringTypeClicked(object sender, RoutedEventArgs args)
+        private void OnEncryptKeyStringTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> encryptKeyStringType)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel encryptKeyStringType && !Equals(SelectedEncryptKeyStringType, encryptKeyStringType))
             {
                 SelectedEncryptKeyStringType = encryptKeyStringType;
             }
@@ -1572,9 +1572,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 初始化向量字符串编码模式发生变化时触发的事件
         /// </summary>
-        private void OnInitializationVectorStringTypeClicked(object sender, RoutedEventArgs args)
+        private void OnInitializationVectorStringTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> initializationVectorStringType)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel initializationVectorStringType && !Equals(SelectedInitializationVectorStringType, initializationVectorStringType))
             {
                 SelectedInitializationVectorStringType = initializationVectorStringType;
             }
@@ -1696,16 +1696,16 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 加密块密码模式发生变化时触发的事件
         /// </summary>
-        private void OnEncryptedBlockCipherModeClicked(object sender, RoutedEventArgs args)
+        private void OnEncryptedBlockCipherModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<CipherMode, string> encryptedBlockCipherMode)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel encryptedBlockCipherMode && !Equals(SelectedEncryptedBlockCipherMode, encryptedBlockCipherMode))
             {
                 SelectedEncryptedBlockCipherMode = encryptedBlockCipherMode;
                 if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.AES || SelectedDataEncryptType.DataEncryptType is DataEncryptType.DES || SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC2 ||
                     SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC5 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC6 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rijndael ||
                     SelectedDataEncryptType.DataEncryptType is DataEncryptType.SM4 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.TripleDES)
                 {
-                    HasInitializationVector = SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB;
+                    HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
                 }
             }
         }
@@ -1713,9 +1713,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 填充模式发生变化时触发的事件
         /// </summary>
-        private void OnPaddingModeClicked(object sender, RoutedEventArgs args)
+        private void OnPaddingModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<PaddingMode, string> encryptedPaddingMode)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel encryptedPaddingMode && !Equals(SelectedPaddingMode, encryptedPaddingMode))
             {
                 SelectedPaddingMode = encryptedPaddingMode;
             }
@@ -1758,9 +1758,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// RSA 非对称加密填充模式发生变化时触发的事件
         /// </summary>
-        private void OnRSAEncryptionPaddingModeClicked(object sender, RoutedEventArgs args)
+        private void OnRSAEncryptionPaddingModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<RSAEncryptionPaddingMode, string> encryptedRSAEncryptionPaddingMode)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel encryptedRSAEncryptionPaddingMode && !Equals(SelectedRSAEncryptionPaddingMode, encryptedRSAEncryptionPaddingMode))
             {
                 SelectedRSAEncryptionPaddingMode = encryptedRSAEncryptionPaddingMode;
             }
@@ -1831,9 +1831,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 选择文字编码类型
         /// </summary>
-        private void OnTextEncodingTypeClicked(object sender, RoutedEventArgs args)
+        private void OnTextEncodingTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> textEncodingType)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel textEncodingType && !Equals(SelectedTextEncodingType, textEncodingType))
             {
                 SelectedTextEncodingType = textEncodingType;
             }
@@ -1989,7 +1989,7 @@ namespace PowerToolbox.Views.Pages
                                 return;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
@@ -2016,7 +2016,7 @@ namespace PowerToolbox.Views.Pages
                                 return;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
@@ -2033,7 +2033,7 @@ namespace PowerToolbox.Views.Pages
                                 return;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
@@ -2077,7 +2077,7 @@ namespace PowerToolbox.Views.Pages
                                 return;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
@@ -2104,7 +2104,7 @@ namespace PowerToolbox.Views.Pages
                                 return;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
@@ -2121,7 +2121,7 @@ namespace PowerToolbox.Views.Pages
                                 return;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
@@ -2138,7 +2138,7 @@ namespace PowerToolbox.Views.Pages
                                 return;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
@@ -2165,7 +2165,7 @@ namespace PowerToolbox.Views.Pages
                                 return;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
@@ -2182,7 +2182,7 @@ namespace PowerToolbox.Views.Pages
                                 return;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.Key is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
@@ -2258,7 +2258,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 else
                 {
-                    textEncoding = Encoding.GetEncoding(SelectedTextEncodingType.Key);
+                    textEncoding = Encoding.GetEncoding(Convert.ToString(SelectedTextEncodingType.SelectedValue));
                 }
                 return textEncoding;
             });
@@ -2479,8 +2479,8 @@ namespace PowerToolbox.Views.Pages
                                 }
                             }
 
-                            aes.Mode = SelectedEncryptedBlockCipherMode.Key;
-                            aes.Padding = SelectedPaddingMode.Key;
+                            aes.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
+                            aes.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
                             ICryptoTransform cryptoTransform = aes.CreateEncryptor(aes.Key, aes.IV);
                             MemoryStream memoryStream = new();
                             CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
@@ -2608,8 +2608,8 @@ namespace PowerToolbox.Views.Pages
                                 }
                             }
 
-                            des.Mode = SelectedEncryptedBlockCipherMode.Key;
-                            des.Padding = SelectedPaddingMode.Key;
+                            des.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
+                            des.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
                             ICryptoTransform cryptoTransform = des.CreateEncryptor(des.Key, des.IV);
                             MemoryStream memoryStream = new();
                             CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
@@ -2683,7 +2683,7 @@ namespace PowerToolbox.Views.Pages
                             }
 
                             rabbit.Mode = CipherMode.CBC;
-                            rabbit.Padding = SelectedPaddingMode.Key;
+                            rabbit.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
                             ICryptoTransform cryptoTransform = rabbit.CreateEncryptor(rabbit.Key, rabbit.IV);
                             MemoryStream memoryStream = new();
                             CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
@@ -2740,8 +2740,8 @@ namespace PowerToolbox.Views.Pages
                                 }
                             }
 
-                            rc2.Mode = SelectedEncryptedBlockCipherMode.Key;
-                            rc2.Padding = SelectedPaddingMode.Key;
+                            rc2.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
+                            rc2.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
                             ICryptoTransform cryptoTransform = rc2.CreateEncryptor(rc2.Key, rc2.IV);
                             MemoryStream memoryStream = new();
                             CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
@@ -2786,8 +2786,8 @@ namespace PowerToolbox.Views.Pages
                                 }
                             }
 
-                            rc4.Mode = SelectedEncryptedBlockCipherMode.Key;
-                            rc4.Padding = SelectedPaddingMode.Key;
+                            rc4.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
+                            rc4.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
                             ICryptoTransform cryptoTransform = rc4.CreateEncryptor(rc4.Key, rc4.IV);
                             MemoryStream memoryStream = new();
                             CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
@@ -2844,8 +2844,8 @@ namespace PowerToolbox.Views.Pages
                                 }
                             }
 
-                            rc5.Mode = SelectedEncryptedBlockCipherMode.Key;
-                            rc5.Padding = SelectedPaddingMode.Key;
+                            rc5.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
+                            rc5.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
                             ICryptoTransform cryptoTransform = rc5.CreateEncryptor(rc5.Key, rc5.IV);
                             MemoryStream memoryStream = new();
                             CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
@@ -2902,8 +2902,8 @@ namespace PowerToolbox.Views.Pages
                                 }
                             }
 
-                            rc6.Mode = SelectedEncryptedBlockCipherMode.Key;
-                            rc6.Padding = SelectedPaddingMode.Key;
+                            rc6.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
+                            rc6.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
                             ICryptoTransform cryptoTransform = rc6.CreateEncryptor(rc6.Key, rc6.IV);
                             MemoryStream memoryStream = new();
                             CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
@@ -2960,8 +2960,8 @@ namespace PowerToolbox.Views.Pages
                                 }
                             }
 
-                            rijndael.Mode = SelectedEncryptedBlockCipherMode.Key;
-                            rijndael.Padding = SelectedPaddingMode.Key;
+                            rijndael.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
+                            rijndael.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
                             ICryptoTransform cryptoTransform = rijndael.CreateEncryptor(rijndael.Key, rijndael.IV);
                             MemoryStream memoryStream = new();
                             CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
@@ -3002,11 +3002,11 @@ namespace PowerToolbox.Views.Pages
                                 fileStream.Dispose();
                                 rsa.FromXmlString(EncryptPublicKeyText);
                                 byte[] encryptedOutput = null;
-                                if (SelectedRSAEncryptionPaddingMode.Key is RSAEncryptionPaddingMode.Pkcs1)
+                                if (SelectedRSAEncryptionPaddingMode.SelectedValue is RSAEncryptionPaddingMode.Pkcs1)
                                 {
                                     encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
                                 }
-                                else if (SelectedRSAEncryptionPaddingMode.Key is RSAEncryptionPaddingMode.Oaep)
+                                else if (SelectedRSAEncryptionPaddingMode.SelectedValue is RSAEncryptionPaddingMode.Oaep)
                                 {
                                     encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.OaepSHA1);
                                 }
@@ -3021,11 +3021,11 @@ namespace PowerToolbox.Views.Pages
                                 byte[] data = textEncoding.GetBytes(contentData);
                                 rsa.FromXmlString(EncryptPublicKeyText);
                                 byte[] encryptedOutput = null;
-                                if (SelectedRSAEncryptionPaddingMode.Key is RSAEncryptionPaddingMode.Pkcs1)
+                                if (SelectedRSAEncryptionPaddingMode.SelectedValue is RSAEncryptionPaddingMode.Pkcs1)
                                 {
                                     encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
                                 }
-                                else if (SelectedRSAEncryptionPaddingMode.Key is RSAEncryptionPaddingMode.Oaep)
+                                else if (SelectedRSAEncryptionPaddingMode.SelectedValue is RSAEncryptionPaddingMode.Oaep)
                                 {
                                     encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.OaepSHA1);
                                 }
@@ -3073,8 +3073,8 @@ namespace PowerToolbox.Views.Pages
                                 }
                             }
 
-                            sm4.Mode = SelectedEncryptedBlockCipherMode.Key;
-                            sm4.Padding = SelectedPaddingMode.Key;
+                            sm4.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
+                            sm4.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
                             ICryptoTransform cryptoTransform = sm4.CreateEncryptor(sm4.Key, sm4.IV);
                             MemoryStream memoryStream = new();
                             CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
@@ -3131,8 +3131,8 @@ namespace PowerToolbox.Views.Pages
                                 }
                             }
 
-                            tripleDes.Mode = SelectedEncryptedBlockCipherMode.Key;
-                            tripleDes.Padding = SelectedPaddingMode.Key;
+                            tripleDes.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
+                            tripleDes.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
                             ICryptoTransform cryptoTransform = tripleDes.CreateEncryptor(tripleDes.Key, tripleDes.IV);
                             MemoryStream memoryStream = new();
                             CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
@@ -3199,9 +3199,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取对应的文字编码类型
         /// </summary>
-        private Visibility GetTextEncodingType(string textEncodingType, string comparedTextEncodingType)
+        private Visibility GetTextEncodingType(object textEncodingType, object comparedTextEncodingType)
         {
-            return string.Equals(textEncodingType, comparedTextEncodingType) ? Visibility.Visible : Visibility.Collapsed;
+            return string.Equals(Convert.ToString(textEncodingType), Convert.ToString(comparedTextEncodingType)) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

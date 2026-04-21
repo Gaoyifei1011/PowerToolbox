@@ -371,9 +371,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedUpdateSource;
+        private ComboBoxItemModel _selectedUpdateSource;
 
-        public KeyValuePair<string, string> SelectedUpdateSource
+        public ComboBoxItemModel SelectedUpdateSource
         {
             get { return _selectedUpdateSource; }
 
@@ -387,7 +387,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<KeyValuePair<string, string>> UpdateSourceList { get; } = [];
+        private List<ComboBoxItemModel> UpdateSourceList { get; } = [];
 
         private WinRTObservableCollection<UpdateModel> AvailableUpdateCollection { get; } = [];
 
@@ -403,10 +403,10 @@ namespace PowerToolbox.Views.Pages
         {
             InitializeComponent();
             SelectedItem = UpdateManagerSelctorBar.Items[0];
-            UpdateSourceList.Add(new KeyValuePair<string, string>("Microsoft Update", MicrosoftUpdateString));
-            UpdateSourceList.Add(new KeyValuePair<string, string>("DCat Flighting Prod", DCatFlightingProdString));
-            UpdateSourceList.Add(new KeyValuePair<string, string>("Windows Store(DCat Prod)", WindowsStoreString));
-            UpdateSourceList.Add(new KeyValuePair<string, string>("Windows Update", WindowsUpdateString));
+            UpdateSourceList.Add(new ComboBoxItemModel() { SelectedValue = "Microsoft Update", DisplayMember = MicrosoftUpdateString });
+            UpdateSourceList.Add(new ComboBoxItemModel() { SelectedValue = "DCat Flighting Prod", DisplayMember = DCatFlightingProdString });
+            UpdateSourceList.Add(new ComboBoxItemModel() { SelectedValue = "Windows Store(DCat Prod)", DisplayMember = WindowsStoreString });
+            UpdateSourceList.Add(new ComboBoxItemModel() { SelectedValue = "Windows Update", DisplayMember = WindowsUpdateString });
             SelectedUpdateSource = UpdateSourceList[0];
         }
 
@@ -2057,9 +2057,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 设置更新源
         /// </summary>
-        private void OnUpdateSourceSelectClicked(object sender, RoutedEventArgs args)
+        private void OnUpdateSourceSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is MenuFlyoutItem menuFlyoutItem && menuFlyoutItem.Tag is KeyValuePair<string, string> updateSource)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel updateSource && !Equals(SelectedUpdateSource, updateSource))
             {
                 SelectedUpdateSource = updateSource;
             }
@@ -2292,7 +2292,7 @@ namespace PowerToolbox.Views.Pages
                 // 设置更新源
                 foreach (IUpdateService2 updateService in updateServiceManager.Services)
                 {
-                    if (string.Equals(updateService.Name, SelectedUpdateSource.Key, StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(updateService.Name, Convert.ToString(SelectedUpdateSource.SelectedValue), StringComparison.OrdinalIgnoreCase))
                     {
                         updateSearcher.ServiceID = updateService.ServiceID;
                         break;

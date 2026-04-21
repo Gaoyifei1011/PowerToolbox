@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using PowerToolbox.Extensions.DataType.Enums;
+using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Windows;
 using System;
@@ -99,9 +100,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<SimulateUpdateKind, string> _selectedSimulateUpdateStyle;
+        private ComboBoxItemModel _selectedSimulateUpdateStyle;
 
-        public KeyValuePair<SimulateUpdateKind, string> SelectedSimulateUpdateStyle
+        public ComboBoxItemModel SelectedSimulateUpdateStyle
         {
             get { return _selectedSimulateUpdateStyle; }
 
@@ -131,9 +132,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedAfterSimulatedOperation;
+        private ComboBoxItemModel _selectedAfterSimulatedOperation;
 
-        public KeyValuePair<string, string> SelectedAfterSimulateOperation
+        public ComboBoxItemModel SelectedAfterSimulateOperation
         {
             get { return _selectedAfterSimulatedOperation; }
 
@@ -147,23 +148,23 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<KeyValuePair<SimulateUpdateKind, string>> SimulateUpdateStyleList { get; } = [];
+        private List<ComboBoxItemModel> SimulateUpdateStyleList { get; } = [];
 
-        private List<KeyValuePair<string, string>> AfterSimulateOperationList { get; } = [];
+        private List<ComboBoxItemModel> AfterSimulateOperationList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public LoafPage()
         {
             InitializeComponent();
-            SimulateUpdateStyleList.Add(new KeyValuePair<SimulateUpdateKind, string>(SimulateUpdateKind.Windows11, Windows11StyleString));
-            SimulateUpdateStyleList.Add(new KeyValuePair<SimulateUpdateKind, string>(SimulateUpdateKind.Windows10, Windows10StyleString));
-            AfterSimulateOperationList.Add(new KeyValuePair<string, string>("None", NoneString));
-            AfterSimulateOperationList.Add(new KeyValuePair<string, string>("LockScreen", LockScreenString));
-            AfterSimulateOperationList.Add(new KeyValuePair<string, string>("LogOff", LogOffString));
-            AfterSimulateOperationList.Add(new KeyValuePair<string, string>("Sleep", SleepString));
-            AfterSimulateOperationList.Add(new KeyValuePair<string, string>("Restart", RestartString));
-            AfterSimulateOperationList.Add(new KeyValuePair<string, string>("Shutdown", ShutdownString));
+            SimulateUpdateStyleList.Add(new ComboBoxItemModel() { SelectedValue = SimulateUpdateKind.Windows11, DisplayMember = Windows11StyleString });
+            SimulateUpdateStyleList.Add(new ComboBoxItemModel() { SelectedValue = SimulateUpdateKind.Windows10, DisplayMember = Windows10StyleString });
+            AfterSimulateOperationList.Add(new ComboBoxItemModel() { SelectedValue = "None", DisplayMember = NoneString });
+            AfterSimulateOperationList.Add(new ComboBoxItemModel() { SelectedValue = "LockScreen", DisplayMember = LockScreenString });
+            AfterSimulateOperationList.Add(new ComboBoxItemModel() { SelectedValue = "LogOff", DisplayMember = LogOffString });
+            AfterSimulateOperationList.Add(new ComboBoxItemModel() { SelectedValue = "Sleep", DisplayMember = SleepString });
+            AfterSimulateOperationList.Add(new ComboBoxItemModel() { SelectedValue = "Restart", DisplayMember = RestartString });
+            AfterSimulateOperationList.Add(new ComboBoxItemModel() { SelectedValue = "Shutdown", DisplayMember = ShutdownString });
             SelectedSimulateUpdateStyle = SimulateUpdateStyleList[0];
             SelectedAfterSimulateOperation = AfterSimulateOperationList[0];
         }
@@ -267,7 +268,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnStartLoafClicked(object sender, RoutedEventArgs args)
         {
-            new SimulateUpdateWindow(SelectedSimulateUpdateStyle.Key, DurationTime, BlockAllKeys, SelectedAfterSimulateOperation.Key).Activate();
+            new SimulateUpdateWindow((SimulateUpdateKind)SelectedSimulateUpdateStyle.SelectedValue, DurationTime, BlockAllKeys, Convert.ToString(SelectedAfterSimulateOperation.SelectedValue)).Activate();
             SimulateUpdateWindow.Current.Closed += OnClosed;
             IsLoafing = true;
         }
@@ -277,19 +278,16 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnClosed(object sender, WindowEventArgs args)
         {
-            if (SimulateUpdateWindow.Current is not null)
-            {
-                SimulateUpdateWindow.Current.Closed -= OnClosed;
-            }
+            SimulateUpdateWindow.Current?.Closed -= OnClosed;
             IsLoafing = false;
         }
 
         /// <summary>
         /// 选择模拟更新的界面风格
         /// </summary>
-        private void OnUpdateStyleClicked(object sender, RoutedEventArgs args)
+        private void OnUpdateStyleSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<SimulateUpdateKind, string> simulateUpdateStyle)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel simulateUpdateStyle && !Equals(SelectedSimulateUpdateStyle, simulateUpdateStyle))
             {
                 SelectedSimulateUpdateStyle = simulateUpdateStyle;
             }
@@ -320,9 +318,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 模拟更新结束后是否自动锁屏
         /// </summary>
-        private void OnAfterSimulateOperationClicked(object sender, RoutedEventArgs args)
+        private void OnAfterSimulateOperationSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> afterSimulateOperation)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel afterSimulateOperation && !Equals(SelectedAfterSimulateOperation, afterSimulateOperation))
             {
                 SelectedAfterSimulateOperation = afterSimulateOperation;
             }

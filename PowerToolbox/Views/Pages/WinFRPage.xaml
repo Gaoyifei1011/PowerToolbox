@@ -396,49 +396,14 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RecoveryMode')}" />
 
-                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedRecoveryMode.Value, Mode=OneWay}">
-
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnRecoveryModeClicked}"
-                                            GroupName="RecoveryModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRecoveryMode.Key, RecoveryModeList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind RecoveryModeList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(RecoveryModeList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnRecoveryModeClicked}"
-                                            GroupName="RecoveryModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRecoveryMode.Key, RecoveryModeList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind RecoveryModeList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(RecoveryModeList[1].Value)}" />
-
-                                        <MenuFlyoutSeparator />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnRecoveryModeClicked}"
-                                            GroupName="RecoveryModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRecoveryMode.Key, RecoveryModeList[2].Key), Mode=OneWay}"
-                                            Tag="{x:Bind RecoveryModeList[2]}"
-                                            Text="{x:Bind system:Convert.ToString(RecoveryModeList[2].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnRecoveryModeClicked}"
-                                            GroupName="RecoveryModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRecoveryMode.Key, RecoveryModeList[3].Key), Mode=OneWay}"
-                                            Tag="{x:Bind RecoveryModeList[3]}"
-                                            Text="{x:Bind system:Convert.ToString(RecoveryModeList[3].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnRecoveryModeClicked}"
-                                            GroupName="RecoveryModeRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRecoveryMode.Key, RecoveryModeList[4].Key), Mode=OneWay}"
-                                            Tag="{x:Bind RecoveryModeList[4]}"
-                                            Text="{x:Bind system:Convert.ToString(RecoveryModeList[4].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
+                            <ComboBox
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                DisplayMemberPath="DisplayMember"
+                                ItemsSource="{x:Bind RecoveryModeList}"
+                                SelectedItem="{x:Bind SelectedRecoveryMode, Mode=OneWay}"
+                                SelectionChanged="{x:Bind OnRecoveryModeSelectionChanged}"
+                                Style="{StaticResource ComboBoxStyle}" />
                         </Grid>
 
                         <MenuFlyoutSeparator />
@@ -545,7 +510,7 @@
                     HorizontalContentAlignment="Stretch"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True"
-                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.Key, RecoveryModeList[0].Key), Mode=OneWay}">
+                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.SelectedValue, RecoveryModeList[0].SelectedValue), Mode=OneWay}">
 
                     <Expander.Header>
                         <Grid>
@@ -672,33 +637,14 @@
                                 </TextBlock>
                             </StackPanel>
 
-                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedRegularDuplicatedFileOption.Value, Mode=OneWay}">
-
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnRegularDuplicatedFileOptionClicked}"
-                                            GroupName="RegularDuplicatedFileOptionRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRegularDuplicatedFileOption.Key, RegularDuplicatedFileOptionList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind RegularDuplicatedFileOptionList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(RegularDuplicatedFileOptionList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnRegularDuplicatedFileOptionClicked}"
-                                            GroupName="RegularDuplicatedFileOptionRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRegularDuplicatedFileOption.Key, RegularDuplicatedFileOptionList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind RegularDuplicatedFileOptionList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(RegularDuplicatedFileOptionList[1].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnRegularDuplicatedFileOptionClicked}"
-                                            GroupName="RegularDuplicatedFileOptionRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedRegularDuplicatedFileOption.Key, RegularDuplicatedFileOptionList[2].Key), Mode=OneWay}"
-                                            Tag="{x:Bind RegularDuplicatedFileOptionList[2]}"
-                                            Text="{x:Bind system:Convert.ToString(RegularDuplicatedFileOptionList[2].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
+                            <ComboBox
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                DisplayMemberPath="DisplayMember"
+                                ItemsSource="{x:Bind RegularDuplicatedFileOptionList}"
+                                SelectedItem="{x:Bind SelectedRegularDuplicatedFileOption, Mode=OneWay}"
+                                SelectionChanged="{x:Bind OnRegularDuplicatedFileOptionSelectionChanged}"
+                                Style="{StaticResource ComboBoxStyle}" />
                         </Grid>
                     </StackPanel>
                 </Expander>
@@ -712,7 +658,7 @@
                     HorizontalContentAlignment="Stretch"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True"
-                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.Key, RecoveryModeList[1].Key), Mode=OneWay}">
+                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.SelectedValue, RecoveryModeList[1].SelectedValue), Mode=OneWay}">
 
                     <Expander.Header>
                         <Grid>
@@ -839,33 +785,14 @@
                                 </TextBlock>
                             </StackPanel>
 
-                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedExtensiveDuplicatedFileOption.Value, Mode=OneWay}">
-
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnExtensiveDuplicatedFileOptionClicked}"
-                                            GroupName="ExtensiveDuplicatedFileOptionRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedExtensiveDuplicatedFileOption.Key, ExtensiveDuplicatedFileOptionList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind ExtensiveDuplicatedFileOptionList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(ExtensiveDuplicatedFileOptionList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnExtensiveDuplicatedFileOptionClicked}"
-                                            GroupName="ExtensiveDuplicatedFileOptionRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedExtensiveDuplicatedFileOption.Key, ExtensiveDuplicatedFileOptionList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind ExtensiveDuplicatedFileOptionList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(ExtensiveDuplicatedFileOptionList[1].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnExtensiveDuplicatedFileOptionClicked}"
-                                            GroupName="ExtensiveDuplicatedFileOptionRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedExtensiveDuplicatedFileOption.Key, ExtensiveDuplicatedFileOptionList[2].Key), Mode=OneWay}"
-                                            Tag="{x:Bind ExtensiveDuplicatedFileOptionList[2]}"
-                                            Text="{x:Bind system:Convert.ToString(ExtensiveDuplicatedFileOptionList[2].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
+                            <ComboBox
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                DisplayMemberPath="DisplayMember"
+                                ItemsSource="{x:Bind ExtensiveDuplicatedFileOptionList}"
+                                SelectedItem="{x:Bind SelectedExtensiveDuplicatedFileOption, Mode=OneWay}"
+                                SelectionChanged="{x:Bind OnExtensiveDuplicatedFileOptionSelectionChanged}"
+                                Style="{StaticResource ComboBoxStyle}" />
                         </Grid>
                     </StackPanel>
                 </Expander>
@@ -879,7 +806,7 @@
                     HorizontalContentAlignment="Stretch"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True"
-                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.Key, RecoveryModeList[2].Key), Mode=OneWay}">
+                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.SelectedValue, RecoveryModeList[2].SelectedValue), Mode=OneWay}">
 
                     <Expander.Header>
                         <Grid>
@@ -1068,33 +995,14 @@
                                 </TextBlock>
                             </StackPanel>
 
-                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedNTFSDuplicatedFileOption.Value, Mode=OneWay}">
-
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnNTFSDuplicatedFileOptionClicked}"
-                                            GroupName="NTFSDuplicatedFileOptionRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedNTFSDuplicatedFileOption.Key, NTFSDuplicatedFileOptionList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind NTFSDuplicatedFileOptionList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(NTFSDuplicatedFileOptionList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnNTFSDuplicatedFileOptionClicked}"
-                                            GroupName="NTFSDuplicatedFileOptionRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedNTFSDuplicatedFileOption.Key, NTFSDuplicatedFileOptionList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind NTFSDuplicatedFileOptionList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(NTFSDuplicatedFileOptionList[1].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnNTFSDuplicatedFileOptionClicked}"
-                                            GroupName="NTFSDuplicatedFileOptionRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedNTFSDuplicatedFileOption.Key, NTFSDuplicatedFileOptionList[2].Key), Mode=OneWay}"
-                                            Tag="{x:Bind NTFSDuplicatedFileOptionList[2]}"
-                                            Text="{x:Bind system:Convert.ToString(NTFSDuplicatedFileOptionList[2].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
+                            <ComboBox
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                DisplayMemberPath="DisplayMember"
+                                ItemsSource="{x:Bind NTFSDuplicatedFileOptionList}"
+                                SelectedItem="{x:Bind SelectedNTFSDuplicatedFileOption, Mode=OneWay}"
+                                SelectionChanged="{x:Bind OnNTFSDuplicatedFileOptionSelectionChanged}"
+                                Style="{StaticResource ComboBoxStyle}" />
                         </Grid>
 
                         <MenuFlyoutSeparator />
@@ -1228,7 +1136,7 @@
                     HorizontalContentAlignment="Stretch"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True"
-                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.Key, RecoveryModeList[3].Key), Mode=OneWay}">
+                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.SelectedValue, RecoveryModeList[3].SelectedValue), Mode=OneWay}">
 
                     <Expander.Header>
                         <Grid>
@@ -1417,33 +1325,14 @@
                                 </TextBlock>
                             </StackPanel>
 
-                            <DropDownButton Grid.Column="1" Content="{x:Bind SelectedSegmentDuplicatedFileOption.Value, Mode=OneWay}">
-
-                                <DropDownButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSegmentDuplicatedFileOptionClicked}"
-                                            GroupName="SegmentDuplicatedFileOptionRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedSegmentDuplicatedFileOption.Key, SegmentDuplicatedFileOptionList[0].Key), Mode=OneWay}"
-                                            Tag="{x:Bind SegmentDuplicatedFileOptionList[0]}"
-                                            Text="{x:Bind system:Convert.ToString(SegmentDuplicatedFileOptionList[0].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSegmentDuplicatedFileOptionClicked}"
-                                            GroupName="SegmentDuplicatedFileOptionRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedSegmentDuplicatedFileOption.Key, SegmentDuplicatedFileOptionList[1].Key), Mode=OneWay}"
-                                            Tag="{x:Bind SegmentDuplicatedFileOptionList[1]}"
-                                            Text="{x:Bind system:Convert.ToString(SegmentDuplicatedFileOptionList[1].Value)}" />
-
-                                        <RadioMenuFlyoutItem
-                                            Click="{x:Bind OnSegmentDuplicatedFileOptionClicked}"
-                                            GroupName="SegmentDuplicatedFileOptionRadioGroup"
-                                            IsChecked="{x:Bind x:Object.Equals(SelectedSegmentDuplicatedFileOption.Key, SegmentDuplicatedFileOptionList[2].Key), Mode=OneWay}"
-                                            Tag="{x:Bind SegmentDuplicatedFileOptionList[2]}"
-                                            Text="{x:Bind system:Convert.ToString(SegmentDuplicatedFileOptionList[2].Value)}" />
-                                    </MenuFlyout>
-                                </DropDownButton.Flyout>
-                            </DropDownButton>
+                            <ComboBox
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                DisplayMemberPath="DisplayMember"
+                                ItemsSource="{x:Bind SegmentDuplicatedFileOptionList}"
+                                SelectedItem="{x:Bind SelectedSegmentDuplicatedFileOption, Mode=OneWay}"
+                                SelectionChanged="{x:Bind OnSegmentDuplicatedFileOptionSelectionChanged}"
+                                Style="{StaticResource ComboBoxStyle}" />
                         </Grid>
 
                         <MenuFlyoutSeparator />
@@ -1695,7 +1584,7 @@
                     HorizontalContentAlignment="Stretch"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True"
-                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.Key, RecoveryModeList[4].Key), Mode=OneWay}">
+                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.SelectedValue, RecoveryModeList[4].SelectedValue), Mode=OneWay}">
 
                     <Expander.Header>
                         <Grid>

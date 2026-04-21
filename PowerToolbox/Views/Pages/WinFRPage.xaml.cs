@@ -8,6 +8,7 @@ using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
+using PowerToolbox.Services.Settings;
 using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
@@ -157,9 +158,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedRecoveryMode;
+        private ComboBoxItemModel _selectedRecoveryMode;
 
-        public KeyValuePair<string, string> SelectedRecoveryMode
+        public ComboBoxItemModel SelectedRecoveryMode
         {
             get { return _selectedRecoveryMode; }
 
@@ -221,9 +222,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedRegularDuplicatedFileOption;
+        private ComboBoxItemModel _selectedRegularDuplicatedFileOption;
 
-        public KeyValuePair<string, string> SelectedRegularDuplicatedFileOption
+        public ComboBoxItemModel SelectedRegularDuplicatedFileOption
         {
             get { return _selectedRegularDuplicatedFileOption; }
 
@@ -253,9 +254,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedExtensiveDuplicatedFileOption;
+        private ComboBoxItemModel _selectedExtensiveDuplicatedFileOption;
 
-        public KeyValuePair<string, string> SelectedExtensiveDuplicatedFileOption
+        public ComboBoxItemModel SelectedExtensiveDuplicatedFileOption
         {
             get { return _selectedExtensiveDuplicatedFileOption; }
 
@@ -317,9 +318,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedNTFSDuplicatedFileOption;
+        private ComboBoxItemModel _selectedNTFSDuplicatedFileOption;
 
-        public KeyValuePair<string, string> SelectedNTFSDuplicatedFileOption
+        public ComboBoxItemModel SelectedNTFSDuplicatedFileOption
         {
             get { return _selectedNTFSDuplicatedFileOption; }
 
@@ -429,9 +430,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private KeyValuePair<string, string> _selectedSegmentDuplicatedFileOption;
+        private ComboBoxItemModel _selectedSegmentDuplicatedFileOption;
 
-        public KeyValuePair<string, string> SelectedSegmentDuplicatedFileOption
+        public ComboBoxItemModel SelectedSegmentDuplicatedFileOption
         {
             get { return _selectedSegmentDuplicatedFileOption; }
 
@@ -589,15 +590,15 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<KeyValuePair<string, string>> RecoveryModeList { get; } = [];
+        private List<ComboBoxItemModel> RecoveryModeList { get; } = [];
 
-        private List<KeyValuePair<string, string>> RegularDuplicatedFileOptionList { get; } = [];
+        private List<ComboBoxItemModel> RegularDuplicatedFileOptionList { get; } = [];
 
-        private List<KeyValuePair<string, string>> ExtensiveDuplicatedFileOptionList { get; } = [];
+        private List<ComboBoxItemModel> ExtensiveDuplicatedFileOptionList { get; } = [];
 
-        private List<KeyValuePair<string, string>> NTFSDuplicatedFileOptionList { get; } = [];
+        private List<ComboBoxItemModel> NTFSDuplicatedFileOptionList { get; } = [];
 
-        private List<KeyValuePair<string, string>> SegmentDuplicatedFileOptionList { get; } = [];
+        private List<ComboBoxItemModel> SegmentDuplicatedFileOptionList { get; } = [];
 
         public List<RecoveryModeSuggestionModel> RecoveryModeSuggestionList { get; } = [];
 
@@ -609,31 +610,31 @@ namespace PowerToolbox.Views.Pages
         {
             InitializeComponent();
 
-            RecoveryModeList.Add(new KeyValuePair<string, string>("RegularMode", RegularModeString));
-            RecoveryModeList.Add(new KeyValuePair<string, string>("ExtensiveMode", ExtensiveModeString));
-            RecoveryModeList.Add(new KeyValuePair<string, string>("NTFSModeMode", NTFSModeString));
-            RecoveryModeList.Add(new KeyValuePair<string, string>("SegmentMode", SegmentModeString));
-            RecoveryModeList.Add(new KeyValuePair<string, string>("Signature", SignatureModeString));
+            RecoveryModeList.Add(new ComboBoxItemModel() { SelectedValue = "RegularMode", DisplayMember = RegularModeString });
+            RecoveryModeList.Add(new ComboBoxItemModel() { SelectedValue = "ExtensiveMode", DisplayMember = ExtensiveModeString });
+            RecoveryModeList.Add(new ComboBoxItemModel() { SelectedValue = "NTFSModeMode", DisplayMember = NTFSModeString });
+            RecoveryModeList.Add(new ComboBoxItemModel() { SelectedValue = "SegmentMode", DisplayMember = SegmentModeString });
+            RecoveryModeList.Add(new ComboBoxItemModel() { SelectedValue = "Signature", DisplayMember = SignatureModeString });
             SelectedRecoveryMode = RecoveryModeList[0];
 
-            RegularDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("Override", OverrideString));
-            RegularDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("NeverOverride", NeverOverrideString));
-            RegularDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("KeepBoth", KeepBothString));
+            RegularDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "Override", DisplayMember = OverrideString });
+            RegularDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "NeverOverride", DisplayMember = NeverOverrideString });
+            RegularDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "KeepBoth", DisplayMember = KeepBothString });
             SelectedRegularDuplicatedFileOption = RegularDuplicatedFileOptionList[0];
 
-            ExtensiveDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("Override", OverrideString));
-            ExtensiveDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("NeverOverride", NeverOverrideString));
-            ExtensiveDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("KeepBoth", KeepBothString));
+            ExtensiveDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "Override", DisplayMember = OverrideString });
+            ExtensiveDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "NeverOverride", DisplayMember = NeverOverrideString });
+            ExtensiveDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "KeepBoth", DisplayMember = KeepBothString });
             SelectedExtensiveDuplicatedFileOption = ExtensiveDuplicatedFileOptionList[0];
 
-            NTFSDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("Override", OverrideString));
-            NTFSDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("NeverOverride", NeverOverrideString));
-            NTFSDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("KeepBoth", KeepBothString));
+            NTFSDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "Override", DisplayMember = OverrideString });
+            NTFSDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "NeverOverride", DisplayMember = NeverOverrideString });
+            NTFSDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "KeepBoth", DisplayMember = KeepBothString });
             SelectedNTFSDuplicatedFileOption = NTFSDuplicatedFileOptionList[0];
 
-            SegmentDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("Override", OverrideString));
-            SegmentDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("NeverOverride", NeverOverrideString));
-            SegmentDuplicatedFileOptionList.Add(new KeyValuePair<string, string>("KeepBoth", KeepBothString));
+            SegmentDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "Override", DisplayMember = OverrideString });
+            SegmentDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "NeverOverride", DisplayMember = NeverOverrideString });
+            SegmentDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "KeepBoth", DisplayMember = KeepBothString });
             SelectedSegmentDuplicatedFileOption = SegmentDuplicatedFileOptionList[0];
 
             RecoveryModeSuggestionList.Add(new RecoveryModeSuggestionModel()
@@ -1145,9 +1146,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 修改恢复模式
         /// </summary>
-        private void OnRecoveryModeClicked(object sender, RoutedEventArgs args)
+        private void OnRecoveryModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> recoveryMode)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel recoveryMode && !Equals(SelectedRecoveryMode, recoveryMode))
             {
                 SelectedRecoveryMode = recoveryMode;
             }
@@ -1165,24 +1166,24 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 重复文件选项
+        /// 修改重复文件选项
         /// </summary>
-        private void OnRegularDuplicatedFileOptionClicked(object sender, RoutedEventArgs args)
+        private void OnRegularDuplicatedFileOptionSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> ntfsDuplicatedFileOption)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel ntfsDuplicatedFileOption && !Equals(SelectedRegularDuplicatedFileOption, ntfsDuplicatedFileOption))
             {
                 SelectedRegularDuplicatedFileOption = ntfsDuplicatedFileOption;
             }
         }
 
         /// <summary>
-        /// 重复文件选项
+        /// 修改重复文件选项
         /// </summary>
-        private void OnExtensiveDuplicatedFileOptionClicked(object sender, RoutedEventArgs args)
+        private void OnExtensiveDuplicatedFileOptionSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> ntfsDuplicatedFileOption)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel extensiveDuplicatedFileOption && !Equals(SelectedExtensiveDuplicatedFileOption, extensiveDuplicatedFileOption))
             {
-                SelectedExtensiveDuplicatedFileOption = ntfsDuplicatedFileOption;
+                SelectedExtensiveDuplicatedFileOption = extensiveDuplicatedFileOption;
             }
         }
 
@@ -1209,13 +1210,13 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 重复文件选项
+        /// 修改重复文件选项
         /// </summary>
-        private void OnNTFSDuplicatedFileOptionClicked(object sender, RoutedEventArgs args)
+        private void OnNTFSDuplicatedFileOptionSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> regularDuplicatedFileOption)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel ntfsDuplicatedFileOption && !Equals(SelectedNTFSDuplicatedFileOption, ntfsDuplicatedFileOption))
             {
-                SelectedNTFSDuplicatedFileOption = regularDuplicatedFileOption;
+                SelectedNTFSDuplicatedFileOption = ntfsDuplicatedFileOption;
             }
         }
 
@@ -1275,13 +1276,13 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 重复文件选项
+        /// 修改重复文件选项
         /// </summary>
-        private void OnSegmentDuplicatedFileOptionClicked(object sender, RoutedEventArgs args)
+        private void OnSegmentDuplicatedFileOptionSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is KeyValuePair<string, string> ntfsDuplicatedFileOption)
+            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel segmentDuplicatedFileOption && !Equals(SelectedSegmentDuplicatedFileOption, segmentDuplicatedFileOption))
             {
-                SelectedSegmentDuplicatedFileOption = ntfsDuplicatedFileOption;
+                SelectedSegmentDuplicatedFileOption = segmentDuplicatedFileOption;
             }
         }
 
@@ -2060,9 +2061,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取恢复模式
         /// </summary>
-        private Visibility GetRecoveryMode(string recoveryMode, string comparedRecoveryMode)
+        private Visibility GetRecoveryMode(object recoveryMode, object comparedRecoveryMode)
         {
-            return string.Equals(recoveryMode, comparedRecoveryMode) ? Visibility.Visible : Visibility.Collapsed;
+            return string.Equals(Convert.ToString(recoveryMode), Convert.ToString(comparedRecoveryMode)) ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }
