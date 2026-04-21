@@ -681,61 +681,52 @@ namespace PowerToolbox.Views.Windows
                 // 窗口位置发生变化时触发的消息
                 case WindowMessage.WM_MOVE:
                     {
-                        synchronizationContext.Post((_) =>
+                        if (TitlebarMenuFlyout.IsOpen)
                         {
-                            if (TitlebarMenuFlyout.IsOpen)
-                            {
-                                TitlebarMenuFlyout.Hide();
-                            }
+                            TitlebarMenuFlyout.Hide();
+                        }
 
-                            if (overlappedPresenter is not null)
-                            {
-                                IsWindowMaximized = overlappedPresenter.State is OverlappedPresenterState.Maximized;
-                            }
-                        }, null);
+                        if (overlappedPresenter is not null)
+                        {
+                            IsWindowMaximized = overlappedPresenter.State is OverlappedPresenterState.Maximized;
+                        }
                         break;
                     }
                 // 窗口大小发生变化时触发的消息
                 case WindowMessage.WM_SIZE:
                     {
-                        synchronizationContext.Post((_) =>
+                        if (TitlebarMenuFlyout.IsOpen)
                         {
-                            if (TitlebarMenuFlyout.IsOpen)
-                            {
-                                TitlebarMenuFlyout.Hide();
-                            }
+                            TitlebarMenuFlyout.Hide();
+                        }
 
-                            if (overlappedPresenter is not null)
-                            {
-                                IsWindowMaximized = overlappedPresenter.State is OverlappedPresenterState.Maximized;
-                            }
+                        if (overlappedPresenter is not null)
+                        {
+                            IsWindowMaximized = overlappedPresenter.State is OverlappedPresenterState.Maximized;
+                        }
 
-                            if (MainPage.IsLoaded)
-                            {
-                                double dpi = Convert.ToDouble(User32Library.GetDpiForWindow((nint)AppWindow.Id.Value)) / 96;
-                                overlappedPresenter.PreferredMinimumWidth = Convert.ToInt32(1000 * dpi);
-                                overlappedPresenter.PreferredMinimumHeight = Convert.ToInt32(600 * dpi);
-                            }
-                        }, null);
+                        if (MainPage.IsLoaded)
+                        {
+                            double dpi = Convert.ToDouble(User32Library.GetDpiForWindow((nint)AppWindow.Id.Value)) / 96;
+                            overlappedPresenter.PreferredMinimumWidth = Convert.ToInt32(1000 * dpi);
+                            overlappedPresenter.PreferredMinimumHeight = Convert.ToInt32(600 * dpi);
+                        }
                         break;
                     }
                 // 窗口激活状态发生变化时触发的消息
                 case WindowMessage.WM_ACTIVATE:
                     {
-                        synchronizationContext.Post((_) =>
+                        try
                         {
-                            try
+                            if (WindowSystemBackdrop is MaterialBackdrop materialBackdrop && materialBackdrop.BackdropConfiguration is not null)
                             {
-                                if (WindowSystemBackdrop is MaterialBackdrop materialBackdrop && materialBackdrop.BackdropConfiguration is not null)
-                                {
-                                    materialBackdrop.BackdropConfiguration.IsInputActive = AlwaysShowBackdropService.AlwaysShowBackdropValue || wParam is not 0;
-                                }
+                                materialBackdrop.BackdropConfiguration.IsInputActive = AlwaysShowBackdropService.AlwaysShowBackdropValue || wParam is not 0;
                             }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(MainWindowSubClassProc), 1, e);
-                            }
-                        }, null);
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(MainWindowSubClassProc), 1, e);
+                        }
                         break;
                     }
                 // 窗口关闭时触发的消息
