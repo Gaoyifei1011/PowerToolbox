@@ -1327,6 +1327,7 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
+                    SegmentSourceDeviceNumberSectors = int.MaxValue;
                     SegmentSourceDeviceNumberSectors = Math.Abs(Convert.ToInt32(args.NewValue));
                 }
                 catch (Exception e)
@@ -1350,6 +1351,7 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
+                    SegmentSourceDeviceClusterSize = int.MaxValue;
                     SegmentSourceDeviceClusterSize = Math.Abs(Convert.ToInt32(args.NewValue));
                 }
                 catch (Exception e)
@@ -1395,6 +1397,7 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
+                    SignatureSourceDeviceNumberSectors = int.MaxValue;
                     SignatureSourceDeviceNumberSectors = Math.Abs(Convert.ToInt32(args.NewValue));
                 }
                 catch (Exception e)
@@ -1418,6 +1421,7 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
+                    SignatureSourceDeviceClusterSize = int.MaxValue;
                     SignatureSourceDeviceClusterSize = Math.Abs(Convert.ToInt32(args.NewValue));
                 }
                 catch (Exception e)

@@ -1128,6 +1128,7 @@ namespace PowerToolbox.Views.Pages
                     TimeSpan sunriseTime = new(calculatedSunriseTime.Hours, calculatedSunriseTime.Minutes, 0);
                     TimeSpan sunsetTime = new(calculatedSunsetTime.Hours, calculatedSunsetTime.Minutes, 0);
 
+                    SunriseOffset = int.MaxValue;
                     if (sunriseTime < sunsetTime)
                     {
                         SunriseOffset = sunriseOffset;
@@ -1224,6 +1225,7 @@ namespace PowerToolbox.Views.Pages
                     TimeSpan sunriseTime = new(calculatedSunriseTime.Hours, calculatedSunriseTime.Minutes, 0);
                     TimeSpan sunsetTime = new(calculatedSunsetTime.Hours, calculatedSunsetTime.Minutes, 0);
 
+                    SunsetOffset = int.MaxValue;
                     if (sunriseTime < sunsetTime)
                     {
                         SunsetOffset = sunsetOffset;

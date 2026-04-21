@@ -1530,6 +1530,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.NewValue is not double.NaN)
             {
+                Offset = int.MaxValue;
                 Offset = Convert.ToInt32(args.NewValue);
             }
         }
