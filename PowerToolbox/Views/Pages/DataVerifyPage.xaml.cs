@@ -1269,7 +1269,7 @@ namespace PowerToolbox.Views.Pages
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                FileStream fileStream = new(@"E:\28020.1362.251205-1009.BR_RELEASE_SVC_BETAFLT_PROD1_CLIENTMULTI_X64FRE_ZH-CN.ISO", FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
                                 hashBytes = sha256.ComputeHash(fileStream);
                             }
                             sha256.Dispose();
