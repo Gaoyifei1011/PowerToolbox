@@ -5,11 +5,11 @@ using System.Resources;
 [assembly: AssemblyCompany("高怡飞")]
 [assembly: AssemblyCopyright("Copyright 2023-2026 高怡飞 版权所有")]
 [assembly: AssemblyDescription("主题切换")]
-[assembly: AssemblyFileVersion("4.12.410.0")]
-[assembly: AssemblyInformationalVersion("4.12.410.0")]
+[assembly: AssemblyFileVersion("4.13.501.0")]
+[assembly: AssemblyInformationalVersion("4.13.501.0")]
 [assembly: AssemblyProduct("主题切换")]
 [assembly: AssemblyTitle("主题切换")]
-[assembly: AssemblyVersion("4.12.410.0")]
+[assembly: AssemblyVersion("4.13.501.0")]
 
 // 应用程序默认区域性的资源控制器设置
 [assembly: NeutralResourcesLanguage("en-us")]
