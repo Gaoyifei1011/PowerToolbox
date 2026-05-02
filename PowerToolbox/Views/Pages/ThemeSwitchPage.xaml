@@ -251,32 +251,14 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowThemeColorInStartAndTaskbar')}" />
 
-                            <StackPanel
+                            <ToggleSwitch
                                 Grid.Column="1"
-                                VerticalAlignment="Center"
-                                Orientation="Horizontal">
-
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowThemeColorInStartAndTaskbarOffContent')}"
-                                    Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsShowThemeColorInStartAndTaskbar), Mode=OneWay}" />
-
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowThemeColorInStartAndTaskbarOnContent')}"
-                                    Visibility="{x:Bind IsShowThemeColorInStartAndTaskbar, Mode=OneWay}" />
-
-                                <ToggleSwitch
-                                    MinWidth="0"
-                                    Margin="10,-2,-10,0"
-                                    IsEnabled="{x:Bind IsShowThemeColorInStartAndTaskbarEnabled, Mode=OneWay}"
-                                    IsOn="{x:Bind IsShowThemeColorInStartAndTaskbar, Mode=OneWay}"
-                                    OffContent=""
-                                    OnContent=""
-                                    Toggled="{x:Bind OnShowThemeColorInStartAndTaskbarToggled}" />
-                            </StackPanel>
+                                IsEnabled="{x:Bind IsShowThemeColorInStartAndTaskbarEnabled, Mode=OneWay}"
+                                IsOn="{x:Bind IsShowThemeColorInStartAndTaskbar, Mode=OneWay}"
+                                OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowThemeColorInStartAndTaskbarOffContent')}"
+                                OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowThemeColorInStartAndTaskbarOnContent')}"
+                                Style="{StaticResource ToggleSwitchStyle}"
+                                Toggled="{x:Bind OnShowThemeColorInStartAndTaskbarToggled}" />
                         </Grid>
                     </StackPanel>
                 </Expander>
@@ -367,31 +349,13 @@
                                 Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('OpenAutoSwitchProgram')}"
                                 Visibility="{x:Bind IsAutoThemeSwitchEnableValue, Mode=OneWay}" />
 
-                            <StackPanel
+                            <ToggleSwitch
                                 Grid.Column="2"
-                                VerticalAlignment="Center"
-                                Orientation="Horizontal">
-
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoThemeSwitchEnableOffContent')}"
-                                    Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsAutoThemeSwitchEnableValue), Mode=OneWay}" />
-
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoThemeSwitchEnableOnContent')}"
-                                    Visibility="{x:Bind IsAutoThemeSwitchEnableValue, Mode=OneWay}" />
-
-                                <ToggleSwitch
-                                    MinWidth="0"
-                                    Margin="10,-2,-10,0"
-                                    IsOn="{x:Bind IsAutoThemeSwitchEnableValue, Mode=OneWay}"
-                                    OffContent=""
-                                    OnContent=""
-                                    Toggled="{x:Bind OnAutoThemeSwitchEnableToggled}" />
-                            </StackPanel>
+                                IsOn="{x:Bind IsAutoThemeSwitchEnableValue, Mode=OneWay}"
+                                OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoThemeSwitchEnableOffContent')}"
+                                OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoThemeSwitchEnableOnContent')}"
+                                Style="{StaticResource ToggleSwitchStyle}"
+                                Toggled="{x:Bind OnAutoThemeSwitchEnableToggled}" />
                         </Grid>
 
                         <StackPanel Visibility="{x:Bind IsAutoThemeSwitchEnableValue, Mode=OneWay}">
@@ -618,31 +582,13 @@
                                     </FlyoutBase.AttachedFlyout>
                                 </HyperlinkButton>
 
-                                <StackPanel
+                                <ToggleSwitch
                                     Grid.Column="2"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal">
-
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchSystemThemeOffContent')}"
-                                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsAutoSwitchSystemThemeValue), Mode=OneWay}" />
-
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchSystemThemeOnContent')}"
-                                        Visibility="{x:Bind IsAutoSwitchSystemThemeValue, Mode=OneWay}" />
-
-                                    <ToggleSwitch
-                                        MinWidth="0"
-                                        Margin="10,-2,-10,0"
-                                        IsOn="{x:Bind IsAutoSwitchSystemThemeValue, Mode=OneWay}"
-                                        OffContent=""
-                                        OnContent=""
-                                        Toggled="{x:Bind OnAutoSwitchSystemThemeToggled}" />
-                                </StackPanel>
+                                    IsOn="{x:Bind IsAutoSwitchSystemThemeValue, Mode=OneWay}"
+                                    OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchSystemThemeOffContent')}"
+                                    OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchSystemThemeOnContent')}"
+                                    Style="{StaticResource ToggleSwitchStyle}"
+                                    Toggled="{x:Bind OnAutoSwitchSystemThemeToggled}" />
                             </Grid>
 
                             <MenuFlyoutSeparator />
@@ -838,31 +784,13 @@
                                     </FlyoutBase.AttachedFlyout>
                                 </HyperlinkButton>
 
-                                <StackPanel
+                                <ToggleSwitch
                                     Grid.Column="2"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal">
-
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchAppThemeOffContent')}"
-                                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsAutoSwitchAppThemeValue), Mode=OneWay}" />
-
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchAppThemeOnContent')}"
-                                        Visibility="{x:Bind IsAutoSwitchAppThemeValue, Mode=OneWay}" />
-
-                                    <ToggleSwitch
-                                        MinWidth="0"
-                                        Margin="10,-2,-10,0"
-                                        IsOn="{x:Bind IsAutoSwitchAppThemeValue, Mode=OneWay}"
-                                        OffContent=""
-                                        OnContent=""
-                                        Toggled="{x:Bind OnAutoSwitchAppThemeToggled}" />
-                                </StackPanel>
+                                    IsOn="{x:Bind IsAutoSwitchAppThemeValue, Mode=OneWay}"
+                                    OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchAppThemeOffContent')}"
+                                    OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchAppThemeOnContent')}"
+                                    Style="{StaticResource ToggleSwitchStyle}"
+                                    Toggled="{x:Bind OnAutoSwitchAppThemeToggled}" />
                             </Grid>
 
                             <MenuFlyoutSeparator />
@@ -884,31 +812,13 @@
                                     VerticalAlignment="Center"
                                     Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowColorInDarkTheme')}" />
 
-                                <StackPanel
+                                <ToggleSwitch
                                     Grid.Column="1"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal">
-
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowColorInDarkThemeOffContent')}"
-                                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsShowColorInDarkThemeValue), Mode=OneWay}" />
-
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowColorInDarkThemeOnContent')}"
-                                        Visibility="{x:Bind IsShowColorInDarkThemeValue, Mode=OneWay}" />
-
-                                    <ToggleSwitch
-                                        MinWidth="0"
-                                        Margin="10,-2,-10,0"
-                                        IsOn="{x:Bind IsShowColorInDarkThemeValue, Mode=OneWay}"
-                                        OffContent=""
-                                        OnContent=""
-                                        Toggled="{x:Bind OnShowColorInDarkThemeToggled}" />
-                                </StackPanel>
+                                    IsOn="{x:Bind IsShowColorInDarkThemeValue, Mode=OneWay}"
+                                    OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowColorInDarkThemeOffContent')}"
+                                    OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowColorInDarkThemeOnContent')}"
+                                    Style="{StaticResource ToggleSwitchStyle}"
+                                    Toggled="{x:Bind OnShowColorInDarkThemeToggled}" />
                             </Grid>
 
                             <MenuFlyoutSeparator Visibility="{x:Bind GetAutoThemeSwitchTypeState(SelectedAutoThemeSwitchType.SelectedValue, AutoThemeSwitchTypeList[1].SelectedValue), Mode=OneWay}" />

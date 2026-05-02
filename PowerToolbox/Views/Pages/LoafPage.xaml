@@ -191,31 +191,13 @@
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('BlockAllKeys')}" />
 
-                            <StackPanel
+                            <ToggleSwitch
                                 Grid.Column="1"
-                                VerticalAlignment="Center"
-                                Orientation="Horizontal">
-
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('BlockAllKeysOffContent')}"
-                                    Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(BlockAllKeys), Mode=OneWay}" />
-
-                                <TextBlock
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('BlockAllKeysOnContent')}"
-                                    Visibility="{x:Bind BlockAllKeys, Mode=OneWay}" />
-
-                                <ToggleSwitch
-                                    MinWidth="0"
-                                    Margin="10,-2,-10,0"
-                                    IsOn="{x:Bind BlockAllKeys, Mode=OneWay}"
-                                    OffContent=""
-                                    OnContent=""
-                                    Toggled="{x:Bind OnBlockAllKeysToggled}" />
-                            </StackPanel>
+                                IsOn="{x:Bind BlockAllKeys, Mode=OneWay}"
+                                OffContent="{x:Bind rootservice:ResourceService.LoafResource.GetString('BlockAllKeysOffContent')}"
+                                OnContent="{x:Bind rootservice:ResourceService.LoafResource.GetString('BlockAllKeysOnContent')}"
+                                Style="{StaticResource ToggleSwitchStyle}"
+                                Toggled="{x:Bind OnBlockAllKeysToggled}" />
                         </Grid>
 
                         <MenuFlyoutSeparator />

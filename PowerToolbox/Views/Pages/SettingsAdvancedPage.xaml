@@ -90,31 +90,13 @@
                     </Grid>
                 </HyperlinkButton>
 
-                <StackPanel
+                <ToggleSwitch
                     Grid.Column="3"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-
-                    <TextBlock
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('FileShellMenuOffContent')}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(FileShellMenuValue), Mode=OneWay}" />
-
-                    <TextBlock
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('FileShellMenuOnContent')}"
-                        Visibility="{x:Bind FileShellMenuValue, Mode=OneWay}" />
-
-                    <ToggleSwitch
-                        MinWidth="0"
-                        Margin="10,-2,-10,0"
-                        IsOn="{x:Bind FileShellMenuValue, Mode=OneWay}"
-                        OffContent=""
-                        OnContent=""
-                        Toggled="{x:Bind OnFileShellMenuToggled}" />
-                </StackPanel>
+                    IsOn="{x:Bind FileShellMenuValue, Mode=OneWay}"
+                    OffContent="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('FileShellMenuOffContent')}"
+                    OnContent="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('FileShellMenuOnContent')}"
+                    Style="{StaticResource ToggleSwitchStyle}"
+                    Toggled="{x:Bind OnFileShellMenuToggled}" />
             </Grid>
 
             <!--  日志记录设置  -->

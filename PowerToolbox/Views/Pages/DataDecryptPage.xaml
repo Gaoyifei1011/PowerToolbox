@@ -711,31 +711,13 @@
                             VerticalAlignment="Center"
                             Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ParseAsTextData')}" />
 
-                        <StackPanel
+                        <ToggleSwitch
                             Grid.Column="1"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal">
-
-                            <TextBlock
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('ParseAsTextDataOffContent')}"
-                                Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(ParseAsTextData), Mode=OneWay}" />
-
-                            <TextBlock
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('ParseAsTextDataOnContent')}"
-                                Visibility="{x:Bind ParseAsTextData, Mode=OneWay}" />
-
-                            <ToggleSwitch
-                                MinWidth="0"
-                                Margin="10,-2,-10,0"
-                                IsOn="{x:Bind ParseAsTextData, Mode=OneWay}"
-                                OffContent=""
-                                OnContent=""
-                                Toggled="{x:Bind OnParseAsTextDataToggled}" />
-                        </StackPanel>
+                            IsOn="{x:Bind ParseAsTextData, Mode=OneWay}"
+                            OffContent="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ParseAsTextDataOffContent')}"
+                            OnContent="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ParseAsTextDataOnContent')}"
+                            Style="{StaticResource ToggleSwitchStyle}"
+                            Toggled="{x:Bind OnParseAsTextDataToggled}" />
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind HasParseAsTextData, Mode=OneWay}" />
@@ -851,31 +833,13 @@
                             VerticalAlignment="Center"
                             Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('SaveDecryptedDataToLocalFile')}" />
 
-                        <StackPanel
+                        <ToggleSwitch
                             Grid.Column="1"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal">
-
-                            <TextBlock
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('SaveDecryptedDataToLocalFileOffContent')}"
-                                Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(SaveDecryptedDataToLocalFile), Mode=OneWay}" />
-
-                            <TextBlock
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('SaveDecryptedDataToLocalFileOnContent')}"
-                                Visibility="{x:Bind SaveDecryptedDataToLocalFile, Mode=OneWay}" />
-
-                            <ToggleSwitch
-                                MinWidth="0"
-                                Margin="10,-2,-10,0"
-                                IsOn="{x:Bind SaveDecryptedDataToLocalFile, Mode=OneWay}"
-                                OffContent=""
-                                OnContent=""
-                                Toggled="{x:Bind OnSaveDecryptedDataToLocalFileToggled}" />
-                        </StackPanel>
+                            IsOn="{x:Bind SaveDecryptedDataToLocalFile, Mode=OneWay}"
+                            OffContent="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('SaveDecryptedDataToLocalFileOffContent')}"
+                            OnContent="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('SaveDecryptedDataToLocalFileOnContent')}"
+                            Style="{StaticResource ToggleSwitchStyle}"
+                            Toggled="{x:Bind OnSaveDecryptedDataToLocalFileToggled}" />
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind SaveDecryptedDataToLocalFile, Mode=OneWay}" />

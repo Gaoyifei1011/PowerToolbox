@@ -304,12 +304,13 @@
 
 		<None Remove="Assets\PowerToolbox.ico" CopyToOutputDirectory="Never" />
     <None Remove="Styles\ComboBox.xaml" />
-		<None Remove="Styles\Main\DateTimePicker.xaml" />
-		<None Remove="Styles\Main\InfoBar.xaml" />
-		<None Remove="Styles\Main\NavigationView.xaml" />
-		<None Remove="Styles\Main\ProgressRing.xaml" />
-		<None Remove="Styles\Main\TextBlock.xaml" />
-		<None Remove="Styles\Main\TimePicker.xaml" />
+		<None Remove="Styles\DateTimePicker.xaml" />
+		<None Remove="Styles\InfoBar.xaml" />
+		<None Remove="Styles\NavigationView.xaml" />
+		<None Remove="Styles\ProgressRing.xaml" />
+		<None Remove="Styles\TextBlock.xaml" />
+		<None Remove="Styles\TimePicker.xaml" />
+    <None Remove="Styles\ToggleSwitch.xaml" />
     <None Remove="MainApp.xaml" />
 		<None Remove="Views\Dialogs\AddDownloadTaskDialog.xaml" />
 		<None Remove="Views\Dialogs\AppInformationDialog.xaml" />
@@ -380,6 +381,7 @@
 		<Page Include="Styles\NavigationView.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\ProgressRing.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\TimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Styles\ToggleSwitch.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Dialogs\AddDownloadTaskDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Dialogs\AppInformationDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Views\Dialogs\ClosingWindowDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />

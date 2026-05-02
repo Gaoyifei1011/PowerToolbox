@@ -4028,31 +4028,13 @@
                                     VerticalAlignment="Center"
                                     Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('IncludePotentiallySupersededUpdate')}" />
 
-                                <StackPanel
+                                <ToggleSwitch
                                     Grid.Column="1"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal">
-
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('IncludePotentiallySupersededUpdateOffContent')}"
-                                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsIncludePotentiallySupersededUpdate), Mode=OneWay}" />
-
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('IncludePotentiallySupersededUpdateOnContent')}"
-                                        Visibility="{x:Bind IsIncludePotentiallySupersededUpdate, Mode=OneWay}" />
-
-                                    <ToggleSwitch
-                                        MinWidth="0"
-                                        Margin="10,-2,-10,0"
-                                        IsOn="{x:Bind IsIncludePotentiallySupersededUpdate, Mode=OneWay}"
-                                        OffContent=""
-                                        OnContent=""
-                                        Toggled="{x:Bind OnIncludePotentiallySupersededUpdateToggled}" />
-                                </StackPanel>
+                                    IsOn="{x:Bind IsIncludePotentiallySupersededUpdate, Mode=OneWay}"
+                                    OffContent="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('IncludePotentiallySupersededUpdateOffContent')}"
+                                    OnContent="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('IncludePotentiallySupersededUpdateOnContent')}"
+                                    Style="{StaticResource ToggleSwitchStyle}"
+                                    Toggled="{x:Bind OnIncludePotentiallySupersededUpdateToggled}" />
                             </Grid>
 
                             <MenuFlyoutSeparator />
@@ -4139,31 +4121,13 @@
                                         VerticalAlignment="Center"
                                         Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ExcludeDrivers')}" />
 
-                                    <StackPanel
+                                    <ToggleSwitch
                                         Grid.Column="1"
-                                        VerticalAlignment="Center"
-                                        Orientation="Horizontal">
-
-                                        <TextBlock
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Center"
-                                            Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ExcludeDriversOffContent')}"
-                                            Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsExcludeDrivers), Mode=OneWay}" />
-
-                                        <TextBlock
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Center"
-                                            Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ExcludeDriversOnContent')}"
-                                            Visibility="{x:Bind IsExcludeDrivers, Mode=OneWay}" />
-
-                                        <ToggleSwitch
-                                            MinWidth="0"
-                                            Margin="10,-2,-10,0"
-                                            IsOn="{x:Bind IsExcludeDrivers, Mode=OneWay}"
-                                            OffContent=""
-                                            OnContent=""
-                                            Toggled="{x:Bind OnExcludeDriversToggled}" />
-                                    </StackPanel>
+                                        IsOn="{x:Bind IsExcludeDrivers, Mode=OneWay}"
+                                        OffContent="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ExcludeDriversOffContent')}"
+                                        OnContent="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ExcludeDriversOnContent')}"
+                                        Style="{StaticResource ToggleSwitchStyle}"
+                                        Toggled="{x:Bind OnExcludeDriversToggled}" />
                                 </Grid>
 
                                 <MenuFlyoutSeparator />

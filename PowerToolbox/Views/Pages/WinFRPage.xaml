@@ -429,11 +429,10 @@
 
                             <ToggleSwitch
                                 Grid.Column="1"
-                                MinWidth="0"
-                                Margin="10,-2,-10,0"
                                 IsOn="{x:Bind UseCustomLogFolder, Mode=OneWay}"
-                                OffContent=""
-                                OnContent=""
+                                OffContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('UseCustomLogFolderOffContent')}"
+                                OnContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('UseCustomLogFolderOnContent')}"
+                                Style="{StaticResource ToggleSwitchStyle}"
                                 Toggled="{x:Bind OnUseCustomLogFolderToggled}" />
                         </Grid>
 
@@ -908,11 +907,10 @@
 
                             <ToggleSwitch
                                 Grid.Column="1"
-                                MinWidth="0"
-                                Margin="10,-2,-10,0"
                                 IsOn="{x:Bind NTFSRestoreFromRecyclebin, Mode=OneWay}"
-                                OffContent=""
-                                OnContent=""
+                                OffContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSRestoreFromRecyclebinOffContent')}"
+                                OnContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSRestoreFromRecyclebinOnContent')}"
+                                Style="{StaticResource ToggleSwitchStyle}"
                                 Toggled="{x:Bind OnNTFSRestoreFromRecyclebinToggled}" />
                         </Grid>
 
@@ -939,11 +937,10 @@
 
                             <ToggleSwitch
                                 Grid.Column="1"
-                                MinWidth="0"
-                                Margin="10,-2,-10,0"
                                 IsOn="{x:Bind NTFSRestoreSystemFile, Mode=OneWay}"
-                                OffContent=""
-                                OnContent=""
+                                OffContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSRestoreSystemFileOffContent')}"
+                                OnContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSRestoreSystemFileOnContent')}"
+                                Style="{StaticResource ToggleSwitchStyle}"
                                 Toggled="{x:Bind OnNTFSRestoreSystemFileToggled}" />
                         </Grid>
 
@@ -1028,11 +1025,10 @@
 
                             <ToggleSwitch
                                 Grid.Column="1"
-                                MinWidth="0"
-                                Margin="10,-2,-10,0"
                                 IsOn="{x:Bind NTFSRestoreNonMainDataStream, Mode=OneWay}"
-                                OffContent=""
-                                OnContent=""
+                                OffContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSRestoreNonMainDataStreamOffContent')}"
+                                OnContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSRestoreNonMainDataStreamOnContent')}"
+                                Style="{StaticResource ToggleSwitchStyle}"
                                 Toggled="{x:Bind OnNTFSRestoreNonMainDataStreamToggled}" />
                         </Grid>
 
@@ -1059,11 +1055,10 @@
 
                             <ToggleSwitch
                                 Grid.Column="1"
-                                MinWidth="0"
-                                Margin="10,-2,-10,0"
                                 IsOn="{x:Bind NTFSUseCustomFileFilterType, Mode=OneWay}"
-                                OffContent=""
-                                OnContent=""
+                                OffContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSUseCustomFileFilterTypeOffContent')}"
+                                OnContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSUseCustomFileFilterTypeOnContent')}"
+                                Style="{StaticResource ToggleSwitchStyle}"
                                 Toggled="{x:Bind OnNTFSUseCustomFileFilterTypeToggled}" />
                         </Grid>
 
@@ -1238,11 +1233,10 @@
 
                             <ToggleSwitch
                                 Grid.Column="1"
-                                MinWidth="0"
-                                Margin="10,-2,-10,0"
                                 IsOn="{x:Bind SegmentRestoreFromRecyclebin, Mode=OneWay}"
-                                OffContent=""
-                                OnContent=""
+                                OffContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentRestoreFromRecyclebinOffContent')}"
+                                OnContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentRestoreFromRecyclebinOnContent')}"
+                                Style="{StaticResource ToggleSwitchStyle}"
                                 Toggled="{x:Bind OnSegmentRestoreFromRecyclebinToggled}" />
                         </Grid>
 
@@ -1269,11 +1263,10 @@
 
                             <ToggleSwitch
                                 Grid.Column="1"
-                                MinWidth="0"
-                                Margin="10,-2,-10,0"
                                 IsOn="{x:Bind SegmentRestoreSystemFile, Mode=OneWay}"
-                                OffContent=""
-                                OnContent=""
+                                OffContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentRestoreSystemFileOffContent')}"
+                                OnContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentRestoreSystemFileOnContent')}"
+                                Style="{StaticResource ToggleSwitchStyle}"
                                 Toggled="{x:Bind OnSegmentRestoreSystemFileToggled}" />
                         </Grid>
 
@@ -1358,11 +1351,10 @@
 
                             <ToggleSwitch
                                 Grid.Column="1"
-                                MinWidth="0"
-                                Margin="10,-2,-10,0"
                                 IsOn="{x:Bind SegmentRestoreNonMainDataStream, Mode=OneWay}"
-                                OffContent=""
-                                OnContent=""
+                                OffContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentRestoreNonMainDataStreamOffContent')}"
+                                OnContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentRestoreNonMainDataStreamOnContent')}"
+                                Style="{StaticResource ToggleSwitchStyle}"
                                 Toggled="{x:Bind OnSegmentRestoreNonMainDataStreamToggled}" />
                         </Grid>
 
@@ -1389,11 +1381,10 @@
 
                             <ToggleSwitch
                                 Grid.Column="1"
-                                MinWidth="0"
-                                Margin="10,-2,-10,0"
                                 IsOn="{x:Bind SegmentUseCustomFileFilterType, Mode=OneWay}"
-                                OffContent=""
-                                OnContent=""
+                                OffContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentUseCustomFileFilterTypeOffContent')}"
+                                OnContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentUseCustomFileFilterTypeOnContent')}"
+                                Style="{StaticResource ToggleSwitchStyle}"
                                 Toggled="{x:Bind OnSegmentUseCustomFileFilterTypeToggled}" />
                         </Grid>
 
@@ -1629,11 +1620,10 @@
 
                             <ToggleSwitch
                                 Grid.Column="1"
-                                MinWidth="0"
-                                Margin="10,-2,-10,0"
                                 IsOn="{x:Bind SignatureUseRestoreSpecificExtensionGroups, Mode=OneWay}"
-                                OffContent=""
-                                OnContent=""
+                                OffContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureUseRestoreSpecificExtensionGroupsOffContent')}"
+                                OnContent="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureUseRestoreSpecificExtensionGroupsOnContent')}"
+                                Style="{StaticResource ToggleSwitchStyle}"
                                 Toggled="{x:Bind OnSignatureUseRestoreSpecificExtensionGroupsToggled}" />
                         </Grid>
 

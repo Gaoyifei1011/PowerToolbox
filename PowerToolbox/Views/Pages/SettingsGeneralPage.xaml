@@ -226,32 +226,14 @@
                     </TextBlock>
                 </StackPanel>
 
-                <StackPanel
+                <ToggleSwitch
                     Grid.Column="2"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-
-                    <TextBlock
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('AlwaysShowBackdropOffContent')}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(AlwaysShowBackdropValue), Mode=OneWay}" />
-
-                    <TextBlock
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('AlwaysShowBackdropOnContent')}"
-                        Visibility="{x:Bind AlwaysShowBackdropValue, Mode=OneWay}" />
-
-                    <ToggleSwitch
-                        MinWidth="0"
-                        Margin="10,-2,-10,0"
-                        IsEnabled="{x:Bind AlwaysShowBackdropEnabled, Mode=OneWay}"
-                        IsOn="{x:Bind AlwaysShowBackdropValue, Mode=OneWay}"
-                        OffContent=""
-                        OnContent=""
-                        Toggled="{x:Bind OnAlwaysShowBackdropToggled}" />
-                </StackPanel>
+                    IsEnabled="{x:Bind AlwaysShowBackdropEnabled, Mode=OneWay}"
+                    IsOn="{x:Bind AlwaysShowBackdropValue, Mode=OneWay}"
+                    OffContent="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('AlwaysShowBackdropOffContent')}"
+                    OnContent="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('AlwaysShowBackdropOnContent')}"
+                    Style="{StaticResource ToggleSwitchStyle}"
+                    Toggled="{x:Bind OnAlwaysShowBackdropToggled}" />
             </Grid>
 
             <!--  界面语言设置  -->
@@ -380,31 +362,13 @@
                     </TextBlock>
                 </StackPanel>
 
-                <StackPanel
+                <ToggleSwitch
                     Grid.Column="2"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-
-                    <TextBlock
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('TopMostOffContent')}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(TopMostValue), Mode=OneWay}" />
-
-                    <TextBlock
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('TopMostOnContent')}"
-                        Visibility="{x:Bind TopMostValue, Mode=OneWay}" />
-
-                    <ToggleSwitch
-                        MinWidth="0"
-                        Margin="10,-2,-10,0"
-                        IsOn="{x:Bind TopMostValue, Mode=OneWay}"
-                        OffContent=""
-                        OnContent=""
-                        Toggled="{x:Bind OnTopMostToggled}" />
-                </StackPanel>
+                    IsOn="{x:Bind TopMostValue, Mode=OneWay}"
+                    OffContent="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('TopMostOffContent')}"
+                    OnContent="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('TopMostOnContent')}"
+                    Style="{StaticResource ToggleSwitchStyle}"
+                    Toggled="{x:Bind OnTopMostToggled}" />
             </Grid>
         </Grid>
     </ScrollViewer>

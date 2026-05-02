@@ -20,6 +20,7 @@
                         <ResourceDictionary Source="ms-appx:///Styles/ProgressRing.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/RadioButtons.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/TimePicker.xaml" />
+                        <ResourceDictionary Source="ms-appx:///Styles/ToggleSwitch.xaml" />
 
                         <ResourceDictionary>
                             <ResourceDictionary.ThemeDictionaries>
