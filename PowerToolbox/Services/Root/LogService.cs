@@ -32,12 +32,9 @@ namespace PowerToolbox.Services.Root
             {
                 try
                 {
-                    if (Directory.Exists(localAppDataPath))
-                    {
-                        string logFolderPath = Path.Combine(localAppDataPath, "Logs");
-                        logDirectory = Directory.CreateDirectory(logFolderPath);
-                        isInitialized = true;
-                    }
+                    string logFolderPath = Path.Combine(localAppDataPath, "Logs");
+                    logDirectory = Directory.CreateDirectory(logFolderPath);
+                    isInitialized = true;
                 }
                 catch (Exception)
                 {
