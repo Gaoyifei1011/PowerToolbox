@@ -106,7 +106,6 @@
                         x:Name="MainNavigationView"
                         Icon="{x:Bind NavigationIcon}"
                         MenuItemsSource="{x:Bind NavigationViewItemMenuItemsCollection}"
-                        Tag="{x:Bind NavigationTag}"
                         Visibility="{x:Bind VisibleState}">
 
                         <TextBlock
