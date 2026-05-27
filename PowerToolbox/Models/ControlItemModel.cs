@@ -1,4 +1,6 @@
-﻿namespace PowerToolbox.Models
+﻿using System;
+
+namespace PowerToolbox.Models
 {
     /// <summary>
     /// 主页面项目数据模型
@@ -21,8 +23,8 @@
         public string ImagePath { get; set; }
 
         /// <summary>
-        /// 主页面项目标签
+        /// 主页面项目对应的页面
         /// </summary>
-        public string Tag { get; set; }
+        public Type NavigationPage { get; set; }
     }
 }
