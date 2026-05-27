@@ -46,8 +46,34 @@ namespace PowerToolbox.Views.Windows
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private readonly string AllToolsString = ResourceService.WindowResource.GetString("AllTools");
+        private readonly string ContextMenuManagerString = ResourceService.WindowResource.GetString("ContextMenuManager");
+        private readonly string DataVertifyEncryptString = ResourceService.WindowResource.GetString("DataVerifyEncrypt");
+        private readonly string DownloadManagerString = ResourceService.WindowResource.GetString("DataVerifyEncrypt");
+        private readonly string DriverManagerString = ResourceService.WindowResource.GetString("DriverManager");
+        private readonly string ExperimentalFeatureManagerString = ResourceService.WindowResource.GetString("ExperimentalFeatureManager");
+        private readonly string FileString = ResourceService.WindowResource.GetString("File");
+        private readonly string FileCertificateString = ResourceService.WindowResource.GetString("FileCertificate");
+        private readonly string FileManagerString = ResourceService.WindowResource.GetString("FileManager");
+        private readonly string FileUnlockString = ResourceService.WindowResource.GetString("FileUnlock");
+        private readonly string HostsString = ResourceService.WindowResource.GetString("Hosts");
+        private readonly string IconExtractString = ResourceService.WindowResource.GetString("IconExtract");
+        private readonly string LoafString = ResourceService.WindowResource.GetString("Loaf");
+        private readonly string LoopbackManagerString = ResourceService.WindowResource.GetString("LoopbackManager");
+        private readonly string PersonalizeString = ResourceService.WindowResource.GetString("Personalize");
+        private readonly string PriExtractString = ResourceService.WindowResource.GetString("PriExtract");
+        private readonly string RelaxationString = ResourceService.WindowResource.GetString("Relaxation");
+        private readonly string ResourceString = ResourceService.WindowResource.GetString("Resource");
         private readonly string RunningAdministratorString = ResourceService.WindowResource.GetString("RunningAdministrator");
+        private readonly string ScheduledTaskManagerString = ResourceService.WindowResource.GetString("LoopbackManager");
+        private readonly string SettingsString = ResourceService.WindowResource.GetString("Settings");
+        private readonly string ShellMenuString = ResourceService.WindowResource.GetString("ShellMenu");
+        private readonly string SystemString = ResourceService.WindowResource.GetString("System");
+        private readonly string ThemeSwitchString = ResourceService.WindowResource.GetString("ThemeSwitch");
         private readonly string TitleString = ResourceService.WindowResource.GetString("Title");
+        private readonly string UpdateManagerString = ResourceService.WindowResource.GetString("UpdateManager");
+        private readonly string WinFRString = ResourceService.WindowResource.GetString("WinFR");
+        private readonly string WinSATString = ResourceService.WindowResource.GetString("WinSAT");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly OverlappedPresenter overlappedPresenter;
         private readonly SUBCLASSPROC mainWindowSubClassProc;
@@ -213,7 +239,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/AllTools.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("AllTools"),
+                NavigationTitle = AllToolsString,
                 NavigationTag = "AllTools",
                 ParentTag = null,
                 NavigationPage = typeof(AllToolsPage),
@@ -233,7 +259,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/Relaxation.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("Relaxation"),
+                NavigationTitle = RelaxationString,
                 NavigationTag = "Relaxation",
                 ParentTag = null,
                 NavigationPage = null,
@@ -243,7 +269,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/Loaf.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("Loaf"),
+                NavigationTitle = LoafString,
                 NavigationTag = "Loaf",
                 ParentTag = "Relaxation",
                 NavigationPage = typeof(LoafPage),
@@ -254,7 +280,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/File.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("File"),
+                NavigationTitle = FileString,
                 NavigationTag = "File",
                 ParentTag = null,
                 NavigationPage = null,
@@ -264,7 +290,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/FileManager.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("FileManager"),
+                NavigationTitle = FileManagerString,
                 NavigationTag = "FileManager",
                 ParentTag = "File",
                 NavigationPage = typeof(FileManagerPage),
@@ -274,7 +300,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/FileCertificate.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("FileCertificate"),
+                NavigationTitle = FileCertificateString,
                 NavigationTag = "FileCertificate",
                 ParentTag = "File",
                 NavigationPage = typeof(FileCertificatePage),
@@ -284,7 +310,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/FileUnlock.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("FileUnlock"),
+                NavigationTitle = FileUnlockString,
                 NavigationTag = "FileUnlock",
                 ParentTag = "File",
                 NavigationPage = typeof(FileUnlockPage),
@@ -295,7 +321,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/Resource.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("Resource"),
+                NavigationTitle = ResourceString,
                 NavigationTag = "Resource",
                 ParentTag = null,
                 NavigationPage = null,
@@ -305,7 +331,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/DataVerifyEncrypt.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("DataVerifyEncrypt"),
+                NavigationTitle = DataVertifyEncryptString,
                 NavigationTag = "DataVerifyEncrypt",
                 ParentTag = "Resource",
                 NavigationPage = typeof(DataVerifyEncryptPage),
@@ -315,7 +341,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/DownloadManager.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("DownloadManager"),
+                NavigationTitle = DownloadManagerString,
                 NavigationTag = "DownloadManager",
                 ParentTag = "Resource",
                 NavigationPage = typeof(DownloadManagerPage),
@@ -325,7 +351,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/IconExtract.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("IconExtract"),
+                NavigationTitle = IconExtractString,
                 NavigationTag = "IconExtract",
                 ParentTag = "Resource",
                 NavigationPage = typeof(IconExtractPage),
@@ -335,7 +361,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/PriExtract.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("PriExtract"),
+                NavigationTitle = PriExtractString,
                 NavigationTag = "PriExtract",
                 ParentTag = "Resource",
                 NavigationPage = typeof(PriExtractPage),
@@ -346,7 +372,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/Personalize.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("Personalize"),
+                NavigationTitle = PersonalizeString,
                 NavigationTag = "Personalize",
                 ParentTag = null,
                 NavigationPage = null,
@@ -356,7 +382,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/ThemeSwitch.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("ThemeSwitch"),
+                NavigationTitle = ThemeSwitchString,
                 NavigationTag = "ThemeSwitch",
                 ParentTag = "Personalize",
                 NavigationPage = typeof(ThemeSwitchPage),
@@ -366,7 +392,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/ShellMenu.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("ShellMenu"),
+                NavigationTitle = ShellMenuString,
                 NavigationTag = "ShellMenu",
                 ParentTag = "Personalize",
                 NavigationPage = typeof(ShellMenuPage),
@@ -376,7 +402,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/ContextMenuManager.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("ContextMenuManager"),
+                NavigationTitle = ContextMenuManagerString,
                 NavigationTag = "ContextMenuManager",
                 ParentTag = "Personalize",
                 NavigationPage = typeof(ContextMenuManagerPage),
@@ -387,7 +413,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/ExperimentalFeatureManager.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("ExperimentalFeatureManager"),
+                NavigationTitle = ExperimentalFeatureManagerString,
                 NavigationTag = "ExperimentalFeatureManager",
                 ParentTag = null,
                 NavigationPage = null,
@@ -398,7 +424,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/System.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("System"),
+                NavigationTitle = SystemString,
                 NavigationTag = "System",
                 ParentTag = null,
                 NavigationPage = null,
@@ -408,7 +434,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/LoopbackManager.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("LoopbackManager"),
+                NavigationTitle = LoopbackManagerString,
                 NavigationTag = "LoopbackManager",
                 ParentTag = "System",
                 NavigationPage = typeof(LoopbackManagerPage),
@@ -418,7 +444,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/ScheduledTaskManager.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("ScheduledTaskManager"),
+                NavigationTitle = ScheduledTaskManagerString,
                 NavigationTag = "ScheduledTaskManager",
                 ParentTag = "System",
                 NavigationPage = typeof(ScheduledTaskManagerPage),
@@ -428,7 +454,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/Hosts.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("Hosts"),
+                NavigationTitle = HostsString,
                 NavigationTag = "Hosts",
                 ParentTag = "System",
                 NavigationPage = typeof(HostsPage),
@@ -438,7 +464,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/DriverManager.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("DriverManager"),
+                NavigationTitle = DriverManagerString,
                 NavigationTag = "DriverManager",
                 ParentTag = "System",
                 NavigationPage = typeof(DriverManagerPage),
@@ -448,7 +474,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/UpdateManager.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("UpdateManager"),
+                NavigationTitle = UpdateManagerString,
                 NavigationTag = "UpdateManager",
                 ParentTag = "System",
                 NavigationPage = typeof(UpdateManagerPage),
@@ -458,7 +484,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/WinFR.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("WinFR"),
+                NavigationTitle = WinFRString,
                 NavigationTag = "WinFR",
                 ParentTag = "System",
                 NavigationPage = typeof(WinFRPage),
@@ -468,7 +494,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/WinSAT.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("WinSAT"),
+                NavigationTitle = WinSATString,
                 NavigationTag = "WinSAT",
                 ParentTag = "System",
                 NavigationPage = typeof(WinSATPage),
@@ -479,7 +505,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
                 NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/Settings.png") } },
-                NavigationTitle = ResourceService.WindowResource.GetString("Settings"),
+                NavigationTitle = SettingsString,
                 NavigationTag = "Settings",
                 ParentTag = null,
                 NavigationPage = typeof(SettingsPage),
@@ -648,7 +674,6 @@ namespace PowerToolbox.Views.Windows
                 // 切换到选中项对应的页面
                 else
                 {
-                    Type currentPageType = GetCurrentPageType();
                     if (Equals(SelectedItem.NavigationPage, typeof(ShellMenuPage)))
                     {
                         NavigateTo(SelectedItem.NavigationPage, "ShellMenu");

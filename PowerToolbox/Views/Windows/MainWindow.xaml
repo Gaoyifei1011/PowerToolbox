@@ -226,35 +226,6 @@
                     <datatemplate:NavigationViewItemTemplateSelector NavigationViewItemSeparatorTemplate="{StaticResource NavigationViewItemSeparatorTemplate}" NavigationViewItemTemplate="{StaticResource NavigationViewItemTemplate}" />
                 </NavigationView.MenuItemTemplateSelector>
 
-                <NavigationView.FooterMenuItems>
-                    <NavigationViewItem Tag="{x:Bind PageList[25].Key}">
-
-                        <NavigationViewItem.Icon>
-                            <ImageIcon Source="ms-appx:///Assets/ControlIcon/Settings.png" />
-                        </NavigationViewItem.Icon>
-
-                        <TextBlock
-                            x:Name="WindowSettingsText"
-                            Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Settings')}"
-                            TextTrimming="CharacterEllipsis"
-                            TextWrapping="NoWrap" />
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent"
-                                Visibility="{x:Bind WindowSettingsText.IsTextTrimmed, Mode=OneWay}">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WindowResource.GetString('Settings')}" />
-                                </Grid>
-                            </ToolTip>
-                        </ToolTipService.ToolTip>
-                    </NavigationViewItem>
-                </NavigationView.FooterMenuItems>
-
                 <Frame
                     Margin="0,-10,0,0"
                     Navigated="{x:Bind OnNavigated}"
