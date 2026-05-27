@@ -154,36 +154,6 @@ namespace PowerToolbox.Views.Windows
             }
         }
 
-        private List<KeyValuePair<string, Type>> PageList { get; } =
-        [
-            new KeyValuePair<string, Type>("AllTools",typeof(AllToolsPage)),
-            new KeyValuePair<string, Type>("Relaxation", null),
-            new KeyValuePair<string, Type>("Loaf", typeof(LoafPage)),
-            new KeyValuePair<string, Type>("File",null),
-            new KeyValuePair<string, Type>("FileManager",typeof(FileManagerPage)),
-            new KeyValuePair<string, Type>("FileCertificate",typeof(FileCertificatePage)),
-            new KeyValuePair<string, Type>("FileUnlock",typeof(FileUnlockPage)),
-            new KeyValuePair<string, Type>("Resource",null),
-            new KeyValuePair<string, Type>("DataVerifyEncrypt",typeof(DataVerifyEncryptPage)),
-            new KeyValuePair<string, Type>("DownloadManager",typeof(DownloadManagerPage)),
-            new KeyValuePair<string, Type>("IconExtract",typeof(IconExtractPage)),
-            new KeyValuePair<string, Type>("PriExtract",typeof(PriExtractPage)),
-            new KeyValuePair<string, Type>("Personalize",null),
-            new KeyValuePair<string, Type>("ThemeSwitch",typeof(ThemeSwitchPage)),
-            new KeyValuePair<string, Type>("ShellMenu",typeof(ShellMenuPage)),
-            new KeyValuePair<string, Type>("ContextMenuManager",typeof(ContextMenuManagerPage)),
-            new KeyValuePair<string, Type>("ExperimentalFeatureManager",typeof(ExperimentalFeatureManagerPage)),
-            new KeyValuePair<string, Type>("System",null),
-            new KeyValuePair<string, Type>("LoopbackManager",typeof(LoopbackManagerPage)),
-            new KeyValuePair<string, Type>("ScheduledTaskManager",typeof(ScheduledTaskManagerPage)),
-            new KeyValuePair<string, Type>("Hosts",typeof(HostsPage)),
-            new KeyValuePair<string, Type>("DriverManager",typeof(DriverManagerPage)),
-            new KeyValuePair<string, Type>("UpdateManager",typeof(UpdateManagerPage)),
-            new KeyValuePair<string, Type>("WinFR",typeof(WinFRPage)),
-            new KeyValuePair<string, Type>("WinSAT",typeof(WinSATPage)),
-            new KeyValuePair<string, Type>("Settings",typeof(SettingsPage)),
-        ];
-
         public WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemMenuItemsCollection { get; } = [];
 
         public WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemFooterMenuItemsCollection { get; } = [];
