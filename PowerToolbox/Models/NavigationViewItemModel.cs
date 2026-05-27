@@ -46,6 +46,9 @@ namespace PowerToolbox.Models
         /// </summary>
         public Visibility VisibleState { get; set; }
 
+        /// <summary>
+        /// 子菜单项
+        /// </summary>
         public WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemMenuItemsCollection { get; } = [];
     }
 }
