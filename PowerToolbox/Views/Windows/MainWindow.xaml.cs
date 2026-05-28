@@ -80,7 +80,7 @@ namespace PowerToolbox.Views.Windows
         private readonly ContentIsland contentIsland;
         private readonly InputKeyboardSource inputKeyboardSource;
         private readonly InputPointerSource inputPointerSource;
-        private bool isProgrammaticExpan;
+        private bool isProgrammaticExpand;
 
         public new static MainWindow Current { get; private set; }
 
@@ -692,9 +692,9 @@ namespace PowerToolbox.Views.Windows
         private async void OnExpanding(NavigationView sender, NavigationViewItemExpandingEventArgs args)
         {
             Type currentPageType = GetCurrentPageType();
-            if(isProgrammaticExpan)
+            if(isProgrammaticExpand)
             {
-                isProgrammaticExpan = false;
+                isProgrammaticExpand = false;
                 await Task.Delay(5);
             }
 
@@ -1321,7 +1321,7 @@ namespace PowerToolbox.Views.Windows
                 if (MainNavigationView.ContainerFromMenuItem(parentNavigationViewModelItem) is NavigationViewItem parentNavigationViewItem)
                 {
                     MainNavigationView.Expand(parentNavigationViewItem);
-                    isProgrammaticExpan = true;
+                    isProgrammaticExpand = true;
                     return true;
                 }
             }
