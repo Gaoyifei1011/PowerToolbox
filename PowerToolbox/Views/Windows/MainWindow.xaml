@@ -103,9 +103,9 @@
                 <!--  导航项数据模板  -->
                 <DataTemplate x:Key="NavigationViewItemTemplate" x:DataType="model:NavigationViewItemModel">
                     <NavigationViewItem
-                        x:Name="MainNavigationView"
                         Icon="{x:Bind NavigationIcon}"
                         MenuItemsSource="{x:Bind NavigationViewItemMenuItemsCollection}"
+                        Style="{StaticResource NavigationViewItemStyle}"
                         Visibility="{x:Bind VisibleState}">
 
                         <TextBlock
