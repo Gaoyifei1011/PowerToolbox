@@ -36,17 +36,7 @@
             TextWrapping="NoWrap">
 
             <ToolTipService.ToolTip>
-                <ToolTip
-                    MaxWidth="9999"
-                    Padding="0"
-                    Background="Transparent"
-                    Visibility="{x:Bind GetResultsText.IsTextTrimmed, Mode=OneWay}">
-
-                    <Grid>
-                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind GetResults, Mode=OneWay}" />
-                    </Grid>
-                </ToolTip>
+                <ToolTip Content="{x:Bind GetResults, Mode=OneWay}" Visibility="{x:Bind GetResultsText.IsTextTrimmed, Mode=OneWay}" />
             </ToolTipService.ToolTip>
         </TextBlock>
 

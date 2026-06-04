@@ -115,7 +115,8 @@
                     VerticalAlignment="Center"
                     Foreground="{ThemeResource CommandBarForeground}"
                     IsAccessKeyScope="True"
-                    Style="{ThemeResource EllipsisButton}">
+                    Style="{ThemeResource EllipsisButton}"
+                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ViewMore')}">
 
                     <FontIcon
                         Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
@@ -195,19 +196,6 @@
                             </MenuFlyoutItem>
                         </MenuFlyout>
                     </Button.Flyout>
-
-                    <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ViewMore')}" />
-                            </Grid>
-                        </ToolTip>
-                    </ToolTipService.ToolTip>
                 </Button>
             </Grid>
 
@@ -295,18 +283,10 @@
                                         IsChecked="{x:Bind IsSelected, Mode=TwoWay}">
 
                                         <ToolTipService.ToolTip>
-                                            <ToolTip
-                                                MaxWidth="9999"
-                                                Padding="0"
-                                                Background="Transparent">
-
+                                            <ToolTip>
                                                 <Grid>
-                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-
-                                                    <Grid Padding="{StaticResource ToolTipBorderPadding}">
-                                                        <TextBlock Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                        <TextBlock Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
-                                                    </Grid>
+                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
+                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
                                                 </Grid>
                                             </ToolTip>
                                         </ToolTipService.ToolTip>
@@ -341,17 +321,7 @@
                                             TextWrapping="NoWrap">
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip
-                                                    MaxWidth="9999"
-                                                    Padding="0"
-                                                    Background="Transparent"
-                                                    Visibility="{Binding ElementName=NameText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                                    <Grid>
-                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Name}" />
-                                                    </Grid>
-                                                </ToolTip>
+                                                <ToolTip Content="{x:Bind Name}" Visibility="{Binding ElementName=NameText, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
 
@@ -366,17 +336,7 @@
                                             TextWrapping="NoWrap">
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip
-                                                    MaxWidth="9999"
-                                                    Padding="0"
-                                                    Background="Transparent"
-                                                    Visibility="{Binding ElementName=DescriptionText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                                    <Grid>
-                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Description}" />
-                                                    </Grid>
-                                                </ToolTip>
+                                                <ToolTip Content="{x:Bind Description}" Visibility="{Binding ElementName=DescriptionText, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
                                     </StackPanel>
@@ -389,20 +349,8 @@
                                         Content="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Disable')}"
                                         CornerRadius="{StaticResource ControlCornerRadius}"
                                         IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsProcessing), Mode=OneWay}"
+                                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Disable')}"
                                         Visibility="{x:Bind IsEnabled, Mode=OneWay}">
-
-                                        <ToolTipService.ToolTip>
-                                            <ToolTip
-                                                MaxWidth="9999"
-                                                Padding="0"
-                                                Background="Transparent">
-
-                                                <Grid>
-                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Disable')}" />
-                                                </Grid>
-                                            </ToolTip>
-                                        </ToolTipService.ToolTip>
 
                                         <SplitButton.Flyout>
                                             <MenuFlyout Placement="Bottom">
@@ -469,20 +417,8 @@
                                         Content="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Enable')}"
                                         CornerRadius="{StaticResource ControlCornerRadius}"
                                         IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsProcessing), Mode=OneWay}"
+                                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Enable')}"
                                         Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsEnabled), Mode=OneWay}">
-
-                                        <ToolTipService.ToolTip>
-                                            <ToolTip
-                                                MaxWidth="9999"
-                                                Padding="0"
-                                                Background="Transparent">
-
-                                                <Grid>
-                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Enable')}" />
-                                                </Grid>
-                                            </ToolTip>
-                                        </ToolTipService.ToolTip>
 
                                         <SplitButton.Flyout>
                                             <MenuFlyout Placement="Bottom">
@@ -743,25 +679,13 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Click="{x:Bind OnCloseClicked}"
-                            Style="{StaticResource AlternateCloseButtonStyle}">
+                            Style="{StaticResource AlternateCloseButtonStyle}"
+                            ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Close')}">
 
                             <FontIcon
                                 Margin="4"
                                 FontSize="16"
                                 Glyph="&#xE711;" />
-
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Padding="0"
-                                    Background="Transparent">
-
-                                    <Grid>
-                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Close')}" />
-                                    </Grid>
-                                </ToolTip>
-                            </ToolTipService.ToolTip>
                         </Button>
                     </Grid>
 

@@ -62,17 +62,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent"
-                                Visibility="{x:Bind FileShellMenuDescription.IsTextTrimmed, Mode=OneWay}">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('FileShellMenuDescription')}" />
-                                </Grid>
-                            </ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('FileShellMenuDescription')}" Visibility="{x:Bind FileShellMenuDescription.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -137,17 +127,7 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        MaxWidth="9999"
-                                        Padding="0"
-                                        Background="Transparent"
-                                        Visibility="{x:Bind LogRecordDescription.IsTextTrimmed, Mode=OneWay}">
-
-                                        <Grid>
-                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('LogRecordDescription')}" />
-                                        </Grid>
-                                    </ToolTip>
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('LogRecordDescription')}" Visibility="{x:Bind LogRecordDescription.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
                         </StackPanel>
@@ -185,17 +165,7 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        MaxWidth="9999"
-                                        Padding="0"
-                                        Background="Transparent"
-                                        Visibility="{x:Bind LogFolderDescription.IsTextTrimmed, Mode=OneWay}">
-
-                                        <Grid>
-                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('LogFolderDescription')}" />
-                                        </Grid>
-                                    </ToolTip>
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('LogFolderDescription')}" Visibility="{x:Bind LogFolderDescription.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
                         </StackPanel>
@@ -239,17 +209,7 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        MaxWidth="9999"
-                                        Padding="0"
-                                        Background="Transparent"
-                                        Visibility="{x:Bind ClearLogDescription.IsTextTrimmed, Mode=OneWay}">
-
-                                        <Grid>
-                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('ClearLogDescription')}" />
-                                        </Grid>
-                                    </ToolTip>
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('ClearLogDescription')}" Visibility="{x:Bind ClearLogDescription.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
                         </StackPanel>

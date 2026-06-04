@@ -184,17 +184,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind OriginalFileNameHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ExtensionNameResource.GetString('OriginalFileName')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.ExtensionNameResource.GetString('OriginalFileName')}" Visibility="{x:Bind OriginalFileNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -209,17 +199,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind NewFileNameHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ExtensionNameResource.GetString('NewFileName')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.ExtensionNameResource.GetString('NewFileName')}" Visibility="{x:Bind NewFileNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -278,17 +258,9 @@
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
-                                        MaxWidth="9999"
-                                        Padding="0"
-                                        Background="Transparent"
+                                        Content="{x:Bind OriginalFilePath, Mode=OneWay}"
                                         Placement="Mouse"
-                                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(OriginalFilePath), Mode=OneWay}">
-
-                                        <Grid>
-                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind OriginalFilePath, Mode=OneWay}" />
-                                        </Grid>
-                                    </ToolTip>
+                                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(OriginalFilePath), Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
@@ -306,17 +278,9 @@
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
-                                        MaxWidth="9999"
-                                        Padding="0"
-                                        Background="Transparent"
+                                        Content="{x:Bind NewFilePath, Mode=OneWay}"
                                         Placement="Mouse"
-                                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(NewFilePath), Mode=OneWay}">
-
-                                        <Grid>
-                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind NewFilePath, Mode=OneWay}" />
-                                        </Grid>
-                                    </ToolTip>
+                                        Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(NewFilePath), Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
@@ -334,25 +298,13 @@
                                     Command="{StaticResource MoveUpCommand}"
                                     CommandParameter="{x:Bind}"
                                     IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}"
-                                    Style="{StaticResource AlternateCloseButtonStyle}">
+                                    Style="{StaticResource AlternateCloseButtonStyle}"
+                                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ExtensionNameResource.GetString('MoveUp')}">
 
                                     <FontIcon
                                         Margin="4"
                                         FontSize="16"
                                         Glyph="&#xE74A;" />
-
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ExtensionNameResource.GetString('MoveUp')}" />
-                                            </Grid>
-                                        </ToolTip>
-                                    </ToolTipService.ToolTip>
                                 </Button>
 
                                 <Button
@@ -364,25 +316,13 @@
                                     Command="{StaticResource MoveDownCommand}"
                                     CommandParameter="{x:Bind}"
                                     IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}"
-                                    Style="{StaticResource AlternateCloseButtonStyle}">
+                                    Style="{StaticResource AlternateCloseButtonStyle}"
+                                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ExtensionNameResource.GetString('MoveDown')}">
 
                                     <FontIcon
                                         Margin="4"
                                         FontSize="16"
                                         Glyph="&#xE74B;" />
-
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ExtensionNameResource.GetString('MoveDown')}" />
-                                            </Grid>
-                                        </ToolTip>
-                                    </ToolTipService.ToolTip>
                                 </Button>
 
                                 <Button
@@ -394,25 +334,13 @@
                                     Command="{StaticResource DeleteCommand}"
                                     CommandParameter="{x:Bind}"
                                     IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsModifyingNow), Mode=OneWay}"
-                                    Style="{StaticResource AlternateCloseButtonStyle}">
+                                    Style="{StaticResource AlternateCloseButtonStyle}"
+                                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ExtensionNameResource.GetString('Delete')}">
 
                                     <FontIcon
                                         Margin="4"
                                         FontSize="16"
                                         Glyph="&#xE711;" />
-
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ExtensionNameResource.GetString('Delete')}" />
-                                            </Grid>
-                                        </ToolTip>
-                                    </ToolTipService.ToolTip>
                                 </Button>
                             </StackPanel>
                         </Grid>

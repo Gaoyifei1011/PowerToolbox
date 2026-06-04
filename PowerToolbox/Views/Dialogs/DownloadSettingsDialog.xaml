@@ -50,25 +50,13 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Click="{x:Bind OnCloseClicked}"
-                Style="{StaticResource AlternateCloseButtonStyle}">
+                Style="{StaticResource AlternateCloseButtonStyle}"
+                ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DialogResource.GetString('Close')}">
 
                 <FontIcon
                     Margin="4"
                     FontSize="16"
                     Glyph="&#xE711;" />
-
-                <ToolTipService.ToolTip>
-                    <ToolTip
-                        MaxWidth="9999"
-                        Padding="0"
-                        Background="Transparent">
-
-                        <Grid>
-                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('Close')}" />
-                        </Grid>
-                    </ToolTip>
-                </ToolTipService.ToolTip>
             </Button>
         </Grid>
 
@@ -138,21 +126,13 @@
                             </Hyperlink>
 
                             <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Padding="0"
-                                    Background="Transparent">
-
-                                    <Grid>
-                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-
-                                        <StackPanel Padding="{StaticResource ToolTipBorderPadding}" HorizontalAlignment="Stretch">
-                                            <TextBlock Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('FileStoragePath')}" />
-                                            <TextBlock Text="{x:Bind DownloadFolder, Mode=OneWay}" />
-                                            <MenuFlyoutSeparator Margin="4,3" />
-                                            <TextBlock Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('ClickToOpenFolder')}" />
-                                        </StackPanel>
-                                    </Grid>
+                                <ToolTip>
+                                    <StackPanel HorizontalAlignment="Stretch">
+                                        <TextBlock Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('FileStoragePath')}" />
+                                        <TextBlock Text="{x:Bind DownloadFolder, Mode=OneWay}" />
+                                        <MenuFlyoutSeparator Margin="4,3" />
+                                        <TextBlock Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('ClickToOpenFolder')}" />
+                                    </StackPanel>
                                 </ToolTip>
                             </ToolTipService.ToolTip>
                         </TextBlock>
@@ -246,21 +226,8 @@
                             Style="{StaticResource CaptionTextBlockStyle}"
                             Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('DoEngineModeDescription')}"
                             TextTrimming="CharacterEllipsis"
-                            TextWrapping="NoWrap">
-
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Padding="0"
-                                    Background="Transparent">
-
-                                    <Grid>
-                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('DoEngineModeDescription')}" />
-                                    </Grid>
-                                </ToolTip>
-                            </ToolTipService.ToolTip>
-                        </TextBlock>
+                            TextWrapping="NoWrap"
+                            ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DialogResource.GetString('DoEngineModeDescription')}" />
                     </StackPanel>
 
                     <ComboBox
@@ -313,21 +280,8 @@
                             Style="{StaticResource CaptionTextBlockStyle}"
                             Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('DeliveryOptimizationDescription')}"
                             TextTrimming="CharacterEllipsis"
-                            TextWrapping="NoWrap">
-
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Padding="0"
-                                    Background="Transparent">
-
-                                    <Grid>
-                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('DeliveryOptimizationDescription')}" />
-                                    </Grid>
-                                </ToolTip>
-                            </ToolTipService.ToolTip>
-                        </TextBlock>
+                            TextWrapping="NoWrap"
+                            ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DialogResource.GetString('DeliveryOptimizationDescription')}" />
                     </StackPanel>
 
                     <Button
@@ -380,17 +334,7 @@
                             TextWrapping="NoWrap">
 
                             <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Padding="0"
-                                    Background="Transparent"
-                                    Visibility="{x:Bind Aria2ConfigurationDescription.IsTextTrimmed, Mode=OneWay}">
-
-                                    <Grid>
-                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('Aria2ConfigurationDescription')}" />
-                                    </Grid>
-                                </ToolTip>
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('Aria2ConfigurationDescription')}" Visibility="{x:Bind Aria2ConfigurationDescription.IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </TextBlock>
                     </StackPanel>

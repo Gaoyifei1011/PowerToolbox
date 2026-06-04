@@ -374,7 +374,8 @@
                 VerticalAlignment="Center"
                 Foreground="{ThemeResource CommandBarForeground}"
                 IsAccessKeyScope="True"
-                Style="{ThemeResource EllipsisButton}">
+                Style="{ThemeResource EllipsisButton}"
+                ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.HostsResource.GetString('ViewMore')}">
 
                 <FontIcon
                     Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
@@ -399,19 +400,6 @@
                         </MenuFlyoutItem>
                     </MenuFlyout>
                 </Button.Flyout>
-
-                <ToolTipService.ToolTip>
-                    <ToolTip
-                        MaxWidth="9999"
-                        Padding="0"
-                        Background="Transparent">
-
-                        <Grid>
-                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('ViewMore')}" />
-                        </Grid>
-                    </ToolTip>
-                </ToolTipService.ToolTip>
             </Button>
         </Grid>
 
@@ -518,36 +506,28 @@
                             </TextBlock>
 
                             <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Padding="0"
-                                    Background="Transparent">
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock>
+                                            <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('AddressName')}" />
+                                            <Run Text="{x:Bind Address}" />
+                                        </TextBlock>
 
-                                    <Grid>
-                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                        <TextBlock>
+                                            <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('HostsName')}" />
+                                            <Run Text="{x:Bind Hosts}" />
+                                        </TextBlock>
 
-                                        <StackPanel Padding="{StaticResource ToolTipBorderPadding}">
-                                            <TextBlock>
-                                                <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('AddressName')}" />
-                                                <Run Text="{x:Bind Address}" />
-                                            </TextBlock>
+                                        <TextBlock>
+                                            <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('AnnotationName')}" />
+                                            <Run Text="{x:Bind Annotation}" />
+                                        </TextBlock>
 
-                                            <TextBlock>
-                                                <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('HostsName')}" />
-                                                <Run Text="{x:Bind Hosts}" />
-                                            </TextBlock>
-
-                                            <TextBlock>
-                                                <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('AnnotationName')}" />
-                                                <Run Text="{x:Bind Annotation}" />
-                                            </TextBlock>
-
-                                            <TextBlock>
-                                                <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('IsAvailableName')}" />
-                                                <Run Text="{x:Bind IsAvailableString}" />
-                                            </TextBlock>
-                                        </StackPanel>
-                                    </Grid>
+                                        <TextBlock>
+                                            <Run Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('IsAvailableName')}" />
+                                            <Run Text="{x:Bind IsAvailableString}" />
+                                        </TextBlock>
+                                    </StackPanel>
                                 </ToolTip>
                             </ToolTipService.ToolTip>
                         </StackPanel>
@@ -560,7 +540,8 @@
                             VerticalAlignment="Center"
                             Foreground="{ThemeResource CommandBarForeground}"
                             IsAccessKeyScope="True"
-                            Style="{ThemeResource EllipsisButton}">
+                            Style="{ThemeResource EllipsisButton}"
+                            ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.HostsResource.GetString('ViewMore')}">
 
                             <FontIcon
                                 Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
@@ -592,19 +573,6 @@
                                     </MenuFlyoutItem>
                                 </MenuFlyout>
                             </Button.Flyout>
-
-                            <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Padding="0"
-                                    Background="Transparent">
-
-                                    <Grid>
-                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.HostsResource.GetString('ViewMore')}" />
-                                    </Grid>
-                                </ToolTip>
-                            </ToolTipService.ToolTip>
                         </Button>
                     </Grid>
                 </DataTemplate>

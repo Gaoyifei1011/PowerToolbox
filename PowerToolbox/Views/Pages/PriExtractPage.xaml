@@ -48,17 +48,7 @@
             TextWrapping="NoWrap">
 
             <ToolTipService.ToolTip>
-                <ToolTip
-                    MaxWidth="9999"
-                    Padding="0"
-                    Background="Transparent"
-                    Visibility="{x:Bind GetResultsText.IsTextTrimmed, Mode=OneWay}">
-
-                    <Grid>
-                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind GetResults, Mode=OneWay}" />
-                    </Grid>
-                </ToolTip>
+                <ToolTip Content="{x:Bind GetResults, Mode=OneWay}" Visibility="{x:Bind GetResultsText.IsTextTrimmed, Mode=OneWay}" />
             </ToolTipService.ToolTip>
         </TextBlock>
 
@@ -106,24 +96,12 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap">
+                        TextWrapping="NoWrap"
+                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectDescription')}">
 
                         <Hyperlink Click="{x:Bind OnStringSelectClicked}" UnderlineStyle="None">
                             <Run Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Select')}" />
                         </Hyperlink>
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectDescription')}" />
-                                </Grid>
-                            </ToolTip>
-                        </ToolTipService.ToolTip>
                     </TextBlock>
 
                     <TextBlock
@@ -137,17 +115,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent"
-                                Visibility="{x:Bind StringKeyHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" />
-                                </Grid>
-                            </ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind StringKeyHeaderText.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
@@ -162,17 +130,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent"
-                                Visibility="{x:Bind StringLanguageHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Language')}" />
-                                </Grid>
-                            </ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Language')}" Visibility="{x:Bind StringLanguageHeaderText.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
@@ -187,17 +145,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent"
-                                Visibility="{x:Bind StringContentHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Content')}" />
-                                </Grid>
-                            </ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Content')}" Visibility="{x:Bind StringContentHeaderText.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
@@ -212,17 +160,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent"
-                                Visibility="{x:Bind StringOperationHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" />
-                                </Grid>
-                            </ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind StringOperationHeaderText.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </Grid>
@@ -277,18 +215,10 @@
                                     IsThreeState="False">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent">
-
+                                        <ToolTip>
                                             <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-
-                                                <Grid Padding="{StaticResource ToolTipBorderPadding}">
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
-                                                </Grid>
+                                                <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
+                                                <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
                                             </Grid>
                                         </ToolTip>
                                     </ToolTipService.ToolTip>
@@ -304,22 +234,8 @@
                                     Text="{x:Bind Key}"
                                     TextAlignment="Left"
                                     TextTrimming="CharacterEllipsis"
-                                    TextWrapping="NoWrap">
-
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{Binding ElementName=StringKeyText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Key}" />
-                                            </Grid>
-                                        </ToolTip>
-                                    </ToolTipService.ToolTip>
-                                </TextBlock>
+                                    TextWrapping="NoWrap"
+                                    ToolTipService.ToolTip="{x:Bind Key}" />
 
                                 <TextBlock
                                     x:Name="StringLanguageText"
@@ -334,17 +250,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{Binding ElementName=StringLanguageText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Language}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind Language}" Visibility="{Binding ElementName=StringLanguageText, Path=IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
@@ -361,17 +267,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{Binding ElementName=StringContentText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Content}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind Content}" Visibility="{Binding ElementName=StringContentText, Path=IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
@@ -423,24 +319,12 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap">
+                        TextWrapping="NoWrap"
+                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectDescription')}">
 
                         <Hyperlink Click="{x:Bind OnFilePathSelectClicked}" UnderlineStyle="None">
                             <Run Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Select')}" />
                         </Hyperlink>
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectDescription')}" />
-                                </Grid>
-                            </ToolTip>
-                        </ToolTipService.ToolTip>
                     </TextBlock>
 
                     <TextBlock
@@ -454,17 +338,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent"
-                                Visibility="{x:Bind FilePathKeyHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" />
-                                </Grid>
-                            </ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind FilePathKeyHeaderText.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
@@ -479,17 +353,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent"
-                                Visibility="{x:Bind FilePathAbsolutePathHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('AbsolutePath')}" />
-                                </Grid>
-                            </ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('AbsolutePath')}" Visibility="{x:Bind FilePathAbsolutePathHeaderText.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
@@ -504,17 +368,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent"
-                                Visibility="{x:Bind FilePathOperationHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" />
-                                </Grid>
-                            </ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind FilePathOperationHeaderText.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </Grid>
@@ -568,18 +422,10 @@
                                     IsThreeState="False">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent">
-
+                                        <ToolTip>
                                             <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-
-                                                <Grid Padding="{StaticResource ToolTipBorderPadding}">
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
-                                                </Grid>
+                                                <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
+                                                <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
                                             </Grid>
                                         </ToolTip>
                                     </ToolTipService.ToolTip>
@@ -598,17 +444,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{Binding ElementName=FilePathKeyText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Key}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind Key}" Visibility="{Binding ElementName=FilePathKeyText, Path=IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
@@ -625,17 +461,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{Binding ElementName=FilePathAbsolutePathText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind AbsolutePath}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind AbsolutePath}" Visibility="{Binding ElementName=FilePathAbsolutePathText, Path=IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
@@ -686,24 +512,12 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap">
+                        TextWrapping="NoWrap"
+                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectDescription')}">
 
                         <Hyperlink Click="{x:Bind OnEmbeddedDataSelectClicked}" UnderlineStyle="None">
                             <Run Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Select')}" />
                         </Hyperlink>
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectDescription')}" />
-                                </Grid>
-                            </ToolTip>
-                        </ToolTipService.ToolTip>
                     </TextBlock>
 
                     <TextBlock
@@ -717,17 +531,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent"
-                                Visibility="{x:Bind EmbeddedDataKeyHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" />
-                                </Grid>
-                            </ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind EmbeddedDataKeyHeaderText.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
@@ -742,17 +546,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent"
-                                Visibility="{x:Bind EmbeddedDataOperationHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" />
-                                </Grid>
-                            </ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind EmbeddedDataOperationHeaderText.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </Grid>
@@ -804,18 +598,10 @@
                                     IsThreeState="False">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent">
-
+                                        <ToolTip>
                                             <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-
-                                                <Grid Padding="{StaticResource ToolTipBorderPadding}">
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
-                                                </Grid>
+                                                <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
+                                                <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
                                             </Grid>
                                         </ToolTip>
                                     </ToolTipService.ToolTip>
@@ -834,17 +620,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{Binding ElementName=EmbeddedDataKeyText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Key}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind Key}" Visibility="{Binding ElementName=EmbeddedDataKeyText, Path=IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
@@ -919,21 +695,8 @@
                         HorizontalAlignment="Stretch"
                         Click="{x:Bind OnSelectSaveFolderClicked}"
                         Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectSaveFolder')}"
-                        IsEnabled="{x:Bind IsExtractSaveSame, Mode=OneWay}">
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind x:String.Format(SelectedFolderString, SelectedSaveFolder), Mode=OneWay}" />
-                                </Grid>
-                            </ToolTip>
-                        </ToolTipService.ToolTip>
-                    </Button>
+                        IsEnabled="{x:Bind IsExtractSaveSame, Mode=OneWay}"
+                        ToolTipService.ToolTip="{x:Bind x:String.Format(SelectedFolderString, SelectedSaveFolder), Mode=OneWay}" />
 
                     <MenuFlyoutSeparator Margin="5,3" />
 

@@ -106,19 +106,11 @@
                                                 TextWrapping="NoWrap">
 
                                                 <ToolTipService.ToolTip>
-                                                    <ToolTip
-                                                        MaxWidth="9999"
-                                                        Padding="0"
-                                                        Background="Transparent">
-
-                                                        <Grid>
-                                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-
-                                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}">
-                                                                <Run Text="{x:Bind rootservice:ResourceService.ShellMenuListResource.GetString('MenuTitleToolTip')}" />
-                                                                <Run Text="{x:Bind MenuTitleText, Mode=OneWay}" />
-                                                            </TextBlock>
-                                                        </Grid>
+                                                    <ToolTip>
+                                                        <TextBlock>
+                                                            <Run Text="{x:Bind rootservice:ResourceService.ShellMenuListResource.GetString('MenuTitleToolTip')}" />
+                                                            <Run Text="{x:Bind MenuTitleText, Mode=OneWay}" />
+                                                        </TextBlock>
                                                     </ToolTip>
                                                 </ToolTipService.ToolTip>
                                             </TextBlock>
@@ -181,21 +173,8 @@
                                 HorizontalAlignment="Stretch"
                                 Click="{x:Bind OnClearMenuClicked}"
                                 Content="{x:Bind rootservice:ResourceService.ShellMenuListResource.GetString('ClearMenu')}"
-                                IsEnabled="{x:Bind system:Convert.ToBoolean(ShellMenuItemCollection.Count), Mode=OneWay}">
-
-                                <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        MaxWidth="9999"
-                                        Padding="0"
-                                        Background="Transparent">
-
-                                        <Grid>
-                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.ShellMenuListResource.GetString('ClearMenuToolTip')}" />
-                                        </Grid>
-                                    </ToolTip>
-                                </ToolTipService.ToolTip>
-                            </Button>
+                                IsEnabled="{x:Bind system:Convert.ToBoolean(ShellMenuItemCollection.Count), Mode=OneWay}"
+                                ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ShellMenuListResource.GetString('ClearMenuToolTip')}" />
 
                             <Button
                                 HorizontalAlignment="Stretch"

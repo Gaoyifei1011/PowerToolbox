@@ -188,50 +188,32 @@
                                             TextTrimming="CharacterEllipsis">
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip
-                                                    MaxWidth="9999"
-                                                    Padding="0"
-                                                    Background="Transparent"
-                                                    Visibility="{Binding ElementName=SpaceText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                                    <Grid>
-                                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Space}" />
-                                                    </Grid>
-                                                </ToolTip>
+                                                <ToolTip Content="{x:Bind Space}" Visibility="{Binding ElementName=SpaceText, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
                                     </StackPanel>
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent">
-
+                                        <ToolTip>
                                             <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
 
-                                                <Grid Padding="{StaticResource ToolTipBorderPadding}">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto" />
-                                                    </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
 
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="Auto" />
-                                                    </Grid.ColumnDefinitions>
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('DiskType')}" />
 
-                                                    <TextBlock
-                                                        Grid.Row="0"
-                                                        Grid.Column="0"
-                                                        Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('DiskType')}" />
-
-                                                    <TextBlock
-                                                        Grid.Row="0"
-                                                        Grid.Column="1"
-                                                        Text="{x:Bind system:Convert.ToString(DriveInfo.DriveFormat)}" />
-                                                </Grid>
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    Text="{x:Bind system:Convert.ToString(DriveInfo.DriveFormat)}" />
                                             </Grid>
                                         </ToolTip>
                                     </ToolTipService.ToolTip>
@@ -350,21 +332,13 @@
                                     </Hyperlink>
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-
-                                                <StackPanel Padding="{StaticResource ToolTipBorderPadding}" HorizontalAlignment="Stretch">
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('FileStoragePath')}" />
-                                                    <TextBlock Text="{x:Bind SaveFolder, Mode=OneWay}" />
-                                                    <MenuFlyoutSeparator Margin="4,3" />
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('OpenFolder')}" />
-                                                </StackPanel>
-                                            </Grid>
+                                        <ToolTip>
+                                            <StackPanel HorizontalAlignment="Stretch">
+                                                <TextBlock Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('FileStoragePath')}" />
+                                                <TextBlock Text="{x:Bind SaveFolder, Mode=OneWay}" />
+                                                <MenuFlyoutSeparator Margin="4,3" />
+                                                <TextBlock Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('OpenFolder')}" />
+                                            </StackPanel>
                                         </ToolTip>
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
@@ -472,21 +446,13 @@
                                     </Hyperlink>
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-
-                                                <StackPanel Padding="{StaticResource ToolTipBorderPadding}" HorizontalAlignment="Stretch">
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('FileStoragePath')}" />
-                                                    <TextBlock Text="{x:Bind LogSaveFolder, Mode=OneWay}" />
-                                                    <MenuFlyoutSeparator Margin="4,3" />
-                                                    <TextBlock Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('OpenFolder')}" />
-                                                </StackPanel>
-                                            </Grid>
+                                        <ToolTip>
+                                            <StackPanel HorizontalAlignment="Stretch">
+                                                <TextBlock Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('FileStoragePath')}" />
+                                                <TextBlock Text="{x:Bind LogSaveFolder, Mode=OneWay}" />
+                                                <MenuFlyoutSeparator Margin="4,3" />
+                                                <TextBlock Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('OpenFolder')}" />
+                                            </StackPanel>
                                         </ToolTip>
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
@@ -564,17 +530,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind RegularRestoreContentDescriptionText. IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularRestoreContentDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularRestoreContentDescription')}" Visibility="{x:Bind RegularRestoreContentDescriptionText. IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -621,17 +577,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind RegularDuplicatedFileOptionDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularDuplicatedFileOptionDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularDuplicatedFileOptionDescription')}" Visibility="{x:Bind RegularDuplicatedFileOptionDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -712,17 +658,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind ExtensiveRestoreContentDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveRestoreContentDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveRestoreContentDescription')}" Visibility="{x:Bind ExtensiveRestoreContentDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -769,17 +705,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind ExtensiveDuplicatedFileOptionDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveDuplicatedFileOptionDescriptionText')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveDuplicatedFileOptionDescriptionText')}" Visibility="{x:Bind ExtensiveDuplicatedFileOptionDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -860,17 +786,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind NTFSRestoreContentDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSRestoreContentDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSRestoreContentDescription')}" Visibility="{x:Bind NTFSRestoreContentDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -977,17 +893,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind NTFSDuplicatedFileOptionDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSDuplicatedFileOptionDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSDuplicatedFileOptionDescription')}" Visibility="{x:Bind NTFSDuplicatedFileOptionDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1096,17 +1002,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind NTFSCustomFileFilterTypeDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSCustomFileFilterTypeDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSCustomFileFilterTypeDescription')}" Visibility="{x:Bind NTFSCustomFileFilterTypeDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1186,17 +1082,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind SegmentRestoreContentDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentRestoreContentDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentRestoreContentDescription')}" Visibility="{x:Bind SegmentRestoreContentDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1303,17 +1189,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind SegmentDuplicatedFileOptionDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentDuplicatedFileOptionDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentDuplicatedFileOptionDescription')}" Visibility="{x:Bind SegmentDuplicatedFileOptionDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1422,17 +1298,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind SegmentCustomFileFilterTypeDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentCustomFileFilterTypeDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentCustomFileFilterTypeDescription')}" Visibility="{x:Bind SegmentCustomFileFilterTypeDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1480,17 +1346,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind SegmentSourceDeviceNumberSectorsDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentSourceDeviceNumberSectorsDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentSourceDeviceNumberSectorsDescription')}" Visibility="{x:Bind SegmentSourceDeviceNumberSectorsDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1539,17 +1395,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind SegmentSourceDeviceClusterSizeDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentSourceDeviceClusterSizeDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentSourceDeviceClusterSizeDescription')}" Visibility="{x:Bind SegmentSourceDeviceClusterSizeDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1661,17 +1507,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind SignatureRestoreSpecificExtensionGroupsTypeDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureRestoreSpecificExtensionGroupsTypeDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureRestoreSpecificExtensionGroupsTypeDescription')}" Visibility="{x:Bind SignatureRestoreSpecificExtensionGroupsTypeDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1719,17 +1555,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind SignatureSourceDeviceNumberSectorsDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureSourceDeviceNumberSectorsDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureSourceDeviceNumberSectorsDescription')}" Visibility="{x:Bind SignatureSourceDeviceNumberSectorsDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1778,17 +1604,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind SignatureSourceDeviceClusterSizeDescriptionText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureSourceDeviceClusterSizeDescription')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureSourceDeviceClusterSizeDescription')}" Visibility="{x:Bind SignatureSourceDeviceClusterSizeDescriptionText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1872,17 +1688,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind FileSystemHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('FileSystem')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('FileSystem')}" Visibility="{x:Bind FileSystemHeaderText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
@@ -1897,17 +1703,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind CircumstancesHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('Circumstances')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('Circumstances')}" Visibility="{x:Bind CircumstancesHeaderText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
@@ -1922,17 +1718,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip
-                                            MaxWidth="9999"
-                                            Padding="0"
-                                            Background="Transparent"
-                                            Visibility="{x:Bind RecommendedModeHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                            <Grid>
-                                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RecommendedMode')}" />
-                                            </Grid>
-                                        </ToolTip>
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RecommendedMode')}" Visibility="{x:Bind RecommendedModeHeaderText.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </Grid>
@@ -1966,17 +1752,7 @@
                                         TextWrapping="NoWrap">
 
                                         <ToolTipService.ToolTip>
-                                            <ToolTip
-                                                MaxWidth="9999"
-                                                Padding="0"
-                                                Background="Transparent"
-                                                Visibility="{Binding ElementName=FileSystemText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                                <Grid>
-                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind FileSystem}" />
-                                                </Grid>
-                                            </ToolTip>
+                                            <ToolTip Content="{x:Bind FileSystem}" Visibility="{Binding ElementName=FileSystemText, Path=IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
 
@@ -1995,17 +1771,7 @@
                                         TextWrapping="NoWrap">
 
                                         <ToolTipService.ToolTip>
-                                            <ToolTip
-                                                MaxWidth="9999"
-                                                Padding="0"
-                                                Background="Transparent"
-                                                Visibility="{Binding ElementName=CircumstancesText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                                <Grid>
-                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Circumstances}" />
-                                                </Grid>
-                                            </ToolTip>
+                                            <ToolTip Content="{x:Bind Circumstances}" Visibility="{Binding ElementName=CircumstancesText, Path=IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
 
@@ -2024,17 +1790,7 @@
                                         TextWrapping="NoWrap">
 
                                         <ToolTipService.ToolTip>
-                                            <ToolTip
-                                                MaxWidth="9999"
-                                                Padding="0"
-                                                Background="Transparent"
-                                                Visibility="{Binding ElementName=RecommendedModeText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                                <Grid>
-                                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind RecommendedMode}" />
-                                                </Grid>
-                                            </ToolTip>
+                                            <ToolTip Content="{x:Bind RecommendedMode}" Visibility="{Binding ElementName=RecommendedModeText, Path=IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
                                 </Grid>

@@ -103,17 +103,7 @@
                         Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(VerifyFile), Mode=OneWay}">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip
-                                MaxWidth="9999"
-                                Padding="0"
-                                Background="Transparent"
-                                Visibility="{x:Bind VerifyFileText.IsTextTrimmed, Mode=OneWay}">
-
-                                <Grid>
-                                    <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                    <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind VerifyFile, Mode=OneWay}" />
-                                </Grid>
-                            </ToolTip>
+                            <ToolTip Content="{x:Bind VerifyFile, Mode=OneWay}" Visibility="{x:Bind VerifyFileText.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -419,17 +409,7 @@
                             TextWrapping="NoWrap">
 
                             <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Padding="0"
-                                    Background="Transparent"
-                                    Visibility="{x:Bind VerifyTypeHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                    <Grid>
-                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyType')}" />
-                                    </Grid>
-                                </ToolTip>
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyType')}" Visibility="{x:Bind VerifyTypeHeaderText.IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </TextBlock>
 
@@ -442,17 +422,7 @@
                             Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyResult')}">
 
                             <ToolTipService.ToolTip>
-                                <ToolTip
-                                    MaxWidth="9999"
-                                    Padding="0"
-                                    Background="Transparent"
-                                    Visibility="{x:Bind VerifyResultHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                                    <Grid>
-                                        <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                        <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyResult')}" />
-                                    </Grid>
-                                </ToolTip>
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyResult')}" Visibility="{x:Bind VerifyResultHeaderText.IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </TextBlock>
                     </Grid>
@@ -499,17 +469,9 @@
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
-                                        MaxWidth="9999"
-                                        Padding="0"
-                                        Background="Transparent"
+                                        Content="{x:Bind Name}"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=VerifyTypeText, Path=IsTextTrimmed, Mode=OneWay}">
-
-                                        <Grid>
-                                            <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                            <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind Name}" />
-                                        </Grid>
-                                    </ToolTip>
+                                        Visibility="{Binding ElementName=VerifyTypeText, Path=IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 

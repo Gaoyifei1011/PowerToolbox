@@ -71,17 +71,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind ComponentHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Component')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Component')}" Visibility="{x:Bind ComponentHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -95,17 +85,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind AssessmentItemsHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('AssessmentItems')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('AssessmentItems')}" Visibility="{x:Bind AssessmentItemsHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -119,17 +99,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind SubScoreHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('SubScore')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('SubScore')}" Visibility="{x:Bind SubScoreHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -143,17 +113,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind BasicScoreHeaderText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('BasicScore')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('BasicScore')}" Visibility="{x:Bind BasicScoreHeaderText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -181,17 +141,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind ProcessorText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Processor')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Processor')}" Visibility="{x:Bind ProcessorText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -205,17 +155,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind ProcessorItemText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('ProcessorItem')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('ProcessorItem')}" Visibility="{x:Bind ProcessorItemText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -229,17 +169,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind ProcessorSubScoreText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind ProcessorSubScore, Mode=OneWay}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind ProcessorSubScore, Mode=OneWay}" Visibility="{x:Bind ProcessorSubScoreText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -267,17 +197,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind MemoryText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Memory')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Memory')}" Visibility="{x:Bind MemoryText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -291,17 +211,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind MemoryItemText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('MemoryItem')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('MemoryItem')}" Visibility="{x:Bind MemoryItemText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -315,17 +225,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind MemorySubScoreText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind MemorySubScore, Mode=OneWay}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind MemorySubScore, Mode=OneWay}" Visibility="{x:Bind MemorySubScoreText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -353,17 +253,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind GraphicsText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Graphics')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Graphics')}" Visibility="{x:Bind GraphicsText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -377,17 +267,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind GraphicsItemText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GraphicsItem')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GraphicsItem')}" Visibility="{x:Bind GraphicsItemText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -401,17 +281,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind GraphicsSubScoreText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind GraphicsSubScore, Mode=OneWay}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind GraphicsSubScore, Mode=OneWay}" Visibility="{x:Bind GraphicsSubScoreText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -439,17 +309,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind GamingGraphicsText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GamingGraphics')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GamingGraphics')}" Visibility="{x:Bind GamingGraphicsText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -463,17 +323,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind GamingGraphicsItemText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GamingGraphicsItem')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GamingGraphicsItem')}" Visibility="{x:Bind GamingGraphicsItemText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -487,17 +337,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind GamingGraphicsSubScoreText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind GamingGraphicsSubScore, Mode=OneWay}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind GamingGraphicsSubScore, Mode=OneWay}" Visibility="{x:Bind GamingGraphicsSubScoreText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -525,17 +365,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind PrimaryDiskText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('PrimaryDisk')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('PrimaryDisk')}" Visibility="{x:Bind PrimaryDiskText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -549,17 +379,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind PrimaryDiskItemText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('PrimaryDiskItem')}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('PrimaryDiskItem')}" Visibility="{x:Bind PrimaryDiskItemText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
@@ -573,17 +393,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip
-                            MaxWidth="9999"
-                            Padding="0"
-                            Background="Transparent"
-                            Visibility="{x:Bind PrimaryDiskSubScoreText.IsTextTrimmed, Mode=OneWay}">
-
-                            <Grid>
-                                <SystemBackdropElement CornerRadius="{StaticResource ControlCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
-                                <TextBlock Padding="{StaticResource ToolTipBorderPadding}" Text="{x:Bind PrimaryDiskSubScore, Mode=OneWay}" />
-                            </Grid>
-                        </ToolTip>
+                        <ToolTip Content="{x:Bind PrimaryDiskSubScore, Mode=OneWay}" Visibility="{x:Bind PrimaryDiskSubScoreText.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
