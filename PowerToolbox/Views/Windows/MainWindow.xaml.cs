@@ -1,7 +1,5 @@
 ﻿using Microsoft.UI;
 using Microsoft.UI.Composition.SystemBackdrops;
-using Microsoft.UI.Content;
-using Microsoft.UI.Input;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -29,7 +27,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -77,9 +74,6 @@ namespace PowerToolbox.Views.Windows
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly OverlappedPresenter overlappedPresenter;
         private readonly SUBCLASSPROC mainWindowSubClassProc;
-        private readonly ContentIsland contentIsland;
-        private readonly InputKeyboardSource inputKeyboardSource;
-        private readonly InputPointerSource inputPointerSource;
         private bool isProgrammaticExpand;
 
         public new static MainWindow Current { get; private set; }
@@ -199,17 +193,12 @@ namespace PowerToolbox.Views.Windows
             AppWindow.TitleBar.InactiveBackgroundColor = Colors.Transparent;
             AppWindow.TitleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
             IsWindowMaximized = overlappedPresenter.State is OverlappedPresenterState.Maximized;
-            contentIsland = ContentIsland.FindAllForCompositor(Compositor)[0];
-            inputKeyboardSource = InputKeyboardSource.GetForIsland(contentIsland);
-            inputPointerSource = InputPointerSource.GetForIsland(contentIsland);
 
             // 挂载相应的事件
             AlwaysShowBackdropService.PropertyChanged += OnServicePropertyChanged;
             ThemeService.PropertyChanged += OnServicePropertyChanged;
             BackdropService.PropertyChanged += OnServicePropertyChanged;
             TopMostService.PropertyChanged += OnServicePropertyChanged;
-            inputKeyboardSource.SystemKeyDown += OnSystemKeyDown;
-            inputPointerSource.PointerReleased += OnPointerReleased;
 
             // 标题栏和右键菜单设置
             SetClassicMenuTheme((Content as FrameworkElement).ActualTheme);
@@ -513,33 +502,6 @@ namespace PowerToolbox.Views.Windows
             });
         }
 
-        #region 第一部分：窗口辅助类挂载的事件
-
-        /// 处理键盘系统按键事件
-        /// </summary>
-        private async void OnSystemKeyDown(InputKeyboardSource sender, KeyEventArgs args)
-        {
-            if (args.VirtualKey is VirtualKey.F10 && Content is not null && Content.XamlRoot is not null)
-            {
-                await Task.Delay(50);
-                SetPopupControlTheme(WindowTheme);
-            }
-        }
-
-        /// <summary>
-        /// 处理鼠标事件
-        /// </summary>
-        private async void OnPointerReleased(InputPointerSource sender, PointerEventArgs args)
-        {
-            if (args.CurrentPoint.Properties.PointerUpdateKind is PointerUpdateKind.RightButtonReleased && Content is not null && Content.XamlRoot is not null)
-            {
-                await Task.Delay(50);
-                SetPopupControlTheme(WindowTheme);
-            }
-        }
-
-        #endregion 第一部分：窗口辅助类挂载的事件
-
         #region 第二部分：窗口右键菜单事件
 
         /// <summary>
@@ -644,7 +606,6 @@ namespace PowerToolbox.Views.Windows
             SelectedItem = NavigationViewItemMenuItemsCollection[0];
             NavigateTo(typeof(AllToolsPage));
             IsBackEnabled = CanGoBack();
-            SetPopupControlTheme(WindowTheme);
         }
 
         /// <summary>
@@ -692,7 +653,7 @@ namespace PowerToolbox.Views.Windows
         private async void OnExpanding(NavigationView sender, NavigationViewItemExpandingEventArgs args)
         {
             Type currentPageType = GetCurrentPageType();
-            if(isProgrammaticExpand)
+            if (isProgrammaticExpand)
             {
                 isProgrammaticExpand = false;
                 await Task.Delay(5);
@@ -917,27 +878,6 @@ namespace PowerToolbox.Views.Windows
         }
 
         /// <summary>
-        /// 设置所有弹出控件主题
-        /// </summary>
-        private void SetPopupControlTheme(ElementTheme elementTheme)
-        {
-            foreach (Popup popup in VisualTreeHelper.GetOpenPopupsForXamlRoot(Content.XamlRoot))
-            {
-                popup.RequestedTheme = elementTheme;
-
-                if (popup.Child is FlyoutPresenter flyoutPresenter)
-                {
-                    flyoutPresenter.RequestedTheme = elementTheme;
-                }
-
-                if (popup.Child is Grid grid && grid.Name is "OuterOverflowContentRootV2")
-                {
-                    grid.RequestedTheme = elementTheme;
-                }
-            }
-        }
-
-        /// <summary>
         /// 设置窗口的置顶状态
         /// </summary>
         private void SetTopMost()
@@ -1047,8 +987,6 @@ namespace PowerToolbox.Views.Windows
                                     ThemeService.PropertyChanged -= OnServicePropertyChanged;
                                     BackdropService.PropertyChanged -= OnServicePropertyChanged;
                                     TopMostService.PropertyChanged -= OnServicePropertyChanged;
-                                    inputKeyboardSource.SystemKeyDown -= OnSystemKeyDown;
-                                    inputPointerSource.PointerReleased -= OnPointerReleased;
                                     DownloadSchedulerService.TerminateDownload();
                                     Comctl32Library.RemoveWindowSubclass((nint)AppWindow.Id.Value, mainWindowSubClassProc, 0);
                                     (Application.Current as MainApp).Dispose();
@@ -1073,8 +1011,6 @@ namespace PowerToolbox.Views.Windows
                                 ThemeService.PropertyChanged -= OnServicePropertyChanged;
                                 BackdropService.PropertyChanged -= OnServicePropertyChanged;
                                 TopMostService.PropertyChanged -= OnServicePropertyChanged;
-                                inputKeyboardSource.SystemKeyDown -= OnSystemKeyDown;
-                                inputPointerSource.PointerReleased -= OnPointerReleased;
                                 Comctl32Library.RemoveWindowSubclass((nint)AppWindow.Id.Value, mainWindowSubClassProc, 0);
                                 (Application.Current as MainApp).Dispose();
                             }
@@ -1114,11 +1050,6 @@ namespace PowerToolbox.Views.Windows
                     {
                         SetWindowTheme();
                         SetClassicMenuTheme(WindowTheme);
-
-                        synchronizationContext.Post((_) =>
-                        {
-                            SetPopupControlTheme(WindowTheme);
-                        }, null);
 
                         if (GetFrameContent() is ThemeSwitchPage themeSwitchPage)
                         {
@@ -1210,8 +1141,8 @@ namespace PowerToolbox.Views.Windows
         {
             try
             {
-                 // 导航到该项目对应的页面
-                if(!Equals(GetCurrentPageType(),navigationPageType))
+                // 导航到该项目对应的页面
+                if (!Equals(GetCurrentPageType(), navigationPageType))
                 {
                     (MainNavigationView.Content as Frame).Navigate(navigationPageType, parameter);
                 }
@@ -1270,13 +1201,13 @@ namespace PowerToolbox.Views.Windows
         {
             foreach (NavigationViewItemModel navigationViewItem in navigationViewItemMenuItemCollection)
             {
-                if(Equals(navigationViewItem.NavigationPage, currentPageType))
+                if (Equals(navigationViewItem.NavigationPage, currentPageType))
                 {
                     return navigationViewItem;
                 }
 
                 // 递归遍历
-                if(GetSelectedItem(currentPageType,navigationViewItem.NavigationViewItemMenuItemsCollection) is NavigationViewItemModel searchedNavigationViewItem)
+                if (GetSelectedItem(currentPageType, navigationViewItem.NavigationViewItemMenuItemsCollection) is NavigationViewItemModel searchedNavigationViewItem)
                 {
                     return searchedNavigationViewItem;
                 }
