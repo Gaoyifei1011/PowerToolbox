@@ -46,7 +46,8 @@
             <CommandBar
                 Grid.Column="2"
                 VerticalAlignment="Center"
-                DefaultLabelPosition="Right">
+                DefaultLabelPosition="Right"
+                Style="{StaticResource CommandBarStyle}">
 
                 <CommandBar.PrimaryCommands>
                     <AppBarButton

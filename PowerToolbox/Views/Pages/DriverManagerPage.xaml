@@ -64,7 +64,6 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <AutoSuggestBox
@@ -81,13 +80,15 @@
                 <CommandBar
                     Grid.Column="1"
                     VerticalAlignment="Center"
-                    DefaultLabelPosition="Right">
+                    DefaultLabelPosition="Right"
+                    Style="{StaticResource CommandBarStyle}">
 
                     <CommandBar.PrimaryCommands>
                         <AppBarButton
                             Click="{x:Bind OnSelectAllClicked}"
                             IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
                             Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SelectAll')}">
+
                             <AppBarButton.Icon>
                                 <FontIcon Glyph="&#xE8B3;" />
                             </AppBarButton.Icon>
@@ -109,191 +110,178 @@
                             </AppBarButton.Icon>
                         </AppBarButton>
                     </CommandBar.PrimaryCommands>
+
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}" Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Sort')}">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE8CB;" />
+                            </AppBarButton.Icon>
+
+                            <AppBarButton.Resources>
+                                <Visibility x:Key="AppBarButtonHasFlyoutChevronVisibility">Visible</Visibility>
+                            </AppBarButton.Resources>
+
+                            <AppBarButton.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutSubItem Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortWay')}">
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnSortWayClicked}"
+                                            GroupName="SortWayRadioGroup"
+                                            IsChecked="{x:Bind IsIncrease, Mode=OneWay}"
+                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortIncrease')}">
+
+                                            <RadioMenuFlyoutItem.Tag>
+                                                <x:Boolean>True</x:Boolean>
+                                            </RadioMenuFlyoutItem.Tag>
+                                        </RadioMenuFlyoutItem>
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnSortWayClicked}"
+                                            GroupName="SortWayRadioGroup"
+                                            IsChecked="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsIncrease), Mode=OneWay}"
+                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortDecrease')}">
+
+                                            <RadioMenuFlyoutItem.Tag>
+                                                <x:Boolean>False</x:Boolean>
+                                            </RadioMenuFlyoutItem.Tag>
+                                        </RadioMenuFlyoutItem>
+                                    </MenuFlyoutSubItem>
+
+                                    <MenuFlyoutSubItem Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortRule')}">
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnSortRuleClicked}"
+                                            GroupName="SortRuleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.DeviceName), Mode=OneWay}"
+                                            Tag="{x:Bind enum:DriverSortRuleKind.DeviceName}"
+                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByDeviceName')}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnSortRuleClicked}"
+                                            GroupName="SortRuleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.InfName), Mode=OneWay}"
+                                            Tag="{x:Bind enum:DriverSortRuleKind.InfName}"
+                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByInfName')}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnSortRuleClicked}"
+                                            GroupName="SortRuleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.OEMInfName), Mode=OneWay}"
+                                            Tag="{x:Bind enum:DriverSortRuleKind.OEMInfName}"
+                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByOEMInfName')}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnSortRuleClicked}"
+                                            GroupName="SortRuleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.DeviceType), Mode=OneWay}"
+                                            Tag="{x:Bind enum:DriverSortRuleKind.DeviceType}"
+                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByDeviceType')}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnSortRuleClicked}"
+                                            GroupName="SortRuleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.Manufacturer), Mode=OneWay}"
+                                            Tag="{x:Bind enum:DriverSortRuleKind.Manufacturer}"
+                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByManufacturer')}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnSortRuleClicked}"
+                                            GroupName="SortRuleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.Version), Mode=OneWay}"
+                                            Tag="{x:Bind enum:DriverSortRuleKind.Version}"
+                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByVersion')}" />
+
+                                        <RadioMenuFlyoutItem
+                                            Click="{x:Bind OnSortRuleClicked}"
+                                            GroupName="SortRuleRadioGroup"
+                                            IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.Date), Mode=OneWay}"
+                                            Tag="{x:Bind enum:DriverSortRuleKind.Date}"
+                                            Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByDate')}" />
+                                    </MenuFlyoutSubItem>
+                                </MenuFlyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+
+                        <AppBarButton
+                            Click="{x:Bind OnRefreshClicked}"
+                            IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Refresh')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE72C;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarSeparator />
+
+                        <AppBarButton
+                            Click="{x:Bind OnAddDriverClicked}"
+                            IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('AddDriver')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE710;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton
+                            Click="{x:Bind OnAddInstallDriverClicked}"
+                            IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('AddInstallDriver')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE710;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton
+                            Click="{x:Bind OnDeleteDriverClicked}"
+                            IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DeleteDriver')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE711;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton
+                            Click="{x:Bind OnForceDeleteDriverClicked}"
+                            IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ForceDeleteDriver')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE711;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarSeparator />
+
+                        <AppBarButton
+                            Click="{x:Bind OnSelectOldDriverClicked}"
+                            IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SelectOldDriver')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE74D;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarSeparator />
+
+                        <AppBarButton Click="{x:Bind OnUseInstructionClicked}" Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('UseInstruction')}">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE946;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton Click="{x:Bind OnOpenDeviceManagementClicked}" Label="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DeviceManagement')}">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE7F8;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </CommandBar.SecondaryCommands>
                 </CommandBar>
-
-                <Button
-                    Grid.Column="2"
-                    MinHeight="{ThemeResource AppBarThemeCompactHeight}"
-                    Margin="-6,0,0,0"
-                    Padding="{ThemeResource CommandBarMoreButtonMargin}"
-                    VerticalAlignment="Center"
-                    Foreground="{ThemeResource CommandBarForeground}"
-                    IsAccessKeyScope="True"
-                    Style="{ThemeResource EllipsisButton}"
-                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ViewMore')}">
-
-                    <FontIcon
-                        Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
-                        VerticalAlignment="Center"
-                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                        FontSize="20"
-                        Glyph="&#xE712;" />
-
-                    <Button.Flyout>
-                        <MenuFlyout Placement="Bottom">
-                            <MenuFlyoutSubItem IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Sort')}">
-                                <MenuFlyoutSubItem.Icon>
-                                    <FontIcon Glyph="&#xE8CB;" />
-                                </MenuFlyoutSubItem.Icon>
-
-                                <MenuFlyoutSubItem Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortWay')}">
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnSortWayClicked}"
-                                        GroupName="SortWayRadioGroup"
-                                        IsChecked="{x:Bind IsIncrease, Mode=OneWay}"
-                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortIncrease')}">
-
-                                        <RadioMenuFlyoutItem.Tag>
-                                            <x:Boolean>True</x:Boolean>
-                                        </RadioMenuFlyoutItem.Tag>
-                                    </RadioMenuFlyoutItem>
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnSortWayClicked}"
-                                        GroupName="SortWayRadioGroup"
-                                        IsChecked="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsIncrease), Mode=OneWay}"
-                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortDecrease')}">
-
-                                        <RadioMenuFlyoutItem.Tag>
-                                            <x:Boolean>False</x:Boolean>
-                                        </RadioMenuFlyoutItem.Tag>
-                                    </RadioMenuFlyoutItem>
-                                </MenuFlyoutSubItem>
-
-                                <MenuFlyoutSubItem Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortRule')}">
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnSortRuleClicked}"
-                                        GroupName="SortRuleRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.DeviceName), Mode=OneWay}"
-                                        Tag="{x:Bind enum:DriverSortRuleKind.DeviceName}"
-                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByDeviceName')}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnSortRuleClicked}"
-                                        GroupName="SortRuleRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.InfName), Mode=OneWay}"
-                                        Tag="{x:Bind enum:DriverSortRuleKind.InfName}"
-                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByInfName')}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnSortRuleClicked}"
-                                        GroupName="SortRuleRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.OEMInfName), Mode=OneWay}"
-                                        Tag="{x:Bind enum:DriverSortRuleKind.OEMInfName}"
-                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByOEMInfName')}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnSortRuleClicked}"
-                                        GroupName="SortRuleRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.DeviceType), Mode=OneWay}"
-                                        Tag="{x:Bind enum:DriverSortRuleKind.DeviceType}"
-                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByDeviceType')}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnSortRuleClicked}"
-                                        GroupName="SortRuleRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.Manufacturer), Mode=OneWay}"
-                                        Tag="{x:Bind enum:DriverSortRuleKind.Manufacturer}"
-                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByManufacturer')}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnSortRuleClicked}"
-                                        GroupName="SortRuleRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.Version), Mode=OneWay}"
-                                        Tag="{x:Bind enum:DriverSortRuleKind.Version}"
-                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByVersion')}" />
-
-                                    <RadioMenuFlyoutItem
-                                        Click="{x:Bind OnSortRuleClicked}"
-                                        GroupName="SortRuleRadioGroup"
-                                        IsChecked="{x:Bind x:Object.Equals(SelectedRule, enum:DriverSortRuleKind.Date), Mode=OneWay}"
-                                        Tag="{x:Bind enum:DriverSortRuleKind.Date}"
-                                        Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SortByDate')}" />
-                                </MenuFlyoutSubItem>
-                            </MenuFlyoutSubItem>
-
-                            <MenuFlyoutItem
-                                Click="{x:Bind OnRefreshClicked}"
-                                IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('Refresh')}">
-
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE72C;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutSeparator />
-
-                            <MenuFlyoutItem
-                                Click="{x:Bind OnAddDriverClicked}"
-                                IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('AddDriver')}">
-
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE710;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutItem
-                                Click="{x:Bind OnAddInstallDriverClicked}"
-                                IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('AddInstallDriver')}">
-
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE710;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutItem
-                                Click="{x:Bind OnDeleteDriverClicked}"
-                                IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DeleteDriver')}">
-
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE711;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutItem
-                                Click="{x:Bind OnForceDeleteDriverClicked}"
-                                IsEnabled="{x:Bind GetElevatedIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('ForceDeleteDriver')}">
-
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE711;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutSeparator />
-
-                            <MenuFlyoutItem
-                                Click="{x:Bind OnSelectOldDriverClicked}"
-                                IsEnabled="{x:Bind GetIsLoadingOrOperating(DriverResultKind), Mode=OneWay}"
-                                Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('SelectOldDriver')}">
-
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE74D;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutSeparator />
-
-                            <MenuFlyoutItem Click="{x:Bind OnUseInstructionClicked}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('UseInstruction')}">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE946;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutItem Click="{x:Bind OnOpenDeviceManagementClicked}" Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DeviceManagement')}">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE7F8;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-                        </MenuFlyout>
-                    </Button.Flyout>
-                </Button>
             </Grid>
 
             <!--  驱动管理状态显示栏  -->

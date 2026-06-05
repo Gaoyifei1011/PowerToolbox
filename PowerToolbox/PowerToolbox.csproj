@@ -304,6 +304,7 @@
 
 		<None Remove="Assets\PowerToolbox.ico" CopyToOutputDirectory="Never" />
     <None Remove="Styles\ComboBox.xaml" />
+    <None Remove="Styles\CommandBar.xaml" />
 		<None Remove="Styles\DateTimePicker.xaml" />
 		<None Remove="Styles\InfoBar.xaml" />
 		<None Remove="Styles\NavigationView.xaml" />
@@ -375,6 +376,7 @@
 		<PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
 
     <Page Include="Styles\ComboBox.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Styles\CommandBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\DateTimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\RadioButtons.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\InfoBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
@@ -449,5 +451,11 @@
 		<Reference Include="System.Net.Http" />
 		<Reference Include="System.ServiceProcess" />
 		<Reference Include="System.Windows.Forms" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Styles\CommandBar.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </None>
 	</ItemGroup>
 </Project>

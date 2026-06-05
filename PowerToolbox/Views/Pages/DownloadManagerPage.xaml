@@ -62,7 +62,6 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <FontIcon
@@ -95,7 +94,8 @@
                 <CommandBar
                     Grid.Column="4"
                     VerticalAlignment="Center"
-                    DefaultLabelPosition="Right">
+                    DefaultLabelPosition="Right"
+                    Style="{StaticResource CommandBarStyle}">
 
                     <CommandBar.PrimaryCommands>
                         <AppBarButton Click="{x:Bind OnAddTaskClicked}" Label="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('AddTask')}">
@@ -124,63 +124,43 @@
                             </AppBarButton.Icon>
                         </AppBarButton>
                     </CommandBar.PrimaryCommands>
+
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton
+                            Click="{x:Bind OnDeleteDownloadClicked}"
+                            IsEnabled="{x:Bind system:Convert.ToBoolean(DownloadCollection.Count), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DeleteDownload')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE74D;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton
+                            Click="{x:Bind OnOpenFolderClicked}"
+                            Label="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('OpenFolder')}"
+                            ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('OpenFolderToolTip')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE8B7;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton Click="{x:Bind OnUseInstructionClicked}" Label="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('UseInstruction')}">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE946;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarSeparator />
+
+                        <AppBarButton Click="{x:Bind OnDownloadSettingsClicked}" Label="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadSettings')}">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE713;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </CommandBar.SecondaryCommands>
                 </CommandBar>
-
-                <Button
-                    Grid.Column="5"
-                    MinHeight="{ThemeResource AppBarThemeCompactHeight}"
-                    Margin="-6,0,0,0"
-                    Padding="{ThemeResource CommandBarMoreButtonMargin}"
-                    VerticalAlignment="Center"
-                    Foreground="{ThemeResource CommandBarForeground}"
-                    IsAccessKeyScope="True"
-                    Style="{ThemeResource EllipsisButton}"
-                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('ViewMore')}">
-
-                    <FontIcon
-                        Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
-                        VerticalAlignment="Center"
-                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                        FontSize="20"
-                        Glyph="&#xE712;" />
-
-                    <Button.Flyout>
-                        <MenuFlyout Placement="Bottom">
-                            <MenuFlyoutItem
-                                Click="{x:Bind OnDeleteDownloadClicked}"
-                                IsEnabled="{x:Bind system:Convert.ToBoolean(DownloadCollection.Count), Mode=OneWay}"
-                                Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DeleteDownload')}">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE74D;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutItem
-                                Click="{x:Bind OnOpenFolderClicked}"
-                                Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('OpenFolder')}"
-                                ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('OpenFolderToolTip')}">
-
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE8B7;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutItem Click="{x:Bind OnUseInstructionClicked}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('UseInstruction')}">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE946;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutSeparator />
-
-                            <MenuFlyoutItem Click="{x:Bind OnDownloadSettingsClicked}" Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadSettings')}">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE713;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-                        </MenuFlyout>
-                    </Button.Flyout>
-                </Button>
             </Grid>
 
             <!--  下载内容空提示栏  -->

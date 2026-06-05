@@ -66,7 +66,6 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <AutoSuggestBox
@@ -83,7 +82,8 @@
                 <CommandBar
                     Grid.Column="1"
                     VerticalAlignment="Center"
-                    DefaultLabelPosition="Right">
+                    DefaultLabelPosition="Right"
+                    Style="{StaticResource CommandBarStyle}">
 
                     <CommandBar.PrimaryCommands>
                         <AppBarButton
@@ -105,98 +105,77 @@
                             </AppBarButton.Icon>
                         </AppBarButton>
                     </CommandBar.PrimaryCommands>
+
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton
+                            Click="{x:Bind OnRunScheduledTaskClicked}"
+                            IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('RunScheduledTask')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE768;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton
+                            Click="{x:Bind OnStopScheduledTaskClicked}"
+                            IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('StopScheduledTask')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE71A;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton
+                            Click="{x:Bind OnExportScheduledTaskClicked}"
+                            IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ExportScheduledTask')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE74E;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarSeparator />
+
+                        <AppBarButton
+                            Click="{x:Bind OnRefreshClicked}"
+                            IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Refresh')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE72C;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarSeparator />
+
+                        <AppBarButton
+                            Click="{x:Bind OnViewErrorInformationClicked}"
+                            IsEnabled="{x:Bind IsModifiedFailed, Mode=OneWay}"
+                            Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ViewErrorInformation')}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xEA39;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarSeparator />
+
+                        <AppBarButton Click="{x:Bind OnUseInstructionClicked}" Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('UseInstruction')}">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE946;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton Click="{x:Bind OnOpenScheduledTaskProgramClicked}" Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('OpenScheduledTaskProgram')}">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xED5A;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </CommandBar.SecondaryCommands>
                 </CommandBar>
-
-                <Button
-                    Grid.Column="2"
-                    MinHeight="{ThemeResource AppBarThemeCompactHeight}"
-                    Margin="-6,0,0,0"
-                    Padding="{ThemeResource CommandBarMoreButtonMargin}"
-                    VerticalAlignment="Center"
-                    Foreground="{ThemeResource CommandBarForeground}"
-                    IsAccessKeyScope="True"
-                    Style="{ThemeResource EllipsisButton}"
-                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ViewMore')}">
-
-                    <FontIcon
-                        Height="{ThemeResource AppBarExpandButtonCircleDiameter}"
-                        VerticalAlignment="Center"
-                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                        FontSize="20"
-                        Glyph="&#xE712;" />
-
-                    <Button.Flyout>
-                        <MenuFlyout Placement="Bottom">
-                            <MenuFlyoutItem
-                                Click="{x:Bind OnRunScheduledTaskClicked}"
-                                IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                                Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('RunScheduledTask')}">
-
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE768;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutItem
-                                Click="{x:Bind OnStopScheduledTaskClicked}"
-                                IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                                Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('StopScheduledTask')}">
-
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE71A;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutItem
-                                Click="{x:Bind OnExportScheduledTaskClicked}"
-                                IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                                Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ExportScheduledTask')}">
-
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE74E;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutSeparator />
-
-                            <MenuFlyoutItem
-                                Click="{x:Bind OnRefreshClicked}"
-                                IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                                Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Refresh')}">
-
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE72C;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutSeparator />
-
-                            <MenuFlyoutItem
-                                Click="{x:Bind OnViewErrorInformationClicked}"
-                                IsEnabled="{x:Bind IsModifiedFailed, Mode=OneWay}"
-                                Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ViewErrorInformation')}">
-
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xEA39;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutSeparator />
-
-                            <MenuFlyoutItem Click="{x:Bind OnUseInstructionClicked}" Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('UseInstruction')}">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE946;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-
-                            <MenuFlyoutItem Click="{x:Bind OnOpenScheduledTaskProgramClicked}" Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('OpenScheduledTaskProgram')}">
-                                <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xED5A;" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
-                        </MenuFlyout>
-                    </Button.Flyout>
-                </Button>
             </Grid>
 
             <!--  计划任务管理状态显示栏  -->

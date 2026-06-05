@@ -177,7 +177,11 @@
                             VerticalAlignment="Center"
                             Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('DataVerifyType')}" />
 
-                        <CommandBar Grid.Column="2" DefaultLabelPosition="Right">
+                        <CommandBar
+                            Grid.Column="2"
+                            DefaultLabelPosition="Right"
+                            Style="{StaticResource CommandBarStyle}">
+
                             <CommandBar.PrimaryCommands>
                                 <AppBarButton
                                     Click="{x:Bind OnSelectAllClicked}"
