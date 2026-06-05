@@ -502,7 +502,7 @@ namespace PowerToolbox.Views.Windows
             });
         }
 
-        #region 第二部分：窗口右键菜单事件
+        #region 第一部分：窗口右键菜单事件
 
         /// <summary>
         /// 窗口还原
@@ -560,9 +560,9 @@ namespace PowerToolbox.Views.Windows
             User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_CLOSE, 0);
         }
 
-        #endregion 第二部分：窗口右键菜单事件
+        #endregion 第一部分：窗口右键菜单事件
 
-        #region 第三部分：窗口内容挂载的事件
+        #region 第二部分：窗口内容挂载的事件
 
         /// <summary>
         /// 应用主题变化时设置标题栏按钮的颜色
@@ -584,9 +584,9 @@ namespace PowerToolbox.Views.Windows
             }
         }
 
-        #endregion 第三部分：窗口内容挂载的事件
+        #endregion 第二部分：窗口内容挂载的事件
 
-        #region 第四部分：导航控件及其内容挂载的事件
+        #region 第三部分：导航控件及其内容挂载的事件
 
         /// <summary>
         /// 当后退按钮收到交互（如单击或点击）时发生
@@ -747,9 +747,9 @@ namespace PowerToolbox.Views.Windows
             (Application.Current as MainApp).Dispose();
         }
 
-        #endregion 第四部分：导航控件及其内容挂载的事件
+        #endregion 第三部分：导航控件及其内容挂载的事件
 
-        #region 第五部分：自定义事件
+        #region 第四部分：自定义事件
 
         /// <summary>
         /// 设置选项发生变化时触发的事件
@@ -773,9 +773,9 @@ namespace PowerToolbox.Views.Windows
             }, null);
         }
 
-        #endregion 第五部分：自定义事件
+        #endregion 第四部分：自定义事件
 
-        #region 第六部分：窗口及内容属性设置
+        #region 第五部分：窗口及内容属性设置
 
         /// <summary>
         /// 设置应用显示的主题
@@ -885,9 +885,9 @@ namespace PowerToolbox.Views.Windows
             overlappedPresenter.IsAlwaysOnTop = TopMostService.TopMostValue;
         }
 
-        #endregion 第六部分：窗口及内容属性设置
+        #endregion 第五部分：窗口及内容属性设置
 
-        #region 第七部分：窗口过程
+        #region 第六部分：窗口过程
 
         /// <summary>
         /// 应用主窗口消息处理
@@ -1130,9 +1130,9 @@ namespace PowerToolbox.Views.Windows
             return Comctl32Library.DefSubclassProc(hWnd, Msg, wParam, lParam);
         }
 
-        #endregion 第七部分：窗口过程
+        #endregion 第六部分：窗口过程
 
-        #region 第八部分：窗口导航方法
+        #region 第七部分：窗口导航方法
 
         /// <summary>
         /// 页面向前导航
@@ -1260,9 +1260,9 @@ namespace PowerToolbox.Views.Windows
             return false;
         }
 
-        #endregion 第八部分：窗口导航方法
+        #endregion 第七部分：窗口导航方法
 
-        #region 第九部分：显示对话框和应用通知
+        #region 第八部分：显示对话框和应用通知
 
         /// <summary>
         /// 显示内容对话框
@@ -1325,7 +1325,7 @@ namespace PowerToolbox.Views.Windows
             }
         }
 
-        #endregion 第九部分：显示对话框和应用通知
+        #endregion 第八部分：显示对话框和应用通知
 
         /// <summary>
         /// 将提权模式下拖放获得到的文件列表发送到各个页面

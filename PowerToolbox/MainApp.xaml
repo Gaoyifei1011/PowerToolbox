@@ -513,6 +513,7 @@
                 </Setter>
             </Style>
 
+            <!--  更新命令栏浮出控件专用命令栏的默认控件模板样式  -->
             <Style TargetType="primitives:CommandBarFlyoutCommandBar">
                 <Setter Property="SystemBackdrop" Value="{StaticResource CommandBarFlyoutSystemBackdrop}" />
                 <Setter Property="Background" Value="{ThemeResource CommandBarFlyoutBackground}" />
