@@ -305,7 +305,7 @@
 		<None Remove="Assets\PowerToolbox.ico" CopyToOutputDirectory="Never" />
     <None Remove="Styles\ComboBox.xaml" />
     <None Remove="Styles\CommandBar.xaml" />
-		<None Remove="Styles\DateTimePicker.xaml" />
+    <None Remove="Styles\DatePicker.xaml" />
 		<None Remove="Styles\InfoBar.xaml" />
 		<None Remove="Styles\NavigationView.xaml" />
 		<None Remove="Styles\ProgressRing.xaml" />
@@ -379,7 +379,7 @@
 
     <Page Include="Styles\ComboBox.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\CommandBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-		<Page Include="Styles\DateTimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+		<Page Include="Styles\DatePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\InfoBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\NavigationView.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
 		<Page Include="Styles\ProgressRing.xaml" XamlRuntime="$(DefaultXamlRuntime)" />

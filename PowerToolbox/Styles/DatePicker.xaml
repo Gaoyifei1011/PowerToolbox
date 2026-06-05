@@ -137,11 +137,11 @@
                             <Grid x:Name="FlyoutButtonContentGrid">
 
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition x:Name="DayColumn" Width="64*" />
+                                    <ColumnDefinition x:Name="DayColumn" Width="*" />
                                     <ColumnDefinition x:Name="FirstSpacerColumn" Width="Auto" />
-                                    <ColumnDefinition x:Name="MonthColumn" Width="64*" />
+                                    <ColumnDefinition x:Name="MonthColumn" Width="*" />
                                     <ColumnDefinition x:Name="SecondSpacerColumn" Width="Auto" />
-                                    <ColumnDefinition x:Name="YearColumn" Width="78*" />
+                                    <ColumnDefinition x:Name="YearColumn" Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     x:Name="DayTextBlock"
