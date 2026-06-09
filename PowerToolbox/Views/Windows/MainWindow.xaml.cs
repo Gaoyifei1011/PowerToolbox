@@ -43,6 +43,7 @@ namespace PowerToolbox.Views.Windows
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private readonly string AdvancedSystemOptionsString = ResourceService.WindowResource.GetString("AdvancedSystemOptions");
         private readonly string AllToolsString = ResourceService.WindowResource.GetString("AllTools");
         private readonly string ContextMenuManagerString = ResourceService.WindowResource.GetString("ContextMenuManager");
         private readonly string DataVertifyEncryptString = ResourceService.WindowResource.GetString("DataVerifyEncrypt");
@@ -467,6 +468,16 @@ namespace PowerToolbox.Views.Windows
                 NavigationTag = "UpdateManager",
                 ParentTag = "System",
                 NavigationPage = typeof(UpdateManagerPage),
+                VisibleState = Visibility.Visible
+            });
+            systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            {
+                NavigationViewItemKind = NavigationViewItemKind.Item,
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/AdvancedSystemOptions.png") } },
+                NavigationTitle = AdvancedSystemOptionsString,
+                NavigationTag = "AdvancedSystemOptions",
+                ParentTag = "System",
+                NavigationPage = typeof(AdvancedSystemOptionsPage),
                 VisibleState = Visibility.Visible
             });
             systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()

@@ -10,6 +10,8 @@ namespace PowerToolbox.Services.Root
     {
         private static Assembly CurrentAssembly { get; } = Assembly.GetExecutingAssembly();
 
+        public static ResourceManager AdvancedSystemOptionsResource { get; } = new("PowerToolbox.Strings.AdvancedSystemOptions", CurrentAssembly);
+
         public static ResourceManager AllToolsResource { get; } = new("PowerToolbox.Strings.AllTools", CurrentAssembly);
 
         public static ResourceManager ContextMenuManagerResource { get; } = new("PowerToolbox.Strings.ContextMenuManager", CurrentAssembly);
@@ -27,8 +29,6 @@ namespace PowerToolbox.Services.Root
         public static ResourceManager DownloadManagerResource { get; } = new("PowerToolbox.Strings.DownloadManager", CurrentAssembly);
 
         public static ResourceManager DriverManagerResource { get; } = new("PowerToolbox.Strings.DriverManager", CurrentAssembly);
-
-        public static ResourceManager ExperimentalFeatureManagerResource { get; } = new("PowerToolbox.Strings.ExperimentalFeatureManager", CurrentAssembly);
 
         public static ResourceManager ExtensionNameResource { get; } = new("PowerToolbox.Strings.ExtensionName", CurrentAssembly);
 

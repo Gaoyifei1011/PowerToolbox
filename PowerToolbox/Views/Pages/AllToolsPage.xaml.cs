@@ -158,6 +158,13 @@ namespace PowerToolbox.Views.Pages
             },
             new ControlItemModel()
             {
+                Title = ResourceService.AllToolsResource.GetString("AdvancedSystemOptions"),
+                Description = ResourceService.AllToolsResource.GetString("AdvancedSystemOptionsDescription"),
+                ImagePath = "ms-appx:///Assets/ControlIcon/AdvancedSystemOptions.png",
+                NavigationPage = typeof(AdvancedSystemOptionsPage)
+            },
+            new ControlItemModel()
+            {
                 Title = ResourceService.AllToolsResource.GetString("WinFR"),
                 Description = ResourceService.AllToolsResource.GetString("WinFRDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/WinFR.png",
