@@ -42,8 +42,6 @@ namespace PowerToolbox.Services.Root
 
         public static ResourceManager FileUnlockResource { get; } = new("PowerToolbox.Strings.FileUnlock", CurrentAssembly);
 
-        public static ResourceManager HostsResource { get; } = new("PowerToolbox.Strings.Hosts", CurrentAssembly);
-
         public static ResourceManager IconExtractResource { get; } = new("PowerToolbox.Strings.IconExtract", CurrentAssembly);
 
         public static ResourceManager LoafResource { get; } = new("PowerToolbox.Strings.Loaf", CurrentAssembly);

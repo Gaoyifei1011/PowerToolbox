@@ -111,12 +111,10 @@ A toolbox that integrates multiple gadgets
 | Theme switch                                              | Finished                                                             |
 | Customize the right-click menu                            | Finished                                                             |
 | Right-click menu items manager                            | Finished                                                             |
-| Experimental feature management                           | Developing                                                           |
 | Loopback manager                                          | Finished                                                             |
 | Driver manager                                            | Finished                                                             |
 | Update manager                                            | Finished                                                             |
 | Scheduled task management                                 | Finished                                                             |
-| Hosts file editor                                         | Developing                                                           |
 | Windows file recovery                                     | Finished                                                             |
 | Windows system assessment tool                            | Finished                                                             |
 | To be continued                                           | ......                                                               |

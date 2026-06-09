@@ -108,14 +108,7 @@ namespace PowerToolbox.Views.Pages
                 Description = ResourceService.AllToolsResource.GetString("ContextMenuManagerDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/ContextMenuManager.png",
                 NavigationPage = typeof(ContextMenuManagerPage)
-            },
-            //new ControlItemModel()
-            //{
-            //    Title = ResourceService.AllToolsResource.GetString("ExperimentalFeatureManager"),
-            //    Description = ResourceService.AllToolsResource.GetString("ExperimentalFeatureManagerDescription"),
-            //    ImagePath = "ms-appx:///Assets/ControlIcon/ExperimentalFeatureManager.png",
-            //    NavigationPage = typeof(ExperimentalFeatureManagerPage)
-            //}
+            }
         ];
 
         // 系统工具列表
@@ -135,13 +128,6 @@ namespace PowerToolbox.Views.Pages
                 ImagePath = "ms-appx:///Assets/ControlIcon/ScheduledTaskManager.png",
                 NavigationPage = typeof(ScheduledTaskManagerPage)
             },
-            //new ControlItemModel()
-            //{
-            //    Title = ResourceService.AllToolsResource.GetString("Hosts"),
-            //    Description = ResourceService.AllToolsResource.GetString("HostsDescription"),
-            //    ImagePath = "ms-appx:///Assets/ControlIcon/Hosts.png",
-            //    NavigationPage = typeof(HostsPage)
-            //},
             new ControlItemModel()
             {
                 Title = ResourceService.AllToolsResource.GetString("DriverManager"),

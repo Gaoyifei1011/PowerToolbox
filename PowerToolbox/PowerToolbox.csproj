@@ -115,12 +115,10 @@
     <Content Include="Assets\ControlIcon\DataVerifyEncrypt.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\DownloadManager.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\DriverManager.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\ExperimentalFeatureManager.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\File.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\FileCertificate.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\FileManager.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\FileUnlock.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\ControlIcon\Hosts.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\IconExtract.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\Loaf.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\LoopbackManager.png" CopyToOutputDirectory="Always" />
@@ -238,9 +236,6 @@
     <EmbeddedResource Include="Strings\FileUnlock.en-us.restext" />
     <EmbeddedResource Include="Strings\FileUnlock.restext" />
     <EmbeddedResource Include="Strings\FileUnlock.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\Hosts.en-us.restext" />
-    <EmbeddedResource Include="Strings\Hosts.restext" />
-    <EmbeddedResource Include="Strings\Hosts.zh-hans.restext" />
     <EmbeddedResource Include="Strings\IconExtract.en-us.restext" />
     <EmbeddedResource Include="Strings\IconExtract.restext" />
     <EmbeddedResource Include="Strings\IconExtract.zh-hans.restext" />
@@ -312,7 +307,6 @@
     <None Remove="Styles\ProgressRing.xaml" />
     <None Remove="Styles\RadioButtons.xaml" />
     <None Remove="Styles\RepeatButton.xaml" />
-    <None Remove="Styles\TextBlock.xaml" />
     <None Remove="Styles\TimePicker.xaml" />
     <None Remove="Styles\ToggleSwitch.xaml" />
     <None Remove="MainApp.xaml" />
@@ -346,11 +340,9 @@
     <None Remove="Views\Pages\FileNamePage.xaml" />
     <None Remove="Views\Pages\FilePropertiesPage.xaml" />
     <None Remove="Views\Pages\FileUnlockPage.xaml" />
-    <None Remove="Views\Pages\HostsPage.xaml" />
     <None Remove="Views\Pages\IconExtractPage.xaml" />
     <None Remove="Views\Pages\LoafPage.xaml" />
     <None Remove="Views\Pages\LoopbackManagerPage.xaml" />
-    <None Remove="Views\Pages\MainPage.xaml" />
     <None Remove="Views\Pages\PriExtractPage.xaml" />
     <None Remove="Views\Pages\ScheduledTaskManagerPage.xaml" />
     <None Remove="Views\Pages\SettingsAboutPage.xaml" />
@@ -421,7 +413,6 @@
     <Page Include="Views\Pages\FileNamePage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\FilePropertiesPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\FileUnlockPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Views\Pages\HostsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\IconExtractPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\LoafPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\LoopbackManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />

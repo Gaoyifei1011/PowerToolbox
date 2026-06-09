@@ -49,12 +49,10 @@ namespace PowerToolbox.Views.Windows
         private readonly string DataVertifyEncryptString = ResourceService.WindowResource.GetString("DataVerifyEncrypt");
         private readonly string DownloadManagerString = ResourceService.WindowResource.GetString("DataVerifyEncrypt");
         private readonly string DriverManagerString = ResourceService.WindowResource.GetString("DriverManager");
-        private readonly string ExperimentalFeatureManagerString = ResourceService.WindowResource.GetString("ExperimentalFeatureManager");
         private readonly string FileString = ResourceService.WindowResource.GetString("File");
         private readonly string FileCertificateString = ResourceService.WindowResource.GetString("FileCertificate");
         private readonly string FileManagerString = ResourceService.WindowResource.GetString("FileManager");
         private readonly string FileUnlockString = ResourceService.WindowResource.GetString("FileUnlock");
-        private readonly string HostsString = ResourceService.WindowResource.GetString("Hosts");
         private readonly string IconExtractString = ResourceService.WindowResource.GetString("IconExtract");
         private readonly string LoafString = ResourceService.WindowResource.GetString("Loaf");
         private readonly string LoopbackManagerString = ResourceService.WindowResource.GetString("LoopbackManager");
@@ -399,17 +397,6 @@ namespace PowerToolbox.Views.Windows
                 VisibleState = Visibility.Visible
             });
             NavigationViewItemMenuItemsCollection.Add(personalizeItem);
-            NavigationViewItemModel experimentalFeatureManagerItem = new()
-            {
-                NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/ExperimentalFeatureManager.png") } },
-                NavigationTitle = ExperimentalFeatureManagerString,
-                NavigationTag = "ExperimentalFeatureManager",
-                ParentTag = null,
-                NavigationPage = null,
-                VisibleState = Visibility.Collapsed
-            };
-            NavigationViewItemMenuItemsCollection.Add(experimentalFeatureManagerItem);
             NavigationViewItemModel systemItem = new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
@@ -439,16 +426,6 @@ namespace PowerToolbox.Views.Windows
                 ParentTag = "System",
                 NavigationPage = typeof(ScheduledTaskManagerPage),
                 VisibleState = Visibility.Visible
-            });
-            systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
-            {
-                NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/Hosts.png") } },
-                NavigationTitle = HostsString,
-                NavigationTag = "Hosts",
-                ParentTag = "System",
-                NavigationPage = typeof(HostsPage),
-                VisibleState = Visibility.Collapsed
             });
             systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
             {
@@ -735,8 +712,8 @@ namespace PowerToolbox.Views.Windows
 
                 IsBackEnabled = CanGoBack();
 
-                // 如果导航到更新页面、 Hosts 文件编辑器页面、文件恢复页面，而且是非管理员模式，显示提示对话框
-                if ((Equals(currentPageType, typeof(UpdateManagerPage)) || Equals(currentPageType, typeof(HostsPage)) || Equals(currentPageType, typeof(WinFRPage))) && !RuntimeHelper.IsElevated)
+                // 如果导航到更新页面、文件恢复页面，而且是非管理员模式，显示提示对话框
+                if ((Equals(currentPageType, typeof(UpdateManagerPage)) || Equals(currentPageType, typeof(WinFRPage))) && !RuntimeHelper.IsElevated)
                 {
                     await ShowDialogAsync(new NeedElevatedDialog());
                     NavigationFrom();
