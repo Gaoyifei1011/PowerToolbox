@@ -65,6 +65,7 @@ namespace PowerToolbox.Views.Windows
         private readonly string SettingsString = ResourceService.WindowResource.GetString("Settings");
         private readonly string ShellMenuString = ResourceService.WindowResource.GetString("ShellMenu");
         private readonly string SystemString = ResourceService.WindowResource.GetString("System");
+        private readonly string SystemInformationString = ResourceService.WindowResource.GetString("SystemInformation");
         private readonly string ThemeSwitchString = ResourceService.WindowResource.GetString("ThemeSwitch");
         private readonly string TitleString = ResourceService.WindowResource.GetString("Title");
         private readonly string UpdateManagerString = ResourceService.WindowResource.GetString("UpdateManager");
@@ -475,6 +476,16 @@ namespace PowerToolbox.Views.Windows
                 NavigationTag = "WinSAT",
                 ParentTag = "System",
                 NavigationPage = typeof(WinSATPage),
+                VisibleState = Visibility.Visible
+            });
+            systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            {
+                NavigationViewItemKind = NavigationViewItemKind.Item,
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/SystemInformation.png") } },
+                NavigationTitle = SystemInformationString,
+                NavigationTag = "SystemInformation",
+                ParentTag = "System",
+                NavigationPage = typeof(SystemInformationPage),
                 VisibleState = Visibility.Visible
             });
             NavigationViewItemMenuItemsCollection.Add(systemItem);

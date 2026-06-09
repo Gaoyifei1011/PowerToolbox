@@ -162,6 +162,13 @@ namespace PowerToolbox.Views.Pages
                 Description = ResourceService.AllToolsResource.GetString("WinSATDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/WinSAT.png",
                 NavigationPage = typeof(WinSATPage)
+            },
+            new ControlItemModel()
+            {
+                Title = ResourceService.AllToolsResource.GetString("SystemInformation"),
+                Description = ResourceService.AllToolsResource.GetString("SystemInformationDescription"),
+                ImagePath = "ms-appx:///Assets/ControlIcon/SystemInformation.png",
+                NavigationPage = typeof(SystemInformationPage)
             }
         ];
 

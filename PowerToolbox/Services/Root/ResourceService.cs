@@ -70,6 +70,8 @@ namespace PowerToolbox.Services.Root
 
         public static ResourceManager SimulateUpdateResource { get; } = new("PowerToolbox.Strings.SimulateUpdate", CurrentAssembly);
 
+        public static ResourceManager SystemInformationResource { get; } = new("PowerToolbox.Strings.SystemInformation", CurrentAssembly);
+
         public static ResourceManager ThemeSwitchResource { get; } = new("PowerToolbox.Strings.ThemeSwitch", CurrentAssembly);
 
         public static ResourceManager UpdateManagerResource { get; } = new("PowerToolbox.Strings.UpdateManager", CurrentAssembly);

@@ -130,6 +130,7 @@
     <Content Include="Assets\ControlIcon\Settings.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\ShellMenu.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\System.png" CopyToOutputDirectory="Always" />
+    <Content Include="Assets\ControlIcon\SystemInformation.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\ThemeSwitch.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\UpdateManager.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\WinFR.png" CopyToOutputDirectory="Always" />
@@ -279,6 +280,9 @@
     <EmbeddedResource Include="Strings\SimulateUpdate.en-us.restext" />
     <EmbeddedResource Include="Strings\SimulateUpdate.restext" />
     <EmbeddedResource Include="Strings\SimulateUpdate.zh-hans.restext" />
+    <EmbeddedResource Include="Strings\SystemInformation.en-us.restext" />
+    <EmbeddedResource Include="Strings\SystemInformation.restext" />
+    <EmbeddedResource Include="Strings\SystemInformation.zh-hans.restext" />
     <EmbeddedResource Include="Strings\ThemeSwitch.en-us.restext" />
     <EmbeddedResource Include="Strings\ThemeSwitch.restext" />
     <EmbeddedResource Include="Strings\ThemeSwitch.zh-hans.restext" />
@@ -329,6 +333,7 @@
     <None Remove="Views\Pages\AdvancedSystemOptionsPage.xaml" />
     <None Remove="Views\Pages\AllToolsPage.xaml" />
     <None Remove="Views\Pages\ContextMenuManagerPage.xaml" />
+    <None Remove="Views\Pages\DataDecryptPage.xaml" />
     <None Remove="Views\Pages\DataEncryptPage.xaml" />
     <None Remove="Views\Pages\DataVerifyEncryptPage.xaml" />
     <None Remove="Views\Pages\DataVerifyPage.xaml" />
@@ -352,7 +357,8 @@
     <None Remove="Views\Pages\ShellMenuEditPage.xaml" />
     <None Remove="Views\Pages\ShellMenuListPage.xaml" />
     <None Remove="Views\Pages\ShellMenuPage.xaml" />
-    <None Remove="Views\Pages\ThemeSwitch.xaml" />
+    <None Remove="Views\Pages\SystemInformationPage.xaml" />
+    <None Remove="Views\Pages\ThemeSwitchPage.xaml" />
     <None Remove="Views\Pages\UpdateManagerPage.xaml" />
     <None Remove="Views\Pages\UpperAndLowerCasePage.xaml" />
     <None Remove="Views\Pages\WinFRPage.xaml" />
@@ -398,6 +404,7 @@
     <Page Include="Views\Dialogs\UpdateAppDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\NotificationTips\CopyPasteNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\NotificationTips\OperationResultNotificationTip.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Views\Pages\SystemInformationPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\AdvancedSystemOptionsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\AllToolsPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Pages\ContextMenuManagerPage.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
