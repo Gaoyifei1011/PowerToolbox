@@ -448,16 +448,16 @@ namespace PowerToolbox.Views.Windows
                 NavigationPage = typeof(UpdateManagerPage),
                 VisibleState = Visibility.Visible
             });
-            systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
-            {
-                NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/AdvancedSystemOptions.png") } },
-                NavigationTitle = AdvancedSystemOptionsString,
-                NavigationTag = "AdvancedSystemOptions",
-                ParentTag = "System",
-                NavigationPage = typeof(AdvancedSystemOptionsPage),
-                VisibleState = Visibility.Visible
-            });
+            //systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            //{
+            //    NavigationViewItemKind = NavigationViewItemKind.Item,
+            //    NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/AdvancedSystemOptions.png") } },
+            //    NavigationTitle = AdvancedSystemOptionsString,
+            //    NavigationTag = "AdvancedSystemOptions",
+            //    ParentTag = "System",
+            //    NavigationPage = typeof(AdvancedSystemOptionsPage),
+            //    VisibleState = Visibility.Collapsed
+            //});
             systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,

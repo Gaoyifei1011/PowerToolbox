@@ -36,6 +36,7 @@ A toolbox that integrates multiple gadgets
 > *	Windows file recovery 
 > *	Loopback manager
 > * Windows system performance evaluation
+> * Windows system information
 
 ------
 
@@ -117,6 +118,7 @@ A toolbox that integrates multiple gadgets
 | Scheduled task management                                 | Finished                                                             |
 | Windows file recovery                                     | Finished                                                             |
 | Windows system assessment tool                            | Finished                                                             |
+| Windows system information                                | Finished                                                             |
 | To be continued                                           | ......                                                               |
 
 ------
