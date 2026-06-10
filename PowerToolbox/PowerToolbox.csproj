@@ -370,10 +370,10 @@
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools.MSIX" Version="1.7.260518100" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     <PackageReference Include="Microsoft.Windows.SDK.NET.Ref" Version="10.0.26100.84" PrivateAssets="none" IncludeAssets="none" GeneratePathProperty="true" />
     <PackageReference Include="Microsoft.WindowsAppSDK.Base" Version="2.0.4" />
-    <PackageReference Include="Microsoft.WindowsAppSDK.Foundation" Version="2.0.21" />
-    <PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="2.0.13" GeneratePathProperty="True" />
-    <PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="2.1.3" />
-    <PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="2.1.0" GeneratePathProperty="True" IncludeAssets="none" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.Foundation" Version="2.1.0" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="2.0.15" GeneratePathProperty="True" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="2.2.0" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="2.2.1" GeneratePathProperty="True" IncludeAssets="none" PrivateAssets="all" />
     <PackageReference Include="Mile.Aria2" Version="1.0.1050" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.6.1" />
     <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
