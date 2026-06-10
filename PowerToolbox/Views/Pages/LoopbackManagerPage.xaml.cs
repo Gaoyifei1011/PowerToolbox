@@ -758,7 +758,6 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取是否正在加载中
         /// </summary>
-
         private bool GetIsLoading(LoopbackResultKind loopbackResultKind)
         {
             return loopbackResultKind is not LoopbackResultKind.Loading;

@@ -50,6 +50,22 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Kernel32
         public static extern nint GetCurrentProcess();
 
         /// <summary>
+        /// 检索本地计算机的固件类型。
+        /// </summary>
+        /// <param name="FirmwareType">指向 FIRMWARE_TYPE枚举的 指针。</param>
+        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
+        [DllImport(Kernel32, CharSet = CharSet.Unicode, EntryPoint = "GetFirmwareType", PreserveSig = true, SetLastError = false)]
+        public static extern bool GetFirmwareType(out FIRMWARE_TYPE FirmwareType);
+
+        /// <summary>
+        /// 检索有关系统当前物理内存和虚拟内存使用情况的信息。
+        /// </summary>
+        /// <param name="lpBuffer">指向 MEMORYSTATUSEX 结构的指针，该结构接收有关当前内存可用性的信息。</param>
+        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。 </returns>
+        [DllImport(Kernel32, CharSet = CharSet.Unicode, EntryPoint = "GlobalMemoryStatusEx", PreserveSig = true, SetLastError = false)]
+        public static extern bool GlobalMemoryStatusEx(ref MEMORYSTATUSEX lpBuffer);
+
+        /// <summary>
         /// 检索调用线程的最后错误代码值。 最后一个错误代码按线程进行维护。 多个线程不会覆盖彼此的最后一个错误代码。
         /// </summary>
         /// <returns>
@@ -71,6 +87,14 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Kernel32
         /// <returns>如果函数成功，则返回 ERROR_SUCCESS。 否则，函数将返回错误代码。</returns>
         [DllImport(Kernel32, CharSet = CharSet.Unicode, EntryPoint = "GetPackagePathByFullName", PreserveSig = true, SetLastError = false)]
         public static extern int GetPackagePathByFullName([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, ref int pathLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder path);
+
+        /// <summary>
+        /// 指向变量的指针，该变量接收物理安装的 RAM 量（以 KB 为单位）。
+        /// </summary>
+        /// <param name="totalMemoryInKilobytes">指向变量的指针，该变量接收物理安装的 RAM 量（以 KB 为单位）。</param>
+        /// <returns>如果函数成功，则返回 TRUE 并将 TotalMemoryInKilobytes 参数设置为非零值。如果函数失败，它将返回 FALSE ，并且不会修改 TotalMemoryInKilobytes 参数。</returns>
+        [DllImport(Kernel32, CharSet = CharSet.Unicode, EntryPoint = "GetPhysicallyInstalledSystemMemory", PreserveSig = true, SetLastError = false)]
+        public static extern bool GetPhysicallyInstalledSystemMemory(out ulong totalMemoryInKilobytes);
 
         /// <summary>
         /// 使应用程序能够通知系统它正在使用中，从而防止系统在应用程序运行时进入睡眠状态或关闭显示器。
