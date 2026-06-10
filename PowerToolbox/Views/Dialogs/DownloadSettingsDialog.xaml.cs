@@ -5,7 +5,6 @@ using PowerToolbox.Models;
 using PowerToolbox.Services.Download;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
-using PowerToolbox.Views.Pages;
 using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;

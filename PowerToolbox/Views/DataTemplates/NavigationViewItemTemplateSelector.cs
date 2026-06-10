@@ -18,11 +18,11 @@ namespace PowerToolbox.Views.DataTemplates
         {
             if (item is NavigationViewItemModel navigationViewItem)
             {
-                if(navigationViewItem.NavigationViewItemKind is NavigationViewItemKind.Item)
+                if (navigationViewItem.NavigationViewItemKind is NavigationViewItemKind.Item)
                 {
                     return NavigationViewItemTemplate;
                 }
-                else if(navigationViewItem.NavigationViewItemKind is NavigationViewItemKind.Seperator)
+                else if (navigationViewItem.NavigationViewItemKind is NavigationViewItemKind.Seperator)
                 {
                     return NavigationViewItemSeparatorTemplate;
                 }
