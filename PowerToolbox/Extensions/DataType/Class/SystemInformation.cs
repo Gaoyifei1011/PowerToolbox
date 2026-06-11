@@ -156,8 +156,8 @@
         public string PageFilePosition { get; set; }
 
         /// <summary>
-        /// 页面文件空间
+        /// 页面文件大小
         /// </summary>
-        public string PageFileSpace { get; set; }
+        public string PageFileSize { get; set; }
     }
 }

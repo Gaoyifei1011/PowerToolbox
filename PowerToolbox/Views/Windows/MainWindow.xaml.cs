@@ -61,7 +61,7 @@ namespace PowerToolbox.Views.Windows
         private readonly string RelaxationString = ResourceService.WindowResource.GetString("Relaxation");
         private readonly string ResourceString = ResourceService.WindowResource.GetString("Resource");
         private readonly string RunningAdministratorString = ResourceService.WindowResource.GetString("RunningAdministrator");
-        private readonly string ScheduledTaskManagerString = ResourceService.WindowResource.GetString("LoopbackManager");
+        private readonly string ScheduledTaskManagerString = ResourceService.WindowResource.GetString("ScheduledTaskManager");
         private readonly string SettingsString = ResourceService.WindowResource.GetString("Settings");
         private readonly string ShellMenuString = ResourceService.WindowResource.GetString("ShellMenu");
         private readonly string SystemString = ResourceService.WindowResource.GetString("System");

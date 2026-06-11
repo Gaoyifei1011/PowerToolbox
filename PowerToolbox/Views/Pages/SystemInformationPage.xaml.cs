@@ -49,7 +49,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string OperatingSystemVersionString = ResourceService.SystemInformationResource.GetString("OperatingSystemVersion");
         private readonly string ProductIDString = ResourceService.SystemInformationResource.GetString("ProductID");
         private readonly string PageFilePositionString = ResourceService.SystemInformationResource.GetString("PageFilePosition");
-        private readonly string PageFileSpaceString = ResourceService.SystemInformationResource.GetString("PageFileSpace");
+        private readonly string PageFileSizeString = ResourceService.SystemInformationResource.GetString("PageFileSize");
         private readonly string ProcessorString = ResourceService.SystemInformationResource.GetString("Processor");
         private readonly string RegionSettingsString = ResourceService.SystemInformationResource.GetString("RegionSettings");
         private readonly string SMBIOSVersionString = ResourceService.SystemInformationResource.GetString("SMBIOSVersion");
@@ -156,7 +156,7 @@ namespace PowerToolbox.Views.Pages
                     SystemInformationCollection.Add(new SystemInformationModel() { Item = TotalVirtualMemoryString, Content = systemInformation.TotalVirtualMemory });
                     SystemInformationCollection.Add(new SystemInformationModel() { Item = AvailableVirtualMemoryString, Content = systemInformation.AvailableVirtualMemory });
                     SystemInformationCollection.Add(new SystemInformationModel() { Item = PageFilePositionString, Content = systemInformation.PageFilePosition });
-                    SystemInformationCollection.Add(new SystemInformationModel() { Item = PageFileSpaceString, Content = systemInformation.PageFileSpace });
+                    SystemInformationCollection.Add(new SystemInformationModel() { Item = PageFileSizeString, Content = systemInformation.PageFileSize });
                     SystemInformationResultKind = SystemInformationResultKind.Successfully;
                 }
                 else
@@ -238,7 +238,7 @@ namespace PowerToolbox.Views.Pages
                 SystemInformationCollection.Add(new SystemInformationModel() { Item = TotalVirtualMemoryString, Content = systemInformation.TotalVirtualMemory });
                 SystemInformationCollection.Add(new SystemInformationModel() { Item = AvailableVirtualMemoryString, Content = systemInformation.AvailableVirtualMemory });
                 SystemInformationCollection.Add(new SystemInformationModel() { Item = PageFilePositionString, Content = systemInformation.PageFilePosition });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = PageFileSpaceString, Content = systemInformation.PageFileSpace });
+                SystemInformationCollection.Add(new SystemInformationModel() { Item = PageFileSizeString, Content = systemInformation.PageFileSize });
                 SystemInformationResultKind = SystemInformationResultKind.Successfully;
             }
             else
@@ -484,13 +484,13 @@ namespace PowerToolbox.Views.Pages
                     }
                     pageFilePositionSearcher.Dispose();
 
-                    ManagementObjectSearcher pageFileSpaceSearcher = new("SELECT SizeStoredInPagingFiles FROM Win32_OperatingSystem");
-                    foreach (ManagementObject managementObject in pageFileSpaceSearcher.Get().Cast<ManagementObject>())
+                    ManagementObjectSearcher pageFileSizeSearcher = new("SELECT SizeStoredInPagingFiles FROM Win32_OperatingSystem");
+                    foreach (ManagementObject managementObject in pageFileSizeSearcher.Get().Cast<ManagementObject>())
                     {
-                        ulong pageFileSpace = (ulong)managementObject["SizeStoredInPagingFiles"];
-                        systemInformation.PageFileSpace = VolumeSizeHelper.ConvertVolumeSizeToString(pageFileSpace * 1024);
+                        ulong pageFileSize = (ulong)managementObject["SizeStoredInPagingFiles"];
+                        systemInformation.PageFileSize = VolumeSizeHelper.ConvertVolumeSizeToString(pageFileSize * 1024);
                     }
-                    pageFileSpaceSearcher.Dispose();
+                    pageFileSizeSearcher.Dispose();
 
                     // 为未赋值的属性设置未知
                     PropertyInfo[] systemInformationPropertyInfo = systemInformation.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
