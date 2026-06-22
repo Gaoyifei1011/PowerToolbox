@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 // 抑制 CA1401 警告
 #pragma warning disable CA1401
@@ -11,6 +12,15 @@ namespace PowerToolbox.WindowsAPI.PInvoke.PowrProf
     public static class PowrProfLibrary
     {
         private const string PowrProf = "powrProf.dll";
+
+        /// <summary>
+        /// 为当前用户设置活动电源方案。
+        /// </summary>
+        /// <param name="UserRootPowerKey">此参数保留供将来使用，必须设置为 NULL。</param>
+        /// <param name="SchemeGuid">电源方案的标识符。</param>
+        /// <returns>如果调用成功，则返回 ERROR_SUCCESS (零) ;如果调用失败，则返回非零值。</returns>
+        [DllImport(PowrProf, CharSet = CharSet.Unicode, EntryPoint = "PowerSetActiveScheme", PreserveSig = true, SetLastError = true)]
+        public static extern uint PowerSetActiveScheme(nint UserRootPowerKey, Guid SchemeGuid);
 
         /// <summary>
         /// 通过关闭电源来暂停系统。 根据 休眠 参数，系统将进入暂停 (睡眠) 状态或休眠 (S4) 。

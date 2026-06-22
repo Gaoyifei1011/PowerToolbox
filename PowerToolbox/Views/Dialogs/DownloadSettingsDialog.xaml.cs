@@ -176,7 +176,7 @@ namespace PowerToolbox.Views.Dialogs
         /// 下载引擎方式设置
         /// </summary>
 
-        private void OnDoEngineModeSelectChanged(object sender, SelectionChangedEventArgs args)
+        private void OnDoEngineModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
             if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel doEngineMode && !Equals(DoEngineMode, doEngineMode))
             {

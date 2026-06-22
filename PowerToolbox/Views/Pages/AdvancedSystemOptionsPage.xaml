@@ -2,6 +2,7 @@
     x:Class="PowerToolbox.Views.Pages.AdvancedSystemOptionsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
@@ -21,7 +22,7 @@
 
         <ScrollViewer
             Grid.Row="1"
-            Padding="16,0,30,3"
+            Padding="30,5,30,3"
             HorizontalScrollBarVisibility="Disabled"
             HorizontalScrollMode="Disabled"
             VerticalScrollBarVisibility="Auto"
@@ -29,8 +30,8 @@
 
             <StackPanel Margin="0,0,0,30">
 
-                <!--  格式转换类型  -->
-                <!--<Grid
+                <!--  电源模式设置  -->
+                <Grid
                     Height="60"
                     Margin="0,0,0,2"
                     Padding="16,0"
@@ -40,27 +41,455 @@
                     CornerRadius="{StaticResource ControlCornerRadius}">
 
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <FontIcon
+                        Grid.Column="0"
+                        Margin="0,0,12,0"
+                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        FontSize="16"
+                        Glyph="&#xE945;" />
+
+                    <StackPanel
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('PowerModeSettings')}" />
+
+                        <TextBlock
+                            x:Name="PowerModeSettingsDescription"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('PowerModeSettingsDescription')}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap">
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('PowerModeSettingsDescription')}" Visibility="{x:Bind PowerModeSettingsDescription.IsTextTrimmed, Mode=OneWay}" />
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <Button
+                        Grid.Column="2"
+                        Width="32"
+                        Height="32"
+                        Margin="0,0,6,0"
+                        Padding="0"
+                        CornerRadius="{StaticResource ControlCornerRadius}"
+                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('ShowOptions')}">
+
+                        <FontIcon FontSize="14" Glyph="&#xE712;" />
+
+                        <Button.Flyout>
+                            <MenuFlyout Placement="Bottom">
+                                <MenuFlyoutItem Click="{x:Bind OnOpenSystemSettingsClicked}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('OpenSystemSettings')}">
+                                    <MenuFlyoutItem.Icon>
+                                        <AnimatedIcon>
+                                            <AnimatedIcon.Source>
+                                                <animatedvisuals:AnimatedSettingsVisualSource />
+                                            </AnimatedIcon.Source>
+                                            <AnimatedIcon.FallbackIconSource>
+                                                <FontIconSource Glyph="&#xE713;" />
+                                            </AnimatedIcon.FallbackIconSource>
+                                        </AnimatedIcon>
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+
+                                <MenuFlyoutItem Click="{x:Bind OnOpenControlPanelClicked}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('OpenControlPanel')}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE70A;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+
+                    <Button
+                        Grid.Column="3"
+                        Width="32"
+                        Height="32"
+                        Padding="8"
+                        CornerRadius="{StaticResource ControlCornerRadius}"
+                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('Change')}">
+
+                        <AnimatedIcon>
+                            <AnimatedIcon.Source>
+                                <animatedvisuals:AnimatedChevronDownSmallVisualSource />
+                            </AnimatedIcon.Source>
+                            <AnimatedIcon.FallbackIconSource>
+                                <FontIconSource Glyph="&#xE70D;" />
+                            </AnimatedIcon.FallbackIconSource>
+                        </AnimatedIcon>
+
+                        <Button.Flyout>
+                            <MenuFlyout Placement="Bottom">
+                                <MenuFlyoutItem
+                                    Click="{x:Bind OnChangePowerModeClicked}"
+                                    Tag="EnergySaving"
+                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('EnergySaving')}" />
+
+                                <MenuFlyoutItem
+                                    Click="{x:Bind OnChangePowerModeClicked}"
+                                    Tag="Balance"
+                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('Balance')}" />
+
+                                <MenuFlyoutItem
+                                    Click="{x:Bind OnChangePowerModeClicked}"
+                                    Tag="HighPerformance"
+                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('HighPerformance')}" />
+
+                                <MenuFlyoutItem
+                                    Click="{x:Bind OnChangePowerModeClicked}"
+                                    Tag="OutstandingPerformance"
+                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('OutstandingPerformance')}" />
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                </Grid>
+
+                <!--  用户账户控制设置  -->
+                <Grid
+                    Height="60"
+                    Margin="0,0,0,2"
+                    Padding="16,0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{StaticResource ControlCornerRadius}">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock
+                    <FontIcon
                         Grid.Column="0"
-                        Margin="0,0,0,2"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource BodyTextBlockStyle}"
-                        Text="{x:Bind rootservice:ResourceService.AdvancedSystemSettingsResource.GetString('FormatConversionType')}" />
+                        Margin="0,0,12,0"
+                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        FontSize="16"
+                        Glyph="&#xF0EF;" />
 
-                    <ComboBox
+                    <StackPanel
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        DisplayMemberPath="DisplayMember"
-                        ItemsSource="{x:Bind FormatConversionTypeList}"
-                        SelectedItem="{x:Bind SelectedFormatConversionType, Mode=OneWay}"
-                        SelectionChanged="{x:Bind OnFormatConversionTypeSelectionChanged}"
-                        Style="{StaticResource ComboBoxStyle}" />
-                </Grid>-->
+                        Orientation="Vertical">
+
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('UACSettings')}" />
+
+                        <TextBlock
+                            x:Name="UACSettingsDescription"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('UACSettingsDescription')}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap">
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('UACSettingsDescription')}" Visibility="{x:Bind UACSettingsDescription.IsTextTrimmed, Mode=OneWay}" />
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <Button
+                        Grid.Column="2"
+                        Width="32"
+                        Height="32"
+                        Padding="8"
+                        CornerRadius="{StaticResource ControlCornerRadius}"
+                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('Change')}">
+
+                        <AnimatedIcon>
+                            <AnimatedIcon.Source>
+                                <animatedvisuals:AnimatedChevronDownSmallVisualSource />
+                            </AnimatedIcon.Source>
+                            <AnimatedIcon.FallbackIconSource>
+                                <FontIconSource Glyph="&#xE70D;" />
+                            </AnimatedIcon.FallbackIconSource>
+                        </AnimatedIcon>
+
+                        <Button.Flyout>
+                            <Flyout
+                                x:Name="UACSettingsFlyout"
+                                Closing="{x:Bind OnUACSettingsFlyoutClosing}"
+                                Opened="{x:Bind OnUACSettingsFlyoutOpened}"
+                                Placement="Bottom"
+                                ShouldConstrainToRootBounds="False">
+
+                                <Flyout.FlyoutPresenterStyle>
+                                    <Style BasedOn="{StaticResource DefaultFlyoutPresenterStyle}" TargetType="FlyoutPresenter">
+                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="Background" Value="Transparent" />
+                                        <Setter Property="MinWidth" Value="0" />
+                                        <Setter Property="MinHeight" Value="0" />
+                                    </Style>
+                                </Flyout.FlyoutPresenterStyle>
+
+                                <Grid>
+                                    <SystemBackdropElement CornerRadius="{StaticResource OverlayCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="40" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid
+                                            Grid.Row="0"
+                                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                            BorderThickness="0,0,0,1">
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <FontIcon
+                                                Grid.Column="0"
+                                                Margin="16,2,6,0"
+                                                VerticalAlignment="Center"
+                                                FontSize="16"
+                                                Glyph="&#xE713;" />
+
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                FontSize="14"
+                                                Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('UACSettings')}" />
+
+                                            <Button
+                                                Grid.Column="2"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Click="{x:Bind OnCloseUACSettingsClicked}"
+                                                Style="{StaticResource AlternateCloseButtonStyle}"
+                                                ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('Close')}">
+
+                                                <FontIcon
+                                                    Margin="4"
+                                                    FontSize="16"
+                                                    Glyph="&#xE711;" />
+                                            </Button>
+                                        </Grid>
+
+                                        <Grid
+                                            Grid.Row="1"
+                                            Width="450"
+                                            Padding="16,8,6,8">
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid Grid.Row="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock
+                                                    Grid.Column="0"
+                                                    VerticalAlignment="Center"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NotifyMode')}" />
+
+                                                <ComboBox
+                                                    Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                    DisplayMemberPath="DisplayMember"
+                                                    ItemsSource="{x:Bind NotifyModeList}"
+                                                    SelectedItem="{x:Bind SelectedNotifyMode, Mode=OneWay}"
+                                                    SelectionChanged="{x:Bind OnNotifyModeSelectionChanged}"
+                                                    Style="{StaticResource ComboBoxStyle}" />
+                                            </Grid>
+
+                                            <MenuFlyoutSeparator Grid.Row="1" Margin="3,5,5,3" />
+
+                                            <Grid
+                                                Grid.Row="2"
+                                                RowSpacing="3"
+                                                Visibility="{x:Bind GetSelectedNotifyMode(SelectedNotifyMode.SelectedValue, NotifyModeList[0].SelectedValue), Mode=OneWay}">
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    FontSize="16"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('AlwaysNotify')}" />
+
+                                                <TextBlock
+                                                    Grid.Row="1"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('AlwaysNotifyDescription1')}"
+                                                    TextWrapping="Wrap" />
+
+                                                <TextBlock
+                                                    Grid.Row="2"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('AlwaysNotifyDescription2')}"
+                                                    TextWrapping="Wrap" />
+
+                                                <TextBlock
+                                                    Grid.Row="3"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('AlwaysNotifyDescription3')}"
+                                                    TextWrapping="Wrap" />
+
+                                                <TextBlock
+                                                    Grid.Row="4"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('AlwaysNotifyDescription4')}"
+                                                    TextWrapping="Wrap" />
+                                            </Grid>
+
+                                            <Grid
+                                                Grid.Row="2"
+                                                RowSpacing="3"
+                                                Visibility="{x:Bind GetSelectedNotifyMode(SelectedNotifyMode.SelectedValue, NotifyModeList[1].SelectedValue), Mode=OneWay}">
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    FontSize="16"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('Notify')}" />
+
+                                                <TextBlock
+                                                    Grid.Row="1"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NotifyDescription1')}"
+                                                    TextWrapping="Wrap" />
+
+                                                <TextBlock
+                                                    Grid.Row="2"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NotifyDescription2')}"
+                                                    TextWrapping="Wrap" />
+
+                                                <TextBlock
+                                                    Grid.Row="3"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NotifyNotifyDescription3')}"
+                                                    TextWrapping="Wrap" />
+                                            </Grid>
+
+                                            <Grid
+                                                Grid.Row="2"
+                                                RowSpacing="3"
+                                                Visibility="{x:Bind GetSelectedNotifyMode(SelectedNotifyMode.SelectedValue, NotifyModeList[2].SelectedValue), Mode=OneWay}">
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    FontSize="16"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NotifyWithoutDimming')}" />
+
+                                                <TextBlock
+                                                    Grid.Row="1"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NotifyWithoutDimmingDescription1')}"
+                                                    TextWrapping="Wrap" />
+
+                                                <TextBlock
+                                                    Grid.Row="2"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NotifyWithoutDimmingDescription2')}"
+                                                    TextWrapping="Wrap" />
+
+                                                <TextBlock
+                                                    Grid.Row="3"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NotifyWithoutDimmingDescription3')}"
+                                                    TextWrapping="Wrap" />
+                                            </Grid>
+
+                                            <Grid
+                                                Grid.Row="2"
+                                                RowSpacing="3"
+                                                Visibility="{x:Bind GetSelectedNotifyMode(SelectedNotifyMode.SelectedValue, NotifyModeList[3].SelectedValue), Mode=OneWay}">
+
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    FontSize="16"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NeverNotify')}" />
+
+                                                <TextBlock
+                                                    Grid.Row="1"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NeverNotifyDescription1')}"
+                                                    TextWrapping="Wrap" />
+
+                                                <TextBlock
+                                                    Grid.Row="2"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NeverNotifyDescription2')}"
+                                                    TextWrapping="Wrap" />
+
+                                                <TextBlock
+                                                    Grid.Row="3"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NeverNotifyDescription3')}"
+                                                    TextWrapping="Wrap" />
+
+                                                <TextBlock
+                                                    Grid.Row="4"
+                                                    Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NeverNotifyDescription4')}"
+                                                    TextWrapping="Wrap" />
+                                            </Grid>
+                                        </Grid>
+
+                                        <Grid
+                                            Grid.Row="2"
+                                            Padding="3"
+                                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                            BorderThickness="0,1,0,0"
+                                            ColumnSpacing="3">
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Button
+                                                Grid.Column="1"
+                                                Click="{x:Bind OnChangeNotifyModeClicked}"
+                                                Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('OK')}" />
+
+                                            <Button
+                                                Grid.Column="2"
+                                                Margin="0,0,3,0"
+                                                Click="{x:Bind OnCancelNotifyModeChangeClicked}"
+                                                Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('Cancel')}" />
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </Grid>
             </StackPanel>
         </ScrollViewer>
     </Grid>

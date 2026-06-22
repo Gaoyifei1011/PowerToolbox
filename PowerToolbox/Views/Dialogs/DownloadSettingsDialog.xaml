@@ -236,7 +236,7 @@
                         DisplayMemberPath="DisplayMember"
                         ItemsSource="{x:Bind DoEngineModeList}"
                         SelectedItem="{x:Bind DoEngineMode, Mode=OneWay}"
-                        SelectionChanged="{x:Bind OnDoEngineModeSelectChanged}"
+                        SelectionChanged="{x:Bind OnDoEngineModeSelectionChanged}"
                         Style="{StaticResource ComboBoxStyle}" />
                 </Grid>
 
