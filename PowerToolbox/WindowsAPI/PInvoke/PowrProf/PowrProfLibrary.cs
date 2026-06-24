@@ -14,6 +14,15 @@ namespace PowerToolbox.WindowsAPI.PInvoke.PowrProf
         private const string PowrProf = "powrProf.dll";
 
         /// <summary>
+        /// 检索有关系统电源功能的信息。
+        /// </summary>
+        /// <param name="systemPowerCapabilities">指向接收信息的 SYSTEM_POWER_CAPABILITIES 结构的指针。</param>
+        /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
+        [DllImport(PowrProf, CharSet = CharSet.Unicode, EntryPoint = "GetPwrCapabilities", PreserveSig = true, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool GetPwrCapabilities(out SYSTEM_POWER_CAPABILITIES systemPowerCapabilities);
+
+        /// <summary>
         /// 为当前用户设置活动电源方案。
         /// </summary>
         /// <param name="UserRootPowerKey">此参数保留供将来使用，必须设置为 NULL。</param>

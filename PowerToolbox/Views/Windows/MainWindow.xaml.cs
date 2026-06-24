@@ -456,7 +456,7 @@ namespace PowerToolbox.Views.Windows
                 NavigationTag = "AdvancedSystemOptions",
                 ParentTag = "System",
                 NavigationPage = typeof(AdvancedSystemOptionsPage),
-                VisibleState = Visibility.Collapsed
+                VisibleState = Visibility.Visible
             });
             systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
             {
@@ -742,7 +742,7 @@ namespace PowerToolbox.Views.Windows
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs args)
         {
             args.Handled = true;
-            LogService.WriteLog(TraceEventType.Warning, nameof(PowerToolbox), nameof(MainWindow), nameof(OnNavigationFailed), 1, args.Exception);
+            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(OnNavigationFailed), 1, args.Exception);
             (Application.Current as MainApp).Dispose();
         }
 
