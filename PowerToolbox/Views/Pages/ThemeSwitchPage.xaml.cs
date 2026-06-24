@@ -689,7 +689,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnShowThemeColorInStartAndTaskbarToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsShowThemeColorInStartAndTaskbar, toggleSwitch.IsOn))
             {
                 IsShowThemeColorInStartAndTaskbar = toggleSwitch.IsOn;
 
@@ -820,7 +820,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnAutoThemeSwitchEnableToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsAutoThemeSwitchEnableValue, toggleSwitch.IsOn))
             {
                 IsAutoThemeSwitchEnableValue = toggleSwitch.IsOn;
             }
@@ -886,7 +886,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAutoSwitchSystemThemeToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsAutoSwitchSystemThemeValue, toggleSwitch.IsOn))
             {
                 IsAutoSwitchSystemThemeValue = toggleSwitch.IsOn;
             }
@@ -913,7 +913,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAutoSwitchAppThemeToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsAutoSwitchAppThemeValue, toggleSwitch.IsOn))
             {
                 IsAutoSwitchAppThemeValue = toggleSwitch.IsOn;
             }
@@ -924,7 +924,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnShowColorInDarkThemeToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsShowColorInDarkThemeValue, toggleSwitch.IsOn))
             {
                 IsShowColorInDarkThemeValue = toggleSwitch.IsOn;
             }

@@ -295,7 +295,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAlwaysShowBackdropToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(AlwaysShowBackdropValue, toggleSwitch.IsOn))
             {
                 AlwaysShowBackdropService.SetAlwaysShowBackdropValue(toggleSwitch.IsOn);
                 AlwaysShowBackdropValue = toggleSwitch.IsOn;
@@ -321,7 +321,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnTopMostToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(TopMostValue, toggleSwitch.IsOn))
             {
                 TopMostService.SetTopMostValue(toggleSwitch.IsOn);
                 TopMostValue = toggleSwitch.IsOn;

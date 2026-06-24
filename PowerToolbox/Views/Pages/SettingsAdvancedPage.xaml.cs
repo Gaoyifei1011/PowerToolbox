@@ -123,7 +123,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnFileShellMenuToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(FileShellMenuValue, toggleSwitch.IsOn))
             {
                 FileShellMenuService.SetFileShellMenuValue(toggleSwitch.IsOn);
                 FileShellMenuValue = toggleSwitch.IsOn;

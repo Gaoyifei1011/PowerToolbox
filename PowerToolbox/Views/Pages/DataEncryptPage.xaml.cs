@@ -1855,7 +1855,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSaveEncryptedDataToLocalFileToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(SaveEncryptedDataToLocalFile, toggleSwitch.IsOn))
             {
                 SaveEncryptedDataToLocalFile = toggleSwitch.IsOn;
             }

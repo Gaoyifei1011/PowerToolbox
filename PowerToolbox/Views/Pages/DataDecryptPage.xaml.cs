@@ -1562,7 +1562,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnParseAsTextDataToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(ParseAsTextData, toggleSwitch.IsOn))
             {
                 ParseAsTextData = toggleSwitch.IsOn;
             }
@@ -1595,7 +1595,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSaveDecryptedDataToLocalFileToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(SaveDecryptedDataToLocalFile, toggleSwitch.IsOn))
             {
                 SaveDecryptedDataToLocalFile = toggleSwitch.IsOn;
             }

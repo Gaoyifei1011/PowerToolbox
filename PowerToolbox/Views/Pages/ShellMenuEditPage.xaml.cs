@@ -729,7 +729,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnUseIconToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(UseIcon, toggleSwitch.IsOn))
             {
                 UseIcon = toggleSwitch.IsOn;
             }
@@ -740,7 +740,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnUseProgramIconToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(UseProgramIcon, toggleSwitch.IsOn))
             {
                 UseProgramIcon = toggleSwitch.IsOn;
             }
@@ -751,7 +751,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnUseThemeIconToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(UseThemeIcon, toggleSwitch.IsOn))
             {
                 UseThemeIcon = toggleSwitch.IsOn;
             }

@@ -1158,7 +1158,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnUseCustomLogFolderToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(UseCustomLogFolder, toggleSwitch.IsOn))
             {
                 UseCustomLogFolder = toggleSwitch.IsOn;
             }
@@ -1191,7 +1191,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNTFSRestoreFromRecyclebinToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(NTFSRestoreFromRecyclebin, toggleSwitch.IsOn))
             {
                 NTFSRestoreFromRecyclebin = toggleSwitch.IsOn;
             }
@@ -1202,7 +1202,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNTFSRestoreSystemFileToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(NTFSRestoreSystemFile, toggleSwitch.IsOn))
             {
                 NTFSRestoreSystemFile = toggleSwitch.IsOn;
             }
@@ -1224,7 +1224,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNTFSRestoreNonMainDataStreamToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(NTFSRestoreNonMainDataStream, toggleSwitch.IsOn))
             {
                 NTFSRestoreNonMainDataStream = toggleSwitch.IsOn;
             }
@@ -1235,7 +1235,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNTFSUseCustomFileFilterTypeToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(NTFSUseCustomFileFilterType, toggleSwitch.IsOn))
             {
                 NTFSUseCustomFileFilterType = toggleSwitch.IsOn;
             }
@@ -1257,7 +1257,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSegmentRestoreFromRecyclebinToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(SegmentRestoreFromRecyclebin, toggleSwitch.IsOn))
             {
                 SegmentRestoreFromRecyclebin = toggleSwitch.IsOn;
             }
@@ -1268,7 +1268,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSegmentRestoreSystemFileToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(SegmentRestoreSystemFile, toggleSwitch.IsOn))
             {
                 SegmentRestoreSystemFile = toggleSwitch.IsOn;
             }
@@ -1290,7 +1290,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSegmentRestoreNonMainDataStreamToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(SegmentRestoreNonMainDataStream, toggleSwitch.IsOn))
             {
                 SegmentRestoreNonMainDataStream = toggleSwitch.IsOn;
             }
@@ -1301,7 +1301,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSegmentUseCustomFileFilterTypeToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(SegmentUseCustomFileFilterType, toggleSwitch.IsOn))
             {
                 SegmentUseCustomFileFilterType = toggleSwitch.IsOn;
             }
@@ -1371,7 +1371,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSignatureUseRestoreSpecificExtensionGroupsToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(SignatureUseRestoreSpecificExtensionGroups, toggleSwitch.IsOn))
             {
                 SignatureUseRestoreSpecificExtensionGroups = toggleSwitch.IsOn;
             }

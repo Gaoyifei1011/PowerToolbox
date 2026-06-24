@@ -298,7 +298,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnBlockAllKeysToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(BlockAllKeys, toggleSwitch.IsOn))
             {
                 BlockAllKeys = toggleSwitch.IsOn;
             }

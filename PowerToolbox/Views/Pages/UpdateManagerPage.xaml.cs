@@ -2048,7 +2048,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnIncludePotentiallySupersededUpdateToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsIncludePotentiallySupersededUpdate, toggleSwitch.IsOn))
             {
                 IsIncludePotentiallySupersededUpdate = toggleSwitch.IsOn;
             }
@@ -2070,7 +2070,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnExcludeDriversToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsExcludeDrivers, toggleSwitch.IsOn))
             {
                 bool value = toggleSwitch.IsOn;
                 IsExcludeDrivers = await Task.Run(() =>
