@@ -25,6 +25,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class AdvancedSystemOptionsPage : Page, INotifyPropertyChanged
     {
+        private readonly int DISM_RESERVED_STORAGE_DISABLED = 0x00000000;
+        private readonly int DISM_RESERVED_STORAGE_ENABLED = 0x00000001;
         private readonly string AlwaysNotifyString = ResourceService.AdvancedSystemOptionsResource.GetString("AlwaysNotify");
         private readonly string HibernationFileTypeReducedString = ResourceService.AdvancedSystemOptionsResource.GetString("HibernationFileTypeReduced");
         private readonly string HibernationFileTypeFullString = ResourceService.AdvancedSystemOptionsResource.GetString("HibernationFileTypeFull");
@@ -364,6 +366,24 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 了解电源设置
+        /// </summary>
+        private void OnLearnPowerSettingsClicked(object sender, RoutedEventArgs args)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("https://learn.microsoft.com/windows/win32/power/system-power-states");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnLearnPowerSettingsClicked), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
         /// 开启睡眠
         /// </summary>
         private async void OnEnableHibernationToggled(object sender, RoutedEventArgs args)
@@ -683,19 +703,26 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 了解电源设置
+        /// 生成电池报告
         /// </summary>
-        private void OnLearnPowerSettingsClicked(object sender, RoutedEventArgs args)
+        private void OnGenerateBatteryReportClicked(object sender, RoutedEventArgs args)
         {
             Task.Run(() =>
             {
                 try
                 {
-                    Process.Start("https://learn.microsoft.com/windows/win32/power/system-power-states");
+                    Process.Start(new ProcessStartInfo()
+                    {
+                        FileName = "powercfg.exe",
+                        Arguments = string.Format("/batteryreport /output {0}", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "battery-report.html")),
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    });
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnLearnPowerSettingsClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnGenerateBatteryReportClicked), 1, e);
                 }
             });
         }
