@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
@@ -88,7 +89,7 @@
 
                         <Button.Flyout>
                             <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem Click="{x:Bind OnOpenSystemSettingsClicked}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('OpenSystemSettings')}">
+                                <MenuFlyoutItem Click="{x:Bind OnOpenSystemPowerSettingsClicked}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('OpenSystemSettings')}">
                                     <MenuFlyoutItem.Icon>
                                         <AnimatedIcon>
                                             <AnimatedIcon.Source>
@@ -679,6 +680,105 @@
                         Click="{x:Bind OnGenerateBatteryReportClicked}"
                         Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('Generate')}"
                         CornerRadius="{StaticResource ControlCornerRadius}" />
+                </Grid>
+
+                <!--  保留的存储  -->
+                <Grid
+                    Height="60"
+                    Margin="0,0,0,2"
+                    Padding="16,0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{StaticResource ControlCornerRadius}">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <FontIcon
+                        Grid.Column="0"
+                        Margin="0,0,12,0"
+                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        FontSize="16"
+                        Glyph="&#xEDA2;" />
+
+                    <StackPanel
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('SystemReservedStorage')}" />
+
+                        <TextBlock
+                            x:Name="SystemReservedStorageDescription"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('SystemReservedStorageDescription')}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap">
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('SystemReservedStorageDescription')}" Visibility="{x:Bind SystemReservedStorageDescription.IsTextTrimmed, Mode=OneWay}" />
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <Button
+                        Grid.Column="2"
+                        Width="32"
+                        Height="32"
+                        Margin="0,0,6,0"
+                        Padding="0"
+                        CornerRadius="{StaticResource ControlCornerRadius}"
+                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('ShowOptions')}">
+
+                        <FontIcon FontSize="14" Glyph="&#xE712;" />
+
+                        <Button.Flyout>
+                            <MenuFlyout Placement="Bottom">
+                                <MenuFlyoutItem Click="{x:Bind OnOpenSystemStorageSettingsClicked}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('OpenSystemSettings')}">
+                                    <MenuFlyoutItem.Icon>
+                                        <AnimatedIcon>
+                                            <AnimatedIcon.Source>
+                                                <animatedvisuals:AnimatedSettingsVisualSource />
+                                            </AnimatedIcon.Source>
+                                            <AnimatedIcon.FallbackIconSource>
+                                                <FontIconSource Glyph="&#xE713;" />
+                                            </AnimatedIcon.FallbackIconSource>
+                                        </AnimatedIcon>
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+
+                                <MenuFlyoutItem Click="{x:Bind OnLearnSystemReservedStorageClicked}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('LearnSystemReservedStorage')}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE70A;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+
+                    <ProgressRing
+                        Grid.Column="3"
+                        Width="32"
+                        Height="32"
+                        Margin="0,0,10,0"
+                        IsActive="{x:Bind IsSystemReservedStorageLoadingOrUpdating, Mode=OneWay}"
+                        Visibility="{x:Bind IsSystemReservedStorageLoadingOrUpdating, Mode=OneWay}" />
+
+                    <ToggleSwitch
+                        Grid.Column="4"
+                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsSystemReservedStorageLoadingOrUpdating), Mode=OneWay}"
+                        IsOn="{x:Bind IsSystemReservedStorageEnabled, Mode=OneWay}"
+                        OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('SystemReservedStorageOffContent')}"
+                        OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('SystemReservedStorageOnContent')}"
+                        Style="{StaticResource ToggleSwitchStyle}"
+                        Toggled="{x:Bind OnSystemReservedStorageToggled}" />
                 </Grid>
             </StackPanel>
         </ScrollViewer>

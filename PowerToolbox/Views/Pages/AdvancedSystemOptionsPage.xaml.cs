@@ -7,12 +7,14 @@ using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.ComTypes;
+
 using PowerToolbox.WindowsAPI.PInvoke.PowrProf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
@@ -25,8 +27,6 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class AdvancedSystemOptionsPage : Page, INotifyPropertyChanged
     {
-        private readonly int DISM_RESERVED_STORAGE_DISABLED = 0x00000000;
-        private readonly int DISM_RESERVED_STORAGE_ENABLED = 0x00000001;
         private readonly string AlwaysNotifyString = ResourceService.AdvancedSystemOptionsResource.GetString("AlwaysNotify");
         private readonly string HibernationFileTypeReducedString = ResourceService.AdvancedSystemOptionsResource.GetString("HibernationFileTypeReduced");
         private readonly string HibernationFileTypeFullString = ResourceService.AdvancedSystemOptionsResource.GetString("HibernationFileTypeFull");
@@ -167,6 +167,38 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isSystemReservedStorageLoadingOrUpdating;
+
+        public bool IsSystemReservedStorageLoadingOrUpdating
+        {
+            get { return _isSystemReservedStorageLoadingOrUpdating; }
+
+            set
+            {
+                if (!Equals(_isSystemReservedStorageLoadingOrUpdating, value))
+                {
+                    _isSystemReservedStorageLoadingOrUpdating = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSystemReservedStorageLoadingOrUpdating)));
+                }
+            }
+        }
+
+        private bool _isSystemReservedStorageEnabled;
+
+        public bool IsSystemReservedStorageEnabled
+        {
+            get { return _isSystemReservedStorageEnabled; }
+
+            set
+            {
+                if (!Equals(_isSystemReservedStorageEnabled, value))
+                {
+                    _isSystemReservedStorageEnabled = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSystemReservedStorageEnabled)));
+                }
+            }
+        }
+
         private List<ComboBoxItemModel> NotifyModeList { get; } = [];
 
         private List<ComboBoxItemModel> HibernationFileTypeList { get; } = [];
@@ -193,71 +225,108 @@ namespace PowerToolbox.Views.Pages
         {
             base.OnNavigatedTo(args);
 
-            UacLevel uacLevel = await Task.Run(UACHelper.GetUacLevel);
-            SelectedNotifyMode = NotifyModeList.Find((item) => Equals(item.SelectedValue, uacLevel));
-            IsBackgroundAppsTaskEnabled = await Task.Run(() =>
+            if (RuntimeHelper.IsElevated)
             {
-                return RegistryHelper.ReadRegistryKey<int>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications", "GlobalUserDisabled") is 0;
-            });
-            SYSTEM_POWER_CAPABILITIES systemPowerCapabilities = await Task.Run(() =>
-            {
-                PowrProfLibrary.GetPwrCapabilities(out SYSTEM_POWER_CAPABILITIES systemPowerCapabilities);
-                return systemPowerCapabilities;
-            });
-            IsHibernationEnabled = systemPowerCapabilities.SystemS4;
-            IsHibernationOpened = systemPowerCapabilities.HiberFilePresent;
+                IsSystemReservedStorageLoadingOrUpdating = true;
+                UacLevel uacLevel = await Task.Run(UACHelper.GetUacLevel);
+                SelectedNotifyMode = NotifyModeList.Find((item) => Equals(item.SelectedValue, uacLevel));
+                IsBackgroundAppsTaskEnabled = await Task.Run(() =>
+                {
+                    return RegistryHelper.ReadRegistryKey<int>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications", "GlobalUserDisabled") is 0;
+                });
+                SYSTEM_POWER_CAPABILITIES systemPowerCapabilities = await Task.Run(() =>
+                {
+                    PowrProfLibrary.GetPwrCapabilities(out SYSTEM_POWER_CAPABILITIES systemPowerCapabilities);
+                    return systemPowerCapabilities;
+                });
+                IsHibernationEnabled = systemPowerCapabilities.SystemS4;
+                IsHibernationOpened = systemPowerCapabilities.HiberFilePresent;
 
-            (int hiberFileType, int hiberFileSizePercent) = await Task.Run(() =>
-            {
-                int hiberFileType = RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Power", "HiberFileType");
-                int hiberFileSizePercent = RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Power", "HiberFileSizePercent");
-                return ValueTuple.Create(hiberFileType, hiberFileSizePercent);
-            });
-            if (hiberFileType is 1)
-            {
-                SelectedHibernationFileType = HibernationFileTypeList[0];
-                HibernationFilePercent = 20;
-            }
-            else if (hiberFileType is 2)
-            {
-                SelectedHibernationFileType = HibernationFileTypeList[1];
-                if (hiberFileSizePercent < 40)
+                (int hiberFileType, int hiberFileSizePercent) = await Task.Run(() =>
                 {
-                    HibernationFilePercent = 40;
-                }
-                else if (hiberFileSizePercent > 100)
+                    int hiberFileType = RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Power", "HiberFileType");
+                    int hiberFileSizePercent = RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Power", "HiberFileSizePercent");
+                    return ValueTuple.Create(hiberFileType, hiberFileSizePercent);
+                });
+                if (hiberFileType is 1)
                 {
-                    HibernationFilePercent = 100;
+                    SelectedHibernationFileType = HibernationFileTypeList[0];
+                    HibernationFilePercent = 20;
                 }
-                else
+                else if (hiberFileType is 2)
                 {
-                    HibernationFilePercent = hiberFileSizePercent;
+                    SelectedHibernationFileType = HibernationFileTypeList[1];
+                    if (hiberFileSizePercent < 40)
+                    {
+                        HibernationFilePercent = 40;
+                    }
+                    else if (hiberFileSizePercent > 100)
+                    {
+                        HibernationFilePercent = 100;
+                    }
+                    else
+                    {
+                        HibernationFilePercent = hiberFileSizePercent;
+                    }
                 }
-            }
-            HibernationFileSize = await Task.Run(() =>
-            {
-                string hibernationFile = Path.Combine(Path.GetPathRoot(Environment.SystemDirectory), "hiberfil.sys");
-                string hibernationFileSize = VolumeSizeHelper.ConvertVolumeSizeToString(0);
+                HibernationFileSize = await Task.Run(() =>
+                {
+                    string hibernationFile = Path.Combine(Path.GetPathRoot(Environment.SystemDirectory), "hiberfil.sys");
+                    string hibernationFileSize = VolumeSizeHelper.ConvertVolumeSizeToString(0);
 
-                if (File.Exists(hibernationFile))
+                    if (File.Exists(hibernationFile))
+                    {
+                        try
+                        {
+                            FileInfo hibernationFileInfo = new(hibernationFile);
+                            hibernationFileSize = VolumeSizeHelper.ConvertVolumeSizeToString(hibernationFileInfo.Length);
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnNavigatedTo), 1, e);
+                        }
+                    }
+
+                    return hibernationFileSize;
+                });
+                IsFastStartupEnabled = await Task.Run(() =>
                 {
+                    return RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Power", "HiberbootEnabled");
+                });
+                IsSystemReservedStorageEnabled = await Task.Run(() =>
+                {
+                    bool isSystemReservedStorageEnabled = false;
+
                     try
                     {
-                        FileInfo hibernationFileInfo = new(hibernationFile);
-                        hibernationFileSize = VolumeSizeHelper.ConvertVolumeSizeToString(hibernationFileInfo.Length);
+                        Process powerShellProcess = Process.Start(new ProcessStartInfo()
+                        {
+                            FileName = "powershell.exe",
+                            Arguments = "-NoProfile -ExecutionPolicy Bypass -Command Get-WindowsReservedStorageState",
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true,
+                            WindowStyle = ProcessWindowStyle.Hidden
+                        });
+                        string output = powerShellProcess.StandardOutput.ReadToEnd();
+                        string error = powerShellProcess.StandardError.ReadToEnd();
+                        powerShellProcess.WaitForExit();
+                        powerShellProcess.Dispose();
+                        if (output.Contains("Enabled"))
+                        {
+                            isSystemReservedStorageEnabled = true;
+                        }
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnNavigatedTo), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnNavigatedTo), 4, e);
                     }
-                }
 
-                return hibernationFileSize;
-            });
-            IsFastStartupEnabled = await Task.Run(() =>
-            {
-                return RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Power", "HiberbootEnabled");
-            });
+                    return isSystemReservedStorageEnabled;
+                });
+                IsSystemReservedStorageLoadingOrUpdating = false;
+            }
         }
 
         #endregion 第一部分：重载父类事件
@@ -265,9 +334,9 @@ namespace PowerToolbox.Views.Pages
         #region 第一部分：高级系统选项页面——挂载的事件
 
         /// <summary>
-        /// 打开系统设置
+        /// 打开系统电源设置
         /// </summary>
-        private void OnOpenSystemSettingsClicked(object sender, RoutedEventArgs args)
+        private void OnOpenSystemPowerSettingsClicked(object sender, RoutedEventArgs args)
         {
             Task.Run(() =>
             {
@@ -277,7 +346,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnOpenSystemSettingsClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnOpenSystemPowerSettingsClicked), 1, e);
                 }
             });
         }
@@ -354,7 +423,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnBackgroundAppsTaskToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsBackgroundAppsTaskEnabled, toggleSwitch.IsOn))
             {
                 IsBackgroundAppsTaskEnabled = toggleSwitch.IsOn;
                 IsBackgroundAppsTaskEnabled = await Task.Run(() =>
@@ -388,7 +457,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnEnableHibernationToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsHibernationEnabled, toggleSwitch.IsOn))
             {
                 IsHibernationOpened = toggleSwitch.IsOn;
 
@@ -403,6 +472,7 @@ namespace PowerToolbox.Views.Pages
                         WindowStyle = ProcessWindowStyle.Hidden
                     });
                     powerCfgProcess.WaitForExit();
+                    powerCfgProcess.Dispose();
                     PowrProfLibrary.GetPwrCapabilities(out SYSTEM_POWER_CAPABILITIES systemPowerCapabilities);
                     return systemPowerCapabilities;
                 });
@@ -486,6 +556,7 @@ namespace PowerToolbox.Views.Pages
                                 WindowStyle = ProcessWindowStyle.Hidden
                             });
                             powerCfgProcess.WaitForExit();
+                            powerCfgProcess.Dispose();
                             powerCfgProcess = Process.Start(new ProcessStartInfo()
                             {
                                 FileName = "powercfg.exe",
@@ -495,6 +566,7 @@ namespace PowerToolbox.Views.Pages
                                 WindowStyle = ProcessWindowStyle.Hidden
                             });
                             powerCfgProcess.WaitForExit();
+                            powerCfgProcess.Dispose();
                         }
                         catch (Exception e)
                         {
@@ -514,6 +586,7 @@ namespace PowerToolbox.Views.Pages
                                 WindowStyle = ProcessWindowStyle.Hidden
                             });
                             powerCfgProcess.WaitForExit();
+                            powerCfgProcess.Dispose();
                         }
                         catch (Exception e)
                         {
@@ -627,6 +700,7 @@ namespace PowerToolbox.Views.Pages
                         WindowStyle = ProcessWindowStyle.Hidden
                     });
                     powerCfgProcess.WaitForExit();
+                    powerCfgProcess.Dispose();
                 }
                 catch (Exception e)
                 {
@@ -688,7 +762,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnFastStartupToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch)
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsFastStartupEnabled, toggleSwitch.IsOn))
             {
                 IsFastStartupEnabled = toggleSwitch.IsOn;
                 IsFastStartupEnabled = await Task.Run(() =>
@@ -725,6 +799,96 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnGenerateBatteryReportClicked), 1, e);
                 }
             });
+        }
+
+        /// <summary>
+        /// 打开系统存储设置
+        /// </summary>
+        private void OnOpenSystemStorageSettingsClicked(object sender, RoutedEventArgs args)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("ms-settings:storagesense");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnOpenSystemStorageSettingsClicked), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 了解系统保留存储
+        /// </summary>
+        private void OnLearnSystemReservedStorageClicked(object sender, RoutedEventArgs args)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("https://support.microsoft.com/windows/storage-settings-in-windows-5bc98443-0711-8038-4621-6a18ddc904f2");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnLearnSystemReservedStorageClicked), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 启用 / 关闭系统保留存储
+        /// </summary>
+        private async void OnSystemReservedStorageToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsSystemReservedStorageEnabled, toggleSwitch.IsOn))
+            {
+                IsSystemReservedStorageLoadingOrUpdating = true;
+                IsSystemReservedStorageEnabled = toggleSwitch.IsOn;
+                IsSystemReservedStorageEnabled = await Task.Run(() =>
+                {
+                    bool isSystemReservedStorageEnabled = false;
+
+                    try
+                    {
+                        Process dismProcess = Process.Start(new ProcessStartInfo()
+                        {
+                            FileName = "dism.exe",
+                            Arguments = string.Format("/Online /Set-ReservedStorageState /State:{0}", IsSystemReservedStorageEnabled ? "Enabled" : "Disabled"),
+                            UseShellExecute = false,
+                            CreateNoWindow = true,
+                            WindowStyle = ProcessWindowStyle.Hidden
+                        });
+                        dismProcess.WaitForExit();
+                        dismProcess.Dispose();
+                        Process powerShellProcess = Process.Start(new ProcessStartInfo()
+                        {
+                            FileName = "powershell.exe",
+                            Arguments = "-NoProfile -ExecutionPolicy Bypass -Command Get-WindowsReservedStorageState",
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true
+                        });
+                        string output = powerShellProcess.StandardOutput.ReadToEnd();
+                        string error = powerShellProcess.StandardError.ReadToEnd();
+                        powerShellProcess.WaitForExit();
+                        powerShellProcess.Dispose();
+                        if (output.Contains("Enabled"))
+                        {
+                            isSystemReservedStorageEnabled = true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnSystemReservedStorageToggled), 1, e);
+                    }
+
+                    return isSystemReservedStorageEnabled;
+                });
+                IsSystemReservedStorageLoadingOrUpdating = false;
+            }
         }
 
         #endregion 第一部分：高级系统选项页面——挂载的事件
