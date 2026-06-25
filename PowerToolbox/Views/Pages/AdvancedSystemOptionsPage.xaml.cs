@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
+using System.Linq;
 using System.Threading.Tasks;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
@@ -183,6 +183,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isGeneratingBatteryReport;
+
+        public bool IsGeneratingBatteryReport
+        {
+            get { return _isGeneratingBatteryReport; }
+
+            set
+            {
+                if (!Equals(_isGeneratingBatteryReport, value))
+                {
+                    _isGeneratingBatteryReport = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsGeneratingBatteryReport)));
+                }
+            }
+        }
+
         private bool _isSystemReservedStorageEnabled;
 
         public bool IsSystemReservedStorageEnabled
@@ -195,6 +211,22 @@ namespace PowerToolbox.Views.Pages
                 {
                     _isSystemReservedStorageEnabled = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSystemReservedStorageEnabled)));
+                }
+            }
+        }
+
+        private bool _isRebuildingIconCache;
+
+        public bool IsRebuildingIconCache
+        {
+            get { return _isRebuildingIconCache; }
+
+            set
+            {
+                if (!Equals(_isRebuildingIconCache, value))
+                {
+                    _isRebuildingIconCache = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRebuildingIconCache)));
                 }
             }
         }
@@ -227,7 +259,6 @@ namespace PowerToolbox.Views.Pages
 
             if (RuntimeHelper.IsElevated)
             {
-                IsSystemReservedStorageLoadingOrUpdating = true;
                 UacLevel uacLevel = await Task.Run(UACHelper.GetUacLevel);
                 SelectedNotifyMode = NotifyModeList.Find((item) => Equals(item.SelectedValue, uacLevel));
                 IsBackgroundAppsTaskEnabled = await Task.Run(() =>
@@ -293,39 +324,44 @@ namespace PowerToolbox.Views.Pages
                 {
                     return RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Power", "HiberbootEnabled");
                 });
-                IsSystemReservedStorageEnabled = await Task.Run(() =>
+
+                if (!IsSystemReservedStorageLoadingOrUpdating)
                 {
-                    bool isSystemReservedStorageEnabled = false;
-
-                    try
+                    IsSystemReservedStorageLoadingOrUpdating = true;
+                    IsSystemReservedStorageEnabled = await Task.Run(() =>
                     {
-                        Process powerShellProcess = Process.Start(new ProcessStartInfo()
+                        bool isSystemReservedStorageEnabled = false;
+
+                        try
                         {
-                            FileName = "powershell.exe",
-                            Arguments = "-NoProfile -ExecutionPolicy Bypass -Command Get-WindowsReservedStorageState",
-                            RedirectStandardOutput = true,
-                            RedirectStandardError = true,
-                            UseShellExecute = false,
-                            CreateNoWindow = true,
-                            WindowStyle = ProcessWindowStyle.Hidden
-                        });
-                        string output = powerShellProcess.StandardOutput.ReadToEnd();
-                        string error = powerShellProcess.StandardError.ReadToEnd();
-                        powerShellProcess.WaitForExit();
-                        powerShellProcess.Dispose();
-                        if (output.Contains("Enabled"))
-                        {
-                            isSystemReservedStorageEnabled = true;
+                            Process powerShellProcess = Process.Start(new ProcessStartInfo()
+                            {
+                                FileName = "powershell.exe",
+                                Arguments = "-NoProfile -ExecutionPolicy Bypass -Command Get-WindowsReservedStorageState",
+                                RedirectStandardOutput = true,
+                                RedirectStandardError = true,
+                                UseShellExecute = false,
+                                CreateNoWindow = true,
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            });
+                            string output = powerShellProcess.StandardOutput.ReadToEnd();
+                            string error = powerShellProcess.StandardError.ReadToEnd();
+                            powerShellProcess.WaitForExit();
+                            powerShellProcess.Dispose();
+                            if (output.Contains("Enabled"))
+                            {
+                                isSystemReservedStorageEnabled = true;
+                            }
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnNavigatedTo), 4, e);
-                    }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnNavigatedTo), 4, e);
+                        }
 
-                    return isSystemReservedStorageEnabled;
-                });
-                IsSystemReservedStorageLoadingOrUpdating = false;
+                        return isSystemReservedStorageEnabled;
+                    });
+                    IsSystemReservedStorageLoadingOrUpdating = false;
+                }
             }
         }
 
@@ -779,26 +815,33 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 生成电池报告
         /// </summary>
-        private void OnGenerateBatteryReportClicked(object sender, RoutedEventArgs args)
+        private async void OnGenerateBatteryReportClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
+            if (!IsGeneratingBatteryReport)
             {
-                try
+                IsGeneratingBatteryReport = true;
+                await Task.Run(() =>
                 {
-                    Process.Start(new ProcessStartInfo()
+                    try
                     {
-                        FileName = "powercfg.exe",
-                        Arguments = string.Format("/batteryreport /output {0}", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "battery-report.html")),
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        WindowStyle = ProcessWindowStyle.Hidden
-                    });
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnGenerateBatteryReportClicked), 1, e);
-                }
-            });
+                        Process powerCfgProcess = Process.Start(new ProcessStartInfo()
+                        {
+                            FileName = "powercfg.exe",
+                            Arguments = string.Format("/batteryreport /output {0}", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "battery-report.html")),
+                            UseShellExecute = false,
+                            CreateNoWindow = true,
+                            WindowStyle = ProcessWindowStyle.Hidden
+                        });
+                        powerCfgProcess.WaitForExit();
+                        powerCfgProcess.Dispose();
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnGenerateBatteryReportClicked), 1, e);
+                    }
+                });
+                IsGeneratingBatteryReport = false;
+            }
         }
 
         /// <summary>
@@ -842,7 +885,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnSystemReservedStorageToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch && !Equals(IsSystemReservedStorageEnabled, toggleSwitch.IsOn))
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsSystemReservedStorageEnabled, toggleSwitch.IsOn) && !IsSystemReservedStorageLoadingOrUpdating)
             {
                 IsSystemReservedStorageLoadingOrUpdating = true;
                 IsSystemReservedStorageEnabled = toggleSwitch.IsOn;
@@ -888,6 +931,72 @@ namespace PowerToolbox.Views.Pages
                     return isSystemReservedStorageEnabled;
                 });
                 IsSystemReservedStorageLoadingOrUpdating = false;
+            }
+        }
+
+        /// <summary>
+        /// 重建图标缓存
+        /// </summary>
+        private async void OnRebuildIconCacheClicked(object sender, RoutedEventArgs args)
+        {
+            if (!IsRebuildingIconCache)
+            {
+                IsRebuildingIconCache = true;
+                await Task.Run(async () =>
+                {
+                    try
+                    {
+                        Process taskKillProcess = Process.Start(new ProcessStartInfo
+                        {
+                            FileName = "taskkill",
+                            Arguments = "/IM explorer.exe /F",
+                            Verb = "open",
+                            CreateNoWindow = true,
+                            WindowStyle = ProcessWindowStyle.Hidden,
+                        });
+                        taskKillProcess.WaitForExit();
+                        taskKillProcess.Dispose();
+                        while (Process.GetProcessesByName("explorer").FirstOrDefault() is not null)
+                        {
+                            await Task.Delay(1000);
+                        }
+
+                        string iconCacheDbFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "IconCache.db");
+                        if (File.Exists(iconCacheDbFile))
+                        {
+                            File.Delete(iconCacheDbFile);
+                        }
+                        string explorerFolder = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\Windows\Explorer"));
+                        foreach (FileInfo fileInfo in from file in new DirectoryInfo(explorerFolder).EnumerateFiles() where file.Name.Contains("iconcache") || file.Name.Contains("thumbcache") select file)
+                        {
+                            fileInfo.Delete();
+                        }
+                    }
+                    catch (Win32Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnRebuildIconCacheClicked), 1, e);
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            Process explorerProcess = Process.Start(new ProcessStartInfo
+                            {
+                                FileName = "explorer.exe",
+                                Verb = "open",
+                                CreateNoWindow = true,
+                                WindowStyle = ProcessWindowStyle.Hidden,
+                            });
+                            explorerProcess.WaitForExit();
+                            explorerProcess.Dispose();
+                        }
+                        catch (Win32Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnRebuildIconCacheClicked), 2, e);
+                        }
+                    }
+                });
+                IsRebuildingIconCache = false;
             }
         }
 
