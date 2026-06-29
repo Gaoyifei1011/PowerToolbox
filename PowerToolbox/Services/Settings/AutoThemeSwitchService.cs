@@ -22,15 +22,15 @@ namespace PowerToolbox.Services.Settings
         private static readonly string sunriseOffsetKey = ConfigKey.SunriseOffsetKey;
         private static readonly string sunsetOffsetKey = ConfigKey.SunsetOffsetKey;
 
-        public static bool DefaultAutoThemeSwitchEnableValue { get; } = false;
+        public static bool DefaultAutoThemeSwitchEnable { get; } = false;
 
-        public static string DefaultAutoThemeSwitchTypeValue { get; private set; }
+        public static string DefaultAutoThemeSwitchType { get; private set; }
 
-        public static bool DefaultAutoSwitchSystemThemeValue { get; } = false;
+        public static bool DefaultAutoSwitchSystemTheme { get; } = false;
 
-        public static bool DefaultAutoSwitchAppThemeValue { get; } = false;
+        public static bool DefaultAutoSwitchAppTheme { get; } = false;
 
-        public static bool DefaultIsShowColorInDarkThemeValue { get; } = false;
+        public static bool DefaultIsShowColorInDarkTheme { get; } = false;
 
         public static TimeSpan DefaultSystemThemeLightTime { get; } = new(7, 0, 0);
 
@@ -44,15 +44,15 @@ namespace PowerToolbox.Services.Settings
 
         public static int DefaultSunsetOffset { get; } = 0;
 
-        public static bool AutoThemeSwitchEnableValue { get; set; }
+        public static bool AutoThemeSwitchEnable { get; set; }
 
-        public static string AutoThemeSwitchTypeValue { get; set; }
+        public static string AutoThemeSwitchType { get; set; }
 
-        public static bool AutoSwitchSystemThemeValue { get; set; }
+        public static bool AutoSwitchSystemTheme { get; set; }
 
-        public static bool AutoSwitchAppThemeValue { get; set; }
+        public static bool AutoSwitchAppTheme { get; set; }
 
-        public static bool IsShowColorInDarkThemeValue { get; set; }
+        public static bool IsShowColorInDarkTheme { get; set; }
 
         public static TimeSpan SystemThemeLightTime { get; set; }
 
@@ -73,12 +73,12 @@ namespace PowerToolbox.Services.Settings
         /// </summary>
         public static void InitializeAutoThemeSwitch()
         {
-            DefaultAutoThemeSwitchTypeValue = AutoThemeSwitchTypeList[0];
-            AutoThemeSwitchEnableValue = GetAutoThemeSwitchEnableValue();
-            AutoThemeSwitchTypeValue = GetAutoThemeSwitchTypeValue();
-            AutoSwitchSystemThemeValue = GetAutoSwitchSystemThemeValue();
-            AutoSwitchAppThemeValue = GetAutoSwitchAppThemeValue();
-            IsShowColorInDarkThemeValue = GetIsShowColorInDarkThemeValue();
+            DefaultAutoThemeSwitchType = AutoThemeSwitchTypeList[0];
+            AutoThemeSwitchEnable = GetAutoThemeSwitchEnable();
+            AutoThemeSwitchType = GetAutoThemeSwitchType();
+            AutoSwitchSystemTheme = GetAutoSwitchSystemTheme();
+            AutoSwitchAppTheme = GetAutoSwitchAppTheme();
+            IsShowColorInDarkTheme = GetIsShowColorInDarkTheme();
             SystemThemeLightTime = GetSystemThemeLightTime();
             SystemThemeDarkTime = GetSystemThemeDarkTime();
             AppThemeLightTime = GetAppThemeLightTime();
@@ -90,78 +90,78 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 获取设置存储的自动切换主题启用值，如果设置没有存储，使用默认值
         /// </summary>
-        private static bool GetAutoThemeSwitchEnableValue()
+        private static bool GetAutoThemeSwitchEnable()
         {
-            bool? autoThemeSwitchEnableValue = LocalSettingsService.ReadSetting<bool?>(autoThemeSwitchEnableKey);
+            bool? autoThemeSwitchEnable = LocalSettingsService.ReadSetting<bool?>(autoThemeSwitchEnableKey);
 
-            if (!autoThemeSwitchEnableValue.HasValue)
+            if (!autoThemeSwitchEnable.HasValue)
             {
-                SetAutoThemeSwitchEnableValue(DefaultAutoThemeSwitchEnableValue);
-                return DefaultAutoThemeSwitchEnableValue;
+                SetAutoThemeSwitchEnable(DefaultAutoThemeSwitchEnable);
+                return DefaultAutoThemeSwitchEnable;
             }
 
-            return autoThemeSwitchEnableValue.Value;
+            return autoThemeSwitchEnable.Value;
         }
 
         /// <summary>
         /// 获取设置存储的自动切换系统主题启用值，如果设置没有存储，使用默认值
         /// </summary>
-        private static bool GetAutoSwitchSystemThemeValue()
+        private static bool GetAutoSwitchSystemTheme()
         {
-            bool? autoSwitchSystemThemeValue = LocalSettingsService.ReadSetting<bool?>(autoSwitchSystemThemeKey);
+            bool? autoSwitchSystemTheme = LocalSettingsService.ReadSetting<bool?>(autoSwitchSystemThemeKey);
 
-            if (!autoSwitchSystemThemeValue.HasValue)
+            if (!autoSwitchSystemTheme.HasValue)
             {
-                SetAutoSwitchSystemThemeValue(DefaultAutoSwitchSystemThemeValue);
-                return DefaultAutoSwitchSystemThemeValue;
+                SetAutoSwitchSystemTheme(DefaultAutoSwitchSystemTheme);
+                return DefaultAutoSwitchSystemTheme;
             }
 
-            return autoSwitchSystemThemeValue.Value;
+            return autoSwitchSystemTheme.Value;
         }
 
         /// <summary>
         /// 获取设置存储的自动切换主题类型值，如果设置没有存储，使用默认值
         /// </summary>
-        private static string GetAutoThemeSwitchTypeValue()
+        private static string GetAutoThemeSwitchType()
         {
-            string autoThemeSwitchTypeValue = LocalSettingsService.ReadSetting<string>(autoThemeSwitchTypeKey);
+            string autoThemeSwitchType = LocalSettingsService.ReadSetting<string>(autoThemeSwitchTypeKey);
 
-            if (string.IsNullOrEmpty(autoThemeSwitchTypeValue))
+            if (string.IsNullOrEmpty(autoThemeSwitchType))
             {
-                SetAutoThemeSwitchEnableValue(DefaultAutoThemeSwitchEnableValue);
-                return DefaultAutoThemeSwitchTypeValue;
+                SetAutoThemeSwitchEnable(DefaultAutoThemeSwitchEnable);
+                return DefaultAutoThemeSwitchType;
             }
 
-            return autoThemeSwitchTypeValue;
+            return autoThemeSwitchType;
         }
 
         /// <summary>
         /// 获取设置存储的自动切换应用主题启用值，如果设置没有存储，使用默认值
         /// </summary>
-        private static bool GetAutoSwitchAppThemeValue()
+        private static bool GetAutoSwitchAppTheme()
         {
-            bool? autoSwitchAppThemeValue = LocalSettingsService.ReadSetting<bool?>(autoSwitchAppThemeKey);
+            bool? autoSwitchAppTheme = LocalSettingsService.ReadSetting<bool?>(autoSwitchAppThemeKey);
 
-            if (!autoSwitchAppThemeValue.HasValue)
+            if (!autoSwitchAppTheme.HasValue)
             {
-                SetAutoSwitchAppThemeValue(DefaultAutoSwitchAppThemeValue);
-                return DefaultAutoSwitchAppThemeValue;
+                SetAutoSwitchAppTheme(DefaultAutoSwitchAppTheme);
+                return DefaultAutoSwitchAppTheme;
             }
 
-            return autoSwitchAppThemeValue.Value;
+            return autoSwitchAppTheme.Value;
         }
 
         /// <summary>
         /// 获取设置存储的切换系统深色主题时显示主题色值，如果设置没有存储，使用默认值
         /// </summary>
-        private static bool GetIsShowColorInDarkThemeValue()
+        private static bool GetIsShowColorInDarkTheme()
         {
             bool? isShowColorInDarkTheme = LocalSettingsService.ReadSetting<bool?>(isShowColorInDarkThemeKey);
 
             if (!isShowColorInDarkTheme.HasValue)
             {
-                SetIsShowColorInDarkThemeValue(DefaultIsShowColorInDarkThemeValue);
-                return DefaultIsShowColorInDarkThemeValue;
+                SetIsShowColorInDarkTheme(DefaultIsShowColorInDarkTheme);
+                return DefaultIsShowColorInDarkTheme;
             }
 
             return isShowColorInDarkTheme.Value;
@@ -310,46 +310,46 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 自动切换主题启用值发生修改时修改设置存储的自动切换主题启用值
         /// </summary>
-        public static void SetAutoThemeSwitchEnableValue(bool autoThemeSwitchEnableValue)
+        public static void SetAutoThemeSwitchEnable(bool autoThemeSwitchEnable)
         {
-            AutoThemeSwitchEnableValue = autoThemeSwitchEnableValue;
-            LocalSettingsService.SaveSetting(autoThemeSwitchEnableKey, autoThemeSwitchEnableValue);
+            AutoThemeSwitchEnable = autoThemeSwitchEnable;
+            LocalSettingsService.SaveSetting(autoThemeSwitchEnableKey, autoThemeSwitchEnable);
         }
 
         /// <summary>
         /// 自动切换主题类型值发生修改时修改设置存储的自动切换主题类型值
         /// </summary>
-        public static void SetAutoThemeSwitchTypeValue(string autoThemeSwitchTypeValue)
+        public static void SetAutoThemeSwitchType(string autoThemeSwitchType)
         {
-            AutoThemeSwitchTypeValue = autoThemeSwitchTypeValue;
-            LocalSettingsService.SaveSetting(autoThemeSwitchTypeKey, autoThemeSwitchTypeValue);
+            AutoThemeSwitchType = autoThemeSwitchType;
+            LocalSettingsService.SaveSetting(autoThemeSwitchTypeKey, autoThemeSwitchType);
         }
 
         /// <summary>
         /// 自动切换系统主题启用值发生修改时修改设置存储的自动切换系统主题启用值
         /// </summary>
-        public static void SetAutoSwitchSystemThemeValue(bool autoSwitchSystemThemeValue)
+        public static void SetAutoSwitchSystemTheme(bool autoSwitchSystemTheme)
         {
-            AutoSwitchSystemThemeValue = autoSwitchSystemThemeValue;
-            LocalSettingsService.SaveSetting(autoSwitchSystemThemeKey, autoSwitchSystemThemeValue);
+            AutoSwitchSystemTheme = autoSwitchSystemTheme;
+            LocalSettingsService.SaveSetting(autoSwitchSystemThemeKey, autoSwitchSystemTheme);
         }
 
         /// <summary>
         /// 自动切换应用主题启用值发生修改时修改设置存储的自动切换系统主题启用值
         /// </summary>
-        public static void SetAutoSwitchAppThemeValue(bool autoSwitchAppThemeValue)
+        public static void SetAutoSwitchAppTheme(bool autoSwitchAppTheme)
         {
-            AutoSwitchAppThemeValue = autoSwitchAppThemeValue;
-            LocalSettingsService.SaveSetting(autoSwitchAppThemeKey, autoSwitchAppThemeValue);
+            AutoSwitchAppTheme = autoSwitchAppTheme;
+            LocalSettingsService.SaveSetting(autoSwitchAppThemeKey, autoSwitchAppTheme);
         }
 
         /// <summary>
         /// 切换系统深色主题时显示主题色值发生修改时修改设置存储的切换系统深色主题时显示主题色值
         /// </summary>
-        public static void SetIsShowColorInDarkThemeValue(bool isShowColorInDarkThemeValue)
+        public static void SetIsShowColorInDarkTheme(bool isShowColorInDarkTheme)
         {
-            IsShowColorInDarkThemeValue = isShowColorInDarkThemeValue;
-            LocalSettingsService.SaveSetting(isShowColorInDarkThemeKey, isShowColorInDarkThemeValue);
+            IsShowColorInDarkTheme = isShowColorInDarkTheme;
+            LocalSettingsService.SaveSetting(isShowColorInDarkThemeKey, isShowColorInDarkTheme);
         }
 
         /// <summary>

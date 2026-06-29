@@ -27,7 +27,7 @@
 
         public const string FileShellMenuKey = "FileShellMenu";
 
-        public const string IsShowColorInDarkThemeKey = "IsShowColorInDarkThemeValue";
+        public const string IsShowColorInDarkThemeKey = "IsShowColorInDarkTheme";
 
         public const string LanguageKey = "AppLanguage";
 
@@ -41,6 +41,6 @@
 
         public const string ThemeKey = "AppTheme";
 
-        public const string TopMostKey = "TopMostValue";
+        public const string TopMostKey = "TopMost";
     }
 }

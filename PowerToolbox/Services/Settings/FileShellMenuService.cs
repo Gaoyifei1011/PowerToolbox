@@ -10,41 +10,41 @@ namespace PowerToolbox.Services.Settings
     {
         private static readonly string settingsKey = ConfigKey.FileShellMenuKey;
 
-        private static readonly bool defaultFileShellMenuValue = true;
+        private static readonly bool defaultFileShellMenu = true;
 
-        public static bool FileShellMenuValue { get; private set; }
+        public static bool FileShellMenu { get; private set; }
 
         /// <summary>
         /// 应用在初始化前获取设置存储的文件右键菜单显示值
         /// </summary>
         public static void InitializeFileShellMenu()
         {
-            FileShellMenuValue = GetFileShellMenuValue();
+            FileShellMenu = GetFileShellMenu();
         }
 
         /// <summary>
         /// 获取设置存储的文件右键菜单显示值，如果设置没有存储，使用默认值
         /// </summary>
-        private static bool GetFileShellMenuValue()
+        private static bool GetFileShellMenu()
         {
-            bool? fileShellMenuValue = LocalSettingsService.ReadSetting<bool?>(settingsKey);
+            bool? fileShellMenu = LocalSettingsService.ReadSetting<bool?>(settingsKey);
 
-            if (!fileShellMenuValue.HasValue)
+            if (!fileShellMenu.HasValue)
             {
-                SetFileShellMenuValue(defaultFileShellMenuValue);
-                return defaultFileShellMenuValue;
+                SetFileShellMenu(defaultFileShellMenu);
+                return defaultFileShellMenu;
             }
 
-            return fileShellMenuValue.Value;
+            return fileShellMenu.Value;
         }
 
         /// <summary>
         /// 文件右键菜单显示值发生修改时修改设置存储的文件右键菜单显示值
         /// </summary>
-        public static void SetFileShellMenuValue(bool fileShellMenuValue)
+        public static void SetFileShellMenu(bool fileShellMenu)
         {
-            FileShellMenuValue = fileShellMenuValue;
-            LocalSettingsService.SaveSetting(settingsKey, fileShellMenuValue);
+            FileShellMenu = fileShellMenu;
+            LocalSettingsService.SaveSetting(settingsKey, fileShellMenu);
         }
     }
 }

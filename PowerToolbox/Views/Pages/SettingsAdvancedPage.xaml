@@ -82,7 +82,7 @@
 
                 <ToggleSwitch
                     Grid.Column="3"
-                    IsOn="{x:Bind FileShellMenuValue, Mode=OneWay}"
+                    IsOn="{x:Bind FileShellMenu, Mode=OneWay}"
                     OffContent="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('FileShellMenuOffContent')}"
                     OnContent="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('FileShellMenuOnContent')}"
                     Style="{StaticResource ToggleSwitchStyle}"

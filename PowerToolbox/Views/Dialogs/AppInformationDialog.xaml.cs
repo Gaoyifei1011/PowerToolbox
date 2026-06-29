@@ -60,9 +60,9 @@ namespace PowerToolbox.Views.Dialogs
         /// </summary>
         private async void OnLoaded(object sender, RoutedEventArgs args)
         {
-            List<KeyValuePair<string, Version>> dependencyInformationList = [];
-            await Task.Run(() =>
+            List<KeyValuePair<string, Version>> dependencyInformationList = await Task.Run(() =>
             {
+                List<KeyValuePair<string, Version>> dependencyInformationList = [];
                 uint bufferLength = 0;
 
                 KernelAppCoreLibrary.GetCurrentPackageInfo(PACKAGE_FLAGS.PACKAGE_PROPERTY_STATIC, ref bufferLength, null, out uint count);
@@ -98,6 +98,7 @@ namespace PowerToolbox.Views.Dialogs
                     // .NET 版本信息
                     dependencyInformationList.Add(new KeyValuePair<string, Version>(DoNetVersionString, new Version(RuntimeInformation.FrameworkDescription.Remove(0, 15))));
                 }
+                return dependencyInformationList;
             });
 
             foreach (KeyValuePair<string, Version> dependencyInformation in dependencyInformationList)

@@ -10,21 +10,21 @@ namespace PowerToolboxShellExtension.Services.Controls.Settings
     {
         private static readonly string settingsKey = ConfigKey.FileShellMenuKey;
 
-        private static readonly bool defaultFileShellMenuValue = false;
+        private static readonly bool defaultFileShellMenu = false;
 
         /// <summary>
         /// 获取设置存储的文件右键菜单显示值，如果设置没有存储，使用默认值
         /// </summary>
-        public static bool GetFileShellMenuValue()
+        public static bool GetFileShellMenu()
         {
-            bool? fileShellMenuValue = LocalSettingsService.ReadSetting<bool?>(settingsKey);
+            bool? fileShellMenu = LocalSettingsService.ReadSetting<bool?>(settingsKey);
 
-            if (!fileShellMenuValue.HasValue)
+            if (!fileShellMenu.HasValue)
             {
-                return defaultFileShellMenuValue;
+                return defaultFileShellMenu;
             }
 
-            return fileShellMenuValue.Value;
+            return fileShellMenu.Value;
         }
     }
 }

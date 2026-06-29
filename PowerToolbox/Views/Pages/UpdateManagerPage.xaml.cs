@@ -2072,12 +2072,12 @@ namespace PowerToolbox.Views.Pages
         {
             if (sender is ToggleSwitch toggleSwitch && !Equals(IsExcludeDrivers, toggleSwitch.IsOn))
             {
-                bool value = toggleSwitch.IsOn;
+                IsExcludeDrivers = toggleSwitch.IsOn;
                 IsExcludeDrivers = await Task.Run(() =>
                 {
                     if (RuntimeHelper.IsElevated)
                     {
-                        RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate", "ExcludeWUDriversInQualityUpdate", value);
+                        RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate", "ExcludeWUDriversInQualityUpdate", IsExcludeDrivers);
                     }
                     return RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate", "ExcludeWUDriversInQualityUpdate");
                 });

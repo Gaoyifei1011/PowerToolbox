@@ -11,20 +11,20 @@ namespace PowerToolbox.Services.Settings
     {
         private static readonly string settingsKey = ConfigKey.AlwaysShowBackdropKey;
 
-        private static readonly bool defaultAlwaysShowBackdropValue = false;
+        private static readonly bool defaultAlwaysShowBackdrop = false;
 
-        private static bool _alwaysShowBackdropValue;
+        private static bool _alwaysShowBackdrop;
 
-        public static bool AlwaysShowBackdropValue
+        public static bool AlwaysShowBackdrop
         {
-            get { return _alwaysShowBackdropValue; }
+            get { return _alwaysShowBackdrop; }
 
             private set
             {
-                if (!Equals(_alwaysShowBackdropValue, value))
+                if (!Equals(_alwaysShowBackdrop, value))
                 {
-                    _alwaysShowBackdropValue = value;
-                    PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(AlwaysShowBackdropValue)));
+                    _alwaysShowBackdrop = value;
+                    PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(AlwaysShowBackdrop)));
                 }
             }
         }
@@ -36,32 +36,32 @@ namespace PowerToolbox.Services.Settings
         /// </summary>
         public static void InitializeAlwaysShowBackdrop()
         {
-            AlwaysShowBackdropValue = GetAlwaysShowBackdropValue();
+            AlwaysShowBackdrop = GetAlwaysShowBackdrop();
         }
 
         /// <summary>
         /// 获取设置存储的始终显示背景色值，如果设置没有存储，使用默认值
         /// </summary>
-        private static bool GetAlwaysShowBackdropValue()
+        private static bool GetAlwaysShowBackdrop()
         {
-            bool? alwaysShowBackdropValue = LocalSettingsService.ReadSetting<bool?>(settingsKey);
+            bool? alwaysShowBackdrop = LocalSettingsService.ReadSetting<bool?>(settingsKey);
 
-            if (!alwaysShowBackdropValue.HasValue)
+            if (!alwaysShowBackdrop.HasValue)
             {
-                SetAlwaysShowBackdropValue(defaultAlwaysShowBackdropValue);
-                return defaultAlwaysShowBackdropValue;
+                SetAlwaysShowBackdrop(defaultAlwaysShowBackdrop);
+                return defaultAlwaysShowBackdrop;
             }
 
-            return alwaysShowBackdropValue.Value;
+            return alwaysShowBackdrop.Value;
         }
 
         /// <summary>
         /// 始终显示背景色发生修改时修改设置存储的始终显示背景色值
         /// </summary>
-        public static void SetAlwaysShowBackdropValue(bool alwaysShowBackdropValue)
+        public static void SetAlwaysShowBackdrop(bool alwaysShowBackdrop)
         {
-            AlwaysShowBackdropValue = alwaysShowBackdropValue;
-            LocalSettingsService.SaveSetting(settingsKey, alwaysShowBackdropValue);
+            AlwaysShowBackdrop = alwaysShowBackdrop;
+            LocalSettingsService.SaveSetting(settingsKey, alwaysShowBackdrop);
         }
     }
 }

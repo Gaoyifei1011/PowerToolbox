@@ -335,18 +335,18 @@
                                 Margin="0,0,6,0"
                                 Click="{x:Bind OnOpenAutoSwitchProgramClicked}"
                                 Content="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('OpenAutoSwitchProgram')}"
-                                Visibility="{x:Bind IsAutoThemeSwitchEnableValue, Mode=OneWay}" />
+                                Visibility="{x:Bind IsAutoThemeSwitchEnable, Mode=OneWay}" />
 
                             <ToggleSwitch
                                 Grid.Column="2"
-                                IsOn="{x:Bind IsAutoThemeSwitchEnableValue, Mode=OneWay}"
+                                IsOn="{x:Bind IsAutoThemeSwitchEnable, Mode=OneWay}"
                                 OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoThemeSwitchEnableOffContent')}"
                                 OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoThemeSwitchEnableOnContent')}"
                                 Style="{StaticResource ToggleSwitchStyle}"
                                 Toggled="{x:Bind OnAutoThemeSwitchEnableToggled}" />
                         </Grid>
 
-                        <StackPanel Visibility="{x:Bind IsAutoThemeSwitchEnableValue, Mode=OneWay}">
+                        <StackPanel Visibility="{x:Bind IsAutoThemeSwitchEnable, Mode=OneWay}">
 
                             <MenuFlyoutSeparator />
 
@@ -401,7 +401,7 @@
                                     Grid.Column="1"
                                     Margin="0,0,6,0"
                                     Click="{x:Bind OnShowSetTimeFlyoutClicked}"
-                                    Visibility="{x:Bind GetAutoSwitchSystemThemeTimeState(SelectedAutoThemeSwitchType.SelectedValue, IsAutoSwitchSystemThemeValue), Mode=OneWay}">
+                                    Visibility="{x:Bind GetAutoSwitchSystemThemeTimeState(SelectedAutoThemeSwitchType.SelectedValue, IsAutoSwitchSystemTheme), Mode=OneWay}">
 
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SetTime')}" />
@@ -560,7 +560,7 @@
 
                                 <ToggleSwitch
                                     Grid.Column="2"
-                                    IsOn="{x:Bind IsAutoSwitchSystemThemeValue, Mode=OneWay}"
+                                    IsOn="{x:Bind IsAutoSwitchSystemTheme, Mode=OneWay}"
                                     OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchSystemThemeOffContent')}"
                                     OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchSystemThemeOnContent')}"
                                     Style="{StaticResource ToggleSwitchStyle}"
@@ -591,7 +591,7 @@
                                     Grid.Column="1"
                                     Margin="0,0,6,0"
                                     Click="{x:Bind OnShowSetTimeFlyoutClicked}"
-                                    Visibility="{x:Bind GetAutoSwitchAppThemeTimeState(SelectedAutoThemeSwitchType.SelectedValue, IsAutoSwitchAppThemeValue), Mode=OneWay}">
+                                    Visibility="{x:Bind GetAutoSwitchAppThemeTimeState(SelectedAutoThemeSwitchType.SelectedValue, IsAutoSwitchAppTheme), Mode=OneWay}">
 
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('SetTime')}" />
@@ -750,7 +750,7 @@
 
                                 <ToggleSwitch
                                     Grid.Column="2"
-                                    IsOn="{x:Bind IsAutoSwitchAppThemeValue, Mode=OneWay}"
+                                    IsOn="{x:Bind IsAutoSwitchAppTheme, Mode=OneWay}"
                                     OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchAppThemeOffContent')}"
                                     OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchAppThemeOnContent')}"
                                     Style="{StaticResource ToggleSwitchStyle}"
@@ -778,7 +778,7 @@
 
                                 <ToggleSwitch
                                     Grid.Column="1"
-                                    IsOn="{x:Bind IsShowColorInDarkThemeValue, Mode=OneWay}"
+                                    IsOn="{x:Bind IsShowColorInDarkTheme, Mode=OneWay}"
                                     OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowColorInDarkThemeOffContent')}"
                                     OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowColorInDarkThemeOnContent')}"
                                     Style="{StaticResource ToggleSwitchStyle}"

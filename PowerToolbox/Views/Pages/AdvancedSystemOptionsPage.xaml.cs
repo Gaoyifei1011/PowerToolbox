@@ -444,7 +444,6 @@ namespace PowerToolbox.Views.Pages
             if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel notifyMode && !Equals(SelectedNotifyMode, notifyMode))
             {
                 SelectedNotifyMode = notifyMode;
-
                 UacLevel uacLevel = await Task.Run(() =>
                 {
                     UACHelper.SetUacLevel((UacLevel)SelectedNotifyMode.SelectedValue);

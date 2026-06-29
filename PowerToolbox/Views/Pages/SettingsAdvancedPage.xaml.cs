@@ -38,18 +38,18 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _fileShellMenuValue = FileShellMenuService.FileShellMenuValue;
+        private bool _fileShellMenu = FileShellMenuService.FileShellMenu;
 
-        public bool FileShellMenuValue
+        public bool FileShellMenu
         {
-            get { return _fileShellMenuValue; }
+            get { return _fileShellMenu; }
 
             set
             {
-                if (!Equals(_fileShellMenuValue, value))
+                if (!Equals(_fileShellMenu, value))
                 {
-                    _fileShellMenuValue = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileShellMenuValue)));
+                    _fileShellMenu = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileShellMenu)));
                 }
             }
         }
@@ -123,10 +123,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnFileShellMenuToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch && !Equals(FileShellMenuValue, toggleSwitch.IsOn))
+            if (sender is ToggleSwitch toggleSwitch && !Equals(FileShellMenu, toggleSwitch.IsOn))
             {
-                FileShellMenuService.SetFileShellMenuValue(toggleSwitch.IsOn);
-                FileShellMenuValue = toggleSwitch.IsOn;
+                FileShellMenu = toggleSwitch.IsOn;
+                FileShellMenuService.SetFileShellMenu(toggleSwitch.IsOn);
+                FileShellMenu = FileShellMenuService.FileShellMenu;
             }
         }
 

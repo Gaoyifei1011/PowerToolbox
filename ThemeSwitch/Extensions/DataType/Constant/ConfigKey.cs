@@ -17,7 +17,7 @@
 
         public const string AutoThemeSwitchTypeKey = "AutoThemeSwitchType";
 
-        public const string IsShowColorInDarkThemeKey = "IsShowColorInDarkThemeValue";
+        public const string IsShowColorInDarkThemeKey = "IsShowColorInDarkTheme";
 
         public const string LanguageKey = "AppLanguage";
 

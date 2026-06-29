@@ -53,7 +53,7 @@ namespace ThemeSwitch
                 InitializeProgramResources();
                 AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
-                if (AutoThemeSwitchService.AutoThemeSwitchEnableValue)
+                if (AutoThemeSwitchService.AutoThemeSwitchEnable)
                 {
                     if (ManualResetEvent is null)
                     {
@@ -102,10 +102,10 @@ namespace ThemeSwitch
             AutoThemeSwitchService.InitializeOrUpdateAutoThemeSwitch();
 
             // 已启用自动切换主题
-            if (AutoThemeSwitchService.AutoThemeSwitchEnableValue)
+            if (AutoThemeSwitchService.AutoThemeSwitchEnable)
             {
                 // 固定时间段
-                if (string.Equals(AutoThemeSwitchService.AutoThemeSwitchTypeValue, AutoThemeSwitchService.AutoThemeSwitchTypeList[0]))
+                if (string.Equals(AutoThemeSwitchService.AutoThemeSwitchType, AutoThemeSwitchService.AutoThemeSwitchTypeList[0]))
                 {
                     // 如果地理位置服务开启，关闭地理位置服务
                     if (DevicePositionService.IsInitialized)
@@ -116,19 +116,19 @@ namespace ThemeSwitch
                     TimeSpan currentTime = new(DateTimeOffset.Now.Hour, DateTimeOffset.Now.Minute, 0);
 
                     // 自动切换系统主题
-                    if (AutoThemeSwitchService.AutoSwitchSystemThemeValue)
+                    if (AutoThemeSwitchService.AutoSwitchSystemTheme)
                     {
-                        SetSystemTheme(currentTime, AutoThemeSwitchService.SystemThemeLightTime, AutoThemeSwitchService.SystemThemeDarkTime, AutoThemeSwitchService.IsShowColorInDarkThemeValue);
+                        SetSystemTheme(currentTime, AutoThemeSwitchService.SystemThemeLightTime, AutoThemeSwitchService.SystemThemeDarkTime, AutoThemeSwitchService.IsShowColorInDarkTheme);
                     }
 
                     // 自动切换应用主题
-                    if (AutoThemeSwitchService.AutoSwitchAppThemeValue)
+                    if (AutoThemeSwitchService.AutoSwitchAppTheme)
                     {
                         SetAppTheme(currentTime, AutoThemeSwitchService.AppThemeLightTime, AutoThemeSwitchService.AppThemeDarkTime);
                     }
                 }
                 // 日落日出
-                else if (Equals(AutoThemeSwitchService.AutoThemeSwitchTypeValue, AutoThemeSwitchService.AutoThemeSwitchTypeList[1]))
+                else if (Equals(AutoThemeSwitchService.AutoThemeSwitchType, AutoThemeSwitchService.AutoThemeSwitchTypeList[1]))
                 {
                     if (DevicePositionService.IsInitialized)
                     {
@@ -151,13 +151,13 @@ namespace ThemeSwitch
                                 if (sunriseTime < sunsetTime)
                                 {
                                     // 自动切换系统主题
-                                    if (AutoThemeSwitchService.AutoSwitchSystemThemeValue)
+                                    if (AutoThemeSwitchService.AutoSwitchSystemTheme)
                                     {
-                                        SetSystemTheme(currentTime, sunriseTime, sunsetTime, AutoThemeSwitchService.IsShowColorInDarkThemeValue);
+                                        SetSystemTheme(currentTime, sunriseTime, sunsetTime, AutoThemeSwitchService.IsShowColorInDarkTheme);
                                     }
 
                                     // 自动切换应用主题
-                                    if (AutoThemeSwitchService.AutoSwitchAppThemeValue)
+                                    if (AutoThemeSwitchService.AutoSwitchAppTheme)
                                     {
                                         SetAppTheme(currentTime, sunriseTime, sunsetTime);
                                     }
@@ -165,13 +165,13 @@ namespace ThemeSwitch
                                 else
                                 {
                                     // 自动切换系统主题
-                                    if (AutoThemeSwitchService.AutoSwitchSystemThemeValue)
+                                    if (AutoThemeSwitchService.AutoSwitchSystemTheme)
                                     {
-                                        SetSystemTheme(currentTime, standardSunriseTime, standardSunsetTime, AutoThemeSwitchService.IsShowColorInDarkThemeValue);
+                                        SetSystemTheme(currentTime, standardSunriseTime, standardSunsetTime, AutoThemeSwitchService.IsShowColorInDarkTheme);
                                     }
 
                                     // 自动切换应用主题
-                                    if (AutoThemeSwitchService.AutoSwitchAppThemeValue)
+                                    if (AutoThemeSwitchService.AutoSwitchAppTheme)
                                     {
                                         SetAppTheme(currentTime, standardSunriseTime, standardSunsetTime);
                                     }
@@ -189,13 +189,13 @@ namespace ThemeSwitch
                                         bool isModified = false;
 
                                         // 自动切换系统主题
-                                        if (AutoThemeSwitchService.AutoSwitchSystemThemeValue && SetSystemLightTheme())
+                                        if (AutoThemeSwitchService.AutoSwitchSystemTheme && SetSystemLightTheme())
                                         {
                                             isModified = true;
                                         }
 
                                         // 自动切换应用主题
-                                        if (AutoThemeSwitchService.AutoSwitchAppThemeValue && SetAppLightTheme())
+                                        if (AutoThemeSwitchService.AutoSwitchAppTheme && SetAppLightTheme())
                                         {
                                             isModified = true;
                                         }
@@ -211,13 +211,13 @@ namespace ThemeSwitch
                                         bool isModified = false;
 
                                         // 自动切换系统主题
-                                        if (AutoThemeSwitchService.AutoSwitchSystemThemeValue && SetSystemDarkTheme(AutoThemeSwitchService.IsShowColorInDarkThemeValue))
+                                        if (AutoThemeSwitchService.AutoSwitchSystemTheme && SetSystemDarkTheme(AutoThemeSwitchService.IsShowColorInDarkTheme))
                                         {
                                             isModified = true;
                                         }
 
                                         // 自动切换应用主题
-                                        if (AutoThemeSwitchService.AutoSwitchAppThemeValue && SetAppDarkTheme())
+                                        if (AutoThemeSwitchService.AutoSwitchAppTheme && SetAppDarkTheme())
                                         {
                                             isModified = true;
                                         }
@@ -237,13 +237,13 @@ namespace ThemeSwitch
                                         bool isModified = false;
 
                                         // 自动切换系统主题
-                                        if (AutoThemeSwitchService.AutoSwitchSystemThemeValue && SetSystemLightTheme())
+                                        if (AutoThemeSwitchService.AutoSwitchSystemTheme && SetSystemLightTheme())
                                         {
                                             isModified = true;
                                         }
 
                                         // 自动切换应用主题
-                                        if (AutoThemeSwitchService.AutoSwitchAppThemeValue && SetAppLightTheme())
+                                        if (AutoThemeSwitchService.AutoSwitchAppTheme && SetAppLightTheme())
                                         {
                                             isModified = true;
                                         }
@@ -259,13 +259,13 @@ namespace ThemeSwitch
                                         bool isModified = false;
 
                                         // 自动切换系统主题
-                                        if (AutoThemeSwitchService.AutoSwitchSystemThemeValue && SetSystemDarkTheme(AutoThemeSwitchService.IsShowColorInDarkThemeValue))
+                                        if (AutoThemeSwitchService.AutoSwitchSystemTheme && SetSystemDarkTheme(AutoThemeSwitchService.IsShowColorInDarkTheme))
                                         {
                                             isModified = true;
                                         }
 
                                         // 自动切换应用主题
-                                        if (AutoThemeSwitchService.AutoSwitchAppThemeValue && SetAppDarkTheme())
+                                        if (AutoThemeSwitchService.AutoSwitchAppTheme && SetAppDarkTheme())
                                         {
                                             isModified = true;
                                         }
@@ -283,13 +283,13 @@ namespace ThemeSwitch
                             TimeSpan currentTime = new(DateTimeOffset.Now.Hour, DateTimeOffset.Now.Minute, 0);
 
                             // 自动切换系统主题
-                            if (AutoThemeSwitchService.AutoSwitchSystemThemeValue)
+                            if (AutoThemeSwitchService.AutoSwitchSystemTheme)
                             {
-                                SetSystemTheme(currentTime, AutoThemeSwitchService.SystemThemeLightTime, AutoThemeSwitchService.SystemThemeDarkTime, AutoThemeSwitchService.IsShowColorInDarkThemeValue);
+                                SetSystemTheme(currentTime, AutoThemeSwitchService.SystemThemeLightTime, AutoThemeSwitchService.SystemThemeDarkTime, AutoThemeSwitchService.IsShowColorInDarkTheme);
                             }
 
                             // 自动切换应用主题
-                            if (AutoThemeSwitchService.AutoSwitchAppThemeValue)
+                            if (AutoThemeSwitchService.AutoSwitchAppTheme)
                             {
                                 SetAppTheme(currentTime, AutoThemeSwitchService.AppThemeLightTime, AutoThemeSwitchService.AppThemeDarkTime);
                             }
@@ -301,7 +301,7 @@ namespace ThemeSwitch
                     }
                 }
                 // 夜间模式
-                else if (Equals(AutoThemeSwitchService.AutoThemeSwitchTypeValue, AutoThemeSwitchService.AutoThemeSwitchTypeList[2]))
+                else if (Equals(AutoThemeSwitchService.AutoThemeSwitchType, AutoThemeSwitchService.AutoThemeSwitchTypeList[2]))
                 {
                     // 如果地理位置服务开启，关闭地理位置服务
                     if (DevicePositionService.IsInitialized)
@@ -310,11 +310,11 @@ namespace ThemeSwitch
                     }
 
                     // 自动切换系统主题
-                    if (AutoThemeSwitchService.AutoSwitchSystemThemeValue)
+                    if (AutoThemeSwitchService.AutoSwitchSystemTheme)
                     {
                         if (IsNightLightEnabled())
                         {
-                            bool isModified = SetSystemDarkTheme(AutoThemeSwitchService.IsShowColorInDarkThemeValue);
+                            bool isModified = SetSystemDarkTheme(AutoThemeSwitchService.IsShowColorInDarkTheme);
 
                             if (isModified)
                             {
@@ -332,7 +332,7 @@ namespace ThemeSwitch
                         }
 
                         // 自动切换应用主题
-                        if (AutoThemeSwitchService.AutoSwitchAppThemeValue)
+                        if (AutoThemeSwitchService.AutoSwitchAppTheme)
                         {
                             if (IsNightLightEnabled())
                             {
@@ -374,7 +374,7 @@ namespace ThemeSwitch
         /// <summary>
         /// 设置系统主题
         /// </summary>
-        private static void SetSystemTheme(TimeSpan currentTime, TimeSpan lightTime, TimeSpan darkTime, bool isShowColorInDarkThemeValue)
+        private static void SetSystemTheme(TimeSpan currentTime, TimeSpan lightTime, TimeSpan darkTime, bool isShowColorInDarkTheme)
         {
             // 白天时间小于夜间时间
             if (lightTime < darkTime)
@@ -392,7 +392,7 @@ namespace ThemeSwitch
                 // 切换深色主题
                 else
                 {
-                    bool isModified = SetSystemDarkTheme(isShowColorInDarkThemeValue);
+                    bool isModified = SetSystemDarkTheme(isShowColorInDarkTheme);
 
                     if (isModified)
                     {
@@ -406,7 +406,7 @@ namespace ThemeSwitch
                 // 介于白天时间和夜间时间，切换深色主题
                 if (currentTime > darkTime && currentTime < lightTime)
                 {
-                    bool isModified = SetSystemDarkTheme(isShowColorInDarkThemeValue);
+                    bool isModified = SetSystemDarkTheme(isShowColorInDarkTheme);
 
                     if (isModified)
                     {
@@ -506,7 +506,7 @@ namespace ThemeSwitch
         /// <summary>
         /// 设置系统深色主题
         /// </summary>
-        private static bool SetSystemDarkTheme(bool isShowColorInDarkThemeValue)
+        private static bool SetSystemDarkTheme(bool isShowColorInDarkTheme)
         {
             bool isModified = false;
 
@@ -516,7 +516,7 @@ namespace ThemeSwitch
                 isModified = true;
             }
 
-            if (isShowColorInDarkThemeValue && RegistryHelper.ReadRegistryKey<int>(Registry.CurrentUser, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence") is 0)
+            if (isShowColorInDarkTheme && RegistryHelper.ReadRegistryKey<int>(Registry.CurrentUser, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence") is 0)
             {
                 RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence", 1);
                 isModified = true;
@@ -627,13 +627,13 @@ namespace ThemeSwitch
                             if (sunriseTime < sunsetTime)
                             {
                                 // 自动切换系统主题
-                                if (AutoThemeSwitchService.AutoSwitchSystemThemeValue)
+                                if (AutoThemeSwitchService.AutoSwitchSystemTheme)
                                 {
-                                    SetSystemTheme(currentTime, sunriseTime, sunsetTime, AutoThemeSwitchService.IsShowColorInDarkThemeValue);
+                                    SetSystemTheme(currentTime, sunriseTime, sunsetTime, AutoThemeSwitchService.IsShowColorInDarkTheme);
                                 }
 
                                 // 自动切换应用主题
-                                if (AutoThemeSwitchService.AutoSwitchAppThemeValue)
+                                if (AutoThemeSwitchService.AutoSwitchAppTheme)
                                 {
                                     SetAppTheme(currentTime, sunriseTime, sunsetTime);
                                 }
@@ -641,13 +641,13 @@ namespace ThemeSwitch
                             else
                             {
                                 // 自动切换系统主题
-                                if (AutoThemeSwitchService.AutoSwitchSystemThemeValue)
+                                if (AutoThemeSwitchService.AutoSwitchSystemTheme)
                                 {
-                                    SetSystemTheme(currentTime, standardSunriseTime, standardSunsetTime, AutoThemeSwitchService.IsShowColorInDarkThemeValue);
+                                    SetSystemTheme(currentTime, standardSunriseTime, standardSunsetTime, AutoThemeSwitchService.IsShowColorInDarkTheme);
                                 }
 
                                 // 自动切换应用主题
-                                if (AutoThemeSwitchService.AutoSwitchAppThemeValue)
+                                if (AutoThemeSwitchService.AutoSwitchAppTheme)
                                 {
                                     SetAppTheme(currentTime, standardSunriseTime, standardSunsetTime);
                                 }
@@ -665,13 +665,13 @@ namespace ThemeSwitch
                                     bool isModified = false;
 
                                     // 自动切换系统主题
-                                    if (AutoThemeSwitchService.AutoSwitchSystemThemeValue && SetSystemLightTheme())
+                                    if (AutoThemeSwitchService.AutoSwitchSystemTheme && SetSystemLightTheme())
                                     {
                                         isModified = true;
                                     }
 
                                     // 自动切换应用主题
-                                    if (AutoThemeSwitchService.AutoSwitchAppThemeValue && SetAppLightTheme())
+                                    if (AutoThemeSwitchService.AutoSwitchAppTheme && SetAppLightTheme())
                                     {
                                         isModified = true;
                                     }
@@ -687,13 +687,13 @@ namespace ThemeSwitch
                                     bool isModified = false;
 
                                     // 自动切换系统主题
-                                    if (AutoThemeSwitchService.AutoSwitchSystemThemeValue && SetSystemDarkTheme(AutoThemeSwitchService.IsShowColorInDarkThemeValue))
+                                    if (AutoThemeSwitchService.AutoSwitchSystemTheme && SetSystemDarkTheme(AutoThemeSwitchService.IsShowColorInDarkTheme))
                                     {
                                         isModified = true;
                                     }
 
                                     // 自动切换应用主题
-                                    if (AutoThemeSwitchService.AutoSwitchAppThemeValue && SetAppDarkTheme())
+                                    if (AutoThemeSwitchService.AutoSwitchAppTheme && SetAppDarkTheme())
                                     {
                                         isModified = true;
                                     }
@@ -713,13 +713,13 @@ namespace ThemeSwitch
                                     bool isModified = false;
 
                                     // 自动切换系统主题
-                                    if (AutoThemeSwitchService.AutoSwitchSystemThemeValue && SetSystemLightTheme())
+                                    if (AutoThemeSwitchService.AutoSwitchSystemTheme && SetSystemLightTheme())
                                     {
                                         isModified = true;
                                     }
 
                                     // 自动切换应用主题
-                                    if (AutoThemeSwitchService.AutoSwitchAppThemeValue && SetAppLightTheme())
+                                    if (AutoThemeSwitchService.AutoSwitchAppTheme && SetAppLightTheme())
                                     {
                                         isModified = true;
                                     }
@@ -735,13 +735,13 @@ namespace ThemeSwitch
                                     bool isModified = false;
 
                                     // 自动切换系统主题
-                                    if (AutoThemeSwitchService.AutoSwitchSystemThemeValue && SetSystemDarkTheme(AutoThemeSwitchService.IsShowColorInDarkThemeValue))
+                                    if (AutoThemeSwitchService.AutoSwitchSystemTheme && SetSystemDarkTheme(AutoThemeSwitchService.IsShowColorInDarkTheme))
                                     {
                                         isModified = true;
                                     }
 
                                     // 自动切换应用主题
-                                    if (AutoThemeSwitchService.AutoSwitchAppThemeValue && SetAppDarkTheme())
+                                    if (AutoThemeSwitchService.AutoSwitchAppTheme && SetAppDarkTheme())
                                     {
                                         isModified = true;
                                     }
@@ -765,13 +765,13 @@ namespace ThemeSwitch
                     TimeSpan currentTime = new(DateTimeOffset.Now.Hour, DateTimeOffset.Now.Minute, 0);
 
                     // 自动切换系统主题
-                    if (AutoThemeSwitchService.AutoSwitchSystemThemeValue)
+                    if (AutoThemeSwitchService.AutoSwitchSystemTheme)
                     {
-                        SetSystemTheme(currentTime, AutoThemeSwitchService.SystemThemeLightTime, AutoThemeSwitchService.SystemThemeDarkTime, AutoThemeSwitchService.IsShowColorInDarkThemeValue);
+                        SetSystemTheme(currentTime, AutoThemeSwitchService.SystemThemeLightTime, AutoThemeSwitchService.SystemThemeDarkTime, AutoThemeSwitchService.IsShowColorInDarkTheme);
                     }
 
                     // 自动切换应用主题
-                    if (AutoThemeSwitchService.AutoSwitchAppThemeValue)
+                    if (AutoThemeSwitchService.AutoSwitchAppTheme)
                     {
                         SetAppTheme(currentTime, AutoThemeSwitchService.AppThemeLightTime, AutoThemeSwitchService.AppThemeDarkTime);
                     }

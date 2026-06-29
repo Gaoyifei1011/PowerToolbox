@@ -182,6 +182,7 @@ namespace PowerToolbox.Views.Dialogs
             {
                 DoEngineMode = doEngineMode;
                 DownloadOptionsService.SetDoEngineMode(Convert.ToString(DoEngineMode.SelectedValue));
+                DoEngineMode = DoEngineModeList.Find(item => string.Equals(Convert.ToString(item.SelectedValue), DownloadOptionsService.DoEngineMode, StringComparison.OrdinalIgnoreCase));
             }
         }
 

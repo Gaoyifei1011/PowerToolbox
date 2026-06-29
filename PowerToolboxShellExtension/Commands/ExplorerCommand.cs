@@ -160,7 +160,7 @@ namespace PowerToolboxShellExtension.Commands
         /// </summary>
         public unsafe int GetState(IShellItemArray psiItemArray, bool fOkToBeSlow, out EXPCMDSTATE pCmdState)
         {
-            if (FileShellMenuService.GetFileShellMenuValue() && shellMenuItem is not null)
+            if (FileShellMenuService.GetFileShellMenu() && shellMenuItem is not null)
             {
                 // Directory\Background
                 if (psiItemArray is null && !site.Equals(nint.Zero))

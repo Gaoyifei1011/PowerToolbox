@@ -197,18 +197,18 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isAutoThemeSwitchEnableValue = AutoThemeSwitchService.AutoThemeSwitchEnableValue;
+        private bool _isAutoThemeSwitchEnable = AutoThemeSwitchService.AutoThemeSwitchEnable;
 
-        public bool IsAutoThemeSwitchEnableValue
+        public bool IsAutoThemeSwitchEnable
         {
-            get { return _isAutoThemeSwitchEnableValue; }
+            get { return _isAutoThemeSwitchEnable; }
 
             set
             {
-                if (!Equals(_isAutoThemeSwitchEnableValue, value))
+                if (!Equals(_isAutoThemeSwitchEnable, value))
                 {
-                    _isAutoThemeSwitchEnableValue = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAutoThemeSwitchEnableValue)));
+                    _isAutoThemeSwitchEnable = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAutoThemeSwitchEnable)));
                 }
             }
         }
@@ -229,50 +229,50 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isAutoSwitchSystemThemeValue = AutoThemeSwitchService.AutoSwitchSystemThemeValue;
+        private bool _isAutoSwitchSystemTheme = AutoThemeSwitchService.AutoSwitchSystemTheme;
 
-        public bool IsAutoSwitchSystemThemeValue
+        public bool IsAutoSwitchSystemTheme
         {
-            get { return _isAutoSwitchSystemThemeValue; }
+            get { return _isAutoSwitchSystemTheme; }
 
             set
             {
-                if (!Equals(_isAutoSwitchSystemThemeValue, value))
+                if (!Equals(_isAutoSwitchSystemTheme, value))
                 {
-                    _isAutoSwitchSystemThemeValue = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAutoSwitchSystemThemeValue)));
+                    _isAutoSwitchSystemTheme = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAutoSwitchSystemTheme)));
                 }
             }
         }
 
-        private bool _isAutoSwitchAppThemeValue = AutoThemeSwitchService.AutoSwitchAppThemeValue;
+        private bool _isAutoSwitchAppTheme = AutoThemeSwitchService.AutoSwitchAppTheme;
 
-        public bool IsAutoSwitchAppThemeValue
+        public bool IsAutoSwitchAppTheme
         {
-            get { return _isAutoSwitchAppThemeValue; }
+            get { return _isAutoSwitchAppTheme; }
 
             set
             {
-                if (!Equals(_isAutoSwitchAppThemeValue, value))
+                if (!Equals(_isAutoSwitchAppTheme, value))
                 {
-                    _isAutoSwitchAppThemeValue = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAutoSwitchAppThemeValue)));
+                    _isAutoSwitchAppTheme = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAutoSwitchAppTheme)));
                 }
             }
         }
 
-        private bool _isShowColorInDarkThemeValue = AutoThemeSwitchService.IsShowColorInDarkThemeValue;
+        private bool _isShowColorInDarkTheme = AutoThemeSwitchService.IsShowColorInDarkTheme;
 
-        public bool IsShowColorInDarkThemeValue
+        public bool IsShowColorInDarkTheme
         {
-            get { return _isShowColorInDarkThemeValue; }
+            get { return _isShowColorInDarkTheme; }
 
             set
             {
-                if (!Equals(_isShowColorInDarkThemeValue, value))
+                if (!Equals(_isShowColorInDarkTheme, value))
                 {
-                    _isShowColorInDarkThemeValue = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsShowColorInDarkThemeValue)));
+                    _isShowColorInDarkTheme = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsShowColorInDarkTheme)));
                 }
             }
         }
@@ -546,7 +546,7 @@ namespace PowerToolbox.Views.Pages
             try
             {
                 GlobalNotificationService.ApplicationExit -= OnApplicationExit;
-                if (IsAutoThemeSwitchEnableValue && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized)
+                if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized)
                 {
                     await UnInitializeDeviceServiceAsync();
                     Latitude = NotAvailableString;
@@ -595,7 +595,7 @@ namespace PowerToolbox.Views.Pages
                 return startupTaskState is StartupTaskState.Enabled || startupTaskState is StartupTaskState.Disabled;
             });
 
-            if (AutoThemeSwitchService.AutoThemeSwitchEnableValue)
+            if (AutoThemeSwitchService.AutoThemeSwitchEnable)
             {
                 IsThemeSwitchNotificationEnabled = !isStartupTaskEnabled;
 
@@ -687,16 +687,16 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 在“开始菜单”和任务栏中显示主题色
         /// </summary>
-        private void OnShowThemeColorInStartAndTaskbarToggled(object sender, RoutedEventArgs args)
+        private async void OnShowThemeColorInStartAndTaskbarToggled(object sender, RoutedEventArgs args)
         {
             if (sender is ToggleSwitch toggleSwitch && !Equals(IsShowThemeColorInStartAndTaskbar, toggleSwitch.IsOn))
             {
                 IsShowThemeColorInStartAndTaskbar = toggleSwitch.IsOn;
-
-                Task.Run(() =>
+                IsShowThemeColorInStartAndTaskbar = await Task.Run(() =>
                 {
                     RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence", IsShowThemeColorInStartAndTaskbar);
                     User32Library.SendMessageTimeout(0xffff, WindowMessage.WM_SETTINGCHANGE, 0, Marshal.StringToHGlobalUni("ImmersiveColorSet"), SMTO.SMTO_ABORTIFHUNG, 50, out _);
+                    return GetShowThemeColorInStartAndTaskbar();
                 });
             }
         }
@@ -706,12 +706,12 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnSaveClicked(SplitButton sender, SplitButtonClickEventArgs args)
         {
-            if (IsAutoSwitchSystemThemeValue && Equals(SystemThemeLightTime, SystemThemeDarkTime))
+            if (IsAutoSwitchSystemTheme && Equals(SystemThemeLightTime, SystemThemeDarkTime))
             {
                 await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ThemeChangeSameTime));
                 return;
             }
-            else if (IsAutoSwitchAppThemeValue && Equals(AppThemeLightTime, AppThemeDarkTime))
+            else if (IsAutoSwitchAppTheme && Equals(AppThemeLightTime, AppThemeDarkTime))
             {
                 await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ThemeChangeSameTime));
                 return;
@@ -719,11 +719,11 @@ namespace PowerToolbox.Views.Pages
 
             await Task.Run(() =>
             {
-                AutoThemeSwitchService.SetAutoThemeSwitchEnableValue(IsAutoThemeSwitchEnableValue);
-                AutoThemeSwitchService.SetAutoThemeSwitchTypeValue(Convert.ToString(SelectedAutoThemeSwitchType.SelectedValue));
-                AutoThemeSwitchService.SetAutoSwitchSystemThemeValue(IsAutoSwitchSystemThemeValue);
-                AutoThemeSwitchService.SetAutoSwitchAppThemeValue(IsAutoSwitchAppThemeValue);
-                AutoThemeSwitchService.SetIsShowColorInDarkThemeValue(IsShowColorInDarkThemeValue);
+                AutoThemeSwitchService.SetAutoThemeSwitchEnable(IsAutoThemeSwitchEnable);
+                AutoThemeSwitchService.SetAutoThemeSwitchType(Convert.ToString(SelectedAutoThemeSwitchType.SelectedValue));
+                AutoThemeSwitchService.SetAutoSwitchSystemTheme(IsAutoSwitchSystemTheme);
+                AutoThemeSwitchService.SetAutoSwitchAppTheme(IsAutoSwitchAppTheme);
+                AutoThemeSwitchService.SetIsShowColorInDarkTheme(IsShowColorInDarkTheme);
                 AutoThemeSwitchService.SetSystemThemeLightTime(SystemThemeLightTime);
                 AutoThemeSwitchService.SetSystemThemeDarkTime(SystemThemeDarkTime);
                 AutoThemeSwitchService.SetAppThemeLightTime(AppThemeLightTime);
@@ -731,7 +731,7 @@ namespace PowerToolbox.Views.Pages
                 AutoThemeSwitchService.SetSunriseOffset(SunriseOffset);
                 AutoThemeSwitchService.SetSunsetOffset(SunsetOffset);
 
-                if (IsAutoThemeSwitchEnableValue)
+                if (IsAutoThemeSwitchEnable)
                 {
                     try
                     {
@@ -751,7 +751,7 @@ namespace PowerToolbox.Views.Pages
                 }
             });
 
-            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnableValue && !await Task.Run(GetStartupTaskEnabledAsync);
+            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnable && !await Task.Run(GetStartupTaskEnabledAsync);
             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ThemeSwitchSaveResult));
         }
 
@@ -762,11 +762,11 @@ namespace PowerToolbox.Views.Pages
         {
             await Task.Run(() =>
             {
-                AutoThemeSwitchService.SetAutoThemeSwitchEnableValue(AutoThemeSwitchService.DefaultAutoThemeSwitchEnableValue);
-                AutoThemeSwitchService.SetAutoThemeSwitchTypeValue(AutoThemeSwitchService.DefaultAutoThemeSwitchTypeValue);
-                AutoThemeSwitchService.SetAutoSwitchSystemThemeValue(AutoThemeSwitchService.DefaultAutoSwitchSystemThemeValue);
-                AutoThemeSwitchService.SetAutoSwitchAppThemeValue(AutoThemeSwitchService.DefaultAutoSwitchAppThemeValue);
-                AutoThemeSwitchService.SetIsShowColorInDarkThemeValue(AutoThemeSwitchService.DefaultIsShowColorInDarkThemeValue);
+                AutoThemeSwitchService.SetAutoThemeSwitchEnable(AutoThemeSwitchService.DefaultAutoThemeSwitchEnable);
+                AutoThemeSwitchService.SetAutoThemeSwitchType(AutoThemeSwitchService.DefaultAutoThemeSwitchType);
+                AutoThemeSwitchService.SetAutoSwitchSystemTheme(AutoThemeSwitchService.DefaultAutoSwitchSystemTheme);
+                AutoThemeSwitchService.SetAutoSwitchAppTheme(AutoThemeSwitchService.DefaultAutoSwitchAppTheme);
+                AutoThemeSwitchService.SetIsShowColorInDarkTheme(AutoThemeSwitchService.DefaultIsShowColorInDarkTheme);
                 AutoThemeSwitchService.SetSystemThemeLightTime(AutoThemeSwitchService.DefaultSystemThemeLightTime);
                 AutoThemeSwitchService.SetSystemThemeDarkTime(AutoThemeSwitchService.DefaultSystemThemeDarkTime);
                 AutoThemeSwitchService.SetAppThemeLightTime(AutoThemeSwitchService.DefaultAppThemeLightTime);
@@ -775,18 +775,18 @@ namespace PowerToolbox.Views.Pages
                 AutoThemeSwitchService.SetSunsetOffset(AutoThemeSwitchService.DefaultSunriseOffset);
             });
 
-            IsAutoThemeSwitchEnableValue = AutoThemeSwitchService.DefaultAutoThemeSwitchEnableValue;
-            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList[AutoThemeSwitchService.AutoThemeSwitchTypeList.FindIndex(item => string.Equals(item, AutoThemeSwitchService.DefaultAutoThemeSwitchTypeValue))];
-            IsAutoSwitchSystemThemeValue = AutoThemeSwitchService.DefaultAutoSwitchSystemThemeValue;
-            IsAutoSwitchAppThemeValue = AutoThemeSwitchService.DefaultAutoSwitchAppThemeValue;
-            IsShowColorInDarkThemeValue = AutoThemeSwitchService.DefaultIsShowColorInDarkThemeValue;
+            IsAutoThemeSwitchEnable = AutoThemeSwitchService.DefaultAutoThemeSwitchEnable;
+            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList[AutoThemeSwitchService.AutoThemeSwitchTypeList.FindIndex(item => string.Equals(item, AutoThemeSwitchService.DefaultAutoThemeSwitchType))];
+            IsAutoSwitchSystemTheme = AutoThemeSwitchService.DefaultAutoSwitchSystemTheme;
+            IsAutoSwitchAppTheme = AutoThemeSwitchService.DefaultAutoSwitchAppTheme;
+            IsShowColorInDarkTheme = AutoThemeSwitchService.DefaultIsShowColorInDarkTheme;
             SystemThemeLightTime = AutoThemeSwitchService.DefaultSystemThemeLightTime;
             SystemThemeDarkTime = AutoThemeSwitchService.DefaultSystemThemeDarkTime;
             AppThemeLightTime = AutoThemeSwitchService.DefaultAppThemeLightTime;
             AppThemeDarkTime = AutoThemeSwitchService.DefaultAppThemeDarkTime;
             SunriseOffset = AutoThemeSwitchService.DefaultSunriseOffset;
             SunsetOffset = AutoThemeSwitchService.DefaultSunsetOffset;
-            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnableValue && !await Task.Run(GetStartupTaskEnabledAsync);
+            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnable && !await Task.Run(GetStartupTaskEnabledAsync);
             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ThemeSwitchRestoreResult));
         }
 
@@ -820,14 +820,14 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnAutoThemeSwitchEnableToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch && !Equals(IsAutoThemeSwitchEnableValue, toggleSwitch.IsOn))
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsAutoThemeSwitchEnable, toggleSwitch.IsOn))
             {
-                IsAutoThemeSwitchEnableValue = toggleSwitch.IsOn;
+                IsAutoThemeSwitchEnable = toggleSwitch.IsOn;
             }
 
             if (Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]))
             {
-                if (IsAutoThemeSwitchEnableValue)
+                if (IsAutoThemeSwitchEnable)
                 {
                     if (!DevicePositionService.IsInitialized)
                     {
@@ -858,7 +858,7 @@ namespace PowerToolbox.Views.Pages
                 SelectedAutoThemeSwitchType = autoThemeSwitchType;
             }
 
-            if (IsAutoThemeSwitchEnableValue)
+            if (IsAutoThemeSwitchEnable)
             {
                 if (Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]))
                 {
@@ -886,9 +886,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAutoSwitchSystemThemeToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch && !Equals(IsAutoSwitchSystemThemeValue, toggleSwitch.IsOn))
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsAutoSwitchSystemTheme, toggleSwitch.IsOn))
             {
-                IsAutoSwitchSystemThemeValue = toggleSwitch.IsOn;
+                IsAutoSwitchSystemTheme = toggleSwitch.IsOn;
             }
         }
 
@@ -913,9 +913,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAutoSwitchAppThemeToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch && !Equals(IsAutoSwitchAppThemeValue, toggleSwitch.IsOn))
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsAutoSwitchAppTheme, toggleSwitch.IsOn))
             {
-                IsAutoSwitchAppThemeValue = toggleSwitch.IsOn;
+                IsAutoSwitchAppTheme = toggleSwitch.IsOn;
             }
         }
 
@@ -924,9 +924,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnShowColorInDarkThemeToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch && !Equals(IsShowColorInDarkThemeValue, toggleSwitch.IsOn))
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsShowColorInDarkTheme, toggleSwitch.IsOn))
             {
-                IsShowColorInDarkThemeValue = toggleSwitch.IsOn;
+                IsShowColorInDarkTheme = toggleSwitch.IsOn;
             }
         }
 
@@ -1003,7 +1003,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnLocatePositionClicked(object sender, RoutedEventArgs args)
         {
             IsGettingPosition = true;
-            if (IsAutoThemeSwitchEnableValue && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]))
+            if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]))
             {
                 if (DevicePositionService.IsInitialized)
                 {
@@ -1111,7 +1111,7 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            if (IsAutoThemeSwitchEnableValue && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized && DevicePositionService.IsLoaded)
+            if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized && DevicePositionService.IsLoaded)
             {
                 Latitude = Convert.ToString(DevicePositionService.Latitude);
                 Longitude = Convert.ToString(DevicePositionService.Longitude);
@@ -1208,7 +1208,7 @@ namespace PowerToolbox.Views.Pages
                 sunsetOffset = 0;
             }
 
-            if (IsAutoThemeSwitchEnableValue && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized && DevicePositionService.IsLoaded)
+            if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized && DevicePositionService.IsLoaded)
             {
                 Latitude = Convert.ToString(DevicePositionService.Latitude);
                 Longitude = Convert.ToString(DevicePositionService.Longitude);
@@ -1369,13 +1369,13 @@ namespace PowerToolbox.Views.Pages
             SystemAppTheme = appTheme;
             SelectedAppThemeStyle = AppThemeStyleList.Find(item => Equals(item.SelectedValue, appTheme));
 
-            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList.Find(item => string.Equals(Convert.ToString(item.SelectedValue), AutoThemeSwitchService.AutoThemeSwitchTypeValue, StringComparison.OrdinalIgnoreCase));
+            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList.Find(item => string.Equals(Convert.ToString(item.SelectedValue), AutoThemeSwitchService.AutoThemeSwitchType, StringComparison.OrdinalIgnoreCase));
             IsShowThemeColorInStartAndTaskbarEnabled = Equals(SelectedSystemThemeStyle, SystemThemeStyleList[1]);
             bool showThemeColorInStartAndTaskbar = await Task.Run(GetShowThemeColorInStartAndTaskbar);
             IsShowThemeColorInStartAndTaskbar = showThemeColorInStartAndTaskbar;
-            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnableValue && !await Task.Run(GetStartupTaskEnabledAsync);
+            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnable && !await Task.Run(GetStartupTaskEnabledAsync);
 
-            if (IsAutoThemeSwitchEnableValue && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && !DevicePositionService.IsInitialized)
+            if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && !DevicePositionService.IsInitialized)
             {
                 await InitializeDeviceServiceAsync();
             }
@@ -1617,17 +1617,17 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取自动切换系统主题时间显示状态值
         /// </summary>
-        private Visibility GetAutoSwitchSystemThemeTimeState(object selectedAutoThemeSwitchType, bool isAutoSwitchSystemThemeValue)
+        private Visibility GetAutoSwitchSystemThemeTimeState(object selectedAutoThemeSwitchType, bool isAutoSwitchSystemTheme)
         {
-            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].SelectedValue) && isAutoSwitchSystemThemeValue ? Visibility.Visible : Visibility.Collapsed;
+            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].SelectedValue) && isAutoSwitchSystemTheme ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
         /// 获取自动切换应用主题时间显示状态值
         /// </summary>
-        private Visibility GetAutoSwitchAppThemeTimeState(object selectedAutoThemeSwitchType, bool isAutoSwitchAppThemeValue)
+        private Visibility GetAutoSwitchAppThemeTimeState(object selectedAutoThemeSwitchType, bool isAutoSwitchAppTheme)
         {
-            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].SelectedValue) && isAutoSwitchAppThemeValue ? Visibility.Visible : Visibility.Collapsed;
+            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].SelectedValue) && isAutoSwitchAppTheme ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

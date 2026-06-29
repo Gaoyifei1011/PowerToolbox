@@ -765,7 +765,7 @@ namespace PowerToolbox.Views.Windows
                 {
                     SetSystemBackdrop();
                 }
-                if (string.Equals(args.PropertyName, nameof(TopMostService.TopMostValue)))
+                if (string.Equals(args.PropertyName, nameof(TopMostService.TopMost)))
                 {
                     SetTopMost();
                 }
@@ -881,7 +881,7 @@ namespace PowerToolbox.Views.Windows
         /// </summary>
         private void SetTopMost()
         {
-            overlappedPresenter.IsAlwaysOnTop = TopMostService.TopMostValue;
+            overlappedPresenter.IsAlwaysOnTop = TopMostService.TopMost;
         }
 
         #endregion 第五部分：窗口及内容属性设置
@@ -937,7 +937,7 @@ namespace PowerToolbox.Views.Windows
                         {
                             if (WindowSystemBackdrop is MaterialBackdrop materialBackdrop && materialBackdrop.BackdropConfiguration is not null)
                             {
-                                materialBackdrop.BackdropConfiguration.IsInputActive = AlwaysShowBackdropService.AlwaysShowBackdropValue || wParam is not 0;
+                                materialBackdrop.BackdropConfiguration.IsInputActive = AlwaysShowBackdropService.AlwaysShowBackdrop || wParam is not 0;
                             }
                         }
                         catch (Exception e)

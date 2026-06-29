@@ -557,10 +557,9 @@ namespace PowerToolbox.Views.Pages
                 OperationFailedList.Clear();
                 if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath))
                 {
-                    List<OldAndNewNameModel> fileNameList = [];
-
-                    await Task.Run(() =>
+                    List<OldAndNewNameModel> fileNameList = await Task.Run(() =>
                     {
+                        List<OldAndNewNameModel> fileNameList = [];
                         DirectoryInfo currentFolder = new(openFolderDialog.SelectedPath);
 
                         try
@@ -583,6 +582,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ExtensionNamePage), nameof(OnSelectFolderClicked), 1, e);
                         }
+                        return fileNameList;
                     });
 
                     AddToExtensionNamePage(fileNameList);
