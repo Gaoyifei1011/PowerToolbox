@@ -248,6 +248,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isNICOffloadSettingsEnabled;
+
+        public bool IsNICOffloadSettingsEnabled
+        {
+            get { return _isNICOffloadSettingsEnabled; }
+
+            set
+            {
+                if (!Equals(_isNICOffloadSettingsEnabled, value))
+                {
+                    _isNICOffloadSettingsEnabled = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsNICOffloadSettingsEnabled)));
+                }
+            }
+        }
+
         private List<ComboBoxItemModel> NotifyModeList { get; } = [];
 
         private List<ComboBoxItemModel> HibernationFileTypeList { get; } = [];
@@ -434,6 +450,11 @@ namespace PowerToolbox.Views.Pages
                     {
                         IsVirtualizationBasedSecurityEnabled = isVirtualizationBasedSecurityEnabled;
                     }, null);
+                });
+
+                IsNICOffloadSettingsEnabled = await Task.Run(() =>
+                {
+                    return RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", "DisableTaskOffload") is 0;
                 });
             }
         }
@@ -1175,6 +1196,40 @@ namespace PowerToolbox.Views.Pages
                     }
 
                     return isVirtualizationBasedSecurityEnabled;
+                });
+            }
+        }
+
+        /// <summary>
+        /// 了解网卡负载
+        /// </summary>
+        private void OnLearnNICOffloadClicked(object sender, RoutedEventArgs args)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("https://learn.microsoft.com/windows-hardware/drivers/network/using-registry-values-to-enable-and-disable-task-offloading");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnLearnVBSClicked), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 修改网卡负载状态
+        /// </summary>
+        private async Task OnNICOffloadSettingsToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsNICOffloadSettingsEnabled, toggleSwitch.IsOn))
+            {
+                IsNICOffloadSettingsEnabled = toggleSwitch.IsOn;
+                IsNICOffloadSettingsEnabled = await Task.Run(() =>
+                {
+                    RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", "DisableTaskOffload", IsNICOffloadSettingsEnabled ? 0 : 1);
+                    return RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", "DisableTaskOffload") is 0;
                 });
             }
         }

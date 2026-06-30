@@ -929,6 +929,82 @@
                         Style="{StaticResource ToggleSwitchStyle}"
                         Toggled="{x:Bind OnVirtualizationBasedSecurityToggled}" />
                 </Grid>
+
+                <!--  网卡负载设置  -->
+                <Grid
+                    Height="60"
+                    Margin="0,0,0,2"
+                    Padding="16,0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{StaticResource ControlCornerRadius}">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <FontIcon
+                        Grid.Column="0"
+                        Margin="0,0,12,0"
+                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        FontSize="16"
+                        Glyph="&#xEDA3;" />
+
+                    <StackPanel
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NICOffloadSettings')}" />
+
+                        <TextBlock
+                            x:Name="NICOffloadSettingsDescription"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NICOffloadSettingsDescription')}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap">
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NICOffloadSettingsDescription')}" Visibility="{x:Bind NICOffloadSettingsDescription.IsTextTrimmed, Mode=OneWay}" />
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <Button
+                        Grid.Column="2"
+                        Width="32"
+                        Height="32"
+                        Margin="0,0,6,0"
+                        Padding="0"
+                        CornerRadius="{StaticResource ControlCornerRadius}"
+                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('ShowOptions')}">
+
+                        <FontIcon FontSize="14" Glyph="&#xE712;" />
+
+                        <Button.Flyout>
+                            <MenuFlyout Placement="Bottom">
+                                <MenuFlyoutItem Click="{x:Bind OnLearnNICOffloadClicked}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('LearnNICOffload')}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE890;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+
+                    <ToggleSwitch
+                        Grid.Column="3"
+                        IsOn="{x:Bind IsNICOffloadSettingsEnabled, Mode=OneWay}"
+                        OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NICOffloadSettingsOffContent')}"
+                        OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NICOffloadSettingsOnContent')}"
+                        Style="{StaticResource ToggleSwitchStyle}"
+                        Toggled="{x:Bind OnNICOffloadSettingsToggled}" />
+                </Grid>
             </StackPanel>
         </ScrollViewer>
     </Grid>
