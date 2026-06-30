@@ -7,7 +7,6 @@ using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.ComTypes;
-
 using PowerToolbox.WindowsAPI.PInvoke.PowrProf;
 using System;
 using System.Collections.Generic;
@@ -15,6 +14,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
@@ -38,6 +38,7 @@ namespace PowerToolbox.Views.Pages
         private readonly Guid EnergySaving = new("A1841308-3541-4FAB-BC81-F71556F20B4A");
         private readonly Guid HighPerformance = new("8C5E7FDA-E8BF-4A96-9A85-A6E23A8C635C");
         private readonly Guid OutstandingPerformance = new("E9A42B02-D5DF-448D-AA00-03F14749EB61");
+        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
 
         private ComboBoxItemModel _selectedNotifyMode;
 
@@ -231,6 +232,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isVirtualizationBasedSecurityEnabled;
+
+        public bool IsVirtualizationBasedSecurityEnabled
+        {
+            get { return _isVirtualizationBasedSecurityEnabled; }
+
+            set
+            {
+                if (!Equals(_isVirtualizationBasedSecurityEnabled, value))
+                {
+                    _isVirtualizationBasedSecurityEnabled = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsVirtualizationBasedSecurityEnabled)));
+                }
+            }
+        }
+
         private List<ComboBoxItemModel> NotifyModeList { get; } = [];
 
         private List<ComboBoxItemModel> HibernationFileTypeList { get; } = [];
@@ -328,7 +345,7 @@ namespace PowerToolbox.Views.Pages
                 if (!IsSystemReservedStorageLoadingOrUpdating)
                 {
                     IsSystemReservedStorageLoadingOrUpdating = true;
-                    IsSystemReservedStorageEnabled = await Task.Run(() =>
+                    _ = Task.Run(() =>
                     {
                         bool isSystemReservedStorageEnabled = false;
 
@@ -358,10 +375,66 @@ namespace PowerToolbox.Views.Pages
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnNavigatedTo), 4, e);
                         }
 
-                        return isSystemReservedStorageEnabled;
+                        synchronizationContext.Post((_) =>
+                        {
+                            IsSystemReservedStorageEnabled = isSystemReservedStorageEnabled;
+                            IsSystemReservedStorageLoadingOrUpdating = false;
+                        }, null);
                     });
-                    IsSystemReservedStorageLoadingOrUpdating = false;
                 }
+
+                _ = Task.Run(() =>
+                {
+                    bool isVirtualizationBasedSecurityEnabled = false;
+
+                    try
+                    {
+                        bool hypervisorEnforcedCodeIntegrityEnabled = RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity", "Enabled");
+                        bool enableVirtualizationBasedSecurity = RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\DeviceGuard", "EnableVirtualizationBasedSecurity");
+                        string hypervisorLaunchType = string.Empty;
+
+                        Process bcdeditProcess = Process.Start(new ProcessStartInfo()
+                        {
+                            FileName = "bcdedit.exe",
+                            Arguments = "/enum",
+                            Verb = "open",
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true,
+                            WindowStyle = ProcessWindowStyle.Hidden
+                        });
+                        string output = bcdeditProcess.StandardOutput.ReadToEnd();
+                        string error = bcdeditProcess.StandardError.ReadToEnd();
+                        bcdeditProcess.WaitForExit();
+                        bcdeditProcess.Dispose();
+
+                        if (string.IsNullOrEmpty(output))
+                        {
+                            string[] lines = output.Split([Environment.NewLine], StringSplitOptions.RemoveEmptyEntries);
+                            string hypervisorLaunchTypeLine = lines.FirstOrDefault(line => line.Trim().StartsWith("hypervisorlaunchtype", StringComparison.OrdinalIgnoreCase));
+
+                            if (hypervisorLaunchTypeLine is not null)
+                            {
+                                string[] hypervisorLaunchTypeState = hypervisorLaunchTypeLine.Split([' '], StringSplitOptions.RemoveEmptyEntries);
+                                if (hypervisorLaunchTypeState.Length >= 2)
+                                {
+                                    hypervisorLaunchType = hypervisorLaunchTypeState[1];
+                                }
+                            }
+                        }
+                        isVirtualizationBasedSecurityEnabled = (hypervisorEnforcedCodeIntegrityEnabled && enableVirtualizationBasedSecurity) || hypervisorLaunchType.Contains("Auto");
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnNavigatedTo), 5, e);
+                    }
+
+                    synchronizationContext.Post((_) =>
+                    {
+                        IsVirtualizationBasedSecurityEnabled = isVirtualizationBasedSecurityEnabled;
+                    }, null);
+                });
             }
         }
 
@@ -498,16 +571,20 @@ namespace PowerToolbox.Views.Pages
 
                 SYSTEM_POWER_CAPABILITIES systemPowerCapabilities = await Task.Run(() =>
                 {
-                    Process powerCfgProcess = Process.Start(new ProcessStartInfo()
+                    if (RuntimeHelper.IsElevated)
                     {
-                        FileName = "powercfg.exe",
-                        Arguments = string.Format("/hibernate {0}", IsHibernationOpened ? "on" : "off"),
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        WindowStyle = ProcessWindowStyle.Hidden
-                    });
-                    powerCfgProcess.WaitForExit();
-                    powerCfgProcess.Dispose();
+                        Process powerCfgProcess = Process.Start(new ProcessStartInfo()
+                        {
+                            FileName = "powercfg.exe",
+                            Arguments = string.Format("/hibernate {0}", IsHibernationOpened ? "on" : "off"),
+                            UseShellExecute = false,
+                            CreateNoWindow = true,
+                            WindowStyle = ProcessWindowStyle.Hidden
+                        });
+                        powerCfgProcess.WaitForExit();
+                        powerCfgProcess.Dispose();
+                    }
+
                     PowrProfLibrary.GetPwrCapabilities(out SYSTEM_POWER_CAPABILITIES systemPowerCapabilities);
                     return systemPowerCapabilities;
                 });
@@ -576,59 +653,62 @@ namespace PowerToolbox.Views.Pages
             {
                 SelectedHibernationFileType = hibernationFileType;
 
-                await Task.Run(() =>
+                if (RuntimeHelper.IsElevated)
                 {
-                    if (hibernationFileType.SelectedValue is "HibernationFileTypeReduced")
+                    await Task.Run(() =>
                     {
-                        try
+                        if (hibernationFileType.SelectedValue is "HibernationFileTypeReduced")
                         {
-                            Process powerCfgProcess = Process.Start(new ProcessStartInfo()
+                            try
                             {
-                                FileName = "powercfg.exe",
-                                Arguments = "/h /size 0",
-                                UseShellExecute = false,
-                                CreateNoWindow = true,
-                                WindowStyle = ProcessWindowStyle.Hidden
-                            });
-                            powerCfgProcess.WaitForExit();
-                            powerCfgProcess.Dispose();
-                            powerCfgProcess = Process.Start(new ProcessStartInfo()
+                                Process powerCfgProcess = Process.Start(new ProcessStartInfo()
+                                {
+                                    FileName = "powercfg.exe",
+                                    Arguments = "/h /size 0",
+                                    UseShellExecute = false,
+                                    CreateNoWindow = true,
+                                    WindowStyle = ProcessWindowStyle.Hidden
+                                });
+                                powerCfgProcess.WaitForExit();
+                                powerCfgProcess.Dispose();
+                                powerCfgProcess = Process.Start(new ProcessStartInfo()
+                                {
+                                    FileName = "powercfg.exe",
+                                    Arguments = "/h /type reduced",
+                                    UseShellExecute = false,
+                                    CreateNoWindow = true,
+                                    WindowStyle = ProcessWindowStyle.Hidden
+                                });
+                                powerCfgProcess.WaitForExit();
+                                powerCfgProcess.Dispose();
+                            }
+                            catch (Exception e)
                             {
-                                FileName = "powercfg.exe",
-                                Arguments = "/h /type reduced",
-                                UseShellExecute = false,
-                                CreateNoWindow = true,
-                                WindowStyle = ProcessWindowStyle.Hidden
-                            });
-                            powerCfgProcess.WaitForExit();
-                            powerCfgProcess.Dispose();
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnHibernationFileTypeSelectionChanged), 1, e);
+                            }
                         }
-                        catch (Exception e)
+                        else if (hibernationFileType.SelectedValue is "HibernationFileTypeFull")
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnHibernationFileTypeSelectionChanged), 1, e);
-                        }
-                    }
-                    else if (hibernationFileType.SelectedValue is "HibernationFileTypeFull")
-                    {
-                        try
-                        {
-                            Process powerCfgProcess = Process.Start(new ProcessStartInfo()
+                            try
                             {
-                                FileName = "powercfg.exe",
-                                Arguments = "/h /type full",
-                                UseShellExecute = false,
-                                CreateNoWindow = true,
-                                WindowStyle = ProcessWindowStyle.Hidden
-                            });
-                            powerCfgProcess.WaitForExit();
-                            powerCfgProcess.Dispose();
+                                Process powerCfgProcess = Process.Start(new ProcessStartInfo()
+                                {
+                                    FileName = "powercfg.exe",
+                                    Arguments = "/h /type full",
+                                    UseShellExecute = false,
+                                    CreateNoWindow = true,
+                                    WindowStyle = ProcessWindowStyle.Hidden
+                                });
+                                powerCfgProcess.WaitForExit();
+                                powerCfgProcess.Dispose();
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnHibernationFileTypeSelectionChanged), 2, e);
+                            }
                         }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnHibernationFileTypeSelectionChanged), 2, e);
-                        }
-                    }
-                });
+                    });
+                }
 
                 (int hiberFileType, int hiberFileSizePercent) = await Task.Run(() =>
                 {
@@ -726,16 +806,19 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
-                    Process powerCfgProcess = Process.Start(new ProcessStartInfo()
+                    if (RuntimeHelper.IsElevated)
                     {
-                        FileName = "powercfg.exe",
-                        Arguments = string.Format("/h /size {0}", HibernationFilePercent),
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        WindowStyle = ProcessWindowStyle.Hidden
-                    });
-                    powerCfgProcess.WaitForExit();
-                    powerCfgProcess.Dispose();
+                        Process powerCfgProcess = Process.Start(new ProcessStartInfo()
+                        {
+                            FileName = "powercfg.exe",
+                            Arguments = string.Format("/h /size {0}", HibernationFilePercent),
+                            UseShellExecute = false,
+                            CreateNoWindow = true,
+                            WindowStyle = ProcessWindowStyle.Hidden
+                        });
+                        powerCfgProcess.WaitForExit();
+                        powerCfgProcess.Dispose();
+                    }
                 }
                 catch (Exception e)
                 {
@@ -894,32 +977,35 @@ namespace PowerToolbox.Views.Pages
 
                     try
                     {
-                        Process dismProcess = Process.Start(new ProcessStartInfo()
+                        if (RuntimeHelper.IsElevated)
                         {
-                            FileName = "dism.exe",
-                            Arguments = string.Format("/Online /Set-ReservedStorageState /State:{0}", IsSystemReservedStorageEnabled ? "Enabled" : "Disabled"),
-                            UseShellExecute = false,
-                            CreateNoWindow = true,
-                            WindowStyle = ProcessWindowStyle.Hidden
-                        });
-                        dismProcess.WaitForExit();
-                        dismProcess.Dispose();
-                        Process powerShellProcess = Process.Start(new ProcessStartInfo()
-                        {
-                            FileName = "powershell.exe",
-                            Arguments = "-NoProfile -ExecutionPolicy Bypass -Command Get-WindowsReservedStorageState",
-                            RedirectStandardOutput = true,
-                            RedirectStandardError = true,
-                            UseShellExecute = false,
-                            CreateNoWindow = true
-                        });
-                        string output = powerShellProcess.StandardOutput.ReadToEnd();
-                        string error = powerShellProcess.StandardError.ReadToEnd();
-                        powerShellProcess.WaitForExit();
-                        powerShellProcess.Dispose();
-                        if (output.Contains("Enabled"))
-                        {
-                            isSystemReservedStorageEnabled = true;
+                            Process dismProcess = Process.Start(new ProcessStartInfo()
+                            {
+                                FileName = "dism.exe",
+                                Arguments = string.Format("/Online /Set-ReservedStorageState /State:{0}", IsSystemReservedStorageEnabled ? "Enabled" : "Disabled"),
+                                UseShellExecute = false,
+                                CreateNoWindow = true,
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            });
+                            dismProcess.WaitForExit();
+                            dismProcess.Dispose();
+                            Process powerShellProcess = Process.Start(new ProcessStartInfo()
+                            {
+                                FileName = "powershell.exe",
+                                Arguments = "-NoProfile -ExecutionPolicy Bypass -Command Get-WindowsReservedStorageState",
+                                RedirectStandardOutput = true,
+                                RedirectStandardError = true,
+                                UseShellExecute = false,
+                                CreateNoWindow = true
+                            });
+                            string output = powerShellProcess.StandardOutput.ReadToEnd();
+                            string error = powerShellProcess.StandardError.ReadToEnd();
+                            powerShellProcess.WaitForExit();
+                            powerShellProcess.Dispose();
+                            if (output.Contains("Enabled"))
+                            {
+                                isSystemReservedStorageEnabled = true;
+                            }
                         }
                     }
                     catch (Exception e)
@@ -986,7 +1072,6 @@ namespace PowerToolbox.Views.Pages
                                 CreateNoWindow = true,
                                 WindowStyle = ProcessWindowStyle.Hidden,
                             });
-                            explorerProcess.WaitForExit();
                             explorerProcess.Dispose();
                         }
                         catch (Win32Exception e)
@@ -996,6 +1081,101 @@ namespace PowerToolbox.Views.Pages
                     }
                 });
                 IsRebuildingIconCache = false;
+            }
+        }
+
+        /// <summary>
+        /// 了解基于虚拟化的安全
+        /// </summary>
+        private void OnLearnVBSClicked(object sender, RoutedEventArgs args)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("https://learn.microsoft.com/windows-hardware/design/device-experiences/oem-vbs");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnLearnVBSClicked), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 修改基于虚拟化的安全状态
+        /// </summary>
+        private async void OnVirtualizationBasedSecurityToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsVirtualizationBasedSecurityEnabled, toggleSwitch.IsOn))
+            {
+                IsVirtualizationBasedSecurityEnabled = toggleSwitch.IsOn;
+                IsVirtualizationBasedSecurityEnabled = await Task.Run(() =>
+                {
+                    bool isVirtualizationBasedSecurityEnabled = false;
+
+                    try
+                    {
+                        if (RuntimeHelper.IsElevated)
+                        {
+                            RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity", "Enabled", IsVirtualizationBasedSecurityEnabled);
+                            RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\DeviceGuard", "EnableVirtualizationBasedSecurity", IsVirtualizationBasedSecurityEnabled);
+                            Process bcdeditSetProcess = Process.Start(new ProcessStartInfo()
+                            {
+                                FileName = "bcdedit.exe",
+                                Arguments = "/set hypervisorlaunchtype" + " " + (IsVirtualizationBasedSecurityEnabled ? "auto" : "off"),
+                                Verb = "open",
+                                UseShellExecute = false,
+                                CreateNoWindow = true,
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            });
+                            bcdeditSetProcess.WaitForExit();
+                            bcdeditSetProcess.Dispose();
+                        }
+
+                        bool hypervisorEnforcedCodeIntegrityEnabled = RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity", "Enabled");
+                        bool enableVirtualizationBasedSecurity = RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\DeviceGuard", "EnableVirtualizationBasedSecurity");
+                        string hypervisorLaunchType = string.Empty;
+
+                        Process bcdeditProcess = Process.Start(new ProcessStartInfo()
+                        {
+                            FileName = "bcdedit.exe",
+                            Arguments = "/enum",
+                            Verb = "open",
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true,
+                            WindowStyle = ProcessWindowStyle.Hidden
+                        });
+                        string output = bcdeditProcess.StandardOutput.ReadToEnd();
+                        string error = bcdeditProcess.StandardError.ReadToEnd();
+                        bcdeditProcess.WaitForExit();
+                        bcdeditProcess.Dispose();
+
+                        if (string.IsNullOrEmpty(output))
+                        {
+                            string[] lines = output.Split([Environment.NewLine], StringSplitOptions.RemoveEmptyEntries);
+                            string hypervisorLaunchTypeLine = lines.FirstOrDefault(line => line.Trim().StartsWith("hypervisorlaunchtype", StringComparison.OrdinalIgnoreCase));
+
+                            if (hypervisorLaunchTypeLine is not null)
+                            {
+                                string[] hypervisorLaunchTypeState = hypervisorLaunchTypeLine.Split([' '], StringSplitOptions.RemoveEmptyEntries);
+                                if (hypervisorLaunchTypeState.Length >= 2)
+                                {
+                                    hypervisorLaunchType = hypervisorLaunchTypeState[1];
+                                }
+                            }
+                        }
+                        isVirtualizationBasedSecurityEnabled = (hypervisorEnforcedCodeIntegrityEnabled && enableVirtualizationBasedSecurity) || hypervisorLaunchType.Contains("Auto");
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnVirtualizationBasedSecurityToggled), 1, e);
+                    }
+
+                    return isVirtualizationBasedSecurityEnabled;
+                });
             }
         }
 
