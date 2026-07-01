@@ -1221,7 +1221,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 修改网卡负载状态
         /// </summary>
-        private async Task OnNICOffloadSettingsToggled(object sender, RoutedEventArgs args)
+        private async void OnNICOffloadSettingsToggled(object sender, RoutedEventArgs args)
         {
             if (sender is ToggleSwitch toggleSwitch && !Equals(IsNICOffloadSettingsEnabled, toggleSwitch.IsOn))
             {

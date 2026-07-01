@@ -2509,39 +2509,46 @@ namespace PowerToolbox.Views.Pages
         {
             List<UpdateModel> updateHistoryList = [];
 
-            int updateHistoryCount = updateSearcher.GetTotalHistoryCount();
-
-            if (updateHistoryCount > 0)
+            try
             {
-                foreach (IUpdateHistoryEntry2 updateHistoryEntry in updateSearcher.QueryHistory(0, updateHistoryCount))
+                int updateHistoryCount = updateSearcher.GetTotalHistoryCount();
+
+                if (updateHistoryCount > 0)
                 {
-                    if (!string.IsNullOrEmpty(updateHistoryEntry.Title))
+                    foreach (IUpdateHistoryEntry2 updateHistoryEntry in updateSearcher.QueryHistory(0, updateHistoryCount))
                     {
-                        UpdateHistoryInformation updateHistoryInformation = new()
+                        if (!string.IsNullOrEmpty(updateHistoryEntry.Title))
                         {
-                            ClientApplicationID = updateHistoryEntry.ClientApplicationID,
-                            Date = updateHistoryEntry.Date,
-                            HResult = updateHistoryEntry.HResult,
-                            OperationResultCode = updateHistoryEntry.ResultCode,
-                            SupportUrl = updateHistoryEntry.SupportUrl,
-                            Title = updateHistoryEntry.Title,
-                            UpdateHistoryEntry = updateHistoryEntry,
-                            UpdateID = !string.IsNullOrEmpty(updateHistoryEntry.UpdateIdentity.UpdateID) ? Guid.NewGuid().ToString() : updateHistoryEntry.UpdateIdentity.UpdateID
-                        };
+                            UpdateHistoryInformation updateHistoryInformation = new()
+                            {
+                                ClientApplicationID = updateHistoryEntry.ClientApplicationID,
+                                Date = updateHistoryEntry.Date,
+                                HResult = updateHistoryEntry.HResult,
+                                OperationResultCode = updateHistoryEntry.ResultCode,
+                                SupportUrl = updateHistoryEntry.SupportUrl,
+                                Title = updateHistoryEntry.Title,
+                                UpdateHistoryEntry = updateHistoryEntry,
+                                UpdateID = !string.IsNullOrEmpty(updateHistoryEntry.UpdateIdentity.UpdateID) ? Guid.NewGuid().ToString() : updateHistoryEntry.UpdateIdentity.UpdateID
+                            };
 
-                        UpdateModel update = new()
-                        {
-                            UpdateHistoryInformation = updateHistoryInformation,
-                            Date = updateHistoryInformation.Date.ToString("yyyy/MM/dd"),
-                            HistoryUpdateResult = GetUpdateResult(updateHistoryInformation.OperationResultCode, updateHistoryInformation.Date, updateHistoryInformation.HResult),
-                            SupportURL = updateHistoryInformation.SupportUrl,
-                            Title = updateHistoryInformation.Title,
-                            UpdateID = updateHistoryInformation.UpdateID
-                        };
+                            UpdateModel update = new()
+                            {
+                                UpdateHistoryInformation = updateHistoryInformation,
+                                Date = updateHistoryInformation.Date.ToString("yyyy/MM/dd"),
+                                HistoryUpdateResult = GetUpdateResult(updateHistoryInformation.OperationResultCode, updateHistoryInformation.Date, updateHistoryInformation.HResult),
+                                SupportURL = updateHistoryInformation.SupportUrl,
+                                Title = updateHistoryInformation.Title,
+                                UpdateID = updateHistoryInformation.UpdateID
+                            };
 
-                        updateHistoryList.Add(update);
+                            updateHistoryList.Add(update);
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(GetUpdateHistoryList), 1, e);
             }
 
             return updateHistoryList;
