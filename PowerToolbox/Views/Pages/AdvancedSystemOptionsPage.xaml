@@ -8,11 +8,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:roothelper="using:PowerToolbox.Helpers.Root"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
+    xmlns:system="using:System"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -23,9 +25,74 @@
             FontSize="22"
             Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('AdvancedSystemOptions')}" />
 
-        <ScrollViewer
+        <!--  高级设置选项控制栏  -->
+        <InfoBar
             Grid.Row="1"
-            Padding="30,5,30,3"
+            Height="60"
+            Margin="30,5,30,3"
+            IsClosable="False"
+            IsIconVisible="False"
+            IsOpen="True"
+            Severity="{x:Bind AdvancedSettingsInfoSeverity, Mode=OneWay}"
+            Style="{StaticResource InfoBarStyle}">
+
+            <Grid
+                Height="60"
+                HorizontalAlignment="Stretch"
+                BorderThickness="1">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <FontIcon
+                    Grid.Column="0"
+                    Margin="0,0,12,0"
+                    FontSize="16"
+                    Glyph="&#xE74C;" />
+
+                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind AdvancedSettingsOperationText, Mode=OneWay}" />
+
+                <CommandBar
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    DefaultLabelPosition="Right"
+                    Style="{StaticResource CommandBarStyle}">
+
+                    <CommandBar.PrimaryCommands>
+                        <AppBarButton
+                            Click="{x:Bind OnRestartExplorerClicked}"
+                            IsEnabled="{x:Bind IsRestarting, Mode=OneWay}"
+                            Label="{x:Bind RestartExplorerText, Mode=OneWay}"
+                            Visibility="{x:Bind IsRestartExplorerVisible, Mode=OneWay}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xEC50;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+
+                        <AppBarButton
+                            Click="{x:Bind OnRestartPCClicked}"
+                            Label="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('RestartPC')}"
+                            Visibility="{x:Bind IsRestartPCVisible, Mode=OneWay}">
+
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xEC4E;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </CommandBar.PrimaryCommands>
+                </CommandBar>
+            </Grid>
+        </InfoBar>
+
+        <ScrollViewer
+            Grid.Row="2"
+            Padding="30,0,30,3"
             HorizontalScrollBarVisibility="Disabled"
             HorizontalScrollMode="Disabled"
             VerticalScrollBarVisibility="Auto"
@@ -777,8 +844,8 @@
 
                     <ProgressRing
                         Grid.Column="3"
-                        Width="32"
-                        Height="32"
+                        Width="30"
+                        Height="30"
                         Margin="0,0,10,0"
                         IsActive="{x:Bind IsSystemReservedStorageLoadingOrUpdating, Mode=OneWay}"
                         Visibility="{x:Bind IsSystemReservedStorageLoadingOrUpdating, Mode=OneWay}" />
@@ -1004,6 +1071,81 @@
                         OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('NICOffloadSettingsOnContent')}"
                         Style="{StaticResource ToggleSwitchStyle}"
                         Toggled="{x:Bind OnNICOffloadSettingsToggled}" />
+                </Grid>
+
+                <!--  设备休眠  -->
+                <Grid
+                    Height="60"
+                    Margin="0,0,0,2"
+                    Padding="16,0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{StaticResource ControlCornerRadius}">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <FontIcon
+                        Grid.Column="0"
+                        Margin="0,0,12,0"
+                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        FontSize="16"
+                        Glyph="&#xE708;" />
+
+                    <StackPanel
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('CloseWakeUpTask')}" />
+
+                        <TextBlock
+                            x:Name="CloseWakeUpTaskDescription"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('CloseWakeUpTaskDescription')}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap">
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('CloseWakeUpTaskDescription')}" Visibility="{x:Bind CloseWakeUpTaskDescription.IsTextTrimmed, Mode=OneWay}" />
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <InfoBadge
+                        Grid.Column="2"
+                        Style="{StaticResource InformationalValueInfoBadgeStyle}"
+                        Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(WakeUpTaskCount), Mode=OneWay}"
+                        Value="{x:Bind WakeUpTaskCount, Mode=OneWay}" />
+
+                    <InfoBadge
+                        Grid.Column="2"
+                        Style="{StaticResource CautionValueInfoBadgeStyle}"
+                        Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(WakeUpTaskCount), Mode=OneWay}"
+                        Value="{x:Bind WakeUpTaskCount, Mode=OneWay}" />
+
+                    <Button
+                        Grid.Column="3"
+                        Margin="5,0,0,0"
+                        Click="{x:Bind OnCloseWakeUpTaskClicked}"
+                        CornerRadius="{StaticResource ControlCornerRadius}">
+
+                        <Grid>
+                            <TextBlock Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('Close')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsClosingWakeUpTask), Mode=OneWay}" />
+
+                            <ProgressRing
+                                Width="20"
+                                Height="20"
+                                IsActive="{x:Bind IsClosingWakeUpTask, Mode=OneWay}"
+                                Visibility="{x:Bind IsClosingWakeUpTask, Mode=OneWay}" />
+                        </Grid>
+                    </Button>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

@@ -8,14 +8,17 @@ using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.PowrProf;
+using PowerToolbox.WindowsAPI.PInvoke.Rstrtmgr;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
+using TaskScheduler;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
 #pragma warning disable CA1806,CA1822,IDE0060
@@ -30,15 +33,115 @@ namespace PowerToolbox.Views.Pages
         private readonly string AlwaysNotifyString = ResourceService.AdvancedSystemOptionsResource.GetString("AlwaysNotify");
         private readonly string HibernationFileTypeReducedString = ResourceService.AdvancedSystemOptionsResource.GetString("HibernationFileTypeReduced");
         private readonly string HibernationFileTypeFullString = ResourceService.AdvancedSystemOptionsResource.GetString("HibernationFileTypeFull");
+        private readonly string NeedRestartString = ResourceService.AdvancedSystemOptionsResource.GetString("NeedRestart");
         private readonly string NeverNotifyString = ResourceService.AdvancedSystemOptionsResource.GetString("NeverNotify");
         private readonly string NotifyString = ResourceService.AdvancedSystemOptionsResource.GetString("Notify");
         private readonly string NotifyWithoutDimmingString = ResourceService.AdvancedSystemOptionsResource.GetString("NotifyWithoutDimming");
+        private readonly string OperationString = ResourceService.AdvancedSystemOptionsResource.GetString("Operation");
+        private readonly string RestartExplorerString = ResourceService.AdvancedSystemOptionsResource.GetString("RestartExplorer");
+        private readonly string RestartingString = ResourceService.AdvancedSystemOptionsResource.GetString("Restarting");
         private readonly Guid CLSID_OpenControlPanel = new("06622D85-6856-4460-8DE1-A81921B41C4B");
         private readonly Guid Balance = new("381B4222-F694-41F0-9685-FF5BB260DF2E");
         private readonly Guid EnergySaving = new("A1841308-3541-4FAB-BC81-F71556F20B4A");
         private readonly Guid HighPerformance = new("8C5E7FDA-E8BF-4A96-9A85-A6E23A8C635C");
         private readonly Guid OutstandingPerformance = new("E9A42B02-D5DF-448D-AA00-03F14749EB61");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
+
+        private InfoBarSeverity _advancedSettingsInfoSeverity;
+
+        public InfoBarSeverity AdvancedSettingsInfoSeverity
+        {
+            get { return _advancedSettingsInfoSeverity; }
+
+            set
+            {
+                if (!Equals(_advancedSettingsInfoSeverity, value))
+                {
+                    _advancedSettingsInfoSeverity = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AdvancedSettingsInfoSeverity)));
+                }
+            }
+        }
+
+        private string _AdvancedSettingsOperationText;
+
+        public string AdvancedSettingsOperationText
+        {
+            get { return _AdvancedSettingsOperationText; }
+
+            set
+            {
+                if (!Equals(_AdvancedSettingsOperationText, value))
+                {
+                    _AdvancedSettingsOperationText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AdvancedSettingsOperationText)));
+                }
+            }
+        }
+
+        private bool _isRestartExplorerVisible;
+
+        public bool IsRestartExplorerVisible
+        {
+            get { return _isRestartExplorerVisible; }
+
+            set
+            {
+                if (!Equals(_isRestartExplorerVisible, value))
+                {
+                    _isRestartExplorerVisible = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRestartExplorerVisible)));
+                }
+            }
+        }
+
+        private bool _isRestartPCVisible;
+
+        public bool IsRestartPCVisible
+        {
+            get { return _isRestartPCVisible; }
+
+            set
+            {
+                if (!Equals(_isRestartPCVisible, value))
+                {
+                    _isRestartPCVisible = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRestartPCVisible)));
+                }
+            }
+        }
+
+        private bool _isRestarting;
+
+        public bool IsRestarting
+        {
+            get { return _isRestarting; }
+
+            set
+            {
+                if (!Equals(_isRestarting, value))
+                {
+                    _isRestarting = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRestarting)));
+                }
+            }
+        }
+
+        private string _restartExplorerText;
+
+        public string RestartExplorerText
+        {
+            get { return _restartExplorerText; }
+
+            set
+            {
+                if (!Equals(_restartExplorerText, value))
+                {
+                    _restartExplorerText = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RestartExplorerText)));
+                }
+            }
+        }
 
         private ComboBoxItemModel _selectedNotifyMode;
 
@@ -264,6 +367,38 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private int _wakeUpTaskCount;
+
+        public int WakeUpTaskCount
+        {
+            get { return _wakeUpTaskCount; }
+
+            set
+            {
+                if (!Equals(_wakeUpTaskCount, value))
+                {
+                    _wakeUpTaskCount = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WakeUpTaskCount)));
+                }
+            }
+        }
+
+        private bool _isClosingWakeUpTask;
+
+        public bool IsClosingWakeUpTask
+        {
+            get { return _isClosingWakeUpTask; }
+
+            set
+            {
+                if (!Equals(_isClosingWakeUpTask, value))
+                {
+                    _isClosingWakeUpTask = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsClosingWakeUpTask)));
+                }
+            }
+        }
+
         private List<ComboBoxItemModel> NotifyModeList { get; } = [];
 
         private List<ComboBoxItemModel> HibernationFileTypeList { get; } = [];
@@ -273,6 +408,9 @@ namespace PowerToolbox.Views.Pages
         public AdvancedSystemOptionsPage()
         {
             InitializeComponent();
+            AdvancedSettingsInfoSeverity = InfoBarSeverity.Informational;
+            AdvancedSettingsOperationText = OperationString;
+            RestartExplorerText = RestartExplorerString;
             NotifyModeList.Add(new ComboBoxItemModel() { DisplayMember = AlwaysNotifyString, SelectedValue = UacLevel.AlwaysNotify });
             NotifyModeList.Add(new ComboBoxItemModel() { DisplayMember = NotifyString, SelectedValue = UacLevel.Notify });
             NotifyModeList.Add(new ComboBoxItemModel() { DisplayMember = NotifyWithoutDimmingString, SelectedValue = UacLevel.NotifyWithoutDimming });
@@ -357,7 +495,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     return RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Power", "HiberbootEnabled");
                 });
-
                 if (!IsSystemReservedStorageLoadingOrUpdating)
                 {
                     IsSystemReservedStorageLoadingOrUpdating = true;
@@ -398,7 +535,6 @@ namespace PowerToolbox.Views.Pages
                         }, null);
                     });
                 }
-
                 _ = Task.Run(() =>
                 {
                     bool isVirtualizationBasedSecurityEnabled = false;
@@ -456,12 +592,101 @@ namespace PowerToolbox.Views.Pages
                 {
                     return RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", "DisableTaskOffload") is 0;
                 });
+                IsClosingWakeUpTask = true;
+                _ = Task.Run(() =>
+                {
+                    List<string> wakeUpTaskList = GetWaskUpTaskList();
+                    synchronizationContext.Post((_) =>
+                    {
+                        WakeUpTaskCount = wakeUpTaskList.Count;
+                        IsClosingWakeUpTask = false;
+                    }, null);
+                });
             }
         }
 
         #endregion 第一部分：重载父类事件
 
         #region 第一部分：高级系统选项页面——挂载的事件
+
+        /// <summary>
+        /// 重启资源管理器
+        /// </summary>
+        private async void OnRestartExplorerClicked(object sender, RoutedEventArgs args)
+        {
+            RestartExplorerText = RestartingString;
+            IsRestarting = true;
+            await Task.Run(() =>
+            {
+                try
+                {
+                    int dwRmStatus = RstrtmgrLibrary.RmStartSession(out uint dwSessionHandle, 0, Guid.Empty.ToString());
+
+                    if (dwRmStatus is 0)
+                    {
+                        Process[] processList = Process.GetProcessesByName("explorer");
+                        RM_UNIQUE_PROCESS[] lpRmProcList = new RM_UNIQUE_PROCESS[processList.Length];
+
+                        for (int index = 0; index < processList.Length; index++)
+                        {
+                            lpRmProcList[index].dwProcessId = processList[index].Id;
+                            FILETIME fileTime = new();
+                            long time = processList[index].StartTime.ToFileTime();
+                            fileTime.dwLowDateTime = (int)(time & 0xFFFFFFFF);
+                            fileTime.dwHighDateTime = (int)(time >> 32);
+                            lpRmProcList[index].ProcessStartTime = fileTime;
+                        }
+
+                        dwRmStatus = RstrtmgrLibrary.RmRegisterResources(dwSessionHandle, 0, null, (uint)processList.Length, lpRmProcList, 0, null);
+
+                        if (dwRmStatus is 0)
+                        {
+                            dwRmStatus = RstrtmgrLibrary.RmShutdown(dwSessionHandle, RM_SHUTDOWN_TYPE.RmForceShutdown, null);
+
+                            if (dwRmStatus is 0)
+                            {
+                                dwRmStatus = RstrtmgrLibrary.RmRestart(dwSessionHandle, 0, null);
+
+                                if (dwRmStatus is 0)
+                                {
+                                    dwRmStatus = RstrtmgrLibrary.RmEndSession(dwSessionHandle);
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnRestartExplorerClicked), 1, e);
+                }
+            });
+            IsRestarting = false;
+            RestartExplorerText = RestartExplorerString;
+            IsRestartExplorerVisible = false;
+            if (!IsRestartExplorerVisible && !IsRestartPCVisible)
+            {
+                AdvancedSettingsInfoSeverity = InfoBarSeverity.Informational;
+                AdvancedSettingsOperationText = OperationString;
+            }
+        }
+
+        /// <summary>
+        /// 重启电脑
+        /// </summary>
+        private void OnRestartPCClicked(object sender, RoutedEventArgs args)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("shutdown.exe", "-r -f -t 0");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnRestartPCClicked), 1, e);
+                }
+            });
+        }
 
         /// <summary>
         /// 打开系统电源设置
@@ -1197,6 +1422,9 @@ namespace PowerToolbox.Views.Pages
 
                     return isVirtualizationBasedSecurityEnabled;
                 });
+                AdvancedSettingsInfoSeverity = InfoBarSeverity.Warning;
+                AdvancedSettingsOperationText = NeedRestartString;
+                IsRestartPCVisible = true;
             }
         }
 
@@ -1231,6 +1459,27 @@ namespace PowerToolbox.Views.Pages
                     RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", "DisableTaskOffload", IsNICOffloadSettingsEnabled ? 0 : 1);
                     return RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", "DisableTaskOffload") is 0;
                 });
+                AdvancedSettingsInfoSeverity = InfoBarSeverity.Warning;
+                AdvancedSettingsOperationText = NeedRestartString;
+                IsRestartPCVisible = true;
+            }
+        }
+
+        /// <summary>
+        /// 关闭唤醒任务
+        /// </summary>
+        private async void OnCloseWakeUpTaskClicked(object sender, RoutedEventArgs args)
+        {
+            if (!IsClosingWakeUpTask)
+            {
+                IsClosingWakeUpTask = true;
+                List<string> wakeUpTaskList = await Task.Run(() =>
+                {
+                    DisableAllWakeUpRunTask();
+                    return GetWaskUpTaskList();
+                });
+                WakeUpTaskCount = wakeUpTaskList.Count;
+                IsClosingWakeUpTask = false;
             }
         }
 
@@ -1241,7 +1490,110 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private Visibility GetSelectedNotifyMode(object selectedValue, object comparedValue)
         {
-            return string.Equals(selectedValue, comparedValue) ? Visibility.Visible : Visibility.Collapsed;
+            return Equals(selectedValue, comparedValue) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 获取持续唤醒任务列表
+        /// </summary>
+        public static List<string> GetWaskUpTaskList()
+        {
+            List<string> wakeUpTaskList = [];
+            try
+            {
+                ITaskService service = (ITaskService)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("0F87369F-A4E5-4CFC-BD3E-73E6154572DD")));
+                service.Connect();
+                if (service.Connected)
+                {
+                    Stack<ITaskFolder> folders = new();
+                    folders.Push(service.GetFolder("\\"));
+
+                    while (folders.Count > 0)
+                    {
+                        ITaskFolder taskFolder = folders.Pop();
+                        foreach (IRegisteredTask registeredTask in taskFolder.GetTasks((int)_TASK_ENUM_FLAGS.TASK_ENUM_HIDDEN))
+                        {
+                            try
+                            {
+                                ITaskDefinition taskDefinition = registeredTask.Definition;
+                                bool enabled = registeredTask.Enabled;
+                                bool wakeToRun = taskDefinition.Settings.WakeToRun;
+                                string userId = taskDefinition.Principal.UserId ?? string.Empty;
+                                _TASK_LOGON_TYPE logonType = taskDefinition.Principal.LogonType;
+                                bool requiresPassword = logonType is _TASK_LOGON_TYPE.TASK_LOGON_PASSWORD || logonType is _TASK_LOGON_TYPE.TASK_LOGON_INTERACTIVE_TOKEN_OR_PASSWORD;
+                                bool isSystem = userId.Equals("SYSTEM", StringComparison.OrdinalIgnoreCase) || userId.Equals(@"NT AUTHORITY\SYSTEM", StringComparison.OrdinalIgnoreCase);
+                                if (!isSystem && !requiresPassword && enabled && wakeToRun)
+                                {
+                                    wakeUpTaskList.Add(registeredTask.Name);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(GetWaskUpTaskList), 1, e);
+                            }
+                        }
+
+                        foreach (ITaskFolder subFolder in taskFolder.GetFolders(0))
+                        {
+                            folders.Push(subFolder);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(GetWaskUpTaskList), 2, e);
+            }
+
+            return wakeUpTaskList;
+        }
+
+        /// <summary>
+        /// 禁用所有持续唤醒任务
+        /// </summary>
+        private static void DisableAllWakeUpRunTask()
+        {
+            try
+            {
+                ITaskService taskService = (ITaskService)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("0F87369F-A4E5-4CFC-BD3E-73E6154572DD")));
+                taskService.Connect();
+                Queue<ITaskFolder> taskFolderQueue = new();
+                taskFolderQueue.Enqueue(taskService.GetFolder("\\"));
+
+                while (taskFolderQueue.Count > 0)
+                {
+                    ITaskFolder taskFolder = taskFolderQueue.Dequeue();
+                    IRegisteredTaskCollection registeredTaskCollection = taskFolder.GetTasks((int)_TASK_ENUM_FLAGS.TASK_ENUM_HIDDEN);
+
+                    foreach (IRegisteredTask registeredTask in registeredTaskCollection)
+                    {
+                        try
+                        {
+                            ITaskDefinition definition = registeredTask.Definition;
+
+                            if (definition.Settings.WakeToRun)
+                            {
+                                definition.Settings.WakeToRun = false;
+                                taskFolder.RegisterTaskDefinition(registeredTask.Name, definition, (int)_TASK_CREATION.TASK_UPDATE, Type.Missing, Type.Missing, definition.Principal.LogonType, Type.Missing);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(DisableAllWakeUpRunTask), 1, e);
+                        }
+                    }
+
+                    ITaskFolderCollection subTaskFolderCollection = taskFolder.GetFolders(0);
+                    foreach (ITaskFolder subTaskFolder in subTaskFolderCollection)
+                    {
+                        taskFolderQueue.Enqueue(subTaskFolder);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(DisableAllWakeUpRunTask), 2, e);
+            }
         }
     }
 }
