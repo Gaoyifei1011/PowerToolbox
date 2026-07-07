@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Win32;
+using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
@@ -11,6 +12,7 @@ using PowerToolbox.WindowsAPI.PInvoke.PowrProf;
 using PowerToolbox.WindowsAPI.PInvoke.Rstrtmgr;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -367,22 +369,6 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private int _wakeUpTaskCount;
-
-        public int WakeUpTaskCount
-        {
-            get { return _wakeUpTaskCount; }
-
-            set
-            {
-                if (!Equals(_wakeUpTaskCount, value))
-                {
-                    _wakeUpTaskCount = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WakeUpTaskCount)));
-                }
-            }
-        }
-
         private bool _isClosingWakeUpTask;
 
         public bool IsClosingWakeUpTask
@@ -402,6 +388,8 @@ namespace PowerToolbox.Views.Pages
         private List<ComboBoxItemModel> NotifyModeList { get; } = [];
 
         private List<ComboBoxItemModel> HibernationFileTypeList { get; } = [];
+
+        public WinRTObservableCollection<string> WakeUpTaskCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -598,7 +586,11 @@ namespace PowerToolbox.Views.Pages
                     List<string> wakeUpTaskList = GetWaskUpTaskList();
                     synchronizationContext.Post((_) =>
                     {
-                        WakeUpTaskCount = wakeUpTaskList.Count;
+                        WakeUpTaskCollection.Clear();
+                        foreach (string wakeUpTask in wakeUpTaskList)
+                        {
+                            WakeUpTaskCollection.Add(wakeUpTask);
+                        }
                         IsClosingWakeUpTask = false;
                     }, null);
                 });
@@ -1478,7 +1470,11 @@ namespace PowerToolbox.Views.Pages
                     DisableAllWakeUpRunTask();
                     return GetWaskUpTaskList();
                 });
-                WakeUpTaskCount = wakeUpTaskList.Count;
+                WakeUpTaskCollection.Clear();
+                foreach (string wakeUpTask in wakeUpTaskList)
+                {
+                    WakeUpTaskCollection.Add(wakeUpTask);
+                }
                 IsClosingWakeUpTask = false;
             }
         }

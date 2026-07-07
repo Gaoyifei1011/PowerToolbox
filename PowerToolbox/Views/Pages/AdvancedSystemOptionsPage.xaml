@@ -1121,14 +1121,42 @@
                     <InfoBadge
                         Grid.Column="2"
                         Style="{StaticResource InformationalValueInfoBadgeStyle}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(WakeUpTaskCount), Mode=OneWay}"
-                        Value="{x:Bind WakeUpTaskCount, Mode=OneWay}" />
+                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('WakeUpTaskEmpty')}"
+                        Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(WakeUpTaskCollection.Count), Mode=OneWay}"
+                        Value="{x:Bind WakeUpTaskCollection.Count, Mode=OneWay}" />
 
                     <InfoBadge
                         Grid.Column="2"
                         Style="{StaticResource CautionValueInfoBadgeStyle}"
-                        Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(WakeUpTaskCount), Mode=OneWay}"
-                        Value="{x:Bind WakeUpTaskCount, Mode=OneWay}" />
+                        Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(WakeUpTaskCollection.Count), Mode=OneWay}"
+                        Value="{x:Bind WakeUpTaskCollection.Count, Mode=OneWay}">
+
+                        <ToolTipService.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock
+                                        FontSize="12"
+                                        FontWeight="SemiBold"
+                                        Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('WaskUpTaskExisted')}" />
+
+                                    <ListView ItemsSource="{x:Bind WakeUpTaskCollection}">
+                                        <ListView.ItemContainerStyle>
+                                            <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                                <Setter Property="MinHeight" Value="0" />
+                                                <Setter Property="Padding" Value="0" />
+                                                <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
+                                                <Setter Property="FontSize" Value="12" />
+                                            </Style>
+                                        </ListView.ItemContainerStyle>
+
+                                        <ItemsControl.ItemContainerTransitions>
+                                            <TransitionCollection />
+                                        </ItemsControl.ItemContainerTransitions>
+                                    </ListView>
+                                </StackPanel>
+                            </ToolTip>
+                        </ToolTipService.ToolTip>
+                    </InfoBadge>
 
                     <Button
                         Grid.Column="3"

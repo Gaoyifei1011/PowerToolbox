@@ -79,3 +79,5 @@ VirtualizationBasedSecurity=Virtualization-based security
 VirtualizationBasedSecurityDescription=Create isolated virtual memory areas to better protect against vulnerabilities and malicious attacks
 VirtualizationBasedSecurityOffContent=No
 VirtualizationBasedSecurityOnContent=Yes
+WakeUpTaskEmpty=There are no tasks that can wake up your device
+WaskUpTaskExisted=Tasks that can wake up your device:

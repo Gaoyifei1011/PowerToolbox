@@ -79,3 +79,5 @@ VirtualizationBasedSecurity=基于虚拟化的安全
 VirtualizationBasedSecurityDescription=创建隔离的虚拟内存区域以增强对漏洞和恶意攻击的保护
 VirtualizationBasedSecurityOffContent=否
 VirtualizationBasedSecurityOnContent=是
+WakeUpTaskEmpty=没有任务可以唤醒你的设备
+WaskUpTaskExisted=可以唤醒你设备的任务：
