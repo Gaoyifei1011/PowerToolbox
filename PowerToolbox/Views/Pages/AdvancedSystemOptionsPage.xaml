@@ -82,7 +82,7 @@
                             Visibility="{x:Bind IsRestartPCVisible, Mode=OneWay}">
 
                             <AppBarButton.Icon>
-                                <FontIcon Glyph="&#xEC4E;" />
+                                <FontIcon Glyph="&#xE977;" />
                             </AppBarButton.Icon>
                         </AppBarButton>
                     </CommandBar.PrimaryCommands>
@@ -1172,6 +1172,68 @@
                                 Height="20"
                                 IsActive="{x:Bind IsClosingWakeUpTask, Mode=OneWay}"
                                 Visibility="{x:Bind IsClosingWakeUpTask, Mode=OneWay}" />
+                        </Grid>
+                    </Button>
+                </Grid>
+
+                <!--  重启显卡驱动  -->
+                <Grid
+                    Height="60"
+                    Margin="0,0,0,2"
+                    Padding="16,0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{StaticResource ControlCornerRadius}">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <FontIcon
+                        Grid.Column="0"
+                        Margin="0,0,12,0"
+                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        FontSize="16"
+                        Glyph="&#xE7F4;" />
+
+                    <StackPanel
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('RestartGraphicsDriver')}" />
+
+                        <TextBlock
+                            x:Name="RestartGraphicsDriverDescription"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('RestartGraphicsDriverDescription')}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="NoWrap">
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('RestartGraphicsDriverDescription')}" Visibility="{x:Bind RestartGraphicsDriverDescription.IsTextTrimmed, Mode=OneWay}" />
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <Button
+                        Grid.Column="2"
+                        Click="{x:Bind OnRestartGraphicsDriverClicked}"
+                        CornerRadius="{StaticResource ControlCornerRadius}">
+
+                        <Grid>
+                            <TextBlock Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsResource.GetString('Restart')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsRestartingGraphicsDriver), Mode=OneWay}" />
+
+                            <ProgressRing
+                                Width="20"
+                                Height="20"
+                                IsActive="{x:Bind IsRestartingGraphicsDriver, Mode=OneWay}"
+                                Visibility="{x:Bind IsRestartingGraphicsDriver, Mode=OneWay}" />
                         </Grid>
                     </Button>
                 </Grid>

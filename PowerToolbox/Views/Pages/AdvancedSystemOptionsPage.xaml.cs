@@ -8,16 +8,19 @@ using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.ComTypes;
+using PowerToolbox.WindowsAPI.PInvoke.Cfgmgr32;
+using PowerToolbox.WindowsAPI.PInvoke.Dxgi;
 using PowerToolbox.WindowsAPI.PInvoke.PowrProf;
 using PowerToolbox.WindowsAPI.PInvoke.Rstrtmgr;
+using PowerToolbox.WindowsAPI.PInvoke.Setupapi;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TaskScheduler;
@@ -385,6 +388,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isRestartingGraphicsDriver;
+
+        public bool IsRestartingGraphicsDriver
+        {
+            get { return _isRestartingGraphicsDriver; }
+
+            set
+            {
+                if (!Equals(_isRestartingGraphicsDriver, value))
+                {
+                    _isRestartingGraphicsDriver = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRestartingGraphicsDriver)));
+                }
+            }
+        }
+
         private List<ComboBoxItemModel> NotifyModeList { get; } = [];
 
         private List<ComboBoxItemModel> HibernationFileTypeList { get; } = [];
@@ -622,7 +641,7 @@ namespace PowerToolbox.Views.Pages
                         for (int index = 0; index < processList.Length; index++)
                         {
                             lpRmProcList[index].dwProcessId = processList[index].Id;
-                            FILETIME fileTime = new();
+                            System.Runtime.InteropServices.ComTypes.FILETIME fileTime = new();
                             long time = processList[index].StartTime.ToFileTime();
                             fileTime.dwLowDateTime = (int)(time & 0xFFFFFFFF);
                             fileTime.dwHighDateTime = (int)(time >> 32);
@@ -1479,6 +1498,89 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        /// <summary>
+        /// 重启显卡驱动
+        /// </summary>
+        private async void OnRestartGraphicsDriverClicked(object sender, RoutedEventArgs args)
+        {
+            if (!IsRestartingGraphicsDriver)
+            {
+                IsRestartingGraphicsDriver = true;
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        string name = string.Empty;
+                        string id = string.Empty;
+                        uint deviceId = 0;
+                        string deviceName = string.Empty;
+                        uint vendor = 0;
+
+                        Guid dxgiFactoryGuid = typeof(IDXGIFactory6).GUID;
+                        if (DxgiLibrary.CreateDXGIFactory(ref dxgiFactoryGuid, out nint ppFactory) is 0)
+                        {
+                            object factory = Marshal.GetObjectForIUnknown(ppFactory);
+                            Guid dxgiAdapterGuid = typeof(IDXGIAdapter).GUID;
+                            if (((IDXGIFactory6)factory).EnumAdapterByGpuPreference(0, DXGI_GPU_PREFERENCE.DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE, in dxgiAdapterGuid, out IDXGIAdapter dxgiAdapter) is 0 && dxgiAdapter.GetDesc(out DXGI_ADAPTER_DESC dxgiAdapterDesc) is 0)
+                            {
+                                name = dxgiAdapterDesc.Description;
+                                id = string.Empty;
+                                deviceId = dxgiAdapterDesc.DeviceId;
+                                deviceName = string.Empty;
+                                vendor = dxgiAdapterDesc.VendorId;
+                                string[] deviceArray = GetDevices(new Guid("1CA05180-A699-450A-9A0C-DE4FBE3DDD89"), CM_GET_DEVICE_INTERFACE_LIST_FLAGS.CM_GET_DEVICE_INTERFACE_LIST_PRESENT);
+                                DEVPROPKEY devPropKey = new()
+                                {
+                                    fmtid = new Guid("A45C254E-DF1C-4EFD-8020-67D146A850E0"),
+                                    pid = 2
+                                };
+                                foreach (string dev in deviceArray)
+                                {
+                                    string pnp = FormatIdentifier(dev);
+                                    uint size = 0;
+                                    Cfgmgr32Library.CM_Locate_DevNode(out uint node, pnp, CM_LOCATE_DEVNODE_FLAGS.CM_LOCATE_DEVNODE_NORMAL);
+                                    Cfgmgr32Library.CM_Get_DevNode_Property(node, ref devPropKey, out _, IntPtr.Zero, ref size, 0);
+                                    nint buffer = Marshal.AllocHGlobal((int)size);
+                                    Cfgmgr32Library.CM_Get_DevNode_Property(node, ref devPropKey, out _, buffer, ref size, 0);
+                                    string description = Marshal.PtrToStringUni(buffer);
+                                    Marshal.FreeHGlobal(buffer);
+                                    if (string.Equals(name, description))
+                                    {
+                                        id = pnp;
+                                        deviceName = dev;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (!string.IsNullOrEmpty(id))
+                        {
+                            Process pnputilProcess = new()
+                            {
+                                StartInfo = new ProcessStartInfo
+                                {
+                                    FileName = "pnputil.exe",
+                                    Arguments = "/restart-device \"" + id + "\"",
+                                    Verb = "open",
+                                    CreateNoWindow = true,
+                                    WindowStyle = ProcessWindowStyle.Hidden
+                                }
+                            };
+                            pnputilProcess.Start();
+                            pnputilProcess.WaitForExit();
+                            pnputilProcess.Dispose();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnRestartGraphicsDriverClicked), 1, e);
+                    }
+                });
+                IsRestartingGraphicsDriver = false;
+            }
+        }
+
         #endregion 第一部分：高级系统选项页面——挂载的事件
 
         /// <summary>
@@ -1590,6 +1692,37 @@ namespace PowerToolbox.Views.Pages
             {
                 LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(DisableAllWakeUpRunTask), 2, e);
             }
+        }
+
+        private static string[] GetDevices(Guid interfaceClassGuid, CM_GET_DEVICE_INTERFACE_LIST_FLAGS flags)
+        {
+            Cfgmgr32Library.CM_Get_Device_Interface_List_Size(out uint size, in interfaceClassGuid, null, flags);
+            byte[] buffer = new byte[size * sizeof(char)];
+            Cfgmgr32Library.CM_Get_Device_Interface_List(in interfaceClassGuid, null, buffer, size, flags);
+            string device = Encoding.Unicode.GetString(buffer);
+            return device.Split(['\0'], StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        private static string FormatIdentifier(string identifier)
+        {
+            if (string.IsNullOrEmpty(identifier))
+            {
+                return null;
+            }
+            if (identifier.StartsWith("\\\\?\\"))
+            {
+                string text = identifier;
+                identifier = text.Substring(4, text.Length - 4);
+            }
+            if (identifier.Length > 0 && identifier.Contains('}') && identifier.Contains('{'))
+            {
+                int brace = identifier.IndexOf('{');
+                if (brace > 0)
+                {
+                    identifier = identifier.Substring(0, brace - 1);
+                }
+            }
+            return identifier.Replace('#', '\\');
         }
     }
 }
