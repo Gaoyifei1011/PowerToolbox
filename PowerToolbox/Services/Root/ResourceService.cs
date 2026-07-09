@@ -10,6 +10,12 @@ namespace PowerToolbox.Services.Root
     {
         private static Assembly CurrentAssembly { get; } = Assembly.GetExecutingAssembly();
 
+        public static ResourceManager AdvancedSystemOptionsListResource { get; } = new("PowerToolbox.Strings.AdvancedSystemOptionsList", CurrentAssembly);
+
+        public static ResourceManager AdvancedSystemOptionsPersonalizationResource { get; } = new("PowerToolbox.Strings.AdvancedSystemOptionsPersonalization", CurrentAssembly);
+
+        public static ResourceManager AdvancedSystemOptionsSystemResource { get; } = new("PowerToolbox.Strings.AdvancedSystemOptionsSystem", CurrentAssembly);
+
         public static ResourceManager AdvancedSystemOptionsResource { get; } = new("PowerToolbox.Strings.AdvancedSystemOptions", CurrentAssembly);
 
         public static ResourceManager AllToolsResource { get; } = new("PowerToolbox.Strings.AllTools", CurrentAssembly);

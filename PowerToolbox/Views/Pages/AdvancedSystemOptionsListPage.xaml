@@ -1,0 +1,104 @@
+<Page
+    x:Class="PowerToolbox.Views.Pages.AdvancedSystemOptionsListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rootservice="using:PowerToolbox.Services.Root"
+    NavigationCacheMode="Enabled"
+    mc:Ignorable="d">
+
+    <ScrollViewer
+        Margin="30,0,30,0"
+        HorizontalScrollBarVisibility="Disabled"
+        HorizontalScrollMode="Disabled"
+        VerticalScrollBarVisibility="Auto"
+        VerticalScrollMode="Enabled">
+
+        <StackPanel Margin="0,0,0,30" Spacing="3">
+            <StackPanel.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Default">
+                            <StaticResource x:Key="ButtonBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                            <StaticResource x:Key="ButtonBorderBrushPointerOver" ResourceKey="CardStrokeColorDefaultBrush" />
+                            <StaticResource x:Key="ButtonBorderBrushPressed" ResourceKey="CardStrokeColorDefaultBrush" />
+                        </ResourceDictionary>
+
+                        <ResourceDictionary x:Key="HighContrast">
+                            <StaticResource x:Key="ButtonBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                            <StaticResource x:Key="ButtonBorderBrushPointerOver" ResourceKey="CardStrokeColorDefaultBrush" />
+                            <StaticResource x:Key="ButtonBorderBrushPressed" ResourceKey="CardStrokeColorDefaultBrush" />
+                        </ResourceDictionary>
+
+                        <ResourceDictionary x:Key="Light">
+                            <StaticResource x:Key="ButtonBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                            <StaticResource x:Key="ButtonBorderBrushPointerOver" ResourceKey="CardStrokeColorDefaultBrush" />
+                            <StaticResource x:Key="ButtonBorderBrushPressed" ResourceKey="CardStrokeColorDefaultBrush" />
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                </ResourceDictionary>
+            </StackPanel.Resources>
+
+            <Button
+                Height="60"
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Click="{x:Bind OnPersonalizationClicked}">
+
+                <Grid Padding="16,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <FontIcon
+                        Grid.Column="0"
+                        Margin="0,0,12,0"
+                        FontSize="18"
+                        Glyph="&#xE771;" />
+
+                    <TextBlock Grid.Column="1" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsListResource.GetString('Personalization')}" />
+
+                    <FontIcon
+                        Grid.Column="2"
+                        FontSize="14"
+                        Glyph="&#xE76C;" />
+                </Grid>
+            </Button>
+
+            <Button
+                Height="60"
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Click="{x:Bind OnSystemClicked}">
+
+                <Grid Padding="16,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <FontIcon
+                        Grid.Column="0"
+                        Margin="0,0,12,0"
+                        FontSize="18"
+                        Glyph="&#xE770;" />
+
+                    <TextBlock Grid.Column="1" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsListResource.GetString('System')}" />
+
+                    <FontIcon
+                        Grid.Column="2"
+                        FontSize="14"
+                        Glyph="&#xE76C;" />
+                </Grid>
+            </Button>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

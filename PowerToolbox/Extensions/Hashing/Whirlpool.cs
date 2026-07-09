@@ -189,7 +189,7 @@ namespace PowerToolbox.Extensions.Hashing
         ];
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Whirlpool" /> class.
+        /// Initializes a new instance of the Whirlpool class.
         /// </summary>
         public Whirlpool()
         {

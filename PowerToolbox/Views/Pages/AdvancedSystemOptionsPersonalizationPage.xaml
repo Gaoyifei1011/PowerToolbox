@@ -1,0 +1,83 @@
+<Page
+    x:Class="PowerToolbox.Views.Pages.AdvancedSystemOptionsPersonalizationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="using:PowerToolbox.Helpers.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rootservice="using:PowerToolbox.Services.Root"
+    NavigationCacheMode="Enabled"
+    mc:Ignorable="d">
+
+    <ScrollViewer
+        Padding="30,0,30,0"
+        HorizontalScrollBarVisibility="Disabled"
+        HorizontalScrollMode="Disabled"
+        VerticalScrollBarVisibility="Auto"
+        VerticalScrollMode="Enabled">
+
+        <StackPanel Margin="0,0,0,30">
+
+            <!--  重建图标缓存  -->
+            <Grid
+                Height="60"
+                Margin="0,0,0,2"
+                Padding="16,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <FontIcon
+                    Grid.Column="0"
+                    Margin="0,0,12,0"
+                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                    FontSize="16"
+                    Glyph="&#xED58;" />
+
+                <StackPanel
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical">
+
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('RebuildIconCache')}" />
+
+                    <TextBlock
+                        x:Name="RebuildIconCacheDescription"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('RebuildIconCacheDescription')}"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="NoWrap">
+
+                        <ToolTipService.ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('RebuildIconCacheDescription')}" Visibility="{x:Bind RebuildIconCacheDescription.IsTextTrimmed, Mode=OneWay}" />
+                        </ToolTipService.ToolTip>
+                    </TextBlock>
+                </StackPanel>
+
+                <Button
+                    Grid.Column="2"
+                    Click="{x:Bind OnRebuildIconCacheClicked}"
+                    CornerRadius="{StaticResource ControlCornerRadius}">
+
+                    <Grid>
+                        <TextBlock Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('Rebuild')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsRebuildingIconCache), Mode=OneWay}" />
+
+                        <ProgressRing
+                            Width="20"
+                            Height="20"
+                            IsActive="{x:Bind IsRebuildingIconCache, Mode=OneWay}"
+                            Visibility="{x:Bind IsRebuildingIconCache, Mode=OneWay}" />
+                    </Grid>
+                </Button>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

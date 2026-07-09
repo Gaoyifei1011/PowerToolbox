@@ -1163,6 +1163,12 @@ namespace PowerToolbox.Views.Windows
                 return;
             }
 
+            if (GetFrameContent() is AdvancedSystemOptionsPage advancedSystemOptionsPage && advancedSystemOptionsPage.BreadCollection.Count is 2)
+            {
+                advancedSystemOptionsPage.NavigateTo(advancedSystemOptionsPage.PageList[0], null, false);
+                return;
+            }
+
             if ((MainNavigationView.Content as Frame).CanGoBack)
             {
                 (MainNavigationView.Content as Frame).GoBack();
