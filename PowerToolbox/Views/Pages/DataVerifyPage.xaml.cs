@@ -532,7 +532,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioButtons radioButtons && radioButtons.SelectedIndex >= 0)
+            if (sender is RadioButtons radioButtons && !Equals(SelectedIndex, radioButtons.SelectedIndex))
             {
                 SelectedIndex = radioButtons.SelectedIndex;
                 if (SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
@@ -605,9 +605,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnTextEncodingTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel textEncodingType && !Equals(SelectedTextEncodingType, textEncodingType))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedTextEncodingType, comboBox.SelectedItem))
             {
-                SelectedTextEncodingType = textEncodingType;
+                SelectedTextEncodingType = comboBox.SelectedItem is ComboBoxItemModel textEncodingType ? textEncodingType : null;
             }
         }
 

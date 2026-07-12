@@ -904,9 +904,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnFileMatchRuleSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel fileMatchRule && !Equals(SelectedFileMatchRule, fileMatchRule))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedFileMatchRule, comboBox.SelectedItem))
             {
-                SelectedFileMatchRule = fileMatchRule;
+                SelectedFileMatchRule = comboBox.SelectedItem is ComboBoxItemModel fileMatchRule ? fileMatchRule : null;
                 MenuFileMatchFormatText = string.Empty;
 
                 if (Equals(SelectedFileMatchRule, FileMatchRuleList[0]) || Equals(SelectedFileMatchRule, FileMatchRuleList[4]))

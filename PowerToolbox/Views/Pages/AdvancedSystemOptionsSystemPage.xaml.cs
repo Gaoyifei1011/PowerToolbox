@@ -614,15 +614,15 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnHibernationFileTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel hibernationFileType && !Equals(SelectedHibernationFileType, hibernationFileType))
+            if (sender is ComboBox comboBox && !Equals(SelectedHibernationFileType, comboBox.SelectedItem))
             {
-                SelectedHibernationFileType = hibernationFileType;
+                SelectedHibernationFileType = comboBox.SelectedItem is ComboBoxItemModel hibernationFileType ? hibernationFileType : null;
 
                 if (RuntimeHelper.IsElevated)
                 {
                     await Task.Run(() =>
                     {
-                        if (hibernationFileType.SelectedValue is "HibernationFileTypeReduced")
+                        if (SelectedHibernationFileType is not null && SelectedHibernationFileType.SelectedValue is "HibernationFileTypeReduced")
                         {
                             try
                             {
@@ -652,7 +652,7 @@ namespace PowerToolbox.Views.Pages
                                 LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnHibernationFileTypeSelectionChanged), 1, e);
                             }
                         }
-                        else if (hibernationFileType.SelectedValue is "HibernationFileTypeFull")
+                        else if (SelectedHibernationFileType.SelectedValue is "HibernationFileTypeFull")
                         {
                             try
                             {
@@ -963,9 +963,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnNotifyModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel notifyMode && !Equals(SelectedNotifyMode, notifyMode))
+            if (sender is ComboBox comboBox && !Equals(SelectedNotifyMode, comboBox.SelectedItem))
             {
-                SelectedNotifyMode = notifyMode;
+                SelectedNotifyMode = comboBox.SelectedItem is ComboBoxItemModel notifyMode ? notifyMode : null;
                 UacLevel uacLevel = await Task.Run(() =>
                 {
                     UACHelper.SetUacLevel((UacLevel)SelectedNotifyMode.SelectedValue);

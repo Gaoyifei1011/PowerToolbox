@@ -287,9 +287,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnUpdateStyleSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel simulateUpdateStyle && !Equals(SelectedSimulateUpdateStyle, simulateUpdateStyle))
+            if (sender is ComboBox comboBox && !Equals(SelectedSimulateUpdateStyle, comboBox.SelectedItem))
             {
-                SelectedSimulateUpdateStyle = simulateUpdateStyle;
+                SelectedSimulateUpdateStyle = comboBox.SelectedItem is ComboBoxItemModel simulateUpdateStyle ? simulateUpdateStyle : null;
             }
         }
 
@@ -320,9 +320,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAfterSimulateOperationSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel afterSimulateOperation && !Equals(SelectedAfterSimulateOperation, afterSimulateOperation))
+            if (sender is ComboBox comboBox && !Equals(SelectedAfterSimulateOperation, comboBox.SelectedItem))
             {
-                SelectedAfterSimulateOperation = afterSimulateOperation;
+                SelectedAfterSimulateOperation = comboBox.SelectedItem is ComboBoxItemModel afterSimulateOperation ? afterSimulateOperation : null;
             }
         }
 

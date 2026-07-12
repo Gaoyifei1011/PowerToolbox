@@ -1233,7 +1233,10 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectorBarSelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
         {
-            SelectedItem = sender.SelectedItem;
+            if (!Equals(SelectedItem, sender.SelectedItem))
+            {
+                SelectedItem = sender.SelectedItem;
+            }
         }
 
         /// <summary>
@@ -2059,9 +2062,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnUpdateSourceSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel updateSource && !Equals(SelectedUpdateSource, updateSource))
+            if (sender is ComboBox comboBox && !Equals(SelectedUpdateSource, comboBox.SelectedItem))
             {
-                SelectedUpdateSource = updateSource;
+                SelectedUpdateSource = comboBox.SelectedItem is ComboBoxItemModel updateSource ? updateSource : null;
             }
         }
 

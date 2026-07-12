@@ -754,9 +754,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is GridView gridView && gridView.SelectedItem is DriveModel driveItem)
+            if (sender is GridView gridView && !Equals(SelectedItem, gridView.SelectedItem))
             {
-                SelectedItem = driveItem;
+                SelectedItem = gridView.SelectedItem is DriveModel driveItem ? driveItem : null;
             }
         }
 
@@ -1147,9 +1147,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnRecoveryModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel recoveryMode && !Equals(SelectedRecoveryMode, recoveryMode))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedRecoveryMode, comboBox.SelectedItem))
             {
-                SelectedRecoveryMode = recoveryMode;
+                SelectedRecoveryMode = comboBox.SelectedItem is ComboBoxItemModel recoveryMode ? recoveryMode : null;
             }
         }
 
@@ -1169,9 +1169,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnRegularDuplicatedFileOptionSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel ntfsDuplicatedFileOption && !Equals(SelectedRegularDuplicatedFileOption, ntfsDuplicatedFileOption))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedRegularDuplicatedFileOption, comboBox.SelectedItem))
             {
-                SelectedRegularDuplicatedFileOption = ntfsDuplicatedFileOption;
+                SelectedRegularDuplicatedFileOption = comboBox.SelectedItem is ComboBoxItemModel ntfsDuplicatedFileOption ? ntfsDuplicatedFileOption : null;
             }
         }
 
@@ -1180,9 +1180,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnExtensiveDuplicatedFileOptionSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel extensiveDuplicatedFileOption && !Equals(SelectedExtensiveDuplicatedFileOption, extensiveDuplicatedFileOption))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedExtensiveDuplicatedFileOption, comboBox.SelectedItem))
             {
-                SelectedExtensiveDuplicatedFileOption = extensiveDuplicatedFileOption;
+                SelectedExtensiveDuplicatedFileOption = comboBox.SelectedItem is ComboBoxItemModel extensiveDuplicatedFileOption ? extensiveDuplicatedFileOption : null;
             }
         }
 
@@ -1213,9 +1213,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNTFSDuplicatedFileOptionSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel ntfsDuplicatedFileOption && !Equals(SelectedNTFSDuplicatedFileOption, ntfsDuplicatedFileOption))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedNTFSDuplicatedFileOption, comboBox.SelectedItem))
             {
-                SelectedNTFSDuplicatedFileOption = ntfsDuplicatedFileOption;
+                SelectedNTFSDuplicatedFileOption = comboBox.SelectedItem is ComboBoxItemModel ntfsDuplicatedFileOption ? ntfsDuplicatedFileOption : null;
             }
         }
 
@@ -1279,9 +1279,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSegmentDuplicatedFileOptionSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel segmentDuplicatedFileOption && !Equals(SelectedSegmentDuplicatedFileOption, segmentDuplicatedFileOption))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedSegmentDuplicatedFileOption, comboBox.SelectedItem))
             {
-                SelectedSegmentDuplicatedFileOption = segmentDuplicatedFileOption;
+                SelectedSegmentDuplicatedFileOption = comboBox.SelectedItem is ComboBoxItemModel segmentDuplicatedFileOption ? segmentDuplicatedFileOption : null;
             }
         }
 

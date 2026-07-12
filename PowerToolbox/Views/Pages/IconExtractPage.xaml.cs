@@ -557,58 +557,20 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            IList<object> selectedItemsList = (sender as GridView).SelectedItems;
-            if (selectedItemsList.Count > 0)
+            if (sender is GridView gridView)
             {
-                IsSelected = true;
-
-                if (Equals(SelectedGetIconType, GetIconTypeList[0]))
+                IList<object> selectedItemsList = gridView.SelectedItems;
+                if (selectedItemsList.Count > 0)
                 {
-                    int iconIndex = Convert.ToInt32((selectedItemsList.Last() as IconModel).DisplayIndex);
+                    IsSelected = true;
 
-                    try
+                    if (Equals(SelectedGetIconType, GetIconTypeList[0]))
                     {
-                        Icon icon = GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.SelectedValue));
-                        MemoryStream memoryStream = new();
-                        icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                        memoryStream.Seek(0, SeekOrigin.Begin);
-                        BitmapImage bitmapImage = new();
-                        bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
-                        ImageSource = bitmapImage;
-                        IsImageEmpty = false;
-                        icon.Dispose();
-                        memoryStream.Dispose();
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnSelectionChanged), 1, e);
-                    }
-                }
-                else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
-                {
-                    try
-                    {
-                        int size = Convert.ToInt32(SelectedIconSize.SelectedValue);
-                        Icon icon = null;
-                        if (size is 16)
-                        {
-                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_SMALL);
-                        }
-                        else if (size is 32)
-                        {
-                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_LARGE);
-                        }
-                        else if (size is 48)
-                        {
-                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_EXTRALARGE);
-                        }
-                        else if (size is 256)
-                        {
-                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_JUMBO);
-                        }
+                        int iconIndex = Convert.ToInt32((selectedItemsList.Last() as IconModel).DisplayName);
 
-                        if (icon is not null)
+                        try
                         {
+                            Icon icon = GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.SelectedValue));
                             MemoryStream memoryStream = new();
                             icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
                             memoryStream.Seek(0, SeekOrigin.Begin);
@@ -616,18 +578,59 @@ namespace PowerToolbox.Views.Pages
                             bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
                             ImageSource = bitmapImage;
                             IsImageEmpty = false;
+                            icon.Dispose();
                             memoryStream.Dispose();
                         }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnSelectionChanged), 1, e);
+                        }
                     }
-                    catch (Exception e)
+                    else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnSelectionChanged), 2, e);
+                        try
+                        {
+                            int size = Convert.ToInt32(SelectedIconSize.SelectedValue);
+                            Icon icon = null;
+                            if (size is 16)
+                            {
+                                icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_SMALL);
+                            }
+                            else if (size is 32)
+                            {
+                                icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_LARGE);
+                            }
+                            else if (size is 48)
+                            {
+                                icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_EXTRALARGE);
+                            }
+                            else if (size is 256)
+                            {
+                                icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_JUMBO);
+                            }
+
+                            if (icon is not null)
+                            {
+                                MemoryStream memoryStream = new();
+                                icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
+                                memoryStream.Seek(0, SeekOrigin.Begin);
+                                BitmapImage bitmapImage = new();
+                                bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
+                                ImageSource = bitmapImage;
+                                IsImageEmpty = false;
+                                memoryStream.Dispose();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnSelectionChanged), 2, e);
+                        }
                     }
                 }
-            }
-            else
-            {
-                IsSelected = false;
+                else
+                {
+                    IsSelected = false;
+                }
             }
         }
 
@@ -636,9 +639,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnGetIconTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel getIconType && !Equals(SelectedGetIconType, getIconType))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedGetIconType, comboBox.SelectedItem))
             {
-                SelectedGetIconType = getIconType;
+                SelectedGetIconType = comboBox.SelectedItem is ComboBoxItemModel getIconType ? getIconType : null;
                 IsSelected = false;
                 IconExtractResultKind = IconExtractResultKind.Welcome;
                 IsImageEmpty = true;
@@ -655,9 +658,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnIconFormatSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel iconFormat && !Equals(SelectedIconFormat, iconFormat))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedIconFormat, comboBox.SelectedItem))
             {
-                SelectedIconFormat = iconFormat;
+                SelectedIconFormat = comboBox.SelectedItem is ComboBoxItemModel iconFormat ? iconFormat : null;
             }
         }
 
@@ -666,15 +669,15 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnIconSizeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel iconSize && !Equals(SelectedIconSize, iconSize))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedIconSize, comboBox.SelectedItem))
             {
-                SelectedIconSize = iconSize;
+                SelectedIconSize = comboBox.SelectedItem is ComboBoxItemModel iconSize ? iconSize : null;
 
                 if (Equals(SelectedGetIconType, GetIconTypeList[0]))
                 {
                     if (IconsGridView.SelectedItem is not null)
                     {
-                        int iconIndex = Convert.ToInt32((IconsGridView.SelectedItem as IconModel).DisplayIndex);
+                        int iconIndex = Convert.ToInt32((IconsGridView.SelectedItem as IconModel).DisplayName);
 
                         try
                         {
@@ -808,7 +811,7 @@ namespace PowerToolbox.Views.Pages
                             {
                                 if (selectedItemsList[index] is object selectedItem)
                                 {
-                                    int iconIndex = Convert.ToInt32((selectedItem as IconModel).DisplayIndex);
+                                    int iconIndex = Convert.ToInt32((selectedItem as IconModel).DisplayName);
 
                                     // 提取 Ico 图标文件
                                     if (Equals(SelectedIconFormat, IconFormatList[0]))
@@ -1021,7 +1024,7 @@ namespace PowerToolbox.Views.Pages
                             {
                                 if (IconCollection[index] is object selectedItem)
                                 {
-                                    int iconIndex = Convert.ToInt32((selectedItem as IconModel).DisplayIndex);
+                                    int iconIndex = Convert.ToInt32((selectedItem as IconModel).DisplayName);
 
                                     // 提取 Ico 图标文件
                                     if (Equals(SelectedIconFormat, IconFormatList[0]))
@@ -1237,7 +1240,7 @@ namespace PowerToolbox.Views.Pages
 
                         iconsList.Add(new IconModel()
                         {
-                            DisplayIndex = Convert.ToString(index),
+                            DisplayName = Convert.ToString(index),
                             IconMemoryStream = memoryStream,
                         });
 
@@ -1267,7 +1270,7 @@ namespace PowerToolbox.Views.Pages
                         bitmapImage.SetSource(iconItem.IconMemoryStream.AsRandomAccessStream());
                         IconCollection.Add(new IconModel()
                         {
-                            DisplayIndex = iconItem.DisplayIndex,
+                            DisplayName = iconItem.DisplayName,
                             IconImage = bitmapImage
                         });
 
@@ -1318,7 +1321,7 @@ namespace PowerToolbox.Views.Pages
 
                     iconsList.Add(new IconModel()
                     {
-                        DisplayIndex = "0",
+                        DisplayName = "0",
                         IconMemoryStream = memoryStream,
                     });
 
@@ -1345,7 +1348,7 @@ namespace PowerToolbox.Views.Pages
                         bitmapImage.SetSource(iconItem.IconMemoryStream.AsRandomAccessStream());
                         IconCollection.Add(new IconModel()
                         {
-                            DisplayIndex = iconItem.DisplayIndex,
+                            DisplayName = iconItem.DisplayName,
                             IconImage = bitmapImage
                         });
 

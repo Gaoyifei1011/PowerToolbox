@@ -939,7 +939,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is RadioButtons radioButtons && radioButtons.SelectedIndex >= 0)
+            if (sender is RadioButtons radioButtons && !Equals(SelectedIndex, radioButtons.SelectedIndex))
             {
                 SelectedIndex = radioButtons.SelectedIndex;
                 if (!IsDecrypting && SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
@@ -1015,9 +1015,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnDecryptSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is DataDecryptTypeModel dataDecryptType)
+            if (sender is RadioButtons radioButtons && !Equals(SelectedDataDecryptType, radioButtons.SelectedItem))
             {
-                SelectedDataDecryptType = dataDecryptType;
+                SelectedDataDecryptType = radioButtons.SelectedItem is DataDecryptTypeModel dataDecryptType ? dataDecryptType : null;
                 DecryptKeyText = string.Empty;
                 InitializationVectorText = string.Empty;
 
@@ -1456,9 +1456,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnDecryptKeyStringTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel decryptKeyStringType && !Equals(SelectedDecryptKeyStringType, decryptKeyStringType))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedDecryptKeyStringType, comboBox.SelectedItem))
             {
-                SelectedDecryptKeyStringType = decryptKeyStringType;
+                SelectedDecryptKeyStringType = comboBox.SelectedItem is ComboBoxItemModel decryptKeyStringType ? decryptKeyStringType : null;
             }
         }
 
@@ -1478,9 +1478,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnInitializationVectorStringTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel initializationVectorStringType && !Equals(SelectedInitializationVectorStringType, initializationVectorStringType))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedInitializationVectorStringType, comboBox.SelectedItem))
             {
-                SelectedInitializationVectorStringType = initializationVectorStringType;
+                SelectedInitializationVectorStringType = comboBox.SelectedItem is ComboBoxItemModel initializationVectorStringType ? initializationVectorStringType : null;
             }
         }
 
@@ -1500,9 +1500,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnDecryptedBlockCipherModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel decryptedBlockCipherMode && !Equals(SelectedDecryptedBlockCipherMode, decryptedBlockCipherMode))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedDecryptedBlockCipherMode, comboBox.SelectedItem))
             {
-                SelectedDecryptedBlockCipherMode = decryptedBlockCipherMode;
+                SelectedDecryptedBlockCipherMode = comboBox.SelectedItem is ComboBoxItemModel decryptedBlockCipherMode ? decryptedBlockCipherMode : null;
                 if (SelectedDataDecryptType.DataDecryptType is DataDecryptType.AES || SelectedDataDecryptType.DataDecryptType is DataDecryptType.DES || SelectedDataDecryptType.DataDecryptType is DataDecryptType.RC2 ||
                     SelectedDataDecryptType.DataDecryptType is DataDecryptType.RC5 || SelectedDataDecryptType.DataDecryptType is DataDecryptType.RC6 || SelectedDataDecryptType.DataDecryptType is DataDecryptType.Rijndael ||
                     SelectedDataDecryptType.DataDecryptType is DataDecryptType.SM4 || SelectedDataDecryptType.DataDecryptType is DataDecryptType.TripleDES)
@@ -1517,9 +1517,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnPaddingModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel decryptedPaddingMode && !Equals(SelectedPaddingMode, decryptedPaddingMode))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedPaddingMode, comboBox.SelectedItem))
             {
-                SelectedPaddingMode = decryptedPaddingMode;
+                SelectedPaddingMode = comboBox.SelectedItem is ComboBoxItemModel decryptedPaddingMode ? decryptedPaddingMode : null;
             }
         }
 
@@ -1551,9 +1551,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnRSAEncryptionPaddingModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel encryptedRSAEncryptionPaddingMode && !Equals(SelectedRSAEncryptionPaddingMode, encryptedRSAEncryptionPaddingMode))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedRSAEncryptionPaddingMode, comboBox.SelectedItem))
             {
-                SelectedRSAEncryptionPaddingMode = encryptedRSAEncryptionPaddingMode;
+                SelectedRSAEncryptionPaddingMode = comboBox.SelectedItem is ComboBoxItemModel encryptedRSAEncryptionPaddingMode ? encryptedRSAEncryptionPaddingMode : null;
             }
         }
 
@@ -1573,9 +1573,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnTextEncodingTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel textDecodingType && !Equals(SelectedTextEncodingType, textDecodingType))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedTextEncodingType, comboBox.SelectedItem))
             {
-                SelectedTextEncodingType = textDecodingType;
+                SelectedTextEncodingType = comboBox.SelectedItem is ComboBoxItemModel textDecodingType ? textDecodingType : null;
             }
         }
 

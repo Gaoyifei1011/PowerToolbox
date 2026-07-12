@@ -631,9 +631,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSystemThemeStyleSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel systemThemeStyle && !Equals(SelectedSystemThemeStyle, systemThemeStyle))
+            if (sender is ComboBox comboBox && !Equals(SelectedSystemThemeStyle, comboBox.SelectedItem))
             {
-                SelectedSystemThemeStyle = systemThemeStyle;
+                SelectedSystemThemeStyle = comboBox.SelectedItem is ComboBoxItemModel systemThemeStyle ? systemThemeStyle : null;
                 int systemTheme = 0;
 
                 if (Equals(SelectedSystemThemeStyle, SystemThemeStyleList[0]))
@@ -662,9 +662,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAppThemeStyleSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel appTheme && !Equals(SelectedAppThemeStyle, appTheme))
+            if (sender is ComboBox comboBox && !Equals(SelectedAppThemeStyle, comboBox.SelectedItem))
             {
-                SelectedAppThemeStyle = appTheme;
+                SelectedAppThemeStyle = comboBox.SelectedItem is ComboBoxItemModel appTheme ? appTheme : null;
                 int apptheme = 0;
 
                 if (Equals(SelectedAppThemeStyle, AppThemeStyleList[0]))
@@ -853,9 +853,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnAutoThemeSwitchTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel autoThemeSwitchType && !Equals(SelectedAutoThemeSwitchType, autoThemeSwitchType))
+            if (sender is ComboBox comboBox && !Equals(SelectedAutoThemeSwitchType, comboBox.SelectedItem))
             {
-                SelectedAutoThemeSwitchType = autoThemeSwitchType;
+                SelectedAutoThemeSwitchType = comboBox.SelectedItem is ComboBoxItemModel autoThemeSwitchType ? autoThemeSwitchType : null;
             }
 
             if (IsAutoThemeSwitchEnable)

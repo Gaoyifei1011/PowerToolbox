@@ -164,7 +164,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectorBarSelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
         {
-            SelectedItem = sender.SelectedItem;
+            if (!Equals(SelectedItem, sender.SelectedItem))
+            {
+                SelectedItem = sender.SelectedItem;
+            }
+
             int index = sender.Items.IndexOf(SelectedItem);
             Type currentPage = GetCurrentPageType();
             int currentIndex = PageList.FindIndex(item => Equals(item, currentPage));

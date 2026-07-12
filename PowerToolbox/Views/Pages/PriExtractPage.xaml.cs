@@ -668,9 +668,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnLanguageSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (isLoadCompleted && args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel language && !Equals(SelectedLanguage, language))
+            if (isLoadCompleted && sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedLanguage, comboBox.SelectedItem))
             {
-                SelectedLanguage = language;
+                SelectedLanguage = comboBox.SelectedItem is ComboBoxItemModel language ? language : null;
                 await GetFilteredStringAsync();
             }
         }
@@ -699,9 +699,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnResourceCandidateKindSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel resourceCandidateKind && !Equals(SelectedResourceCandidateKind, resourceCandidateKind))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedResourceCandidateKind, comboBox.SelectedItem))
             {
-                SelectedResourceCandidateKind = resourceCandidateKind;
+                SelectedResourceCandidateKind = comboBox.SelectedItem is ComboBoxItemModel resourceCandidateKind ? resourceCandidateKind : null;
             }
         }
 

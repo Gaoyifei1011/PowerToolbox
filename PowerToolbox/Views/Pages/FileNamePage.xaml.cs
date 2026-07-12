@@ -492,9 +492,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNumberFormatSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (args.AddedItems.Count > 0 && args.AddedItems[0] is ComboBoxItemModel numberFormat && !Equals(SelectedNumberFormat, numberFormat))
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedNumberFormat, comboBox.SelectedItem))
             {
-                SelectedNumberFormat = numberFormat;
+                SelectedNumberFormat = comboBox.SelectedItem is ComboBoxItemModel numberFormat ? numberFormat : null;
             }
         }
 
