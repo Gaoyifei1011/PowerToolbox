@@ -292,7 +292,7 @@ namespace PowerToolbox.Views.Pages
 
         private List<ComboBoxItemModel> NotifyModeList { get; } = [];
 
-        public WinRTObservableCollection<string> WakeUpTaskCollection { get; } = [];
+        private WinRTObservableCollection<string> WakeUpTaskCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 

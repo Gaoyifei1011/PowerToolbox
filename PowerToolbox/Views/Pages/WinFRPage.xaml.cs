@@ -599,9 +599,9 @@ namespace PowerToolbox.Views.Pages
 
         private List<ComboBoxItemModel> SegmentDuplicatedFileOptionList { get; } = [];
 
-        public List<RecoveryModeSuggestionModel> RecoveryModeSuggestionList { get; } = [];
+        private List<RecoveryModeSuggestionModel> RecoveryModeSuggestionList { get; } = [];
 
-        public WinRTObservableCollection<DriveModel> DriveCollection { get; } = [];
+        private WinRTObservableCollection<DriveModel> DriveCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 

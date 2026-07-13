@@ -87,7 +87,7 @@ namespace PowerToolbox.Views.Pages
 
         private List<OperationFailedModel> OperationFailedList { get; } = [];
 
-        public WinRTObservableCollection<OldAndNewNameModel> UpperAndLowerCaseCollection { get; } = [];
+        private WinRTObservableCollection<OldAndNewNameModel> UpperAndLowerCaseCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -99,7 +99,7 @@
                                     Grid.Row="1"
                                     HorizontalAlignment="Center"
                                     FontSize="16"
-                                    Text="{x:Bind DisplayName}"
+                                    Text="{x:Bind DisplayIndex}"
                                     TextLineBounds="TrimToCapHeight"
                                     TextWrapping="NoWrap" />
                             </Grid>

@@ -134,7 +134,7 @@ namespace PowerToolbox.Views.Pages
 
         private List<ScheduledTaskFailedModel> ScheduledTaskFailedList { get; } = [];
 
-        public WinRTObservableCollection<ScheduledTaskModel> ScheduledTaskCollection { get; } = [];
+        private WinRTObservableCollection<ScheduledTaskModel> ScheduledTaskCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 

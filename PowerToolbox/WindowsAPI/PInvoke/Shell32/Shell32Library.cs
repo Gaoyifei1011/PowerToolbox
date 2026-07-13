@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 
 // 抑制 CA1401 警告
 #pragma warning disable CA1401
@@ -79,6 +80,27 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// <returns>pidl 指定的 ITEMIDLIST 结构的大小（以字节为单位）。</returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "ILGetSize", PreserveSig = true, SetLastError = false)]
         public static extern int ILGetSize(nint pidl);
+
+        /// <summary>
+        /// 显示一个对话框，允许用户从嵌入在资源（如可执行文件或 DLL 文件）中的可用选项中选择图标。
+        /// </summary>
+        /// <param name="hWnd">父窗口的句柄。 此值可以为 NULL。</param>
+        /// <param name="pszIconPath">指向字符串的指针，该字符串包含以 null 结尾的、包含图标的默认资源的完全限定路径。 如果用户在对话框中选择其他资源，则当函数返回时，此缓冲区将包含该文件的路径。 此缓冲区的长度应至少为 MAX_PATH 个字符，否则返回的路径可能会被截断。 在使用路径之前，应验证该路径是否有效。</param>
+        /// <param name="cchIconPath">pszIconPath 中的字符数，包括终止 NULL 字符。</param>
+        /// <param name="pnIconIndex">指向整数的指针，该整数在条目上指定初始选定内容的索引，并且当此函数成功返回时，接收所选图标的索引。</param>
+        /// <returns>如果成功，则返回 1;否则为 0。</returns>
+        [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "PickIconDlg", PreserveSig = true, SetLastError = false)]
+        public static extern bool PickIconDlg(nint hWnd, StringBuilder pszIconPath, int cchIconPath, ref int pnIconIndex);
+
+        /// <summary>
+        /// 通知系统应用程序已执行的事件。 如果应用程序执行可能影响 Shell 的操作，则应使用此函数。
+        /// </summary>
+        /// <param name="wEventId">描述已发生的事件。 通常，一次只指定一个事件。 如果指定了多个事件，则 dwItem1 和 dwItem2 参数中包含的值对于所有指定事件必须分别相同。</param>
+        /// <param name="uFlags">标记，当与 SHCNF_TYPE 按位组合时，指示 dwItem1 和 dwItem2 参数的含义。</param>
+        /// <param name="dwItem1">可选。 第一个与事件相关的值。</param>
+        /// <param name="dwItem2">可选。 第二个与事件相关的值。</param>
+        [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "SHChangeNotify", PreserveSig = true, SetLastError = false)]
+        public static extern void SHChangeNotify(SHCNE wEventId, SHCNF uFlags, nint dwItem1, nint dwItem2);
 
         /// <summary>
         /// 从分析名称创建和初始化命令行管理程序项对象。

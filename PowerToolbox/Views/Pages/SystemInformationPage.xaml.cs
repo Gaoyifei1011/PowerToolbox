@@ -98,7 +98,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        public WinRTObservableCollection<SystemInformationModel> SystemInformationCollection { get; } = [];
+        private WinRTObservableCollection<SystemInformationModel> SystemInformationCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -566,7 +566,7 @@ namespace PowerToolbox.Views.Pages
 
                     if (Equals(SelectedGetIconType, GetIconTypeList[0]))
                     {
-                        int iconIndex = Convert.ToInt32((selectedItemsList.Last() as IconModel).DisplayName);
+                        int iconIndex = Convert.ToInt32((selectedItemsList.Last() as IconModel).DisplayIndex);
 
                         try
                         {
@@ -677,7 +677,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (IconsGridView.SelectedItem is not null)
                     {
-                        int iconIndex = Convert.ToInt32((IconsGridView.SelectedItem as IconModel).DisplayName);
+                        int iconIndex = Convert.ToInt32((IconsGridView.SelectedItem as IconModel).DisplayIndex);
 
                         try
                         {
@@ -811,7 +811,7 @@ namespace PowerToolbox.Views.Pages
                             {
                                 if (selectedItemsList[index] is object selectedItem)
                                 {
-                                    int iconIndex = Convert.ToInt32((selectedItem as IconModel).DisplayName);
+                                    int iconIndex = Convert.ToInt32((selectedItem as IconModel).DisplayIndex);
 
                                     // 提取 Ico 图标文件
                                     if (Equals(SelectedIconFormat, IconFormatList[0]))
@@ -1024,7 +1024,7 @@ namespace PowerToolbox.Views.Pages
                             {
                                 if (IconCollection[index] is object selectedItem)
                                 {
-                                    int iconIndex = Convert.ToInt32((selectedItem as IconModel).DisplayName);
+                                    int iconIndex = Convert.ToInt32((selectedItem as IconModel).DisplayIndex);
 
                                     // 提取 Ico 图标文件
                                     if (Equals(SelectedIconFormat, IconFormatList[0]))
@@ -1240,7 +1240,7 @@ namespace PowerToolbox.Views.Pages
 
                         iconsList.Add(new IconModel()
                         {
-                            DisplayName = Convert.ToString(index),
+                            DisplayIndex = Convert.ToString(index),
                             IconMemoryStream = memoryStream,
                         });
 
@@ -1270,7 +1270,7 @@ namespace PowerToolbox.Views.Pages
                         bitmapImage.SetSource(iconItem.IconMemoryStream.AsRandomAccessStream());
                         IconCollection.Add(new IconModel()
                         {
-                            DisplayName = iconItem.DisplayName,
+                            DisplayIndex = iconItem.DisplayIndex,
                             IconImage = bitmapImage
                         });
 
@@ -1321,7 +1321,7 @@ namespace PowerToolbox.Views.Pages
 
                     iconsList.Add(new IconModel()
                     {
-                        DisplayName = "0",
+                        DisplayIndex = "0",
                         IconMemoryStream = memoryStream,
                     });
 
@@ -1348,7 +1348,7 @@ namespace PowerToolbox.Views.Pages
                         bitmapImage.SetSource(iconItem.IconMemoryStream.AsRandomAccessStream());
                         IconCollection.Add(new IconModel()
                         {
-                            DisplayName = iconItem.DisplayName,
+                            DisplayIndex = iconItem.DisplayIndex,
                             IconImage = bitmapImage
                         });
 

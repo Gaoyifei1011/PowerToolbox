@@ -15,6 +15,14 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shlwapi
         private const string Shlwapi = "shlwapi.dll";
 
         /// <summary>
+        /// 分析包含文件位置和图标索引的文件位置字符串，并返回单独的值。
+        /// </summary>
+        /// <param name="pszIconFile">指向长度为 null 的字符串的指针，MAX_PATH包含文件位置字符串。 它应采用“路径，iconindex”的形式。 函数返回时，pszIconFile 将指向文件的路径。</param>
+        /// <returns>返回有效的图标索引值。</returns>
+        [DllImport(Shlwapi, CharSet = CharSet.Unicode, EntryPoint = "PathParseIconLocationW", PreserveSig = true)]
+        public static extern int PathParseIconLocation(StringBuilder pszIconFile);
+
+        /// <summary>
         /// 打开或创建文件，并检索要读取或写入该文件的流。
         /// </summary>
         /// <param name="pszFile">指向以 null 结尾的字符串的指针，该字符串指定文件名。</param>
