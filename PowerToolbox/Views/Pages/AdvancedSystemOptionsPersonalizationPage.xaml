@@ -172,12 +172,10 @@
                     <GridView
                         x:Name="DesktopIconSettingsGridView"
                         Padding="44,5,16,0"
-                        IsSwipeEnabled="False"
                         ItemsSource="{x:Bind DesktopIconSettingsCollection}"
                         SelectedItem="{x:Bind SelectedIconItem, Mode=OneWay}"
                         SelectionChanged="{x:Bind OnIconSelectionChanged}"
-                        SelectionMode="Single"
-                        TabIndex="1">
+                        SelectionMode="Single">
 
                         <GridView.ItemTemplate>
                             <DataTemplate x:DataType="model:DesktopIconSettingsModel">
@@ -227,6 +225,84 @@
 
                     <MenuFlyoutSeparator />
 
+                    <!--  桌面图标显示  -->
+                    <Grid
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        ColumnSpacing="5">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('DesktopIconDisplay')}" />
+
+                        <GridView
+                            Grid.Column="1"
+                            ItemsSource="{x:Bind DesktopIconDisplayCollection}"
+                            SelectionMode="None">
+
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapGrid MaximumRowsOrColumns="3" Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+
+                            <GridView.ItemContainerStyle>
+                                <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="Margin" Value="0" />
+                                    <Setter Property="MinHeight" Value="0" />
+                                    <Setter Property="Padding" Value="0" />
+                                </Style>
+                            </GridView.ItemContainerStyle>
+
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="model:DesktopIconDisplayModel">
+                                    <CheckBox
+                                        Command="{StaticResource DesktopIconDisplayCommand}"
+                                        CommandParameter="{x:Bind}"
+                                        Content="{x:Bind DisplayName}"
+                                        IsChecked="{x:Bind IsIconVisible, Mode=OneWay}" />
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </Grid>
+
+                    <MenuFlyoutSeparator />
+
+                    <!--  显示桌面快捷箭头  -->
+                    <!--<Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('FastStartup')}" />
+
+                        <ToggleSwitch
+                            Grid.Column="1"
+                            IsOn="{x:Bind IsFastStartupEnabled, Mode=OneWay}"
+                            OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('FastStartupOffContent')}"
+                            OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('FastStartupOnContent')}"
+                            Style="{StaticResource ToggleSwitchStyle}"
+                            Toggled="{x:Bind OnFastStartupToggled}" />
+                    </Grid>-->
+                </StackPanel>
+            </Expander>
         </StackPanel>
     </ScrollViewer>
 </Page>

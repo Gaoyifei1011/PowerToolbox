@@ -26,7 +26,6 @@ namespace PowerToolbox.Helpers.Root
             {
                 if ((Equals(rootRegistryKey, Registry.ClassesRoot) || Equals(rootRegistryKey, Registry.CurrentConfig) || Equals(rootRegistryKey, Registry.CurrentUser) || Equals(rootRegistryKey, Registry.LocalMachine) || Equals(rootRegistryKey, Registry.PerformanceData) || Equals(rootRegistryKey, Registry.Users)) && rootRegistryKey.OpenSubKey(rootKey, false) is RegistryKey registryKey && registryKey.GetValue(key) is object getValue)
                 {
-                    // 读取布尔值
                     if (Equals(typeof(T), typeof(bool)) || Equals(typeof(T), typeof(bool?)))
                     {
                         value = (T)(object)Convert.ToBoolean(getValue);
@@ -53,9 +52,8 @@ namespace PowerToolbox.Helpers.Root
                     }
                     else
                     {
-                        value = Equals(typeof(T), typeof(byte[])) || Equals(typeof(T), typeof(string[])) ? (T)getValue : (T)getValue;
+                        value = (T)getValue;
                     }
-
                     registryKey.Close();
                     registryKey.Dispose();
                 }

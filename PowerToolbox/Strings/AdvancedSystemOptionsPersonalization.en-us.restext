@@ -1,3 +1,12 @@
+Change=Change
+ChangeDesktopIcon=Change desktop icon
+DesktopIconDisplay=Desktop icon display
+DesktopSettings=Desktop settings
+DesktopSettingsDescription=Change settings related to desktop content
+Empty=(Empty)
+Full=(Full)
 Rebuild=Rebuild
 RebuildIconCache=Rebuild icon cache
 RebuildIconCacheDescription=Rebuild the icon cache to fix icon display issues
+RestoreDefualtIcon=Restore default icon
+UserFolder=User folder

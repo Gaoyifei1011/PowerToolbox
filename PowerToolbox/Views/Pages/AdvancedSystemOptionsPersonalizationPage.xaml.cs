@@ -23,8 +23,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-// 抑制 CA1806,IDE0060 警告
-#pragma warning disable CA1806,IDE0060
+// 抑制 CA1806，CA1822，IDE0060 警告
+#pragma warning disable CA1806,CA1822,IDE0060
 
 namespace PowerToolbox.Views.Pages
 {
@@ -33,12 +33,14 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class AdvancedSystemOptionsPersonalizationPage : Page, INotifyPropertyChanged
     {
-        private readonly string thisPCPathString = "{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
-        private readonly string userFolderPathString = "{59031A47-3F72-44A7-89C5-5595FE6B30EE}";
+        private readonly string controlPanelPathString = "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}";
         private readonly string networkPathString = "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}";
         private readonly string recycleBinPathString = "{645FF040-5081-101B-9F08-00AA002F954E}";
+        private readonly string thisPCPathString = "{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
+        private readonly string userFolderPathString = "{59031A47-3F72-44A7-89C5-5595FE6B30EE}";
         private readonly string EmptyString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Empty");
         private readonly string FullString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Full");
+        private readonly string UserFolderString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("UserFolder");
         private AdvancedSystemOptionsPage advancedSystemOptionsPage;
 
         private bool _isRebuildingIconCache;
@@ -116,6 +118,7 @@ namespace PowerToolbox.Views.Pages
                 string thisPCIconPath = string.Format("::{0}", thisPCPathString);
                 string userFolderIconPath = string.Format("::{0}", userFolderPathString);
                 string networkIconPath = string.Format("::{0}", networkPathString);
+                string controlPanelIconPath = string.Format("::{0}", controlPanelPathString);
                 string recycleBinPath = string.Format("::{0}", recycleBinPathString);
 
                 // 图标在注册表中存储的键
@@ -135,6 +138,7 @@ namespace PowerToolbox.Views.Pages
                 string thisPCDisplayName = await GetShellIconDisplayNameAsync(thisPCIconPath);
                 string userFolderDisplayName = await GetShellIconDisplayNameAsync(userFolderIconPath);
                 string networkDisplayName = await GetShellIconDisplayNameAsync(networkIconPath);
+                string controlPanelDisplayName = await GetShellIconDisplayNameAsync(controlPanelIconPath);
                 string recycleBinDisplayName = await GetShellIconDisplayNameAsync(recycleBinPath);
 
                 // 图标的位置和索引
@@ -256,12 +260,104 @@ namespace PowerToolbox.Views.Pages
                         LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnNavigatedTo), 5, e);
                     }
                 }
+
+                bool thisPCIconVisible = GetDesktopIconVisibility(thisPCPathString, "ThisPC");
+                bool recycleBinIconVisible = GetDesktopIconVisibility(recycleBinPathString, "RecycleBin");
+                bool userFolderIconVisible = GetDesktopIconVisibility(userFolderPathString, "UserFolder");
+                bool controlPanelIconVisible = GetDesktopIconVisibility(controlPanelPathString, "ControlPanel");
+                bool networkIconVisible = GetDesktopIconVisibility(networkPathString, "Network");
+
+                DesktopIconDisplayCollection.Clear();
+                DesktopIconDisplayCollection.Add(new DesktopIconDisplayModel()
+                {
+                    DisplayName = thisPCDisplayName,
+                    IconTag = "ThisPC",
+                    IsIconVisible = thisPCIconVisible
+                });
+                DesktopIconDisplayCollection.Add(new DesktopIconDisplayModel()
+                {
+                    DisplayName = recycleBinDisplayName,
+                    IconTag = "RecycleBin",
+                    IsIconVisible = recycleBinIconVisible
+                });
+                DesktopIconDisplayCollection.Add(new DesktopIconDisplayModel()
+                {
+                    DisplayName = UserFolderString,
+                    IconTag = "UserFolder",
+                    IsIconVisible = userFolderIconVisible
+                });
+                DesktopIconDisplayCollection.Add(new DesktopIconDisplayModel()
+                {
+                    DisplayName = controlPanelDisplayName,
+                    IconTag = "ControlPanel",
+                    IsIconVisible = controlPanelIconVisible
+                });
+                DesktopIconDisplayCollection.Add(new DesktopIconDisplayModel()
+                {
+                    DisplayName = networkDisplayName,
+                    IconTag = "Network",
+                    IsIconVisible = networkIconVisible
+                });
             }
         }
 
         #endregion 第一部分：重写父类事件
 
-        #region 第二部分：高级系统选项——个性化页面——挂载的事件
+        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+
+        /// <summary>
+        /// 修改桌面图标显示状态
+        /// </summary>
+        private async void OnDesktopIconDisplayExecuteRequested(object sender, ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is DesktopIconDisplayModel desktopIconDisplay)
+            {
+                desktopIconDisplay.IsIconVisible = !desktopIconDisplay.IsIconVisible;
+                desktopIconDisplay.IsIconVisible = await Task.Run(() =>
+                {
+                    bool isIconVisible = false;
+                    switch (desktopIconDisplay.IconTag)
+                    {
+                        case "ThisPC":
+                            {
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", thisPCPathString, desktopIconDisplay.IsIconVisible ? 0 : 1);
+                                isIconVisible = GetDesktopIconVisibility(thisPCPathString, desktopIconDisplay.IconTag);
+                                break;
+                            }
+                        case "RecycleBin":
+                            {
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", recycleBinPathString, desktopIconDisplay.IsIconVisible ? 0 : 1);
+                                isIconVisible = GetDesktopIconVisibility(recycleBinPathString, desktopIconDisplay.IconTag);
+                                break;
+                            }
+                        case "UserFolder":
+                            {
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", userFolderPathString, desktopIconDisplay.IsIconVisible ? 0 : 1);
+                                isIconVisible = GetDesktopIconVisibility(userFolderPathString, desktopIconDisplay.IconTag);
+                                break;
+                            }
+                        case "ControlPanel":
+                            {
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", controlPanelPathString, desktopIconDisplay.IsIconVisible ? 0 : 1);
+                                isIconVisible = GetDesktopIconVisibility(controlPanelPathString, desktopIconDisplay.IconTag);
+                                break;
+                            }
+                        case "Network":
+                            {
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", networkPathString, desktopIconDisplay.IsIconVisible ? 0 : 1);
+                                isIconVisible = GetDesktopIconVisibility(networkPathString, desktopIconDisplay.IconTag);
+                                break;
+                            }
+                    }
+                    Shell32Library.SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSH, 0, 0);
+                    return isIconVisible;
+                });
+            }
+        }
+
+        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+
+        #region 第三部分：高级系统选项——个性化页面——挂载的事件
 
         /// <summary>
         /// 重建图标缓存
@@ -333,45 +429,45 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnChangeDesktopIconClicked(object sender, RoutedEventArgs args)
         {
-            if (DesktopIconSettingsGridView.SelectedItem is DesktopIconSettingsModel desktopIconSettingsItem)
+            if (DesktopIconSettingsGridView.SelectedItem is DesktopIconSettingsModel desktopIconSettings)
             {
-                StringBuilder desktopIconStringBuilder = new(desktopIconSettingsItem.IconLocationPath, 260);
-                int desktopIconIndex = desktopIconSettingsItem.IconIndex;
+                StringBuilder desktopIconStringBuilder = new(desktopIconSettings.IconLocationPath, 260);
+                int desktopIconIndex = desktopIconSettings.IconIndex;
                 string iconRegistryValuePath = string.Empty;
                 if (Shell32Library.PickIconDlg((nint)MainWindow.Current.AppWindow.Id.Value, desktopIconStringBuilder, desktopIconStringBuilder.Capacity, ref desktopIconIndex))
                 {
                     await Task.Run(() =>
                     {
-                        switch (desktopIconSettingsItem.IconTag)
+                        switch (desktopIconSettings.IconTag)
                         {
                             case "ThisPC":
                                 {
-                                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, string.Empty, string.Format("{0},{1}", desktopIconStringBuilder.ToString(), desktopIconIndex));
-                                    iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, string.Empty);
+                                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, string.Empty, string.Format("{0},{1}", desktopIconStringBuilder.ToString(), desktopIconIndex));
+                                    iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, string.Empty);
                                     break;
                                 }
                             case "UserFolder":
                                 {
-                                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, string.Empty, string.Format("{0},{1}", desktopIconStringBuilder.ToString(), desktopIconIndex));
-                                    iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, string.Empty);
+                                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, string.Empty, string.Format("{0},{1}", desktopIconStringBuilder.ToString(), desktopIconIndex));
+                                    iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, string.Empty);
                                     break;
                                 }
                             case "Network":
                                 {
-                                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, string.Empty, string.Format("{0},{1}", desktopIconStringBuilder.ToString(), desktopIconIndex));
-                                    iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, string.Empty);
+                                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, string.Empty, string.Format("{0},{1}", desktopIconStringBuilder.ToString(), desktopIconIndex));
+                                    iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, string.Empty);
                                     break;
                                 }
                             case "RecycleBinFull":
                                 {
-                                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, "full", string.Format("{0},{1}", desktopIconStringBuilder.ToString(), desktopIconIndex));
-                                    iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, "full");
+                                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, "full", string.Format("{0},{1}", desktopIconStringBuilder.ToString(), desktopIconIndex));
+                                    iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, "full");
                                     break;
                                 }
                             case "RecycleBinEmpty":
                                 {
-                                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, "empty", string.Format("{0},{1}", desktopIconStringBuilder.ToString(), desktopIconIndex));
-                                    iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, "empty");
+                                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, "empty", string.Format("{0},{1}", desktopIconStringBuilder.ToString(), desktopIconIndex));
+                                    iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, "empty");
                                     break;
                                 }
                         }
@@ -388,7 +484,7 @@ namespace PowerToolbox.Views.Pages
                             {
                                 BitmapImage bitmapImage = new();
                                 bitmapImage.SetSource(iconMemoryStream.AsRandomAccessStream());
-                                desktopIconSettingsItem.IconImage = bitmapImage;
+                                desktopIconSettings.IconImage = bitmapImage;
                             }
                             catch (Exception e)
                             {
@@ -405,41 +501,41 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnRestoreDefualtIconClicked(object sender, RoutedEventArgs args)
         {
-            if (DesktopIconSettingsGridView.SelectedItem is DesktopIconSettingsModel desktopIconSettingsItem)
+            if (DesktopIconSettingsGridView.SelectedItem is DesktopIconSettingsModel desktopIconSettings)
             {
                 string iconRegistryValuePath = string.Empty;
                 await Task.Run(() =>
                 {
-                    switch (desktopIconSettingsItem.IconTag)
+                    switch (desktopIconSettings.IconTag)
                     {
                         case "ThisPC":
                             {
-                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, string.Empty, @"%SystemRoot%\System32\imageres.dll,-109");
-                                iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, string.Empty);
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, string.Empty, @"%SystemRoot%\System32\imageres.dll,-109");
+                                iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, string.Empty);
                                 break;
                             }
                         case "UserFolder":
                             {
-                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, string.Empty, @"%SystemRoot%\System32\imageres.dll,-123");
-                                iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, string.Empty);
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, string.Empty, @"%SystemRoot%\System32\imageres.dll,-123");
+                                iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, string.Empty);
                                 break;
                             }
                         case "Network":
                             {
-                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, string.Empty, @"%SystemRoot%\System32\imageres.dll,-25");
-                                iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, string.Empty);
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, string.Empty, @"%SystemRoot%\System32\imageres.dll,-25");
+                                iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, string.Empty);
                                 break;
                             }
                         case "RecycleBinFull":
                             {
-                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, "full", @"%SystemRoot%\System32\imageres.dll,-54");
-                                iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, "full");
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, "full", @"%SystemRoot%\System32\imageres.dll,-54");
+                                iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, "full");
                                 break;
                             }
                         case "RecycleBinEmpty":
                             {
-                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, "empty", @"%SystemRoot%\System32\imageres.dll,-55");
-                                iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettingsItem.IconRegistryKeyPath, "empty");
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, "empty", @"%SystemRoot%\System32\imageres.dll,-55");
+                                iconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, desktopIconSettings.IconRegistryKeyPath, "empty");
                                 break;
                             }
                     }
@@ -456,7 +552,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             BitmapImage bitmapImage = new();
                             bitmapImage.SetSource(iconMemoryStream.AsRandomAccessStream());
-                            desktopIconSettingsItem.IconImage = bitmapImage;
+                            desktopIconSettings.IconImage = bitmapImage;
                         }
                         catch (Exception e)
                         {
@@ -479,7 +575,7 @@ namespace PowerToolbox.Views.Pages
             IsIconSelected = SelectedIconItem is not null;
         }
 
-        #endregion 第二部分：高级系统选项——个性化页面——挂载的事件
+        #endregion 第三部分：高级系统选项——个性化页面——挂载的事件
 
         /// <summary>
         /// 获取图标存储位置和索引
@@ -556,6 +652,44 @@ namespace PowerToolbox.Views.Pages
             });
 
             return displayName;
+        }
+
+        /// <summary>
+        /// 获取桌面图标显示状态
+        /// </summary>
+        private bool GetDesktopIconVisibility(string iconPathName, string iconTag)
+        {
+            int? iconValue = RegistryHelper.ReadRegistryKey<int?>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", iconPathName);
+            bool visible = false;
+            switch (iconTag)
+            {
+                case "ThisPC":
+                    {
+                        visible = iconValue.HasValue && iconValue.Value is 0;
+                        break;
+                    }
+                case "RecycleBin":
+                    {
+                        visible = !iconValue.HasValue || iconValue.Value is 0;
+                        break;
+                    }
+                case "UserFolder":
+                    {
+                        visible = iconValue.HasValue && iconValue.Value is 0;
+                        break;
+                    }
+                case "ControlPanel":
+                    {
+                        visible = iconValue.HasValue && iconValue.Value is 0;
+                        break;
+                    }
+                case "Network":
+                    {
+                        visible = iconValue.HasValue && iconValue.Value is 0;
+                        break;
+                    }
+            }
+            return visible;
         }
     }
 }

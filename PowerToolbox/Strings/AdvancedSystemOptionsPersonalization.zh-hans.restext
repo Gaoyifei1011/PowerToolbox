@@ -1,3 +1,12 @@
+Change=修改
+ChangeDesktopIcon=修改桌面图标
+DesktopIconDisplay=桌面图标显示
+DesktopSettings=桌面设置
+DesktopSettingsDescription=修改与桌面内容相关的设置
+Empty=（空）
+Full=（满）
 Rebuild=重建
 RebuildIconCache=重建图标缓存
 RebuildIconCacheDescription=重建图标缓存以修复图标显示异常问题
+RestoreDefualtIcon=还原默认图标
+UserFolder=用户文件夹
