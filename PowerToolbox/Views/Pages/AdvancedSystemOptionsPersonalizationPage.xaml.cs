@@ -1,9 +1,11 @@
+using Microsoft.UI.Composition;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Win32;
 using PowerToolbox.Extensions.DataType.Class;
+using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
@@ -87,6 +89,22 @@ namespace PowerToolbox.Views.Pages
                 {
                     _selectedIconItem = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedIconItem)));
+                }
+            }
+        }
+
+        private DesktopShortcutArrowProcessingKind _desktopShortcutArrowProcessingKind;
+
+        public DesktopShortcutArrowProcessingKind DesktopShortcutArrowProcessingKind
+        {
+            get { return _desktopShortcutArrowProcessingKind; }
+
+            set
+            {
+                if (!Equals(_desktopShortcutArrowProcessingKind, value))
+                {
+                    _desktopShortcutArrowProcessingKind = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DesktopShortcutArrowProcessingKind)));
                 }
             }
         }
@@ -575,6 +593,122 @@ namespace PowerToolbox.Views.Pages
             IsIconSelected = SelectedIconItem is not null;
         }
 
+        /// <summary>
+        /// 显示桌面快捷键头
+        /// </summary>
+        private async void OnShowDesktopShortcutArrowClicked(object sender, RoutedEventArgs args)
+        {
+            if (DesktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.None)
+            {
+                DesktopShortcutArrowProcessingKind = DesktopShortcutArrowProcessingKind.Show;
+                await Task.Run(async () =>
+                {
+                    if (RuntimeHelper.IsElevated)
+                    {
+                        RegistryHelper.RemoveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons", "29");
+                        try
+                        {
+                            Process taskKillProcess = Process.Start(new ProcessStartInfo
+                            {
+                                FileName = "taskkill",
+                                Arguments = "/IM explorer.exe /F",
+                                Verb = "open",
+                                CreateNoWindow = true,
+                                WindowStyle = ProcessWindowStyle.Hidden,
+                            });
+                            taskKillProcess.WaitForExit();
+                            taskKillProcess.Dispose();
+                            while (Process.GetProcessesByName("explorer").FirstOrDefault() is not null)
+                            {
+                                await Task.Delay(1000);
+                            }
+                        }
+                        catch (Win32Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnHideDesktopShortcutArrowClicked), 1, e);
+                        }
+                        finally
+                        {
+                            try
+                            {
+                                Process explorerProcess = Process.Start(new ProcessStartInfo
+                                {
+                                    FileName = "explorer.exe",
+                                    Verb = "open",
+                                    CreateNoWindow = true,
+                                    WindowStyle = ProcessWindowStyle.Hidden,
+                                });
+                                explorerProcess.Dispose();
+                            }
+                            catch (Win32Exception e)
+                            {
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnHideDesktopShortcutArrowClicked), 2, e);
+                            }
+                        }
+                    }
+                });
+                DesktopShortcutArrowProcessingKind = DesktopShortcutArrowProcessingKind.None;
+            }
+        }
+
+        /// <summary>
+        /// 隐藏桌面快捷键头
+        /// </summary>
+        private async void OnHideDesktopShortcutArrowClicked(object sender, RoutedEventArgs args)
+        {
+            if (DesktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.None)
+            {
+                DesktopShortcutArrowProcessingKind = DesktopShortcutArrowProcessingKind.Hide;
+                await Task.Run(async () =>
+                {
+                    if (RuntimeHelper.IsElevated)
+                    {
+                        RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons", "29", @"%SystemRoot%\System32\imageres.dll,197");
+                        try
+                        {
+                            Process taskKillProcess = Process.Start(new ProcessStartInfo
+                            {
+                                FileName = "taskkill",
+                                Arguments = "/IM explorer.exe /F",
+                                Verb = "open",
+                                CreateNoWindow = true,
+                                WindowStyle = ProcessWindowStyle.Hidden,
+                            });
+                            taskKillProcess.WaitForExit();
+                            taskKillProcess.Dispose();
+                            while (Process.GetProcessesByName("explorer").FirstOrDefault() is not null)
+                            {
+                                await Task.Delay(1000);
+                            }
+                        }
+                        catch (Win32Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnShowDesktopShortcutArrowClicked), 1, e);
+                        }
+                        finally
+                        {
+                            try
+                            {
+                                Process explorerProcess = Process.Start(new ProcessStartInfo
+                                {
+                                    FileName = "explorer.exe",
+                                    Verb = "open",
+                                    CreateNoWindow = true,
+                                    WindowStyle = ProcessWindowStyle.Hidden,
+                                });
+                                explorerProcess.Dispose();
+                            }
+                            catch (Win32Exception e)
+                            {
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnShowDesktopShortcutArrowClicked), 2, e);
+                            }
+                        }
+                    }
+                });
+                DesktopShortcutArrowProcessingKind = DesktopShortcutArrowProcessingKind.None;
+            }
+        }
+
         #endregion 第三部分：高级系统选项——个性化页面——挂载的事件
 
         /// <summary>
@@ -690,6 +824,87 @@ namespace PowerToolbox.Views.Pages
                     }
             }
             return visible;
+        }
+
+        private bool GetDesktopShortcutArrowEnabled(DesktopShortcutArrowProcessingKind desktopShortcutArrowProcessingKind, DesktopShortcutArrowProcessingKind comparedDesktopShortcutArrowProcessingKind)
+        {
+            if (comparedDesktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.Show)
+            {
+                return desktopShortcutArrowProcessingKind is not DesktopShortcutArrowProcessingKind.Hide;
+            }
+            else if (comparedDesktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.Hide)
+            {
+                return desktopShortcutArrowProcessingKind is not DesktopShortcutArrowProcessingKind.Show;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private Visibility GetDesktopShortcutArrowVisibility(DesktopShortcutArrowProcessingKind desktopShortcutArrowProcessingKind, DesktopShortcutArrowProcessingKind comparedDesktopShortcutArrowProcessingKind, bool needReverse)
+        {
+            if (comparedDesktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.Show)
+            {
+                if (desktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.Show)
+                {
+                    if (needReverse)
+                    {
+                        return Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        return Visibility.Visible;
+                    }
+                }
+                else
+                {
+                    if (needReverse)
+                    {
+                        return Visibility.Visible;
+                    }
+                    else
+                    {
+                        return Visibility.Collapsed;
+                    }
+                }
+            }
+            else if (comparedDesktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.Hide)
+            {
+                if (desktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.Hide)
+                {
+                    if (needReverse)
+                    {
+                        return Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        return Visibility.Visible;
+                    }
+                }
+                else
+                {
+                    if (needReverse)
+                    {
+                        return Visibility.Visible;
+                    }
+                    else
+                    {
+                        return Visibility.Collapsed;
+                    }
+                }
+            }
+            else
+            {
+                if (needReverse)
+                {
+                    return Visibility.Collapsed;
+                }
+                else
+                {
+                    return Visibility.Visible;
+                }
+            }
         }
     }
 }

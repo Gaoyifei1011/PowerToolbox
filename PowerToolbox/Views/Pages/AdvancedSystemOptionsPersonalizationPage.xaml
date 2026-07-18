@@ -5,6 +5,7 @@
     xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:enum="using:PowerToolbox.Extensions.DataType.Enums"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:PowerToolbox.Models"
     xmlns:roothelper="using:PowerToolbox.Helpers.Root"
@@ -276,8 +277,8 @@
 
                     <MenuFlyoutSeparator />
 
-                    <!--  显示桌面快捷箭头  -->
-                    <!--<Grid
+                    <!--  桌面快捷箭头  -->
+                    <Grid
                         Height="52"
                         Padding="44,0,16,0"
                         HorizontalAlignment="Stretch"
@@ -286,21 +287,46 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
                             Grid.Column="0"
                             VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('FastStartup')}" />
+                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('DesktopShortcutArrow')}" />
 
-                        <ToggleSwitch
+                        <Button
                             Grid.Column="1"
-                            IsOn="{x:Bind IsFastStartupEnabled, Mode=OneWay}"
-                            OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('FastStartupOffContent')}"
-                            OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('FastStartupOnContent')}"
-                            Style="{StaticResource ToggleSwitchStyle}"
-                            Toggled="{x:Bind OnFastStartupToggled}" />
-                    </Grid>-->
+                            Margin="5,0,0,0"
+                            Click="{x:Bind OnShowDesktopShortcutArrowClicked}"
+                            IsEnabled="{x:Bind GetDesktopShortcutArrowEnabled(DesktopShortcutArrowProcessingKind, enum:DesktopShortcutArrowProcessingKind.Show), Mode=OneWay}">
+
+                            <Grid>
+                                <TextBlock Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('Show')}" Visibility="{x:Bind GetDesktopShortcutArrowVisibility(DesktopShortcutArrowProcessingKind, enum:DesktopShortcutArrowProcessingKind.Show, x:True), Mode=OneWay}" />
+
+                                <ProgressRing
+                                    Width="20"
+                                    Height="20"
+                                    Visibility="{x:Bind GetDesktopShortcutArrowVisibility(DesktopShortcutArrowProcessingKind, enum:DesktopShortcutArrowProcessingKind.Show, x:False), Mode=OneWay}" />
+                            </Grid>
+                        </Button>
+
+                        <Button
+                            Grid.Column="2"
+                            Margin="5,0,0,0"
+                            Click="{x:Bind OnHideDesktopShortcutArrowClicked}"
+                            IsEnabled="{x:Bind GetDesktopShortcutArrowEnabled(DesktopShortcutArrowProcessingKind, enum:DesktopShortcutArrowProcessingKind.Hide), Mode=OneWay}">
+
+                            <Grid>
+                                <TextBlock Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('Hide')}" Visibility="{x:Bind GetDesktopShortcutArrowVisibility(DesktopShortcutArrowProcessingKind, enum:DesktopShortcutArrowProcessingKind.Hide, x:True), Mode=OneWay}" />
+
+                                <ProgressRing
+                                    Width="20"
+                                    Height="20"
+                                    Visibility="{x:Bind GetDesktopShortcutArrowVisibility(DesktopShortcutArrowProcessingKind, enum:DesktopShortcutArrowProcessingKind.Hide, x:False), Mode=OneWay}" />
+                            </Grid>
+                        </Button>
+                    </Grid>
                 </StackPanel>
             </Expander>
         </StackPanel>
