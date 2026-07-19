@@ -3,12 +3,12 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Services.Root;
-using PowerToolbox.WindowsAPI.PInvoke.Rstrtmgr;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
@@ -201,48 +201,46 @@ namespace PowerToolbox.Views.Pages
         {
             RestartExplorerText = RestartingString;
             IsRestarting = true;
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 try
                 {
-                    int dwRmStatus = RstrtmgrLibrary.RmStartSession(out uint dwSessionHandle, 0, Guid.Empty.ToString());
-
-                    if (dwRmStatus is 0)
+                    Process taskKillProcess = Process.Start(new ProcessStartInfo
                     {
-                        Process[] processList = Process.GetProcessesByName("explorer");
-                        RM_UNIQUE_PROCESS[] lpRmProcList = new RM_UNIQUE_PROCESS[processList.Length];
-
-                        for (int index = 0; index < processList.Length; index++)
-                        {
-                            lpRmProcList[index].dwProcessId = processList[index].Id;
-                            System.Runtime.InteropServices.ComTypes.FILETIME fileTime = new();
-                            long time = processList[index].StartTime.ToFileTime();
-                            fileTime.dwLowDateTime = (int)(time & 0xFFFFFFFF);
-                            fileTime.dwHighDateTime = (int)(time >> 32);
-                            lpRmProcList[index].ProcessStartTime = fileTime;
-                        }
-
-                        dwRmStatus = RstrtmgrLibrary.RmRegisterResources(dwSessionHandle, 0, null, (uint)processList.Length, lpRmProcList, 0, null);
-
-                        if (dwRmStatus is 0)
-                        {
-                            dwRmStatus = RstrtmgrLibrary.RmShutdown(dwSessionHandle, RM_SHUTDOWN_TYPE.RmForceShutdown, null);
-
-                            if (dwRmStatus is 0)
-                            {
-                                dwRmStatus = RstrtmgrLibrary.RmRestart(dwSessionHandle, 0, null);
-
-                                if (dwRmStatus is 0)
-                                {
-                                    dwRmStatus = RstrtmgrLibrary.RmEndSession(dwSessionHandle);
-                                }
-                            }
-                        }
+                        FileName = "taskkill",
+                        Arguments = "/IM explorer.exe /F",
+                        Verb = "open",
+                        CreateNoWindow = true,
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                    });
+                    taskKillProcess.WaitForExit();
+                    taskKillProcess.Dispose();
+                    while (Process.GetProcessesByName("explorer").FirstOrDefault() is not null)
+                    {
+                        await Task.Delay(1000);
                     }
                 }
-                catch (Exception e)
+                catch (Win32Exception e)
                 {
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnRestartExplorerClicked), 1, e);
+                }
+                finally
+                {
+                    try
+                    {
+                        Process explorerProcess = Process.Start(new ProcessStartInfo
+                        {
+                            FileName = "explorer.exe",
+                            Verb = "open",
+                            CreateNoWindow = true,
+                            WindowStyle = ProcessWindowStyle.Hidden,
+                        });
+                        explorerProcess.Dispose();
+                    }
+                    catch (Win32Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPage), nameof(OnRestartExplorerClicked), 2, e);
+                    }
                 }
             });
             IsRestarting = false;

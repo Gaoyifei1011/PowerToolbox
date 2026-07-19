@@ -1,11 +1,9 @@
-using Microsoft.UI.Composition;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Win32;
 using PowerToolbox.Extensions.DataType.Class;
-using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
@@ -15,6 +13,7 @@ using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using PowerToolbox.WindowsAPI.PInvoke.Shlwapi;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -43,6 +42,8 @@ namespace PowerToolbox.Views.Pages
         private readonly string EmptyString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Empty");
         private readonly string FullString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Full");
         private readonly string UserFolderString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("UserFolder");
+        private readonly string Windows10ClassicMenuString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows10ClassicMenu");
+        private readonly string Windows11ModernMenuString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows11ModernMenu");
         private AdvancedSystemOptionsPage advancedSystemOptionsPage;
 
         private bool _isRebuildingIconCache;
@@ -93,18 +94,18 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private DesktopShortcutArrowProcessingKind _desktopShortcutArrowProcessingKind;
+        private ComboBoxItemModel _rightClickMenuStyle;
 
-        public DesktopShortcutArrowProcessingKind DesktopShortcutArrowProcessingKind
+        public ComboBoxItemModel RightClickMenuStyle
         {
-            get { return _desktopShortcutArrowProcessingKind; }
+            get { return _rightClickMenuStyle; }
 
             set
             {
-                if (!Equals(_desktopShortcutArrowProcessingKind, value))
+                if (!Equals(_rightClickMenuStyle, value))
                 {
-                    _desktopShortcutArrowProcessingKind = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DesktopShortcutArrowProcessingKind)));
+                    _rightClickMenuStyle = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RightClickMenuStyle)));
                 }
             }
         }
@@ -113,11 +114,15 @@ namespace PowerToolbox.Views.Pages
 
         private WinRTObservableCollection<DesktopIconDisplayModel> DesktopIconDisplayCollection { get; } = [];
 
+        private List<ComboBoxItemModel> RightClickMenuStyleList { get; } = [];
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public AdvancedSystemOptionsPersonalizationPage()
         {
             InitializeComponent();
+            RightClickMenuStyleList.Add(new ComboBoxItemModel() { DisplayMember = Windows11ModernMenuString, SelectedValue = "Windows11ModernMenu" });
+            RightClickMenuStyleList.Add(new ComboBoxItemModel() { DisplayMember = Windows10ClassicMenuString, SelectedValue = "Windows10ClassicMenu" });
         }
 
         #region 第一部分：重写父类事件
@@ -316,6 +321,15 @@ namespace PowerToolbox.Views.Pages
                     IconTag = "Network",
                     IsIconVisible = networkIconVisible
                 });
+
+                if (RuntimeHelper.IsWindows11)
+                {
+                    bool isClassicRightClickMenuExisted = await Task.Run(() =>
+                    {
+                        return RegistryHelper.IsRegistryKeyExisted(Registry.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32");
+                    });
+                    RightClickMenuStyle = isClassicRightClickMenuExisted ? RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows10ClassicMenu")) : RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows11ModernMenu"));
+                }
             }
         }
 
@@ -598,56 +612,17 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnShowDesktopShortcutArrowClicked(object sender, RoutedEventArgs args)
         {
-            if (DesktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.None)
+            await Task.Run(async () =>
             {
-                DesktopShortcutArrowProcessingKind = DesktopShortcutArrowProcessingKind.Show;
-                await Task.Run(async () =>
+                if (RuntimeHelper.IsElevated)
                 {
-                    if (RuntimeHelper.IsElevated)
-                    {
-                        RegistryHelper.RemoveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons", "29");
-                        try
-                        {
-                            Process taskKillProcess = Process.Start(new ProcessStartInfo
-                            {
-                                FileName = "taskkill",
-                                Arguments = "/IM explorer.exe /F",
-                                Verb = "open",
-                                CreateNoWindow = true,
-                                WindowStyle = ProcessWindowStyle.Hidden,
-                            });
-                            taskKillProcess.WaitForExit();
-                            taskKillProcess.Dispose();
-                            while (Process.GetProcessesByName("explorer").FirstOrDefault() is not null)
-                            {
-                                await Task.Delay(1000);
-                            }
-                        }
-                        catch (Win32Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnHideDesktopShortcutArrowClicked), 1, e);
-                        }
-                        finally
-                        {
-                            try
-                            {
-                                Process explorerProcess = Process.Start(new ProcessStartInfo
-                                {
-                                    FileName = "explorer.exe",
-                                    Verb = "open",
-                                    CreateNoWindow = true,
-                                    WindowStyle = ProcessWindowStyle.Hidden,
-                                });
-                                explorerProcess.Dispose();
-                            }
-                            catch (Win32Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnHideDesktopShortcutArrowClicked), 2, e);
-                            }
-                        }
-                    }
-                });
-                DesktopShortcutArrowProcessingKind = DesktopShortcutArrowProcessingKind.None;
+                    RegistryHelper.RemoveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons", "29");
+                }
+            });
+            if (advancedSystemOptionsPage is not null)
+            {
+                advancedSystemOptionsPage.IsAdvancedSettingsInfoWarning = true;
+                advancedSystemOptionsPage.IsRestartExplorerVisible = true;
             }
         }
 
@@ -656,56 +631,46 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnHideDesktopShortcutArrowClicked(object sender, RoutedEventArgs args)
         {
-            if (DesktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.None)
+            await Task.Run(async () =>
             {
-                DesktopShortcutArrowProcessingKind = DesktopShortcutArrowProcessingKind.Hide;
-                await Task.Run(async () =>
+                if (RuntimeHelper.IsElevated)
                 {
-                    if (RuntimeHelper.IsElevated)
+                    RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons", "29", @"%SystemRoot%\System32\imageres.dll,197");
+                }
+            });
+            if (advancedSystemOptionsPage is not null)
+            {
+                advancedSystemOptionsPage.IsAdvancedSettingsInfoWarning = true;
+                advancedSystemOptionsPage.IsRestartExplorerVisible = true;
+            }
+        }
+
+        /// <summary>
+        /// 右键菜单样式选中项发生变化时触发的事件
+        /// </summary>
+        private async void OnRightClickMenuStyleSelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            if (sender is ComboBox comboBox && !Equals(RightClickMenuStyle, comboBox.SelectedItem))
+            {
+                RightClickMenuStyle = comboBox.SelectedItem is ComboBoxItemModel rightClickMenuStyle ? rightClickMenuStyle : null;
+                bool isClassicRightClickMenuExisted = await Task.Run(() =>
+                {
+                    if (Equals(RightClickMenuStyle, RightClickMenuStyleList[0]))
                     {
-                        RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons", "29", @"%SystemRoot%\System32\imageres.dll,197");
-                        try
-                        {
-                            Process taskKillProcess = Process.Start(new ProcessStartInfo
-                            {
-                                FileName = "taskkill",
-                                Arguments = "/IM explorer.exe /F",
-                                Verb = "open",
-                                CreateNoWindow = true,
-                                WindowStyle = ProcessWindowStyle.Hidden,
-                            });
-                            taskKillProcess.WaitForExit();
-                            taskKillProcess.Dispose();
-                            while (Process.GetProcessesByName("explorer").FirstOrDefault() is not null)
-                            {
-                                await Task.Delay(1000);
-                            }
-                        }
-                        catch (Win32Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnShowDesktopShortcutArrowClicked), 1, e);
-                        }
-                        finally
-                        {
-                            try
-                            {
-                                Process explorerProcess = Process.Start(new ProcessStartInfo
-                                {
-                                    FileName = "explorer.exe",
-                                    Verb = "open",
-                                    CreateNoWindow = true,
-                                    WindowStyle = ProcessWindowStyle.Hidden,
-                                });
-                                explorerProcess.Dispose();
-                            }
-                            catch (Win32Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnShowDesktopShortcutArrowClicked), 2, e);
-                            }
-                        }
+                        RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}", true);
                     }
+                    else if (Equals(RightClickMenuStyle, RightClickMenuStyleList[1]))
+                    {
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32", null, string.Empty);
+                    }
+                    return RegistryHelper.IsRegistryKeyExisted(Registry.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32");
                 });
-                DesktopShortcutArrowProcessingKind = DesktopShortcutArrowProcessingKind.None;
+                RightClickMenuStyle = isClassicRightClickMenuExisted ? RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows10ClassicMenu")) : RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows11ModernMenu"));
+                if (advancedSystemOptionsPage is not null)
+                {
+                    advancedSystemOptionsPage.IsAdvancedSettingsInfoWarning = true;
+                    advancedSystemOptionsPage.IsRestartExplorerVisible = true;
+                }
             }
         }
 
@@ -824,87 +789,6 @@ namespace PowerToolbox.Views.Pages
                     }
             }
             return visible;
-        }
-
-        private bool GetDesktopShortcutArrowEnabled(DesktopShortcutArrowProcessingKind desktopShortcutArrowProcessingKind, DesktopShortcutArrowProcessingKind comparedDesktopShortcutArrowProcessingKind)
-        {
-            if (comparedDesktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.Show)
-            {
-                return desktopShortcutArrowProcessingKind is not DesktopShortcutArrowProcessingKind.Hide;
-            }
-            else if (comparedDesktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.Hide)
-            {
-                return desktopShortcutArrowProcessingKind is not DesktopShortcutArrowProcessingKind.Show;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        private Visibility GetDesktopShortcutArrowVisibility(DesktopShortcutArrowProcessingKind desktopShortcutArrowProcessingKind, DesktopShortcutArrowProcessingKind comparedDesktopShortcutArrowProcessingKind, bool needReverse)
-        {
-            if (comparedDesktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.Show)
-            {
-                if (desktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.Show)
-                {
-                    if (needReverse)
-                    {
-                        return Visibility.Collapsed;
-                    }
-                    else
-                    {
-                        return Visibility.Visible;
-                    }
-                }
-                else
-                {
-                    if (needReverse)
-                    {
-                        return Visibility.Visible;
-                    }
-                    else
-                    {
-                        return Visibility.Collapsed;
-                    }
-                }
-            }
-            else if (comparedDesktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.Hide)
-            {
-                if (desktopShortcutArrowProcessingKind is DesktopShortcutArrowProcessingKind.Hide)
-                {
-                    if (needReverse)
-                    {
-                        return Visibility.Collapsed;
-                    }
-                    else
-                    {
-                        return Visibility.Visible;
-                    }
-                }
-                else
-                {
-                    if (needReverse)
-                    {
-                        return Visibility.Visible;
-                    }
-                    else
-                    {
-                        return Visibility.Collapsed;
-                    }
-                }
-            }
-            else
-            {
-                if (needReverse)
-                {
-                    return Visibility.Collapsed;
-                }
-                else
-                {
-                    return Visibility.Visible;
-                }
-            }
         }
     }
 }

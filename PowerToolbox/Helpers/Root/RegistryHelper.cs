@@ -17,6 +17,26 @@ namespace PowerToolbox.Helpers.Root
         public static event EventHandler<string> NotifyKeyValueChanged;
 
         /// <summary>
+        /// 检测注册表项是否存在
+        /// </summary>
+        public static bool IsRegistryKeyExisted(RegistryKey rootRegistryKey, string rootKey)
+        {
+            bool isRegistryKeyExisted = false;
+            try
+            {
+                isRegistryKeyExisted = (Equals(rootRegistryKey, Registry.ClassesRoot) || Equals(rootRegistryKey, Registry.CurrentConfig) || Equals(rootRegistryKey, Registry.CurrentUser) || Equals(rootRegistryKey, Registry.LocalMachine) || Equals(rootRegistryKey, Registry.PerformanceData) || Equals(rootRegistryKey, Registry.Users)) && rootRegistryKey.OpenSubKey(rootKey, false) is not null;
+                var result = rootRegistryKey.OpenSubKey(rootKey, false) is not null;
+                rootRegistryKey.Close();
+                rootRegistryKey.Dispose();
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(IsRegistryKeyExisted), 1, e);
+            }
+            return isRegistryKeyExisted;
+        }
+
+        /// <summary>
         /// 读取注册表指定项的内容
         /// </summary>
         public static T ReadRegistryKey<T>(RegistryKey rootRegistryKey, string rootKey, string key)
@@ -64,6 +84,33 @@ namespace PowerToolbox.Helpers.Root
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// 删除注册表项
+        /// </summary>
+        public static void DeleteRegistryKey(RegistryKey rootRegistryKey, string rootKey, bool isCrusive)
+        {
+            try
+            {
+                if (Equals(rootRegistryKey, Registry.ClassesRoot) || Equals(rootRegistryKey, Registry.CurrentConfig) || Equals(rootRegistryKey, Registry.CurrentUser) || Equals(rootRegistryKey, Registry.LocalMachine) || Equals(rootRegistryKey, Registry.PerformanceData) || Equals(rootRegistryKey, Registry.Users))
+                {
+                    if (isCrusive)
+                    {
+                        rootRegistryKey.DeleteSubKeyTree(rootKey);
+                    }
+                    else
+                    {
+                        rootRegistryKey.DeleteSubKey(rootKey);
+                    }
+                    rootRegistryKey.Close();
+                    rootRegistryKey.Dispose();
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(DeleteRegistryKey), 1, e);
+            }
         }
 
         /// <summary>

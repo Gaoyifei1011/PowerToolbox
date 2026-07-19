@@ -1,4 +1,5 @@
 ﻿using PowerToolbox.WindowsAPI.PInvoke.Kernel32;
+using System;
 using System.Security.Principal;
 
 namespace PowerToolbox.Helpers.Root
@@ -11,6 +12,8 @@ namespace PowerToolbox.Helpers.Root
         public static bool IsMSIX { get; private set; }
 
         public static bool IsElevated { get; private set; }
+
+        public static bool IsWindows11 { get; } = Environment.OSVersion.Version.Build > 22000;
 
         static RuntimeHelper()
         {
