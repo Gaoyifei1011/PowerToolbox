@@ -385,7 +385,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK.Foundation" Version="2.3.5" />
     <PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="2.1.3" GeneratePathProperty="True" />
     <PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="2.3.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="2.3.0" GeneratePathProperty="True" IncludeAssets="none" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="2.3.2" GeneratePathProperty="True" IncludeAssets="none" PrivateAssets="all" />
     <PackageReference Include="Mile.Aria2" Version="1.0.1050" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.6.1" />
     <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
