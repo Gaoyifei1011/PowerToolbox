@@ -25,7 +25,6 @@ namespace PowerToolbox.Helpers.Root
             try
             {
                 isRegistryKeyExisted = (Equals(rootRegistryKey, Registry.ClassesRoot) || Equals(rootRegistryKey, Registry.CurrentConfig) || Equals(rootRegistryKey, Registry.CurrentUser) || Equals(rootRegistryKey, Registry.LocalMachine) || Equals(rootRegistryKey, Registry.PerformanceData) || Equals(rootRegistryKey, Registry.Users)) && rootRegistryKey.OpenSubKey(rootKey, false) is not null;
-                var result = rootRegistryKey.OpenSubKey(rootKey, false) is not null;
                 rootRegistryKey.Close();
                 rootRegistryKey.Dispose();
             }

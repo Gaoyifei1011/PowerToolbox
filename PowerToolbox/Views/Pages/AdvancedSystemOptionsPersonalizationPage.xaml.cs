@@ -44,7 +44,70 @@ namespace PowerToolbox.Views.Pages
         private readonly string UserFolderString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("UserFolder");
         private readonly string Windows10ClassicMenuString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows10ClassicMenu");
         private readonly string Windows11ModernMenuString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows11ModernMenu");
+        private readonly string Windows10ClassicFileExplorerString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows10ClassicFileExplorer");
+        private readonly string Windows11ModernFileExplorerString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows11ModernFileExplorer");
         private AdvancedSystemOptionsPage advancedSystemOptionsPage;
+
+        private readonly byte[] layout =
+        [
+                19, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 32, 0, 0, 0, 16, 0, 1, 0,
+                0, 0, 0, 0, 1, 0, 0, 0, 1, 7,
+                0, 0, 94, 1, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0
+        ];
 
         private bool _isRebuildingIconCache;
 
@@ -110,11 +173,29 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private ComboBoxItemModel _fileExplorerStyle;
+
+        public ComboBoxItemModel FileExplorerStyle
+        {
+            get { return _fileExplorerStyle; }
+
+            set
+            {
+                if (!Equals(_fileExplorerStyle, value))
+                {
+                    _fileExplorerStyle = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileExplorerStyle)));
+                }
+            }
+        }
+
         private WinRTObservableCollection<DesktopIconSettingsModel> DesktopIconSettingsCollection { get; } = [];
 
         private WinRTObservableCollection<DesktopIconDisplayModel> DesktopIconDisplayCollection { get; } = [];
 
         private List<ComboBoxItemModel> RightClickMenuStyleList { get; } = [];
+
+        private List<ComboBoxItemModel> FileExplorerStyleList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -123,6 +204,8 @@ namespace PowerToolbox.Views.Pages
             InitializeComponent();
             RightClickMenuStyleList.Add(new ComboBoxItemModel() { DisplayMember = Windows11ModernMenuString, SelectedValue = "Windows11ModernMenu" });
             RightClickMenuStyleList.Add(new ComboBoxItemModel() { DisplayMember = Windows10ClassicMenuString, SelectedValue = "Windows10ClassicMenu" });
+            FileExplorerStyleList.Add(new ComboBoxItemModel() { DisplayMember = Windows11ModernFileExplorerString, SelectedValue = "Windows11ModernFileExplorer" });
+            FileExplorerStyleList.Add(new ComboBoxItemModel() { DisplayMember = Windows10ClassicFileExplorerString, SelectedValue = "Windows10ClassicFileExplorer" });
         }
 
         #region 第一部分：重写父类事件
@@ -329,6 +412,20 @@ namespace PowerToolbox.Views.Pages
                         return RegistryHelper.IsRegistryKeyExisted(Registry.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32");
                     });
                     RightClickMenuStyle = isClassicRightClickMenuExisted ? RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows10ClassicMenu")) : RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows11ModernMenu"));
+                    bool isClassicFileExplorerExisted = await Task.Run(() =>
+                    {
+                        string itemsViewAdapter = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", string.Empty);
+                        string fileExplorerDllPath1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", string.Empty);
+                        string apartment1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", "ThreadingModel");
+                        bool flag1 = string.Equals(itemsViewAdapter, "CLSID_ItemsViewAdapter") && string.Equals(fileExplorerDllPath1, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_") && string.Equals(apartment1, "Apartment");
+                        string fileExplorerXamlIslandViewAdapter = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", string.Empty);
+                        string fileExplorerDllPath2 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", string.Empty);
+                        string apartment2 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", "ThreadingModel");
+                        bool flag2 = string.Equals(fileExplorerXamlIslandViewAdapter, "File Explorer Xaml Island View Adapter") && string.Equals(fileExplorerDllPath2, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_") && string.Equals(apartment2, "Apartment");
+                        byte[] tBar7Layout = RegistryHelper.ReadRegistryKey<byte[]>(Registry.CurrentUser, @"SOFTWARE\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout");
+                        return (tBar7Layout?.SequenceEqual(layout) ?? false) && flag1 && flag2;
+                    });
+                    FileExplorerStyle = isClassicFileExplorerExisted ? FileExplorerStyleList.Find(item => Equals(item.SelectedValue, "Windows10ClassicFileExplorer")) : FileExplorerStyleList.Find(item => Equals(item.SelectedValue, "Windows11ModernFileExplorer"));
                 }
             }
         }
@@ -666,6 +763,53 @@ namespace PowerToolbox.Views.Pages
                     return RegistryHelper.IsRegistryKeyExisted(Registry.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32");
                 });
                 RightClickMenuStyle = isClassicRightClickMenuExisted ? RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows10ClassicMenu")) : RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows11ModernMenu"));
+                if (advancedSystemOptionsPage is not null)
+                {
+                    advancedSystemOptionsPage.IsAdvancedSettingsInfoWarning = true;
+                    advancedSystemOptionsPage.IsRestartExplorerVisible = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 资源管理器样式选中项发生变化时触发的事件
+        /// </summary>
+        private async void OnFileExplorerStyleSelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            if (sender is ComboBox comboBox && !Equals(FileExplorerStyle, comboBox.SelectedItem))
+            {
+                FileExplorerStyle = comboBox.SelectedItem is ComboBoxItemModel fileExplorerStyle ? fileExplorerStyle : null;
+                bool isClassicFileExplorerExisted = await Task.Run(() =>
+                {
+                    if (Equals(RightClickMenuStyle, RightClickMenuStyleList[0]))
+                    {
+                        RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", true);
+                        RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", true);
+                        RegistryHelper.RemoveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout");
+                    }
+                    else if (Equals(RightClickMenuStyle, RightClickMenuStyleList[1]))
+                    {
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", string.Empty, "CLSID_ItemsViewAdapter");
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", string.Empty, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_");
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", "ThreadingModel", "Apartment");
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", string.Empty, "File Explorer Xaml Island View Adapter");
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", string.Empty, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_");
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", "ThreadingModel", "Apartment");
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout", layout);
+                    }
+
+                    string itemsViewAdapter = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", string.Empty);
+                    string fileExplorerDllPath1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", string.Empty);
+                    string apartment1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", "ThreadingModel");
+                    bool flag1 = string.Equals(itemsViewAdapter, "CLSID_ItemsViewAdapter") && string.Equals(fileExplorerDllPath1, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_") && string.Equals(apartment1, "Apartment");
+                    string fileExplorerXamlIslandViewAdapter = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", string.Empty);
+                    string fileExplorerDllPath2 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", string.Empty);
+                    string apartment2 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", "ThreadingModel");
+                    bool flag2 = string.Equals(fileExplorerXamlIslandViewAdapter, "File Explorer Xaml Island View Adapter") && string.Equals(fileExplorerDllPath2, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_") && string.Equals(apartment2, "Apartment");
+                    byte[] tBar7Layout = RegistryHelper.ReadRegistryKey<byte[]>(Registry.CurrentUser, @"SOFTWARE\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout");
+                    return (tBar7Layout?.SequenceEqual(layout) ?? false) && flag1 && flag2;
+                });
+                FileExplorerStyle = isClassicFileExplorerExisted ? FileExplorerStyleList.Find(item => Equals(item.SelectedValue, "Windows10ClassicFileExplorer")) : FileExplorerStyleList.Find(item => Equals(item.SelectedValue, "Windows11ModernFileExplorer"));
                 if (advancedSystemOptionsPage is not null)
                 {
                     advancedSystemOptionsPage.IsAdvancedSettingsInfoWarning = true;

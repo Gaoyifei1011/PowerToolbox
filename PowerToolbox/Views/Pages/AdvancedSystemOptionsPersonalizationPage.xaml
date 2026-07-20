@@ -388,6 +388,37 @@
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind roothelper:RuntimeHelper.IsWindows11}" />
+
+                    <!--  资源管理器样式  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind roothelper:RuntimeHelper.IsWindows11}">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('FileExplorerStyle')}" />
+
+                        <ComboBox
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            DisplayMemberPath="DisplayMember"
+                            ItemsSource="{x:Bind FileExplorerStyleList}"
+                            SelectedItem="{x:Bind FileExplorerStyle, Mode=OneWay}"
+                            SelectionChanged="{x:Bind OnFileExplorerStyleSelectionChanged}"
+                            Style="{StaticResource ComboBoxStyle}" />
+                    </Grid>
+
+                    <MenuFlyoutSeparator Visibility="{x:Bind roothelper:RuntimeHelper.IsWindows11}" />
                 </StackPanel>
             </Expander>
         </StackPanel>
