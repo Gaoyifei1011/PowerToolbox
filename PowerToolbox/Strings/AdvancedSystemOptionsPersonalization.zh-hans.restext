@@ -10,6 +10,7 @@ FileExplorerSettingsDescription=修改与文件资源管理器内容相关的设
 FileExplorerStyle=资源管理器样式
 Full=（满）
 Hide=隐藏
+NavigationPaneIconDisplay=导航窗格图标显示
 Rebuild=重建
 RebuildIconCache=重建图标缓存
 RebuildIconCacheDescription=重建图标缓存以修复图标显示异常问题

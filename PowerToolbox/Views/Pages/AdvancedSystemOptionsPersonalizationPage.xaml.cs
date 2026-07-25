@@ -34,11 +34,14 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     public sealed partial class AdvancedSystemOptionsPersonalizationPage : Page, INotifyPropertyChanged
     {
-        private readonly string controlPanelPathString = "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}";
-        private readonly string networkPathString = "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}";
-        private readonly string recycleBinPathString = "{645FF040-5081-101B-9F08-00AA002F954E}";
-        private readonly string thisPCPathString = "{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
-        private readonly string userFolderPathString = "{59031A47-3F72-44A7-89C5-5595FE6B30EE}";
+        private readonly string controlPanelPath = "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}";
+        private readonly string photoGalleryPath = "{E88865EA-0E1C-4E20-9AA6-EDCD0212C87C}";
+        private readonly string homePath = "{F874310E-B6B7-47DC-BC84-B9E6B38F5903}";
+        private readonly string linuxPath = "{B2B4A4D1-2754-4140-A2EB-9A76D9D7CDC6}";
+        private readonly string networkPath = "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}";
+        private readonly string recycleBinPath = "{645FF040-5081-101B-9F08-00AA002F954E}";
+        private readonly string thisPCPath = "{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
+        private readonly string userFolderPath = "{59031A47-3F72-44A7-89C5-5595FE6B30EE}";
         private readonly string EmptyString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Empty");
         private readonly string FullString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Full");
         private readonly string UserFolderString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("UserFolder");
@@ -193,6 +196,8 @@ namespace PowerToolbox.Views.Pages
 
         private WinRTObservableCollection<DesktopIconDisplayModel> DesktopIconDisplayCollection { get; } = [];
 
+        private WinRTObservableCollection<NavigationPaneIconDisplayModel> NavigationPaneIconDisplayCollection { get; } = [];
+
         private List<ComboBoxItemModel> RightClickMenuStyleList { get; } = [];
 
         private List<ComboBoxItemModel> FileExplorerStyleList { get; } = [];
@@ -221,44 +226,50 @@ namespace PowerToolbox.Views.Pages
 
             if (RuntimeHelper.IsElevated)
             {
-                string thisPCIconPath = string.Format("::{0}", thisPCPathString);
-                string userFolderIconPath = string.Format("::{0}", userFolderPathString);
-                string networkIconPath = string.Format("::{0}", networkPathString);
-                string controlPanelIconPath = string.Format("::{0}", controlPanelPathString);
-                string recycleBinPath = string.Format("::{0}", recycleBinPathString);
+                string controlPanelIconPath = string.Format("::{0}", controlPanelPath);
+                string photoGalleryIconPath = string.Format("::{0}", photoGalleryPath);
+                string homeIconPath = string.Format("::{0}", homePath);
+                string linuxIconPath = string.Format("::{0}", linuxPath);
+                string networkIconPath = string.Format("::{0}", networkPath);
+                string recycleBinIconPath = string.Format("::{0}", recycleBinPath);
+                string userFolderIconPath = string.Format("::{0}", userFolderPath);
+                string thisPCIconPath = string.Format("::{0}", thisPCPath);
 
                 // 图标在注册表中存储的键
-                string thisPCIconRegistryKeyPath = string.Format(@"Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{0}\DefaultIcon", thisPCPathString);
-                string userFolderIconRegistryKeyPath = string.Format(@"Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{0}\DefaultIcon", userFolderPathString);
-                string networkIconRegistryKeyPath = string.Format(@"Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{0}\DefaultIcon", networkPathString);
-                string recycleBinIconRegistryKeyPath = string.Format(@"Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{0}\DefaultIcon", recycleBinPathString);
+                string networkIconRegistryKeyPath = string.Format(@"Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{0}\DefaultIcon", networkPath);
+                string recycleBinIconRegistryKeyPath = string.Format(@"Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{0}\DefaultIcon", recycleBinPath);
+                string thisPCIconRegistryKeyPath = string.Format(@"Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{0}\DefaultIcon", thisPCPath);
+                string userFolderIconRegistryKeyPath = string.Format(@"Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{0}\DefaultIcon", userFolderPath);
 
                 // 图标在注册表中存储的值
+                string networkIconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, networkIconRegistryKeyPath, string.Empty);
+                string recycleBinEmptyIconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, recycleBinIconRegistryKeyPath, "empty");
+                string recycleBinFullIconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, recycleBinIconRegistryKeyPath, "full");
                 string thisPCIconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, thisPCIconRegistryKeyPath, string.Empty);
                 string userFolderIconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, userFolderIconRegistryKeyPath, string.Empty);
-                string networkIconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, networkIconRegistryKeyPath, string.Empty);
-                string recycleBinFullIconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, recycleBinIconRegistryKeyPath, "full");
-                string recycleBinEmptyIconRegistryValuePath = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, recycleBinIconRegistryKeyPath, "empty");
 
                 // 图标显示名称
+                string controlPanelDisplayName = await GetShellIconDisplayNameAsync(controlPanelIconPath);
+                string photoGalleryDisplayName = await GetShellIconDisplayNameAsync(photoGalleryIconPath);
+                string homeDisplayName = await GetShellIconDisplayNameAsync(homeIconPath);
+                string linuxDisplayName = await GetShellIconDisplayNameAsync(linuxIconPath);
+                string networkDisplayName = await GetShellIconDisplayNameAsync(networkIconPath);
+                string recycleBinDisplayName = await GetShellIconDisplayNameAsync(recycleBinIconPath);
                 string thisPCDisplayName = await GetShellIconDisplayNameAsync(thisPCIconPath);
                 string userFolderDisplayName = await GetShellIconDisplayNameAsync(userFolderIconPath);
-                string networkDisplayName = await GetShellIconDisplayNameAsync(networkIconPath);
-                string controlPanelDisplayName = await GetShellIconDisplayNameAsync(controlPanelIconPath);
-                string recycleBinDisplayName = await GetShellIconDisplayNameAsync(recycleBinPath);
 
                 // 图标的位置和索引
-                (string thisPCIconLocationPath, int thisPCIconIndex) = await GetShellIconLocationAsync(thisPCIconRegistryValuePath);
-                (string userFolderIconLocationPath, int userFolderIconIndex) = await GetShellIconLocationAsync(userFolderIconRegistryValuePath);
                 (string networkIconLocationPath, int networkIconIndex) = await GetShellIconLocationAsync(networkIconRegistryValuePath);
                 (string recycleBinFullIconLocationPath, int recycleBinFullIconIndex) = await GetShellIconLocationAsync(recycleBinFullIconRegistryValuePath);
                 (string recycleBinEmptyIconLocationPath, int recycleBinEmptyIconIndex) = await GetShellIconLocationAsync(recycleBinEmptyIconRegistryValuePath);
+                (string thisPCIconLocationPath, int thisPCIconIndex) = await GetShellIconLocationAsync(thisPCIconRegistryValuePath);
+                (string userFolderIconLocationPath, int userFolderIconIndex) = await GetShellIconLocationAsync(userFolderIconRegistryValuePath);
 
-                MemoryStream thisPCIconMemoryStream = await GetShellIconAsync(thisPCIconLocationPath, thisPCIconIndex);
-                MemoryStream userFolderIconMemoryStream = await GetShellIconAsync(userFolderIconLocationPath, userFolderIconIndex);
                 MemoryStream networkIconMemoryStream = await GetShellIconAsync(networkIconLocationPath, networkIconIndex);
                 MemoryStream recycleBinFullMemoryStream = await GetShellIconAsync(recycleBinFullIconLocationPath, recycleBinFullIconIndex);
                 MemoryStream recycleBinEmptyMemoryStream = await GetShellIconAsync(recycleBinEmptyIconLocationPath, recycleBinEmptyIconIndex);
+                MemoryStream thisPCIconMemoryStream = await GetShellIconAsync(thisPCIconLocationPath, thisPCIconIndex);
+                MemoryStream userFolderIconMemoryStream = await GetShellIconAsync(userFolderIconLocationPath, userFolderIconIndex);
 
                 DesktopIconSettingsCollection.Clear();
                 if (thisPCIconMemoryStream is not null)
@@ -367,42 +378,42 @@ namespace PowerToolbox.Views.Pages
                     }
                 }
 
-                bool thisPCIconVisible = GetDesktopIconVisibility(thisPCPathString, "ThisPC");
-                bool recycleBinIconVisible = GetDesktopIconVisibility(recycleBinPathString, "RecycleBin");
-                bool userFolderIconVisible = GetDesktopIconVisibility(userFolderPathString, "UserFolder");
-                bool controlPanelIconVisible = GetDesktopIconVisibility(controlPanelPathString, "ControlPanel");
-                bool networkIconVisible = GetDesktopIconVisibility(networkPathString, "Network");
+                bool controlPanelDesktopIconVisible = GetDesktopIconVisibility(controlPanelPath, "ControlPanel");
+                bool networkDesktopIconVisible = GetDesktopIconVisibility(networkPath, "Network");
+                bool recycleBinDesktopIconVisible = GetDesktopIconVisibility(recycleBinPath, "RecycleBin");
+                bool thisPCDesktopIconVisible = GetDesktopIconVisibility(thisPCPath, "ThisPC");
+                bool userFolderDesktopIconVisible = GetDesktopIconVisibility(userFolderPath, "UserFolder");
 
                 DesktopIconDisplayCollection.Clear();
                 DesktopIconDisplayCollection.Add(new DesktopIconDisplayModel()
                 {
                     DisplayName = thisPCDisplayName,
                     IconTag = "ThisPC",
-                    IsIconVisible = thisPCIconVisible
+                    IsIconVisible = thisPCDesktopIconVisible
                 });
                 DesktopIconDisplayCollection.Add(new DesktopIconDisplayModel()
                 {
                     DisplayName = recycleBinDisplayName,
                     IconTag = "RecycleBin",
-                    IsIconVisible = recycleBinIconVisible
+                    IsIconVisible = recycleBinDesktopIconVisible
                 });
                 DesktopIconDisplayCollection.Add(new DesktopIconDisplayModel()
                 {
                     DisplayName = UserFolderString,
                     IconTag = "UserFolder",
-                    IsIconVisible = userFolderIconVisible
+                    IsIconVisible = userFolderDesktopIconVisible
                 });
                 DesktopIconDisplayCollection.Add(new DesktopIconDisplayModel()
                 {
                     DisplayName = controlPanelDisplayName,
                     IconTag = "ControlPanel",
-                    IsIconVisible = controlPanelIconVisible
+                    IsIconVisible = controlPanelDesktopIconVisible
                 });
                 DesktopIconDisplayCollection.Add(new DesktopIconDisplayModel()
                 {
                     DisplayName = networkDisplayName,
                     IconTag = "Network",
-                    IsIconVisible = networkIconVisible
+                    IsIconVisible = networkDesktopIconVisible
                 });
 
                 if (RuntimeHelper.IsWindows11)
@@ -427,6 +438,37 @@ namespace PowerToolbox.Views.Pages
                     });
                     FileExplorerStyle = isClassicFileExplorerExisted ? FileExplorerStyleList.Find(item => Equals(item.SelectedValue, "Windows10ClassicFileExplorer")) : FileExplorerStyleList.Find(item => Equals(item.SelectedValue, "Windows11ModernFileExplorer"));
                 }
+
+                bool homeNavigationPaneIconVisible = GetNavigationPaneIconVisibility(homePath, "Home");
+                bool linuxNavigationPaneIconVisible = GetNavigationPaneIconVisibility(linuxPath, "Linux");
+                bool photoGalleryNavigationPaneIconVisible = GetNavigationPaneIconVisibility(photoGalleryPath, "PhotoGallery");
+                bool recycleBinNavigationPaneIconVisible = GetNavigationPaneIconVisibility(recycleBinPath, "RecycleBin");
+
+                NavigationPaneIconDisplayCollection.Clear();
+                NavigationPaneIconDisplayCollection.Add(new NavigationPaneIconDisplayModel()
+                {
+                    DisplayName = homeDisplayName,
+                    IconTag = "Home",
+                    IsIconVisible = homeNavigationPaneIconVisible
+                });
+                NavigationPaneIconDisplayCollection.Add(new NavigationPaneIconDisplayModel()
+                {
+                    DisplayName = photoGalleryDisplayName,
+                    IconTag = "PhotoGallery",
+                    IsIconVisible = photoGalleryNavigationPaneIconVisible
+                });
+                NavigationPaneIconDisplayCollection.Add(new NavigationPaneIconDisplayModel()
+                {
+                    DisplayName = recycleBinDisplayName,
+                    IconTag = "RecycleBin",
+                    IsIconVisible = recycleBinNavigationPaneIconVisible
+                });
+                NavigationPaneIconDisplayCollection.Add(new NavigationPaneIconDisplayModel()
+                {
+                    DisplayName = linuxDisplayName,
+                    IconTag = "Linux",
+                    IsIconVisible = linuxNavigationPaneIconVisible
+                });
             }
         }
 
@@ -447,40 +489,90 @@ namespace PowerToolbox.Views.Pages
                     bool isIconVisible = false;
                     switch (desktopIconDisplay.IconTag)
                     {
-                        case "ThisPC":
+                        case "ControlPanel":
                             {
-                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", thisPCPathString, desktopIconDisplay.IsIconVisible ? 0 : 1);
-                                isIconVisible = GetDesktopIconVisibility(thisPCPathString, desktopIconDisplay.IconTag);
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", controlPanelPath, desktopIconDisplay.IsIconVisible ? 0 : 1);
+                                isIconVisible = GetDesktopIconVisibility(controlPanelPath, desktopIconDisplay.IconTag);
+                                break;
+                            }
+
+                        case "Network":
+                            {
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", networkPath, desktopIconDisplay.IsIconVisible ? 0 : 1);
+                                isIconVisible = GetDesktopIconVisibility(networkPath, desktopIconDisplay.IconTag);
                                 break;
                             }
                         case "RecycleBin":
                             {
-                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", recycleBinPathString, desktopIconDisplay.IsIconVisible ? 0 : 1);
-                                isIconVisible = GetDesktopIconVisibility(recycleBinPathString, desktopIconDisplay.IconTag);
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", recycleBinPath, desktopIconDisplay.IsIconVisible ? 0 : 1);
+                                isIconVisible = GetDesktopIconVisibility(recycleBinPath, desktopIconDisplay.IconTag);
+                                break;
+                            }
+                        case "ThisPC":
+                            {
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", thisPCPath, desktopIconDisplay.IsIconVisible ? 0 : 1);
+                                isIconVisible = GetDesktopIconVisibility(thisPCPath, desktopIconDisplay.IconTag);
                                 break;
                             }
                         case "UserFolder":
                             {
-                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", userFolderPathString, desktopIconDisplay.IsIconVisible ? 0 : 1);
-                                isIconVisible = GetDesktopIconVisibility(userFolderPathString, desktopIconDisplay.IconTag);
-                                break;
-                            }
-                        case "ControlPanel":
-                            {
-                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", controlPanelPathString, desktopIconDisplay.IsIconVisible ? 0 : 1);
-                                isIconVisible = GetDesktopIconVisibility(controlPanelPathString, desktopIconDisplay.IconTag);
-                                break;
-                            }
-                        case "Network":
-                            {
-                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", networkPathString, desktopIconDisplay.IsIconVisible ? 0 : 1);
-                                isIconVisible = GetDesktopIconVisibility(networkPathString, desktopIconDisplay.IconTag);
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", userFolderPath, desktopIconDisplay.IsIconVisible ? 0 : 1);
+                                isIconVisible = GetDesktopIconVisibility(userFolderPath, desktopIconDisplay.IconTag);
                                 break;
                             }
                     }
                     Shell32Library.SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSH, 0, 0);
                     return isIconVisible;
                 });
+            }
+        }
+
+        /// <summary>
+        /// 修改导航窗格图标显示状态
+        /// </summary>
+        private async void OnNavigationPaneIconExecuteRequested(object sender, ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is NavigationPaneIconDisplayModel navigationPaneIconDisplay)
+            {
+                navigationPaneIconDisplay.IsIconVisible = !navigationPaneIconDisplay.IsIconVisible;
+                navigationPaneIconDisplay.IsIconVisible = await Task.Run(() =>
+                {
+                    bool isIconVisible = false;
+                    switch (navigationPaneIconDisplay.IconTag)
+                    {
+                        case "Home":
+                            {
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", homePath), "System.IsPinnedToNameSpaceTree", navigationPaneIconDisplay.IsIconVisible);
+                                isIconVisible = GetNavigationPaneIconVisibility(homePath, navigationPaneIconDisplay.IconTag);
+                                break;
+                            }
+                        case "Linux":
+                            {
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", linuxPath), string.Empty, "Linux");
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", linuxPath), "System.IsPinnedToNameSpaceTree", navigationPaneIconDisplay.IsIconVisible);
+                                isIconVisible = GetNavigationPaneIconVisibility(linuxPath, navigationPaneIconDisplay.IconTag);
+                                break;
+                            }
+                        case "PhotoGallery":
+                            {
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", photoGalleryPath), "System.IsPinnedToNameSpaceTree", navigationPaneIconDisplay.IsIconVisible);
+                                isIconVisible = GetNavigationPaneIconVisibility(photoGalleryPath, navigationPaneIconDisplay.IconTag);
+                                break;
+                            }
+                        case "RecycleBin":
+                            {
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", recycleBinPath), "System.IsPinnedToNameSpaceTree", navigationPaneIconDisplay.IsIconVisible);
+                                isIconVisible = GetNavigationPaneIconVisibility(recycleBinPath, navigationPaneIconDisplay.IconTag);
+                                break;
+                            }
+                    }
+                    return isIconVisible;
+                });
+                if (advancedSystemOptionsPage is not null)
+                {
+                    advancedSystemOptionsPage.IsAdvancedSettingsInfoWarning = true;
+                    advancedSystemOptionsPage.IsRestartExplorerVisible = true;
+                }
             }
         }
 
@@ -933,6 +1025,15 @@ namespace PowerToolbox.Views.Pages
                     }
             }
             return visible;
+        }
+
+        /// <summary>
+        /// 获取导航窗格图标显示状态
+        /// </summary>
+        private bool GetNavigationPaneIconVisibility(string iconPathName, string iconTag)
+        {
+            int? iconValue = RegistryHelper.ReadRegistryKey<int?>(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", iconPathName), "System.IsPinnedToNameSpaceTree");
+            return !iconValue.HasValue || iconValue.Value is not 0; ;
         }
     }
 }

@@ -10,6 +10,7 @@ FileExplorerSettingsDescription=Change settings related to file explorer content
 FileExplorerStyle=File explorer style
 Full=(Full)
 Hide=Hide
+NavigationPaneIconDisplay=Navigation pane icon display
 Rebuild=Rebuild
 RebuildIconCache=Rebuild icon cache
 RebuildIconCacheDescription=Rebuild the icon cache to fix icon display issues
