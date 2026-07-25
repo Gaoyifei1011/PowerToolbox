@@ -192,6 +192,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isSyncProviderNotificationsEnabled;
+
+        public bool IsSyncProviderNotificationsEnabled
+        {
+            get { return _isSyncProviderNotificationsEnabled; }
+
+            set
+            {
+                if (!Equals(_isSyncProviderNotificationsEnabled, value))
+                {
+                    _isSyncProviderNotificationsEnabled = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSyncProviderNotificationsEnabled)));
+                }
+            }
+        }
+
         private WinRTObservableCollection<DesktopIconSettingsModel> DesktopIconSettingsCollection { get; } = [];
 
         private WinRTObservableCollection<DesktopIconDisplayModel> DesktopIconDisplayCollection { get; } = [];
@@ -227,13 +243,13 @@ namespace PowerToolbox.Views.Pages
             if (RuntimeHelper.IsElevated)
             {
                 string controlPanelIconPath = string.Format("::{0}", controlPanelPath);
-                string photoGalleryIconPath = string.Format("::{0}", photoGalleryPath);
                 string homeIconPath = string.Format("::{0}", homePath);
                 string linuxIconPath = string.Format("::{0}", linuxPath);
                 string networkIconPath = string.Format("::{0}", networkPath);
+                string photoGalleryIconPath = string.Format("::{0}", photoGalleryPath);
                 string recycleBinIconPath = string.Format("::{0}", recycleBinPath);
-                string userFolderIconPath = string.Format("::{0}", userFolderPath);
                 string thisPCIconPath = string.Format("::{0}", thisPCPath);
+                string userFolderIconPath = string.Format("::{0}", userFolderPath);
 
                 // 图标在注册表中存储的键
                 string networkIconRegistryKeyPath = string.Format(@"Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{0}\DefaultIcon", networkPath);
@@ -250,10 +266,10 @@ namespace PowerToolbox.Views.Pages
 
                 // 图标显示名称
                 string controlPanelDisplayName = await GetShellIconDisplayNameAsync(controlPanelIconPath);
-                string photoGalleryDisplayName = await GetShellIconDisplayNameAsync(photoGalleryIconPath);
                 string homeDisplayName = await GetShellIconDisplayNameAsync(homeIconPath);
                 string linuxDisplayName = await GetShellIconDisplayNameAsync(linuxIconPath);
                 string networkDisplayName = await GetShellIconDisplayNameAsync(networkIconPath);
+                string photoGalleryDisplayName = await GetShellIconDisplayNameAsync(photoGalleryIconPath);
                 string recycleBinDisplayName = await GetShellIconDisplayNameAsync(recycleBinIconPath);
                 string thisPCDisplayName = await GetShellIconDisplayNameAsync(thisPCIconPath);
                 string userFolderDisplayName = await GetShellIconDisplayNameAsync(userFolderIconPath);
@@ -468,6 +484,11 @@ namespace PowerToolbox.Views.Pages
                     DisplayName = linuxDisplayName,
                     IconTag = "Linux",
                     IsIconVisible = linuxNavigationPaneIconVisible
+                });
+
+                IsSyncProviderNotificationsEnabled = await Task.Run(() =>
+                {
+                    return RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "ShowSyncProviderNotifications");
                 });
             }
         }
@@ -910,6 +931,25 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        /// <summary>
+        /// 显示 / 关闭供应商同步通知
+        /// </summary>
+        private async void OnSyncProviderNotificationsToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch)
+            {
+                IsSyncProviderNotificationsEnabled = toggleSwitch.IsOn;
+                IsSyncProviderNotificationsEnabled = await Task.Run(() =>
+                {
+                    if (RuntimeHelper.IsElevated)
+                    {
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "ShowSyncProviderNotifications", Convert.ToInt32(IsSyncProviderNotificationsEnabled));
+                    }
+                    return RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "ShowSyncProviderNotifications");
+                });
+            }
+        }
+
         #endregion 第三部分：高级系统选项——个性化页面——挂载的事件
 
         /// <summary>
@@ -1033,7 +1073,7 @@ namespace PowerToolbox.Views.Pages
         private bool GetNavigationPaneIconVisibility(string iconPathName, string iconTag)
         {
             int? iconValue = RegistryHelper.ReadRegistryKey<int?>(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", iconPathName), "System.IsPinnedToNameSpaceTree");
-            return !iconValue.HasValue || iconValue.Value is not 0; ;
+            return !iconValue.HasValue || iconValue.Value is not 0;
         }
     }
 }
