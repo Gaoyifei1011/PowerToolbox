@@ -42,8 +42,11 @@ namespace PowerToolbox.Views.Pages
         private readonly string recycleBinPath = "{645FF040-5081-101B-9F08-00AA002F954E}";
         private readonly string thisPCPath = "{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
         private readonly string userFolderPath = "{59031A47-3F72-44A7-89C5-5595FE6B30EE}";
+        private readonly string DownloadsString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Downloads");
         private readonly string EmptyString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Empty");
         private readonly string FullString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Full");
+        private readonly string HomeString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Home");
+        private readonly string ThisPCString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("ThisPC");
         private readonly string UserFolderString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("UserFolder");
         private readonly string Windows10ClassicMenuString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows10ClassicMenu");
         private readonly string Windows11ModernMenuString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows11ModernMenu");
@@ -208,6 +211,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private ComboBoxItemModel _fileExplorerHomePosition;
+
+        public ComboBoxItemModel FileExplorerHomePosition
+        {
+            get { return _fileExplorerHomePosition; }
+
+            set
+            {
+                if (!Equals(_fileExplorerHomePosition, value))
+                {
+                    _fileExplorerHomePosition = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileExplorerHomePosition)));
+                }
+            }
+        }
+
         private WinRTObservableCollection<DesktopIconSettingsModel> DesktopIconSettingsCollection { get; } = [];
 
         private WinRTObservableCollection<DesktopIconDisplayModel> DesktopIconDisplayCollection { get; } = [];
@@ -218,6 +237,8 @@ namespace PowerToolbox.Views.Pages
 
         private List<ComboBoxItemModel> FileExplorerStyleList { get; } = [];
 
+        private List<ComboBoxItemModel> FileExplorerHomePositionList { get; } = [];
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public AdvancedSystemOptionsPersonalizationPage()
@@ -227,6 +248,9 @@ namespace PowerToolbox.Views.Pages
             RightClickMenuStyleList.Add(new ComboBoxItemModel() { DisplayMember = Windows10ClassicMenuString, SelectedValue = "Windows10ClassicMenu" });
             FileExplorerStyleList.Add(new ComboBoxItemModel() { DisplayMember = Windows11ModernFileExplorerString, SelectedValue = "Windows11ModernFileExplorer" });
             FileExplorerStyleList.Add(new ComboBoxItemModel() { DisplayMember = Windows10ClassicFileExplorerString, SelectedValue = "Windows10ClassicFileExplorer" });
+            FileExplorerHomePositionList.Add(new ComboBoxItemModel() { DisplayMember = ThisPCString, SelectedValue = "ThisPC" });
+            FileExplorerHomePositionList.Add(new ComboBoxItemModel() { DisplayMember = HomeString, SelectedValue = "Home" });
+            FileExplorerHomePositionList.Add(new ComboBoxItemModel() { DisplayMember = DownloadsString, SelectedValue = "Downloads" });
         }
 
         #region 第一部分：重写父类事件
@@ -489,6 +513,36 @@ namespace PowerToolbox.Views.Pages
                 IsSyncProviderNotificationsEnabled = await Task.Run(() =>
                 {
                     return RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "ShowSyncProviderNotifications");
+                });
+
+                FileExplorerHomePosition = await Task.Run(() =>
+                {
+                    ComboBoxItemModel fileExplorerTo = FileExplorerHomePositionList[1];
+                    int launchTo = RegistryHelper.ReadRegistryKey<int>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo");
+                    switch (launchTo)
+                    {
+                        case 1:
+                            {
+                                fileExplorerTo = FileExplorerHomePositionList[0];
+                                break;
+                            }
+                        case 2:
+                            {
+                                fileExplorerTo = FileExplorerHomePositionList[1];
+                                break;
+                            }
+                        case 3:
+                            {
+                                fileExplorerTo = FileExplorerHomePositionList[2];
+                                break;
+                            }
+                        default:
+                            {
+                                fileExplorerTo = FileExplorerHomePositionList[1];
+                                break;
+                            }
+                    }
+                    return fileExplorerTo;
                 });
             }
         }
@@ -946,6 +1000,59 @@ namespace PowerToolbox.Views.Pages
                         RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "ShowSyncProviderNotifications", Convert.ToInt32(IsSyncProviderNotificationsEnabled));
                     }
                     return RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "ShowSyncProviderNotifications");
+                });
+            }
+        }
+
+        /// <summary>
+        /// 资源管理器首页位置发生变化时触发的事件
+        /// </summary>
+        private async void OnFileExplorerHomePositionSelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            if (sender is ComboBox comboBox && !Equals(FileExplorerHomePosition, comboBox.SelectedItem))
+            {
+                FileExplorerHomePosition = comboBox.SelectedItem is ComboBoxItemModel fileExplorerHomePosition ? fileExplorerHomePosition : null;
+                FileExplorerHomePosition = await Task.Run(() =>
+                {
+                    if (Equals(FileExplorerHomePosition, FileExplorerHomePositionList[0]))
+                    {
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo", 1);
+                    }
+                    else if (Equals(FileExplorerHomePosition, FileExplorerHomePositionList[1]))
+                    {
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo", 2);
+                    }
+                    else if (Equals(FileExplorerHomePosition, FileExplorerHomePositionList[2]))
+                    {
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo", 3);
+                    }
+
+                    ComboBoxItemModel fileExplorerTo = FileExplorerHomePositionList[1];
+                    int launchTo = RegistryHelper.ReadRegistryKey<int>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo");
+                    switch (launchTo)
+                    {
+                        case 1:
+                            {
+                                fileExplorerTo = FileExplorerHomePositionList[0];
+                                break;
+                            }
+                        case 2:
+                            {
+                                fileExplorerTo = FileExplorerHomePositionList[1];
+                                break;
+                            }
+                        case 3:
+                            {
+                                fileExplorerTo = FileExplorerHomePositionList[2];
+                                break;
+                            }
+                        default:
+                            {
+                                fileExplorerTo = FileExplorerHomePositionList[1];
+                                break;
+                            }
+                    }
+                    return fileExplorerTo;
                 });
             }
         }

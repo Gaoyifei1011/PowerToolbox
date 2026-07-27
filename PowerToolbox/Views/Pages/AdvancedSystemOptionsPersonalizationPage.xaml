@@ -222,6 +222,10 @@
                                 <Setter Property="Margin" Value="0,0,6,6" />
                             </Style>
                         </GridView.ItemContainerStyle>
+
+                        <ItemsControl.ItemContainerTransitions>
+                            <TransitionCollection />
+                        </ItemsControl.ItemContainerTransitions>
                     </GridView>
 
                     <MenuFlyoutSeparator />
@@ -262,6 +266,10 @@
                                     <Setter Property="Padding" Value="0" />
                                 </Style>
                             </GridView.ItemContainerStyle>
+
+                            <ItemsControl.ItemContainerTransitions>
+                                <TransitionCollection />
+                            </ItemsControl.ItemContainerTransitions>
 
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="model:DesktopIconDisplayModel">
@@ -474,8 +482,7 @@
                         Height="52"
                         Padding="44,0,16,0"
                         HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center"
-                        Visibility="{x:Bind roothelper:RuntimeHelper.IsWindows11}">
+                        VerticalAlignment="Center">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -494,6 +501,35 @@
                             OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('SyncProviderNotificationsOnContent')}"
                             Style="{StaticResource ToggleSwitchStyle}"
                             Toggled="{x:Bind OnSyncProviderNotificationsToggled}" />
+                    </Grid>
+
+                    <MenuFlyoutSeparator />
+
+                    <!--  资源管理器首页位置  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('FileExplorerHomePosition')}" />
+
+                        <ComboBox
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            DisplayMemberPath="DisplayMember"
+                            ItemsSource="{x:Bind FileExplorerHomePositionList}"
+                            SelectedItem="{x:Bind FileExplorerHomePosition, Mode=OneWay}"
+                            SelectionChanged="{x:Bind OnFileExplorerHomePositionSelectionChanged}"
+                            Style="{StaticResource ComboBoxStyle}" />
                     </Grid>
                 </StackPanel>
             </Expander>
