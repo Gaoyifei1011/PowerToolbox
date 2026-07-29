@@ -379,7 +379,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private bool IsAdvancedEffectsEnabled()
         {
-            return RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", "EnableTransparency");
+            return RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "EnableTransparency");
         }
     }
 }

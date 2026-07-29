@@ -47,7 +47,7 @@ namespace ThemeSwitch.Helpers.Root
                     }
                     else
                     {
-                        value = Equals(typeof(T), typeof(byte[])) || Equals(typeof(T), typeof(string[])) ? (T)getValue : (T)getValue;
+                        value = (T)getValue;
                     }
 
                     registryKey.Close();

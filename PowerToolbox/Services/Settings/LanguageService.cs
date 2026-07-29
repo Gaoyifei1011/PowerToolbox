@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.Win32;
 using PowerToolbox.Extensions.DataType.Constant;
+using PowerToolbox.Helpers.Root;
 using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Kernel32;
@@ -190,9 +191,7 @@ namespace PowerToolbox.Services.Settings
                 {
                     StringBuilder packageFamilyNameBuilder = new(length + 1);
                     Kernel32Library.GetCurrentPackageFamilyName(ref length, packageFamilyNameBuilder);
-                    RegistryKey resourceRegistry = Registry.CurrentUser.OpenSubKey(string.Format(resourceKey, Convert.ToString(packageFamilyNameBuilder)), true);
-                    resourceRegistry?.SetValue("OverrideLanguagesList", language.Key);
-                    resourceRegistry?.Dispose();
+                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, string.Format(resourceKey, Convert.ToString(packageFamilyNameBuilder)), "OverrideLanguagesList", language.Key);
                 }
             }
             catch (Exception e)

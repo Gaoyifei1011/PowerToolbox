@@ -429,9 +429,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         try
                         {
-                            RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate", true);
-                            int returnValue = Convert.ToInt32(registryKey.GetValue("ExcludeWUDriversInQualityUpdate"));
-                            return Convert.ToBoolean(returnValue);
+                            return RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate", "ExcludeWUDriversInQualityUpdate");
                         }
                         catch (Exception e)
                         {
@@ -2612,7 +2610,7 @@ namespace PowerToolbox.Views.Pages
                     RegistryHelper.RemoveRegistryKey(Registry.LocalMachine, @"SYSTEM\Setup\LabConfig", "BypassSecureBootCheck");
                     RegistryHelper.RemoveRegistryKey(Registry.LocalMachine, @"SYSTEM\Setup\LabConfig", "BypassStorageCheck");
                     RegistryHelper.RemoveRegistryKey(Registry.LocalMachine, @"SYSTEM\Setup\LabConfig", "BypassTPMCheck");
-                    RegistryHelper.RemoveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Microsoft\PCHC", "UpgradeEligibility");
+                    RegistryHelper.RemoveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\PCHC", "UpgradeEligibility");
                 }
                 catch (Exception e)
                 {
@@ -2737,7 +2735,7 @@ namespace PowerToolbox.Views.Pages
                         RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SYSTEM\Setup\LabConfig", "BypassSecureBootCheck", 1);
                         RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SYSTEM\Setup\LabConfig", "BypassStorageCheck", 1);
                         RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SYSTEM\Setup\LabConfig", "BypassTPMCheck", 1);
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Microsoft\PCHC", "UpgradeEligibility", 1);
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\PCHC", "UpgradeEligibility", 1);
 
                         try
                         {
