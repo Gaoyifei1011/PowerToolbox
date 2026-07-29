@@ -1328,6 +1328,24 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        /// <summary>
+        /// 创建上帝模式文件夹
+        /// </summary>
+        private void OnCreateGodModeClicked(object sender, RoutedEventArgs args)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "GodMode.{ED7BA470-8E54-465E-825C-99712043E01C}"));
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(OnCreateGodModeClicked), 1, e);
+                }
+            });
+        }
+
         #endregion 第二部分：高级系统选项——系统页面——挂载的事件
 
         /// <summary>

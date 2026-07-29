@@ -1096,6 +1096,56 @@
                     </Grid>
                 </Button>
             </Grid>
+
+            <!--  上帝模式设置  -->
+            <Grid
+                Height="60"
+                Margin="0,0,0,2"
+                Padding="16,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <FontIcon
+                    Grid.Column="0"
+                    Margin="0,0,12,0"
+                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                    FontSize="16"
+                    Glyph="&#xE902;" />
+
+                <StackPanel
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical">
+
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('GodModeSettings')}" />
+
+                    <TextBlock
+                        x:Name="GodModeSettingsDescription"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('GodModeSettingsDescription')}"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="NoWrap">
+
+                        <ToolTipService.ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('GodModeSettingsDescription')}" Visibility="{x:Bind GodModeSettingsDescription.IsTextTrimmed, Mode=OneWay}" />
+                        </ToolTipService.ToolTip>
+                    </TextBlock>
+                </StackPanel>
+
+                <Button
+                    Grid.Column="2"
+                    Click="{x:Bind OnCreateGodModeClicked}"
+                    Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('Create')}" />
+            </Grid>
         </StackPanel>
     </ScrollViewer>
 </Page>
