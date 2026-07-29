@@ -1,4 +1,5 @@
 ﻿using PowerToolbox.WindowsAPI.PInvoke.Advapi32;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -236,6 +237,18 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         /// <returns>如果函数成功，则返回值是挂钩过程的句柄。如果函数失败，则返回值为 NULL。</returns>
         [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "SetWindowsHookExW", PreserveSig = true, SetLastError = false)]
         public static extern nint SetWindowsHookEx(HOOKTYPE idHook, HOOKPROC lpfn, nint hMod, int dwThreadId);
+
+        /// <summary>
+        /// 检索或设置其中一个系统范围的参数的值。 此函数还可以在设置参数时更新用户配置文件。
+        /// </summary>
+        /// <param name="uiAction">要检索或设置的系统范围参数。</param>
+        /// <param name="uiParam">一个参数，其用法和格式取决于正在查询或设置的系统参数。 有关系统范围参数的详细信息，请参阅 uiAction 参数。 如果未另行指示，则必须为此参数指定零。</param>
+        /// <param name="pvParam">一个参数，其用法和格式取决于正在查询或设置的系统参数。 有关系统范围参数的详细信息，请参阅 uiAction 参数。 如果未另行指示，则必须为此参数指定 NULL 。</param>
+        /// <param name="fWinIni">如果正在设置系统参数，则指定是否要更新用户配置文件，如果是，则指定是否将 WM_SETTINGCHANGE 消息广播到所有顶级窗口，以通知他们更改。</param>
+        /// <returns>如果函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
+        [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "SystemParametersInfoW", PreserveSig = true, SetLastError = false)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SystemParametersInfo(SPI uiAction, uint uiParam, nint pvParam, SPIF fWinIni);
 
         /// <summary>
         /// 删除 SetWindowsHookEx 函数安装在挂钩链中的挂钩过程。
