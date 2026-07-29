@@ -35,10 +35,11 @@ namespace PowerToolbox.Views.Pages
     public sealed partial class AdvancedSystemOptionsPersonalizationPage : Page, INotifyPropertyChanged
     {
         private readonly string controlPanelPath = "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}";
-        private readonly string photoGalleryPath = "{E88865EA-0E1C-4E20-9AA6-EDCD0212C87C}";
         private readonly string homePath = "{F874310E-B6B7-47DC-BC84-B9E6B38F5903}";
+        private readonly string libraryPath = "{031E4825-7B94-4DC3-B131-E946B44C8DD5}";
         private readonly string linuxPath = "{B2B4A4D1-2754-4140-A2EB-9A76D9D7CDC6}";
         private readonly string networkPath = "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}";
+        private readonly string photoGalleryPath = "{E88865EA-0E1C-4E20-9AA6-EDCD0212C87C}";
         private readonly string recycleBinPath = "{645FF040-5081-101B-9F08-00AA002F954E}";
         private readonly string thisPCPath = "{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
         private readonly string userFolderPath = "{59031A47-3F72-44A7-89C5-5595FE6B30EE}";
@@ -346,6 +347,7 @@ namespace PowerToolbox.Views.Pages
             {
                 string controlPanelIconPath = string.Format("::{0}", controlPanelPath);
                 string homeIconPath = string.Format("::{0}", homePath);
+                string libraryIconPath = string.Format("::{0}", libraryPath);
                 string linuxIconPath = string.Format("::{0}", linuxPath);
                 string networkIconPath = string.Format("::{0}", networkPath);
                 string photoGalleryIconPath = string.Format("::{0}", photoGalleryPath);
@@ -369,6 +371,7 @@ namespace PowerToolbox.Views.Pages
                 // 图标显示名称
                 string controlPanelDisplayName = await GetShellIconDisplayNameAsync(controlPanelIconPath);
                 string homeDisplayName = await GetShellIconDisplayNameAsync(homeIconPath);
+                string libraryDisplayName = await GetShellIconDisplayNameAsync(libraryIconPath);
                 string linuxDisplayName = await GetShellIconDisplayNameAsync(linuxIconPath);
                 string networkDisplayName = await GetShellIconDisplayNameAsync(networkIconPath);
                 string photoGalleryDisplayName = await GetShellIconDisplayNameAsync(photoGalleryIconPath);
@@ -497,6 +500,7 @@ namespace PowerToolbox.Views.Pages
                 }
 
                 bool controlPanelDesktopIconVisible = GetDesktopIconVisibility(controlPanelPath, "ControlPanel");
+                bool libraryDesktopIconVisible = GetDesktopIconVisibility(libraryPath, "Library");
                 bool networkDesktopIconVisible = GetDesktopIconVisibility(networkPath, "Network");
                 bool recycleBinDesktopIconVisible = GetDesktopIconVisibility(recycleBinPath, "RecycleBin");
                 bool thisPCDesktopIconVisible = GetDesktopIconVisibility(thisPCPath, "ThisPC");
@@ -532,6 +536,12 @@ namespace PowerToolbox.Views.Pages
                     DisplayName = networkDisplayName,
                     IconTag = "Network",
                     IsIconVisible = networkDesktopIconVisible
+                });
+                DesktopIconDisplayCollection.Add(new DesktopIconDisplayModel()
+                {
+                    DisplayName = libraryDisplayName,
+                    IconTag = "Library",
+                    IsIconVisible = libraryDesktopIconVisible
                 });
 
                 if (RuntimeHelper.IsWindows11)
@@ -703,7 +713,12 @@ namespace PowerToolbox.Views.Pages
                                 isIconVisible = GetDesktopIconVisibility(controlPanelPath, desktopIconDisplay.IconTag);
                                 break;
                             }
-
+                        case "Library":
+                            {
+                                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", libraryPath, desktopIconDisplay.IsIconVisible ? 0 : 1);
+                                isIconVisible = GetDesktopIconVisibility(libraryPath, desktopIconDisplay.IconTag);
+                                break;
+                            }
                         case "Network":
                             {
                                 RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", networkPath, desktopIconDisplay.IsIconVisible ? 0 : 1);
@@ -1425,7 +1440,17 @@ namespace PowerToolbox.Views.Pages
             bool visible = false;
             switch (iconTag)
             {
-                case "ThisPC":
+                case "ControlPanel":
+                    {
+                        visible = iconValue.HasValue && iconValue.Value is 0;
+                        break;
+                    }
+                case "Library":
+                    {
+                        visible = iconValue.HasValue && iconValue.Value is 0;
+                        break;
+                    }
+                case "Network":
                     {
                         visible = iconValue.HasValue && iconValue.Value is 0;
                         break;
@@ -1435,17 +1460,12 @@ namespace PowerToolbox.Views.Pages
                         visible = !iconValue.HasValue || iconValue.Value is 0;
                         break;
                     }
+                case "ThisPC":
+                    {
+                        visible = iconValue.HasValue && iconValue.Value is 0;
+                        break;
+                    }
                 case "UserFolder":
-                    {
-                        visible = iconValue.HasValue && iconValue.Value is 0;
-                        break;
-                    }
-                case "ControlPanel":
-                    {
-                        visible = iconValue.HasValue && iconValue.Value is 0;
-                        break;
-                    }
-                case "Network":
                     {
                         visible = iconValue.HasValue && iconValue.Value is 0;
                         break;
