@@ -30,12 +30,10 @@
         <virtualization:ExcludedKey>HKEY_CURRENT_USER\Control Panel\Desktop</virtualization:ExcludedKey>
         <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Classes\CLSID</virtualization:ExcludedKey>
         <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications</virtualization:ExcludedKey>
-        <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced</virtualization:ExcludedKey>
-        <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers</virtualization:ExcludedKey>
-        <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID</virtualization:ExcludedKey>
-        <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel</virtualization:ExcludedKey>
+        <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer</virtualization:ExcludedKey>
         <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Shell Extensions</virtualization:ExcludedKey>
         <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize</virtualization:ExcludedKey>
+        <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\DWM</virtualization:ExcludedKey>
       </virtualization:ExcludedKeys>
     </virtualization:RegistryWriteVirtualization>
   </Properties>

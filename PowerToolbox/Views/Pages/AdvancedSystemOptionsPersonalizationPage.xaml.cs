@@ -42,16 +42,37 @@ namespace PowerToolbox.Views.Pages
         private readonly string recycleBinPath = "{645FF040-5081-101B-9F08-00AA002F954E}";
         private readonly string thisPCPath = "{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
         private readonly string userFolderPath = "{59031A47-3F72-44A7-89C5-5595FE6B30EE}";
+        private readonly string AnimationControlsAndElementsInsideWindowString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("AnimationControlsAndElementsInsideWindow");
+        private readonly string BestAppearanceString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("BestAppearance");
+        private readonly string BestPerformanceString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("BestPerformance");
+        private readonly string CustomString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Custom");
         private readonly string DownloadsString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Downloads");
         private readonly string EmptyString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Empty");
+        private readonly string EnablePeekString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("EnablePeek");
+        private readonly string FadeinAndOutOrSlideMenuToViewString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("FadeinAndOutOrSlideMenuToView");
+        private readonly string FadeinFadeoutOrSlideToolTipInViewString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("FadeinFadeoutOrSlideToolTipInView");
+        private readonly string FadeoutMenuAfterClickingString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("FadeoutMenuAfterClicking");
         private readonly string FullString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Full");
         private readonly string HomeString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Home");
+        private readonly string SaveTaskbarThumbnailPreviewString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("SaveTaskbarThumbnailPreview");
+        private readonly string ShowAnimationWhenMaximizingOrMinimizingString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("ShowAnimationWhenMaximizingOrMinimizing");
+        private readonly string ShowSemitransparentSelectedRectangleString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("ShowSemitransparentSelectedRectangle");
+        private readonly string ShowShadowUnderMousePointerString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("ShowShadowUnderMousePointer");
+        private readonly string ShowShadowUnderWindowString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("ShowShadowUnderWindow");
+        private readonly string ShowThumbnailString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("ShowThumbnail");
+        private readonly string ShowWindowContentsWhileDraggingString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("ShowWindowContentsWhileDragging");
+        private readonly string SlideToOpenComboboxString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("SlideToOpenCombobox");
+        private readonly string SmoothScreenFontEdgesString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("SmoothScreenFontEdges");
+        private readonly string SmoothScrollListboxString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("SmoothScrollListbox");
+        private readonly string TaskbarAnimationsString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("TaskbarAnimations");
         private readonly string ThisPCString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("ThisPC");
         private readonly string UserFolderString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("UserFolder");
+        private readonly string UseShadowForIconLabelsOnDesktopString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("UseShadowForIconLabelsOnDesktop");
         private readonly string Windows10ClassicMenuString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows10ClassicMenu");
         private readonly string Windows11ModernMenuString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows11ModernMenu");
         private readonly string Windows10ClassicFileExplorerString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows10ClassicFileExplorer");
         private readonly string Windows11ModernFileExplorerString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows11ModernFileExplorer");
+        private readonly string WindowsChooseBestSettingsString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("WindowsChooseBestSettings");
         private AdvancedSystemOptionsPage advancedSystemOptionsPage;
 
         private readonly byte[] layout =
@@ -227,6 +248,38 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private ComboBoxItemModel _visualEffectsPlan;
+
+        public ComboBoxItemModel VisualEffectsPlan
+        {
+            get { return _visualEffectsPlan; }
+
+            set
+            {
+                if (!Equals(_visualEffectsPlan, value))
+                {
+                    _visualEffectsPlan = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(VisualEffectsPlan)));
+                }
+            }
+        }
+
+        private bool _isUpdatingVisualEffects;
+
+        public bool IsUpdatingVisualEffects
+        {
+            get { return _isUpdatingVisualEffects; }
+
+            set
+            {
+                if (!Equals(_isUpdatingVisualEffects, value))
+                {
+                    _isUpdatingVisualEffects = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsUpdatingVisualEffects)));
+                }
+            }
+        }
+
         private WinRTObservableCollection<DesktopIconSettingsModel> DesktopIconSettingsCollection { get; } = [];
 
         private WinRTObservableCollection<DesktopIconDisplayModel> DesktopIconDisplayCollection { get; } = [];
@@ -238,6 +291,10 @@ namespace PowerToolbox.Views.Pages
         private List<ComboBoxItemModel> FileExplorerStyleList { get; } = [];
 
         private List<ComboBoxItemModel> FileExplorerHomePositionList { get; } = [];
+
+        private List<ComboBoxItemModel> VisualEffectsPlanList { get; } = [];
+
+        private List<VisualEffectsModel> VisualEffectsList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -251,6 +308,27 @@ namespace PowerToolbox.Views.Pages
             FileExplorerHomePositionList.Add(new ComboBoxItemModel() { DisplayMember = ThisPCString, SelectedValue = "ThisPC" });
             FileExplorerHomePositionList.Add(new ComboBoxItemModel() { DisplayMember = HomeString, SelectedValue = "Home" });
             FileExplorerHomePositionList.Add(new ComboBoxItemModel() { DisplayMember = DownloadsString, SelectedValue = "Downloads" });
+            VisualEffectsPlanList.Add(new ComboBoxItemModel() { DisplayMember = WindowsChooseBestSettingsString, SelectedValue = "WindowsChooseBestSettings" });
+            VisualEffectsPlanList.Add(new ComboBoxItemModel() { DisplayMember = BestAppearanceString, SelectedValue = "BestAppearance" });
+            VisualEffectsPlanList.Add(new ComboBoxItemModel() { DisplayMember = BestPerformanceString, SelectedValue = "BestPerformance" });
+            VisualEffectsPlanList.Add(new ComboBoxItemModel() { DisplayMember = CustomString, SelectedValue = "Custom" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = SaveTaskbarThumbnailPreviewString, IsVisualEnabled = false, VisualTag = "SaveTaskbarThumbnailPreview" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = AnimationControlsAndElementsInsideWindowString, IsVisualEnabled = false, VisualTag = "AnimationControlsAndElementsInsideWindow" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = FadeinAndOutOrSlideMenuToViewString, IsVisualEnabled = false, VisualTag = "FadeinAndOutOrSlideMenuToView" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = SlideToOpenComboboxString, IsVisualEnabled = false, VisualTag = "SlideToOpenCombobox" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = SmoothScrollListboxString, IsVisualEnabled = false, VisualTag = "SmoothScrollListbox" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = SmoothScreenFontEdgesString, IsVisualEnabled = false, VisualTag = "SmoothScreenFontEdges" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = EnablePeekString, IsVisualEnabled = false, VisualTag = "EnablePeek" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = TaskbarAnimationsString, IsVisualEnabled = false, VisualTag = "TaskbarAnimations" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = ShowWindowContentsWhileDraggingString, IsVisualEnabled = false, VisualTag = "ShowWindowContentsWhileDragging" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = ShowThumbnailString, IsVisualEnabled = false, VisualTag = "ShowThumbnail" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = ShowSemitransparentSelectedRectangleString, IsVisualEnabled = false, VisualTag = "ShowSemitransparentSelectedRectangle" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = ShowShadowUnderWindowString, IsVisualEnabled = false, VisualTag = "ShowShadowUnderWindow" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = FadeoutMenuAfterClickingString, IsVisualEnabled = false, VisualTag = "FadeoutMenuAfterClicking" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = FadeinFadeoutOrSlideToolTipInViewString, IsVisualEnabled = false, VisualTag = "FadeinFadeoutOrSlideToolTipInView" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = ShowShadowUnderMousePointerString, IsVisualEnabled = false, VisualTag = "ShowShadowUnderMousePointer" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = UseShadowForIconLabelsOnDesktopString, IsVisualEnabled = false, VisualTag = "UseShadowForIconLabelsOnDesktop" });
+            VisualEffectsList.Add(new VisualEffectsModel() { Name = ShowAnimationWhenMaximizingOrMinimizingString, IsVisualEnabled = false, VisualTag = "ShowAnimationWhenMaximizingOrMinimizing" });
         }
 
         #region 第一部分：重写父类事件
@@ -465,15 +543,15 @@ namespace PowerToolbox.Views.Pages
                     RightClickMenuStyle = isClassicRightClickMenuExisted ? RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows10ClassicMenu")) : RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows11ModernMenu"));
                     bool isClassicFileExplorerExisted = await Task.Run(() =>
                     {
-                        string itemsViewAdapter = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", string.Empty);
-                        string fileExplorerDllPath1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", string.Empty);
-                        string apartment1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", "ThreadingModel");
+                        string itemsViewAdapter = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", string.Empty);
+                        string fileExplorerDllPath1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", string.Empty);
+                        string apartment1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", "ThreadingModel");
                         bool flag1 = string.Equals(itemsViewAdapter, "CLSID_ItemsViewAdapter") && string.Equals(fileExplorerDllPath1, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_") && string.Equals(apartment1, "Apartment");
-                        string fileExplorerXamlIslandViewAdapter = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", string.Empty);
-                        string fileExplorerDllPath2 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", string.Empty);
-                        string apartment2 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", "ThreadingModel");
+                        string fileExplorerXamlIslandViewAdapter = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", string.Empty);
+                        string fileExplorerDllPath2 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", string.Empty);
+                        string apartment2 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", "ThreadingModel");
                         bool flag2 = string.Equals(fileExplorerXamlIslandViewAdapter, "File Explorer Xaml Island View Adapter") && string.Equals(fileExplorerDllPath2, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_") && string.Equals(apartment2, "Apartment");
-                        byte[] tBar7Layout = RegistryHelper.ReadRegistryKey<byte[]>(Registry.CurrentUser, @"SOFTWARE\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout");
+                        byte[] tBar7Layout = RegistryHelper.ReadRegistryKey<byte[]>(Registry.CurrentUser, @"Software\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout");
                         return (tBar7Layout?.SequenceEqual(layout) ?? false) && flag1 && flag2;
                     });
                     FileExplorerStyle = isClassicFileExplorerExisted ? FileExplorerStyleList.Find(item => Equals(item.SelectedValue, "Windows10ClassicFileExplorer")) : FileExplorerStyleList.Find(item => Equals(item.SelectedValue, "Windows11ModernFileExplorer"));
@@ -544,6 +622,61 @@ namespace PowerToolbox.Views.Pages
                     }
                     return fileExplorerTo;
                 });
+
+                VisualEffects visualEffects = await Task.Run(() =>
+                {
+                    VisualEffects visualEffects = new()
+                    {
+                        VisualEffectsPlan = RegistryHelper.ReadRegistryKey<int>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects", "VisualFXSetting"),
+                        SaveTaskbarThumbnailPreview = RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\DWM", "AlwaysHibernateThumbnails"),
+                        AnimationControlsAndElementsInsideWindow = GetSystemParametersInfoBoolValue(SPI.SPI_GETCLIENTAREAANIMATION),
+                        FadeinAndOutOrSlideMenuToView = GetSystemParametersInfoBoolValue(SPI.SPI_GETMENUANIMATION),
+                        SlideToOpenCombobox = GetSystemParametersInfoBoolValue(SPI.SPI_GETCOMBOBOXANIMATION),
+                        SmoothScrollListbox = GetSystemParametersInfoBoolValue(SPI.SPI_GETLISTBOXSMOOTHSCROLLING),
+                        SmoothScreenFontEdges = GetSystemParametersInfoBoolValue(SPI.SPI_GETFONTSMOOTHING),
+                        EnablePeek = RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\DWM", "EnableAeroPeek"),
+                        TaskbarAnimations = RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "TaskbarAnimations"),
+                        ShowWindowContentsWhileDragging = GetSystemParametersInfoBoolValue(SPI.SPI_GETDRAGFULLWINDOWS),
+                        ShowThumbnail = !RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "IconsOnly"),
+                        ShowSemitransparentSelectedRectangle = RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "ListviewAlphaSelect"),
+                        ShowShadowUnderWindow = GetSystemParametersInfoBoolValue(SPI.SPI_GETDROPSHADOW),
+                        FadeoutMenuAfterClicking = GetSystemParametersInfoBoolValue(SPI.SPI_GETSELECTIONFADE),
+                        FadeinFadeoutOrSlideToolTipInView = GetSystemParametersInfoBoolValue(SPI.SPI_GETTOOLTIPANIMATION),
+                        ShowShadowUnderMousePointer = GetSystemParametersInfoBoolValue(SPI.SPI_GETCURSORSHADOW),
+                        UseShadowForIconLabelsOnDesktop = RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "ListviewShadow"),
+                        ShowAnimationWhenMaximizingOrMinimizing = GetSystemParametersInfoAnimationInfoValue(SPI.SPI_GETANIMATION)
+                    };
+                    return visualEffects;
+                });
+
+                VisualEffectsPlan = visualEffects.VisualEffectsPlan >= 0 && visualEffects.VisualEffectsPlan <= 3 ? VisualEffectsPlanList[visualEffects.VisualEffectsPlan] : null;
+                if (VisualEffectsPlan is not null)
+                {
+                    VisualEffectsList[0].IsVisualEnabled = visualEffects.SaveTaskbarThumbnailPreview;
+                    VisualEffectsList[1].IsVisualEnabled = visualEffects.AnimationControlsAndElementsInsideWindow;
+                    VisualEffectsList[2].IsVisualEnabled = visualEffects.FadeinAndOutOrSlideMenuToView;
+                    VisualEffectsList[3].IsVisualEnabled = visualEffects.SlideToOpenCombobox;
+                    VisualEffectsList[4].IsVisualEnabled = visualEffects.SmoothScrollListbox;
+                    VisualEffectsList[5].IsVisualEnabled = visualEffects.SmoothScreenFontEdges;
+                    VisualEffectsList[6].IsVisualEnabled = visualEffects.EnablePeek;
+                    VisualEffectsList[7].IsVisualEnabled = visualEffects.TaskbarAnimations;
+                    VisualEffectsList[8].IsVisualEnabled = visualEffects.ShowWindowContentsWhileDragging;
+                    VisualEffectsList[9].IsVisualEnabled = visualEffects.ShowThumbnail;
+                    VisualEffectsList[10].IsVisualEnabled = visualEffects.ShowSemitransparentSelectedRectangle;
+                    VisualEffectsList[11].IsVisualEnabled = visualEffects.ShowShadowUnderWindow;
+                    VisualEffectsList[12].IsVisualEnabled = visualEffects.FadeoutMenuAfterClicking;
+                    VisualEffectsList[13].IsVisualEnabled = visualEffects.FadeinFadeoutOrSlideToolTipInView;
+                    VisualEffectsList[14].IsVisualEnabled = visualEffects.ShowShadowUnderMousePointer;
+                    VisualEffectsList[15].IsVisualEnabled = visualEffects.UseShadowForIconLabelsOnDesktop;
+                    VisualEffectsList[16].IsVisualEnabled = visualEffects.ShowAnimationWhenMaximizingOrMinimizing;
+                }
+                else
+                {
+                    foreach (VisualEffectsModel visualEffectsItem in VisualEffectsList)
+                    {
+                        visualEffectsItem.IsVisualEnabled = false;
+                    }
+                }
             }
         }
 
@@ -648,6 +781,18 @@ namespace PowerToolbox.Views.Pages
                     advancedSystemOptionsPage.IsAdvancedSettingsInfoWarning = true;
                     advancedSystemOptionsPage.IsRestartExplorerVisible = true;
                 }
+            }
+        }
+
+        /// <summary>
+        /// 修改视觉效果选项启用状态
+        /// </summary>
+        private void OnVisualEffectsExecuteRequested(object sender, ExecuteRequestedEventArgs args)
+        {
+            if (args.Parameter is VisualEffectsModel visualEffects)
+            {
+                visualEffects.IsVisualEnabled = !visualEffects.IsVisualEnabled;
+                VisualEffectsPlan = VisualEffectsPlanList[3];
             }
         }
 
@@ -950,30 +1095,30 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (Equals(RightClickMenuStyle, RightClickMenuStyleList[0]))
                     {
-                        RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", true);
-                        RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", true);
-                        RegistryHelper.RemoveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout");
+                        RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", true);
+                        RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", true);
+                        RegistryHelper.RemoveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout");
                     }
                     else if (Equals(RightClickMenuStyle, RightClickMenuStyleList[1]))
                     {
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", string.Empty, "CLSID_ItemsViewAdapter");
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", string.Empty, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_");
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", "ThreadingModel", "Apartment");
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", string.Empty, "File Explorer Xaml Island View Adapter");
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", string.Empty, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_");
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", "ThreadingModel", "Apartment");
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"SOFTWARE\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout", layout);
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", string.Empty, "CLSID_ItemsViewAdapter");
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", string.Empty, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_");
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", "ThreadingModel", "Apartment");
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", string.Empty, "File Explorer Xaml Island View Adapter");
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", string.Empty, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_");
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", "ThreadingModel", "Apartment");
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout", layout);
                     }
 
-                    string itemsViewAdapter = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", string.Empty);
-                    string fileExplorerDllPath1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", string.Empty);
-                    string apartment1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", "ThreadingModel");
+                    string itemsViewAdapter = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", string.Empty);
+                    string fileExplorerDllPath1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", string.Empty);
+                    string apartment1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", "ThreadingModel");
                     bool flag1 = string.Equals(itemsViewAdapter, "CLSID_ItemsViewAdapter") && string.Equals(fileExplorerDllPath1, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_") && string.Equals(apartment1, "Apartment");
-                    string fileExplorerXamlIslandViewAdapter = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", string.Empty);
-                    string fileExplorerDllPath2 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", string.Empty);
-                    string apartment2 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"SOFTWARE\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", "ThreadingModel");
+                    string fileExplorerXamlIslandViewAdapter = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", string.Empty);
+                    string fileExplorerDllPath2 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", string.Empty);
+                    string apartment2 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", "ThreadingModel");
                     bool flag2 = string.Equals(fileExplorerXamlIslandViewAdapter, "File Explorer Xaml Island View Adapter") && string.Equals(fileExplorerDllPath2, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_") && string.Equals(apartment2, "Apartment");
-                    byte[] tBar7Layout = RegistryHelper.ReadRegistryKey<byte[]>(Registry.CurrentUser, @"SOFTWARE\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout");
+                    byte[] tBar7Layout = RegistryHelper.ReadRegistryKey<byte[]>(Registry.CurrentUser, @"Software\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout");
                     return (tBar7Layout?.SequenceEqual(layout) ?? false) && flag1 && flag2;
                 });
                 FileExplorerStyle = isClassicFileExplorerExisted ? FileExplorerStyleList.Find(item => Equals(item.SelectedValue, "Windows10ClassicFileExplorer")) : FileExplorerStyleList.Find(item => Equals(item.SelectedValue, "Windows11ModernFileExplorer"));
@@ -1054,6 +1199,141 @@ namespace PowerToolbox.Views.Pages
                     }
                     return fileExplorerTo;
                 });
+            }
+        }
+
+        /// <summary>
+        /// 保存视觉效果设置
+        /// </summary>
+        private async void OnSaveVisualEffectsClicked(object sender, RoutedEventArgs args)
+        {
+            if (!IsUpdatingVisualEffects)
+            {
+                IsUpdatingVisualEffects = true;
+                VisualEffects visualEffects = await Task.Run(() =>
+                {
+                    int visualEffectsPlanIndex = VisualEffectsPlanList.IndexOf(VisualEffectsPlan);
+                    if (visualEffectsPlanIndex >= 0 && visualEffectsPlanIndex <= 3)
+                    {
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects", "VisualFXSetting", visualEffectsPlanIndex);
+                    }
+                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\DWM", "AlwaysHibernateThumbnails", Convert.ToInt32(VisualEffectsList[0].IsVisualEnabled));
+                    User32Library.SystemParametersInfo(SPI.SPI_SETCLIENTAREAANIMATION, 0, Convert.ToInt32(VisualEffectsList[1].IsVisualEnabled), SPIF.SPIF_UPDATEINIFILE | SPIF.SPIF_SENDCHANGE);
+                    User32Library.SystemParametersInfo(SPI.SPI_SETMENUANIMATION, 0, Convert.ToInt32(VisualEffectsList[2].IsVisualEnabled), SPIF.SPIF_UPDATEINIFILE | SPIF.SPIF_SENDCHANGE);
+                    User32Library.SystemParametersInfo(SPI.SPI_SETCOMBOBOXANIMATION, 0, Convert.ToInt32(VisualEffectsList[3].IsVisualEnabled), SPIF.SPIF_UPDATEINIFILE | SPIF.SPIF_SENDCHANGE);
+                    User32Library.SystemParametersInfo(SPI.SPI_SETLISTBOXSMOOTHSCROLLING, 0, Convert.ToInt32(VisualEffectsList[4].IsVisualEnabled), SPIF.SPIF_UPDATEINIFILE | SPIF.SPIF_SENDCHANGE);
+                    User32Library.SystemParametersInfo(SPI.SPI_SETFONTSMOOTHING, Convert.ToUInt32(VisualEffectsList[5].IsVisualEnabled), 0, SPIF.SPIF_UPDATEINIFILE | SPIF.SPIF_SENDCHANGE);
+                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\DWM", "EnableAeroPeek", Convert.ToInt32(VisualEffectsList[6].IsVisualEnabled));
+                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "TaskbarAnimations", Convert.ToInt32(VisualEffectsList[7].IsVisualEnabled));
+                    User32Library.SystemParametersInfo(SPI.SPI_SETDRAGFULLWINDOWS, Convert.ToUInt32(VisualEffectsList[8].IsVisualEnabled), 0, SPIF.SPIF_UPDATEINIFILE | SPIF.SPIF_SENDCHANGE);
+                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "IconsOnly", VisualEffectsList[9].IsVisualEnabled ? 0 : 1);
+                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "ListviewAlphaSelect", Convert.ToInt32(VisualEffectsList[10].IsVisualEnabled));
+                    User32Library.SystemParametersInfo(SPI.SPI_SETDROPSHADOW, 0, Convert.ToInt32(VisualEffectsList[11].IsVisualEnabled), SPIF.SPIF_UPDATEINIFILE | SPIF.SPIF_SENDCHANGE);
+                    User32Library.SystemParametersInfo(SPI.SPI_SETSELECTIONFADE, 0, Convert.ToInt32(VisualEffectsList[12].IsVisualEnabled), SPIF.SPIF_UPDATEINIFILE | SPIF.SPIF_SENDCHANGE);
+                    User32Library.SystemParametersInfo(SPI.SPI_SETTOOLTIPANIMATION, 0, Convert.ToInt32(VisualEffectsList[13].IsVisualEnabled), SPIF.SPIF_UPDATEINIFILE | SPIF.SPIF_SENDCHANGE);
+                    User32Library.SystemParametersInfo(SPI.SPI_SETCURSORSHADOW, 0, Convert.ToInt32(VisualEffectsList[14].IsVisualEnabled), SPIF.SPIF_UPDATEINIFILE | SPIF.SPIF_SENDCHANGE);
+                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "ListviewShadow", Convert.ToInt32(VisualEffectsList[15].IsVisualEnabled));
+                    SetSystemParametersInfoAnimationInfoValue(SPI.SPI_SETANIMATION, new()
+                    {
+                        cbSize = (uint)Marshal.SizeOf<ANIMATIONINFO>(),
+                        iMinAnimate = Convert.ToInt32(VisualEffectsList[16].IsVisualEnabled)
+                    });
+                    Shell32Library.SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSH, 0, 0);
+
+                    VisualEffects visualEffects = new()
+                    {
+                        VisualEffectsPlan = RegistryHelper.ReadRegistryKey<int>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects", "VisualFXSetting"),
+                        SaveTaskbarThumbnailPreview = RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\DWM", "AlwaysHibernateThumbnails"),
+                        AnimationControlsAndElementsInsideWindow = GetSystemParametersInfoBoolValue(SPI.SPI_GETCLIENTAREAANIMATION),
+                        FadeinAndOutOrSlideMenuToView = GetSystemParametersInfoBoolValue(SPI.SPI_GETMENUANIMATION),
+                        SlideToOpenCombobox = GetSystemParametersInfoBoolValue(SPI.SPI_GETCOMBOBOXANIMATION),
+                        SmoothScrollListbox = GetSystemParametersInfoBoolValue(SPI.SPI_GETLISTBOXSMOOTHSCROLLING),
+                        SmoothScreenFontEdges = GetSystemParametersInfoBoolValue(SPI.SPI_GETFONTSMOOTHING),
+                        EnablePeek = RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\DWM", "EnableAeroPeek"),
+                        TaskbarAnimations = RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "TaskbarAnimations"),
+                        ShowWindowContentsWhileDragging = GetSystemParametersInfoBoolValue(SPI.SPI_GETDRAGFULLWINDOWS),
+                        ShowThumbnail = !RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "IconsOnly"),
+                        ShowSemitransparentSelectedRectangle = RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "ListviewAlphaSelect"),
+                        ShowShadowUnderWindow = GetSystemParametersInfoBoolValue(SPI.SPI_GETDROPSHADOW),
+                        FadeoutMenuAfterClicking = GetSystemParametersInfoBoolValue(SPI.SPI_GETSELECTIONFADE),
+                        FadeinFadeoutOrSlideToolTipInView = GetSystemParametersInfoBoolValue(SPI.SPI_GETTOOLTIPANIMATION),
+                        ShowShadowUnderMousePointer = GetSystemParametersInfoBoolValue(SPI.SPI_GETCURSORSHADOW),
+                        UseShadowForIconLabelsOnDesktop = RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "ListviewShadow"),
+                        ShowAnimationWhenMaximizingOrMinimizing = GetSystemParametersInfoAnimationInfoValue(SPI.SPI_GETANIMATION)
+                    };
+                    return visualEffects;
+                });
+                VisualEffectsPlan = visualEffects.VisualEffectsPlan >= 0 && visualEffects.VisualEffectsPlan <= 3 ? VisualEffectsPlanList[visualEffects.VisualEffectsPlan] : null;
+
+                if (VisualEffectsPlan is not null)
+                {
+                    VisualEffectsList[0].IsVisualEnabled = visualEffects.SaveTaskbarThumbnailPreview;
+                    VisualEffectsList[1].IsVisualEnabled = visualEffects.AnimationControlsAndElementsInsideWindow;
+                    VisualEffectsList[2].IsVisualEnabled = visualEffects.FadeinAndOutOrSlideMenuToView;
+                    VisualEffectsList[3].IsVisualEnabled = visualEffects.SlideToOpenCombobox;
+                    VisualEffectsList[4].IsVisualEnabled = visualEffects.SmoothScrollListbox;
+                    VisualEffectsList[5].IsVisualEnabled = visualEffects.SmoothScreenFontEdges;
+                    VisualEffectsList[6].IsVisualEnabled = visualEffects.EnablePeek;
+                    VisualEffectsList[7].IsVisualEnabled = visualEffects.TaskbarAnimations;
+                    VisualEffectsList[8].IsVisualEnabled = visualEffects.ShowWindowContentsWhileDragging;
+                    VisualEffectsList[9].IsVisualEnabled = visualEffects.ShowThumbnail;
+                    VisualEffectsList[10].IsVisualEnabled = visualEffects.ShowSemitransparentSelectedRectangle;
+                    VisualEffectsList[11].IsVisualEnabled = visualEffects.ShowShadowUnderWindow;
+                    VisualEffectsList[12].IsVisualEnabled = visualEffects.FadeoutMenuAfterClicking;
+                    VisualEffectsList[13].IsVisualEnabled = visualEffects.FadeinFadeoutOrSlideToolTipInView;
+                    VisualEffectsList[14].IsVisualEnabled = visualEffects.ShowShadowUnderMousePointer;
+                    VisualEffectsList[15].IsVisualEnabled = visualEffects.UseShadowForIconLabelsOnDesktop;
+                    VisualEffectsList[16].IsVisualEnabled = visualEffects.ShowAnimationWhenMaximizingOrMinimizing;
+                }
+                else
+                {
+                    foreach (VisualEffectsModel visualEffectsItem in VisualEffectsList)
+                    {
+                        visualEffectsItem.IsVisualEnabled = false;
+                    }
+                }
+            }
+            IsUpdatingVisualEffects = false;
+        }
+
+        /// <summary>
+        /// 视觉效果方案选中项发生变化时触发的事件
+        /// </summary>
+        private void OnVisualEffectsPlanSelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            if (sender is ComboBox comboBox && !Equals(VisualEffectsPlan, comboBox.SelectedItem))
+            {
+                VisualEffectsPlan = comboBox.SelectedItem is ComboBoxItemModel visualEffectsPlan ? visualEffectsPlan : null;
+                if (VisualEffectsPlan.SelectedValue is string tag)
+                {
+                    switch (tag)
+                    {
+                        case "WindowsChooseBestSettings":
+                            {
+                                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsList)
+                                {
+                                    visualEffectsItem.IsVisualEnabled = visualEffectsItem.VisualTag is not "SaveTaskbarThumbnailPreview" && visualEffectsItem.VisualTag is not "ShowShadowUnderMousePointer";
+                                }
+                                break;
+                            }
+                        case "BestAppearance":
+                            {
+                                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsList)
+                                {
+                                    visualEffectsItem.IsVisualEnabled = true;
+                                }
+                                break;
+                            }
+                        case "BestPerformance":
+                            {
+                                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsList)
+                                {
+                                    visualEffectsItem.IsVisualEnabled = false;
+                                }
+                                break;
+                            }
+                    }
+                }
             }
         }
 
@@ -1181,6 +1461,82 @@ namespace PowerToolbox.Views.Pages
         {
             int? iconValue = RegistryHelper.ReadRegistryKey<int?>(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", iconPathName), "System.IsPinnedToNameSpaceTree");
             return !iconValue.HasValue || iconValue.Value is not 0;
+        }
+
+        /// <summary>
+        /// 获取 SystemParametersInfo 存储的 BOOL 结构体值
+        /// </summary>
+        private bool GetSystemParametersInfoBoolValue(SPI spi)
+        {
+            IntPtr pValue = Marshal.AllocHGlobal(sizeof(int));
+
+            try
+            {
+                Marshal.WriteInt32(pValue, 0);
+                return User32Library.SystemParametersInfo(spi, 0, pValue, SPIF.None) && Convert.ToBoolean(Marshal.ReadInt32(pValue));
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(GetSystemParametersInfoBoolValue), 1, e);
+                return false;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(pValue);
+            }
+        }
+
+        /// <summary>
+        /// 获取 SystemParametersInfo 存储的 AnimationInfo 结构体值
+        /// </summary>
+        private bool GetSystemParametersInfoAnimationInfoValue(SPI spi)
+        {
+            ANIMATIONINFO animationInfo = new()
+            {
+                cbSize = (uint)Marshal.SizeOf<ANIMATIONINFO>()
+            };
+            IntPtr pAI = Marshal.AllocHGlobal(Marshal.SizeOf<ANIMATIONINFO>());
+            try
+            {
+                Marshal.StructureToPtr(animationInfo, pAI, false);
+                IntPtr ptr = pAI;
+                if (User32Library.SystemParametersInfo(spi, animationInfo.cbSize, ptr, 0))
+                {
+                    animationInfo = Marshal.PtrToStructure<ANIMATIONINFO>(pAI);
+                }
+
+                return Convert.ToBoolean(animationInfo.iMinAnimate);
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(GetSystemParametersInfoAnimationInfoValue), 1, e);
+                return false;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(pAI);
+            }
+        }
+
+        /// <summary>
+        /// 设置 SystemParametersInfo 存储的 AnimationInfo 结构体值
+        /// </summary>
+        private void SetSystemParametersInfoAnimationInfoValue(SPI spi, ANIMATIONINFO animationInfo)
+        {
+            IntPtr pAI = Marshal.AllocHGlobal(Marshal.SizeOf<ANIMATIONINFO>());
+            try
+            {
+                Marshal.StructureToPtr(animationInfo, pAI, false);
+                User32Library.SystemParametersInfo(spi, animationInfo.cbSize, pAI, SPIF.SPIF_UPDATEINIFILE | SPIF.SPIF_SENDCHANGE);
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(SetSystemParametersInfoAnimationInfoValue), 1, e);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(pAI);
+            }
         }
     }
 }
