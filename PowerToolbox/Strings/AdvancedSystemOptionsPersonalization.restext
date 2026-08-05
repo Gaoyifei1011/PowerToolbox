@@ -3,6 +3,7 @@ BestAppearance=Adjust for best appearance
 BestPerformance=Adjust for best performance
 Change=Change
 ChangeDesktopIcon=Change desktop icon
+CreateShortcutWithoutShortcutText=Create shortcut without adding shortcut text
 Custom=Custom
 DesktopIconDisplay=Desktop icon display
 DesktopSettings=Desktop settings

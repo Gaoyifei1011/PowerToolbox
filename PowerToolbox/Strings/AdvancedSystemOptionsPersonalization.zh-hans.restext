@@ -3,6 +3,7 @@ BestAppearance=调整为最佳外观
 BestPerformance=调整为最佳性能
 Change=修改
 ChangeDesktopIcon=修改桌面图标
+CreateShortcutWithoutShortcutText=创建快捷方式不显示快捷方式文字
 Custom=自定义
 DesktopIconDisplay=桌面图标显示
 DesktopSettings=桌面设置
