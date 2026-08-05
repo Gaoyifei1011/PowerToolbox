@@ -1,3 +1,7 @@
+ApprovalModeForBuiltinAdministratorAccount=Administrator Approval Mode for built-in administrator account
+ApprovalModeForBuiltinAdministratorAccountDescription=Turn on / off Admin Approval Mode for the built-in administrator account
+ApprovalModeForBuiltinAdministratorAccountOffContent=Close
+ApprovalModeForBuiltinAdministratorAccountOnContent=Open
 AlwaysNotify=Always notify
 AlwaysNotifyDescription1= Always notify me when the following situations occur
 AlwaysNotifyDescription2=1.The app tries to install software or change my computer

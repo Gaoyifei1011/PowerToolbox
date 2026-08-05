@@ -305,6 +305,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isApprovalModeForBuiltinAdministratorAccountEnabled;
+
+        public bool IsApprovalModeForBuiltinAdministratorAccountEnabled
+        {
+            get { return _isApprovalModeForBuiltinAdministratorAccountEnabled; }
+
+            set
+            {
+                if (!Equals(_isApprovalModeForBuiltinAdministratorAccountEnabled, value))
+                {
+                    _isApprovalModeForBuiltinAdministratorAccountEnabled = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsApprovalModeForBuiltinAdministratorAccountEnabled)));
+                }
+            }
+        }
+
         private List<ComboBoxItemModel> HibernationFileTypeList { get; } = [];
 
         private List<ComboBoxItemModel> NotifyModeList { get; } = [];
@@ -520,16 +536,22 @@ namespace PowerToolbox.Views.Pages
 
                 IsWindowsPhotoViewerEnabled = await Task.Run(() =>
                 {
-                    bool isEnabled = true;
+                    bool isWindowsPhotoViewerEnabled = true;
                     foreach (string extension in extensionsArray)
                     {
-                        isEnabled = string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations", extension), "PhotoViewer.FileAssoc.Tiff");
-                        if (!isEnabled)
+                        isWindowsPhotoViewerEnabled = string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations", extension), "PhotoViewer.FileAssoc.Tiff");
+                        if (!isWindowsPhotoViewerEnabled)
                         {
                             break;
                         }
                     }
-                    return isEnabled;
+                    return isWindowsPhotoViewerEnabled;
+                });
+
+                IsApprovalModeForBuiltinAdministratorAccountEnabled = await Task.Run(() =>
+                {
+                    int? FilterAdministratorTokenValue = RegistryHelper.ReadRegistryKey<int?>(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System", "FilterAdministratorToken");
+                    return FilterAdministratorTokenValue.HasValue && FilterAdministratorTokenValue.Value is 1;
                 });
             }
         }
@@ -1406,16 +1428,40 @@ namespace PowerToolbox.Views.Pages
                         }
                     }
 
-                    bool isEnabled = true;
+                    bool isWindowsPhotoViewerEnabled = true;
                     foreach (string extension in extensionsArray)
                     {
-                        isEnabled = string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations", extension), "PhotoViewer.FileAssoc.Tiff");
-                        if (!isEnabled)
+                        isWindowsPhotoViewerEnabled = string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations", extension), "PhotoViewer.FileAssoc.Tiff");
+                        if (!isWindowsPhotoViewerEnabled)
                         {
                             break;
                         }
                     }
-                    return isEnabled;
+                    return isWindowsPhotoViewerEnabled;
+                });
+            }
+        }
+
+        /// <summary>
+        /// 启用 / 禁用用于内置管理员帐户的管理员批准模式
+        /// </summary>
+        private async void OnApprovalModeForBuiltinAdministratorAccountSettingsToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsApprovalModeForBuiltinAdministratorAccountEnabled, toggleSwitch.IsOn))
+            {
+                IsApprovalModeForBuiltinAdministratorAccountEnabled = toggleSwitch.IsOn;
+                IsApprovalModeForBuiltinAdministratorAccountEnabled = await Task.Run(() =>
+                {
+                    if (IsApprovalModeForBuiltinAdministratorAccountEnabled)
+                    {
+                        RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System", "FilterAdministratorToken", 1);
+                    }
+                    else
+                    {
+                        RegistryHelper.RemoveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System", "FilterAdministratorToken");
+                    }
+                    int? FilterAdministratorTokenValue = RegistryHelper.ReadRegistryKey<int?>(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System", "FilterAdministratorToken");
+                    return FilterAdministratorTokenValue.HasValue && FilterAdministratorTokenValue.Value is 1;
                 });
             }
         }

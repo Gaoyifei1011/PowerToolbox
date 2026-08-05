@@ -1193,11 +1193,64 @@
 
                 <ToggleSwitch
                     Grid.Column="2"
-                    IsOn="{x:Bind IsWindowsPhotoViewerEnabled}"
+                    IsOn="{x:Bind IsWindowsPhotoViewerEnabled, Mode=OneWay}"
                     OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('WindowsPhotoViewerSettingsOffContent')}"
                     OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('WindowsPhotoViewerSettingsOnContent')}"
                     Style="{StaticResource ToggleSwitchStyle}"
                     Toggled="{x:Bind OnWindowsPhotoViewerSettingsToggled}" />
+            </Grid>
+
+            <!--  用于内置管理员帐户的管理员批准模式  -->
+            <Grid
+                Height="60"
+                Margin="0,0,0,2"
+                Padding="16,0"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlCornerRadius}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <FontIcon
+                    Grid.Column="0"
+                    Margin="0,0,12,0"
+                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                    FontSize="16"
+                    Glyph="&#xE7EF;" />
+
+                <StackPanel
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical">
+
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('ApprovalModeForBuiltinAdministratorAccount')}" />
+
+                    <TextBlock
+                        x:Name="ApprovalModeForBuiltinAdministratorAccountDescription"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('ApprovalModeForBuiltinAdministratorAccountDescription')}"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="NoWrap">
+
+                        <ToolTipService.ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('ApprovalModeForBuiltinAdministratorAccountDescription')}" Visibility="{x:Bind ApprovalModeForBuiltinAdministratorAccountDescription.IsTextTrimmed, Mode=OneWay}" />
+                        </ToolTipService.ToolTip>
+                    </TextBlock>
+                </StackPanel>
+
+                <ToggleSwitch
+                    Grid.Column="2"
+                    IsOn="{x:Bind IsApprovalModeForBuiltinAdministratorAccountEnabled, Mode=OneWay}"
+                    OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('ApprovalModeForBuiltinAdministratorAccountOffContent')}"
+                    OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('ApprovalModeForBuiltinAdministratorAccountOnContent')}"
+                    Style="{StaticResource ToggleSwitchStyle}"
+                    Toggled="{x:Bind OnApprovalModeForBuiltinAdministratorAccountSettingsToggled}" />
             </Grid>
         </StackPanel>
     </ScrollViewer>
