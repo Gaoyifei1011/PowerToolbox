@@ -78,3 +78,7 @@ VirtualizationBasedSecurityOffContent=否
 VirtualizationBasedSecurityOnContent=是
 WakeUpTaskEmpty=没有任务可以唤醒你的设备
 WaskUpTaskExisted=可以唤醒你设备的任务：
+WindowsPhotoViewerSettings=Windows 照片查看器设置
+WindowsPhotoViewerSettingsDescription=启用 / 禁用 Windows 经典照片查看器
+WindowsPhotoViewerSettingsOffContent=禁用
+WindowsPhotoViewerSettingsOnContent=启用

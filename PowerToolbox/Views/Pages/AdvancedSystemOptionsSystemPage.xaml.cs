@@ -46,6 +46,7 @@ namespace PowerToolbox.Views.Pages
         private readonly Guid HighPerformance = new("8C5E7FDA-E8BF-4A96-9A85-A6E23A8C635C");
         private readonly Guid OutstandingPerformance = new("E9A42B02-D5DF-448D-AA00-03F14749EB61");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
+        string[] extensionsArray = [".avif", ".bmp", ".dib", ".gif", ".heic", ".heif", ".hif", ".ico", ".jfif", ".jpe", ".jpeg", ".jpg", ".jxl", ".jxr", ".png", ".tga", ".thumb", ".tif", ".tiff", ".webp"];
         private AdvancedSystemOptionsPage advancedSystemOptionsPage;
 
         private bool _isHibernationEnabled;
@@ -288,6 +289,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private bool _isWindowsPhotoViewerEnabled;
+
+        public bool IsWindowsPhotoViewerEnabled
+        {
+            get { return _isWindowsPhotoViewerEnabled; }
+
+            set
+            {
+                if (!Equals(_isWindowsPhotoViewerEnabled, value))
+                {
+                    _isWindowsPhotoViewerEnabled = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsWindowsPhotoViewerEnabled)));
+                }
+            }
+        }
+
         private List<ComboBoxItemModel> HibernationFileTypeList { get; } = [];
 
         private List<ComboBoxItemModel> NotifyModeList { get; } = [];
@@ -499,6 +516,20 @@ namespace PowerToolbox.Views.Pages
                         }
                         IsClosingWakeUpTask = false;
                     }, null);
+                });
+
+                IsWindowsPhotoViewerEnabled = await Task.Run(() =>
+                {
+                    bool isEnabled = true;
+                    foreach (string extension in extensionsArray)
+                    {
+                        isEnabled = string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations", extension), "PhotoViewer.FileAssoc.Tiff");
+                        if (!isEnabled)
+                        {
+                            break;
+                        }
+                    }
+                    return isEnabled;
                 });
             }
         }
@@ -1344,6 +1375,49 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(OnCreateGodModeClicked), 1, e);
                 }
             });
+        }
+
+        /// <summary>
+        /// 启用 / 禁用 Windows 照片查看器
+        /// </summary>
+        private async void OnWindowsPhotoViewerSettingsToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsWindowsPhotoViewerEnabled, toggleSwitch.IsOn))
+            {
+                IsWindowsPhotoViewerEnabled = toggleSwitch.IsOn;
+                IsWindowsPhotoViewerEnabled = await Task.Run(() =>
+                {
+                    if (IsWindowsPhotoViewerEnabled)
+                    {
+                        RegistryHelper.SaveRegistryKey(Registry.ClassesRoot, @"Applications\photoviewer.dll\shell\open", "MuiVerb", "@photoviewer.dll,-3043", true);
+                        RegistryHelper.SaveRegistryKey(Registry.ClassesRoot, @"Applications\photoviewer.dll\shell\open\command", string.Empty, "\"%SystemRoot%\\System32\\rundll32.exe\" \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\", ImageView_Fullscreen %1", true);
+                        RegistryHelper.SaveRegistryKey(Registry.ClassesRoot, @"Applications\photoviewer.dll\shell\open\DropTarget", "Clsid", "{FFE2A43C-56B9-4BF5-9A79-CC6D4285608A}");
+                        foreach (string extension in extensionsArray)
+                        {
+                            RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations", extension, "PhotoViewer.FileAssoc.Tiff");
+                        }
+                    }
+                    else
+                    {
+                        RegistryHelper.DeleteRegistryKey(Registry.ClassesRoot, @"Applications\photoviewer.dll\shell\open", true);
+                        foreach (string extension in extensionsArray)
+                        {
+                            RegistryHelper.RemoveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations", extension);
+                        }
+                    }
+
+                    bool isEnabled = true;
+                    foreach (string extension in extensionsArray)
+                    {
+                        isEnabled = string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations", extension), "PhotoViewer.FileAssoc.Tiff");
+                        if (!isEnabled)
+                        {
+                            break;
+                        }
+                    }
+                    return isEnabled;
+                });
+            }
         }
 
         #endregion 第二部分：高级系统选项——系统页面——挂载的事件

@@ -78,3 +78,7 @@ VirtualizationBasedSecurityOffContent=No
 VirtualizationBasedSecurityOnContent=Yes
 WakeUpTaskEmpty=There are no tasks that can wake up your device
 WaskUpTaskExisted=Tasks that can wake up your device:
+WindowsPhotoViewerSettings=Windows Photo Viewer settings
+WindowsPhotoViewerSettingsDescription=Enable / Disable Windows Classic Photo Viewer
+WindowsPhotoViewerSettingsOffContent=Disabled
+WindowsPhotoViewerSettingsOnContent=Enabled
