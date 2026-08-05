@@ -568,6 +568,7 @@ namespace PowerToolbox.Views.Pages
                 }
 
                 bool homeNavigationPaneIconVisible = GetNavigationPaneIconVisibility(homePath, "Home");
+                bool libraryNavigationPaneIconVisible = GetNavigationPaneIconVisibility(libraryPath, "Library");
                 bool linuxNavigationPaneIconVisible = GetNavigationPaneIconVisibility(linuxPath, "Linux");
                 bool photoGalleryNavigationPaneIconVisible = GetNavigationPaneIconVisibility(photoGalleryPath, "PhotoGallery");
                 bool recycleBinNavigationPaneIconVisible = GetNavigationPaneIconVisibility(recycleBinPath, "RecycleBin");
@@ -596,6 +597,12 @@ namespace PowerToolbox.Views.Pages
                     DisplayName = linuxDisplayName,
                     IconTag = "Linux",
                     IsIconVisible = linuxNavigationPaneIconVisible
+                });
+                NavigationPaneIconDisplayCollection.Add(new NavigationPaneIconDisplayModel()
+                {
+                    DisplayName = libraryDisplayName,
+                    IconTag = "Library",
+                    IsIconVisible = libraryNavigationPaneIconVisible
                 });
 
                 IsSyncProviderNotificationsEnabled = await Task.Run(() =>
@@ -767,6 +774,12 @@ namespace PowerToolbox.Views.Pages
                             {
                                 RegistryHelper.SaveRegistryKey(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", homePath), "System.IsPinnedToNameSpaceTree", navigationPaneIconDisplay.IsIconVisible);
                                 isIconVisible = GetNavigationPaneIconVisibility(homePath, navigationPaneIconDisplay.IconTag);
+                                break;
+                            }
+                        case "Library":
+                            {
+                                RegistryHelper.SaveRegistryKey(Registry.ClassesRoot, string.Format(@"CLSID\{0}", libraryPath), "System.IsPinnedToNameSpaceTree", navigationPaneIconDisplay.IsIconVisible);
+                                isIconVisible = GetNavigationPaneIconVisibility(libraryPath, navigationPaneIconDisplay.IconTag);
                                 break;
                             }
                         case "Linux":
@@ -1479,8 +1492,41 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private bool GetNavigationPaneIconVisibility(string iconPathName, string iconTag)
         {
-            int? iconValue = RegistryHelper.ReadRegistryKey<int?>(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", iconPathName), "System.IsPinnedToNameSpaceTree");
-            return !iconValue.HasValue || iconValue.Value is not 0;
+            bool visible = false;
+            switch (iconTag)
+            {
+                case "Home":
+                    {
+                        int? iconValue = RegistryHelper.ReadRegistryKey<int?>(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", iconPathName), "System.IsPinnedToNameSpaceTree");
+                        visible = !iconValue.HasValue || iconValue.Value is not 0;
+                        break;
+                    }
+                case "Library":
+                    {
+                        int? iconValue = RegistryHelper.ReadRegistryKey<int?>(Registry.ClassesRoot, string.Format(@"CLSID\{0}", iconPathName), "System.IsPinnedToNameSpaceTree");
+                        visible = !iconValue.HasValue || iconValue.Value is not 0;
+                        break;
+                    }
+                case "Linux":
+                    {
+                        int? iconValue = RegistryHelper.ReadRegistryKey<int?>(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", iconPathName), "System.IsPinnedToNameSpaceTree");
+                        visible = !iconValue.HasValue || iconValue.Value is not 0;
+                        break;
+                    }
+                case "PhotoGallery":
+                    {
+                        int? iconValue = RegistryHelper.ReadRegistryKey<int?>(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", iconPathName), "System.IsPinnedToNameSpaceTree");
+                        visible = !iconValue.HasValue || iconValue.Value is not 0;
+                        break;
+                    }
+                case "RecycleBin":
+                    {
+                        int? iconValue = RegistryHelper.ReadRegistryKey<int?>(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", iconPathName), "System.IsPinnedToNameSpaceTree");
+                        visible = !iconValue.HasValue || iconValue.Value is not 0;
+                        break;
+                    }
+            }
+            return visible;
         }
 
         /// <summary>
@@ -1488,7 +1534,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private bool GetSystemParametersInfoBoolValue(SPI spi)
         {
-            IntPtr pValue = Marshal.AllocHGlobal(sizeof(int));
+            nint pValue = Marshal.AllocHGlobal(sizeof(int));
 
             try
             {
@@ -1515,11 +1561,11 @@ namespace PowerToolbox.Views.Pages
             {
                 cbSize = (uint)Marshal.SizeOf<ANIMATIONINFO>()
             };
-            IntPtr pAI = Marshal.AllocHGlobal(Marshal.SizeOf<ANIMATIONINFO>());
+            nint pAI = Marshal.AllocHGlobal(Marshal.SizeOf<ANIMATIONINFO>());
             try
             {
                 Marshal.StructureToPtr(animationInfo, pAI, false);
-                IntPtr ptr = pAI;
+                nint ptr = pAI;
                 if (User32Library.SystemParametersInfo(spi, animationInfo.cbSize, ptr, 0))
                 {
                     animationInfo = Marshal.PtrToStructure<ANIMATIONINFO>(pAI);
@@ -1543,7 +1589,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void SetSystemParametersInfoAnimationInfoValue(SPI spi, ANIMATIONINFO animationInfo)
         {
-            IntPtr pAI = Marshal.AllocHGlobal(Marshal.SizeOf<ANIMATIONINFO>());
+            nint pAI = Marshal.AllocHGlobal(Marshal.SizeOf<ANIMATIONINFO>());
             try
             {
                 Marshal.StructureToPtr(animationInfo, pAI, false);

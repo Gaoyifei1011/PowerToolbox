@@ -46,7 +46,7 @@ namespace PowerToolbox.Views.Pages
         private readonly Guid HighPerformance = new("8C5E7FDA-E8BF-4A96-9A85-A6E23A8C635C");
         private readonly Guid OutstandingPerformance = new("E9A42B02-D5DF-448D-AA00-03F14749EB61");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
-        string[] extensionsArray = [".avif", ".bmp", ".dib", ".gif", ".heic", ".heif", ".hif", ".ico", ".jfif", ".jpe", ".jpeg", ".jpg", ".jxl", ".jxr", ".png", ".tga", ".thumb", ".tif", ".tiff", ".webp"];
+        private readonly string[] extensionsArray = [".avif", ".bmp", ".dib", ".gif", ".heic", ".heif", ".hif", ".ico", ".jfif", ".jpe", ".jpeg", ".jpg", ".jxl", ".jxr", ".png", ".tga", ".thumb", ".tif", ".tiff", ".webp"];
         private AdvancedSystemOptionsPage advancedSystemOptionsPage;
 
         private bool _isHibernationEnabled;
