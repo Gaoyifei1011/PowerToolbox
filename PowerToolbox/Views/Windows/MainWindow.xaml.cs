@@ -723,8 +723,8 @@ namespace PowerToolbox.Views.Windows
 
                 IsBackEnabled = CanGoBack();
 
-                // 如果导航到更新页面、文件恢复页面，而且是非管理员模式，显示提示对话框
-                if ((Equals(currentPageType, typeof(UpdateManagerPage)) || Equals(currentPageType, typeof(WinFRPage))) && !RuntimeHelper.IsElevated)
+                // 如果导航到高级选项设置页面、更新页面、文件恢复页面，而且是非管理员模式，显示提示对话框
+                if ((Equals(currentPageType, typeof(AdvancedSystemOptionsPage)) || Equals(currentPageType, typeof(UpdateManagerPage)) || Equals(currentPageType, typeof(WinFRPage))) && !RuntimeHelper.IsElevated)
                 {
                     await ShowDialogAsync(new NeedElevatedDialog());
                     NavigationFrom();
