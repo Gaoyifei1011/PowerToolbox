@@ -316,32 +316,6 @@
                             Click="{x:Bind OnHideDesktopShortcutArrowClicked}"
                             Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('Hide')}" />
                     </Grid>
-
-                    <!--  创建快捷方式不添加快捷方式文字  -->
-                    <Grid
-                        Height="52"
-                        Padding="44,0,16,0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center">
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock
-                            Grid.Column="0"
-                            VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('CreateShortcutWithoutShortcutText')}" />
-
-                        <ToggleSwitch
-                            Grid.Column="1"
-                            IsOn="{x:Bind IsShortcutWithoutShortcutTextEnabled, Mode=OneWay}"
-                            OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('CreateShortcutWithoutShortcutTextOffContent')}"
-                            OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('CreateShortcutWithoutShortcutTextOnContent')}"
-                            Style="{StaticResource ToggleSwitchStyle}"
-                            Toggled="{x:Bind OnCreateShortcutWithoutShortcutTextToggled}" />
-                    </Grid>
                 </StackPanel>
             </Expander>
 
@@ -557,6 +531,34 @@
                             SelectedItem="{x:Bind FileExplorerHomePosition, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnFileExplorerHomePositionSelectionChanged}"
                             Style="{StaticResource ComboBoxStyle}" />
+                    </Grid>
+
+                    <MenuFlyoutSeparator />
+
+                    <!--  创建快捷方式不添加快捷方式文字  -->
+                    <Grid
+                        Height="52"
+                        Padding="44,0,16,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString('CreateShortcutWithoutShortcutText')}" />
+
+                        <ToggleSwitch
+                            Grid.Column="1"
+                            IsOn="{x:Bind IsShortcutWithoutShortcutTextEnabled, Mode=OneWay}"
+                            OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('CreateShortcutWithoutShortcutTextOffContent')}"
+                            OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('CreateShortcutWithoutShortcutTextOnContent')}"
+                            Style="{StaticResource ToggleSwitchStyle}"
+                            Toggled="{x:Bind OnCreateShortcutWithoutShortcutTextToggled}" />
                     </Grid>
                 </StackPanel>
             </Expander>

@@ -186,22 +186,6 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isShortcutWithoutShortcutTextEnabled;
-
-        public bool IsShortcutWithoutShortcutTextEnabled
-        {
-            get { return _isShortcutWithoutShortcutTextEnabled; }
-
-            set
-            {
-                if (!Equals(_isShortcutWithoutShortcutTextEnabled, value))
-                {
-                    _isShortcutWithoutShortcutTextEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsShortcutWithoutShortcutTextEnabled)));
-                }
-            }
-        }
-
         private ComboBoxItemModel _rightClickMenuStyle;
 
         public ComboBoxItemModel RightClickMenuStyle
@@ -262,6 +246,22 @@ namespace PowerToolbox.Views.Pages
                 {
                     _fileExplorerHomePosition = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileExplorerHomePosition)));
+                }
+            }
+        }
+
+        private bool _isShortcutWithoutShortcutTextEnabled;
+
+        public bool IsShortcutWithoutShortcutTextEnabled
+        {
+            get { return _isShortcutWithoutShortcutTextEnabled; }
+
+            set
+            {
+                if (!Equals(_isShortcutWithoutShortcutTextEnabled, value))
+                {
+                    _isShortcutWithoutShortcutTextEnabled = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsShortcutWithoutShortcutTextEnabled)));
                 }
             }
         }
@@ -1140,50 +1140,6 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 创建快捷方式不显示快捷方式文字
-        /// </summary>
-        private async void OnCreateShortcutWithoutShortcutTextToggled(object sender, RoutedEventArgs args)
-        {
-            if (sender is ToggleSwitch toggleSwitch && !Equals(IsShortcutWithoutShortcutTextEnabled, toggleSwitch.IsOn))
-            {
-                IsShortcutWithoutShortcutTextEnabled = toggleSwitch.IsOn;
-                IsShortcutWithoutShortcutTextEnabled = await Task.Run(() =>
-                {
-                    if (IsShortcutWithoutShortcutTextEnabled)
-                    {
-                        RegistryHelper.SaveRegistryKey<byte[]>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer", "link", [0x00, 0x00, 0x00, 0x00]);
-                    }
-                    else
-                    {
-                        RegistryHelper.SaveRegistryKey<byte[]>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer", "link", [0x1E, 0x00, 0x00, 0x00]);
-                    }
-
-                    byte[] linkValue = RegistryHelper.ReadRegistryKey<byte[]>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer", "link");
-                    if (linkValue is null)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        if (linkValue.Length < 4)
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            return linkValue[0] is 0 && linkValue[1] is 0 && linkValue[2] is 0 && linkValue[3] is 0;
-                        }
-                    }
-                });
-                if (advancedSystemOptionsPage is not null)
-                {
-                    advancedSystemOptionsPage.IsAdvancedSettingsInfoWarning = true;
-                    advancedSystemOptionsPage.IsRestartExplorerVisible = true;
-                }
-            }
-        }
-
-        /// <summary>
         /// 右键菜单样式选中项发生变化时触发的事件
         /// </summary>
         private async void OnRightClickMenuStyleSelectionChanged(object sender, SelectionChangedEventArgs args)
@@ -1328,6 +1284,50 @@ namespace PowerToolbox.Views.Pages
                     }
                     return fileExplorerTo;
                 });
+            }
+        }
+
+        /// <summary>
+        /// 创建快捷方式不显示快捷方式文字
+        /// </summary>
+        private async void OnCreateShortcutWithoutShortcutTextToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsShortcutWithoutShortcutTextEnabled, toggleSwitch.IsOn))
+            {
+                IsShortcutWithoutShortcutTextEnabled = toggleSwitch.IsOn;
+                IsShortcutWithoutShortcutTextEnabled = await Task.Run(() =>
+                {
+                    if (IsShortcutWithoutShortcutTextEnabled)
+                    {
+                        RegistryHelper.SaveRegistryKey<byte[]>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer", "link", [0x00, 0x00, 0x00, 0x00]);
+                    }
+                    else
+                    {
+                        RegistryHelper.SaveRegistryKey<byte[]>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer", "link", [0x1E, 0x00, 0x00, 0x00]);
+                    }
+
+                    byte[] linkValue = RegistryHelper.ReadRegistryKey<byte[]>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer", "link");
+                    if (linkValue is null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        if (linkValue.Length < 4)
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            return linkValue[0] is 0 && linkValue[1] is 0 && linkValue[2] is 0 && linkValue[3] is 0;
+                        }
+                    }
+                });
+                if (advancedSystemOptionsPage is not null)
+                {
+                    advancedSystemOptionsPage.IsAdvancedSettingsInfoWarning = true;
+                    advancedSystemOptionsPage.IsRestartExplorerVisible = true;
+                }
             }
         }
 
