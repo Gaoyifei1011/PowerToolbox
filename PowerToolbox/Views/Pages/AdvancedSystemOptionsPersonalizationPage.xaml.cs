@@ -55,6 +55,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string FadeoutMenuAfterClickingString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("FadeoutMenuAfterClicking");
         private readonly string FullString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Full");
         private readonly string HomeString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Home");
+        private readonly string RemovableDeviceString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("RemovableDevice");
         private readonly string SaveTaskbarThumbnailPreviewString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("SaveTaskbarThumbnailPreview");
         private readonly string ShowAnimationWhenMaximizingOrMinimizingString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("ShowAnimationWhenMaximizingOrMinimizing");
         private readonly string ShowSemitransparentSelectedRectangleString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("ShowSemitransparentSelectedRectangle");
@@ -572,6 +573,7 @@ namespace PowerToolbox.Views.Pages
                 bool linuxNavigationPaneIconVisible = GetNavigationPaneIconVisibility(linuxPath, "Linux");
                 bool photoGalleryNavigationPaneIconVisible = GetNavigationPaneIconVisibility(photoGalleryPath, "PhotoGallery");
                 bool recycleBinNavigationPaneIconVisible = GetNavigationPaneIconVisibility(recycleBinPath, "RecycleBin");
+                bool removableDeviceNavigationPaneIconVisible = GetNavigationPaneIconVisibility(null, "RemovableDevice");
 
                 NavigationPaneIconDisplayCollection.Clear();
                 NavigationPaneIconDisplayCollection.Add(new NavigationPaneIconDisplayModel()
@@ -603,6 +605,12 @@ namespace PowerToolbox.Views.Pages
                     DisplayName = libraryDisplayName,
                     IconTag = "Library",
                     IsIconVisible = libraryNavigationPaneIconVisible
+                });
+                NavigationPaneIconDisplayCollection.Add(new NavigationPaneIconDisplayModel()
+                {
+                    DisplayName = RemovableDeviceString,
+                    IconTag = "RemovableDevice",
+                    IsIconVisible = removableDeviceNavigationPaneIconVisible
                 });
 
                 IsSyncProviderNotificationsEnabled = await Task.Run(() =>
@@ -799,6 +807,19 @@ namespace PowerToolbox.Views.Pages
                             {
                                 RegistryHelper.SaveRegistryKey(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", recycleBinPath), "System.IsPinnedToNameSpaceTree", navigationPaneIconDisplay.IsIconVisible);
                                 isIconVisible = GetNavigationPaneIconVisibility(recycleBinPath, navigationPaneIconDisplay.IconTag);
+                                break;
+                            }
+                        case "RemovableDevice":
+                            {
+                                if (navigationPaneIconDisplay.IsIconVisible)
+                                {
+                                    RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}", string.Empty, "Removable Drives");
+                                }
+                                else
+                                {
+                                    RegistryHelper.RemoveRegistryKey(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}");
+                                }
+                                isIconVisible = GetNavigationPaneIconVisibility(null, "RemovableDevice");
                                 break;
                             }
                     }
@@ -1523,6 +1544,11 @@ namespace PowerToolbox.Views.Pages
                     {
                         int? iconValue = RegistryHelper.ReadRegistryKey<int?>(Registry.CurrentUser, string.Format(@"Software\Classes\CLSID\{0}", iconPathName), "System.IsPinnedToNameSpaceTree");
                         visible = !iconValue.HasValue || iconValue.Value is not 0;
+                        break;
+                    }
+                case "RemovableDevice":
+                    {
+                        visible = RegistryHelper.IsRegistryKeyExisted(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}");
                         break;
                     }
             }

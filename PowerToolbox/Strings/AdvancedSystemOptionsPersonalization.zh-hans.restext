@@ -25,6 +25,7 @@ NavigationPaneIconDisplay=导航窗格图标显示
 Rebuild=重建
 RebuildIconCache=重建图标缓存
 RebuildIconCacheDescription=重建图标缓存以修复图标显示异常问题
+RemovableDevice=可移动设备
 RestoreDefualtIcon=还原默认图标
 RightClickMenuStyle=右键菜单样式
 Save=保存
