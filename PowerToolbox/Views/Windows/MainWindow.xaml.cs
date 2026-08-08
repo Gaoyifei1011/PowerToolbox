@@ -47,7 +47,7 @@ namespace PowerToolbox.Views.Windows
         private readonly string AllToolsString = ResourceService.WindowResource.GetString("AllTools");
         private readonly string ContextMenuManagerString = ResourceService.WindowResource.GetString("ContextMenuManager");
         private readonly string DataVertifyEncryptString = ResourceService.WindowResource.GetString("DataVerifyEncrypt");
-        private readonly string DownloadManagerString = ResourceService.WindowResource.GetString("DataVerifyEncrypt");
+        private readonly string DownloadManagerString = ResourceService.WindowResource.GetString("DownloadManager");
         private readonly string DriverManagerString = ResourceService.WindowResource.GetString("DriverManager");
         private readonly string FileString = ResourceService.WindowResource.GetString("File");
         private readonly string FileCertificateString = ResourceService.WindowResource.GetString("FileCertificate");
