@@ -634,26 +634,30 @@ namespace PowerToolbox.Views.Pages
             if (sender is ComboBox comboBox && !Equals(SelectedSystemThemeStyle, comboBox.SelectedItem))
             {
                 SelectedSystemThemeStyle = comboBox.SelectedItem is ComboBoxItemModel systemThemeStyle ? systemThemeStyle : null;
-                int systemTheme = 0;
 
-                if (Equals(SelectedSystemThemeStyle, SystemThemeStyleList[0]))
+                if (SelectedSystemThemeStyle is not null)
                 {
-                    systemTheme = 1;
-                    IsShowThemeColorInStartAndTaskbarEnabled = false;
-                    IsShowThemeColorInStartAndTaskbar = false;
-                }
-                else if (Equals(SelectedSystemThemeStyle, SystemThemeStyleList[1]))
-                {
-                    systemTheme = 0;
-                    IsShowThemeColorInStartAndTaskbarEnabled = true;
-                }
+                    int systemTheme = 0;
 
-                Task.Run(() =>
-                {
-                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "SystemUsesLightTheme", systemTheme);
-                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence", IsShowThemeColorInStartAndTaskbar);
-                    User32Library.SendMessageTimeout(0xffff, WindowMessage.WM_SETTINGCHANGE, 0, Marshal.StringToHGlobalUni("ImmersiveColorSet"), SMTO.SMTO_ABORTIFHUNG, 50, out _);
-                });
+                    if (Equals(SelectedSystemThemeStyle, SystemThemeStyleList[0]))
+                    {
+                        systemTheme = 1;
+                        IsShowThemeColorInStartAndTaskbarEnabled = false;
+                        IsShowThemeColorInStartAndTaskbar = false;
+                    }
+                    else if (Equals(SelectedSystemThemeStyle, SystemThemeStyleList[1]))
+                    {
+                        systemTheme = 0;
+                        IsShowThemeColorInStartAndTaskbarEnabled = true;
+                    }
+
+                    Task.Run(() =>
+                    {
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "SystemUsesLightTheme", systemTheme);
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence", IsShowThemeColorInStartAndTaskbar);
+                        User32Library.SendMessageTimeout(0xffff, WindowMessage.WM_SETTINGCHANGE, 0, Marshal.StringToHGlobalUni("ImmersiveColorSet"), SMTO.SMTO_ABORTIFHUNG, 50, out _);
+                    });
+                }
             }
         }
 
@@ -665,22 +669,26 @@ namespace PowerToolbox.Views.Pages
             if (sender is ComboBox comboBox && !Equals(SelectedAppThemeStyle, comboBox.SelectedItem))
             {
                 SelectedAppThemeStyle = comboBox.SelectedItem is ComboBoxItemModel appTheme ? appTheme : null;
-                int apptheme = 0;
 
-                if (Equals(SelectedAppThemeStyle, AppThemeStyleList[0]))
+                if (SelectedAppThemeStyle is not null)
                 {
-                    apptheme = 1;
-                }
-                else if (Equals(SelectedSystemThemeStyle, SystemThemeStyleList[1]))
-                {
-                    apptheme = 0;
-                }
+                    int apptheme = 0;
 
-                Task.Run(() =>
-                {
-                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", apptheme);
-                    User32Library.SendMessageTimeout(0xffff, WindowMessage.WM_SETTINGCHANGE, 0, Marshal.StringToHGlobalUni("ImmersiveColorSet"), SMTO.SMTO_ABORTIFHUNG, 50, out _);
-                });
+                    if (Equals(SelectedAppThemeStyle, AppThemeStyleList[0]))
+                    {
+                        apptheme = 1;
+                    }
+                    else if (Equals(SelectedSystemThemeStyle, SystemThemeStyleList[1]))
+                    {
+                        apptheme = 0;
+                    }
+
+                    Task.Run(() =>
+                    {
+                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", apptheme);
+                        User32Library.SendMessageTimeout(0xffff, WindowMessage.WM_SETTINGCHANGE, 0, Marshal.StringToHGlobalUni("ImmersiveColorSet"), SMTO.SMTO_ABORTIFHUNG, 50, out _);
+                    });
+                }
             }
         }
 
@@ -858,24 +866,27 @@ namespace PowerToolbox.Views.Pages
                 SelectedAutoThemeSwitchType = comboBox.SelectedItem is ComboBoxItemModel autoThemeSwitchType ? autoThemeSwitchType : null;
             }
 
-            if (IsAutoThemeSwitchEnable)
+            if (SelectedAutoThemeSwitchType is not null)
             {
-                if (Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]))
+                if (IsAutoThemeSwitchEnable)
                 {
-                    if (!DevicePositionService.IsInitialized)
+                    if (Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]))
                     {
-                        await InitializeDeviceServiceAsync();
+                        if (!DevicePositionService.IsInitialized)
+                        {
+                            await InitializeDeviceServiceAsync();
+                        }
                     }
-                }
-                else
-                {
-                    if (DevicePositionService.IsInitialized)
+                    else
                     {
-                        await UnInitializeDeviceServiceAsync();
-                        Latitude = NotAvailableString;
-                        Longitude = NotAvailableString;
-                        SunriseTime = NotAvailableString;
-                        SunsetTime = NotAvailableString;
+                        if (DevicePositionService.IsInitialized)
+                        {
+                            await UnInitializeDeviceServiceAsync();
+                            Latitude = NotAvailableString;
+                            Longitude = NotAvailableString;
+                            SunriseTime = NotAvailableString;
+                            SunsetTime = NotAvailableString;
+                        }
                     }
                 }
             }

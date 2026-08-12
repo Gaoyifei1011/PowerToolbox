@@ -909,25 +909,28 @@ namespace PowerToolbox.Views.Pages
                 SelectedFileMatchRule = comboBox.SelectedItem is ComboBoxItemModel fileMatchRule ? fileMatchRule : null;
                 MenuFileMatchFormatText = string.Empty;
 
-                if (Equals(SelectedFileMatchRule, FileMatchRuleList[0]) || Equals(SelectedFileMatchRule, FileMatchRuleList[4]))
+                if (SelectedFileMatchRule is not null)
                 {
-                    NeedInputMatchFormat = false;
-                    MenuFileMatchFormatPHText = string.Empty;
-                }
-                else if (Equals(SelectedFileMatchRule, FileMatchRuleList[1]))
-                {
-                    NeedInputMatchFormat = true;
-                    MenuFileMatchFormatPHText = MenuFileNameFormatString;
-                }
-                else if (Equals(SelectedFileMatchRule, FileMatchRuleList[2]))
-                {
-                    NeedInputMatchFormat = true;
-                    MenuFileMatchFormatPHText = string.Format(MenuFileNameRegexFormatString, @"[\s\S]+.jpg | [\w\W]*.jpg");
-                }
-                else if (Equals(SelectedFileMatchRule, FileMatchRuleList[3]))
-                {
-                    NeedInputMatchFormat = true;
-                    MenuFileMatchFormatPHText = MenuFileExtensionFormatString;
+                    if (Equals(SelectedFileMatchRule, FileMatchRuleList[0]) || Equals(SelectedFileMatchRule, FileMatchRuleList[4]))
+                    {
+                        NeedInputMatchFormat = false;
+                        MenuFileMatchFormatPHText = string.Empty;
+                    }
+                    else if (Equals(SelectedFileMatchRule, FileMatchRuleList[1]))
+                    {
+                        NeedInputMatchFormat = true;
+                        MenuFileMatchFormatPHText = MenuFileNameFormatString;
+                    }
+                    else if (Equals(SelectedFileMatchRule, FileMatchRuleList[2]))
+                    {
+                        NeedInputMatchFormat = true;
+                        MenuFileMatchFormatPHText = string.Format(MenuFileNameRegexFormatString, @"[\s\S]+.jpg | [\w\W]*.jpg");
+                    }
+                    else if (Equals(SelectedFileMatchRule, FileMatchRuleList[3]))
+                    {
+                        NeedInputMatchFormat = true;
+                        MenuFileMatchFormatPHText = MenuFileExtensionFormatString;
+                    }
                 }
             }
         }

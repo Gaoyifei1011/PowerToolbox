@@ -829,6 +829,17 @@ namespace PowerToolbox.Views.Pages
             TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
             TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "Custom", DisplayMember = CustomString });
             SelectedTextEncodingType = TextEncodingTypeList[9];
+
+            SelectedIndex = 0;
+            ResultSeverity = InfoBarSeverity.Informational;
+            if (!IsEncrypting && SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
+            {
+                ResultMessage = FileInitializeString;
+            }
+            else if (!IsEncrypting && SelectedIndex is 1 && ResultSeverity is InfoBarSeverity.Informational)
+            {
+                ResultMessage = ContentInitializeString;
+            }
         }
 
         #region 第一部分：数据加密页面——挂载的事件
@@ -940,6 +951,7 @@ namespace PowerToolbox.Views.Pages
             if (sender is RadioButtons radioButtons && !Equals(SelectedIndex, radioButtons.SelectedIndex))
             {
                 SelectedIndex = radioButtons.SelectedIndex;
+
                 if (!IsEncrypting && SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
                 {
                     ResultMessage = FileInitializeString;
@@ -1019,420 +1031,423 @@ namespace PowerToolbox.Views.Pages
                 EncryptKeyText = string.Empty;
                 InitializationVectorText = string.Empty;
 
-                switch (SelectedDataEncryptType.DataEncryptType)
+                if (SelectedDataEncryptType is not null)
                 {
-                    case DataEncryptType.AES:
-                        {
-                            EncryptKeyPHText = EncryptKey162432SizeString;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = InitializationVector16SizeString;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = true;
-                            HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
-                            HasEncryptedBlockCipherMode = true;
-                            HasPaddingMode = true;
-                            HasOffset = false;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    case DataEncryptType.CaesarCipher:
-                        {
-                            SelectedIndex = 1;
-                            EncryptKeyPHText = string.Empty;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = string.Empty;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = false;
-                            HasEncryptKeyStringType = false;
-                            HasInitializationVector = false;
-                            HasEncryptedBlockCipherMode = false;
-                            HasPaddingMode = false;
-                            HasOffset = true;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    case DataEncryptType.ChaCha20:
-                        {
-                            EncryptKeyPHText = EncryptKey32SizeString;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = InitializationVector12SizeString;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = true;
-                            HasEncryptKeyStringType = true;
-                            HasInitializationVector = true;
-                            HasEncryptedBlockCipherMode = false;
-                            HasPaddingMode = false;
-                            HasOffset = false;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    case DataEncryptType.DES:
-                        {
-                            EncryptKeyPHText = EncryptKey8SizeString;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = InitializationVector8SizeString;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = true;
-                            HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
-                            HasEncryptedBlockCipherMode = true;
-                            HasPaddingMode = true;
-                            HasOffset = false;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    case DataEncryptType.MorseCode:
-                        {
-                            SelectedIndex = 1;
-                            EncryptKeyPHText = string.Empty;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = string.Empty;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = false;
-                            HasEncryptKey = false;
-                            HasEncryptKeyStringType = false;
-                            HasInitializationVector = false;
-                            HasEncryptedBlockCipherMode = false;
-                            HasPaddingMode = false;
-                            HasOffset = false;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    case DataEncryptType.Rabbit:
-                        {
-                            EncryptKeyPHText = EncryptKey16SizeString;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = InitializationVector8SizeString;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = true;
-                            HasEncryptKeyStringType = true;
-                            HasInitializationVector = true;
-                            HasEncryptedBlockCipherMode = false;
-                            HasPaddingMode = true;
-                            HasOffset = false;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    case DataEncryptType.RC2:
-                        {
-                            EncryptKeyPHText = EncryptKey16SizeString;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = InitializationVector8SizeString;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = true;
-                            HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
-                            HasEncryptedBlockCipherMode = true;
-                            HasPaddingMode = true;
-                            HasOffset = false;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    case DataEncryptType.RC4:
-                        {
-                            EncryptKeyPHText = EncryptKey16SizeString;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = string.Empty;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = true;
-                            HasEncryptKeyStringType = true;
-                            HasInitializationVector = false;
-                            HasEncryptedBlockCipherMode = false;
-                            HasPaddingMode = false;
-                            HasOffset = false;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    case DataEncryptType.RC5:
-                        {
-                            EncryptKeyPHText = EncryptKey16SizeString;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = InitializationVector8SizeString;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = true;
-                            HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
-                            HasEncryptedBlockCipherMode = true;
-                            HasPaddingMode = true;
-                            HasOffset = false;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    case DataEncryptType.RC6:
-                        {
-                            EncryptKeyPHText = EncryptKey16SizeString;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = InitializationVector16SizeString;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = true;
-                            HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
-                            HasEncryptedBlockCipherMode = true;
-                            HasPaddingMode = true;
-                            HasOffset = false;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    case DataEncryptType.Rijndael:
-                        {
-                            EncryptKeyPHText = EncryptKey162432SizeString;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = InitializationVector16SizeString;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = true;
-                            HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
-                            HasEncryptedBlockCipherMode = true;
-                            HasPaddingMode = true;
-                            HasOffset = false;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    case DataEncryptType.RSA:
-                        {
-                            EncryptKeyPHText = string.Empty;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = string.Empty;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = false;
-                            HasEncryptKeyStringType = false;
-                            HasInitializationVector = false;
-                            HasEncryptedBlockCipherMode = false;
-                            HasPaddingMode = false;
-                            HasOffset = false;
-                            HasEncryptPublicKey = true;
-                            HasEncryptPrivateKey = true;
-                            HasRSAEncryptionPaddingMode = true;
-                            HasRSAEncryptionOtherOptions = true;
-                            break;
-                        }
-                    case DataEncryptType.SM4:
-                        {
-                            EncryptKeyPHText = EncryptKey16SizeString;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = InitializationVector16SizeString;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = true;
-                            HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
-                            HasEncryptedBlockCipherMode = true;
-                            HasPaddingMode = true;
-                            HasOffset = false;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    case DataEncryptType.TripleDES:
-                        {
-                            EncryptKeyPHText = EncryptKey1624SizeString;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = InitializationVector16SizeString;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = true;
-                            HasEncryptKeyStringType = true;
-                            HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
-                            HasEncryptedBlockCipherMode = true;
-                            HasPaddingMode = true;
-                            HasOffset = false;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    case DataEncryptType.XOR:
-                        {
-                            SelectedIndex = 1;
-                            EncryptKeyPHText = EncryptKeyInitializeString;
-                            EncryptKeyText = string.Empty;
-                            SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                            InitializationVectorPHText = string.Empty;
-                            InitializationVectorText = string.Empty;
-                            SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
-                            SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
-                            SelectedPaddingMode = PaddingModeList[0];
-                            SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
-                            Offset = 0;
-                            EncryptPublicKeyText = string.Empty;
-                            EncryptPrivateKeyText = string.Empty;
-                            HasEncryptOptions = true;
-                            HasEncryptKey = true;
-                            HasEncryptKeyStringType = false;
-                            HasInitializationVector = false;
-                            HasEncryptedBlockCipherMode = false;
-                            HasPaddingMode = false;
-                            HasOffset = false;
-                            HasEncryptPublicKey = false;
-                            HasEncryptPrivateKey = false;
-                            HasRSAEncryptionPaddingMode = false;
-                            HasRSAEncryptionOtherOptions = false;
-                            break;
-                        }
-                    default:
-                        {
-                            break;
-                        }
+                    switch (SelectedDataEncryptType.DataEncryptType)
+                    {
+                        case DataEncryptType.AES:
+                            {
+                                EncryptKeyPHText = EncryptKey162432SizeString;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = InitializationVector16SizeString;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = true;
+                                HasEncryptKeyStringType = true;
+                                HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
+                                HasEncryptedBlockCipherMode = true;
+                                HasPaddingMode = true;
+                                HasOffset = false;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        case DataEncryptType.CaesarCipher:
+                            {
+                                SelectedIndex = 1;
+                                EncryptKeyPHText = string.Empty;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = string.Empty;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = false;
+                                HasEncryptKeyStringType = false;
+                                HasInitializationVector = false;
+                                HasEncryptedBlockCipherMode = false;
+                                HasPaddingMode = false;
+                                HasOffset = true;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        case DataEncryptType.ChaCha20:
+                            {
+                                EncryptKeyPHText = EncryptKey32SizeString;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = InitializationVector12SizeString;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = true;
+                                HasEncryptKeyStringType = true;
+                                HasInitializationVector = true;
+                                HasEncryptedBlockCipherMode = false;
+                                HasPaddingMode = false;
+                                HasOffset = false;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        case DataEncryptType.DES:
+                            {
+                                EncryptKeyPHText = EncryptKey8SizeString;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = InitializationVector8SizeString;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = true;
+                                HasEncryptKeyStringType = true;
+                                HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
+                                HasEncryptedBlockCipherMode = true;
+                                HasPaddingMode = true;
+                                HasOffset = false;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        case DataEncryptType.MorseCode:
+                            {
+                                SelectedIndex = 1;
+                                EncryptKeyPHText = string.Empty;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = string.Empty;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = false;
+                                HasEncryptKey = false;
+                                HasEncryptKeyStringType = false;
+                                HasInitializationVector = false;
+                                HasEncryptedBlockCipherMode = false;
+                                HasPaddingMode = false;
+                                HasOffset = false;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        case DataEncryptType.Rabbit:
+                            {
+                                EncryptKeyPHText = EncryptKey16SizeString;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = InitializationVector8SizeString;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = true;
+                                HasEncryptKeyStringType = true;
+                                HasInitializationVector = true;
+                                HasEncryptedBlockCipherMode = false;
+                                HasPaddingMode = true;
+                                HasOffset = false;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        case DataEncryptType.RC2:
+                            {
+                                EncryptKeyPHText = EncryptKey16SizeString;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = InitializationVector8SizeString;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = true;
+                                HasEncryptKeyStringType = true;
+                                HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
+                                HasEncryptedBlockCipherMode = true;
+                                HasPaddingMode = true;
+                                HasOffset = false;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        case DataEncryptType.RC4:
+                            {
+                                EncryptKeyPHText = EncryptKey16SizeString;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = string.Empty;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = true;
+                                HasEncryptKeyStringType = true;
+                                HasInitializationVector = false;
+                                HasEncryptedBlockCipherMode = false;
+                                HasPaddingMode = false;
+                                HasOffset = false;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        case DataEncryptType.RC5:
+                            {
+                                EncryptKeyPHText = EncryptKey16SizeString;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = InitializationVector8SizeString;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = true;
+                                HasEncryptKeyStringType = true;
+                                HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
+                                HasEncryptedBlockCipherMode = true;
+                                HasPaddingMode = true;
+                                HasOffset = false;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        case DataEncryptType.RC6:
+                            {
+                                EncryptKeyPHText = EncryptKey16SizeString;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = InitializationVector16SizeString;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = true;
+                                HasEncryptKeyStringType = true;
+                                HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
+                                HasEncryptedBlockCipherMode = true;
+                                HasPaddingMode = true;
+                                HasOffset = false;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        case DataEncryptType.Rijndael:
+                            {
+                                EncryptKeyPHText = EncryptKey162432SizeString;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = InitializationVector16SizeString;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = true;
+                                HasEncryptKeyStringType = true;
+                                HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
+                                HasEncryptedBlockCipherMode = true;
+                                HasPaddingMode = true;
+                                HasOffset = false;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        case DataEncryptType.RSA:
+                            {
+                                EncryptKeyPHText = string.Empty;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = string.Empty;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = false;
+                                HasEncryptKeyStringType = false;
+                                HasInitializationVector = false;
+                                HasEncryptedBlockCipherMode = false;
+                                HasPaddingMode = false;
+                                HasOffset = false;
+                                HasEncryptPublicKey = true;
+                                HasEncryptPrivateKey = true;
+                                HasRSAEncryptionPaddingMode = true;
+                                HasRSAEncryptionOtherOptions = true;
+                                break;
+                            }
+                        case DataEncryptType.SM4:
+                            {
+                                EncryptKeyPHText = EncryptKey16SizeString;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = InitializationVector16SizeString;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = true;
+                                HasEncryptKeyStringType = true;
+                                HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
+                                HasEncryptedBlockCipherMode = true;
+                                HasPaddingMode = true;
+                                HasOffset = false;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        case DataEncryptType.TripleDES:
+                            {
+                                EncryptKeyPHText = EncryptKey1624SizeString;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = InitializationVector16SizeString;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = true;
+                                HasEncryptKeyStringType = true;
+                                HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
+                                HasEncryptedBlockCipherMode = true;
+                                HasPaddingMode = true;
+                                HasOffset = false;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        case DataEncryptType.XOR:
+                            {
+                                SelectedIndex = 1;
+                                EncryptKeyPHText = EncryptKeyInitializeString;
+                                EncryptKeyText = string.Empty;
+                                SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
+                                InitializationVectorPHText = string.Empty;
+                                InitializationVectorText = string.Empty;
+                                SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
+                                SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
+                                SelectedPaddingMode = PaddingModeList[0];
+                                SelectedRSAEncryptionPaddingMode = RSAEncryptionPaddingModeList[0];
+                                Offset = 0;
+                                EncryptPublicKeyText = string.Empty;
+                                EncryptPrivateKeyText = string.Empty;
+                                HasEncryptOptions = true;
+                                HasEncryptKey = true;
+                                HasEncryptKeyStringType = false;
+                                HasInitializationVector = false;
+                                HasEncryptedBlockCipherMode = false;
+                                HasPaddingMode = false;
+                                HasOffset = false;
+                                HasEncryptPublicKey = false;
+                                HasEncryptPrivateKey = false;
+                                HasRSAEncryptionPaddingMode = false;
+                                HasRSAEncryptionOtherOptions = false;
+                                break;
+                            }
+                        default:
+                            {
+                                break;
+                            }
+                    }
                 }
             }
         }
@@ -1701,11 +1716,20 @@ namespace PowerToolbox.Views.Pages
             if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedEncryptedBlockCipherMode, comboBox.SelectedItem))
             {
                 SelectedEncryptedBlockCipherMode = comboBox.SelectedItem is ComboBoxItemModel encryptedBlockCipherMode ? encryptedBlockCipherMode : null;
-                if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.AES || SelectedDataEncryptType.DataEncryptType is DataEncryptType.DES || SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC2 ||
-                    SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC5 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC6 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rijndael ||
-                    SelectedDataEncryptType.DataEncryptType is DataEncryptType.SM4 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.TripleDES)
+
+                if (SelectedEncryptedBlockCipherMode is not null)
                 {
-                    HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
+                    if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.AES ||
+                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.DES ||
+                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC2 ||
+                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC5 ||
+                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC6 ||
+                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rijndael ||
+                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.SM4 ||
+                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.TripleDES)
+                    {
+                        HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
+                    }
                 }
             }
         }

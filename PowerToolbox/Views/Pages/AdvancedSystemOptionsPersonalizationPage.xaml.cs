@@ -1147,16 +1147,24 @@ namespace PowerToolbox.Views.Pages
             if (sender is ComboBox comboBox && !Equals(RightClickMenuStyle, comboBox.SelectedItem))
             {
                 RightClickMenuStyle = comboBox.SelectedItem is ComboBoxItemModel rightClickMenuStyle ? rightClickMenuStyle : null;
+
+                if (RightClickMenuStyle is not null)
+                {
+                    await Task.Run(() =>
+                    {
+                        if (Equals(RightClickMenuStyle, RightClickMenuStyleList[0]))
+                        {
+                            RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}", true);
+                        }
+                        else if (Equals(RightClickMenuStyle, RightClickMenuStyleList[1]))
+                        {
+                            RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32", null, string.Empty);
+                        }
+                    });
+                }
+
                 bool isClassicRightClickMenuExisted = await Task.Run(() =>
                 {
-                    if (Equals(RightClickMenuStyle, RightClickMenuStyleList[0]))
-                    {
-                        RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}", true);
-                    }
-                    else if (Equals(RightClickMenuStyle, RightClickMenuStyleList[1]))
-                    {
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32", null, string.Empty);
-                    }
                     return RegistryHelper.IsRegistryKeyExisted(Registry.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32");
                 });
                 RightClickMenuStyle = isClassicRightClickMenuExisted ? RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows10ClassicMenu")) : RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows11ModernMenu"));
@@ -1176,25 +1184,32 @@ namespace PowerToolbox.Views.Pages
             if (sender is ComboBox comboBox && !Equals(FileExplorerStyle, comboBox.SelectedItem))
             {
                 FileExplorerStyle = comboBox.SelectedItem is ComboBoxItemModel fileExplorerStyle ? fileExplorerStyle : null;
+
+                if (FileExplorerStyle is not null)
+                {
+                    await Task.Run(() =>
+                    {
+                        if (Equals(FileExplorerStyle, FileExplorerStyleList[0]))
+                        {
+                            RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", true);
+                            RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", true);
+                            RegistryHelper.RemoveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout");
+                        }
+                        else if (Equals(FileExplorerStyle, FileExplorerStyleList[1]))
+                        {
+                            RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", string.Empty, "CLSID_ItemsViewAdapter");
+                            RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", string.Empty, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_");
+                            RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", "ThreadingModel", "Apartment");
+                            RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", string.Empty, "File Explorer Xaml Island View Adapter");
+                            RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", string.Empty, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_");
+                            RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", "ThreadingModel", "Apartment");
+                            RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout", layout);
+                        }
+                    });
+                }
+
                 bool isClassicFileExplorerExisted = await Task.Run(() =>
                 {
-                    if (Equals(RightClickMenuStyle, RightClickMenuStyleList[0]))
-                    {
-                        RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", true);
-                        RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", true);
-                        RegistryHelper.RemoveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout");
-                    }
-                    else if (Equals(RightClickMenuStyle, RightClickMenuStyleList[1]))
-                    {
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", string.Empty, "CLSID_ItemsViewAdapter");
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", string.Empty, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_");
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", "ThreadingModel", "Apartment");
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", string.Empty, "File Explorer Xaml Island View Adapter");
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", string.Empty, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_");
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}\InProcServer32", "ThreadingModel", "Apartment");
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout", layout);
-                    }
-
                     string itemsViewAdapter = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", string.Empty);
                     string fileExplorerDllPath1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", string.Empty);
                     string apartment1 = RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", "ThreadingModel");
@@ -1242,21 +1257,28 @@ namespace PowerToolbox.Views.Pages
             if (sender is ComboBox comboBox && !Equals(FileExplorerHomePosition, comboBox.SelectedItem))
             {
                 FileExplorerHomePosition = comboBox.SelectedItem is ComboBoxItemModel fileExplorerHomePosition ? fileExplorerHomePosition : null;
+
+                if (FileExplorerHomePosition is not null)
+                {
+                    await Task.Run(() =>
+                    {
+                        if (Equals(FileExplorerHomePosition, FileExplorerHomePositionList[0]))
+                        {
+                            RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo", 1);
+                        }
+                        else if (Equals(FileExplorerHomePosition, FileExplorerHomePositionList[1]))
+                        {
+                            RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo", 2);
+                        }
+                        else if (Equals(FileExplorerHomePosition, FileExplorerHomePositionList[2]))
+                        {
+                            RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo", 3);
+                        }
+                    });
+                }
+
                 FileExplorerHomePosition = await Task.Run(() =>
                 {
-                    if (Equals(FileExplorerHomePosition, FileExplorerHomePositionList[0]))
-                    {
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo", 1);
-                    }
-                    else if (Equals(FileExplorerHomePosition, FileExplorerHomePositionList[1]))
-                    {
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo", 2);
-                    }
-                    else if (Equals(FileExplorerHomePosition, FileExplorerHomePositionList[2]))
-                    {
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo", 3);
-                    }
-
                     ComboBoxItemModel fileExplorerTo = FileExplorerHomePositionList[1];
                     int launchTo = RegistryHelper.ReadRegistryKey<int>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo");
                     switch (launchTo)
@@ -1433,7 +1455,8 @@ namespace PowerToolbox.Views.Pages
             if (sender is ComboBox comboBox && !Equals(VisualEffectsPlan, comboBox.SelectedItem))
             {
                 VisualEffectsPlan = comboBox.SelectedItem is ComboBoxItemModel visualEffectsPlan ? visualEffectsPlan : null;
-                if (VisualEffectsPlan.SelectedValue is string tag)
+
+                if (VisualEffectsPlan is not null && VisualEffectsPlan.SelectedValue is string tag)
                 {
                     switch (tag)
                     {

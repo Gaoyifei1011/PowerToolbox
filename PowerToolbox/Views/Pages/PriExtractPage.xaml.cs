@@ -671,7 +671,11 @@ namespace PowerToolbox.Views.Pages
             if (isLoadCompleted && sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedLanguage, comboBox.SelectedItem))
             {
                 SelectedLanguage = comboBox.SelectedItem is ComboBoxItemModel language ? language : null;
-                await GetFilteredStringAsync();
+
+                if (SelectedLanguage is not null)
+                {
+                    await GetFilteredStringAsync();
+                }
             }
         }
 

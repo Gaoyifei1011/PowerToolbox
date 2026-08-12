@@ -671,58 +671,61 @@ namespace PowerToolbox.Views.Pages
             {
                 SelectedHibernationFileType = comboBox.SelectedItem is ComboBoxItemModel hibernationFileType ? hibernationFileType : null;
 
-                if (RuntimeHelper.IsElevated)
+                if (SelectedHibernationFileType is not null)
                 {
                     await Task.Run(() =>
                     {
-                        if (SelectedHibernationFileType is not null && SelectedHibernationFileType.SelectedValue is "HibernationFileTypeReduced")
+                        if (RuntimeHelper.IsElevated)
                         {
-                            try
+                            if (SelectedHibernationFileType.SelectedValue is "HibernationFileTypeReduced")
                             {
-                                Process powerCfgProcess = Process.Start(new ProcessStartInfo()
+                                try
                                 {
-                                    FileName = "powercfg.exe",
-                                    Arguments = "/h /size 0",
-                                    UseShellExecute = false,
-                                    CreateNoWindow = true,
-                                    WindowStyle = ProcessWindowStyle.Hidden
-                                });
-                                powerCfgProcess.WaitForExit();
-                                powerCfgProcess.Dispose();
-                                powerCfgProcess = Process.Start(new ProcessStartInfo()
+                                    Process powerCfgProcess = Process.Start(new ProcessStartInfo()
+                                    {
+                                        FileName = "powercfg.exe",
+                                        Arguments = "/h /size 0",
+                                        UseShellExecute = false,
+                                        CreateNoWindow = true,
+                                        WindowStyle = ProcessWindowStyle.Hidden
+                                    });
+                                    powerCfgProcess.WaitForExit();
+                                    powerCfgProcess.Dispose();
+                                    powerCfgProcess = Process.Start(new ProcessStartInfo()
+                                    {
+                                        FileName = "powercfg.exe",
+                                        Arguments = "/h /type reduced",
+                                        UseShellExecute = false,
+                                        CreateNoWindow = true,
+                                        WindowStyle = ProcessWindowStyle.Hidden
+                                    });
+                                    powerCfgProcess.WaitForExit();
+                                    powerCfgProcess.Dispose();
+                                }
+                                catch (Exception e)
                                 {
-                                    FileName = "powercfg.exe",
-                                    Arguments = "/h /type reduced",
-                                    UseShellExecute = false,
-                                    CreateNoWindow = true,
-                                    WindowStyle = ProcessWindowStyle.Hidden
-                                });
-                                powerCfgProcess.WaitForExit();
-                                powerCfgProcess.Dispose();
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(OnHibernationFileTypeSelectionChanged), 1, e);
+                                }
                             }
-                            catch (Exception e)
+                            else if (SelectedHibernationFileType.SelectedValue is "HibernationFileTypeFull")
                             {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(OnHibernationFileTypeSelectionChanged), 1, e);
-                            }
-                        }
-                        else if (SelectedHibernationFileType.SelectedValue is "HibernationFileTypeFull")
-                        {
-                            try
-                            {
-                                Process powerCfgProcess = Process.Start(new ProcessStartInfo()
+                                try
                                 {
-                                    FileName = "powercfg.exe",
-                                    Arguments = "/h /type full",
-                                    UseShellExecute = false,
-                                    CreateNoWindow = true,
-                                    WindowStyle = ProcessWindowStyle.Hidden
-                                });
-                                powerCfgProcess.WaitForExit();
-                                powerCfgProcess.Dispose();
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(OnHibernationFileTypeSelectionChanged), 2, e);
+                                    Process powerCfgProcess = Process.Start(new ProcessStartInfo()
+                                    {
+                                        FileName = "powercfg.exe",
+                                        Arguments = "/h /type full",
+                                        UseShellExecute = false,
+                                        CreateNoWindow = true,
+                                        WindowStyle = ProcessWindowStyle.Hidden
+                                    });
+                                    powerCfgProcess.WaitForExit();
+                                    powerCfgProcess.Dispose();
+                                }
+                                catch (Exception e)
+                                {
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(OnHibernationFileTypeSelectionChanged), 2, e);
+                                }
                             }
                         }
                     });
@@ -1019,9 +1022,17 @@ namespace PowerToolbox.Views.Pages
             if (sender is ComboBox comboBox && !Equals(SelectedNotifyMode, comboBox.SelectedItem))
             {
                 SelectedNotifyMode = comboBox.SelectedItem is ComboBoxItemModel notifyMode ? notifyMode : null;
+
+                if (SelectedNotifyMode is not null)
+                {
+                    await Task.Run(() =>
+                    {
+                        UACHelper.SetUacLevel((UacLevel)SelectedNotifyMode.SelectedValue);
+                    });
+                }
+
                 UacLevel uacLevel = await Task.Run(() =>
                 {
-                    UACHelper.SetUacLevel((UacLevel)SelectedNotifyMode.SelectedValue);
                     return UACHelper.GetUacLevel();
                 });
                 SelectedNotifyMode = NotifyModeList.Find((item) => Equals(item.SelectedValue, uacLevel));

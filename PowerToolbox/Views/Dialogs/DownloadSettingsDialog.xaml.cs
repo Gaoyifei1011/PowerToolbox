@@ -181,7 +181,12 @@ namespace PowerToolbox.Views.Dialogs
             if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(DoEngineMode, comboBox.SelectedItem))
             {
                 DoEngineMode = comboBox.SelectedItem is ComboBoxItemModel doEngineMode ? doEngineMode : null;
-                DownloadOptionsService.SetDoEngineMode(Convert.ToString(DoEngineMode.SelectedValue));
+
+                if (DoEngineMode is not null)
+                {
+                    DownloadOptionsService.SetDoEngineMode(Convert.ToString(DoEngineMode.SelectedValue));
+                }
+
                 DoEngineMode = DoEngineModeList.Find(item => string.Equals(Convert.ToString(item.SelectedValue), DownloadOptionsService.DoEngineMode, StringComparison.OrdinalIgnoreCase));
             }
         }

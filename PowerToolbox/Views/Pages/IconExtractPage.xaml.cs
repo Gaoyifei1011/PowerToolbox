@@ -566,7 +566,7 @@ namespace PowerToolbox.Views.Pages
 
                     if (Equals(SelectedGetIconType, GetIconTypeList[0]))
                     {
-                        int iconIndex = Convert.ToInt32((selectedItemsList.Last() as IconModel).DisplayIndex);
+                        int iconIndex = Convert.ToInt32((selectedItemsList.First() as IconModel).DisplayIndex);
 
                         try
                         {
@@ -673,69 +673,72 @@ namespace PowerToolbox.Views.Pages
             {
                 SelectedIconSize = comboBox.SelectedItem is ComboBoxItemModel iconSize ? iconSize : null;
 
-                if (Equals(SelectedGetIconType, GetIconTypeList[0]))
+                if (SelectedIconSize is not null)
                 {
-                    if (IconsGridView.SelectedItem is not null)
+                    if (Equals(SelectedGetIconType, GetIconTypeList[0]))
                     {
-                        int iconIndex = Convert.ToInt32((IconsGridView.SelectedItem as IconModel).DisplayIndex);
+                        if (IconsGridView.SelectedItem is not null)
+                        {
+                            int iconIndex = Convert.ToInt32((IconsGridView.SelectedItem as IconModel).DisplayIndex);
 
+                            try
+                            {
+                                Icon icon = GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.SelectedValue));
+                                MemoryStream memoryStream = new();
+                                icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
+                                memoryStream.Seek(0, SeekOrigin.Begin);
+                                BitmapImage bitmapImage = new();
+                                bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
+                                ImageSource = bitmapImage;
+                                IsImageEmpty = false;
+                                icon.Dispose();
+                                memoryStream.Dispose();
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnIconSizeSelectionChanged), 1, e);
+                            }
+                        }
+                    }
+                    else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
+                    {
                         try
                         {
-                            Icon icon = GetFixedSizeIcon(iconIndex, Convert.ToInt32(SelectedIconSize.SelectedValue));
-                            MemoryStream memoryStream = new();
-                            icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                            memoryStream.Seek(0, SeekOrigin.Begin);
-                            BitmapImage bitmapImage = new();
-                            bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
-                            ImageSource = bitmapImage;
-                            IsImageEmpty = false;
-                            icon.Dispose();
-                            memoryStream.Dispose();
+                            int size = Convert.ToInt32(SelectedIconSize.SelectedValue);
+                            Icon icon = null;
+                            if (size is 16)
+                            {
+                                icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_SMALL);
+                            }
+                            else if (size is 32)
+                            {
+                                icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_LARGE);
+                            }
+                            else if (size is 48)
+                            {
+                                icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_EXTRALARGE);
+                            }
+                            else if (size is 256)
+                            {
+                                icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_JUMBO);
+                            }
+
+                            if (icon is not null)
+                            {
+                                MemoryStream memoryStream = new();
+                                icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
+                                memoryStream.Seek(0, SeekOrigin.Begin);
+                                BitmapImage bitmapImage = new();
+                                bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
+                                ImageSource = bitmapImage;
+                                IsImageEmpty = false;
+                                memoryStream.Dispose();
+                            }
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnIconSizeSelectionChanged), 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnIconSizeSelectionChanged), 2, e);
                         }
-                    }
-                }
-                else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
-                {
-                    try
-                    {
-                        int size = Convert.ToInt32(SelectedIconSize.SelectedValue);
-                        Icon icon = null;
-                        if (size is 16)
-                        {
-                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_SMALL);
-                        }
-                        else if (size is 32)
-                        {
-                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_LARGE);
-                        }
-                        else if (size is 48)
-                        {
-                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_EXTRALARGE);
-                        }
-                        else if (size is 256)
-                        {
-                            icon = GetFixedSizeAssociatedIcon(filePath, SHIL.SHIL_JUMBO);
-                        }
-
-                        if (icon is not null)
-                        {
-                            MemoryStream memoryStream = new();
-                            icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                            memoryStream.Seek(0, SeekOrigin.Begin);
-                            BitmapImage bitmapImage = new();
-                            bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
-                            ImageSource = bitmapImage;
-                            IsImageEmpty = false;
-                            memoryStream.Dispose();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnIconSizeSelectionChanged), 2, e);
                     }
                 }
             }

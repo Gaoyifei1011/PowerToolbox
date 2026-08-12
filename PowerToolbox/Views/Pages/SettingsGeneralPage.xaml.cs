@@ -231,7 +231,12 @@ namespace PowerToolbox.Views.Pages
             if (sender is ComboBox comboBox && !Equals(Theme, comboBox.SelectedItem))
             {
                 Theme = comboBox.SelectedItem is ComboBoxItemModel theme ? theme : null;
-                ThemeService.SetTheme(Convert.ToString(Theme.SelectedValue));
+
+                if (Theme is not null)
+                {
+                    ThemeService.SetTheme(Convert.ToString(Theme.SelectedValue));
+                }
+
                 Theme = ThemeList.Find(item => Equals(Convert.ToString(item.SelectedValue), ThemeService.AppTheme));
             }
         }
@@ -244,7 +249,12 @@ namespace PowerToolbox.Views.Pages
             if (sender is ComboBox comboBox && !Equals(Backdrop, comboBox.SelectedItem))
             {
                 Backdrop = comboBox.SelectedItem is ComboBoxItemModel backdrop ? backdrop : null;
-                BackdropService.SetBackdrop(Convert.ToString(Backdrop.SelectedValue));
+
+                if (Backdrop is not null)
+                {
+                    BackdropService.SetBackdrop(Convert.ToString(Backdrop.SelectedValue));
+                }
+
                 Backdrop = BackdropList.Find(item => Equals(Convert.ToString(item.SelectedValue), BackdropService.AppBackdrop));
                 AlwaysShowBackdropEnabled = IsAdvancedEffectsEnabled() && !string.Equals(Convert.ToString(Backdrop.SelectedValue), Convert.ToString(BackdropList[0].SelectedValue));
 
@@ -313,7 +323,12 @@ namespace PowerToolbox.Views.Pages
             if (sender is ComboBox comboBox && !Equals(AppLanguage, comboBox.SelectedItem))
             {
                 AppLanguage = comboBox.SelectedItem is ComboBoxItemModel language ? language : null;
-                LanguageService.SetLanguage(LanguageService.LanguageList.Find(item => string.Equals(Convert.ToString(AppLanguage.SelectedValue), item.Key)));
+
+                if (AppLanguage is not null)
+                {
+                    LanguageService.SetLanguage(LanguageService.LanguageList.Find(item => string.Equals(Convert.ToString(AppLanguage.SelectedValue), item.Key)));
+                }
+
                 foreach (ComboBoxItemModel languageItem in LanguageCollection)
                 {
                     if (string.Equals(Convert.ToString(languageItem.SelectedValue), LanguageService.AppLanguage.Key, StringComparison.OrdinalIgnoreCase))
