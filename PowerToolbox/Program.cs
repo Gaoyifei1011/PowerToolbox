@@ -1,7 +1,4 @@
-﻿using Microsoft.UI.Dispatching;
-using Microsoft.UI.Xaml;
-using PowerToolbox.Extensions.DataType.Class;
-using PowerToolbox.Helpers.Root;
+﻿using PowerToolbox.Helpers.Root;
 using PowerToolbox.Services.Download;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
@@ -57,12 +54,7 @@ namespace PowerToolbox
 
             InitializeProgramResources();
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-
-            Application.Start((param) =>
-            {
-                SynchronizationContext.SetSynchronizationContext(new DispatcherQueueSynchronizationContext(DispatcherQueue.GetForCurrentThread()));
-                new MainApp();
-            });
+            XamlGeneratedProgram.XamlGeneratedMain();
         }
 
         /// <summary>

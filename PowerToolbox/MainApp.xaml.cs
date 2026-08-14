@@ -1,12 +1,15 @@
 ﻿using Microsoft.UI;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Services.Download;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Windows;
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading;
 
 // 抑制 CA1822 警告
 #pragma warning disable CA1822
@@ -25,6 +28,7 @@ namespace PowerToolbox
 
         public MainApp()
         {
+            SynchronizationContext.SetSynchronizationContext(new DispatcherQueueSynchronizationContext(DispatcherQueue.GetForCurrentThread()));
             InitializeComponent();
             DispatcherShutdownMode = DispatcherShutdownMode.OnExplicitShutdown;
             UnhandledException += OnUnhandledException;
