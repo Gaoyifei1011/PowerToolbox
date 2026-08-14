@@ -307,7 +307,7 @@
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
                 CornerRadius="{StaticResource ControlCornerRadius}"
-                Visibility="{x:Bind GetDriverSuccessfullyState(DriverResultKind, x:False), Mode=OneWay}">
+                Visibility="{x:Bind GetDriverSuccessfullyVisibility(DriverResultKind, x:False), Mode=OneWay}">
 
                 <!--  正在加载中  -->
                 <StackPanel
@@ -315,7 +315,7 @@
                     VerticalAlignment="Center"
                     Orientation="Horizontal"
                     Spacing="10"
-                    Visibility="{x:Bind CheckDriverState(DriverResultKind, enum:DriverResultKind.Loading), Mode=OneWay}">
+                    Visibility="{x:Bind CheckDriverResultKindVisibility(DriverResultKind, enum:DriverResultKind.Loading), Mode=OneWay}">
 
                     <ProgressRing IsActive="True" IsEnabled="True" />
 
@@ -331,7 +331,7 @@
                     VerticalAlignment="Center"
                     Text="{x:Bind DriverFailedContent, Mode=OneWay}"
                     TextAlignment="Center"
-                    Visibility="{x:Bind CheckDriverState(DriverResultKind, enum:DriverResultKind.Failed), Mode=OneWay}" />
+                    Visibility="{x:Bind CheckDriverResultKindVisibility(DriverResultKind, enum:DriverResultKind.Failed), Mode=OneWay}" />
             </Grid>
 
             <!--  正在操作中  -->
@@ -345,7 +345,7 @@
                 BorderThickness="1"
                 ColumnSpacing="10"
                 CornerRadius="{StaticResource OverlayCornerRadius}"
-                Visibility="{x:Bind CheckDriverState(DriverResultKind, enum:DriverResultKind.Operating), Mode=OneWay}">
+                Visibility="{x:Bind CheckDriverResultKindVisibility(DriverResultKind, enum:DriverResultKind.Operating), Mode=OneWay}">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -376,7 +376,7 @@
                 ItemsSource="{x:Bind DriverCollection}"
                 SelectionChanged="{x:Bind OnSelectionChanged}"
                 SelectionMode="Multiple"
-                Visibility="{x:Bind GetDriverSuccessfullyState(DriverResultKind, x:True), Mode=OneWay}">
+                Visibility="{x:Bind GetDriverSuccessfullyVisibility(DriverResultKind, x:True), Mode=OneWay}">
 
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -727,7 +727,7 @@
                     <SystemBackdropElement CornerRadius="4,0,0,0" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
 
                     <!--  使用说明  -->
-                    <Grid Visibility="{x:Bind CheckDriverPaneKindState(DriverPaneKind, enum:DriverPaneKind.UseInstruction), Mode=OneWay}">
+                    <Grid Visibility="{x:Bind CheckDriverPaneKindVisibility(DriverPaneKind, enum:DriverPaneKind.UseInstruction), Mode=OneWay}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
@@ -839,7 +839,7 @@
                     <Grid
                         Margin="0,10,0,0"
                         CornerRadius="4,0,0,0"
-                        Visibility="{x:Bind CheckDriverPaneKindState(DriverPaneKind, enum:DriverPaneKind.TaskManager), Mode=OneWay}">
+                        Visibility="{x:Bind CheckDriverPaneKindVisibility(DriverPaneKind, enum:DriverPaneKind.TaskManager), Mode=OneWay}">
 
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />

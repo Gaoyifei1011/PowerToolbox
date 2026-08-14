@@ -1619,7 +1619,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取选中的通知模式
         /// </summary>
-        private Visibility GetSelectedNotifyMode(object selectedValue, object comparedValue)
+        private Visibility GetNotifyModeVisibility(object selectedValue, object comparedValue)
         {
             return Equals(selectedValue, comparedValue) ? Visibility.Visible : Visibility.Collapsed;
         }

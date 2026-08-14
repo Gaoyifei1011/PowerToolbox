@@ -107,7 +107,7 @@
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
             BorderThickness="1"
             CornerRadius="{StaticResource ControlCornerRadius}"
-            Visibility="{x:Bind GetSystemInformationSuccessfullyState(SystemInformationResultKind, x:False), Mode=OneWay}">
+            Visibility="{x:Bind GetSystemInformationSuccessfullyVisibility(SystemInformationResultKind, x:False), Mode=OneWay}">
 
             <!--  正在加载中  -->
             <StackPanel
@@ -115,7 +115,7 @@
                 VerticalAlignment="Center"
                 Orientation="Horizontal"
                 Spacing="10"
-                Visibility="{x:Bind CheckSystemInformationState(SystemInformationResultKind, enum:SystemInformationResultKind.Loading), Mode=OneWay}">
+                Visibility="{x:Bind CheckSystemInformationResultKindVisibility(SystemInformationResultKind, enum:SystemInformationResultKind.Loading), Mode=OneWay}">
 
                 <ProgressRing IsActive="True" IsEnabled="True" />
 
@@ -131,7 +131,7 @@
                 VerticalAlignment="Center"
                 Text="{x:Bind SystemInformationFailedContent, Mode=OneWay}"
                 TextAlignment="Center"
-                Visibility="{x:Bind CheckSystemInformationState(SystemInformationResultKind, enum:SystemInformationResultKind.Failed), Mode=OneWay}" />
+                Visibility="{x:Bind CheckSystemInformationResultKindVisibility(SystemInformationResultKind, enum:SystemInformationResultKind.Failed), Mode=OneWay}" />
         </Grid>
 
         <!--  系统信息结果列表控件  -->
@@ -142,7 +142,7 @@
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
             BorderThickness="1"
             CornerRadius="{ThemeResource ControlCornerRadius}"
-            Visibility="{x:Bind GetSystemInformationSuccessfullyState(SystemInformationResultKind, x:True), Mode=OneWay}">
+            Visibility="{x:Bind GetSystemInformationSuccessfullyVisibility(SystemInformationResultKind, x:True), Mode=OneWay}">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

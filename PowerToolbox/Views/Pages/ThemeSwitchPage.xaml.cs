@@ -1611,7 +1611,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取信息栏显示状态
         /// </summary>
-        private Visibility GetInfoBarState(bool isManualCloseInfoBar, bool isThemeSwitchNotificationEnabled)
+        private Visibility GetInfoBarVisibility(bool isManualCloseInfoBar, bool isThemeSwitchNotificationEnabled)
         {
             return !isManualCloseInfoBar && isThemeSwitchNotificationEnabled ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -1628,7 +1628,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取自动切换系统主题时间显示状态值
         /// </summary>
-        private Visibility GetAutoSwitchSystemThemeTimeState(object selectedAutoThemeSwitchType, bool isAutoSwitchSystemTheme)
+        private Visibility GetAutoSwitchSystemThemeTimeVisibility(object selectedAutoThemeSwitchType, bool isAutoSwitchSystemTheme)
         {
             return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].SelectedValue) && isAutoSwitchSystemTheme ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -1636,7 +1636,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取自动切换应用主题时间显示状态值
         /// </summary>
-        private Visibility GetAutoSwitchAppThemeTimeState(object selectedAutoThemeSwitchType, bool isAutoSwitchAppTheme)
+        private Visibility GetAutoSwitchAppThemeTimeVisibility(object selectedAutoThemeSwitchType, bool isAutoSwitchAppTheme)
         {
             return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].SelectedValue) && isAutoSwitchAppTheme ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -1644,7 +1644,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取自动切换主题类型值
         /// </summary>
-        private Visibility GetAutoThemeSwitchTypeState(object selectedAutoThemeSwitchType, object comparedAutoThemeSwitchType)
+        private Visibility GetAutoThemeSwitchTypeVisibility(object selectedAutoThemeSwitchType, object comparedAutoThemeSwitchType)
         {
             return string.Equals(Convert.ToString(selectedAutoThemeSwitchType), Convert.ToString(comparedAutoThemeSwitchType)) ? Visibility.Visible : Visibility.Collapsed;
         }

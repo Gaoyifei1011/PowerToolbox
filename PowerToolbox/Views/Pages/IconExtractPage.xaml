@@ -66,7 +66,7 @@
                     SelectionChanged="{x:Bind OnSelectionChanged}"
                     SelectionMode="Extended"
                     TabIndex="1"
-                    Visibility="{x:Bind CheckIconExtractState(IconExtractResultKind, enum:IconExtractResultKind.Successfully), Mode=OneWay}">
+                    Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Successfully), Mode=OneWay}">
 
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="model:IconModel">
@@ -123,14 +123,14 @@
                     Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('PleaseSelectFile')}"
                     TextAlignment="Center"
                     TextWrapping="Wrap"
-                    Visibility="{x:Bind CheckIconExtractState(IconExtractResultKind, enum:IconExtractResultKind.Welcome), Mode=OneWay}" />
+                    Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Welcome), Mode=OneWay}" />
 
                 <!--  正在解析中  -->
                 <Grid
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     ColumnSpacing="10"
-                    Visibility="{x:Bind CheckIconExtractState(IconExtractResultKind, enum:IconExtractResultKind.Parsing), Mode=OneWay}">
+                    Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Parsing), Mode=OneWay}">
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -162,7 +162,7 @@
                     Text="{x:Bind NoResources, Mode=OneWay}"
                     TextAlignment="Center"
                     TextWrapping="Wrap"
-                    Visibility="{x:Bind CheckIconExtractState(IconExtractResultKind, enum:IconExtractResultKind.Failed), Mode=OneWay}" />
+                    Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Failed), Mode=OneWay}" />
             </Grid>
 
             <AppBarSeparator Grid.Column="1" Margin="10,0" />
@@ -241,7 +241,7 @@
                             Grid.Column="1"
                             HorizontalAlignment="Stretch"
                             Content="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('SetIconSize')}"
-                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckIconFormat(SelectedIconFormat.SelectedValue, IconFormatList[0].SelectedValue), Mode=OneWay}">
+                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckIconFormatVisibility(SelectedIconFormat.SelectedValue, IconFormatList[0].SelectedValue), Mode=OneWay}">
 
                             <DropDownButton.Flyout>
                                 <Flyout Placement="Bottom" ShouldConstrainToRootBounds="False">
@@ -258,7 +258,7 @@
                                         <SystemBackdropElement CornerRadius="{StaticResource OverlayCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
 
                                         <Grid Padding="12" RowSpacing="5">
-                                            <Grid Visibility="{x:Bind GetSelectedFileAssociatedIconSize(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}">
+                                            <Grid Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}">
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
                                                     <RowDefinition Height="Auto" />
@@ -326,7 +326,7 @@
                                                     IsChecked="{x:Bind Is256SizeEnabled, Mode=TwoWay}" />
                                             </Grid>
 
-                                            <Grid Visibility="{x:Bind GetSelectedFileAssociatedIconSize(SelectedGetIconType, GetIconTypeList[1]), Mode=OneWay}">
+                                            <Grid Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[1]), Mode=OneWay}">
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
                                                     <RowDefinition Height="Auto" />
@@ -377,7 +377,7 @@
                             SelectedItem="{x:Bind SelectedIconSize, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnIconSizeSelectionChanged}"
                             Style="{StaticResource ComboBoxStyle}"
-                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckIconFormat(SelectedIconFormat.SelectedValue, IconFormatList[1].SelectedValue), Mode=OneWay}" />
+                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckIconFormatVisibility(SelectedIconFormat.SelectedValue, IconFormatList[1].SelectedValue), Mode=OneWay}" />
                     </Grid>
                 </Grid>
 

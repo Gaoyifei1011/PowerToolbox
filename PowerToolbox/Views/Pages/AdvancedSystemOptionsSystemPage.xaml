@@ -493,7 +493,7 @@
 
                     <!--  用户账户控制通知模式说明  -->
                     <Grid Padding="44,5,16,8">
-                        <Grid RowSpacing="3" Visibility="{x:Bind GetSelectedNotifyMode(SelectedNotifyMode.SelectedValue, NotifyModeList[0].SelectedValue), Mode=OneWay}">
+                        <Grid RowSpacing="3" Visibility="{x:Bind GetNotifyModeVisibility(SelectedNotifyMode.SelectedValue, NotifyModeList[0].SelectedValue), Mode=OneWay}">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -529,7 +529,7 @@
                                 TextWrapping="Wrap" />
                         </Grid>
 
-                        <Grid RowSpacing="3" Visibility="{x:Bind GetSelectedNotifyMode(SelectedNotifyMode.SelectedValue, NotifyModeList[1].SelectedValue), Mode=OneWay}">
+                        <Grid RowSpacing="3" Visibility="{x:Bind GetNotifyModeVisibility(SelectedNotifyMode.SelectedValue, NotifyModeList[1].SelectedValue), Mode=OneWay}">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -559,7 +559,7 @@
                                 TextWrapping="Wrap" />
                         </Grid>
 
-                        <Grid RowSpacing="3" Visibility="{x:Bind GetSelectedNotifyMode(SelectedNotifyMode.SelectedValue, NotifyModeList[2].SelectedValue), Mode=OneWay}">
+                        <Grid RowSpacing="3" Visibility="{x:Bind GetNotifyModeVisibility(SelectedNotifyMode.SelectedValue, NotifyModeList[2].SelectedValue), Mode=OneWay}">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -589,7 +589,7 @@
                                 TextWrapping="Wrap" />
                         </Grid>
 
-                        <Grid RowSpacing="3" Visibility="{x:Bind GetSelectedNotifyMode(SelectedNotifyMode.SelectedValue, NotifyModeList[3].SelectedValue), Mode=OneWay}">
+                        <Grid RowSpacing="3" Visibility="{x:Bind GetNotifyModeVisibility(SelectedNotifyMode.SelectedValue, NotifyModeList[3].SelectedValue), Mode=OneWay}">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />

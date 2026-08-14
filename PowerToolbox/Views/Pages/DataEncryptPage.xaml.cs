@@ -3207,7 +3207,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取要加密的类型
         /// </summary>
-        private Visibility GetDataEncryptType(int selectedIndex, int comparedSelectedIndex)
+        private Visibility GetDataEncryptTypeVisibility(int selectedIndex, int comparedSelectedIndex)
         {
             return Equals(selectedIndex, comparedSelectedIndex) ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -3215,7 +3215,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取文字编码选项控件可见状态
         /// </summary>
-        private Visibility GetTextEncodingVisibleState(int selectedIndex, DataEncryptType selectedDataEncryptType)
+        private Visibility GetTextEncodingVisibility(int selectedIndex, DataEncryptType selectedDataEncryptType)
         {
             return selectedIndex is 1 ? selectedDataEncryptType.Equals(DataEncryptTypeList[Convert.ToInt32(DataEncryptType.CaesarCipher)].DataEncryptType) || selectedDataEncryptType.Equals(DataEncryptTypeList[Convert.ToInt32(DataEncryptType.MorseCode)].DataEncryptType) || selectedDataEncryptType.Equals(DataEncryptTypeList[Convert.ToInt32(DataEncryptType.XOR)].DataEncryptType) ? Visibility.Collapsed : Visibility.Visible : Visibility.Collapsed;
         }
@@ -3223,7 +3223,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取对应的文字编码类型
         /// </summary>
-        private Visibility GetTextEncodingType(object textEncodingType, object comparedTextEncodingType)
+        private Visibility GetTextEncodingTypeVisibility(object textEncodingType, object comparedTextEncodingType)
         {
             return string.Equals(Convert.ToString(textEncodingType), Convert.ToString(comparedTextEncodingType)) ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -3231,7 +3231,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取加密结果
         /// </summary>
-        private Visibility GetEncryptResult(InfoBarSeverity resultSeverity)
+        private Visibility GetEncryptResultVisibility(InfoBarSeverity resultSeverity)
         {
             return resultSeverity is InfoBarSeverity.Success || resultSeverity is InfoBarSeverity.Warning ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -3251,7 +3251,7 @@ namespace PowerToolbox.Views.Pages
             return resultSeverity is InfoBarSeverity.Informational && isEncrypting;
         }
 
-        private Visibility GetEncryptFailedInfoButtonState(InfoBarSeverity resultSeverity, bool isEncrypting, string encryptFailedInformation)
+        private Visibility GetEncryptFailedInfoButtonVisibility(InfoBarSeverity resultSeverity, bool isEncrypting, string encryptFailedInformation)
         {
             return (resultSeverity is InfoBarSeverity.Warning || resultSeverity is InfoBarSeverity.Error) && !isEncrypting && !string.IsNullOrEmpty(encryptFailedInformation) ? Visibility.Visible : Visibility.Collapsed;
         }

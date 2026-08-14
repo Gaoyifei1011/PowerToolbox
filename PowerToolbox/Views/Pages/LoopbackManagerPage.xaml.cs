@@ -767,7 +767,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取加载网络回环是否成功
         /// </summary>
-        private Visibility GetLoopbackSuccessfullyState(LoopbackResultKind loopbackResultKind, bool isSuccessfully)
+        private Visibility GetLoopbackSuccessfullyVisibility(LoopbackResultKind loopbackResultKind, bool isSuccessfully)
         {
             return isSuccessfully ? loopbackResultKind is LoopbackResultKind.Successfully ? Visibility.Visible : Visibility.Collapsed : loopbackResultKind is LoopbackResultKind.Successfully ? Visibility.Collapsed : Visibility.Visible;
         }
@@ -775,7 +775,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 检查搜索网络回环是否成功
         /// </summary>
-        private Visibility CheckLoopbackState(LoopbackResultKind loopbackResultKind, LoopbackResultKind comparedLoopbackResultKind)
+        private Visibility CheckLoopbackResultKindVisibility(LoopbackResultKind loopbackResultKind, LoopbackResultKind comparedLoopbackResultKind)
         {
             return Equals(loopbackResultKind, comparedLoopbackResultKind) ? Visibility.Visible : Visibility.Collapsed;
         }

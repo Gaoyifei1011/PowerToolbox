@@ -226,7 +226,7 @@
                                 FontSize="18"
                                 FontWeight="Thin"
                                 Glyph="&#xE958;"
-                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Queued, x:False), Mode=OneWay}" />
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Queued, x:False), Mode=OneWay}" />
 
                             <FontIcon
                                 Grid.Column="0"
@@ -234,7 +234,7 @@
                                 FontSize="18"
                                 FontWeight="Thin"
                                 Glyph="&#xE896;"
-                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
 
                             <FontIcon
                                 Grid.Column="0"
@@ -242,7 +242,7 @@
                                 FontSize="18"
                                 FontWeight="Thin"
                                 Glyph="&#xE769;"
-                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Paused, x:False), Mode=OneWay}" />
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Paused, x:False), Mode=OneWay}" />
 
                             <FontIcon
                                 Grid.Column="0"
@@ -250,7 +250,7 @@
                                 FontSize="18"
                                 FontWeight="Thin"
                                 Glyph="&#xEA39;"
-                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Failed, x:False), Mode=OneWay}" />
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Failed, x:False), Mode=OneWay}" />
 
                             <Grid
                                 Grid.Column="0"
@@ -261,7 +261,7 @@
                                 Background="{ThemeResource CardStrokeColorDefaultBrush}"
                                 BorderThickness="1"
                                 CornerRadius="{StaticResource ControlCornerRadius}"
-                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:False), Mode=OneWay}">
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Finished, x:False), Mode=OneWay}">
 
                                 <ImageIcon Source="{x:Bind IconImage, Mode=OneWay}" />
                             </Grid>
@@ -309,7 +309,7 @@
                                         FontSize="16"
                                         Text="{x:Bind roothelper:SpeedHelper.ConvertSpeedToString(DownloadSpeed), Mode=OneWay}"
                                         TextAlignment="Right"
-                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}">
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}">
 
                                         <ToolTipService.ToolTip>
                                             <ToolTip>
@@ -329,7 +329,7 @@
                                         FontSize="14"
                                         Text="|"
                                         TextAlignment="Right"
-                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
 
                                     <TextBlock
                                         Grid.Column="3"
@@ -338,7 +338,7 @@
                                         FontSize="16"
                                         Text="{x:Bind roothelper:VolumeSizeHelper.ConvertVolumeSizeToString(CompletedSize), Mode=OneWay}"
                                         TextAlignment="Right"
-                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}">
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}">
 
                                         <ToolTipService.ToolTip>
                                             <ToolTip>
@@ -358,7 +358,7 @@
                                         FontSize="14"
                                         Text="|"
                                         TextAlignment="Right"
-                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
 
                                     <TextBlock
                                         Grid.Column="5"
@@ -391,7 +391,7 @@
                                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                         Style="{StaticResource CaptionTextBlockStyle}"
                                         Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadQueued')}"
-                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Queued, x:False), Mode=OneWay}" />
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Queued, x:False), Mode=OneWay}" />
 
                                     <TextBlock
                                         Grid.Column="0"
@@ -399,7 +399,7 @@
                                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                         Style="{StaticResource CaptionTextBlockStyle}"
                                         Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Downloading')}"
-                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Downloading, x:False), Mode=OneWay}" />
 
                                     <TextBlock
                                         Grid.Column="0"
@@ -407,7 +407,7 @@
                                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                         Style="{StaticResource CaptionTextBlockStyle}"
                                         Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadPaused')}"
-                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Paused, x:False), Mode=OneWay}" />
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Paused, x:False), Mode=OneWay}" />
 
                                     <TextBlock
                                         Grid.Column="0"
@@ -415,7 +415,7 @@
                                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                         Style="{StaticResource CaptionTextBlockStyle}"
                                         Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadFailed')}"
-                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Failed, x:False), Mode=OneWay}" />
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Failed, x:False), Mode=OneWay}" />
 
                                     <TextBlock
                                         Grid.Column="0"
@@ -423,7 +423,7 @@
                                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                         Style="{StaticResource CaptionTextBlockStyle}"
                                         Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DownloadFinished')}"
-                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:False), Mode=OneWay}" />
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Finished, x:False), Mode=OneWay}" />
 
                                     <ProgressBar
                                         Grid.Column="1"
@@ -431,7 +431,7 @@
                                         IsIndeterminate="{x:Bind x:Object.Equals(DownloadProgressState, enum:DownloadProgressState.Queued), Mode=OneWay}"
                                         ShowError="{x:Bind x:Object.Equals(DownloadProgressState, enum:DownloadProgressState.Failed), Mode=OneWay}"
                                         ShowPaused="{x:Bind x:Object.Equals(DownloadProgressState, enum:DownloadProgressState.Paused), Mode=OneWay}"
-                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:True), Mode=OneWay}"
+                                        Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Finished, x:True), Mode=OneWay}"
                                         Value="{x:Bind converter:ValueConverterHelper.DownloadProgress(CompletedSize, TotalSize), Mode=OneWay}" />
                                 </Grid>
                             </Grid>
@@ -442,7 +442,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Orientation="Horizontal"
-                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:True), Mode=OneWay}">
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Finished, x:True), Mode=OneWay}">
 
                                 <Button
                                     Width="32"
@@ -454,7 +454,7 @@
                                     CornerRadius="{StaticResource ControlCornerRadius}"
                                     IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsOperating), Mode=OneWay}"
                                     ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Continue')}"
-                                    Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Paused, x:False), Mode=OneWay}">
+                                    Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Paused, x:False), Mode=OneWay}">
 
                                     <FontIcon FontSize="14" Glyph="&#xE768;" />
                                 </Button>
@@ -469,7 +469,7 @@
                                     CornerRadius="{StaticResource ControlCornerRadius}"
                                     IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsOperating), Mode=OneWay}"
                                     ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Pause')}"
-                                    Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadingState(DownloadProgressState), Mode=OneWay}">
+                                    Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadingStateVisibility(DownloadProgressState), Mode=OneWay}">
 
                                     <FontIcon FontSize="14" Glyph="&#xE769;" />
                                 </Button>
@@ -494,7 +494,7 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Orientation="Horizontal"
-                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressState(DownloadProgressState, enum:DownloadProgressState.Finished, x:False), Mode=OneWay}">
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckDownloadProgressStateVisibility(DownloadProgressState, enum:DownloadProgressState.Finished, x:False), Mode=OneWay}">
 
                                 <Button
                                     Width="32"

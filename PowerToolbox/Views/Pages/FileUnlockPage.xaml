@@ -253,7 +253,7 @@
                                 TextAlignment="Left"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="NoWrap"
-                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockState(FileUnlockState, enum:FileUnlockState.NotStarted), Mode=OneWay}">
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockStateVisibility(FileUnlockState, enum:FileUnlockState.NotStarted), Mode=OneWay}">
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -268,7 +268,7 @@
                                 Margin="10,0,0,0"
                                 VerticalAlignment="Center"
                                 Orientation="Horizontal"
-                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockState(FileUnlockState, enum:FileUnlockState.Processing), Mode=OneWay}">
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockStateVisibility(FileUnlockState, enum:FileUnlockState.Processing), Mode=OneWay}">
 
                                 <ProgressRing
                                     Width="14"
@@ -319,7 +319,7 @@
                                 TextAlignment="Left"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="NoWrap"
-                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockState(FileUnlockState, enum:FileUnlockState.Cancelled), Mode=OneWay}">
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockStateVisibility(FileUnlockState, enum:FileUnlockState.Cancelled), Mode=OneWay}">
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -341,7 +341,7 @@
                                 TextAlignment="Left"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="NoWrap"
-                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockState(FileUnlockState, enum:FileUnlockState.Failed), Mode=OneWay}">
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockStateVisibility(FileUnlockState, enum:FileUnlockState.Failed), Mode=OneWay}">
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip
@@ -363,7 +363,7 @@
                                 TextAlignment="Left"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="NoWrap"
-                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockState(FileUnlockState, enum:FileUnlockState.Successfully), Mode=OneWay}">
+                                Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckFileUnlockStateVisibility(FileUnlockState, enum:FileUnlockState.Successfully), Mode=OneWay}">
 
                                 <ToolTipService.ToolTip>
                                     <ToolTip

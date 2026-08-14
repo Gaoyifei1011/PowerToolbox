@@ -525,7 +525,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取加载系统信息是否成功
         /// </summary>
-        private Visibility GetSystemInformationSuccessfullyState(SystemInformationResultKind systemInformationResultKind, bool isSuccessfully)
+        private Visibility GetSystemInformationSuccessfullyVisibility(SystemInformationResultKind systemInformationResultKind, bool isSuccessfully)
         {
             return isSuccessfully ? systemInformationResultKind is SystemInformationResultKind.Successfully ? Visibility.Visible : Visibility.Collapsed : systemInformationResultKind is SystemInformationResultKind.Successfully ? Visibility.Collapsed : Visibility.Visible;
         }
@@ -533,7 +533,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 检查系统信息是否成功
         /// </summary>
-        private Visibility CheckSystemInformationState(SystemInformationResultKind systemInformationResultKind, SystemInformationResultKind comparedSystemInformationResultKind)
+        private Visibility CheckSystemInformationResultKindVisibility(SystemInformationResultKind systemInformationResultKind, SystemInformationResultKind comparedSystemInformationResultKind)
         {
             return Equals(systemInformationResultKind, comparedSystemInformationResultKind) ? Visibility.Visible : Visibility.Collapsed;
         }

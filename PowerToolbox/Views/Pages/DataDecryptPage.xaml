@@ -65,7 +65,7 @@
                 CornerRadius="{StaticResource ControlCornerRadius}"
                 DragEnter="{x:Bind OnDataDragOver}"
                 Drop="{x:Bind OnDataDrop}"
-                Visibility="{x:Bind GetDataDecryptType(SelectedIndex, 0), Mode=OneWay}">
+                Visibility="{x:Bind GetDataDecryptTypeVisibility(SelectedIndex, 0), Mode=OneWay}">
 
                 <StackPanel
                     Margin="0,15"
@@ -119,7 +119,7 @@
                 Text="{x:Bind DecryptContent, Mode=OneWay}"
                 TextChanged="{x:Bind OnDecryptContentTextChanged}"
                 TextWrapping="Wrap"
-                Visibility="{x:Bind GetDataDecryptType(SelectedIndex, 1), Mode=OneWay}" />
+                Visibility="{x:Bind GetDataDecryptTypeVisibility(SelectedIndex, 1), Mode=OneWay}" />
 
             <!--  数据解密验证栏  -->
             <InfoBar
@@ -154,7 +154,7 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ViewErrorInformation')}"
-                                Visibility="{x:Bind GetDecryptFailedInfoButtonState(ResultSeverity, IsDecrypting, DecryptFailedInformation), Mode=OneWay}">
+                                Visibility="{x:Bind GetDecryptFailedInfoButtonVisibility(ResultSeverity, IsDecrypting, DecryptFailedInformation), Mode=OneWay}">
 
                                 <FontIcon FontSize="16" Glyph="&#xE783;" />
 
@@ -643,7 +643,7 @@
                         Padding="44,0,16,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
-                        Visibility="{x:Bind GetHasParseAsTextData(HasParseAsTextData, ParseAsTextData), Mode=OneWay}">
+                        Visibility="{x:Bind GetHasParseAsTextDataVisibility(HasParseAsTextData, ParseAsTextData), Mode=OneWay}">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -666,7 +666,7 @@
                             Style="{StaticResource ComboBoxStyle}" />
                     </Grid>
 
-                    <MenuFlyoutSeparator Visibility="{x:Bind GetHasParseAsTextData(HasParseAsTextData, ParseAsTextData), Mode=OneWay}" />
+                    <MenuFlyoutSeparator Visibility="{x:Bind GetHasParseAsTextDataVisibility(HasParseAsTextData, ParseAsTextData), Mode=OneWay}" />
 
                     <!--  文字编码类型为自定义时手动设置编码类型  -->
                     <Grid
@@ -674,7 +674,7 @@
                         Padding="44,0,16,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
-                        Visibility="{x:Bind GetCustomTextEncodingType(HasParseAsTextData, ParseAsTextData, SelectedTextEncodingType.SelectedValue, TextEncodingTypeList[10].SelectedValue), Mode=OneWay}">
+                        Visibility="{x:Bind GetCustomTextEncodingTypeVisibility(HasParseAsTextData, ParseAsTextData, SelectedTextEncodingType.SelectedValue, TextEncodingTypeList[10].SelectedValue), Mode=OneWay}">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -861,7 +861,7 @@
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
                 IsExpanded="True"
-                Visibility="{x:Bind GetDecryptResult(ResultSeverity), Mode=OneWay}">
+                Visibility="{x:Bind GetDecryptResultVisibility(ResultSeverity), Mode=OneWay}">
 
                 <Expander.Header>
                     <Grid>
@@ -892,7 +892,7 @@
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="Wrap" />
 
-                    <TextBlock HorizontalAlignment="Left" Visibility="{x:Bind GetIsDecryptedResultString(IsLargeContent, IsBinaryFile), Mode=OneWay}">
+                    <TextBlock HorizontalAlignment="Left" Visibility="{x:Bind GetIsDecryptedResultStringVisibility(IsLargeContent, IsBinaryFile), Mode=OneWay}">
                         <Hyperlink Click="{x:Bind OnViewLocalFileClicked}" UnderlineStyle="None">
                             <Run Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ViewLocalFile')}" />
                         </Hyperlink>

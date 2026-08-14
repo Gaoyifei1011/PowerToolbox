@@ -233,7 +233,7 @@
                     Message="{x:Bind rootservice:ResourceService.WinFRResource.GetString('WinFRNotInstalled')}"
                     Severity="Warning"
                     Style="{StaticResource InfoBarStyle}"
-                    Visibility="{x:Bind GetInfoBarState(IsManualCloseInfoBar, IsWinFRInstalled), Mode=OneWay}">
+                    Visibility="{x:Bind GetInfoBarVisibility(IsManualCloseInfoBar, IsWinFRInstalled), Mode=OneWay}">
 
                     <InfoBar.ActionButton>
                         <Button
@@ -475,7 +475,7 @@
                     HorizontalContentAlignment="Stretch"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True"
-                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.SelectedValue, RecoveryModeList[0].SelectedValue), Mode=OneWay}">
+                    Visibility="{x:Bind GetRecoveryModeVisibility(SelectedRecoveryMode.SelectedValue, RecoveryModeList[0].SelectedValue), Mode=OneWay}">
 
                     <Expander.Header>
                         <Grid>
@@ -603,7 +603,7 @@
                     HorizontalContentAlignment="Stretch"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True"
-                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.SelectedValue, RecoveryModeList[1].SelectedValue), Mode=OneWay}">
+                    Visibility="{x:Bind GetRecoveryModeVisibility(SelectedRecoveryMode.SelectedValue, RecoveryModeList[1].SelectedValue), Mode=OneWay}">
 
                     <Expander.Header>
                         <Grid>
@@ -731,7 +731,7 @@
                     HorizontalContentAlignment="Stretch"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True"
-                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.SelectedValue, RecoveryModeList[2].SelectedValue), Mode=OneWay}">
+                    Visibility="{x:Bind GetRecoveryModeVisibility(SelectedRecoveryMode.SelectedValue, RecoveryModeList[2].SelectedValue), Mode=OneWay}">
 
                     <Expander.Header>
                         <Grid>
@@ -1027,7 +1027,7 @@
                     HorizontalContentAlignment="Stretch"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True"
-                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.SelectedValue, RecoveryModeList[3].SelectedValue), Mode=OneWay}">
+                    Visibility="{x:Bind GetRecoveryModeVisibility(SelectedRecoveryMode.SelectedValue, RecoveryModeList[3].SelectedValue), Mode=OneWay}">
 
                     <Expander.Header>
                         <Grid>
@@ -1421,7 +1421,7 @@
                     HorizontalContentAlignment="Stretch"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     IsExpanded="True"
-                    Visibility="{x:Bind GetRecoveryMode(SelectedRecoveryMode.SelectedValue, RecoveryModeList[4].SelectedValue), Mode=OneWay}">
+                    Visibility="{x:Bind GetRecoveryModeVisibility(SelectedRecoveryMode.SelectedValue, RecoveryModeList[4].SelectedValue), Mode=OneWay}">
 
                     <Expander.Header>
                         <Grid>

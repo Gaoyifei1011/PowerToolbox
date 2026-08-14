@@ -16,7 +16,7 @@
         <Grid
             x:Name="Windows11Style"
             Background="Black"
-            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckSimulateUpdateKind(SimulateUpdateKind, enum:SimulateUpdateKind.Windows11), Mode=OneWay}">
+            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckSimulateUpdateKindVisibility(SimulateUpdateKind, enum:SimulateUpdateKind.Windows11), Mode=OneWay}">
             <StackPanel VerticalAlignment="Center">
                 <ProgressRing
                     Width="60"
@@ -51,7 +51,7 @@
         <Grid
             x:Name="Windows10Style"
             Background="{ThemeResource SystemAccentColor}"
-            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckSimulateUpdateKind(SimulateUpdateKind, enum:SimulateUpdateKind.Windows10), Mode=OneWay}">
+            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckSimulateUpdateKindVisibility(SimulateUpdateKind, enum:SimulateUpdateKind.Windows10), Mode=OneWay}">
             <StackPanel VerticalAlignment="Center">
                 <ProgressRing
                     Width="60"

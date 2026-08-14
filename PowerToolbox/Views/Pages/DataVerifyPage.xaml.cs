@@ -1819,7 +1819,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取要校验的类型
         /// </summary>
-        private Visibility GetDataVerifyType(int selectedIndex, int comparedSelectedIndex)
+        private Visibility GetDataVerifyTypeVisibility(int selectedIndex, int comparedSelectedIndex)
         {
             return Equals(selectedIndex, comparedSelectedIndex) ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -1827,7 +1827,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取对应的文字编码类型
         /// </summary>
-        private Visibility GetTextEncodingType(object textEncodingType, object comparedTextEncodingType)
+        private Visibility GetTextEncodingTypeVisibility(object textEncodingType, object comparedTextEncodingType)
         {
             return string.Equals(Convert.ToString(textEncodingType), Convert.ToString(comparedTextEncodingType)) ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -1835,7 +1835,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取校验结果列表显示类型
         /// </summary>
-        private Visibility GetVerifyResult(bool isVerifying, int verifyCount)
+        private Visibility GetVerifyResultVisibility(bool isVerifying, int verifyCount)
         {
             return isVerifying ? Visibility.Collapsed : verifyCount > 0 ? Visibility.Visible : Visibility.Collapsed;
         }

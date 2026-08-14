@@ -3098,7 +3098,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取要解密的类型
         /// </summary>
-        private Visibility GetDataDecryptType(int selectedIndex, int comparedSelectedIndex)
+        private Visibility GetDataDecryptTypeVisibility(int selectedIndex, int comparedSelectedIndex)
         {
             return Equals(selectedIndex, comparedSelectedIndex) ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -3118,17 +3118,17 @@ namespace PowerToolbox.Views.Pages
             return resultSeverity is InfoBarSeverity.Informational && isDecrypting;
         }
 
-        private Visibility GetDecryptFailedInfoButtonState(InfoBarSeverity resultSeverity, bool isDecrypting, string decryptFailedInformation)
+        private Visibility GetDecryptFailedInfoButtonVisibility(InfoBarSeverity resultSeverity, bool isDecrypting, string decryptFailedInformation)
         {
             return resultSeverity is InfoBarSeverity.Error && !isDecrypting && !string.IsNullOrEmpty(decryptFailedInformation) ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private Visibility GetHasParseAsTextData(bool hasParseAsTextData, bool parseAsTextData)
+        private Visibility GetHasParseAsTextDataVisibility(bool hasParseAsTextData, bool parseAsTextData)
         {
             return hasParseAsTextData && parseAsTextData ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private Visibility GetCustomTextEncodingType(bool hasParseAsTextData, bool parseAsTextData, object selectedTextEncodingType, object comparedTextEncodingType)
+        private Visibility GetCustomTextEncodingTypeVisibility(bool hasParseAsTextData, bool parseAsTextData, object selectedTextEncodingType, object comparedTextEncodingType)
         {
             return hasParseAsTextData && parseAsTextData && string.Equals(Convert.ToString(selectedTextEncodingType), Convert.ToString(comparedTextEncodingType)) ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -3136,7 +3136,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取解密结果
         /// </summary>
-        private Visibility GetDecryptResult(InfoBarSeverity resultSeverity)
+        private Visibility GetDecryptResultVisibility(InfoBarSeverity resultSeverity)
         {
             return resultSeverity is InfoBarSeverity.Success || resultSeverity is InfoBarSeverity.Warning ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -3146,7 +3146,7 @@ namespace PowerToolbox.Views.Pages
             return !(isLargeContent || isBinaryFile);
         }
 
-        private Visibility GetIsDecryptedResultString(bool isLargeContent, bool isBinaryFile)
+        private Visibility GetIsDecryptedResultStringVisibility(bool isLargeContent, bool isBinaryFile)
         {
             return isLargeContent || isBinaryFile ? Visibility.Visible : Visibility.Collapsed;
         }

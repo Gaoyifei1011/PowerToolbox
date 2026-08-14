@@ -1973,7 +1973,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取加载驱动是否成功
         /// </summary>
-        private Visibility GetDriverSuccessfullyState(DriverResultKind driverResultKind, bool isSuccessfully)
+        private Visibility GetDriverSuccessfullyVisibility(DriverResultKind driverResultKind, bool isSuccessfully)
         {
             return isSuccessfully ? driverResultKind is DriverResultKind.Successfully || driverResultKind is DriverResultKind.Operating ? Visibility.Visible : Visibility.Collapsed : driverResultKind is DriverResultKind.Successfully || driverResultKind is DriverResultKind.Operating ? Visibility.Collapsed : Visibility.Visible;
         }
@@ -1981,7 +1981,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 检查搜索驱动是否成功
         /// </summary>
-        private Visibility CheckDriverState(DriverResultKind driverResultKind, DriverResultKind comparedDriverResultKind)
+        private Visibility CheckDriverResultKindVisibility(DriverResultKind driverResultKind, DriverResultKind comparedDriverResultKind)
         {
             return Equals(driverResultKind, comparedDriverResultKind) ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -1989,7 +1989,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 检查驱动管理浮出面板状态
         /// </summary>
-        private Visibility CheckDriverPaneKindState(DriverPaneKind driverPaneKind, DriverPaneKind comparedDriverPaneKind)
+        private Visibility CheckDriverPaneKindVisibility(DriverPaneKind driverPaneKind, DriverPaneKind comparedDriverPaneKind)
         {
             return Equals(driverPaneKind, comparedDriverPaneKind) ? Visibility.Visible : Visibility.Collapsed;
         }

@@ -2052,7 +2052,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取信息栏显示状态
         /// </summary>
-        private Visibility GetInfoBarState(bool isManualCloseInfoBar, bool isWinFRInstalled)
+        private Visibility GetInfoBarVisibility(bool isManualCloseInfoBar, bool isWinFRInstalled)
         {
             return !isManualCloseInfoBar && !isWinFRInstalled ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -2060,7 +2060,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取恢复模式
         /// </summary>
-        private Visibility GetRecoveryMode(object recoveryMode, object comparedRecoveryMode)
+        private Visibility GetRecoveryModeVisibility(object recoveryMode, object comparedRecoveryMode)
         {
             return string.Equals(Convert.ToString(recoveryMode), Convert.ToString(comparedRecoveryMode)) ? Visibility.Visible : Visibility.Collapsed;
         }

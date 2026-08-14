@@ -1255,7 +1255,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取加载计划任务是否成功
         /// </summary>
-        private Visibility GetScheduledTaskSuccessfullyState(ScheduledTaskResultKind scheduledTaskResultKind, bool isSuccessfully)
+        private Visibility GetScheduledTaskSuccessfullyVisibility(ScheduledTaskResultKind scheduledTaskResultKind, bool isSuccessfully)
         {
             return isSuccessfully ? scheduledTaskResultKind is ScheduledTaskResultKind.Successfully ? Visibility.Visible : Visibility.Collapsed : scheduledTaskResultKind is ScheduledTaskResultKind.Successfully ? Visibility.Collapsed : Visibility.Visible;
         }
@@ -1263,7 +1263,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 检查搜索计划任务是否成功
         /// </summary>
-        private Visibility CheckScheduledTaskState(ScheduledTaskResultKind scheduledTaskResultKind, ScheduledTaskResultKind comparedScheduledTaskResultKind)
+        private Visibility CheckScheduledTaskResultKindVisibility(ScheduledTaskResultKind scheduledTaskResultKind, ScheduledTaskResultKind comparedScheduledTaskResultKind)
         {
             return Equals(scheduledTaskResultKind, comparedScheduledTaskResultKind) ? Visibility.Visible : Visibility.Collapsed;
         }

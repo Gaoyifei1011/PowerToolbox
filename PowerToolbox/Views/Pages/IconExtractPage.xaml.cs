@@ -1567,12 +1567,12 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 检查图标提取是否成功
         /// </summary>
-        private Visibility CheckIconExtractState(IconExtractResultKind iconResultResultKind, IconExtractResultKind comparedIconExtractResultKind)
+        private Visibility CheckIconExtractResultKindVisibility(IconExtractResultKind iconResultResultKind, IconExtractResultKind comparedIconExtractResultKind)
         {
             return Equals(iconResultResultKind, comparedIconExtractResultKind) ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private Visibility GetSelectedFileAssociatedIconSize(ComboBoxItemModel selectedGetIconType, ComboBoxItemModel comparedGetIconType)
+        private Visibility GetIconTypeVisibility(ComboBoxItemModel selectedGetIconType, ComboBoxItemModel comparedGetIconType)
         {
             return Equals(selectedGetIconType, comparedGetIconType) ? Visibility.Visible : Visibility.Collapsed;
         }

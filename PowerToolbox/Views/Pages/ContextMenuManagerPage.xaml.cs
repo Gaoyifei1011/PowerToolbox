@@ -778,7 +778,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取加载右键菜单是否成功
         /// </summary>
-        private Visibility GetContextMenuSuccessfullyState(ContextMenuResultKind contextMenuResultKind, bool isSuccessfully)
+        private Visibility GetContextMenuSuccessfullyVisibility(ContextMenuResultKind contextMenuResultKind, bool isSuccessfully)
         {
             return isSuccessfully ? contextMenuResultKind is ContextMenuResultKind.Successfully ? Visibility.Visible : Visibility.Collapsed : contextMenuResultKind is ContextMenuResultKind.Successfully ? Visibility.Collapsed : Visibility.Visible;
         }
@@ -786,7 +786,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 检查搜索右键菜单是否成功
         /// </summary>
-        private Visibility CheckContextMenuState(ContextMenuResultKind contextMenuResultKind, ContextMenuResultKind comparedContextMenuResultKind)
+        private Visibility CheckContextMenuResultKindVisibility(ContextMenuResultKind contextMenuResultKind, ContextMenuResultKind comparedContextMenuResultKind)
         {
             return Equals(contextMenuResultKind, comparedContextMenuResultKind) ? Visibility.Visible : Visibility.Collapsed;
         }
