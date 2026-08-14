@@ -170,25 +170,6 @@ namespace PowerToolbox.Models
         public List<string> MoreInfoList { get; } = [];
 
         /// <summary>
-        /// 当前更新是否选择
-        /// </summary>
-        private bool _isSelected;
-
-        public bool IsSelected
-        {
-            get { return _isSelected; }
-
-            set
-            {
-                if (!Equals(_isSelected, value))
-                {
-                    _isSelected = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSelected)));
-                }
-            }
-        }
-
-        /// <summary>
         /// 当前更新是否正在更新中
         /// </summary>
         private bool _isUpdating;

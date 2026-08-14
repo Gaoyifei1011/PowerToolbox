@@ -1,32 +1,12 @@
 ﻿using System;
-using System.ComponentModel;
 
 namespace PowerToolbox.Models
 {
     /// <summary>
     /// 驱动数据模型
     /// </summary>
-    public class DriverModel : INotifyPropertyChanged
+    public class DriverModel
     {
-        /// <summary>
-        /// 驱动是否已经被选择
-        /// </summary>
-        private bool _isSelected;
-
-        public bool IsSelected
-        {
-            get { return _isSelected; }
-
-            set
-            {
-                if (!Equals(_isSelected, value))
-                {
-                    _isSelected = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSelected)));
-                }
-            }
-        }
-
         /// <summary>
         /// 驱动名称
         /// </summary>
@@ -76,7 +56,5 @@ namespace PowerToolbox.Models
         /// 签名
         /// </summary>
         public string SignatureName { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

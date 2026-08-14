@@ -119,6 +119,93 @@ namespace PowerToolbox.Views.Pages
             if (!isInitialized)
             {
                 isInitialized = true;
+                if (SystemInformationResultKind is not SystemInformationResultKind.Loading)
+                {
+                    SystemInformationResultKind = SystemInformationResultKind.Loading;
+                    (bool result, SystemInformation gettedSystemInformation, Exception exception) = await GetSystemInformationAsync();
+
+                    if (result)
+                    {
+                        systemInformation = gettedSystemInformation;
+                        SystemInformationCollection.Clear();
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = HostNameString, Content = systemInformation.HostName });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = OperatingSystemNameString, Content = systemInformation.OperatingSystemName });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = OperatingSystemVersionString, Content = systemInformation.OperatingSystemVersion });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = OperatingSystemManufacturerString, Content = systemInformation.OperatingSystemManufacturer });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = ProductIDString, Content = systemInformation.ProductID });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = FirstInstalledDateString, Content = systemInformation.FirstInstalledDate });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = SystemBootTimeString, Content = systemInformation.SystemBootTime });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = SystemManufacturerString, Content = systemInformation.SystemManufacturer });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = SystemModelString, Content = systemInformation.SystemModel });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = SystemArchitectureString, Content = systemInformation.SystemArchitecture });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = SystemSKUString, Content = systemInformation.SystemSKU });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = ProcessorString, Content = systemInformation.Processor });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = BIOSVersionString, Content = systemInformation.BIOSVersion });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = SMBIOSVersionString, Content = systemInformation.SMBIOSVersion });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = EmbeddedControllerVersionString, Content = systemInformation.EmbeddedControllerVersion });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = BIOSModeString, Content = systemInformation.BIOSMode });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = MainboardManufacturerString, Content = systemInformation.MainboardManufacturer });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = MainboardProductString, Content = systemInformation.MainboardProduct });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = MainboardVersionString, Content = systemInformation.MainboardVersion });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = WindowsDirectoryString, Content = systemInformation.WindowsDirectory });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = SystemDirectoryString, Content = systemInformation.SystemDirectory });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = BootDeviceString, Content = systemInformation.BootDevice });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = RegionSettingsString, Content = systemInformation.RegionSettings });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = TimeZoneString, Content = systemInformation.TimeZone });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = InstalledPhysicalMemoryString, Content = systemInformation.InstalledPhysicalMemory });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = TotalPhysicalMemoryString, Content = systemInformation.TotalPhysicalMemory });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = AvailablePhysicalMemoryString, Content = systemInformation.AvailablePhysicalMemory });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = TotalVirtualMemoryString, Content = systemInformation.TotalVirtualMemory });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = AvailableVirtualMemoryString, Content = systemInformation.AvailableVirtualMemory });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = PageFilePositionString, Content = systemInformation.PageFilePosition });
+                        SystemInformationCollection.Add(new SystemInformationModel() { Item = PageFileSizeString, Content = systemInformation.PageFileSize });
+                        SystemInformationResultKind = SystemInformationResultKind.Successfully;
+                    }
+                    else
+                    {
+                        systemInformation = null;
+                        SystemInformationFailedContent = string.Format(ErrorInformationString, string.Format("0x{0:X8}", exception.HResult), exception.Message);
+                        SystemInformationResultKind = SystemInformationResultKind.Failed;
+                    }
+                }
+            }
+        }
+
+        #endregion 第一部分：重载父类事件
+
+        #region 第二部分：系统信息页面——挂载的事件
+
+        /// <summary>
+        /// 复制系统信息
+        /// </summary>
+        private async void OnCopyClicked(object sender, RoutedEventArgs args)
+        {
+            if (SystemInformationResultKind is SystemInformationResultKind.Successfully)
+            {
+                string copySystemInformationContent = await Task.Run(() =>
+                {
+                    StringBuilder systemInformationBuilder = new();
+
+                    foreach (SystemInformationModel systemInformationItem in SystemInformationCollection)
+                    {
+                        systemInformationBuilder.AppendLine(string.Format("{0}\t{1}", systemInformationItem.Item, systemInformationItem.Content));
+                    }
+
+                    return systemInformationBuilder.ToString();
+                });
+
+                bool copyResult = CopyPasteHelper.CopyToClipboard(copySystemInformationContent);
+                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+            }
+        }
+
+        /// <summary>
+        /// 刷新系统信息
+        /// </summary>
+        private async void OnRefreshClicked(object sender, RoutedEventArgs args)
+        {
+            if (SystemInformationResultKind is not SystemInformationResultKind.Loading)
+            {
                 SystemInformationResultKind = SystemInformationResultKind.Loading;
                 (bool result, SystemInformation gettedSystemInformation, Exception exception) = await GetSystemInformationAsync();
 
@@ -165,87 +252,6 @@ namespace PowerToolbox.Views.Pages
                     SystemInformationFailedContent = string.Format(ErrorInformationString, string.Format("0x{0:X8}", exception.HResult), exception.Message);
                     SystemInformationResultKind = SystemInformationResultKind.Failed;
                 }
-            }
-        }
-
-        #endregion 第一部分：重载父类事件
-
-        #region 第二部分：系统信息页面——挂载的事件
-
-        /// <summary>
-        /// 复制系统信息
-        /// </summary>
-        private async void OnCopyClicked(object sender, RoutedEventArgs args)
-        {
-            if (SystemInformationResultKind is SystemInformationResultKind.Successfully)
-            {
-                string copySystemInformationContent = await Task.Run(() =>
-                {
-                    StringBuilder systemInformationBuilder = new();
-
-                    foreach (SystemInformationModel systemInformationItem in SystemInformationCollection)
-                    {
-                        systemInformationBuilder.AppendLine(string.Format("{0}\t{1}", systemInformationItem.Item, systemInformationItem.Content));
-                    }
-
-                    return systemInformationBuilder.ToString();
-                });
-
-                bool copyResult = CopyPasteHelper.CopyToClipboard(copySystemInformationContent);
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
-            }
-        }
-
-        /// <summary>
-        /// 刷新系统信息
-        /// </summary>
-        private async void OnRefreshClicked(object sender, RoutedEventArgs args)
-        {
-            SystemInformationResultKind = SystemInformationResultKind.Loading;
-            (bool result, SystemInformation gettedSystemInformation, Exception exception) = await GetSystemInformationAsync();
-
-            if (result)
-            {
-                systemInformation = gettedSystemInformation;
-                SystemInformationCollection.Clear();
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = HostNameString, Content = systemInformation.HostName });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = OperatingSystemNameString, Content = systemInformation.OperatingSystemName });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = OperatingSystemVersionString, Content = systemInformation.OperatingSystemVersion });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = OperatingSystemManufacturerString, Content = systemInformation.OperatingSystemManufacturer });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = ProductIDString, Content = systemInformation.ProductID });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = FirstInstalledDateString, Content = systemInformation.FirstInstalledDate });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = SystemBootTimeString, Content = systemInformation.SystemBootTime });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = SystemManufacturerString, Content = systemInformation.SystemManufacturer });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = SystemModelString, Content = systemInformation.SystemModel });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = SystemArchitectureString, Content = systemInformation.SystemArchitecture });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = SystemSKUString, Content = systemInformation.SystemSKU });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = ProcessorString, Content = systemInformation.Processor });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = BIOSVersionString, Content = systemInformation.BIOSVersion });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = SMBIOSVersionString, Content = systemInformation.SMBIOSVersion });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = EmbeddedControllerVersionString, Content = systemInformation.EmbeddedControllerVersion });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = BIOSModeString, Content = systemInformation.BIOSMode });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = MainboardManufacturerString, Content = systemInformation.MainboardManufacturer });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = MainboardProductString, Content = systemInformation.MainboardProduct });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = MainboardVersionString, Content = systemInformation.MainboardVersion });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = WindowsDirectoryString, Content = systemInformation.WindowsDirectory });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = SystemDirectoryString, Content = systemInformation.SystemDirectory });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = BootDeviceString, Content = systemInformation.BootDevice });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = RegionSettingsString, Content = systemInformation.RegionSettings });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = TimeZoneString, Content = systemInformation.TimeZone });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = InstalledPhysicalMemoryString, Content = systemInformation.InstalledPhysicalMemory });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = TotalPhysicalMemoryString, Content = systemInformation.TotalPhysicalMemory });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = AvailablePhysicalMemoryString, Content = systemInformation.AvailablePhysicalMemory });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = TotalVirtualMemoryString, Content = systemInformation.TotalVirtualMemory });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = AvailableVirtualMemoryString, Content = systemInformation.AvailableVirtualMemory });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = PageFilePositionString, Content = systemInformation.PageFilePosition });
-                SystemInformationCollection.Add(new SystemInformationModel() { Item = PageFileSizeString, Content = systemInformation.PageFileSize });
-                SystemInformationResultKind = SystemInformationResultKind.Successfully;
-            }
-            else
-            {
-                systemInformation = null;
-                SystemInformationFailedContent = string.Format(ErrorInformationString, string.Format("0x{0:X8}", exception.HResult), exception.Message);
-                SystemInformationResultKind = SystemInformationResultKind.Failed;
             }
         }
 

@@ -5,9 +5,10 @@
     /// </summary>
     public enum DriverResultKind
     {
-        Loading = 0,
-        Failed = 1,
-        Successfully = 2,
-        Operating = 3
+        None = 0,
+        Loading = 1,
+        Failed = 2,
+        Successfully = 3,
+        Operating = 4
     }
 }

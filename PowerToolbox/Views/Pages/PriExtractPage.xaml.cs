@@ -646,6 +646,99 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 全选
+        /// </summary>
+        private void OnSelectAllClicked(object sender, RoutedEventArgs args)
+        {
+            if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[0]))
+            {
+                PriExtractStringListView.SelectAll();
+            }
+            else if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[1]))
+            {
+                PriExtractFilePathListView.SelectAll();
+            }
+            else if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[2]))
+            {
+                PriExtractEmbeddedDataListView.SelectAll();
+            }
+        }
+
+        /// <summary>
+        /// 全部不选
+        /// </summary>
+        private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
+        {
+            if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[0]))
+            {
+                PriExtractStringListView.DeselectRange(new(0, (uint)PriExtractStringListView.Items.Count));
+            }
+            else if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[1]))
+            {
+                PriExtractFilePathListView.DeselectRange(new(0, (uint)PriExtractFilePathListView.Items.Count));
+            }
+            else if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[2]))
+            {
+                PriExtractEmbeddedDataListView.DeselectRange(new(0, (uint)PriExtractEmbeddedDataListView.Items.Count));
+            }
+        }
+
+        /// <summary>
+        /// 全部反选
+        /// </summary>
+        private void OnSelectReverseClicked(object sender, RoutedEventArgs args)
+        {
+            if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[0]))
+            {
+                List<object> selectedItemList = [.. PriExtractStringListView.SelectedItems];
+
+                foreach (object item in PriExtractStringListView.Items)
+                {
+                    if (selectedItemList.Contains(item))
+                    {
+                        PriExtractStringListView.SelectedItems.Remove(item);
+                    }
+                    else
+                    {
+                        PriExtractStringListView.SelectedItems.Add(item);
+                    }
+                }
+            }
+            else if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[1]))
+            {
+                List<object> selectedItemList = [.. PriExtractFilePathListView.SelectedItems];
+
+                foreach (object item in PriExtractFilePathListView.Items)
+                {
+                    if (selectedItemList.Contains(item))
+                    {
+                        PriExtractFilePathListView.SelectedItems.Remove(item);
+                    }
+                    else
+                    {
+                        PriExtractFilePathListView.SelectedItems.Add(item);
+                    }
+                }
+            }
+            else if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[2]))
+            {
+                List<object> selectedItemList = [.. PriExtractEmbeddedDataListView.SelectedItems];
+
+                foreach (object item in PriExtractEmbeddedDataListView.Items)
+                {
+                    if (selectedItemList.Contains(item))
+                    {
+                        PriExtractEmbeddedDataListView.SelectedItems.Remove(item);
+                    }
+                    else
+                    {
+                        PriExtractEmbeddedDataListView.SelectedItems.Add(item);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// 自动保存时选择保存的文件夹
         /// </summary>
         private void OnSelectSaveFolderClicked(object sender, RoutedEventArgs args)

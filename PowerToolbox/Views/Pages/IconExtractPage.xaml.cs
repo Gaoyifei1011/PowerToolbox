@@ -18,7 +18,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -566,7 +565,7 @@ namespace PowerToolbox.Views.Pages
 
                     if (Equals(SelectedGetIconType, GetIconTypeList[0]))
                     {
-                        int iconIndex = Convert.ToInt32((selectedItemsList.First() as IconModel).DisplayIndex);
+                        int iconIndex = Convert.ToInt32((gridView.SelectedItem as IconModel).DisplayIndex);
 
                         try
                         {
@@ -630,6 +629,8 @@ namespace PowerToolbox.Views.Pages
                 else
                 {
                     IsSelected = false;
+                    ImageSource = null;
+                    IsImageEmpty = true;
                 }
             }
         }
@@ -677,9 +678,9 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (Equals(SelectedGetIconType, GetIconTypeList[0]))
                     {
-                        if (IconsGridView.SelectedItem is not null)
+                        if (IconExtractGridView.SelectedItem is not null)
                         {
-                            int iconIndex = Convert.ToInt32((IconsGridView.SelectedItem as IconModel).DisplayIndex);
+                            int iconIndex = Convert.ToInt32((IconExtractGridView.SelectedItem as IconModel).DisplayIndex);
 
                             try
                             {
@@ -745,6 +746,42 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 全选
+        /// </summary>
+        private void OnSelectAllClicked(object sender, RoutedEventArgs args)
+        {
+            IconExtractGridView.SelectAll();
+        }
+
+        /// <summary>
+        /// 全部不选
+        /// </summary>
+        private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
+        {
+            IconExtractGridView.DeselectRange(new(0, (uint)IconExtractGridView.Items.Count));
+        }
+
+        /// <summary>
+        /// 全部反选
+        /// </summary>
+        private void OnSelectReverseClicked(object sender, RoutedEventArgs args)
+        {
+            List<object> selectedItemList = [.. IconExtractGridView.SelectedItems];
+
+            foreach (object item in IconExtractGridView.Items)
+            {
+                if (selectedItemList.Contains(item))
+                {
+                    IconExtractGridView.SelectedItems.Remove(item);
+                }
+                else
+                {
+                    IconExtractGridView.SelectedItems.Add(item);
+                }
+            }
+        }
+
+        /// <summary>
         /// 选择文件
         /// </summary>
         private async void OnSelectFileClicked(object sender, RoutedEventArgs args)
@@ -789,7 +826,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (!string.IsNullOrEmpty(filePath))
             {
-                IList<object> selectedItemsList = IconsGridView.SelectedItems;
+                IList<object> selectedItemsList = IconExtractGridView.SelectedItems;
                 if (Equals(SelectedIconFormat, IconFormatList[0]) && !(Is16SizeEnabled || Is24SizeEnabled || Is32SizeEnabled || Is48SizeEnabled || Is64SizeEnabled || Is72SizeEnabled || Is96SizeEnabled || Is128SizeEnabled || Is256SizeEnabled))
                 {
                     await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IcoSizeNotSelected));
@@ -1215,90 +1252,93 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         public async Task ParseIconFileAsync(string iconFilePath)
         {
-            IconCollection.Clear();
-            int iconsNum = 0;
-            IconExtractResultKind = IconExtractResultKind.Parsing;
-
-            List<IconModel> iconsList = await Task.Run(() =>
+            if (IconExtractResultKind is not IconExtractResultKind.Parsing)
             {
-                List<IconModel> iconsList = [];
+                IconCollection.Clear();
+                int iconsNum = 0;
+                IconExtractResultKind = IconExtractResultKind.Parsing;
 
-                try
+                List<IconModel> iconsList = await Task.Run(() =>
                 {
-                    filePath = iconFilePath;
-                    // 图标个数
-                    iconsNum = User32Library.PrivateExtractIcons(filePath, 0, 0, 0, null, null, 0, 0);
+                    List<IconModel> iconsList = [];
 
-                    // 显示图标
-                    nint[] phicon = new nint[iconsNum];
-                    int[] piconid = new int[iconsNum];
-
-                    int nIcons = User32Library.PrivateExtractIcons(filePath, 0, 48, 48, phicon, piconid, iconsNum, 0);
-                    for (int index = 0; index < iconsNum; index++)
+                    try
                     {
-                        Icon icon = Icon.FromHandle(phicon[index]);
-                        MemoryStream memoryStream = new();
-                        icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                        memoryStream.Seek(0, SeekOrigin.Begin);
+                        filePath = iconFilePath;
+                        // 图标个数
+                        iconsNum = User32Library.PrivateExtractIcons(filePath, 0, 0, 0, null, null, 0, 0);
 
-                        iconsList.Add(new IconModel()
+                        // 显示图标
+                        nint[] phicon = new nint[iconsNum];
+                        int[] piconid = new int[iconsNum];
+
+                        int nIcons = User32Library.PrivateExtractIcons(filePath, 0, 48, 48, phicon, piconid, iconsNum, 0);
+                        for (int index = 0; index < iconsNum; index++)
                         {
-                            DisplayIndex = Convert.ToString(index),
-                            IconMemoryStream = memoryStream,
-                        });
+                            Icon icon = Icon.FromHandle(phicon[index]);
+                            MemoryStream memoryStream = new();
+                            icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
+                            memoryStream.Seek(0, SeekOrigin.Begin);
 
-                        icon.Dispose();
+                            iconsList.Add(new IconModel()
+                            {
+                                DisplayIndex = Convert.ToString(index),
+                                IconMemoryStream = memoryStream,
+                            });
+
+                            icon.Dispose();
+                        }
                     }
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(ParseIconFileAsync), 1, e);
-                }
-
-                return iconsList;
-            });
-
-            if (iconsList.Count > 0)
-            {
-                try
-                {
-                    GetResults = string.Format(GetFileContainedResultsString, Path.GetFileName(filePath), iconsNum);
-                    NoResources = string.Format(NoResourcesString, Path.GetFileName(filePath));
-                    ImageSource = null;
-                    IsImageEmpty = true;
-
-                    foreach (IconModel iconItem in iconsList)
+                    catch (Exception e)
                     {
-                        BitmapImage bitmapImage = new();
-                        bitmapImage.SetSource(iconItem.IconMemoryStream.AsRandomAccessStream());
-                        IconCollection.Add(new IconModel()
-                        {
-                            DisplayIndex = iconItem.DisplayIndex,
-                            IconImage = bitmapImage
-                        });
-
-                        iconItem.IconMemoryStream.Dispose();
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(ParseIconFileAsync), 1, e);
                     }
 
-                    IconExtractResultKind = IconExtractResultKind.Successfully;
-                }
-                catch (Exception e)
+                    return iconsList;
+                });
+
+                if (iconsList.Count > 0)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(ParseIconFileAsync), 2, e);
+                    try
+                    {
+                        GetResults = string.Format(GetFileContainedResultsString, Path.GetFileName(filePath), iconsNum);
+                        NoResources = string.Format(NoResourcesString, Path.GetFileName(filePath));
+                        ImageSource = null;
+                        IsImageEmpty = true;
+
+                        foreach (IconModel iconItem in iconsList)
+                        {
+                            BitmapImage bitmapImage = new();
+                            bitmapImage.SetSource(iconItem.IconMemoryStream.AsRandomAccessStream());
+                            IconCollection.Add(new IconModel()
+                            {
+                                DisplayIndex = iconItem.DisplayIndex,
+                                IconImage = bitmapImage
+                            });
+
+                            iconItem.IconMemoryStream.Dispose();
+                        }
+
+                        IconExtractResultKind = IconExtractResultKind.Successfully;
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(ParseIconFileAsync), 2, e);
+                        GetResults = string.Format(GetFileContainedResultsString, Path.GetFileName(filePath), 0);
+                        NoResources = string.Format(NoResourcesString, Path.GetFileName(filePath));
+                        ImageSource = null;
+                        IsImageEmpty = true;
+                        IconExtractResultKind = IconExtractResultKind.Failed;
+                    }
+                }
+                else
+                {
                     GetResults = string.Format(GetFileContainedResultsString, Path.GetFileName(filePath), 0);
                     NoResources = string.Format(NoResourcesString, Path.GetFileName(filePath));
                     ImageSource = null;
                     IsImageEmpty = true;
                     IconExtractResultKind = IconExtractResultKind.Failed;
                 }
-            }
-            else
-            {
-                GetResults = string.Format(GetFileContainedResultsString, Path.GetFileName(filePath), 0);
-                NoResources = string.Format(NoResourcesString, Path.GetFileName(filePath));
-                ImageSource = null;
-                IsImageEmpty = true;
-                IconExtractResultKind = IconExtractResultKind.Failed;
             }
         }
 

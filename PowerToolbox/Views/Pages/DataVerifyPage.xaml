@@ -14,7 +14,6 @@
 
     <Page.Resources>
         <CornerRadius x:Key="ListViewItemCornerRadius">0</CornerRadius>
-        <class:ExecuteCommand x:Name="DataVerifyCheckCommand" ExecuteRequested="{x:Bind OnDataVerifyCheckExecuteRequested}" />
     </Page.Resources>
 
     <ScrollViewer
@@ -183,22 +182,36 @@
                             Style="{StaticResource CommandBarStyle}">
 
                             <CommandBar.PrimaryCommands>
-                                <AppBarButton
-                                    Click="{x:Bind OnSelectAllClicked}"
-                                    Label="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('SelectAll')}"
-                                    Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsAllSelected), Mode=OneWay}">
-                                    <AppBarButton.Icon>
-                                        <FontIcon Glyph="&#xE8B3;" />
-                                    </AppBarButton.Icon>
-                                </AppBarButton>
+                                <AppBarButton Label="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('MultiSelect')}">
 
-                                <AppBarButton
-                                    Click="{x:Bind OnSelectNoneClicked}"
-                                    Label="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('SelectNone')}"
-                                    Visibility="{x:Bind IsAllSelected, Mode=OneWay}">
                                     <AppBarButton.Icon>
-                                        <FontIcon Glyph="&#xE8E6;" />
+                                        <FontIcon Glyph="&#xE762;" />
                                     </AppBarButton.Icon>
+
+                                    <AppBarButton.Flyout>
+                                        <MenuFlyout Placement="Bottom">
+                                            <MenuFlyoutItem Click="{x:Bind OnSelectAllClicked}" Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('SelectAll')}">
+
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE8B3;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+
+                                            <MenuFlyoutItem Click="{x:Bind OnSelectNoneClicked}" Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('SelectNone')}">
+
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE8E6;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+
+                                            <MenuFlyoutItem Click="{x:Bind OnSelectReverseClicked}" Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('SelectReverse')}">
+
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xEA98;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </AppBarButton.Flyout>
                                 </AppBarButton>
                             </CommandBar.PrimaryCommands>
                         </CommandBar>
@@ -206,27 +219,102 @@
                 </Expander.Header>
 
                 <GridView
-                    Padding="12,10,0,10"
+                    x:Name="DataVerifyGridView"
+                    Padding="4,10,0,10"
                     IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}"
                     ItemsSource="{x:Bind DataVerifyTypeList}"
-                    SelectionMode="None">
+                    SelectionMode="Multiple">
 
                     <GridView.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
-                            <Setter Property="MinHeight" Value="0" />
-                            <Setter Property="Margin" Value="5,5,0,5" />
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="{ThemeResource ListViewItemForeground}" />
+                            <Setter Property="TabNavigation" Value="Local" />
+                            <Setter Property="IsHoldingEnabled" Value="True" />
+                            <Setter Property="Padding" Value="16,0,12,0" />
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="MinHeight" Value="30" />
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                            <Setter Property="MinWidth" Value="{ThemeResource ListViewItemMinWidth}" />
+                            <Setter Property="HorizontalAlignment" Value="Left" />
+                            <Setter Property="AllowDrop" Value="False" />
+                            <Setter Property="UseSystemFocusVisuals" Value="True" />
+                            <Setter Property="FocusVisualMargin" Value="1" />
+                            <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource ListViewItemFocusVisualPrimaryBrush}" />
+                            <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+                            <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource ListViewItemFocusVisualSecondaryBrush}" />
+                            <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="GridViewItem">
+                                        <ListViewItemPresenter
+                                            x:Name="Root"
+                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            CheckBoxBorderBrush="{ThemeResource ListViewItemCheckBoxBorderBrush}"
+                                            CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}"
+                                            CheckBoxCornerRadius="{ThemeResource ListViewItemCheckBoxCornerRadius}"
+                                            CheckBoxDisabledBorderBrush="{ThemeResource ListViewItemCheckBoxDisabledBorderBrush}"
+                                            CheckBoxDisabledBrush="{ThemeResource ListViewItemCheckBoxDisabledBrush}"
+                                            CheckBoxPointerOverBorderBrush="{ThemeResource ListViewItemCheckBoxPointerOverBorderBrush}"
+                                            CheckBoxPointerOverBrush="{ThemeResource ControlAltFillColorTertiaryBrush}"
+                                            CheckBoxPressedBorderBrush="{ThemeResource ListViewItemCheckBoxPressedBorderBrush}"
+                                            CheckBoxPressedBrush="{ThemeResource ListViewItemCheckBoxPressedBrush}"
+                                            CheckBoxSelectedBrush="{ThemeResource ListViewItemCheckBoxSelectedBrush}"
+                                            CheckBoxSelectedDisabledBrush="{ThemeResource ListViewItemCheckBoxSelectedDisabledBrush}"
+                                            CheckBoxSelectedPointerOverBrush="{ThemeResource ListViewItemCheckBoxSelectedPointerOverBrush}"
+                                            CheckBoxSelectedPressedBrush="{ThemeResource ListViewItemCheckBoxSelectedPressedBrush}"
+                                            CheckBrush="{ThemeResource ListViewItemCheckBrush}"
+                                            CheckDisabledBrush="{ThemeResource ListViewItemCheckDisabledBrush}"
+                                            CheckMode="{ThemeResource ListViewItemCheckMode}"
+                                            CheckPressedBrush="{ThemeResource ListViewItemCheckPressedBrush}"
+                                            ContentMargin="{TemplateBinding Padding}"
+                                            ContentTransitions="{TemplateBinding ContentTransitions}"
+                                            Control.IsTemplateFocusTarget="True"
+                                            CornerRadius="{ThemeResource ListViewItemCornerRadius}"
+                                            DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                            DragBackground="{ThemeResource ListViewItemDragBackground}"
+                                            DragForeground="{ThemeResource ListViewItemDragForeground}"
+                                            DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                            FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}"
+                                            FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}"
+                                            FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                                            FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}"
+                                            FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
+                                            FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}"
+                                            FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
+                                            PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackground}"
+                                            PointerOverBackground="Transparent"
+                                            PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}"
+                                            PressedBackground="Transparent"
+                                            ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                            SelectedBackground="Transparent"
+                                            SelectedDisabledBackground="Transparent"
+                                            SelectedForeground="{ThemeResource ListViewItemForegroundSelected}"
+                                            SelectedPointerOverBackground="Transparent"
+                                            SelectedPressedBackground="Transparent"
+                                            SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}"
+                                            SelectionIndicatorBrush="{ThemeResource ListViewItemSelectionIndicatorBrush}"
+                                            SelectionIndicatorCornerRadius="{ThemeResource ListViewItemSelectionIndicatorCornerRadius}"
+                                            SelectionIndicatorDisabledBrush="{ThemeResource ListViewItemSelectionIndicatorDisabledBrush}"
+                                            SelectionIndicatorPointerOverBrush="{ThemeResource ListViewItemSelectionIndicatorPointerOverBrush}"
+                                            SelectionIndicatorPressedBrush="{ThemeResource ListViewItemSelectionIndicatorPressedBrush}"
+                                            SelectionIndicatorVisualEnabled="{ThemeResource ListViewItemSelectionIndicatorVisualEnabled}" />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                         </Style>
                     </GridView.ItemContainerStyle>
 
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="model:DataVerifyTypeModel">
-                            <CheckBox
-                                MinWidth="120"
+                            <TextBlock
+                                MinWidth="80"
                                 MinHeight="0"
-                                Padding="8,0,0,0"
-                                Command="{StaticResource DataVerifyCheckCommand}"
-                                Content="{x:Bind Name}"
-                                IsChecked="{x:Bind IsSelected, Mode=TwoWay}" />
+                                VerticalAlignment="Center"
+                                Text="{x:Bind Name}" />
                         </DataTemplate>
                     </GridView.ItemTemplate>
                 </GridView>

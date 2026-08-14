@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
+    xmlns:customcontrol="using:PowerToolbox.Views.CustomControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:PowerToolbox.Models"
@@ -23,6 +24,89 @@
         <class:ExecuteCommand x:Name="StringCommand" ExecuteRequested="{x:Bind OnStringExecuteRequested}" />
         <class:ExecuteCommand x:Name="FilePathCommand" ExecuteRequested="{x:Bind OnFilePathExecuteRequested}" />
         <class:ExecuteCommand x:Name="EmbeddedDataCommand" ExecuteRequested="{x:Bind OnEmbeddedDataExecuteRequested}" />
+
+        <Style x:Key="ListViewItemListStyle" TargetType="ListViewItem">
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+            <Setter Property="Foreground" Value="{ThemeResource ListViewItemForeground}" />
+            <Setter Property="TabNavigation" Value="Local" />
+            <Setter Property="IsHoldingEnabled" Value="True" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="MinWidth" Value="{ThemeResource ListViewItemMinWidth}" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="AllowDrop" Value="False" />
+            <Setter Property="UseSystemFocusVisuals" Value="True" />
+            <Setter Property="FocusVisualMargin" Value="1" />
+
+            <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource ListViewItemFocusVisualPrimaryBrush}" />
+            <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+            <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource ListViewItemFocusVisualSecondaryBrush}" />
+            <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <customcontrol:BorderedListViewItemPresenter
+                            x:Name="Root"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="0,0,0,1"
+                            CheckBoxBorderBrush="{ThemeResource ListViewItemCheckBoxBorderBrush}"
+                            CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}"
+                            CheckBoxCornerRadius="{ThemeResource ListViewItemCheckBoxCornerRadius}"
+                            CheckBoxDisabledBorderBrush="{ThemeResource ListViewItemCheckBoxDisabledBorderBrush}"
+                            CheckBoxDisabledBrush="{ThemeResource ListViewItemCheckBoxDisabledBrush}"
+                            CheckBoxPointerOverBorderBrush="{ThemeResource ListViewItemCheckBoxPointerOverBorderBrush}"
+                            CheckBoxPointerOverBrush="{ThemeResource ControlAltFillColorTertiaryBrush}"
+                            CheckBoxPressedBorderBrush="{ThemeResource ListViewItemCheckBoxPressedBorderBrush}"
+                            CheckBoxPressedBrush="{ThemeResource ListViewItemCheckBoxPressedBrush}"
+                            CheckBoxSelectedBrush="{ThemeResource ListViewItemCheckBoxSelectedBrush}"
+                            CheckBoxSelectedDisabledBrush="{ThemeResource ListViewItemCheckBoxSelectedDisabledBrush}"
+                            CheckBoxSelectedPointerOverBrush="{ThemeResource ListViewItemCheckBoxSelectedPointerOverBrush}"
+                            CheckBoxSelectedPressedBrush="{ThemeResource ListViewItemCheckBoxSelectedPressedBrush}"
+                            CheckBrush="{ThemeResource ListViewItemCheckBrush}"
+                            CheckDisabledBrush="{ThemeResource ListViewItemCheckDisabledBrush}"
+                            CheckMode="{ThemeResource ListViewItemCheckMode}"
+                            CheckPressedBrush="{ThemeResource ListViewItemCheckPressedBrush}"
+                            ContentMargin="{TemplateBinding Padding}"
+                            ContentTransitions="{TemplateBinding ContentTransitions}"
+                            Control.IsTemplateFocusTarget="True"
+                            CornerRadius="0"
+                            DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                            DragBackground="{ThemeResource ListViewItemDragBackground}"
+                            DragForeground="{ThemeResource ListViewItemDragForeground}"
+                            DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                            FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}"
+                            FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}"
+                            FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                            FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}"
+                            FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
+                            FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}"
+                            FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
+                            PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackground}"
+                            PointerOverBackground="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}"
+                            PressedBackground="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                            SelectedBackground="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            SelectedDisabledBackground="{ThemeResource ListViewItemBackgroundSelectedDisabled}"
+                            SelectedForeground="{ThemeResource ListViewItemForegroundSelected}"
+                            SelectedPointerOverBackground="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            SelectedPressedBackground="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}"
+                            SelectionIndicatorBrush="{ThemeResource ListViewItemSelectionIndicatorBrush}"
+                            SelectionIndicatorCornerRadius="{ThemeResource ListViewItemSelectionIndicatorCornerRadius}"
+                            SelectionIndicatorDisabledBrush="{ThemeResource ListViewItemSelectionIndicatorDisabledBrush}"
+                            SelectionIndicatorPointerOverBrush="{ThemeResource ListViewItemSelectionIndicatorPointerOverBrush}"
+                            SelectionIndicatorPressedBrush="{ThemeResource ListViewItemSelectionIndicatorPressedBrush}"
+                            SelectionIndicatorVisualEnabled="{ThemeResource ListViewItemSelectionIndicatorVisualEnabled}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Grid>
@@ -68,124 +152,98 @@
                 BorderThickness="1"
                 CornerRadius="{StaticResource ControlCornerRadius}">
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <Grid
-                    Grid.Row="0"
-                    Height="35"
-                    Padding="6,0,0,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="0,0,0,1"
-                    Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[0].SelectedValue), Mode=OneWay}">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="70" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="70" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock
-                        Grid.Column="0"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap"
-                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectDescription')}">
-
-                        <Hyperlink Click="{x:Bind OnStringSelectClicked}" UnderlineStyle="None">
-                            <Run Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Select')}" />
-                        </Hyperlink>
-                    </TextBlock>
-
-                    <TextBlock
-                        x:Name="StringKeyHeaderText"
-                        Grid.Column="1"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap">
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind StringKeyHeaderText.IsTextTrimmed, Mode=OneWay}" />
-                        </ToolTipService.ToolTip>
-                    </TextBlock>
-
-                    <TextBlock
-                        x:Name="StringLanguageHeaderText"
-                        Grid.Column="2"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Language')}"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap">
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Language')}" Visibility="{x:Bind StringLanguageHeaderText.IsTextTrimmed, Mode=OneWay}" />
-                        </ToolTipService.ToolTip>
-                    </TextBlock>
-
-                    <TextBlock
-                        x:Name="StringContentHeaderText"
-                        Grid.Column="3"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Content')}"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap">
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Content')}" Visibility="{x:Bind StringContentHeaderText.IsTextTrimmed, Mode=OneWay}" />
-                        </ToolTipService.ToolTip>
-                    </TextBlock>
-
-                    <TextBlock
-                        x:Name="StringOperationHeaderText"
-                        Grid.Column="4"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap">
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind StringOperationHeaderText.IsTextTrimmed, Mode=OneWay}" />
-                        </ToolTipService.ToolTip>
-                    </TextBlock>
-                </Grid>
-
                 <ListView
-                    Grid.Row="1"
+                    x:Name="PriExtractStringListView"
                     Margin="0,0,0,3"
                     IsItemClickEnabled="True"
                     ItemClick="{x:Bind OnStringItemClicked}"
+                    ItemContainerStyle="{StaticResource ListViewItemListStyle}"
                     ItemsSource="{x:Bind StringCollection}"
-                    SelectionMode="None"
+                    SelectionMode="Multiple"
                     Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[0].SelectedValue), Mode=OneWay}">
-
-                    <ListView.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="MinHeight" Value="0" />
-                            <Setter Property="Padding" Value="0" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
 
                     <ItemsControl.ItemContainerTransitions>
                         <TransitionCollection />
                     </ItemsControl.ItemContainerTransitions>
+
+                    <ListView.Header>
+                        <Grid
+                            Grid.Row="0"
+                            Height="35"
+                            Padding="34,0,0,0"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="0,0,0,1"
+                            Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[0].SelectedValue), Mode=OneWay}">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="70" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                x:Name="StringKeyHeaderText"
+                                Grid.Column="0"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind StringKeyHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+
+                            <TextBlock
+                                x:Name="StringLanguageHeaderText"
+                                Grid.Column="1"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Language')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Language')}" Visibility="{x:Bind StringLanguageHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+
+                            <TextBlock
+                                x:Name="StringContentHeaderText"
+                                Grid.Column="2"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Content')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Content')}" Visibility="{x:Bind StringContentHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+
+                            <TextBlock
+                                x:Name="StringOperationHeaderText"
+                                Grid.Column="3"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind StringOperationHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+                        </Grid>
+                    </ListView.Header>
 
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:StringModel">
@@ -197,36 +255,15 @@
                                 BorderThickness="0,0,0,1">
 
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="70" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="100" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="70" />
                                 </Grid.ColumnDefinitions>
 
-                                <CheckBox
-                                    Grid.Column="0"
-                                    Width="50"
-                                    MinWidth="0"
-                                    Margin="10,0,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    IsChecked="{x:Bind IsSelected, Mode=TwoWay}"
-                                    IsThreeState="False">
-
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip>
-                                            <Grid>
-                                                <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
-                                            </Grid>
-                                        </ToolTip>
-                                    </ToolTipService.ToolTip>
-                                </CheckBox>
-
                                 <TextBlock
                                     x:Name="StringKeyText"
-                                    Grid.Column="1"
+                                    Grid.Column="0"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
@@ -239,7 +276,7 @@
 
                                 <TextBlock
                                     x:Name="StringLanguageText"
-                                    Grid.Column="2"
+                                    Grid.Column="1"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
@@ -256,7 +293,7 @@
 
                                 <TextBlock
                                     x:Name="StringContentText"
-                                    Grid.Column="3"
+                                    Grid.Column="2"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
@@ -272,7 +309,7 @@
                                 </TextBlock>
 
                                 <HyperlinkButton
-                                    Grid.Column="4"
+                                    Grid.Column="3"
                                     Margin="10,0,0,0"
                                     Padding="0"
                                     VerticalAlignment="Center"
@@ -285,8 +322,7 @@
                 </ListView>
 
                 <Grid
-                    Grid.Row="1"
-                    Margin="0,10,0,0"
+                    Margin="0,45,0,0"
                     VerticalAlignment="Top"
                     Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[0].SelectedValue), Mode=OneWay}">
 
@@ -296,104 +332,83 @@
                         Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(StringCollection.Count), Mode=OneWay}" />
                 </Grid>
 
-                <!--  文件路径资源  -->
-                <Grid
-                    Grid.Row="0"
-                    Height="35"
-                    Padding="6,0,0,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="0,0,0,1"
-                    Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[1].SelectedValue), Mode=OneWay}">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="70" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="70" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock
-                        Grid.Column="0"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap"
-                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectDescription')}">
-
-                        <Hyperlink Click="{x:Bind OnFilePathSelectClicked}" UnderlineStyle="None">
-                            <Run Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Select')}" />
-                        </Hyperlink>
-                    </TextBlock>
-
-                    <TextBlock
-                        x:Name="FilePathKeyHeaderText"
-                        Grid.Column="1"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap">
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind FilePathKeyHeaderText.IsTextTrimmed, Mode=OneWay}" />
-                        </ToolTipService.ToolTip>
-                    </TextBlock>
-
-                    <TextBlock
-                        x:Name="FilePathAbsolutePathHeaderText"
-                        Grid.Column="2"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('AbsolutePath')}"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap">
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('AbsolutePath')}" Visibility="{x:Bind FilePathAbsolutePathHeaderText.IsTextTrimmed, Mode=OneWay}" />
-                        </ToolTipService.ToolTip>
-                    </TextBlock>
-
-                    <TextBlock
-                        x:Name="FilePathOperationHeaderText"
-                        Grid.Column="3"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap">
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind FilePathOperationHeaderText.IsTextTrimmed, Mode=OneWay}" />
-                        </ToolTipService.ToolTip>
-                    </TextBlock>
-                </Grid>
-
                 <ListView
-                    Grid.Row="1"
+                    x:Name="PriExtractFilePathListView"
                     Margin="0,0,0,3"
                     IsItemClickEnabled="True"
                     ItemClick="{x:Bind OnFilePathItemClicked}"
+                    ItemContainerStyle="{StaticResource ListViewItemListStyle}"
                     ItemsSource="{x:Bind FilePathCollection}"
-                    SelectionMode="None"
+                    SelectionMode="Multiple"
                     Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[1].SelectedValue), Mode=OneWay}">
-
-                    <ListView.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="MinHeight" Value="0" />
-                            <Setter Property="Padding" Value="0" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
 
                     <ItemsControl.ItemContainerTransitions>
                         <TransitionCollection />
                     </ItemsControl.ItemContainerTransitions>
+
+                    <ListView.Header>
+                        <!--  文件路径资源  -->
+                        <Grid
+                            Grid.Row="0"
+                            Height="35"
+                            Padding="34,0,0,0"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="0,0,0,1"
+                            Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[1].SelectedValue), Mode=OneWay}">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="70" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                x:Name="FilePathKeyHeaderText"
+                                Grid.Column="0"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind FilePathKeyHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+
+                            <TextBlock
+                                x:Name="FilePathAbsolutePathHeaderText"
+                                Grid.Column="1"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('AbsolutePath')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('AbsolutePath')}" Visibility="{x:Bind FilePathAbsolutePathHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+
+                            <TextBlock
+                                x:Name="FilePathOperationHeaderText"
+                                Grid.Column="2"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind FilePathOperationHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+                        </Grid>
+                    </ListView.Header>
 
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:FilePathModel">
@@ -405,35 +420,14 @@
                                 BorderThickness="0,0,0,1">
 
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="70" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="70" />
                                 </Grid.ColumnDefinitions>
 
-                                <CheckBox
-                                    Grid.Column="0"
-                                    Width="50"
-                                    MinWidth="0"
-                                    Margin="10,0,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    IsChecked="{x:Bind IsSelected, Mode=TwoWay}"
-                                    IsThreeState="False">
-
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip>
-                                            <Grid>
-                                                <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
-                                            </Grid>
-                                        </ToolTip>
-                                    </ToolTipService.ToolTip>
-                                </CheckBox>
-
                                 <TextBlock
                                     x:Name="FilePathKeyText"
-                                    Grid.Column="1"
+                                    Grid.Column="0"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
@@ -450,7 +444,7 @@
 
                                 <TextBlock
                                     x:Name="FilePathAbsolutePathText"
-                                    Grid.Column="2"
+                                    Grid.Column="1"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
@@ -466,7 +460,7 @@
                                 </TextBlock>
 
                                 <HyperlinkButton
-                                    Grid.Column="3"
+                                    Grid.Column="2"
                                     Margin="10,0,0,0"
                                     Padding="0"
                                     VerticalAlignment="Center"
@@ -479,8 +473,7 @@
                 </ListView>
 
                 <Grid
-                    Grid.Row="1"
-                    Margin="0,10,0,0"
+                    Margin="0,45,0,0"
                     VerticalAlignment="Top"
                     Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[1].SelectedValue), Mode=OneWay}">
 
@@ -490,87 +483,66 @@
                         Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(FilePathCollection.Count), Mode=OneWay}" />
                 </Grid>
 
-                <!--  嵌入数据资源  -->
-                <Grid
-                    Grid.Row="0"
-                    Height="35"
-                    Padding="6,0,0,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="0,0,0,1"
-                    Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[2].SelectedValue), Mode=OneWay}">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="70" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="70" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock
-                        Grid.Column="0"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap"
-                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectDescription')}">
-
-                        <Hyperlink Click="{x:Bind OnEmbeddedDataSelectClicked}" UnderlineStyle="None">
-                            <Run Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Select')}" />
-                        </Hyperlink>
-                    </TextBlock>
-
-                    <TextBlock
-                        x:Name="EmbeddedDataKeyHeaderText"
-                        Grid.Column="1"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap">
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind EmbeddedDataKeyHeaderText.IsTextTrimmed, Mode=OneWay}" />
-                        </ToolTipService.ToolTip>
-                    </TextBlock>
-
-                    <TextBlock
-                        x:Name="EmbeddedDataOperationHeaderText"
-                        Grid.Column="2"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}"
-                        TextTrimming="CharacterEllipsis"
-                        TextWrapping="NoWrap">
-
-                        <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind EmbeddedDataOperationHeaderText.IsTextTrimmed, Mode=OneWay}" />
-                        </ToolTipService.ToolTip>
-                    </TextBlock>
-                </Grid>
-
                 <ListView
-                    Grid.Row="1"
+                    x:Name="PriExtractEmbeddedDataListView"
                     IsItemClickEnabled="True"
                     ItemClick="{x:Bind OnEmbeddedDataItemClicked}"
+                    ItemContainerStyle="{StaticResource ListViewItemListStyle}"
                     ItemsSource="{x:Bind EmbeddedDataCollection}"
-                    SelectionMode="None"
+                    SelectionMode="Multiple"
                     Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[2].SelectedValue), Mode=OneWay}">
-
-                    <ListView.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="MinHeight" Value="0" />
-                            <Setter Property="Padding" Value="0" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
 
                     <ItemsControl.ItemContainerTransitions>
                         <TransitionCollection />
                     </ItemsControl.ItemContainerTransitions>
+
+                    <ListView.Header>
+                        <!--  嵌入数据资源  -->
+                        <Grid
+                            Grid.Row="0"
+                            Height="35"
+                            Padding="34,0,0,0"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="0,0,0,1"
+                            Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[2].SelectedValue), Mode=OneWay}">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="70" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                x:Name="EmbeddedDataKeyHeaderText"
+                                Grid.Column="0"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind EmbeddedDataKeyHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+
+                            <TextBlock
+                                x:Name="EmbeddedDataOperationHeaderText"
+                                Grid.Column="1"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
+
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind EmbeddedDataOperationHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+                        </Grid>
+                    </ListView.Header>
 
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:EmbeddedDataModel">
@@ -582,34 +554,13 @@
                                 BorderThickness="0,0,0,1">
 
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="70" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="70" />
                                 </Grid.ColumnDefinitions>
 
-                                <CheckBox
-                                    Grid.Column="0"
-                                    Width="50"
-                                    MinWidth="0"
-                                    Margin="10,0,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    IsChecked="{x:Bind IsSelected, Mode=TwoWay}"
-                                    IsThreeState="False">
-
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip>
-                                            <Grid>
-                                                <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                <TextBlock Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
-                                            </Grid>
-                                        </ToolTip>
-                                    </ToolTipService.ToolTip>
-                                </CheckBox>
-
                                 <TextBlock
                                     x:Name="EmbeddedDataKeyText"
-                                    Grid.Column="1"
+                                    Grid.Column="0"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
@@ -625,7 +576,7 @@
                                 </TextBlock>
 
                                 <HyperlinkButton
-                                    Grid.Column="2"
+                                    Grid.Column="1"
                                     Margin="10,0,0,0"
                                     Padding="0"
                                     VerticalAlignment="Center"
@@ -638,8 +589,7 @@
                 </ListView>
 
                 <Grid
-                    Grid.Row="1"
-                    Margin="0,10,0,0"
+                    Margin="0,45,0,0"
                     VerticalAlignment="Top"
                     Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[2].SelectedValue), Mode=OneWay}">
 
@@ -691,6 +641,44 @@
 
                     <MenuFlyoutSeparator Grid.Row="5" Margin="5,3" />
 
+                    <DropDownButton
+                        Grid.Row="2"
+                        Margin="0,0,0,3"
+                        HorizontalAlignment="Stretch"
+                        Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('MultiSelect')}">
+
+                        <DropDownButton.Flyout>
+                            <MenuFlyout Placement="Bottom">
+                                <MenuFlyout.MenuFlyoutPresenterStyle>
+                                    <Style BasedOn="{StaticResource DefaultMenuFlyoutPresenterStyle}" TargetType="MenuFlyoutPresenter">
+                                        <Setter Property="MinWidth" Value="260" />
+                                    </Style>
+                                </MenuFlyout.MenuFlyoutPresenterStyle>
+
+                                <MenuFlyoutItem Click="{x:Bind OnSelectAllClicked}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectAll')}">
+
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE8B3;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+
+                                <MenuFlyoutItem Click="{x:Bind OnSelectNoneClicked}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectNone')}">
+
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE8E6;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+
+                                <MenuFlyoutItem Click="{x:Bind OnSelectReverseClicked}" Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('SelectReverse')}">
+
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xEA98;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
+
                     <Button
                         HorizontalAlignment="Stretch"
                         Click="{x:Bind OnSelectSaveFolderClicked}"
@@ -714,6 +702,7 @@
                                 DisplayMemberPath="DisplayMember"
                                 IsEnabled="{x:Bind system:Convert.ToBoolean(LanguageCollection.Count), Mode=OneWay}"
                                 ItemsSource="{x:Bind LanguageCollection}"
+                                PlaceholderText="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('NoAvailableLanguage')}"
                                 SelectedItem="{x:Bind SelectedLanguage, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnLanguageSelectionChanged}"
                                 Style="{StaticResource ComboBoxStyle}"

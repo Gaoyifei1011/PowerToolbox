@@ -385,14 +385,6 @@ namespace PowerToolbox.Views.Pages
         #region 第一部分：ExecuteCommand 命令调用时挂载的事件
 
         /// <summary>
-        /// 点击选中驱动项
-        /// </summary>
-        private void OnCheckBoxExecuteRequested(object sender, ExecuteRequestedEventArgs args)
-        {
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
-        }
-
-        /// <summary>
         /// 打开文件夹
         /// </summary>
         private void OnOpenFolderExecuteRequested(object sender, ExecuteRequestedEventArgs args)
@@ -550,7 +542,6 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 以管理员身份运行
         /// </summary>
-
         private void OnRunAsAdministratorClicked(object sender, RoutedEventArgs args)
         {
             Task.Run(() =>
@@ -607,6 +598,14 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 驱动管理结果列表控件选中项发生变化时触发的事件
+        /// </summary>
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
+        }
+
+        /// <summary>
         /// 清空驱动操作任务（只允许清理未正进行的驱动操作任务）
         /// </summary>
 
@@ -645,14 +644,13 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
                     {
-                        driverItem.IsSelected = false;
                         DriverCollection.Add(driverItem);
                     }
                 }
 
-                DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
-                DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyWithConditionDescriptionString : string.Empty;
-                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
+                DriverResultKind = DriverResultKind.Successfully;
+                DriverFailedContent = string.Empty;
+                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
             }
         }
 
@@ -668,13 +666,12 @@ namespace PowerToolbox.Views.Pages
                 DriverCollection.Clear();
                 foreach (DriverModel driverItem in DriverList)
                 {
-                    driverItem.IsSelected = false;
                     DriverCollection.Add(driverItem);
                 }
 
-                DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
-                DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyWithConditionDescriptionString : string.Empty;
-                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
+                DriverResultKind = DriverResultKind.Successfully;
+                DriverFailedContent = string.Empty;
+                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
             }
         }
 
@@ -683,12 +680,8 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectAllClicked(object sender, RoutedEventArgs args)
         {
-            foreach (DriverModel driverItem in DriverCollection)
-            {
-                driverItem.IsSelected = true;
-            }
-
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
+            DriverManagerListView.SelectAll();
+            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
         }
 
         /// <summary>
@@ -696,12 +689,30 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
         {
-            foreach (DriverModel driverItem in DriverCollection)
+            DriverManagerListView.DeselectRange(new(0, (uint)DriverManagerListView.Items.Count));
+            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
+        }
+
+        /// <summary>
+        /// 全部反选
+        /// </summary>
+        private void OnSelectReverseClicked(object sender, RoutedEventArgs args)
+        {
+            List<object> selectedItemList = [.. DriverManagerListView.SelectedItems];
+
+            foreach (object item in DriverManagerListView.Items)
             {
-                driverItem.IsSelected = false;
+                if (selectedItemList.Contains(item))
+                {
+                    DriverManagerListView.SelectedItems.Remove(item);
+                }
+                else
+                {
+                    DriverManagerListView.SelectedItems.Add(item);
+                }
             }
 
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
+            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
         }
 
         /// <summary>
@@ -763,7 +774,7 @@ namespace PowerToolbox.Views.Pages
                     Filter = DriverFilterConditionString,
                 };
 
-                if (openFileDialog.ShowDialog() is DialogResult.OK)
+                if (openFileDialog.ShowDialog() is DialogResult.OK && DriverResultKind is not DriverResultKind.Loading)
                 {
                     DriverResultKind oldDriverResultKind = DriverResultKind;
                     DriverResultKind = DriverResultKind.Loading;
@@ -854,7 +865,7 @@ namespace PowerToolbox.Views.Pages
                     Filter = DriverFilterConditionString,
                 };
 
-                if (openFileDialog.ShowDialog() is DialogResult.OK)
+                if (openFileDialog.ShowDialog() is DialogResult.OK && DriverResultKind is not DriverResultKind.Loading)
                 {
                     bool needReboot = false;
                     DriverResultKind oldDriverResultKind = DriverResultKind;
@@ -955,7 +966,15 @@ namespace PowerToolbox.Views.Pages
         {
             if (RuntimeHelper.IsElevated)
             {
-                List<DriverModel> selectedDriverList = [.. DriverCollection.Where(item => item.IsSelected)];
+                List<DriverModel> selectedDriverList = [];
+
+                foreach (object item in DriverManagerListView.SelectedItems)
+                {
+                    if (item is DriverModel driverItem)
+                    {
+                        selectedDriverList.Add(driverItem);
+                    }
+                }
 
                 if (selectedDriverList.Count is 0)
                 {
@@ -1041,7 +1060,15 @@ namespace PowerToolbox.Views.Pages
         {
             if (RuntimeHelper.IsElevated)
             {
-                List<DriverModel> selectedDriverList = [.. DriverCollection.Where(item => item.IsSelected)];
+                List<DriverModel> selectedDriverList = [];
+
+                foreach (object item in DriverManagerListView.SelectedItems)
+                {
+                    if (item is DriverModel driverItem)
+                    {
+                        selectedDriverList.Add(driverItem);
+                    }
+                }
 
                 if (selectedDriverList.Count is 0)
                 {
@@ -1149,6 +1176,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectOldDriverClicked(object sender, RoutedEventArgs args)
         {
+            DriverManagerListView.SelectedItems.Clear();
             IEnumerable<IGrouping<string, DriverModel>> driverInfGroupInfoList = DriverCollection.GroupBy(item => item.DriverInfName);
 
             foreach (IGrouping<string, DriverModel> driverInfGroupInfo in driverInfGroupInfoList)
@@ -1164,12 +1192,12 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (driverItem.DriverDate < latestDate)
                     {
-                        driverItem.IsSelected = true;
+                        DriverManagerListView.SelectedItems.Add(driverItem);
                     }
                 }
             }
 
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
+            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
         }
 
         #endregion 第二部分：驱动管理页面——挂载的事件
@@ -1179,164 +1207,153 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async Task GetDriverAsync()
         {
-            DriverResultKind = DriverResultKind.Loading;
-            DriverList.Clear();
-            DriverCollection.Clear();
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
-
-            List<DriverModel> driverList = await Task.Run(() =>
+            if (DriverResultKind is not DriverResultKind.Loading)
             {
-                List<DriverModel> driverList = GetDriverInformationList();
-                driverList.Sort((item1, item2) => item1.DriverOEMInfName.CompareTo(item2.DriverOEMInfName));
-                return driverList;
-            });
+                DriverResultKind = DriverResultKind.Loading;
+                DriverList.Clear();
+                DriverCollection.Clear();
+                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
 
-            DriverList.AddRange(driverList);
-
-            if (DriverList.Count is 0)
-            {
-                DriverResultKind = DriverResultKind.Failed;
-                DriverFailedContent = DriverEmptyDescriptionString;
-            }
-            else
-            {
-                if (Equals(SelectedRule, DriverSortRuleKind.DeviceName))
+                List<DriverModel> driverList = await Task.Run(() =>
                 {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DeviceName) : DriverList.OrderByDescending(item => item.DeviceName))
-                    {
-                        driverItem.IsSelected = false;
+                    List<DriverModel> driverList = GetDriverInformationList();
+                    driverList.Sort((item1, item2) => item1.DriverOEMInfName.CompareTo(item2.DriverOEMInfName));
+                    return driverList;
+                });
 
-                        if (string.IsNullOrEmpty(SearchText))
+                DriverList.AddRange(driverList);
+
+                if (DriverList.Count is 0)
+                {
+                    DriverResultKind = DriverResultKind.Failed;
+                    DriverFailedContent = DriverEmptyDescriptionString;
+                }
+                else
+                {
+                    if (Equals(SelectedRule, DriverSortRuleKind.DeviceName))
+                    {
+                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DeviceName) : DriverList.OrderByDescending(item => item.DeviceName))
                         {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                            if (string.IsNullOrEmpty(SearchText))
                             {
                                 DriverCollection.Add(driverItem);
                             }
-                        }
-                    }
-                }
-                else if (Equals(SelectedRule, DriverSortRuleKind.InfName))
-                {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverInfName) : DriverList.OrderByDescending(item => item.DriverInfName))
-                    {
-                        driverItem.IsSelected = false;
-
-                        if (string.IsNullOrEmpty(SearchText))
-                        {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                            else
                             {
-                                DriverCollection.Add(driverItem);
+                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                                {
+                                    DriverCollection.Add(driverItem);
+                                }
                             }
                         }
                     }
-                }
-                else if (Equals(SelectedRule, DriverSortRuleKind.OEMInfName))
-                {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverOEMInfName) : DriverList.OrderByDescending(item => item.DriverOEMInfName))
+                    else if (Equals(SelectedRule, DriverSortRuleKind.InfName))
                     {
-                        driverItem.IsSelected = false;
-
-                        if (string.IsNullOrEmpty(SearchText))
+                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverInfName) : DriverList.OrderByDescending(item => item.DriverInfName))
                         {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                            if (string.IsNullOrEmpty(SearchText))
                             {
                                 DriverCollection.Add(driverItem);
                             }
-                        }
-                    }
-                }
-                else if (Equals(SelectedRule, DriverSortRuleKind.DeviceType))
-                {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverType) : DriverList.OrderByDescending(item => item.DriverType))
-                    {
-                        driverItem.IsSelected = false;
-
-                        if (string.IsNullOrEmpty(SearchText))
-                        {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                            else
                             {
-                                DriverCollection.Add(driverItem);
+                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                                {
+                                    DriverCollection.Add(driverItem);
+                                }
                             }
                         }
                     }
-                }
-                else if (Equals(SelectedRule, DriverSortRuleKind.Manufacturer))
-                {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverManufacturer) : DriverList.OrderByDescending(item => item.DriverManufacturer))
+                    else if (Equals(SelectedRule, DriverSortRuleKind.OEMInfName))
                     {
-                        driverItem.IsSelected = false;
-
-                        if (string.IsNullOrEmpty(SearchText))
+                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverOEMInfName) : DriverList.OrderByDescending(item => item.DriverOEMInfName))
                         {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                            if (string.IsNullOrEmpty(SearchText))
                             {
                                 DriverCollection.Add(driverItem);
                             }
-                        }
-                    }
-                }
-                else if (Equals(SelectedRule, DriverSortRuleKind.Manufacturer))
-                {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverVersion) : DriverList.OrderByDescending(item => item.DriverVersion))
-                    {
-                        driverItem.IsSelected = false;
-
-                        if (string.IsNullOrEmpty(SearchText))
-                        {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                            else
                             {
-                                DriverCollection.Add(driverItem);
+                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                                {
+                                    DriverCollection.Add(driverItem);
+                                }
                             }
                         }
                     }
-                }
-                else if (Equals(SelectedRule, DriverSortRuleKind.Date))
-                {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverDate) : DriverList.OrderByDescending(item => item.DriverDate))
+                    else if (Equals(SelectedRule, DriverSortRuleKind.DeviceType))
                     {
-                        driverItem.IsSelected = false;
-
-                        if (string.IsNullOrEmpty(SearchText))
+                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverType) : DriverList.OrderByDescending(item => item.DriverType))
                         {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                            if (string.IsNullOrEmpty(SearchText))
                             {
                                 DriverCollection.Add(driverItem);
                             }
+                            else
+                            {
+                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                                {
+                                    DriverCollection.Add(driverItem);
+                                }
+                            }
                         }
                     }
-                }
+                    else if (Equals(SelectedRule, DriverSortRuleKind.Manufacturer))
+                    {
+                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverManufacturer) : DriverList.OrderByDescending(item => item.DriverManufacturer))
+                        {
+                            if (string.IsNullOrEmpty(SearchText))
+                            {
+                                DriverCollection.Add(driverItem);
+                            }
+                            else
+                            {
+                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                                {
+                                    DriverCollection.Add(driverItem);
+                                }
+                            }
+                        }
+                    }
+                    else if (Equals(SelectedRule, DriverSortRuleKind.Manufacturer))
+                    {
+                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverVersion) : DriverList.OrderByDescending(item => item.DriverVersion))
+                        {
+                            if (string.IsNullOrEmpty(SearchText))
+                            {
+                                DriverCollection.Add(driverItem);
+                            }
+                            else
+                            {
+                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                                {
+                                    DriverCollection.Add(driverItem);
+                                }
+                            }
+                        }
+                    }
+                    else if (Equals(SelectedRule, DriverSortRuleKind.Date))
+                    {
+                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverDate) : DriverList.OrderByDescending(item => item.DriverDate))
+                        {
+                            if (string.IsNullOrEmpty(SearchText))
+                            {
+                                DriverCollection.Add(driverItem);
+                            }
+                            else
+                            {
+                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
+                                {
+                                    DriverCollection.Add(driverItem);
+                                }
+                            }
+                        }
+                    }
 
-                DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
-                DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyWithConditionDescriptionString : string.Empty;
-                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
+                    DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
+                    DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyWithConditionDescriptionString : string.Empty;
+                    DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
+                }
             }
         }
 
@@ -1354,8 +1371,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DeviceName) : DriverList.OrderByDescending(item => item.DeviceName))
                     {
-                        driverItem.IsSelected = false;
-
                         if (string.IsNullOrEmpty(SearchText))
                         {
                             DriverCollection.Add(driverItem);
@@ -1373,8 +1388,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverInfName) : DriverList.OrderByDescending(item => item.DriverInfName))
                     {
-                        driverItem.IsSelected = false;
-
                         if (string.IsNullOrEmpty(SearchText))
                         {
                             DriverCollection.Add(driverItem);
@@ -1392,8 +1405,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverOEMInfName) : DriverList.OrderByDescending(item => item.DriverOEMInfName))
                     {
-                        driverItem.IsSelected = false;
-
                         if (string.IsNullOrEmpty(SearchText))
                         {
                             DriverCollection.Add(driverItem);
@@ -1411,8 +1422,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverType) : DriverList.OrderByDescending(item => item.DriverType))
                     {
-                        driverItem.IsSelected = false;
-
                         if (string.IsNullOrEmpty(SearchText))
                         {
                             DriverCollection.Add(driverItem);
@@ -1430,8 +1439,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverManufacturer) : DriverList.OrderByDescending(item => item.DriverManufacturer))
                     {
-                        driverItem.IsSelected = false;
-
                         if (string.IsNullOrEmpty(SearchText))
                         {
                             DriverCollection.Add(driverItem);
@@ -1449,8 +1456,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverVersion) : DriverList.OrderByDescending(item => item.DriverVersion))
                     {
-                        driverItem.IsSelected = false;
-
                         if (string.IsNullOrEmpty(SearchText))
                         {
                             DriverCollection.Add(driverItem);
@@ -1468,8 +1473,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverDate) : DriverList.OrderByDescending(item => item.DriverDate))
                     {
-                        driverItem.IsSelected = false;
-
                         if (string.IsNullOrEmpty(SearchText))
                         {
                             DriverCollection.Add(driverItem);
@@ -1486,7 +1489,7 @@ namespace PowerToolbox.Views.Pages
 
                 DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
                 DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyWithConditionDescriptionString : string.Empty;
-                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverCollection.Count(item => item.IsSelected));
+                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
             }
         }
 

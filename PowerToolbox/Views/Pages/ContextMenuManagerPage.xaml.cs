@@ -387,186 +387,189 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async Task GetContextMenuAsync()
         {
-            ContextMenuResultKind = ContextMenuResultKind.Loading;
-            ContextMenuList.Clear();
-            ContextMenuCollection.Clear();
-
-            List<ContextMenuModel> queryedContextMenuList = await Task.Run(() =>
+            if (ContextMenuResultKind is not ContextMenuResultKind.Loading)
             {
-                List<ContextMenuModel> queryedContextMenuList = [];
-                List<KeyValuePair<Guid, string>> blockedList = GetBlockedClsidList();
-                List<INET_FIREWALL_APP_CONTAINER> inetLoopbackList = GetAppContainerList();
+                ContextMenuResultKind = ContextMenuResultKind.Loading;
+                ContextMenuList.Clear();
+                ContextMenuCollection.Clear();
 
-                try
+                List<ContextMenuModel> queryedContextMenuList = await Task.Run(() =>
                 {
-                    RegistryKey packageListKey = Registry.LocalMachine.OpenSubKey(packageComPackageKey, false);
+                    List<ContextMenuModel> queryedContextMenuList = [];
+                    List<KeyValuePair<Guid, string>> blockedList = GetBlockedClsidList();
+                    List<INET_FIREWALL_APP_CONTAINER> inetLoopbackList = GetAppContainerList();
 
-                    if (packageListKey is not null)
+                    try
                     {
-                        string[] packageFullNameArray = packageListKey.GetSubKeyNames();
-                        int length = 0;
-                        string currentPackageFullName = string.Empty;
+                        RegistryKey packageListKey = Registry.LocalMachine.OpenSubKey(packageComPackageKey, false);
 
-                        if (Kernel32Library.GetCurrentPackageFullName(ref length, null) is 122)
+                        if (packageListKey is not null)
                         {
-                            StringBuilder packageFullNameBuilder = new(length + 1);
-                            Kernel32Library.GetCurrentPackageFullName(ref length, packageFullNameBuilder);
-                            currentPackageFullName = Convert.ToString(packageFullNameBuilder);
-                        }
+                            string[] packageFullNameArray = packageListKey.GetSubKeyNames();
+                            int length = 0;
+                            string currentPackageFullName = string.Empty;
 
-                        foreach (string packageFullName in packageFullNameArray)
-                        {
-                            if (string.Equals(packageFullName, currentPackageFullName, StringComparison.OrdinalIgnoreCase))
+                            if (Kernel32Library.GetCurrentPackageFullName(ref length, null) is 122)
                             {
-                                continue;
+                                StringBuilder packageFullNameBuilder = new(length + 1);
+                                Kernel32Library.GetCurrentPackageFullName(ref length, packageFullNameBuilder);
+                                currentPackageFullName = Convert.ToString(packageFullNameBuilder);
                             }
 
-                            RegistryKey classKey = packageListKey.OpenSubKey(string.Join(@"\", packageFullName, "Class"));
-
-                            if (classKey is not null)
+                            foreach (string packageFullName in packageFullNameArray)
                             {
-                                string[] clsidArray = classKey.GetSubKeyNames();
-                                List<ContextMenuItemModel> contextMenuItemList = [];
-
-                                foreach (string clsidString in clsidArray)
+                                if (string.Equals(packageFullName, currentPackageFullName, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    if (Guid.TryParse(clsidString, out Guid clsid))
+                                    continue;
+                                }
+
+                                RegistryKey classKey = packageListKey.OpenSubKey(string.Join(@"\", packageFullName, "Class"));
+
+                                if (classKey is not null)
+                                {
+                                    string[] clsidArray = classKey.GetSubKeyNames();
+                                    List<ContextMenuItemModel> contextMenuItemList = [];
+
+                                    foreach (string clsidString in clsidArray)
                                     {
-                                        RegistryKey clsidKey = classKey.OpenSubKey(clsidString, false);
-
-                                        if (clsidKey is not null)
+                                        if (Guid.TryParse(clsidString, out Guid clsid))
                                         {
-                                            string dllPath = Convert.ToString(clsidKey.GetValue("DllPath", string.Empty));
+                                            RegistryKey clsidKey = classKey.OpenSubKey(clsidString, false);
 
-                                            if (!string.IsNullOrEmpty(dllPath) && dllPath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+                                            if (clsidKey is not null)
                                             {
-                                                int serverId = Convert.ToInt32(clsidKey.GetValue("ServerId", 0));
-                                                int threading = Convert.ToInt32(clsidKey.GetValue("Threading", 0));
-                                                int index = blockedList.FindIndex(item => Equals(item.Key, clsid));
+                                                string dllPath = Convert.ToString(clsidKey.GetValue("DllPath", string.Empty));
 
-                                                contextMenuItemList.Add(new ContextMenuItemModel()
+                                                if (!string.IsNullOrEmpty(dllPath) && dllPath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
                                                 {
-                                                    BlockedClsidType = index >= 0 && index < blockedList.Count ? Enum.TryParse(blockedList[index].Value, out BlockedClsidType blockedClsidType) ? blockedClsidType : BlockedClsidType.Unknown : BlockedClsidType.Unknown,
-                                                    Clsid = clsid,
-                                                    ClsidString = Convert.ToString(clsid).ToUpperInvariant(),
-                                                    DllPath = dllPath,
-                                                    IsEnabled = index is -1,
-                                                    ThreadingMode = threading switch
+                                                    int serverId = Convert.ToInt32(clsidKey.GetValue("ServerId", 0));
+                                                    int threading = Convert.ToInt32(clsidKey.GetValue("Threading", 0));
+                                                    int index = blockedList.FindIndex(item => Equals(item.Key, clsid));
+
+                                                    contextMenuItemList.Add(new ContextMenuItemModel()
                                                     {
-                                                        0 => ApartmentState.STA,
-                                                        1 => ApartmentState.MTA,
-                                                        _ => ApartmentState.Unknown,
-                                                    }
-                                                });
+                                                        BlockedClsidType = index >= 0 && index < blockedList.Count ? Enum.TryParse(blockedList[index].Value, out BlockedClsidType blockedClsidType) ? blockedClsidType : BlockedClsidType.Unknown : BlockedClsidType.Unknown,
+                                                        Clsid = clsid,
+                                                        ClsidString = Convert.ToString(clsid).ToUpperInvariant(),
+                                                        DllPath = dllPath,
+                                                        IsEnabled = index is -1,
+                                                        ThreadingMode = threading switch
+                                                        {
+                                                            0 => ApartmentState.STA,
+                                                            1 => ApartmentState.MTA,
+                                                            _ => ApartmentState.Unknown,
+                                                        }
+                                                    });
+                                                }
+                                            }
+
+                                            clsidKey.Close();
+                                            clsidKey.Dispose();
+                                        }
+                                    }
+
+                                    length = 0;
+                                    string packagePath = string.Empty;
+
+                                    if (Kernel32Library.GetPackagePathByFullName(packageFullName, ref length, null) is 122)
+                                    {
+                                        StringBuilder packagePathBuilder = new(length + 1);
+                                        int result = Kernel32Library.GetPackagePathByFullName(packageFullName, ref length, packagePathBuilder);
+                                        packagePath = Convert.ToString(packagePathBuilder);
+                                    }
+
+                                    (string displayName, string logoFullPath, List<Guid> clsidList) = GetAppInfo(packagePath);
+
+                                    if (clsidList.Count > 0)
+                                    {
+                                        StringBuilder displayNameBuilder = new(1024);
+                                        foreach (INET_FIREWALL_APP_CONTAINER inetContainerItem in inetLoopbackList)
+                                        {
+                                            if (inetContainerItem.displayName.Contains(packageFullName))
+                                            {
+                                                ShlwapiLibrary.SHLoadIndirectString(inetContainerItem.displayName, displayNameBuilder, displayNameBuilder.Capacity, 0);
                                             }
                                         }
 
-                                        clsidKey.Close();
-                                        clsidKey.Dispose();
-                                    }
-                                }
-
-                                length = 0;
-                                string packagePath = string.Empty;
-
-                                if (Kernel32Library.GetPackagePathByFullName(packageFullName, ref length, null) is 122)
-                                {
-                                    StringBuilder packagePathBuilder = new(length + 1);
-                                    int result = Kernel32Library.GetPackagePathByFullName(packageFullName, ref length, packagePathBuilder);
-                                    packagePath = Convert.ToString(packagePathBuilder);
-                                }
-
-                                (string displayName, string logoFullPath, List<Guid> clsidList) = GetAppInfo(packagePath);
-
-                                if (clsidList.Count > 0)
-                                {
-                                    StringBuilder displayNameBuilder = new(1024);
-                                    foreach (INET_FIREWALL_APP_CONTAINER inetContainerItem in inetLoopbackList)
-                                    {
-                                        if (inetContainerItem.displayName.Contains(packageFullName))
+                                        ContextMenuModel contextMenu = new()
                                         {
-                                            ShlwapiLibrary.SHLoadIndirectString(inetContainerItem.displayName, displayNameBuilder, displayNameBuilder.Capacity, 0);
-                                        }
+                                            PackageDisplayName = string.IsNullOrEmpty(Convert.ToString(displayNameBuilder)) ? displayName : Convert.ToString(displayNameBuilder),
+                                            PackageFullName = packageFullName,
+                                            PackageIconUri = Uri.TryCreate(logoFullPath, UriKind.Absolute, out Uri uri) ? uri : null,
+                                            PackagePath = packagePath,
+                                            ContextMenuItemCollection = [.. contextMenuItemList]
+                                        };
+
+                                        queryedContextMenuList.Add(contextMenu);
                                     }
 
-                                    ContextMenuModel contextMenu = new()
-                                    {
-                                        PackageDisplayName = string.IsNullOrEmpty(Convert.ToString(displayNameBuilder)) ? displayName : Convert.ToString(displayNameBuilder),
-                                        PackageFullName = packageFullName,
-                                        PackageIconUri = Uri.TryCreate(logoFullPath, UriKind.Absolute, out Uri uri) ? uri : null,
-                                        PackagePath = packagePath,
-                                        ContextMenuItemCollection = [.. contextMenuItemList]
-                                    };
-
-                                    queryedContextMenuList.Add(contextMenu);
+                                    classKey.Close();
+                                    classKey.Dispose();
                                 }
-
-                                classKey.Close();
-                                classKey.Dispose();
                             }
+
+                            packageListKey.Close();
+                            packageListKey.Dispose();
                         }
-
-                        packageListKey.Close();
-                        packageListKey.Dispose();
-                    }
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 1, e);
-                }
-
-                return queryedContextMenuList;
-            });
-
-            ContextMenuList.AddRange(queryedContextMenuList);
-
-            if (ContextMenuList.Count is 0)
-            {
-                ContextMenuResultKind = ContextMenuResultKind.Failed;
-                ContextMenuFailedContent = MenuEmptyDescriptionString;
-            }
-            else
-            {
-                foreach (ContextMenuModel contextMenuItem in ContextMenuList)
-                {
-                    try
-                    {
-                        BitmapImage bitmapImage = new();
-                        if (contextMenuItem.PackageIconUri is not null)
-                        {
-                            bitmapImage.UriSource = contextMenuItem.PackageIconUri;
-                        }
-                        contextMenuItem.PackageIcon = bitmapImage;
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 2, e);
-                        contextMenuItem.PackageIcon = emptyImage;
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 1, e);
                     }
 
-                    if (string.IsNullOrEmpty(SearchText))
-                    {
-                        ContextMenuCollection.Add(contextMenuItem);
-                        continue;
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(contextMenuItem.PackageDisplayName) && contextMenuItem.PackageDisplayName.Contains(SearchText))
-                        {
-                            ContextMenuCollection.Add(contextMenuItem);
-                            continue;
-                        }
+                    return queryedContextMenuList;
+                });
 
-                        if (!string.IsNullOrEmpty(contextMenuItem.PackageFullName) && contextMenuItem.PackageFullName.Contains(SearchText))
-                        {
-                            ContextMenuCollection.Add(contextMenuItem);
-                            continue;
-                        }
-                    }
+                ContextMenuList.AddRange(queryedContextMenuList);
+
+                if (ContextMenuList.Count is 0)
+                {
+                    ContextMenuResultKind = ContextMenuResultKind.Failed;
+                    ContextMenuFailedContent = MenuEmptyDescriptionString;
                 }
+                else
+                {
+                    foreach (ContextMenuModel contextMenuItem in ContextMenuList)
+                    {
+                        try
+                        {
+                            BitmapImage bitmapImage = new();
+                            if (contextMenuItem.PackageIconUri is not null)
+                            {
+                                bitmapImage.UriSource = contextMenuItem.PackageIconUri;
+                            }
+                            contextMenuItem.PackageIcon = bitmapImage;
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 2, e);
+                            contextMenuItem.PackageIcon = emptyImage;
+                        }
 
-                ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.Successfully;
-                ContextMenuFailedContent = ContextMenuCollection.Count is 0 ? MenuEmptyWithConditionDescriptionString : string.Empty;
+                        if (string.IsNullOrEmpty(SearchText))
+                        {
+                            ContextMenuCollection.Add(contextMenuItem);
+                            continue;
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(contextMenuItem.PackageDisplayName) && contextMenuItem.PackageDisplayName.Contains(SearchText))
+                            {
+                                ContextMenuCollection.Add(contextMenuItem);
+                                continue;
+                            }
+
+                            if (!string.IsNullOrEmpty(contextMenuItem.PackageFullName) && contextMenuItem.PackageFullName.Contains(SearchText))
+                            {
+                                ContextMenuCollection.Add(contextMenuItem);
+                                continue;
+                            }
+                        }
+                    }
+
+                    ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.Successfully;
+                    ContextMenuFailedContent = ContextMenuCollection.Count is 0 ? MenuEmptyWithConditionDescriptionString : string.Empty;
+                }
             }
         }
 

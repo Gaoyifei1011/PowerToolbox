@@ -5,6 +5,7 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
+    xmlns:customcontrol="using:PowerToolbox.Views.CustomControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:PowerToolbox.Models"
@@ -20,14 +21,11 @@
         <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="Transparent" />
 
         <class:ExecuteCommand x:Name="AvailableCancelInstallCommand" ExecuteRequested="{x:Bind OnAvailableCancelInstallExecuteRequested}" />
-        <class:ExecuteCommand x:Name="AvailableCheckBoxClickCommand" ExecuteRequested="{x:Bind OnAvailableCheckClickExecuteRequested}" />
         <class:ExecuteCommand x:Name="AvailableHideCommand" ExecuteRequested="{x:Bind OnAvailableHideExecuteRequested}" />
         <class:ExecuteCommand x:Name="AvailableInstallCommand" ExecuteRequested="{x:Bind OnAvailableInstallExecuteRequested}" />
         <class:ExecuteCommand x:Name="CopyInformationCommand" ExecuteRequested="{x:Bind OnCopyInformationExecuteRequested}" />
-        <class:ExecuteCommand x:Name="HiddenCheckBoxClickCommand" ExecuteRequested="{x:Bind OnHiddenCheckBoxClickExecuteRequested}" />
         <class:ExecuteCommand x:Name="HiddenShowCommand" ExecuteRequested="{x:Bind OnHiddenShowExecuteRequested}" />
         <class:ExecuteCommand x:Name="InstalledCancelUninstallCommand" ExecuteRequested="{x:Bind OnInstalledCancelUninstallExecuteRequested}" />
-        <class:ExecuteCommand x:Name="InstalledCheckBoxClickCommand" ExecuteRequested="{x:Bind OnInstalledCheckBoxClickExecuteRequested}" />
         <class:ExecuteCommand x:Name="InstalledUninstallCommand" ExecuteRequested="{x:Bind OnInstalledUninstallExecuteRequested}" />
         <class:ExecuteCommand x:Name="LearnMoreCommand" ExecuteRequested="{x:Bind OnLearnMoreExecuteRequested}" />
         <class:ExecuteCommand x:Name="OpenSupportUrlCommand" ExecuteRequested="{x:Bind OnOpenSupportUrlExecuteRequested}" />
@@ -199,24 +197,45 @@
                             Style="{StaticResource CommandBarStyle}">
 
                             <CommandBar.PrimaryCommands>
-                                <AppBarButton
-                                    Click="{x:Bind OnAvailableSelectAllClicked}"
-                                    IsEnabled="{x:Bind system:Convert.ToBoolean(AvailableUpdateCollection.Count), Mode=OneWay}"
-                                    Label="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectAll')}">
+                                <AppBarButton IsEnabled="{x:Bind system:Convert.ToBoolean(AvailableUpdateCollection.Count), Mode=OneWay}" Label="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MultiSelect')}">
 
                                     <AppBarButton.Icon>
-                                        <FontIcon Glyph="&#xE8B3;" />
+                                        <FontIcon Glyph="&#xE762;" />
                                     </AppBarButton.Icon>
-                                </AppBarButton>
 
-                                <AppBarButton
-                                    Click="{x:Bind OnAvailableSelectNoneClicked}"
-                                    IsEnabled="{x:Bind system:Convert.ToBoolean(AvailableUpdateCollection.Count), Mode=OneWay}"
-                                    Label="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectNone')}">
+                                    <AppBarButton.Flyout>
+                                        <MenuFlyout Placement="Bottom">
+                                            <MenuFlyoutItem
+                                                Click="{x:Bind OnAvailableSelectAllClicked}"
+                                                IsEnabled="{x:Bind system:Convert.ToBoolean(AvailableUpdateCollection.Count), Mode=OneWay}"
+                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectAll')}">
 
-                                    <AppBarButton.Icon>
-                                        <FontIcon Glyph="&#xEA48;" />
-                                    </AppBarButton.Icon>
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE8B3;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+
+                                            <MenuFlyoutItem
+                                                Click="{x:Bind OnAvailableSelectNoneClicked}"
+                                                IsEnabled="{x:Bind system:Convert.ToBoolean(AvailableUpdateCollection.Count), Mode=OneWay}"
+                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectNone')}">
+
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE8E6;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+
+                                            <MenuFlyoutItem
+                                                Click="{x:Bind OnAvailableSelectReverseClicked}"
+                                                IsEnabled="{x:Bind system:Convert.ToBoolean(AvailableUpdateCollection.Count), Mode=OneWay}"
+                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectReverse')}">
+
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xEA98;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </AppBarButton.Flyout>
                                 </AppBarButton>
 
                                 <AppBarButton
@@ -229,9 +248,7 @@
                                         <FontIcon Glyph="&#xE896;" />
                                     </AppBarButton.Icon>
                                 </AppBarButton>
-                            </CommandBar.PrimaryCommands>
 
-                            <CommandBar.SecondaryCommands>
                                 <AppBarButton
                                     Click="{x:Bind OnAvailableHideClicked}"
                                     IsEnabled="{x:Bind GetUpdateState(IsAvailableHideEnabled, AvailableUpdateCollection.Count), Mode=OneWay}"
@@ -253,7 +270,7 @@
                                         <FontIcon Glyph="&#xE711;" />
                                     </AppBarButton.Icon>
                                 </AppBarButton>
-                            </CommandBar.SecondaryCommands>
+                            </CommandBar.PrimaryCommands>
                         </CommandBar>
                     </Grid>
 
@@ -284,17 +301,93 @@
                         </Grid>
 
                         <ListView
+                            x:Name="UpdateManagerAvailableListView"
                             Grid.Row="1"
                             ItemsSource="{x:Bind AvailableUpdateCollection}"
-                            SelectionMode="None"
+                            SelectionChanged="{x:Bind OnAvailableSelectionChanged}"
+                            SelectionMode="Multiple"
                             Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(AvailableUpdateCollection.Count), Mode=OneWay}">
 
                             <ListView.ItemContainerStyle>
-                                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                                    <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
                                     <Setter Property="Background" Value="Transparent" />
-                                    <Setter Property="Margin" Value="0" />
-                                    <Setter Property="MinHeight" Value="0" />
+                                    <Setter Property="Foreground" Value="{ThemeResource ListViewItemForeground}" />
+                                    <Setter Property="TabNavigation" Value="Local" />
+                                    <Setter Property="IsHoldingEnabled" Value="True" />
                                     <Setter Property="Padding" Value="0" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="MinHeight" Value="30" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="MinWidth" Value="{ThemeResource ListViewItemMinWidth}" />
+                                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                    <Setter Property="AllowDrop" Value="False" />
+                                    <Setter Property="UseSystemFocusVisuals" Value="True" />
+                                    <Setter Property="FocusVisualMargin" Value="1" />
+                                    <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource ListViewItemFocusVisualPrimaryBrush}" />
+                                    <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+                                    <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource ListViewItemFocusVisualSecondaryBrush}" />
+                                    <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListViewItem">
+                                                <customcontrol:ExpanderListViewItemPresenter
+                                                    x:Name="Root"
+                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                    CheckBoxBorderBrush="{ThemeResource ListViewItemCheckBoxBorderBrush}"
+                                                    CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}"
+                                                    CheckBoxCornerRadius="{ThemeResource ListViewItemCheckBoxCornerRadius}"
+                                                    CheckBoxDisabledBorderBrush="{ThemeResource ListViewItemCheckBoxDisabledBorderBrush}"
+                                                    CheckBoxDisabledBrush="{ThemeResource ListViewItemCheckBoxDisabledBrush}"
+                                                    CheckBoxPointerOverBorderBrush="{ThemeResource ListViewItemCheckBoxPointerOverBorderBrush}"
+                                                    CheckBoxPointerOverBrush="{ThemeResource ControlAltFillColorTertiaryBrush}"
+                                                    CheckBoxPressedBorderBrush="{ThemeResource ListViewItemCheckBoxPressedBorderBrush}"
+                                                    CheckBoxPressedBrush="{ThemeResource ListViewItemCheckBoxPressedBrush}"
+                                                    CheckBoxSelectedBrush="{ThemeResource ListViewItemCheckBoxSelectedBrush}"
+                                                    CheckBoxSelectedDisabledBrush="{ThemeResource ListViewItemCheckBoxSelectedDisabledBrush}"
+                                                    CheckBoxSelectedPointerOverBrush="{ThemeResource ListViewItemCheckBoxSelectedPointerOverBrush}"
+                                                    CheckBoxSelectedPressedBrush="{ThemeResource ListViewItemCheckBoxSelectedPressedBrush}"
+                                                    CheckBrush="{ThemeResource ListViewItemCheckBrush}"
+                                                    CheckDisabledBrush="{ThemeResource ListViewItemCheckDisabledBrush}"
+                                                    CheckMode="{ThemeResource ListViewItemCheckMode}"
+                                                    CheckPressedBrush="{ThemeResource ListViewItemCheckPressedBrush}"
+                                                    ContentMargin="{TemplateBinding Padding}"
+                                                    ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                    Control.IsTemplateFocusTarget="True"
+                                                    CornerRadius="{ThemeResource ListViewItemCornerRadius}"
+                                                    DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                                    DragBackground="{ThemeResource ListViewItemDragBackground}"
+                                                    DragForeground="{ThemeResource ListViewItemDragForeground}"
+                                                    DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                                    FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}"
+                                                    FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}"
+                                                    FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                                                    FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}"
+                                                    FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
+                                                    FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}"
+                                                    FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
+                                                    PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackground}"
+                                                    PointerOverBackground="Transparent"
+                                                    PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}"
+                                                    PressedBackground="Transparent"
+                                                    ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                                    SelectedBackground="Transparent"
+                                                    SelectedDisabledBackground="Transparent"
+                                                    SelectedForeground="{ThemeResource ListViewItemForegroundSelected}"
+                                                    SelectedPointerOverBackground="Transparent"
+                                                    SelectedPressedBackground="Transparent"
+                                                    SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}"
+                                                    SelectionIndicatorBrush="{ThemeResource ListViewItemSelectionIndicatorBrush}"
+                                                    SelectionIndicatorCornerRadius="{ThemeResource ListViewItemSelectionIndicatorCornerRadius}"
+                                                    SelectionIndicatorDisabledBrush="{ThemeResource ListViewItemSelectionIndicatorDisabledBrush}"
+                                                    SelectionIndicatorPointerOverBrush="{ThemeResource ListViewItemSelectionIndicatorPointerOverBrush}"
+                                                    SelectionIndicatorPressedBrush="{ThemeResource ListViewItemSelectionIndicatorPressedBrush}"
+                                                    SelectionIndicatorVisualEnabled="{ThemeResource ListViewItemSelectionIndicatorVisualEnabled}" />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
                                 </Style>
                             </ListView.ItemContainerStyle>
 
@@ -305,41 +398,23 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:UpdateModel">
                                     <Expander
-                                        Margin="0,0,0,2"
+                                        Margin="-28,0,0,2"
                                         HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Stretch"
                                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                        IsExpanded="False">
+                                        IsExpanded="False"
+                                        Style="{StaticResource ExpanderListViewStyle}">
 
                                         <Expander.Header>
                                             <Grid Height="60">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
 
-                                                <CheckBox
-                                                    Grid.Column="0"
-                                                    MinWidth="0"
-                                                    Margin="0,0,12,0"
-                                                    Command="{StaticResource AvailableCheckBoxClickCommand}"
-                                                    CommandParameter="{x:Bind}"
-                                                    IsChecked="{x:Bind IsSelected, Mode=OneWay}">
-
-                                                    <ToolTipService.ToolTip>
-                                                        <ToolTip>
-                                                            <Grid>
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
-                                                            </Grid>
-                                                        </ToolTip>
-                                                    </ToolTipService.ToolTip>
-                                                </CheckBox>
-
                                                 <StackPanel
-                                                    Grid.Column="1"
+                                                    Grid.Column="0"
                                                     Margin="0,0,20,0"
                                                     HorizontalAlignment="Left"
                                                     VerticalAlignment="Center"
@@ -376,7 +451,7 @@
                                                 </StackPanel>
 
                                                 <ProgressRing
-                                                    Grid.Column="2"
+                                                    Grid.Column="1"
                                                     Width="32"
                                                     Height="32"
                                                     Margin="0,0,5,0"
@@ -386,7 +461,7 @@
                                                     Value="{x:Bind UpdatePercentage, Mode=OneWay}" />
 
                                                 <StackPanel
-                                                    Grid.Column="3"
+                                                    Grid.Column="2"
                                                     Height="30"
                                                     Margin="0,0,-15,0"
                                                     BorderBrush="{ThemeResource ButtonBorderBrush}"
@@ -1258,24 +1333,45 @@
                             Style="{StaticResource CommandBarStyle}">
 
                             <CommandBar.PrimaryCommands>
-                                <AppBarButton
-                                    Click="{x:Bind OnInstalledSelectAllClicked}"
-                                    IsEnabled="{x:Bind system:Convert.ToBoolean(InstalledUpdateCollection.Count), Mode=OneWay}"
-                                    Label="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectAll')}">
+                                <AppBarButton IsEnabled="{x:Bind system:Convert.ToBoolean(InstalledUpdateCollection.Count), Mode=OneWay}" Label="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MultiSelect')}">
 
                                     <AppBarButton.Icon>
-                                        <FontIcon Glyph="&#xE8B3;" />
+                                        <FontIcon Glyph="&#xE762;" />
                                     </AppBarButton.Icon>
-                                </AppBarButton>
 
-                                <AppBarButton
-                                    Click="{x:Bind OnInstalledSelectNoneClicked}"
-                                    IsEnabled="{x:Bind system:Convert.ToBoolean(InstalledUpdateCollection.Count), Mode=OneWay}"
-                                    Label="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectNone')}">
+                                    <AppBarButton.Flyout>
+                                        <MenuFlyout Placement="Bottom">
+                                            <MenuFlyoutItem
+                                                Click="{x:Bind OnInstalledSelectAllClicked}"
+                                                IsEnabled="{x:Bind system:Convert.ToBoolean(InstalledUpdateCollection.Count), Mode=OneWay}"
+                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectAll')}">
 
-                                    <AppBarButton.Icon>
-                                        <FontIcon Glyph="&#xEA48;" />
-                                    </AppBarButton.Icon>
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE8B3;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+
+                                            <MenuFlyoutItem
+                                                Click="{x:Bind OnInstalledSelectNoneClicked}"
+                                                IsEnabled="{x:Bind system:Convert.ToBoolean(InstalledUpdateCollection.Count), Mode=OneWay}"
+                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectNone')}">
+
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE8E6;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+
+                                            <MenuFlyoutItem
+                                                Click="{x:Bind OnInstalledSelectReverseClicked}"
+                                                IsEnabled="{x:Bind system:Convert.ToBoolean(InstalledUpdateCollection.Count), Mode=OneWay}"
+                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectReverse')}">
+
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xEA98;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </AppBarButton.Flyout>
                                 </AppBarButton>
 
                                 <AppBarButton
@@ -1288,9 +1384,7 @@
                                         <FontIcon Glyph="&#xE74D;" />
                                     </AppBarButton.Icon>
                                 </AppBarButton>
-                            </CommandBar.PrimaryCommands>
 
-                            <CommandBar.SecondaryCommands>
                                 <AppBarButton
                                     Click="{x:Bind OnInstalledCancelUninstallClicked}"
                                     IsEnabled="{x:Bind GetUpdateState(IsInstalledCancelInstallEnabled, InstalledUpdateCollection.Count), Mode=OneWay}"
@@ -1301,7 +1395,7 @@
                                         <FontIcon Glyph="&#xE711;" />
                                     </AppBarButton.Icon>
                                 </AppBarButton>
-                            </CommandBar.SecondaryCommands>
+                            </CommandBar.PrimaryCommands>
                         </CommandBar>
                     </Grid>
 
@@ -1332,17 +1426,93 @@
                         </Grid>
 
                         <ListView
+                            x:Name="UpdateManagerInstalledListView"
                             Grid.Row="1"
                             ItemsSource="{x:Bind InstalledUpdateCollection}"
-                            SelectionMode="None"
+                            SelectionChanged="{x:Bind OnInstalledSelectionChanged}"
+                            SelectionMode="Multiple"
                             Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(InstalledUpdateCollection.Count), Mode=OneWay}">
 
                             <ListView.ItemContainerStyle>
-                                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                                    <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
                                     <Setter Property="Background" Value="Transparent" />
-                                    <Setter Property="Margin" Value="0" />
-                                    <Setter Property="MinHeight" Value="0" />
+                                    <Setter Property="Foreground" Value="{ThemeResource ListViewItemForeground}" />
+                                    <Setter Property="TabNavigation" Value="Local" />
+                                    <Setter Property="IsHoldingEnabled" Value="True" />
                                     <Setter Property="Padding" Value="0" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="MinHeight" Value="30" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="MinWidth" Value="{ThemeResource ListViewItemMinWidth}" />
+                                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                    <Setter Property="AllowDrop" Value="False" />
+                                    <Setter Property="UseSystemFocusVisuals" Value="True" />
+                                    <Setter Property="FocusVisualMargin" Value="1" />
+                                    <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource ListViewItemFocusVisualPrimaryBrush}" />
+                                    <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+                                    <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource ListViewItemFocusVisualSecondaryBrush}" />
+                                    <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListViewItem">
+                                                <customcontrol:ExpanderListViewItemPresenter
+                                                    x:Name="Root"
+                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                    CheckBoxBorderBrush="{ThemeResource ListViewItemCheckBoxBorderBrush}"
+                                                    CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}"
+                                                    CheckBoxCornerRadius="{ThemeResource ListViewItemCheckBoxCornerRadius}"
+                                                    CheckBoxDisabledBorderBrush="{ThemeResource ListViewItemCheckBoxDisabledBorderBrush}"
+                                                    CheckBoxDisabledBrush="{ThemeResource ListViewItemCheckBoxDisabledBrush}"
+                                                    CheckBoxPointerOverBorderBrush="{ThemeResource ListViewItemCheckBoxPointerOverBorderBrush}"
+                                                    CheckBoxPointerOverBrush="{ThemeResource ControlAltFillColorTertiaryBrush}"
+                                                    CheckBoxPressedBorderBrush="{ThemeResource ListViewItemCheckBoxPressedBorderBrush}"
+                                                    CheckBoxPressedBrush="{ThemeResource ListViewItemCheckBoxPressedBrush}"
+                                                    CheckBoxSelectedBrush="{ThemeResource ListViewItemCheckBoxSelectedBrush}"
+                                                    CheckBoxSelectedDisabledBrush="{ThemeResource ListViewItemCheckBoxSelectedDisabledBrush}"
+                                                    CheckBoxSelectedPointerOverBrush="{ThemeResource ListViewItemCheckBoxSelectedPointerOverBrush}"
+                                                    CheckBoxSelectedPressedBrush="{ThemeResource ListViewItemCheckBoxSelectedPressedBrush}"
+                                                    CheckBrush="{ThemeResource ListViewItemCheckBrush}"
+                                                    CheckDisabledBrush="{ThemeResource ListViewItemCheckDisabledBrush}"
+                                                    CheckMode="{ThemeResource ListViewItemCheckMode}"
+                                                    CheckPressedBrush="{ThemeResource ListViewItemCheckPressedBrush}"
+                                                    ContentMargin="{TemplateBinding Padding}"
+                                                    ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                    Control.IsTemplateFocusTarget="True"
+                                                    CornerRadius="{ThemeResource ListViewItemCornerRadius}"
+                                                    DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                                    DragBackground="{ThemeResource ListViewItemDragBackground}"
+                                                    DragForeground="{ThemeResource ListViewItemDragForeground}"
+                                                    DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                                    FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}"
+                                                    FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}"
+                                                    FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                                                    FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}"
+                                                    FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
+                                                    FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}"
+                                                    FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
+                                                    PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackground}"
+                                                    PointerOverBackground="Transparent"
+                                                    PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}"
+                                                    PressedBackground="Transparent"
+                                                    ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                                    SelectedBackground="Transparent"
+                                                    SelectedDisabledBackground="Transparent"
+                                                    SelectedForeground="{ThemeResource ListViewItemForegroundSelected}"
+                                                    SelectedPointerOverBackground="Transparent"
+                                                    SelectedPressedBackground="Transparent"
+                                                    SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}"
+                                                    SelectionIndicatorBrush="{ThemeResource ListViewItemSelectionIndicatorBrush}"
+                                                    SelectionIndicatorCornerRadius="{ThemeResource ListViewItemSelectionIndicatorCornerRadius}"
+                                                    SelectionIndicatorDisabledBrush="{ThemeResource ListViewItemSelectionIndicatorDisabledBrush}"
+                                                    SelectionIndicatorPointerOverBrush="{ThemeResource ListViewItemSelectionIndicatorPointerOverBrush}"
+                                                    SelectionIndicatorPressedBrush="{ThemeResource ListViewItemSelectionIndicatorPressedBrush}"
+                                                    SelectionIndicatorVisualEnabled="{ThemeResource ListViewItemSelectionIndicatorVisualEnabled}" />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
                                 </Style>
                             </ListView.ItemContainerStyle>
 
@@ -1353,40 +1523,22 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:UpdateModel">
                                     <Expander
-                                        Margin="0,0,0,2"
+                                        Margin="-28,0,0,2"
                                         HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Stretch"
                                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                        IsExpanded="False">
+                                        IsExpanded="False"
+                                        Style="{StaticResource ExpanderListViewStyle}">
 
                                         <Expander.Header>
                                             <Grid Height="60">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
 
-                                                <CheckBox
-                                                    Grid.Column="0"
-                                                    MinWidth="0"
-                                                    Margin="0,0,12,0"
-                                                    Command="{StaticResource InstalledCheckBoxClickCommand}"
-                                                    CommandParameter="{x:Bind}"
-                                                    IsChecked="{x:Bind IsSelected, Mode=OneWay}">
-
-                                                    <ToolTipService.ToolTip>
-                                                        <ToolTip>
-                                                            <Grid>
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
-                                                            </Grid>
-                                                        </ToolTip>
-                                                    </ToolTipService.ToolTip>
-                                                </CheckBox>
-
                                                 <StackPanel
-                                                    Grid.Column="1"
+                                                    Grid.Column="0"
                                                     VerticalAlignment="Center"
                                                     Orientation="Vertical">
 
@@ -1421,7 +1573,7 @@
                                                 </StackPanel>
 
                                                 <StackPanel
-                                                    Grid.Column="2"
+                                                    Grid.Column="1"
                                                     Height="30"
                                                     Margin="20,0,0,0"
                                                     BorderBrush="{ThemeResource ButtonBorderBrush}"
@@ -2328,24 +2480,45 @@
                             Style="{StaticResource CommandBarStyle}">
 
                             <CommandBar.PrimaryCommands>
-                                <AppBarButton
-                                    Click="{x:Bind OnHiddenSelectAllClicked}"
-                                    IsEnabled="{x:Bind system:Convert.ToBoolean(HiddenUpdateCollection.Count), Mode=OneWay}"
-                                    Label="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectAll')}">
+                                <AppBarButton IsEnabled="{x:Bind system:Convert.ToBoolean(HiddenUpdateCollection.Count), Mode=OneWay}" Label="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MultiSelect')}">
 
                                     <AppBarButton.Icon>
-                                        <FontIcon Glyph="&#xE8B3;" />
+                                        <FontIcon Glyph="&#xE762;" />
                                     </AppBarButton.Icon>
-                                </AppBarButton>
 
-                                <AppBarButton
-                                    Click="{x:Bind OnHiddenSelectNoneClicked}"
-                                    IsEnabled="{x:Bind system:Convert.ToBoolean(HiddenUpdateCollection.Count), Mode=OneWay}"
-                                    Label="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectNone')}">
+                                    <AppBarButton.Flyout>
+                                        <MenuFlyout Placement="Bottom">
+                                            <MenuFlyoutItem
+                                                Click="{x:Bind OnHiddenSelectAllClicked}"
+                                                IsEnabled="{x:Bind system:Convert.ToBoolean(HiddenUpdateCollection.Count), Mode=OneWay}"
+                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectAll')}">
 
-                                    <AppBarButton.Icon>
-                                        <FontIcon Glyph="&#xEA48;" />
-                                    </AppBarButton.Icon>
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE8B3;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+
+                                            <MenuFlyoutItem
+                                                Click="{x:Bind OnHiddenSelectNoneClicked}"
+                                                IsEnabled="{x:Bind system:Convert.ToBoolean(HiddenUpdateCollection.Count), Mode=OneWay}"
+                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectNone')}">
+
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE8E6;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+
+                                            <MenuFlyoutItem
+                                                Click="{x:Bind OnHiddenSelectReverseClicked}"
+                                                IsEnabled="{x:Bind system:Convert.ToBoolean(HiddenUpdateCollection.Count), Mode=OneWay}"
+                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SelectReverse')}">
+
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xEA98;" />
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </AppBarButton.Flyout>
                                 </AppBarButton>
 
                                 <AppBarButton
@@ -2389,17 +2562,93 @@
                         </Grid>
 
                         <ListView
+                            x:Name="UpdateManagerHiddenListView"
                             Grid.Row="1"
                             ItemsSource="{x:Bind HiddenUpdateCollection}"
-                            SelectionMode="None"
+                            SelectionChanged="{x:Bind OnHiddenSelectionChanged}"
+                            SelectionMode="Multiple"
                             Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(HiddenUpdateCollection.Count), Mode=OneWay}">
 
                             <ListView.ItemContainerStyle>
-                                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                                    <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
                                     <Setter Property="Background" Value="Transparent" />
-                                    <Setter Property="Margin" Value="0" />
-                                    <Setter Property="MinHeight" Value="0" />
+                                    <Setter Property="Foreground" Value="{ThemeResource ListViewItemForeground}" />
+                                    <Setter Property="TabNavigation" Value="Local" />
+                                    <Setter Property="IsHoldingEnabled" Value="True" />
                                     <Setter Property="Padding" Value="0" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="MinHeight" Value="30" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <Setter Property="MinWidth" Value="{ThemeResource ListViewItemMinWidth}" />
+                                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                    <Setter Property="AllowDrop" Value="False" />
+                                    <Setter Property="UseSystemFocusVisuals" Value="True" />
+                                    <Setter Property="FocusVisualMargin" Value="1" />
+                                    <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource ListViewItemFocusVisualPrimaryBrush}" />
+                                    <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+                                    <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource ListViewItemFocusVisualSecondaryBrush}" />
+                                    <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListViewItem">
+                                                <customcontrol:ExpanderListViewItemPresenter
+                                                    x:Name="Root"
+                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                    CheckBoxBorderBrush="{ThemeResource ListViewItemCheckBoxBorderBrush}"
+                                                    CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}"
+                                                    CheckBoxCornerRadius="{ThemeResource ListViewItemCheckBoxCornerRadius}"
+                                                    CheckBoxDisabledBorderBrush="{ThemeResource ListViewItemCheckBoxDisabledBorderBrush}"
+                                                    CheckBoxDisabledBrush="{ThemeResource ListViewItemCheckBoxDisabledBrush}"
+                                                    CheckBoxPointerOverBorderBrush="{ThemeResource ListViewItemCheckBoxPointerOverBorderBrush}"
+                                                    CheckBoxPointerOverBrush="{ThemeResource ControlAltFillColorTertiaryBrush}"
+                                                    CheckBoxPressedBorderBrush="{ThemeResource ListViewItemCheckBoxPressedBorderBrush}"
+                                                    CheckBoxPressedBrush="{ThemeResource ListViewItemCheckBoxPressedBrush}"
+                                                    CheckBoxSelectedBrush="{ThemeResource ListViewItemCheckBoxSelectedBrush}"
+                                                    CheckBoxSelectedDisabledBrush="{ThemeResource ListViewItemCheckBoxSelectedDisabledBrush}"
+                                                    CheckBoxSelectedPointerOverBrush="{ThemeResource ListViewItemCheckBoxSelectedPointerOverBrush}"
+                                                    CheckBoxSelectedPressedBrush="{ThemeResource ListViewItemCheckBoxSelectedPressedBrush}"
+                                                    CheckBrush="{ThemeResource ListViewItemCheckBrush}"
+                                                    CheckDisabledBrush="{ThemeResource ListViewItemCheckDisabledBrush}"
+                                                    CheckMode="{ThemeResource ListViewItemCheckMode}"
+                                                    CheckPressedBrush="{ThemeResource ListViewItemCheckPressedBrush}"
+                                                    ContentMargin="{TemplateBinding Padding}"
+                                                    ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                    Control.IsTemplateFocusTarget="True"
+                                                    CornerRadius="{ThemeResource ListViewItemCornerRadius}"
+                                                    DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                                    DragBackground="{ThemeResource ListViewItemDragBackground}"
+                                                    DragForeground="{ThemeResource ListViewItemDragForeground}"
+                                                    DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                                    FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}"
+                                                    FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}"
+                                                    FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                                                    FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}"
+                                                    FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
+                                                    FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}"
+                                                    FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
+                                                    PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackground}"
+                                                    PointerOverBackground="Transparent"
+                                                    PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}"
+                                                    PressedBackground="Transparent"
+                                                    ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                                    SelectedBackground="Transparent"
+                                                    SelectedDisabledBackground="Transparent"
+                                                    SelectedForeground="{ThemeResource ListViewItemForegroundSelected}"
+                                                    SelectedPointerOverBackground="Transparent"
+                                                    SelectedPressedBackground="Transparent"
+                                                    SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}"
+                                                    SelectionIndicatorBrush="{ThemeResource ListViewItemSelectionIndicatorBrush}"
+                                                    SelectionIndicatorCornerRadius="{ThemeResource ListViewItemSelectionIndicatorCornerRadius}"
+                                                    SelectionIndicatorDisabledBrush="{ThemeResource ListViewItemSelectionIndicatorDisabledBrush}"
+                                                    SelectionIndicatorPointerOverBrush="{ThemeResource ListViewItemSelectionIndicatorPointerOverBrush}"
+                                                    SelectionIndicatorPressedBrush="{ThemeResource ListViewItemSelectionIndicatorPressedBrush}"
+                                                    SelectionIndicatorVisualEnabled="{ThemeResource ListViewItemSelectionIndicatorVisualEnabled}" />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
                                 </Style>
                             </ListView.ItemContainerStyle>
 
@@ -2410,11 +2659,12 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:UpdateModel">
                                     <Expander
-                                        Margin="0,0,0,3"
+                                        Margin="-28,0,0,2"
                                         HorizontalAlignment="Stretch"
                                         HorizontalContentAlignment="Stretch"
                                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                        IsExpanded="False">
+                                        IsExpanded="False"
+                                        Style="{StaticResource ExpanderListViewStyle}">
 
                                         <Expander.Header>
                                             <Grid Height="60">
@@ -2424,27 +2674,9 @@
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
 
-                                                <CheckBox
-                                                    Grid.Column="0"
-                                                    MinWidth="0"
-                                                    Margin="0,0,12,0"
-                                                    Command="{StaticResource HiddenCheckBoxClickCommand}"
-                                                    CommandParameter="{x:Bind}"
-                                                    IsChecked="{x:Bind IsSelected, Mode=OneWay}">
-
-                                                    <ToolTipService.ToolTip>
-                                                        <ToolTip>
-                                                            <Grid>
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('Selected')}" Visibility="{x:Bind IsSelected, Mode=OneWay}" />
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsSelected), Mode=OneWay}" />
-                                                            </Grid>
-                                                        </ToolTip>
-                                                    </ToolTipService.ToolTip>
-                                                </CheckBox>
-
                                                 <TextBlock
                                                     x:Name="TitleText"
-                                                    Grid.Column="1"
+                                                    Grid.Column="0"
                                                     HorizontalAlignment="Left"
                                                     VerticalAlignment="Center"
                                                     IsTextSelectionEnabled="True"
@@ -2459,7 +2691,7 @@
                                                 </TextBlock>
 
                                                 <StackPanel
-                                                    Grid.Column="2"
+                                                    Grid.Column="1"
                                                     Height="30"
                                                     Margin="20,0,0,0"
                                                     BorderBrush="{ThemeResource ButtonBorderBrush}"

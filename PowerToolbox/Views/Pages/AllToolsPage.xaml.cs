@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Windows;
@@ -182,9 +183,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 点击条目时进入条目对应的页面
         /// </summary>
-        private void OnItemClick(object sender, ItemClickEventArgs args)
+        private void OnControlItemClickExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (args.ClickedItem is ControlItemModel controlItem && MainWindow.Current.GetSelectedItem(controlItem.NavigationPage, MainWindow.Current.NavigationViewItemMenuItemsCollection) is NavigationViewItemModel navigationViewItem)
+            if (args.Parameter is ControlItemModel controlItem && MainWindow.Current.GetSelectedItem(controlItem.NavigationPage, MainWindow.Current.NavigationViewItemMenuItemsCollection) is NavigationViewItemModel navigationViewItem)
             {
                 if (Equals(navigationViewItem.NavigationPage, typeof(ShellMenuPage)))
                 {

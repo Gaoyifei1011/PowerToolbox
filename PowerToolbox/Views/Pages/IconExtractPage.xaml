@@ -58,7 +58,7 @@
 
                 <!--  图标提取结果网格控件  -->
                 <GridView
-                    x:Name="IconsGridView"
+                    x:Name="IconExtractGridView"
                     Margin="0,0,0,5"
                     Padding="5"
                     IsSwipeEnabled="False"
@@ -168,7 +168,7 @@
             <AppBarSeparator Grid.Column="1" Margin="10,0" />
 
             <!--  图标提取右侧控制栏  -->
-            <Grid Grid.Column="2">
+            <Grid Grid.Column="2" VerticalAlignment="Top">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -177,7 +177,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0" RowSpacing="3">
@@ -382,8 +383,46 @@
 
                 <MenuFlyoutSeparator Grid.Row="1" Margin="5,3" />
 
-                <Grid
+                <DropDownButton
                     Grid.Row="2"
+                    Margin="0,0,0,3"
+                    HorizontalAlignment="Stretch"
+                    Content="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('MultiSelect')}">
+
+                    <DropDownButton.Flyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuFlyout.MenuFlyoutPresenterStyle>
+                                <Style BasedOn="{StaticResource DefaultMenuFlyoutPresenterStyle}" TargetType="MenuFlyoutPresenter">
+                                    <Setter Property="MinWidth" Value="260" />
+                                </Style>
+                            </MenuFlyout.MenuFlyoutPresenterStyle>
+
+                            <MenuFlyoutItem Click="{x:Bind OnSelectAllClicked}" Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('SelectAll')}">
+
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE8B3;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+
+                            <MenuFlyoutItem Click="{x:Bind OnSelectNoneClicked}" Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('SelectNone')}">
+
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE8E6;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+
+                            <MenuFlyoutItem Click="{x:Bind OnSelectReverseClicked}" Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('SelectReverse')}">
+
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xEA98;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
+
+                <Grid
+                    Grid.Row="3"
                     Width="260"
                     Height="260"
                     HorizontalAlignment="Stretch"
@@ -410,10 +449,10 @@
                         Visibility="{x:Bind IsImageEmpty, Mode=OneWay}" />
                 </Grid>
 
-                <MenuFlyoutSeparator Grid.Row="3" Margin="5,3" />
+                <MenuFlyoutSeparator Grid.Row="4" Margin="5,3" />
 
                 <Button
-                    Grid.Row="4"
+                    Grid.Row="5"
                     Margin="0,0,0,3"
                     HorizontalAlignment="Stretch"
                     Click="{x:Bind OnSelectFileClicked}"
@@ -421,7 +460,7 @@
                     IsEnabled="{x:Bind GetIsNotParsingOrSaving(IconExtractResultKind, IsSaving), Mode=OneWay}" />
 
                 <Button
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Margin="0,0,0,3"
                     HorizontalAlignment="Stretch"
                     Click="{x:Bind OnExportSelectedIconsClicked}"
@@ -429,14 +468,14 @@
                     IsEnabled="{x:Bind IsSelected, Mode=OneWay}" />
 
                 <Button
-                    Grid.Row="6"
+                    Grid.Row="7"
                     HorizontalAlignment="Stretch"
                     Click="{x:Bind OnExportAllIconsClicked}"
                     Content="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('ExportAllIcons')}"
                     IsEnabled="{x:Bind system:Convert.ToBoolean(IconCollection.Count), Mode=OneWay}" />
 
                 <StackPanel
-                    Grid.Row="7"
+                    Grid.Row="8"
                     Margin="0,5,0,5"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"

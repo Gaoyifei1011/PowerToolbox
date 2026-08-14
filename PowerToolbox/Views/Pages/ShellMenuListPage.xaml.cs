@@ -898,45 +898,48 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async Task GetShellMenuItemAsync()
         {
-            IsLoading = true;
-            lastUpdateTime = ShellMenuService.GetLastUpdateTime();
-            ShellMenuItemCollection.Clear();
-
-            // 获取所有菜单项信息
-            ShellMenuItem rootShellMenuItem = await Task.Run(ShellMenuService.GetShellMenuItem);
-            IsAddMenuEnabled = true;
-            IsMoveUpEnabled = false;
-            IsMoveDownEnabled = false;
-
-            if (rootShellMenuItem is not null)
+            if (!IsLoading)
             {
-                ShellMenuItemCollection.Add(EnumShellMenuItem(rootShellMenuItem, MenuType.FirstLevelMenu));
+                IsLoading = true;
+                lastUpdateTime = ShellMenuService.GetLastUpdateTime();
+                ShellMenuItemCollection.Clear();
 
-                if (ShellMenuItemCollection.Count is 0)
+                // 获取所有菜单项信息
+                ShellMenuItem rootShellMenuItem = await Task.Run(ShellMenuService.GetShellMenuItem);
+                IsAddMenuEnabled = true;
+                IsMoveUpEnabled = false;
+                IsMoveDownEnabled = false;
+
+                if (rootShellMenuItem is not null)
+                {
+                    ShellMenuItemCollection.Add(EnumShellMenuItem(rootShellMenuItem, MenuType.FirstLevelMenu));
+
+                    if (ShellMenuItemCollection.Count is 0)
+                    {
+                        selectedItem = null;
+                        IsRemoveMenuEnabled = false;
+                        IsEditMenuEnabled = false;
+                    }
+                    else
+                    {
+                        ShellMenuItemCollection[0].IsSelected = true;
+                        selectedItem = ShellMenuItemCollection[0];
+                        IsRemoveMenuEnabled = true;
+                        IsEditMenuEnabled = true;
+                    }
+                }
+                else
                 {
                     selectedItem = null;
                     IsRemoveMenuEnabled = false;
                     IsEditMenuEnabled = false;
                 }
-                else
-                {
-                    ShellMenuItemCollection[0].IsSelected = true;
-                    selectedItem = ShellMenuItemCollection[0];
-                    IsRemoveMenuEnabled = true;
-                    IsEditMenuEnabled = true;
-                }
-            }
-            else
-            {
-                selectedItem = null;
-                IsRemoveMenuEnabled = false;
-                IsEditMenuEnabled = false;
-            }
-            IsLoading = false;
+                IsLoading = false;
 
-            foreach (ShellMenuItemModel shellMenuItem in ShellMenuItemCollection)
-            {
-                EnumModifyShellMenuItemTheme(shellMenuItem);
+                foreach (ShellMenuItemModel shellMenuItem in ShellMenuItemCollection)
+                {
+                    EnumModifyShellMenuItemTheme(shellMenuItem);
+                }
             }
         }
     }

@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -165,22 +164,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     _resultMessage = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultMessage)));
-                }
-            }
-        }
-
-        private bool _isAllSelected;
-
-        public bool IsAllSelected
-        {
-            get { return _isAllSelected; }
-
-            set
-            {
-                if (!Equals(_isAllSelected, value))
-                {
-                    _isAllSelected = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAllSelected)));
                 }
             }
         }
@@ -412,21 +395,20 @@ namespace PowerToolbox.Views.Pages
                 Name = XXH128String,
                 DataVerifyType = DataVerifyType.XXH128
             });
+
+            SelectedIndex = 0;
+            ResultSeverity = InfoBarSeverity.Informational;
+            if (SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
+            {
+                ResultMessage = FileInitializeString;
+            }
+            else if (SelectedIndex is 1 && ResultSeverity is InfoBarSeverity.Informational)
+            {
+                ResultMessage = ContentInitializeString;
+            }
         }
 
-        #region 第一部分：ExecuteCommand 命令调用时挂载的事件
-
-        /// <summary>
-        /// 数据校验类型选中项发生改变时触发的事件
-        /// </summary>
-        private void OnDataVerifyCheckExecuteRequested(object sender, ExecuteRequestedEventArgs args)
-        {
-            IsAllSelected = DataVerifyTypeList.All(item => item.IsSelected);
-        }
-
-        #endregion 第一部分：ExecuteCommand 命令调用时挂载的事件
-
-        #region 第二部分：数据校验页面——挂载的事件
+        #region 第一部分：数据校验页面——挂载的事件
 
         /// <summary>
         /// 设置拖动的数据的可视表示形式
@@ -579,25 +561,35 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectAllClicked(object sender, RoutedEventArgs args)
         {
-            foreach (DataVerifyTypeModel dataVerifyTypeItem in DataVerifyTypeList)
-            {
-                dataVerifyTypeItem.IsSelected = true;
-            }
+            DataVerifyGridView.SelectAll();
+        }
 
-            IsAllSelected = true;
+        /// <summary>
+        /// 全部不选
+        /// </summary>
+        private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
+        {
+            DataVerifyGridView.DeselectRange(new(0, (uint)DataVerifyGridView.Items.Count));
         }
 
         /// <summary>
         /// 全部反选
         /// </summary>
-        private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
+        private void OnSelectReverseClicked(object sender, RoutedEventArgs args)
         {
-            foreach (DataVerifyTypeModel dataVerifyTypeItem in DataVerifyTypeList)
-            {
-                dataVerifyTypeItem.IsSelected = false;
-            }
+            List<object> selectedItemList = [.. DataVerifyGridView.SelectedItems];
 
-            IsAllSelected = false;
+            foreach (object item in DataVerifyGridView.Items)
+            {
+                if (selectedItemList.Contains(item))
+                {
+                    DataVerifyGridView.SelectedItems.Remove(item);
+                }
+                else
+                {
+                    DataVerifyGridView.SelectedItems.Add(item);
+                }
+            }
         }
 
         /// <summary>
@@ -731,7 +723,15 @@ namespace PowerToolbox.Views.Pages
                 return;
             }
 
-            List<DataVerifyTypeModel> selectedDataVerifyTypeList = [.. DataVerifyTypeList.Where(item => item.IsSelected)];
+            List<DataVerifyTypeModel> selectedDataVerifyTypeList = [];
+            foreach (object dataVerifyTypeItemObj in DataVerifyGridView.SelectedItems)
+            {
+                if (dataVerifyTypeItemObj is DataVerifyTypeModel dataVerifyType)
+                {
+                    selectedDataVerifyTypeList.Add(dataVerifyType);
+                }
+            }
+
             if (selectedDataVerifyTypeList.Count is 0)
             {
                 ResultSeverity = InfoBarSeverity.Error;
@@ -830,7 +830,7 @@ namespace PowerToolbox.Views.Pages
             IsVerifying = false;
         }
 
-        #endregion 第二部分：数据校验页面——挂载的事件
+        #endregion 第一部分：数据校验页面——挂载的事件
 
         /// <summary>
         /// 获取校验后的数据

@@ -1,33 +1,13 @@
 ﻿using Microsoft.UI.Xaml.Media;
 using System;
-using System.ComponentModel;
 
 namespace PowerToolbox.Models
 {
     /// <summary>
     /// 网络回环数据模型
     /// </summary>
-    public sealed class LoopbackModel : INotifyPropertyChanged
+    public sealed class LoopbackModel
     {
-        /// <summary>
-        /// 网络回环项是否被选择
-        /// </summary>
-        private bool _isSelected;
-
-        public bool IsSelected
-        {
-            get { return _isSelected; }
-
-            set
-            {
-                if (!Equals(_isSelected, value))
-                {
-                    _isSelected = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSelected)));
-                }
-            }
-        }
-
         /// <summary>
         /// 应用图标
         /// </summary>
@@ -81,7 +61,5 @@ namespace PowerToolbox.Models
         /// 应用容器的包标识符名称
         /// </summary>
         public string AppContainerSIDName { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
