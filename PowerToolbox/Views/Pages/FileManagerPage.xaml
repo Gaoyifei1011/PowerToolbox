@@ -250,7 +250,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock
-                                            x:Name="OriginalNameHeaderText"
+                                            x:Name="OriginalNameHeaderTextBlock"
                                             Grid.Column="0"
                                             Margin="10,0,0,0"
                                             VerticalAlignment="Center"
@@ -259,12 +259,12 @@
                                             TextWrapping="NoWrap">
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip Content="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('OriginalName')}" Visibility="{Binding ElementName=OriginalNameHeaderText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                <ToolTip Content="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('OriginalName')}" Visibility="{Binding ElementName=OriginalNameHeaderTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
 
                                         <TextBlock
-                                            x:Name="ChangedNameHeaderText"
+                                            x:Name="ChangedNameHeaderTextBlock"
                                             Grid.Column="1"
                                             Margin="10,0,0,0"
                                             VerticalAlignment="Center"
@@ -273,7 +273,7 @@
                                             TextWrapping="NoWrap">
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip Content="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('ChangedName')}" Visibility="{Binding ElementName=ChangedNameHeaderText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                <ToolTip Content="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('ChangedName')}" Visibility="{Binding ElementName=ChangedNameHeaderTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
                                     </Grid>
@@ -293,7 +293,7 @@
                                             </Grid.ColumnDefinitions>
 
                                             <TextBlock
-                                                x:Name="OriginalFileNameText"
+                                                x:Name="OriginalFileNameTextBlock"
                                                 Grid.Column="0"
                                                 MinWidth="50"
                                                 Margin="10,0,0,0"
@@ -305,12 +305,12 @@
                                                 TextWrapping="NoWrap">
 
                                                 <ToolTipService.ToolTip>
-                                                    <ToolTip Content="{x:Bind OriginalFileName}" Visibility="{Binding ElementName=OriginalFileNameText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                    <ToolTip Content="{x:Bind OriginalFileName}" Visibility="{Binding ElementName=OriginalFileNameTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                                 </ToolTipService.ToolTip>
                                             </TextBlock>
 
                                             <TextBlock
-                                                x:Name="NewFileNameText"
+                                                x:Name="NewFileNameTextBlock"
                                                 Grid.Column="1"
                                                 MinWidth="50"
                                                 Margin="10,0,0,0"
@@ -322,7 +322,7 @@
                                                 TextWrapping="NoWrap">
 
                                                 <ToolTipService.ToolTip>
-                                                    <ToolTip Content="{x:Bind NewFileName, Mode=OneWay}" Visibility="{Binding ElementName=NewFileNameText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                    <ToolTip Content="{x:Bind NewFileName, Mode=OneWay}" Visibility="{Binding ElementName=NewFileNameTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                                 </ToolTipService.ToolTip>
                                             </TextBlock>
                                         </Grid>

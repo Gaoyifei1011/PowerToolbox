@@ -95,7 +95,7 @@
                         Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityReverseConvert(DecryptFile), Mode=OneWay}" />
 
                     <TextBlock
-                        x:Name="DecryptFileText"
+                        x:Name="DecryptFileTextBlock"
                         HorizontalAlignment="Center"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Text="{x:Bind DecryptFile, Mode=OneWay}"
@@ -104,7 +104,7 @@
                         Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(DecryptFile), Mode=OneWay}">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind DecryptFile, Mode=OneWay}" Visibility="{x:Bind DecryptFileText.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind DecryptFile, Mode=OneWay}" Visibility="{x:Bind DecryptFileTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>

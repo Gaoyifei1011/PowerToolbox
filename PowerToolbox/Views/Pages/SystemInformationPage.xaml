@@ -163,7 +163,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
-                    x:Name="ItemHeaderText"
+                    x:Name="ItemHeaderTextBlock"
                     Grid.Column="0"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Left"
@@ -173,12 +173,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Item')}" Visibility="{x:Bind ItemHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Item')}" Visibility="{x:Bind ItemHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="ContentHeaderText"
+                    x:Name="ContentHeaderTextBlock"
                     Grid.Column="1"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Left"
@@ -188,7 +188,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Content')}" Visibility="{x:Bind ContentHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Content')}" Visibility="{x:Bind ContentHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -226,7 +226,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
-                                x:Name="ItemText"
+                                x:Name="ItemTextBlock"
                                 Grid.Column="0"
                                 MinWidth="50"
                                 Margin="10,0,0,0"
@@ -243,12 +243,12 @@
                                     <ToolTip
                                         Content="{x:Bind Item}"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=ItemText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=ItemTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
                             <TextBlock
-                                x:Name="ContentText"
+                                x:Name="ContentTextBlock"
                                 Grid.Column="1"
                                 MinWidth="50"
                                 Margin="10,0,0,0"
@@ -265,7 +265,7 @@
                                     <ToolTip
                                         Content="{x:Bind Content}"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=ContentText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=ContentTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
                         </Grid>

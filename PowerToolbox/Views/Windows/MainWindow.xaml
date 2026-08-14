@@ -109,13 +109,13 @@
                         Visibility="{x:Bind VisibleState}">
 
                         <TextBlock
-                            x:Name="NavigationViewItemText"
+                            x:Name="NavigationViewItemTextBlock"
                             Text="{x:Bind NavigationTitle}"
                             TextTrimming="CharacterEllipsis"
                             TextWrapping="NoWrap">
 
                             <ToolTipService.ToolTip>
-                                <ToolTip Content="{x:Bind NavigationTitle}" Visibility="{Binding ElementName=NavigationViewItemText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                <ToolTip Content="{x:Bind NavigationTitle}" Visibility="{Binding ElementName=NavigationViewItemTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </TextBlock>
                     </NavigationViewItem>

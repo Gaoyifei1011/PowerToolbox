@@ -76,7 +76,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
-                    x:Name="FileFolderNameHeaderText"
+                    x:Name="FileFolderNameHeaderTextBlock"
                     Grid.Column="0"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Left"
@@ -86,12 +86,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderName')}" Visibility="{x:Bind FileFolderNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderName')}" Visibility="{x:Bind FileFolderNameHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="FileFolderTypeHeaderText"
+                    x:Name="FileFolderTypeHeaderTextBlock"
                     Grid.Column="1"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Left"
@@ -101,12 +101,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderType')}" Visibility="{x:Bind FileFolderTypeHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderType')}" Visibility="{x:Bind FileFolderTypeHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="FileFolderAmountHeaderText"
+                    x:Name="FileFolderAmountHeaderTextBlock"
                     Grid.Column="2"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Left"
@@ -127,7 +127,7 @@
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="FileFolderStatusHeaderText"
+                    x:Name="FileFolderStatusHeaderTextBlock"
                     Grid.Column="3"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Left"
@@ -137,7 +137,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderStatus')}" Visibility="{x:Bind FileFolderStatusHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderStatus')}" Visibility="{x:Bind FileFolderStatusHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -179,7 +179,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
-                                x:Name="FileFolderNameText"
+                                x:Name="FileFolderNameTextBlock"
                                 Grid.Column="0"
                                 MinWidth="50"
                                 Margin="10,0,0,0"
@@ -200,7 +200,7 @@
                             </TextBlock>
 
                             <TextBlock
-                                x:Name="FileFolderTypeText"
+                                x:Name="FileFolderTypeTextBlock"
                                 Grid.Column="1"
                                 MinWidth="50"
                                 Margin="10,0,0,0"
@@ -216,12 +216,12 @@
                                     <ToolTip
                                         Content="{x:Bind FileFolderType}"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=FileFolderTypeText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=FileFolderTypeTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
                             <TextBlock
-                                x:Name="FileFolderAmountText"
+                                x:Name="FileFolderAmountTextBlock"
                                 Grid.Column="2"
                                 MinWidth="50"
                                 Margin="10,0,0,0"
@@ -237,12 +237,12 @@
                                     <ToolTip
                                         Content="{x:Bind FileFolderAmount}"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=FileFolderAmountText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=FileFolderAmountTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
                             <TextBlock
-                                x:Name="FileFolderNotStartedText"
+                                x:Name="FileFolderNotStartedTextBlock"
                                 Grid.Column="3"
                                 MinWidth="50"
                                 Margin="10,0,0,0"
@@ -259,7 +259,7 @@
                                     <ToolTip
                                         Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderNotStarted')}"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=FileFolderNotStartedText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=FileFolderNotStartedTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
@@ -279,7 +279,7 @@
                                     Value="{x:Bind FileUnlockProgressingPercentage, Mode=OneWay}" />
 
                                 <TextBlock
-                                    x:Name="FileFolderProcessingText"
+                                    x:Name="FileFolderProcessingTextBlock"
                                     Grid.Column="3"
                                     MinWidth="50"
                                     HorizontalAlignment="Left"
@@ -308,7 +308,7 @@
                             </StackPanel>
 
                             <TextBlock
-                                x:Name="FileFolderCancelledText"
+                                x:Name="FileFolderCancelledTextBlock"
                                 Grid.Column="3"
                                 MinWidth="50"
                                 Margin="10,0,0,0"
@@ -325,12 +325,12 @@
                                     <ToolTip
                                         Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderCancelled')}"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=FileFolderCancelledText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=FileFolderCancelledTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
                             <TextBlock
-                                x:Name="FileFolderFailedText"
+                                x:Name="FileFolderFailedTextBlock"
                                 Grid.Column="3"
                                 MinWidth="50"
                                 Margin="10,0,0,0"
@@ -347,12 +347,12 @@
                                     <ToolTip
                                         Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderFailed')}"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=FileFolderFailedText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=FileFolderFailedTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
                             <TextBlock
-                                x:Name="FileFolderSuccessfullyText"
+                                x:Name="FileFolderSuccessfullyTextBlock"
                                 Grid.Column="3"
                                 MinWidth="50"
                                 Margin="10,0,0,0"
@@ -369,7 +369,7 @@
                                     <ToolTip
                                         Content="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileFolderSuccessfully')}"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=FileFolderSuccessfullyText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=FileFolderSuccessfullyTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 

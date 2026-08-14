@@ -199,7 +199,7 @@
                                         Orientation="Vertical">
 
                                         <TextBlock
-                                            x:Name="PackageDisplayNameText"
+                                            x:Name="PackageDisplayNameTextBlock"
                                             HorizontalAlignment="Left"
                                             IsTextSelectionEnabled="True"
                                             Style="{StaticResource BodyTextBlockStyle}"
@@ -208,12 +208,12 @@
                                             TextWrapping="NoWrap">
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip Content="{x:Bind PackageDisplayName}" Visibility="{Binding ElementName=PackageDisplayNameText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                <ToolTip Content="{x:Bind PackageDisplayName}" Visibility="{Binding ElementName=PackageDisplayNameTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
 
                                         <TextBlock
-                                            x:Name="PackageFullNameText"
+                                            x:Name="PackageFullNameTextBlock"
                                             HorizontalAlignment="Left"
                                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                             IsTextSelectionEnabled="True"
@@ -223,7 +223,7 @@
                                             TextWrapping="NoWrap">
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip Content="{x:Bind PackageFullName}" Visibility="{Binding ElementName=PackageFullNameText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                <ToolTip Content="{x:Bind PackageFullName}" Visibility="{Binding ElementName=PackageFullNameTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
                                     </StackPanel>

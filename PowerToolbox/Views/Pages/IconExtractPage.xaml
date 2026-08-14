@@ -27,7 +27,7 @@
             Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('IconExtract')}" />
 
         <TextBlock
-            x:Name="GetResultsText"
+            x:Name="GetResultsTextBlock"
             Grid.Row="1"
             Margin="32,3,32,3"
             FontSize="14"
@@ -36,7 +36,7 @@
             TextWrapping="NoWrap">
 
             <ToolTipService.ToolTip>
-                <ToolTip Content="{x:Bind GetResults, Mode=OneWay}" Visibility="{x:Bind GetResultsText.IsTextTrimmed, Mode=OneWay}" />
+                <ToolTip Content="{x:Bind GetResults, Mode=OneWay}" Visibility="{x:Bind GetResultsTextBlock.IsTextTrimmed, Mode=OneWay}" />
             </ToolTipService.ToolTip>
         </TextBlock>
 

@@ -489,7 +489,7 @@
                                         Orientation="Vertical">
 
                                         <TextBlock
-                                            x:Name="DeviceNameText"
+                                            x:Name="DeviceNameTextBlock"
                                             HorizontalAlignment="Left"
                                             IsTextSelectionEnabled="True"
                                             Style="{StaticResource BodyTextBlockStyle}"
@@ -498,12 +498,12 @@
                                             TextWrapping="NoWrap">
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip Content="{x:Bind DeviceName}" Visibility="{Binding ElementName=DeviceNameText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                <ToolTip Content="{x:Bind DeviceName}" Visibility="{Binding ElementName=DeviceNameTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
 
                                         <TextBlock
-                                            x:Name="DriverManufacturerText"
+                                            x:Name="DriverManufacturerTextBlock"
                                             HorizontalAlignment="Left"
                                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                             IsTextSelectionEnabled="True"
@@ -513,7 +513,7 @@
                                             TextWrapping="NoWrap">
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip Content="{x:Bind DriverManufacturer}" Visibility="{Binding ElementName=DriverManufacturerText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                <ToolTip Content="{x:Bind DriverManufacturer}" Visibility="{Binding ElementName=DriverManufacturerTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
                                     </StackPanel>
@@ -970,7 +970,7 @@
                                             </Grid.RowDefinitions>
 
                                             <TextBlock
-                                                x:Name="DriverInfNameText"
+                                                x:Name="DriverInfNameTextBlock"
                                                 Grid.Row="0"
                                                 MinWidth="50"
                                                 Margin="0,0,5,0"
@@ -981,12 +981,12 @@
                                                 TextTrimming="CharacterEllipsis">
 
                                                 <ToolTipService.ToolTip>
-                                                    <ToolTip Content="{x:Bind DriverInfName}" Visibility="{Binding ElementName=DriverInfNameText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                    <ToolTip Content="{x:Bind DriverInfName}" Visibility="{Binding ElementName=DriverInfNameTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                                 </ToolTipService.ToolTip>
                                             </TextBlock>
 
                                             <TextBlock
-                                                x:Name="DriverOperationText"
+                                                x:Name="DriverOperationTextBlock"
                                                 Grid.Row="1"
                                                 MinWidth="50"
                                                 Margin="0,0,5,0"
@@ -997,7 +997,7 @@
                                                 TextTrimming="CharacterEllipsis">
 
                                                 <ToolTipService.ToolTip>
-                                                    <ToolTip Content="{x:Bind DriverOperation, Mode=OneWay}" Visibility="{Binding ElementName=DriverOperationText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                    <ToolTip Content="{x:Bind DriverOperation, Mode=OneWay}" Visibility="{Binding ElementName=DriverOperationTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                                 </ToolTipService.ToolTip>
                                             </TextBlock>
                                         </Grid>

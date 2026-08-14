@@ -161,7 +161,7 @@
                                         Spacing="2">
 
                                         <TextBlock
-                                            x:Name="NameText"
+                                            x:Name="NameTextBlock"
                                             HorizontalAlignment="Left"
                                             Style="{StaticResource BodyStrongTextBlockStyle}"
                                             Text="{x:Bind Name}"
@@ -179,7 +179,7 @@
                                             Value="{x:Bind DriveUsedPercentage}" />
 
                                         <TextBlock
-                                            x:Name="SpaceText"
+                                            x:Name="SpaceTextBlock"
                                             HorizontalAlignment="Left"
                                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                             RelativePanel.Below="NameText"
@@ -188,7 +188,7 @@
                                             TextTrimming="CharacterEllipsis">
 
                                             <ToolTipService.ToolTip>
-                                                <ToolTip Content="{x:Bind Space}" Visibility="{Binding ElementName=SpaceText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                <ToolTip Content="{x:Bind Space}" Visibility="{Binding ElementName=SpaceTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                             </ToolTipService.ToolTip>
                                         </TextBlock>
                                     </StackPanel>
@@ -522,7 +522,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularRestoreContent')}" />
 
                                 <TextBlock
-                                    x:Name="RegularRestoreContentDescriptionText"
+                                    x:Name="RegularRestoreContentDescriptionTextBlock"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularRestoreContentDescription')}"
@@ -530,7 +530,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularRestoreContentDescription')}" Visibility="{x:Bind RegularRestoreContentDescriptionText. IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularRestoreContentDescription')}" Visibility="{x:Bind RegularRestoreContentDescriptionTextBlock. IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -569,7 +569,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularDuplicatedFileOption')}" />
 
                                 <TextBlock
-                                    x:Name="RegularDuplicatedFileOptionDescriptionText"
+                                    x:Name="RegularDuplicatedFileOptionDescriptionTextBlock"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularDuplicatedFileOptionDescription')}"
@@ -577,7 +577,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularDuplicatedFileOptionDescription')}" Visibility="{x:Bind RegularDuplicatedFileOptionDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RegularDuplicatedFileOptionDescription')}" Visibility="{x:Bind RegularDuplicatedFileOptionDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -650,7 +650,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveRestoreContent')}" />
 
                                 <TextBlock
-                                    x:Name="ExtensiveRestoreContentDescriptionText"
+                                    x:Name="ExtensiveRestoreContentDescriptionTextBlock"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveRestoreContentDescription')}"
@@ -658,7 +658,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveRestoreContentDescription')}" Visibility="{x:Bind ExtensiveRestoreContentDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveRestoreContentDescription')}" Visibility="{x:Bind ExtensiveRestoreContentDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -697,7 +697,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveDuplicatedFileOption')}" />
 
                                 <TextBlock
-                                    x:Name="ExtensiveDuplicatedFileOptionDescriptionText"
+                                    x:Name="ExtensiveDuplicatedFileOptionDescriptionTextBlock"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveDuplicatedFileOptionDescription')}"
@@ -705,7 +705,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveDuplicatedFileOptionDescriptionText')}" Visibility="{x:Bind ExtensiveDuplicatedFileOptionDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('ExtensiveDuplicatedFileOptionDescriptionText')}" Visibility="{x:Bind ExtensiveDuplicatedFileOptionDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -778,7 +778,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSRestoreContent')}" />
 
                                 <TextBlock
-                                    x:Name="NTFSRestoreContentDescriptionText"
+                                    x:Name="NTFSRestoreContentDescriptionTextBlock"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSRestoreContentDescription')}"
@@ -786,7 +786,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSRestoreContentDescription')}" Visibility="{x:Bind NTFSRestoreContentDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSRestoreContentDescription')}" Visibility="{x:Bind NTFSRestoreContentDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -885,7 +885,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSDuplicatedFileOption')}" />
 
                                 <TextBlock
-                                    x:Name="NTFSDuplicatedFileOptionDescriptionText"
+                                    x:Name="NTFSDuplicatedFileOptionDescriptionTextBlock"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSDuplicatedFileOptionDescription')}"
@@ -893,7 +893,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSDuplicatedFileOptionDescription')}" Visibility="{x:Bind NTFSDuplicatedFileOptionDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSDuplicatedFileOptionDescription')}" Visibility="{x:Bind NTFSDuplicatedFileOptionDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -994,7 +994,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSCustomFileFilterType')}" />
 
                                 <TextBlock
-                                    x:Name="NTFSCustomFileFilterTypeDescriptionText"
+                                    x:Name="NTFSCustomFileFilterTypeDescriptionTextBlock"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSCustomFileFilterTypeDescription')}"
@@ -1002,7 +1002,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSCustomFileFilterTypeDescription')}" Visibility="{x:Bind NTFSCustomFileFilterTypeDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('NTFSCustomFileFilterTypeDescription')}" Visibility="{x:Bind NTFSCustomFileFilterTypeDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1074,7 +1074,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentRestoreContent')}" />
 
                                 <TextBlock
-                                    x:Name="SegmentRestoreContentDescriptionText"
+                                    x:Name="SegmentRestoreContentDescriptionTextBlock"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentRestoreContentDescription')}"
@@ -1082,7 +1082,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentRestoreContentDescription')}" Visibility="{x:Bind SegmentRestoreContentDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentRestoreContentDescription')}" Visibility="{x:Bind SegmentRestoreContentDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1181,7 +1181,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentDuplicatedFileOption')}" />
 
                                 <TextBlock
-                                    x:Name="SegmentDuplicatedFileOptionDescriptionText"
+                                    x:Name="SegmentDuplicatedFileOptionDescriptionTextBlock"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentDuplicatedFileOptionDescription')}"
@@ -1189,7 +1189,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentDuplicatedFileOptionDescription')}" Visibility="{x:Bind SegmentDuplicatedFileOptionDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentDuplicatedFileOptionDescription')}" Visibility="{x:Bind SegmentDuplicatedFileOptionDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1290,7 +1290,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentCustomFileFilterType')}" />
 
                                 <TextBlock
-                                    x:Name="SegmentCustomFileFilterTypeDescriptionText"
+                                    x:Name="SegmentCustomFileFilterTypeDescriptionTextBlock"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentCustomFileFilterTypeDescription')}"
@@ -1298,7 +1298,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentCustomFileFilterTypeDescription')}" Visibility="{x:Bind SegmentCustomFileFilterTypeDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentCustomFileFilterTypeDescription')}" Visibility="{x:Bind SegmentCustomFileFilterTypeDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1337,7 +1337,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentSourceDeviceNumberSectors')}" />
 
                                 <TextBlock
-                                    x:Name="SegmentSourceDeviceNumberSectorsDescriptionText"
+                                    x:Name="SegmentSourceDeviceNumberSectorsDescriptionTextBlock"
                                     HorizontalAlignment="Left"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
@@ -1346,7 +1346,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentSourceDeviceNumberSectorsDescription')}" Visibility="{x:Bind SegmentSourceDeviceNumberSectorsDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentSourceDeviceNumberSectorsDescription')}" Visibility="{x:Bind SegmentSourceDeviceNumberSectorsDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1386,7 +1386,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentSourceDeviceClusterSize')}" />
 
                                 <TextBlock
-                                    x:Name="SegmentSourceDeviceClusterSizeDescriptionText"
+                                    x:Name="SegmentSourceDeviceClusterSizeDescriptionTextBlock"
                                     HorizontalAlignment="Left"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
@@ -1395,7 +1395,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentSourceDeviceClusterSizeDescription')}" Visibility="{x:Bind SegmentSourceDeviceClusterSizeDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SegmentSourceDeviceClusterSizeDescription')}" Visibility="{x:Bind SegmentSourceDeviceClusterSizeDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1499,7 +1499,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureRestoreSpecificExtensionGroupsType')}" />
 
                                 <TextBlock
-                                    x:Name="SignatureRestoreSpecificExtensionGroupsTypeDescriptionText"
+                                    x:Name="SignatureRestoreSpecificExtensionGroupsTypeDescriptionTextBlock"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureRestoreSpecificExtensionGroupsTypeDescription')}"
@@ -1507,7 +1507,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureRestoreSpecificExtensionGroupsTypeDescription')}" Visibility="{x:Bind SignatureRestoreSpecificExtensionGroupsTypeDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureRestoreSpecificExtensionGroupsTypeDescription')}" Visibility="{x:Bind SignatureRestoreSpecificExtensionGroupsTypeDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1546,7 +1546,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureSourceDeviceNumberSectors')}" />
 
                                 <TextBlock
-                                    x:Name="SignatureSourceDeviceNumberSectorsDescriptionText"
+                                    x:Name="SignatureSourceDeviceNumberSectorsDescriptionTextBlock"
                                     HorizontalAlignment="Left"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
@@ -1555,7 +1555,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureSourceDeviceNumberSectorsDescription')}" Visibility="{x:Bind SignatureSourceDeviceNumberSectorsDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureSourceDeviceNumberSectorsDescription')}" Visibility="{x:Bind SignatureSourceDeviceNumberSectorsDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1595,7 +1595,7 @@
                                     Text="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureSourceDeviceClusterSize')}" />
 
                                 <TextBlock
-                                    x:Name="SignatureSourceDeviceClusterSizeDescriptionText"
+                                    x:Name="SignatureSourceDeviceClusterSizeDescriptionTextBlock"
                                     HorizontalAlignment="Left"
                                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                     Style="{StaticResource CaptionTextBlockStyle}"
@@ -1604,7 +1604,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureSourceDeviceClusterSizeDescription')}" Visibility="{x:Bind SignatureSourceDeviceClusterSizeDescriptionText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('SignatureSourceDeviceClusterSizeDescription')}" Visibility="{x:Bind SignatureSourceDeviceClusterSizeDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
@@ -1678,7 +1678,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock
-                                    x:Name="FileSystemHeaderText"
+                                    x:Name="FileSystemHeaderTextBlock"
                                     Grid.Column="0"
                                     Margin="44,0,0,0"
                                     HorizontalAlignment="Left"
@@ -1688,12 +1688,12 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('FileSystem')}" Visibility="{x:Bind FileSystemHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('FileSystem')}" Visibility="{x:Bind FileSystemHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
                                 <TextBlock
-                                    x:Name="CircumstancesHeaderText"
+                                    x:Name="CircumstancesHeaderTextBlock"
                                     Grid.Column="1"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
@@ -1703,12 +1703,12 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('Circumstances')}" Visibility="{x:Bind CircumstancesHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('Circumstances')}" Visibility="{x:Bind CircumstancesHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
                                 <TextBlock
-                                    x:Name="RecommendedModeHeaderText"
+                                    x:Name="RecommendedModeHeaderTextBlock"
                                     Grid.Column="2"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
@@ -1718,7 +1718,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RecommendedMode')}" Visibility="{x:Bind RecommendedModeHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinFRResource.GetString('RecommendedMode')}" Visibility="{x:Bind RecommendedModeHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </Grid>
@@ -1738,7 +1738,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <TextBlock
-                                        x:Name="FileSystemText"
+                                        x:Name="FileSystemTextBlock"
                                         Grid.Column="0"
                                         MinWidth="50"
                                         Margin="44,0,0,0"
@@ -1752,12 +1752,12 @@
                                         TextWrapping="NoWrap">
 
                                         <ToolTipService.ToolTip>
-                                            <ToolTip Content="{x:Bind FileSystem}" Visibility="{Binding ElementName=FileSystemText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                            <ToolTip Content="{x:Bind FileSystem}" Visibility="{Binding ElementName=FileSystemTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
 
                                     <TextBlock
-                                        x:Name="CircumstancesText"
+                                        x:Name="CircumstancesTextBlock"
                                         Grid.Column="1"
                                         MinWidth="50"
                                         Margin="10,0,0,0"
@@ -1771,12 +1771,12 @@
                                         TextWrapping="NoWrap">
 
                                         <ToolTipService.ToolTip>
-                                            <ToolTip Content="{x:Bind Circumstances}" Visibility="{Binding ElementName=CircumstancesText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                            <ToolTip Content="{x:Bind Circumstances}" Visibility="{Binding ElementName=CircumstancesTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
 
                                     <TextBlock
-                                        x:Name="RecommendedModeText"
+                                        x:Name="RecommendedModeTextBlock"
                                         Grid.Column="2"
                                         MinWidth="50"
                                         Margin="10,0,0,0"
@@ -1790,7 +1790,7 @@
                                         TextWrapping="NoWrap">
 
                                         <ToolTipService.ToolTip>
-                                            <ToolTip Content="{x:Bind RecommendedMode}" Visibility="{Binding ElementName=RecommendedModeText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                            <ToolTip Content="{x:Bind RecommendedMode}" Visibility="{Binding ElementName=RecommendedModeTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
                                 </Grid>

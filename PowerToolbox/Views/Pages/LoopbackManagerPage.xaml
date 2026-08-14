@@ -326,7 +326,7 @@
                                     Orientation="Vertical">
 
                                     <TextBlock
-                                        x:Name="DisplayNameText"
+                                        x:Name="DisplayNameTextBlock"
                                         HorizontalAlignment="Left"
                                         IsTextSelectionEnabled="True"
                                         Style="{StaticResource BodyTextBlockStyle}"
@@ -335,12 +335,12 @@
                                         TextWrapping="NoWrap">
 
                                         <ToolTipService.ToolTip>
-                                            <ToolTip Content="{x:Bind DisplayName}" Visibility="{Binding ElementName=DisplayNameText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                            <ToolTip Content="{x:Bind DisplayName}" Visibility="{Binding ElementName=DisplayNameTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
 
                                     <TextBlock
-                                        x:Name="PackageFullNameText"
+                                        x:Name="PackageFullNameTextBlock"
                                         HorizontalAlignment="Left"
                                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                         IsTextSelectionEnabled="True"
@@ -350,7 +350,7 @@
                                         TextWrapping="NoWrap">
 
                                         <ToolTipService.ToolTip>
-                                            <ToolTip Content="{x:Bind PackageFullName}" Visibility="{Binding ElementName=PackageFullNameText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                            <ToolTip Content="{x:Bind PackageFullName}" Visibility="{Binding ElementName=PackageFullNameTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                         </ToolTipService.ToolTip>
                                     </TextBlock>
                                 </StackPanel>

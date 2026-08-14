@@ -90,7 +90,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
-                    x:Name="FileNameHeaderText"
+                    x:Name="FileNameHeaderTextBlock"
                     Grid.Column="0"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Left"
@@ -100,12 +100,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.FileCertificateResource.GetString('FileName')}" Visibility="{x:Bind FileNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.FileCertificateResource.GetString('FileName')}" Visibility="{x:Bind FileNameHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="OperationHeaderText"
+                    x:Name="OperationHeaderTextBlock"
                     Grid.Column="1"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Left"
@@ -115,7 +115,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.FileCertificateResource.GetString('Operation')}" Visibility="{x:Bind OperationHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.FileCertificateResource.GetString('Operation')}" Visibility="{x:Bind OperationHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>

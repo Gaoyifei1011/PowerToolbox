@@ -62,7 +62,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
-                    x:Name="ComponentHeaderText"
+                    x:Name="ComponentHeaderTextBlock"
                     Grid.Column="0"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -71,12 +71,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Component')}" Visibility="{x:Bind ComponentHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Component')}" Visibility="{x:Bind ComponentHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="AssessmentItemsHeaderText"
+                    x:Name="AssessmentItemsHeaderTextBlock"
                     Grid.Column="1"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -85,12 +85,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('AssessmentItems')}" Visibility="{x:Bind AssessmentItemsHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('AssessmentItems')}" Visibility="{x:Bind AssessmentItemsHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="SubScoreHeaderText"
+                    x:Name="SubScoreHeaderTextBlock"
                     Grid.Column="2"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -99,12 +99,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('SubScore')}" Visibility="{x:Bind SubScoreHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('SubScore')}" Visibility="{x:Bind SubScoreHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="BasicScoreHeaderText"
+                    x:Name="BasicScoreHeaderTextBlock"
                     Grid.Column="3"
                     VerticalAlignment="Center"
                     Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('BasicScore')}"
@@ -113,7 +113,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('BasicScore')}" Visibility="{x:Bind BasicScoreHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('BasicScore')}" Visibility="{x:Bind BasicScoreHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -132,7 +132,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
-                    x:Name="ProcessorText"
+                    x:Name="ProcessorTextBlock"
                     Grid.Column="0"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -141,12 +141,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Processor')}" Visibility="{x:Bind ProcessorText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Processor')}" Visibility="{x:Bind ProcessorTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="ProcessorItemText"
+                    x:Name="ProcessorItemTextBlock"
                     Grid.Column="1"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -155,12 +155,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('ProcessorItem')}" Visibility="{x:Bind ProcessorItemText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('ProcessorItem')}" Visibility="{x:Bind ProcessorItemTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="ProcessorSubScoreText"
+                    x:Name="ProcessorSubScoreTextBlock"
                     Grid.Column="2"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -169,7 +169,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind ProcessorSubScore, Mode=OneWay}" Visibility="{x:Bind ProcessorSubScoreText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind ProcessorSubScore, Mode=OneWay}" Visibility="{x:Bind ProcessorSubScoreTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -188,7 +188,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
-                    x:Name="MemoryText"
+                    x:Name="MemoryTextBlock"
                     Grid.Column="0"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -197,12 +197,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Memory')}" Visibility="{x:Bind MemoryText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Memory')}" Visibility="{x:Bind MemoryTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="MemoryItemText"
+                    x:Name="MemoryItemTextBlock"
                     Grid.Column="1"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -211,12 +211,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('MemoryItem')}" Visibility="{x:Bind MemoryItemText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('MemoryItem')}" Visibility="{x:Bind MemoryItemTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="MemorySubScoreText"
+                    x:Name="MemorySubScoreTextBlock"
                     Grid.Column="2"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -225,7 +225,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind MemorySubScore, Mode=OneWay}" Visibility="{x:Bind MemorySubScoreText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind MemorySubScore, Mode=OneWay}" Visibility="{x:Bind MemorySubScoreTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -244,7 +244,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
-                    x:Name="GraphicsText"
+                    x:Name="GraphicsTextBlock"
                     Grid.Column="0"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -253,12 +253,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Graphics')}" Visibility="{x:Bind GraphicsText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Graphics')}" Visibility="{x:Bind GraphicsTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="GraphicsItemText"
+                    x:Name="GraphicsItemTextBlock"
                     Grid.Column="1"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -267,12 +267,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GraphicsItem')}" Visibility="{x:Bind GraphicsItemText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GraphicsItem')}" Visibility="{x:Bind GraphicsItemTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="GraphicsSubScoreText"
+                    x:Name="GraphicsSubScoreTextBlock"
                     Grid.Column="2"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -281,7 +281,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind GraphicsSubScore, Mode=OneWay}" Visibility="{x:Bind GraphicsSubScoreText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind GraphicsSubScore, Mode=OneWay}" Visibility="{x:Bind GraphicsSubScoreTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -300,7 +300,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
-                    x:Name="GamingGraphicsText"
+                    x:Name="GamingGraphicsTextBlock"
                     Grid.Column="0"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -309,12 +309,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GamingGraphics')}" Visibility="{x:Bind GamingGraphicsText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GamingGraphics')}" Visibility="{x:Bind GamingGraphicsTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="GamingGraphicsItemText"
+                    x:Name="GamingGraphicsItemTextBlock"
                     Grid.Column="1"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -323,12 +323,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GamingGraphicsItem')}" Visibility="{x:Bind GamingGraphicsItemText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('GamingGraphicsItem')}" Visibility="{x:Bind GamingGraphicsItemTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="GamingGraphicsSubScoreText"
+                    x:Name="GamingGraphicsSubScoreTextBlock"
                     Grid.Column="2"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -337,7 +337,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind GamingGraphicsSubScore, Mode=OneWay}" Visibility="{x:Bind GamingGraphicsSubScoreText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind GamingGraphicsSubScore, Mode=OneWay}" Visibility="{x:Bind GamingGraphicsSubScoreTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -356,7 +356,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
-                    x:Name="PrimaryDiskText"
+                    x:Name="PrimaryDiskTextBlock"
                     Grid.Column="0"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -365,12 +365,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('PrimaryDisk')}" Visibility="{x:Bind PrimaryDiskText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('PrimaryDisk')}" Visibility="{x:Bind PrimaryDiskTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="PrimaryDiskItemText"
+                    x:Name="PrimaryDiskItemTextBlock"
                     Grid.Column="1"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -379,12 +379,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('PrimaryDiskItem')}" Visibility="{x:Bind PrimaryDiskItemText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('PrimaryDiskItem')}" Visibility="{x:Bind PrimaryDiskItemTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="PrimaryDiskSubScoreText"
+                    x:Name="PrimaryDiskSubScoreTextBlock"
                     Grid.Column="2"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -393,7 +393,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind PrimaryDiskSubScore, Mode=OneWay}" Visibility="{x:Bind PrimaryDiskSubScoreText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind PrimaryDiskSubScore, Mode=OneWay}" Visibility="{x:Bind PrimaryDiskSubScoreTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -413,7 +413,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock
-                    x:Name="BasicScoreText"
+                    x:Name="BasicScoreTextBlock"
                     Grid.Row="0"
                     Margin="0,0,0,15"
                     VerticalAlignment="Center"

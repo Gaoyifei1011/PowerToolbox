@@ -69,7 +69,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
-                    x:Name="FileNameHeaderText"
+                    x:Name="FileNameHeaderTextBlock"
                     Grid.Column="0"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -78,12 +78,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('FileName')}" Visibility="{x:Bind FileNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('FileName')}" Visibility="{x:Bind FileNameHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="ProcessNameHeaderText"
+                    x:Name="ProcessNameHeaderTextBlock"
                     Grid.Column="1"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -92,12 +92,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ProcessName')}" Visibility="{x:Bind ProcessNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ProcessName')}" Visibility="{x:Bind ProcessNameHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="ErrorMessageHeaderText"
+                    x:Name="ErrorMessageHeaderTextBlock"
                     Grid.Column="2"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -106,12 +106,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ErrorMessage')}" Visibility="{x:Bind ErrorMessageHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ErrorMessage')}" Visibility="{x:Bind ErrorMessageHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="ErrorCodeHeaderText"
+                    x:Name="ErrorCodeHeaderTextBlock"
                     Grid.Column="3"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
@@ -120,7 +120,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ErrorCode')}" Visibility="{x:Bind ErrorCodeHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('ErrorCode')}" Visibility="{x:Bind ErrorCodeHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
             </Grid>
@@ -143,7 +143,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock
-                        x:Name="FileNameText"
+                        x:Name="FileNameTextBlock"
                         Grid.Column="0"
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
@@ -156,7 +156,7 @@
                         ToolTipService.ToolTip="{x:Bind FilePath}" />
 
                     <TextBlock
-                        x:Name="ProcessNameText"
+                        x:Name="ProcessNameTextBlock"
                         Grid.Column="1"
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
@@ -194,7 +194,7 @@
                     </TextBlock>
 
                     <TextBlock
-                        x:Name="ErrorMessageText"
+                        x:Name="ErrorMessageTextBlock"
                         Grid.Column="2"
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
@@ -206,12 +206,12 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind Exception.Message}" Visibility="{Binding ElementName=ErrorMessageText, Path=IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind Exception.Message}" Visibility="{Binding ElementName=ErrorMessageTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
 
                     <TextBlock
-                        x:Name="ErrorCodeText"
+                        x:Name="ErrorCodeTextBlock"
                         Grid.Column="3"
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
@@ -223,7 +223,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind system:Convert.ToString(Exception.HResult)}" Visibility="{Binding ElementName=ErrorCodeText, Path=IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind system:Convert.ToString(Exception.HResult)}" Visibility="{Binding ElementName=ErrorCodeTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
 

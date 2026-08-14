@@ -202,7 +202,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
-                    x:Name="FileNameHeaderText"
+                    x:Name="FileNameHeaderTextBlock"
                     Grid.Column="0"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Left"
@@ -212,12 +212,12 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('FileName')}" Visibility="{x:Bind FileNameHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('FileName')}" Visibility="{x:Bind FileNameHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 
                 <TextBlock
-                    x:Name="FilePropertiesHeaderText"
+                    x:Name="FilePropertiesHeaderTextBlock"
                     Grid.Column="1"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Left"
@@ -227,7 +227,7 @@
                     TextWrapping="NoWrap">
 
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('ChangedProperties')}" Visibility="{x:Bind FilePropertiesHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                        <ToolTip Content="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('ChangedProperties')}" Visibility="{x:Bind FilePropertiesHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                     </ToolTipService.ToolTip>
                 </TextBlock>
 

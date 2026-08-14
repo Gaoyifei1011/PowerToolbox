@@ -220,14 +220,18 @@
                             Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('DoEngineMode')}" />
 
                         <TextBlock
-                            x:Name="DoEngineModeDescription"
+                            x:Name="DoEngineModeDescriptionTextBlock"
                             HorizontalAlignment="Left"
                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             Style="{StaticResource CaptionTextBlockStyle}"
                             Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('DoEngineModeDescription')}"
                             TextTrimming="CharacterEllipsis"
-                            TextWrapping="NoWrap"
-                            ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DialogResource.GetString('DoEngineModeDescription')}" />
+                            TextWrapping="NoWrap">
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('DoEngineModeDescription')}" Visibility="{x:Bind DoEngineModeDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
                     </StackPanel>
 
                     <ComboBox
@@ -274,14 +278,18 @@
                             Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('DeliveryOptimization')}" />
 
                         <TextBlock
-                            x:Name="DeliveryOptimizationDescription"
+                            x:Name="DeliveryOptimizationDescriptionTextBlock"
                             HorizontalAlignment="Left"
                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             Style="{StaticResource CaptionTextBlockStyle}"
                             Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('DeliveryOptimizationDescription')}"
                             TextTrimming="CharacterEllipsis"
-                            TextWrapping="NoWrap"
-                            ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DialogResource.GetString('DeliveryOptimizationDescription')}" />
+                            TextWrapping="NoWrap">
+
+                            <ToolTipService.ToolTip>
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('DeliveryOptimizationDescription')}" Visibility="{x:Bind DeliveryOptimizationDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
+                            </ToolTipService.ToolTip>
+                        </TextBlock>
                     </StackPanel>
 
                     <Button
@@ -325,7 +333,7 @@
                             Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('Aria2Configuration')}" />
 
                         <TextBlock
-                            x:Name="Aria2ConfigurationDescription"
+                            x:Name="Aria2ConfigurationDescriptionTextBlock"
                             HorizontalAlignment="Left"
                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             Style="{StaticResource CaptionTextBlockStyle}"
@@ -334,7 +342,7 @@
                             TextWrapping="NoWrap">
 
                             <ToolTipService.ToolTip>
-                                <ToolTip Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('Aria2ConfigurationDescription')}" Visibility="{x:Bind Aria2ConfigurationDescription.IsTextTrimmed, Mode=OneWay}" />
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('Aria2ConfigurationDescription')}" Visibility="{x:Bind Aria2ConfigurationDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </TextBlock>
                     </StackPanel>

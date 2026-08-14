@@ -93,7 +93,7 @@
                         Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityReverseConvert(VerifyFile), Mode=OneWay}" />
 
                     <TextBlock
-                        x:Name="VerifyFileText"
+                        x:Name="VerifyFileTextBlock"
                         HorizontalAlignment="Center"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Text="{x:Bind VerifyFile, Mode=OneWay}"
@@ -102,7 +102,7 @@
                         Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(VerifyFile), Mode=OneWay}">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind VerifyFile, Mode=OneWay}" Visibility="{x:Bind VerifyFileText.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind VerifyFile, Mode=OneWay}" Visibility="{x:Bind VerifyFileTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -491,7 +491,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
-                            x:Name="VerifyTypeHeaderText"
+                            x:Name="VerifyTypeHeaderTextBlock"
                             Grid.Column="0"
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
@@ -501,12 +501,12 @@
                             TextWrapping="NoWrap">
 
                             <ToolTipService.ToolTip>
-                                <ToolTip Content="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyType')}" Visibility="{x:Bind VerifyTypeHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyType')}" Visibility="{x:Bind VerifyTypeHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </TextBlock>
 
                         <TextBlock
-                            x:Name="VerifyResultHeaderText"
+                            x:Name="VerifyResultHeaderTextBlock"
                             Grid.Column="1"
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
@@ -514,7 +514,7 @@
                             Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyResult')}">
 
                             <ToolTipService.ToolTip>
-                                <ToolTip Content="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyResult')}" Visibility="{x:Bind VerifyResultHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                <ToolTip Content="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('VerifyResult')}" Visibility="{x:Bind VerifyResultHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                             </ToolTipService.ToolTip>
                         </TextBlock>
                     </Grid>
@@ -547,7 +547,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
-                                x:Name="VerifyTypeText"
+                                x:Name="VerifyTypeTextBlock"
                                 Grid.Column="0"
                                 MinWidth="50"
                                 Margin="10,0,0,0"
@@ -563,7 +563,7 @@
                                     <ToolTip
                                         Content="{x:Bind Name}"
                                         Placement="Mouse"
-                                        Visibility="{Binding ElementName=VerifyTypeText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        Visibility="{Binding ElementName=VerifyTypeTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 

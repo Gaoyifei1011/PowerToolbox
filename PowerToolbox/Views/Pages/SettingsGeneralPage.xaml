@@ -60,7 +60,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('ThemeMode')}" />
 
                     <TextBlock
-                        x:Name="ThemeModeDescription"
+                        x:Name="ThemeModeDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('ThemeModeDescription')}"
@@ -68,7 +68,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('ThemeModeDescription')}" Visibility="{x:Bind ThemeModeDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('ThemeModeDescription')}" Visibility="{x:Bind ThemeModeDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -121,7 +121,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('Backdrop')}" />
 
                     <TextBlock
-                        x:Name="BackdropDescription"
+                        x:Name="BackdropDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('BackdropDescription')}"
@@ -129,7 +129,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('BackdropDescription')}" Visibility="{x:Bind BackdropDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('BackdropDescription')}" Visibility="{x:Bind BackdropDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -183,7 +183,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('AlwaysShowBackdrop')}" />
 
                     <TextBlock
-                        x:Name="AlwaysShowBackdropDescription"
+                        x:Name="AlwaysShowBackdropDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('AlwaysShowBackdropDescription')}"
@@ -191,7 +191,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('AlwaysShowBackdropDescription')}" Visibility="{x:Bind AlwaysShowBackdropDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('AlwaysShowBackdropDescription')}" Visibility="{x:Bind AlwaysShowBackdropDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -238,7 +238,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('Language')}" />
 
                     <TextBlock
-                        x:Name="LanguageDescription"
+                        x:Name="LanguageDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('LanguageDescription')}"
@@ -246,7 +246,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('LanguageDescription')}" Visibility="{x:Bind LanguageDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('LanguageDescription')}" Visibility="{x:Bind LanguageDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -299,7 +299,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('TopMost')}" />
 
                     <TextBlock
-                        x:Name="TopMostDescription"
+                        x:Name="TopMostDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('TopMostDescription')}"
@@ -307,7 +307,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('TopMostDescription')}" Visibility="{x:Bind TopMostDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.SettingsGeneralResource.GetString('TopMostDescription')}" Visibility="{x:Bind TopMostDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>

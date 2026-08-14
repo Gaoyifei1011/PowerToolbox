@@ -52,7 +52,7 @@
                             <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('PowerSettings')}" />
 
                             <TextBlock
-                                x:Name="PowerSettingsDescription"
+                                x:Name="PowerSettingsDescriptionTextBlock"
                                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                 Style="{StaticResource CaptionTextBlockStyle}"
                                 Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('PowerSettingsDescription')}"
@@ -60,7 +60,7 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('PowerSettingsDescription')}" Visibility="{x:Bind PowerSettingsDescription.IsTextTrimmed, Mode=OneWay}" />
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('PowerSettingsDescription')}" Visibility="{x:Bind PowerSettingsDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
                         </StackPanel>
@@ -158,7 +158,7 @@
                             <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('HibernationFileSize')}" />
 
                             <TextBlock
-                                x:Name="HibernationFileSizeDescription"
+                                x:Name="HibernationFileSizeDescriptionTextBlock"
                                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                 Style="{StaticResource CaptionTextBlockStyle}"
                                 Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('HibernationFileSizeDescription')}"
@@ -166,7 +166,7 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('HibernationFileSizeDescription')}" Visibility="{x:Bind HibernationFileSizeDescription.IsTextTrimmed, Mode=OneWay}" />
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('HibernationFileSizeDescription')}" Visibility="{x:Bind HibernationFileSizeDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
                         </StackPanel>
@@ -263,7 +263,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('PowerModeSettings')}" />
 
                     <TextBlock
-                        x:Name="PowerModeSettingsDescription"
+                        x:Name="PowerModeSettingsDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('PowerModeSettingsDescription')}"
@@ -271,7 +271,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('PowerModeSettingsDescription')}" Visibility="{x:Bind PowerModeSettingsDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('PowerModeSettingsDescription')}" Visibility="{x:Bind PowerModeSettingsDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -386,7 +386,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('BatteryReport')}" />
 
                     <TextBlock
-                        x:Name="BatteryReportDescription"
+                        x:Name="BatteryReportDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('BatteryReportDescription')}"
@@ -394,7 +394,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('BatteryReportDescription')}" Visibility="{x:Bind BatteryReportDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('BatteryReportDescription')}" Visibility="{x:Bind BatteryReportDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -446,7 +446,7 @@
                             <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('UACSettings')}" />
 
                             <TextBlock
-                                x:Name="UACSettingsDescription"
+                                x:Name="UACSettingsDescriptionTextBlock"
                                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                 Style="{StaticResource CaptionTextBlockStyle}"
                                 Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('UACSettingsDescription')}"
@@ -454,7 +454,7 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('UACSettingsDescription')}" Visibility="{x:Bind UACSettingsDescription.IsTextTrimmed, Mode=OneWay}" />
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('UACSettingsDescription')}" Visibility="{x:Bind UACSettingsDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
                         </StackPanel>
@@ -659,7 +659,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('BackgroundAppsSettings')}" />
 
                     <TextBlock
-                        x:Name="BackgroundAppsSettingsDescription"
+                        x:Name="BackgroundAppsSettingsDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('BackgroundAppsSettingsDescription')}"
@@ -667,7 +667,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('BackgroundAppsSettingsDescription')}" Visibility="{x:Bind PowerModeSettingsDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('BackgroundAppsSettingsDescription')}" Visibility="{x:Bind PowerModeSettingsDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -714,7 +714,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('SystemReservedStorage')}" />
 
                     <TextBlock
-                        x:Name="SystemReservedStorageDescription"
+                        x:Name="SystemReservedStorageDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('SystemReservedStorageDescription')}"
@@ -722,7 +722,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('SystemReservedStorageDescription')}" Visibility="{x:Bind SystemReservedStorageDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('SystemReservedStorageDescription')}" Visibility="{x:Bind SystemReservedStorageDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -812,7 +812,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('VirtualizationBasedSecurity')}" />
 
                     <TextBlock
-                        x:Name="VirtualizationBasedSecurityDescription"
+                        x:Name="VirtualizationBasedSecurityDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('VirtualizationBasedSecurityDescription')}"
@@ -820,7 +820,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('VirtualizationBasedSecurityDescription')}" Visibility="{x:Bind VirtualizationBasedSecurityDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('VirtualizationBasedSecurityDescription')}" Visibility="{x:Bind VirtualizationBasedSecurityDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -888,7 +888,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('NICOffloadSettings')}" />
 
                     <TextBlock
-                        x:Name="NICOffloadSettingsDescription"
+                        x:Name="NICOffloadSettingsDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('NICOffloadSettingsDescription')}"
@@ -896,7 +896,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('NICOffloadSettingsDescription')}" Visibility="{x:Bind NICOffloadSettingsDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('NICOffloadSettingsDescription')}" Visibility="{x:Bind NICOffloadSettingsDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -964,7 +964,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('CloseWakeUpTask')}" />
 
                     <TextBlock
-                        x:Name="CloseWakeUpTaskDescription"
+                        x:Name="CloseWakeUpTaskDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('CloseWakeUpTaskDescription')}"
@@ -972,7 +972,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('CloseWakeUpTaskDescription')}" Visibility="{x:Bind CloseWakeUpTaskDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('CloseWakeUpTaskDescription')}" Visibility="{x:Bind CloseWakeUpTaskDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -1067,7 +1067,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('RestartGraphicsDriver')}" />
 
                     <TextBlock
-                        x:Name="RestartGraphicsDriverDescription"
+                        x:Name="RestartGraphicsDriverDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('RestartGraphicsDriverDescription')}"
@@ -1075,7 +1075,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('RestartGraphicsDriverDescription')}" Visibility="{x:Bind RestartGraphicsDriverDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('RestartGraphicsDriverDescription')}" Visibility="{x:Bind RestartGraphicsDriverDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -1128,7 +1128,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('GodModeSettings')}" />
 
                     <TextBlock
-                        x:Name="GodModeSettingsDescription"
+                        x:Name="GodModeSettingsDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('GodModeSettingsDescription')}"
@@ -1136,7 +1136,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('GodModeSettingsDescription')}" Visibility="{x:Bind GodModeSettingsDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('GodModeSettingsDescription')}" Visibility="{x:Bind GodModeSettingsDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -1178,7 +1178,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('WindowsPhotoViewerSettings')}" />
 
                     <TextBlock
-                        x:Name="WindowsPhotoViewerSettingsDescription"
+                        x:Name="WindowsPhotoViewerSettingsDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('WindowsPhotoViewerSettingsDescription')}"
@@ -1186,7 +1186,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('WindowsPhotoViewerSettingsDescription')}" Visibility="{x:Bind WindowsPhotoViewerSettingsDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('WindowsPhotoViewerSettingsDescription')}" Visibility="{x:Bind WindowsPhotoViewerSettingsDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>
@@ -1231,7 +1231,7 @@
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('ApprovalModeForBuiltinAdministratorAccount')}" />
 
                     <TextBlock
-                        x:Name="ApprovalModeForBuiltinAdministratorAccountDescription"
+                        x:Name="ApprovalModeForBuiltinAdministratorAccountDescriptionTextBlock"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Style="{StaticResource CaptionTextBlockStyle}"
                         Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('ApprovalModeForBuiltinAdministratorAccountDescription')}"
@@ -1239,7 +1239,7 @@
                         TextWrapping="NoWrap">
 
                         <ToolTipService.ToolTip>
-                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('ApprovalModeForBuiltinAdministratorAccountDescription')}" Visibility="{x:Bind ApprovalModeForBuiltinAdministratorAccountDescription.IsTextTrimmed, Mode=OneWay}" />
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('ApprovalModeForBuiltinAdministratorAccountDescription')}" Visibility="{x:Bind ApprovalModeForBuiltinAdministratorAccountDescriptionTextBlock.IsTextTrimmed, Mode=OneWay}" />
                         </ToolTipService.ToolTip>
                     </TextBlock>
                 </StackPanel>

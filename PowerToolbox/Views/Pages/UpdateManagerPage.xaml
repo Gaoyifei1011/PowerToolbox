@@ -421,7 +421,7 @@
                                                     Orientation="Vertical">
 
                                                     <TextBlock
-                                                        x:Name="TitleText"
+                                                        x:Name="TitleTextBlock"
                                                         HorizontalAlignment="Left"
                                                         IsTextSelectionEnabled="True"
                                                         Style="{StaticResource BodyTextBlockStyle}"
@@ -430,12 +430,12 @@
                                                         TextWrapping="NoWrap">
 
                                                         <ToolTipService.ToolTip>
-                                                            <ToolTip Content="{x:Bind Title}" Visibility="{Binding ElementName=TitleText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                            <ToolTip Content="{x:Bind Title}" Visibility="{Binding ElementName=TitleTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                                         </ToolTipService.ToolTip>
                                                     </TextBlock>
 
                                                     <TextBlock
-                                                        x:Name="UpdateProgressText"
+                                                        x:Name="UpdateProgressTextBlock"
                                                         HorizontalAlignment="Left"
                                                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                         IsTextSelectionEnabled="True"
@@ -445,7 +445,7 @@
                                                         TextWrapping="NoWrap">
 
                                                         <ToolTipService.ToolTip>
-                                                            <ToolTip Content="{x:Bind UpdateProgress, Mode=OneWay}" Visibility="{Binding ElementName=UpdateProgressText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                            <ToolTip Content="{x:Bind UpdateProgress, Mode=OneWay}" Visibility="{Binding ElementName=UpdateProgressTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                                         </ToolTipService.ToolTip>
                                                     </TextBlock>
                                                 </StackPanel>
@@ -1543,7 +1543,7 @@
                                                     Orientation="Vertical">
 
                                                     <TextBlock
-                                                        x:Name="TitleText"
+                                                        x:Name="TitleTextBlock"
                                                         HorizontalAlignment="Left"
                                                         IsTextSelectionEnabled="True"
                                                         Style="{StaticResource BodyTextBlockStyle}"
@@ -1552,12 +1552,12 @@
                                                         TextWrapping="NoWrap">
 
                                                         <ToolTipService.ToolTip>
-                                                            <ToolTip Content="{x:Bind Title}" Visibility="{Binding ElementName=TitleText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                            <ToolTip Content="{x:Bind Title}" Visibility="{Binding ElementName=TitleTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                                         </ToolTipService.ToolTip>
                                                     </TextBlock>
 
                                                     <TextBlock
-                                                        x:Name="UpdateProgressText"
+                                                        x:Name="UpdateProgressTextBlock"
                                                         HorizontalAlignment="Left"
                                                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                         IsTextSelectionEnabled="True"
@@ -1567,7 +1567,7 @@
                                                         TextWrapping="NoWrap">
 
                                                         <ToolTipService.ToolTip>
-                                                            <ToolTip Content="{x:Bind UpdateProgress, Mode=OneWay}" Visibility="{Binding ElementName=UpdateProgressText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                            <ToolTip Content="{x:Bind UpdateProgress, Mode=OneWay}" Visibility="{Binding ElementName=UpdateProgressTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                                         </ToolTipService.ToolTip>
                                                     </TextBlock>
                                                 </StackPanel>
@@ -2675,7 +2675,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock
-                                                    x:Name="TitleText"
+                                                    x:Name="TitleTextBlock"
                                                     Grid.Column="0"
                                                     HorizontalAlignment="Left"
                                                     VerticalAlignment="Center"
@@ -2686,7 +2686,7 @@
                                                     TextWrapping="NoWrap">
 
                                                     <ToolTipService.ToolTip>
-                                                        <ToolTip Content="{x:Bind Title}" Visibility="{Binding ElementName=TitleText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                        <ToolTip Content="{x:Bind Title}" Visibility="{Binding ElementName=TitleTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                                     </ToolTipService.ToolTip>
                                                 </TextBlock>
 
@@ -3589,7 +3589,7 @@
                                             Orientation="Vertical">
 
                                             <TextBlock
-                                                x:Name="TitleText"
+                                                x:Name="TitleTextBlock"
                                                 HorizontalAlignment="Left"
                                                 IsTextSelectionEnabled="True"
                                                 Style="{StaticResource BodyTextBlockStyle}"
@@ -3598,12 +3598,12 @@
                                                 TextWrapping="NoWrap">
 
                                                 <ToolTipService.ToolTip>
-                                                    <ToolTip Content="{x:Bind Title}" Visibility="{Binding ElementName=TitleText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                    <ToolTip Content="{x:Bind Title}" Visibility="{Binding ElementName=TitleTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                                 </ToolTipService.ToolTip>
                                             </TextBlock>
 
                                             <TextBlock
-                                                x:Name="HistoryUpdateResultText"
+                                                x:Name="HistoryUpdateResultTextBlock"
                                                 HorizontalAlignment="Left"
                                                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                 IsTextSelectionEnabled="True"
@@ -3613,7 +3613,7 @@
                                                 TextWrapping="NoWrap">
 
                                                 <ToolTipService.ToolTip>
-                                                    <ToolTip Content="{x:Bind HistoryUpdateResult, Mode=OneWay}" Visibility="{Binding ElementName=HistoryUpdateResultText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                    <ToolTip Content="{x:Bind HistoryUpdateResult, Mode=OneWay}" Visibility="{Binding ElementName=HistoryUpdateResultTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                                 </ToolTipService.ToolTip>
                                             </TextBlock>
                                         </StackPanel>

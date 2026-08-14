@@ -123,7 +123,7 @@
             Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('PriExtract')}" />
 
         <TextBlock
-            x:Name="GetResultsText"
+            x:Name="GetResultsTextBlock"
             Grid.Row="1"
             Margin="32,3,32,3"
             FontSize="14"
@@ -132,7 +132,7 @@
             TextWrapping="NoWrap">
 
             <ToolTipService.ToolTip>
-                <ToolTip Content="{x:Bind GetResults, Mode=OneWay}" Visibility="{x:Bind GetResultsText.IsTextTrimmed, Mode=OneWay}" />
+                <ToolTip Content="{x:Bind GetResults, Mode=OneWay}" Visibility="{x:Bind GetResultsTextBlock.IsTextTrimmed, Mode=OneWay}" />
             </ToolTipService.ToolTip>
         </TextBlock>
 
@@ -184,7 +184,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
-                                x:Name="StringKeyHeaderText"
+                                x:Name="StringKeyHeaderTextBlock"
                                 Grid.Column="0"
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
@@ -194,12 +194,12 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind StringKeyHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind StringKeyHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
                             <TextBlock
-                                x:Name="StringLanguageHeaderText"
+                                x:Name="StringLanguageHeaderTextBlock"
                                 Grid.Column="1"
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
@@ -209,12 +209,12 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Language')}" Visibility="{x:Bind StringLanguageHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Language')}" Visibility="{x:Bind StringLanguageHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
                             <TextBlock
-                                x:Name="StringContentHeaderText"
+                                x:Name="StringContentHeaderTextBlock"
                                 Grid.Column="2"
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
@@ -224,12 +224,12 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Content')}" Visibility="{x:Bind StringContentHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Content')}" Visibility="{x:Bind StringContentHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
                             <TextBlock
-                                x:Name="StringOperationHeaderText"
+                                x:Name="StringOperationHeaderTextBlock"
                                 Grid.Column="3"
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
@@ -239,7 +239,7 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind StringOperationHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind StringOperationHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
                         </Grid>
@@ -262,7 +262,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock
-                                    x:Name="StringKeyText"
+                                    x:Name="StringKeyTextBlock"
                                     Grid.Column="0"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
@@ -275,7 +275,7 @@
                                     ToolTipService.ToolTip="{x:Bind Key}" />
 
                                 <TextBlock
-                                    x:Name="StringLanguageText"
+                                    x:Name="StringLanguageTextBlock"
                                     Grid.Column="1"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
@@ -287,12 +287,12 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind Language}" Visibility="{Binding ElementName=StringLanguageText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind Language}" Visibility="{Binding ElementName=StringLanguageTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
                                 <TextBlock
-                                    x:Name="StringContentText"
+                                    x:Name="StringContentTextBlock"
                                     Grid.Column="2"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
@@ -304,7 +304,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind Content}" Visibility="{Binding ElementName=StringContentText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind Content}" Visibility="{Binding ElementName=StringContentTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
@@ -364,7 +364,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
-                                x:Name="FilePathKeyHeaderText"
+                                x:Name="FilePathKeyHeaderTextBlock"
                                 Grid.Column="0"
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
@@ -374,12 +374,12 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind FilePathKeyHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind FilePathKeyHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
                             <TextBlock
-                                x:Name="FilePathAbsolutePathHeaderText"
+                                x:Name="FilePathAbsolutePathHeaderTextBlock"
                                 Grid.Column="1"
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
@@ -389,12 +389,12 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('AbsolutePath')}" Visibility="{x:Bind FilePathAbsolutePathHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('AbsolutePath')}" Visibility="{x:Bind FilePathAbsolutePathHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
                             <TextBlock
-                                x:Name="FilePathOperationHeaderText"
+                                x:Name="FilePathOperationHeaderTextBlock"
                                 Grid.Column="2"
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
@@ -404,7 +404,7 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind FilePathOperationHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind FilePathOperationHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
                         </Grid>
@@ -426,7 +426,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock
-                                    x:Name="FilePathKeyText"
+                                    x:Name="FilePathKeyTextBlock"
                                     Grid.Column="0"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
@@ -438,12 +438,12 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind Key}" Visibility="{Binding ElementName=FilePathKeyText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind Key}" Visibility="{Binding ElementName=FilePathKeyTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
                                 <TextBlock
-                                    x:Name="FilePathAbsolutePathText"
+                                    x:Name="FilePathAbsolutePathTextBlock"
                                     Grid.Column="1"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
@@ -455,7 +455,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind AbsolutePath}" Visibility="{Binding ElementName=FilePathAbsolutePathText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind AbsolutePath}" Visibility="{Binding ElementName=FilePathAbsolutePathTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
@@ -513,7 +513,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
-                                x:Name="EmbeddedDataKeyHeaderText"
+                                x:Name="EmbeddedDataKeyHeaderTextBlock"
                                 Grid.Column="0"
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
@@ -523,12 +523,12 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind EmbeddedDataKeyHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Key')}" Visibility="{x:Bind EmbeddedDataKeyHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
 
                             <TextBlock
-                                x:Name="EmbeddedDataOperationHeaderText"
+                                x:Name="EmbeddedDataOperationHeaderTextBlock"
                                 Grid.Column="1"
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
@@ -538,7 +538,7 @@
                                 TextWrapping="NoWrap">
 
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind EmbeddedDataOperationHeaderText.IsTextTrimmed, Mode=OneWay}" />
+                                    <ToolTip Content="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('Operation')}" Visibility="{x:Bind EmbeddedDataOperationHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
                                 </ToolTipService.ToolTip>
                             </TextBlock>
                         </Grid>
@@ -559,7 +559,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock
-                                    x:Name="EmbeddedDataKeyText"
+                                    x:Name="EmbeddedDataKeyTextBlock"
                                     Grid.Column="0"
                                     Margin="10,0,0,0"
                                     HorizontalAlignment="Left"
@@ -571,7 +571,7 @@
                                     TextWrapping="NoWrap">
 
                                     <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind Key}" Visibility="{Binding ElementName=EmbeddedDataKeyText, Path=IsTextTrimmed, Mode=OneWay}" />
+                                        <ToolTip Content="{x:Bind Key}" Visibility="{Binding ElementName=EmbeddedDataKeyTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
 
