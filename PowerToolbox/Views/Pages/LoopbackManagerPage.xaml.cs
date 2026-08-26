@@ -50,7 +50,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_loopbackDescription, value))
                 {
                     _loopbackDescription = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LoopbackDescription)));
+                    PropertyChanged?.Invoke(this, new(nameof(LoopbackDescription)));
                 }
             }
         }
@@ -66,7 +66,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_loopbackResultKind, value))
                 {
                     _loopbackResultKind = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LoopbackResultKind)));
+                    PropertyChanged?.Invoke(this, new(nameof(LoopbackResultKind)));
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_loopbackFailedContent, value))
                 {
                     _loopbackFailedContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LoopbackFailedContent)));
+                    PropertyChanged?.Invoke(this, new(nameof(LoopbackFailedContent)));
                 }
             }
         }
@@ -98,7 +98,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_searchText, value))
                 {
                     _searchText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SearchText)));
+                    PropertyChanged?.Invoke(this, new(nameof(SearchText)));
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isSaved, value))
                 {
                     _isSaved = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSaved)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsSaved)));
                 }
             }
         }
@@ -441,7 +441,7 @@ namespace PowerToolbox.Views.Pages
                                 byte revision = Marshal.ReadByte(inetContainerItem.appContainerSid, 0);
                                 if (revision is 1 && inetContainerItem.appContainerSid is not 0)
                                 {
-                                    appContainerSid = new SecurityIdentifier(inetContainerItem.appContainerSid);
+                                    appContainerSid = new(inetContainerItem.appContainerSid);
                                 }
                             }
                             catch (Exception e)
@@ -689,7 +689,7 @@ namespace PowerToolbox.Views.Pages
 
                     foreach (LoopbackModel loopbackItem in loopbackList)
                     {
-                        sidAndAttributesArray[count] = new SID_AND_ATTRIBUTES
+                        sidAndAttributesArray[count] = new()
                         {
                             Attributes = 0u,
                             Sid = loopbackItem.AppContainerSID

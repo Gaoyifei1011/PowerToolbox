@@ -95,7 +95,7 @@ namespace PowerToolbox.Services.Download
                             }
                         }
 
-                        DownloadProgress?.Invoke(new DownloadProgress()
+                        DownloadProgress?.Invoke(new()
                         {
                             DownloadID = backgroundCopyCallback.DownloadID,
                             DownloadProgressState = DownloadProgressState.Queued,
@@ -131,7 +131,7 @@ namespace PowerToolbox.Services.Download
 
                         if (continueResult is 0)
                         {
-                            DownloadProgress?.Invoke(new DownloadProgress()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = downloadID,
                                 DownloadProgressState = DownloadProgressState.Queued,
@@ -162,7 +162,7 @@ namespace PowerToolbox.Services.Download
 
                         if (pauseResult is 0)
                         {
-                            DownloadProgress?.Invoke(new DownloadProgress()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = downloadID,
                                 DownloadProgressState = DownloadProgressState.Paused,
@@ -203,7 +203,7 @@ namespace PowerToolbox.Services.Download
                             }
 
                             BitsDict.Remove(downloadID);
-                            DownloadProgress?.Invoke(new DownloadProgress()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = downloadID,
                                 DownloadProgressState = DownloadProgressState.Deleted,
@@ -231,7 +231,7 @@ namespace PowerToolbox.Services.Download
 
                 if (BitsDict.TryGetValue(callback.DownloadID, out (string saveFilePath, IBackgroundCopyJob backgroundCopyJob, BackgroundCopyCallback backgroundCopyCallback) downloadValue))
                 {
-                    DownloadProgress?.Invoke(new DownloadProgress()
+                    DownloadProgress?.Invoke(new()
                     {
                         DownloadID = callback.DownloadID,
                         DownloadProgressState = DownloadProgressState.Downloading,
@@ -257,7 +257,7 @@ namespace PowerToolbox.Services.Download
                     {
                         if (BitsDict.TryGetValue(callback.DownloadID, out (string saveFilePath, IBackgroundCopyJob backgroundCopyJob, BackgroundCopyCallback backgroundCopyCallback) downloadValue))
                         {
-                            DownloadProgress?.Invoke(new DownloadProgress()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = callback.DownloadID,
                                 DownloadProgressState = DownloadProgressState.Finished,
@@ -287,7 +287,7 @@ namespace PowerToolbox.Services.Download
                     {
                         if (BitsDict.TryGetValue(callback.DownloadID, out (string saveFilePath, IBackgroundCopyJob backgroundCopyJob, BackgroundCopyCallback backgroundCopyCallback) downloadValue))
                         {
-                            DownloadProgress?.Invoke(new DownloadProgress()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = callback.DownloadID,
                                 DownloadProgressState = DownloadProgressState.Failed,

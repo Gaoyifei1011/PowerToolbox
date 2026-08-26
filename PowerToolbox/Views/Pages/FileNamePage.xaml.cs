@@ -49,7 +49,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isChecked, value))
                 {
                     _isChecked = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsChecked)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsChecked)));
                 }
             }
         }
@@ -65,7 +65,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isModifyingNow, value))
                 {
                     _isModifyingNow = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsModifyingNow)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
         }
@@ -81,7 +81,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_renameRule, value))
                 {
                     _renameRule = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RenameRule)));
+                    PropertyChanged?.Invoke(this, new(nameof(RenameRule)));
                 }
             }
         }
@@ -97,7 +97,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_startNumber, value))
                 {
                     _startNumber = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StartNumber)));
+                    PropertyChanged?.Invoke(this, new(nameof(StartNumber)));
                 }
             }
         }
@@ -113,7 +113,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_extensionName, value))
                 {
                     _extensionName = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ExtensionName)));
+                    PropertyChanged?.Invoke(this, new(nameof(ExtensionName)));
                 }
             }
         }
@@ -129,7 +129,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_lookUpText, value))
                 {
                     _lookUpText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LookUpText)));
+                    PropertyChanged?.Invoke(this, new(nameof(LookUpText)));
                 }
             }
         }
@@ -145,7 +145,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_replaceText, value))
                 {
                     _replaceText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReplaceText)));
+                    PropertyChanged?.Invoke(this, new(nameof(ReplaceText)));
                 }
             }
         }
@@ -161,7 +161,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedNumberFormat, value))
                 {
                     _selectedNumberFormat = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedNumberFormat)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedNumberFormat)));
                 }
             }
         }
@@ -177,7 +177,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isOperationFailed, value))
                 {
                     _isOperationFailed = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsOperationFailed)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsOperationFailed)));
                 }
             }
         }
@@ -193,14 +193,14 @@ namespace PowerToolbox.Views.Pages
         public FileNamePage()
         {
             InitializeComponent();
-            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "Auto", DisplayMember = AutoString });
-            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "0", DisplayMember = "0" });
-            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "00", DisplayMember = "00" });
-            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "000", DisplayMember = "000" });
-            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "0000", DisplayMember = "0000" });
-            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "00000", DisplayMember = "00000" });
-            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "000000", DisplayMember = "000000" });
-            NumberFormatList.Add(new ComboBoxItemModel() { SelectedValue = "0000000", DisplayMember = "0000000" });
+            NumberFormatList.Add(new() { SelectedValue = "Auto", DisplayMember = AutoString });
+            NumberFormatList.Add(new() { SelectedValue = "0", DisplayMember = "0" });
+            NumberFormatList.Add(new() { SelectedValue = "00", DisplayMember = "00" });
+            NumberFormatList.Add(new() { SelectedValue = "000", DisplayMember = "000" });
+            NumberFormatList.Add(new() { SelectedValue = "0000", DisplayMember = "0000" });
+            NumberFormatList.Add(new() { SelectedValue = "00000", DisplayMember = "00000" });
+            NumberFormatList.Add(new() { SelectedValue = "000000", DisplayMember = "000000" });
+            NumberFormatList.Add(new() { SelectedValue = "0000000", DisplayMember = "0000000" });
             SelectedNumberFormat = NumberFormatList[0];
         }
 
@@ -900,7 +900,7 @@ namespace PowerToolbox.Views.Pages
                                 }
                                 catch (Exception e)
                                 {
-                                    operationFailedList.Add(new OperationFailedModel()
+                                    operationFailedList.Add(new()
                                     {
                                         FileName = oldAndNewNameItem.OriginalFileName,
                                         FilePath = oldAndNewNameItem.OriginalFilePath,
@@ -916,7 +916,7 @@ namespace PowerToolbox.Views.Pages
                                 }
                                 catch (Exception e)
                                 {
-                                    operationFailedList.Add(new OperationFailedModel()
+                                    operationFailedList.Add(new()
                                     {
                                         FileName = oldAndNewNameItem.OriginalFileName,
                                         FilePath = oldAndNewNameItem.OriginalFilePath,

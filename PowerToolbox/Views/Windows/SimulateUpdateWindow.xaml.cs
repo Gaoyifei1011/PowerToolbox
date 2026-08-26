@@ -51,7 +51,7 @@ namespace PowerToolbox.Views.Windows
                 if (!Equals(_simulateUpdateKind, value))
                 {
                     _simulateUpdateKind = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SimulateUpdateKind)));
+                    PropertyChanged?.Invoke(this, new(nameof(SimulateUpdateKind)));
                 }
             }
         }
@@ -67,7 +67,7 @@ namespace PowerToolbox.Views.Windows
                 if (!Equals(_windows11UpdateText, value))
                 {
                     _windows11UpdateText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Windows11UpdateText)));
+                    PropertyChanged?.Invoke(this, new(nameof(Windows11UpdateText)));
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace PowerToolbox.Views.Windows
                 if (!Equals(_windows10UpdateText, value))
                 {
                     _windows10UpdateText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Windows10UpdateText)));
+                    PropertyChanged?.Invoke(this, new(nameof(Windows10UpdateText)));
                 }
             }
         }
@@ -176,7 +176,7 @@ namespace PowerToolbox.Views.Windows
                 // 安装键盘钩子
                 if (hHook is 0)
                 {
-                    keyBoardHookProc = new HOOKPROC(OnKeyboardHookProc);
+                    keyBoardHookProc = new(OnKeyboardHookProc);
 
                     hHook = User32Library.SetWindowsHookEx(HOOKTYPE.WH_KEYBOARD_LL, keyBoardHookProc, Process.GetCurrentProcess().MainModule.BaseAddress, 0);
 

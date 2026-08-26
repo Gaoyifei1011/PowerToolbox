@@ -20,7 +20,7 @@ namespace PowerToolbox.Views.Dialogs
                 if (!Equals(_licenseText, value))
                 {
                     _licenseText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LicenseText)));
+                    PropertyChanged?.Invoke(this, new(nameof(LicenseText)));
                 }
             }
         }

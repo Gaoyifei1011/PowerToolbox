@@ -38,7 +38,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isChecking, value))
                 {
                     _isChecking = value;
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nameof(IsChecking)));
+                    PropertyChanged.Invoke(this, new(nameof(IsChecking)));
                 }
             }
         }

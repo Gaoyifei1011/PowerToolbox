@@ -133,7 +133,7 @@ namespace PowerToolboxShellExtension.Services.Shell
             int? menuIndex = RegistryHelper.ReadRegistryKey<int?>(menuKey, "MenuIndex");
 
             shellMenuItem.MenuKey = menuKey;
-            shellMenuItem.MenuGuid = string.IsNullOrEmpty(menuGuid) ? Guid.Empty : new Guid(menuGuid);
+            shellMenuItem.MenuGuid = string.IsNullOrEmpty(menuGuid) ? Guid.Empty : new(menuGuid);
             shellMenuItem.MenuTitleText = menuTitleText;
             shellMenuItem.UseIcon = useIcon.HasValue && useIcon.Value;
             shellMenuItem.UseProgramIcon = useProgramIcon.HasValue && useProgramIcon.Value;

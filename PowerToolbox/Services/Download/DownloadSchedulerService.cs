@@ -18,7 +18,7 @@ namespace PowerToolbox.Services.Download
         private static bool isInitialized;
         private static string doEngineMode;
 
-        public static SemaphoreSlim DownloadSchedulerSemaphoreSlim { get; private set; } = new SemaphoreSlim(1, 1);
+        public static SemaphoreSlim DownloadSchedulerSemaphoreSlim { get; private set; } = new(1, 1);
 
         public static List<DownloadSchedulerModel> DownloadSchedulerList { get; } = [];
 
@@ -42,7 +42,7 @@ namespace PowerToolbox.Services.Download
                         if (string.Equals(downloadSchedulerItem.DownloadID, downloadProgress.DownloadID))
                         {
                             downloadSchedulerItem.DownloadProgressState = downloadProgress.DownloadProgressState;
-                            DownloadProgress?.Invoke(new DownloadSchedulerModel()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = downloadSchedulerItem.DownloadID,
                                 FileName = downloadSchedulerItem.FileName,
@@ -69,7 +69,7 @@ namespace PowerToolbox.Services.Download
                     };
 
                     DownloadSchedulerList.Add(downloadScheduler);
-                    DownloadProgress?.Invoke(new DownloadSchedulerModel()
+                    DownloadProgress?.Invoke(new()
                     {
                         DownloadID = downloadScheduler.DownloadID,
                         FileName = downloadScheduler.FileName,
@@ -104,7 +104,7 @@ namespace PowerToolbox.Services.Download
                             downloadSchedulerItem.DownloadSpeed = downloadProgress.CompletedSize - downloadSchedulerItem.CompletedSize;
                             downloadSchedulerItem.CompletedSize = downloadProgress.CompletedSize;
                             downloadSchedulerItem.TotalSize = downloadProgress.TotalSize;
-                            DownloadProgress?.Invoke(new DownloadSchedulerModel()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = downloadSchedulerItem.DownloadID,
                                 FileName = downloadSchedulerItem.FileName,
@@ -139,7 +139,7 @@ namespace PowerToolbox.Services.Download
                         if (string.Equals(downloadSchedulerItem.DownloadID, downloadProgress.DownloadID))
                         {
                             downloadSchedulerItem.DownloadProgressState = downloadProgress.DownloadProgressState;
-                            DownloadProgress?.Invoke(new DownloadSchedulerModel()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = downloadSchedulerItem.DownloadID,
                                 FileName = downloadSchedulerItem.FileName,
@@ -176,7 +176,7 @@ namespace PowerToolbox.Services.Download
                             downloadSchedulerItem.DownloadProgressState = downloadProgress.DownloadProgressState;
                             downloadSchedulerItem.CompletedSize = 1;
                             downloadProgress.TotalSize = 1;
-                            DownloadProgress?.Invoke(new DownloadSchedulerModel()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = downloadSchedulerItem.DownloadID,
                                 FileName = downloadSchedulerItem.FileName,
@@ -215,7 +215,7 @@ namespace PowerToolbox.Services.Download
                             downloadSchedulerItem.DownloadSpeed = downloadProgress.CompletedSize - downloadSchedulerItem.CompletedSize;
                             downloadSchedulerItem.CompletedSize = downloadProgress.CompletedSize;
                             downloadSchedulerItem.TotalSize = downloadProgress.TotalSize;
-                            DownloadProgress?.Invoke(new DownloadSchedulerModel()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = downloadSchedulerItem.DownloadID,
                                 FileName = downloadSchedulerItem.FileName,
@@ -251,7 +251,7 @@ namespace PowerToolbox.Services.Download
                         if (string.Equals(downloadSchedulerItem.DownloadID, downloadProgress.DownloadID))
                         {
                             downloadSchedulerItem.DownloadProgressState = downloadProgress.DownloadProgressState;
-                            DownloadProgress?.Invoke(new DownloadSchedulerModel()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = downloadSchedulerItem.DownloadID,
                                 FileName = downloadSchedulerItem.FileName,

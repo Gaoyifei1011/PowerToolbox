@@ -62,7 +62,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_menuTitleText, value))
                 {
                     _menuTitleText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MenuTitleText)));
+                    PropertyChanged?.Invoke(this, new(nameof(MenuTitleText)));
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_useIcon, value))
                 {
                     _useIcon = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UseIcon)));
+                    PropertyChanged?.Invoke(this, new(nameof(UseIcon)));
                 }
             }
         }
@@ -94,7 +94,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_useProgramIcon, value))
                 {
                     _useProgramIcon = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UseProgramIcon)));
+                    PropertyChanged?.Invoke(this, new(nameof(UseProgramIcon)));
                 }
             }
         }
@@ -110,7 +110,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_useThemeIcon, value))
                 {
                     _useThemeIcon = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UseThemeIcon)));
+                    PropertyChanged?.Invoke(this, new(nameof(UseThemeIcon)));
                 }
             }
         }
@@ -126,7 +126,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_defaultIconImage, value))
                 {
                     _defaultIconImage = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DefaultIconImage)));
+                    PropertyChanged?.Invoke(this, new(nameof(DefaultIconImage)));
                 }
             }
         }
@@ -142,7 +142,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_defaultIconPath, value))
                 {
                     _defaultIconPath = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DefaultIconPath)));
+                    PropertyChanged?.Invoke(this, new(nameof(DefaultIconPath)));
                 }
             }
         }
@@ -158,7 +158,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_lightThemeIconImage, value))
                 {
                     _lightThemeIconImage = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LightThemeIconImage)));
+                    PropertyChanged?.Invoke(this, new(nameof(LightThemeIconImage)));
                 }
             }
         }
@@ -174,7 +174,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_lightThemeIconPath, value))
                 {
                     _lightThemeIconPath = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LightThemeIconPath)));
+                    PropertyChanged?.Invoke(this, new(nameof(LightThemeIconPath)));
                 }
             }
         }
@@ -190,7 +190,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_darkThemeIconImage, value))
                 {
                     _darkThemeIconImage = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DarkThemeIconImage)));
+                    PropertyChanged?.Invoke(this, new(nameof(DarkThemeIconImage)));
                 }
             }
         }
@@ -206,7 +206,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_darkThemeIconPath, value))
                 {
                     _darkThemeIconPath = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DarkThemeIconPath)));
+                    PropertyChanged?.Invoke(this, new(nameof(DarkThemeIconPath)));
                 }
             }
         }
@@ -222,7 +222,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_menuProgramPathText, value))
                 {
                     _menuProgramPathText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MenuProgramPathText)));
+                    PropertyChanged?.Invoke(this, new(nameof(MenuProgramPathText)));
                 }
             }
         }
@@ -238,7 +238,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_menuParameterText, value))
                 {
                     _menuParameterText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MenuParameterText)));
+                    PropertyChanged?.Invoke(this, new(nameof(MenuParameterText)));
                 }
             }
         }
@@ -254,7 +254,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isAlwaysRunAsAdministrator, value))
                 {
                     _isAlwaysRunAsAdministrator = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAlwaysRunAsAdministrator)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsAlwaysRunAsAdministrator)));
                 }
             }
         }
@@ -270,7 +270,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_folderBackgroundMatch, value))
                 {
                     _folderBackgroundMatch = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FolderBackgroundMatch)));
+                    PropertyChanged?.Invoke(this, new(nameof(FolderBackgroundMatch)));
                 }
             }
         }
@@ -286,7 +286,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_folderDesktopMatch, value))
                 {
                     _folderDesktopMatch = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FolderDesktopMatch)));
+                    PropertyChanged?.Invoke(this, new(nameof(FolderDesktopMatch)));
                 }
             }
         }
@@ -302,7 +302,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_folderDirectoryMatch, value))
                 {
                     _folderDirectoryMatch = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FolderDirectoryMatch)));
+                    PropertyChanged?.Invoke(this, new(nameof(FolderDirectoryMatch)));
                 }
             }
         }
@@ -318,7 +318,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_folderDriveMatch, value))
                 {
                     _folderDriveMatch = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FolderDriveMatch)));
+                    PropertyChanged?.Invoke(this, new(nameof(FolderDriveMatch)));
                 }
             }
         }
@@ -334,7 +334,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedFileMatchRule, value))
                 {
                     _selectedFileMatchRule = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedFileMatchRule)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedFileMatchRule)));
                 }
             }
         }
@@ -350,7 +350,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_needInputMatchFormat, value))
                 {
                     _needInputMatchFormat = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NeedInputMatchFormat)));
+                    PropertyChanged?.Invoke(this, new(nameof(NeedInputMatchFormat)));
                 }
             }
         }
@@ -366,7 +366,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_menuFileMatchFormatPHText, value))
                 {
                     _menuFileMatchFormatPHText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MenuFileMatchFormatPHText)));
+                    PropertyChanged?.Invoke(this, new(nameof(MenuFileMatchFormatPHText)));
                 }
             }
         }
@@ -382,7 +382,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_menuFileMatchFormatText, value))
                 {
                     _menuFileMatchFormatText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MenuFileMatchFormatText)));
+                    PropertyChanged?.Invoke(this, new(nameof(MenuFileMatchFormatText)));
                 }
             }
         }
@@ -395,11 +395,11 @@ namespace PowerToolbox.Views.Pages
         {
             InitializeComponent();
 
-            FileMatchRuleList.Add(new ComboBoxItemModel() { SelectedValue = "None", DisplayMember = NoneString });
-            FileMatchRuleList.Add(new ComboBoxItemModel() { SelectedValue = "Name", DisplayMember = NameString });
-            FileMatchRuleList.Add(new ComboBoxItemModel() { SelectedValue = "NameRegex", DisplayMember = NameRegexString });
-            FileMatchRuleList.Add(new ComboBoxItemModel() { SelectedValue = "Extension", DisplayMember = ExtensionString });
-            FileMatchRuleList.Add(new ComboBoxItemModel() { SelectedValue = "All", DisplayMember = AllString });
+            FileMatchRuleList.Add(new() { SelectedValue = "None", DisplayMember = NoneString });
+            FileMatchRuleList.Add(new() { SelectedValue = "Name", DisplayMember = NameString });
+            FileMatchRuleList.Add(new() { SelectedValue = "NameRegex", DisplayMember = NameRegexString });
+            FileMatchRuleList.Add(new() { SelectedValue = "Extension", DisplayMember = ExtensionString });
+            FileMatchRuleList.Add(new() { SelectedValue = "All", DisplayMember = AllString });
             SelectedFileMatchRule = FileMatchRuleList[4];
         }
 

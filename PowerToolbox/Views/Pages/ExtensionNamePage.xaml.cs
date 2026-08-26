@@ -48,7 +48,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isModifyingNow, value))
                 {
                     _isModifyingNow = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsModifyingNow)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedKind, value))
                 {
                     _selectedKind = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedKind)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedKind)));
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_changeToText, value))
                 {
                     _changeToText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ChangeToText)));
+                    PropertyChanged?.Invoke(this, new(nameof(ChangeToText)));
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_searchText, value))
                 {
                     _searchText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SearchText)));
+                    PropertyChanged?.Invoke(this, new(nameof(SearchText)));
                 }
             }
         }
@@ -112,7 +112,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_replaceText, value))
                 {
                     _replaceText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ReplaceText)));
+                    PropertyChanged?.Invoke(this, new(nameof(ReplaceText)));
                 }
             }
         }
@@ -128,7 +128,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isOperationFailed, value))
                 {
                     _isOperationFailed = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsOperationFailed)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsOperationFailed)));
                 }
             }
         }
@@ -728,7 +728,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                operationFailedList.Add(new OperationFailedModel()
+                                operationFailedList.Add(new()
                                 {
                                     FileName = oldAndNewNameItem.OriginalFileName,
                                     FilePath = oldAndNewNameItem.OriginalFilePath,

@@ -92,7 +92,7 @@ namespace PowerToolbox.Extensions.Hashing
             uint[] blockWords = new uint[16];
             Array.Copy(leftChildCv, 0, blockWords, 0, 8);
             Array.Copy(rightChildCv, 0, blockWords, 8, 8);
-            return new Blake3Output
+            return new()
             {
                 InputChainingValue = key,
                 BlockWords = blockWords,

@@ -126,7 +126,7 @@ namespace PowerToolboxShellExtension.Helpers.Root
                     {
                         if (result is 0)
                         {
-                            subKeyList.Add(new string(name[..nameLength]));
+                            subKeyList.Add(new(name[..nameLength]));
                             nameLength = name.Length;
                         }
                         else if (result is 2) // ERROR_FILE_NOT_FOUND

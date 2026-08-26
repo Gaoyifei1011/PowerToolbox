@@ -35,7 +35,7 @@ namespace PowerToolbox.Extensions.Hashing
 
             if (BitConverter.IsLittleEndian)
             {
-                funcGetLittleEndianUInt32 = new Func<byte[], int, uint>((x, i) =>
+                funcGetLittleEndianUInt32 = new((x, i) =>
                 {
                     unsafe
                     {
@@ -45,7 +45,7 @@ namespace PowerToolbox.Extensions.Hashing
                         }
                     }
                 });
-                funcGetLittleEndianUInt64 = new Func<byte[], int, ulong>((x, i) =>
+                funcGetLittleEndianUInt64 = new((x, i) =>
                 {
                     unsafe
                     {
@@ -55,11 +55,11 @@ namespace PowerToolbox.Extensions.Hashing
                         }
                     }
                 });
-                funcGetFinalHashUInt64 = new Func<ulong, ulong>(i => (i & 0x00000000000000FFUL) << 56 | (i & 0x000000000000FF00UL) << 40 | (i & 0x0000000000FF0000UL) << 24 | (i & 0x00000000FF000000UL) << 8 | (i & 0x000000FF00000000UL) >> 8 | (i & 0x0000FF0000000000UL) >> 24 | (i & 0x00FF000000000000UL) >> 40 | (i & 0xFF00000000000000UL) >> 56);
+                funcGetFinalHashUInt64 = new(i => (i & 0x00000000000000FFUL) << 56 | (i & 0x000000000000FF00UL) << 40 | (i & 0x0000000000FF0000UL) << 24 | (i & 0x00000000FF000000UL) << 8 | (i & 0x000000FF00000000UL) >> 8 | (i & 0x0000FF0000000000UL) >> 24 | (i & 0x00FF000000000000UL) >> 40 | (i & 0xFF00000000000000UL) >> 56);
             }
             else
             {
-                funcGetLittleEndianUInt32 = new Func<byte[], int, uint>((x, i) =>
+                funcGetLittleEndianUInt32 = new((x, i) =>
                 {
                     unsafe
                     {
@@ -69,7 +69,7 @@ namespace PowerToolbox.Extensions.Hashing
                         }
                     }
                 });
-                funcGetLittleEndianUInt64 = new Func<byte[], int, ulong>((x, i) =>
+                funcGetLittleEndianUInt64 = new((x, i) =>
                 {
                     unsafe
                     {
@@ -79,7 +79,7 @@ namespace PowerToolbox.Extensions.Hashing
                         }
                     }
                 });
-                funcGetFinalHashUInt64 = new Func<ulong, ulong>(i => i);
+                funcGetFinalHashUInt64 = new(i => i);
             }
         }
 

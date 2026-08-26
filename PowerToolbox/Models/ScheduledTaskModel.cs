@@ -23,7 +23,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isEnabled, value))
                 {
                     _isEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsEnabled)));
                 }
             }
         }
@@ -42,7 +42,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isProcessing, value))
                 {
                     _isProcessing = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsProcessing)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsProcessing)));
                 }
             }
         }
@@ -86,7 +86,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_state, value))
                 {
                     _state = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(State)));
+                    PropertyChanged?.Invoke(this, new(nameof(State)));
                 }
             }
         }
@@ -105,7 +105,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_lastRunTime, value))
                 {
                     _lastRunTime = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LastRunTime)));
+                    PropertyChanged?.Invoke(this, new(nameof(LastRunTime)));
                 }
             }
         }
@@ -124,7 +124,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_lastTaskResult, value))
                 {
                     _lastTaskResult = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LastTaskResult)));
+                    PropertyChanged?.Invoke(this, new(nameof(LastTaskResult)));
                 }
             }
         }
@@ -143,7 +143,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_nextRunTime, value))
                 {
                     _nextRunTime = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NextRunTime)));
+                    PropertyChanged?.Invoke(this, new(nameof(NextRunTime)));
                 }
             }
         }

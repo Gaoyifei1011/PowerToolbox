@@ -51,7 +51,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isModifyingNow, value))
                 {
                     _isModifyingNow = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsModifyingNow)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
         }
@@ -67,7 +67,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isOperationCancelling, value))
                 {
                     _isOperationCancelling = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsOperationCancelling)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsOperationCancelling)));
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isOperationFailed, value))
                 {
                     _isOperationFailed = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsOperationFailed)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsOperationFailed)));
                 }
             }
         }
@@ -529,7 +529,7 @@ namespace PowerToolbox.Views.Pages
                                     unlockSuccessfully = false;
                                     try
                                     {
-                                        FileUnlockFailedList.Add(new FileUnlockFailedModel()
+                                        FileUnlockFailedList.Add(new()
                                         {
                                             Exception = e,
                                             FileName = subFile,

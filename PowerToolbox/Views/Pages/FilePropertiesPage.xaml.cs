@@ -55,7 +55,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isReadOnlyChecked, value))
                 {
                     _isReadOnlyChecked = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsReadOnlyChecked)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsReadOnlyChecked)));
                 }
             }
         }
@@ -71,7 +71,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isArchiveChecked, value))
                 {
                     _isArchiveChecked = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsArchiveChecked)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsArchiveChecked)));
                 }
             }
         }
@@ -87,7 +87,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isCreateDateChecked, value))
                 {
                     _isCreateDateChecked = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCreateDateChecked)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsCreateDateChecked)));
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isHideChecked, value))
                 {
                     _isHideChecked = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsHideChecked)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsHideChecked)));
                 }
             }
         }
@@ -119,7 +119,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isSystemChecked, value))
                 {
                     _isSystemChecked = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSystemChecked)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsSystemChecked)));
                 }
             }
         }
@@ -135,7 +135,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isModifyDateChecked, value))
                 {
                     _isModifyDateChecked = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsModifyDateChecked)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsModifyDateChecked)));
                 }
             }
         }
@@ -151,7 +151,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isModifyingNow, value))
                 {
                     _isModifyingNow = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsModifyingNow)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
         }
@@ -167,7 +167,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_createDate, value))
                 {
                     _createDate = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CreateDate)));
+                    PropertyChanged?.Invoke(this, new(nameof(CreateDate)));
                 }
             }
         }
@@ -183,7 +183,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_createTime, value))
                 {
                     _createTime = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CreateTime)));
+                    PropertyChanged?.Invoke(this, new(nameof(CreateTime)));
                 }
             }
         }
@@ -199,7 +199,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_modifyDate, value))
                 {
                     _modifyDate = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ModifyDate)));
+                    PropertyChanged?.Invoke(this, new(nameof(ModifyDate)));
                 }
             }
         }
@@ -215,7 +215,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_modifyTime, value))
                 {
                     _modifyTime = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ModifyTime)));
+                    PropertyChanged?.Invoke(this, new(nameof(ModifyTime)));
                 }
             }
         }
@@ -231,7 +231,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isOperationFailed, value))
                 {
                     _isOperationFailed = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsOperationFailed)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsOperationFailed)));
                 }
             }
         }
@@ -316,7 +316,7 @@ namespace PowerToolbox.Views.Pages
                             continue;
                         }
 
-                        filePropertiesList.Add(new OldAndNewPropertiesModel()
+                        filePropertiesList.Add(new()
                         {
                             FileName = storageItem.Name,
                             FilePath = storageItem.Path,
@@ -584,7 +584,7 @@ namespace PowerToolbox.Views.Pages
                                 continue;
                             }
 
-                            filePropertiesList.Add(new OldAndNewPropertiesModel()
+                            filePropertiesList.Add(new()
                             {
                                 FileName = fileInfo.Name,
                                 FilePath = fileInfo.FullName,
@@ -642,7 +642,7 @@ namespace PowerToolbox.Views.Pages
                                     continue;
                                 }
 
-                                directoryNameList.Add(new OldAndNewPropertiesModel()
+                                directoryNameList.Add(new()
                                 {
                                     FileName = directoryInfo.Name,
                                     FilePath = directoryInfo.FullName
@@ -663,7 +663,7 @@ namespace PowerToolbox.Views.Pages
                                     continue;
                                 }
 
-                                fileNameList.Add(new OldAndNewPropertiesModel()
+                                fileNameList.Add(new()
                                 {
                                     FileName = fileInfo.Name,
                                     FilePath = fileInfo.FullName
@@ -843,7 +843,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                operationFailedList.Add(new OperationFailedModel()
+                                operationFailedList.Add(new()
                                 {
                                     FileName = oldAndNewPropertiesItem.FileName,
                                     FilePath = oldAndNewPropertiesItem.FilePath,

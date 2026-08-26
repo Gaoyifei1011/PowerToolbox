@@ -23,7 +23,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
         public HierarchicalSchemaSection(string sectionIdentifier, BinaryReader binaryReader, bool extendedVersion)
         {
-            if (!string.Equals(new string(binaryReader.ReadChars(16)), sectionIdentifier))
+            if (!string.Equals(new(binaryReader.ReadChars(16)), sectionIdentifier))
             {
                 throw new InvalidDataException("Unexpected section identifier.");
             }
@@ -78,7 +78,7 @@ namespace PowerToolbox.Extensions.PriExtract
             uint numScopes = binaryReader.ReadUInt32();
             uint numItems = binaryReader.ReadUInt32();
 
-            Version = new HierarchicalSchemaVersion()
+            Version = new()
             {
                 MajorVersion = majorVersion,
                 MinorVersion = minorVersion,
@@ -122,7 +122,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 ushort index = binaryReader.ReadUInt16();
                 bool isScope = (flags & 0x10) is not 0;
                 bool nameInAscii = (flags & 0x20) is not 0;
-                scopeAndItemInfoList.Add(new ScopeAndItemInfo()
+                scopeAndItemInfoList.Add(new()
                 {
                     Parent = parent,
                     FullPathLength = fullPathLength,
@@ -141,7 +141,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 ushort childCount = binaryReader.ReadUInt16();
                 ushort firstChildIndex = binaryReader.ReadUInt16();
                 binaryReader.ExpectUInt16(0);
-                scopeExInfoList.Add(new ScopeExInfo()
+                scopeExInfoList.Add(new()
                 {
                     ScopeIndex = scopeIndex,
                     ChildCount = childCount,
@@ -183,7 +183,7 @@ namespace PowerToolbox.Extensions.PriExtract
                         throw new InvalidDataException();
                     }
 
-                    scopesArray[index] = new ResourceMapScopeAndItem()
+                    scopesArray[index] = new()
                     {
                         Index = index,
                         Parent = null,
@@ -197,7 +197,7 @@ namespace PowerToolbox.Extensions.PriExtract
                         throw new InvalidDataException();
                     }
 
-                    itemsArray[index] = new ResourceMapScopeAndItem()
+                    itemsArray[index] = new()
                     {
                         Index = index,
                         Parent = null,

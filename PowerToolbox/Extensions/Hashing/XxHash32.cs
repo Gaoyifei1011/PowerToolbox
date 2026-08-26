@@ -35,7 +35,7 @@ namespace PowerToolbox.Extensions.Hashing
         {
             if (BitConverter.IsLittleEndian)
             {
-                FuncGetLittleEndianUInt32 = new Func<byte[], int, uint>((x, i) =>
+                FuncGetLittleEndianUInt32 = new((x, i) =>
                 {
                     unsafe
                     {
@@ -45,11 +45,11 @@ namespace PowerToolbox.Extensions.Hashing
                         }
                     }
                 });
-                FuncGetFinalHashUInt32 = new Func<uint, uint>(i => (i & 0x000000FFU) << 24 | (i & 0x0000FF00U) << 8 | (i & 0x00FF0000U) >> 8 | (i & 0xFF000000U) >> 24);
+                FuncGetFinalHashUInt32 = new(i => (i & 0x000000FFU) << 24 | (i & 0x0000FF00U) << 8 | (i & 0x00FF0000U) >> 8 | (i & 0xFF000000U) >> 24);
             }
             else
             {
-                FuncGetLittleEndianUInt32 = new Func<byte[], int, uint>((x, i) =>
+                FuncGetLittleEndianUInt32 = new((x, i) =>
                 {
                     unsafe
                     {
@@ -59,7 +59,7 @@ namespace PowerToolbox.Extensions.Hashing
                         }
                     }
                 });
-                FuncGetFinalHashUInt32 = new Func<uint, uint>(i => i);
+                FuncGetFinalHashUInt32 = new(i => i);
             }
         }
 

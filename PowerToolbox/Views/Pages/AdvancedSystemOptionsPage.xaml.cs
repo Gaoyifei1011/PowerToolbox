@@ -38,7 +38,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isAdvancedSettingsInfoWarning, value))
                 {
                     _isAdvancedSettingsInfoWarning = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAdvancedSettingsInfoWarning)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsAdvancedSettingsInfoWarning)));
                 }
             }
         }
@@ -54,7 +54,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isRestartExplorerVisible, value))
                 {
                     _isRestartExplorerVisible = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRestartExplorerVisible)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsRestartExplorerVisible)));
                 }
             }
         }
@@ -70,7 +70,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isRestartPCVisible, value))
                 {
                     _isRestartPCVisible = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRestartPCVisible)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsRestartPCVisible)));
                 }
             }
         }
@@ -86,7 +86,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isRestarting, value))
                 {
                     _isRestarting = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRestarting)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsRestarting)));
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_restartExplorerText, value))
                 {
                     _restartExplorerText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RestartExplorerText)));
+                    PropertyChanged?.Invoke(this, new(nameof(RestartExplorerText)));
                 }
             }
         }
@@ -158,7 +158,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (BreadCollection.Count is 0 && Equals(GetCurrentPageType(), PageList[0]))
             {
-                BreadCollection.Add(new DictionaryEntry
+                BreadCollection.Add(new()
                 {
                     Key = "AdvancedSystemOptions",
                     Value = AdvancedSystemOptionsString
@@ -166,7 +166,7 @@ namespace PowerToolbox.Views.Pages
             }
             else if (BreadCollection.Count is 1 && Equals(GetCurrentPageType(), PageList[1]))
             {
-                BreadCollection.Add(new DictionaryEntry()
+                BreadCollection.Add(new()
                 {
                     Key = "Personalization",
                     Value = PersonalizationString
@@ -174,7 +174,7 @@ namespace PowerToolbox.Views.Pages
             }
             else if (BreadCollection.Count is 1 && Equals(GetCurrentPageType(), PageList[2]))
             {
-                BreadCollection.Add(new DictionaryEntry()
+                BreadCollection.Add(new()
                 {
                     Key = "System",
                     Value = SystemString

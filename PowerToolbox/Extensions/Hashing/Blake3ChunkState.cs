@@ -45,7 +45,7 @@ namespace PowerToolbox.Extensions.Hashing
         {
             uint[] blockWords = new uint[16];
             Blake3Functions.WordsFromLittleEndianBytes(_block, ref blockWords);
-            return new Blake3Output
+            return new()
             {
                 InputChainingValue = key,
                 BlockWords = blockWords,

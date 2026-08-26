@@ -88,7 +88,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isDriveLoadCompleted, value))
                 {
                     _isDriveLoadCompleted = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsDriveLoadCompleted)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsDriveLoadCompleted)));
                 }
             }
         }
@@ -104,7 +104,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedItem, value))
                 {
                     _selectedItem = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedItem)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
                 }
             }
         }
@@ -120,7 +120,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isManualCloseInfoBar, value))
                 {
                     _isManualCloseInfoBar = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsManualCloseInfoBar)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsManualCloseInfoBar)));
                 }
             }
         }
@@ -136,7 +136,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isWinFRInstalled, value))
                 {
                     _isWinFRInstalled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsWinFRInstalled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsWinFRInstalled)));
                 }
             }
         }
@@ -152,7 +152,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_saveFolder, value))
                 {
                     _saveFolder = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SaveFolder)));
+                    PropertyChanged?.Invoke(this, new(nameof(SaveFolder)));
                 }
             }
         }
@@ -168,7 +168,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_saveFolder, value))
                 {
                     _selectedRecoveryMode = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedRecoveryMode)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedRecoveryMode)));
                 }
             }
         }
@@ -184,7 +184,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_useCustomLogFolder, value))
                 {
                     _useCustomLogFolder = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UseCustomLogFolder)));
+                    PropertyChanged?.Invoke(this, new(nameof(UseCustomLogFolder)));
                 }
             }
         }
@@ -200,7 +200,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_logSaveFolder, value))
                 {
                     _logSaveFolder = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LogSaveFolder)));
+                    PropertyChanged?.Invoke(this, new(nameof(LogSaveFolder)));
                 }
             }
         }
@@ -216,7 +216,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_regularRestoreContent, value))
                 {
                     _regularRestoreContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RegularRestoreContent)));
+                    PropertyChanged?.Invoke(this, new(nameof(RegularRestoreContent)));
                 }
             }
         }
@@ -232,7 +232,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedRegularDuplicatedFileOption, value))
                 {
                     _selectedRegularDuplicatedFileOption = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedRegularDuplicatedFileOption)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedRegularDuplicatedFileOption)));
                 }
             }
         }
@@ -248,7 +248,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_extensiveRestoreContent, value))
                 {
                     _extensiveRestoreContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ExtensiveRestoreContent)));
+                    PropertyChanged?.Invoke(this, new(nameof(ExtensiveRestoreContent)));
                 }
             }
         }
@@ -264,7 +264,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedExtensiveDuplicatedFileOption, value))
                 {
                     _selectedExtensiveDuplicatedFileOption = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedExtensiveDuplicatedFileOption)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedExtensiveDuplicatedFileOption)));
                 }
             }
         }
@@ -280,7 +280,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_ntfsRestoreContent, value))
                 {
                     _ntfsRestoreContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NTFSRestoreContent)));
+                    PropertyChanged?.Invoke(this, new(nameof(NTFSRestoreContent)));
                 }
             }
         }
@@ -296,7 +296,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_ntfsRestoreFromRecyclebin, value))
                 {
                     _ntfsRestoreFromRecyclebin = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NTFSRestoreFromRecyclebin)));
+                    PropertyChanged?.Invoke(this, new(nameof(NTFSRestoreFromRecyclebin)));
                 }
             }
         }
@@ -312,7 +312,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_ntfsRestoreSystemFile, value))
                 {
                     _ntfsRestoreSystemFile = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NTFSRestoreSystemFile)));
+                    PropertyChanged?.Invoke(this, new(nameof(NTFSRestoreSystemFile)));
                 }
             }
         }
@@ -328,7 +328,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedNTFSDuplicatedFileOption, value))
                 {
                     _selectedNTFSDuplicatedFileOption = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedNTFSDuplicatedFileOption)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedNTFSDuplicatedFileOption)));
                 }
             }
         }
@@ -344,7 +344,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_ntfsRestoreNonMainDataStream, value))
                 {
                     _ntfsRestoreNonMainDataStream = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NTFSRestoreNonMainDataStream)));
+                    PropertyChanged?.Invoke(this, new(nameof(NTFSRestoreNonMainDataStream)));
                 }
             }
         }
@@ -360,7 +360,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_ntfsUseCustomFileFilterType, value))
                 {
                     _ntfsUseCustomFileFilterType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NTFSUseCustomFileFilterType)));
+                    PropertyChanged?.Invoke(this, new(nameof(NTFSUseCustomFileFilterType)));
                 }
             }
         }
@@ -376,7 +376,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_ntfsCustomFileFilterType, value))
                 {
                     _ntfsCustomFileFilterType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NTFSCustomFileFilterType)));
+                    PropertyChanged?.Invoke(this, new(nameof(NTFSCustomFileFilterType)));
                 }
             }
         }
@@ -392,7 +392,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_segmentRestoreContent, value))
                 {
                     _segmentRestoreContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SegmentRestoreContent)));
+                    PropertyChanged?.Invoke(this, new(nameof(SegmentRestoreContent)));
                 }
             }
         }
@@ -408,7 +408,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_segmentRestoreFromRecyclebin, value))
                 {
                     _segmentRestoreFromRecyclebin = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SegmentRestoreFromRecyclebin)));
+                    PropertyChanged?.Invoke(this, new(nameof(SegmentRestoreFromRecyclebin)));
                 }
             }
         }
@@ -424,7 +424,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_segmentRestoreSystemFile, value))
                 {
                     _segmentRestoreSystemFile = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SegmentRestoreSystemFile)));
+                    PropertyChanged?.Invoke(this, new(nameof(SegmentRestoreSystemFile)));
                 }
             }
         }
@@ -440,7 +440,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedSegmentDuplicatedFileOption, value))
                 {
                     _selectedSegmentDuplicatedFileOption = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedSegmentDuplicatedFileOption)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedSegmentDuplicatedFileOption)));
                 }
             }
         }
@@ -456,7 +456,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_segmentRestoreNonMainDataStream, value))
                 {
                     _segmentRestoreNonMainDataStream = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SegmentRestoreNonMainDataStream)));
+                    PropertyChanged?.Invoke(this, new(nameof(SegmentRestoreNonMainDataStream)));
                 }
             }
         }
@@ -472,7 +472,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_segmentUseCustomFileFilterType, value))
                 {
                     _segmentUseCustomFileFilterType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SegmentUseCustomFileFilterType)));
+                    PropertyChanged?.Invoke(this, new(nameof(SegmentUseCustomFileFilterType)));
                 }
             }
         }
@@ -488,7 +488,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_segmentCustomFileFilterType, value))
                 {
                     _segmentCustomFileFilterType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SegmentCustomFileFilterType)));
+                    PropertyChanged?.Invoke(this, new(nameof(SegmentCustomFileFilterType)));
                 }
             }
         }
@@ -504,7 +504,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_segmentSourceDeviceNumberSectors, value))
                 {
                     _segmentSourceDeviceNumberSectors = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SegmentSourceDeviceNumberSectors)));
+                    PropertyChanged?.Invoke(this, new(nameof(SegmentSourceDeviceNumberSectors)));
                 }
             }
         }
@@ -520,7 +520,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_segmentSourceDeviceClusterSize, value))
                 {
                     _segmentSourceDeviceClusterSize = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SegmentSourceDeviceClusterSize)));
+                    PropertyChanged?.Invoke(this, new(nameof(SegmentSourceDeviceClusterSize)));
                 }
             }
         }
@@ -536,7 +536,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_signatureUseRestoreSpecificExtensionGroups, value))
                 {
                     _signatureUseRestoreSpecificExtensionGroups = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SignatureUseRestoreSpecificExtensionGroups)));
+                    PropertyChanged?.Invoke(this, new(nameof(SignatureUseRestoreSpecificExtensionGroups)));
                 }
             }
         }
@@ -552,7 +552,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_signatureRestoreSpecificExtensionGroupsType, value))
                 {
                     _signatureRestoreSpecificExtensionGroupsType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SignatureRestoreSpecificExtensionGroupsType)));
+                    PropertyChanged?.Invoke(this, new(nameof(SignatureRestoreSpecificExtensionGroupsType)));
                 }
             }
         }
@@ -568,7 +568,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_signatureSourceDeviceNumberSectors, value))
                 {
                     _signatureSourceDeviceNumberSectors = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SignatureSourceDeviceNumberSectors)));
+                    PropertyChanged?.Invoke(this, new(nameof(SignatureSourceDeviceNumberSectors)));
                 }
             }
         }
@@ -584,7 +584,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_signatureSourceDeviceClusterSize, value))
                 {
                     _signatureSourceDeviceClusterSize = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SignatureSourceDeviceClusterSize)));
+                    PropertyChanged?.Invoke(this, new(nameof(SignatureSourceDeviceClusterSize)));
                 }
             }
         }
@@ -609,62 +609,62 @@ namespace PowerToolbox.Views.Pages
         {
             InitializeComponent();
 
-            RecoveryModeList.Add(new ComboBoxItemModel() { SelectedValue = "RegularMode", DisplayMember = RegularModeString });
-            RecoveryModeList.Add(new ComboBoxItemModel() { SelectedValue = "ExtensiveMode", DisplayMember = ExtensiveModeString });
-            RecoveryModeList.Add(new ComboBoxItemModel() { SelectedValue = "NTFSModeMode", DisplayMember = NTFSModeString });
-            RecoveryModeList.Add(new ComboBoxItemModel() { SelectedValue = "SegmentMode", DisplayMember = SegmentModeString });
-            RecoveryModeList.Add(new ComboBoxItemModel() { SelectedValue = "Signature", DisplayMember = SignatureModeString });
+            RecoveryModeList.Add(new() { SelectedValue = "RegularMode", DisplayMember = RegularModeString });
+            RecoveryModeList.Add(new() { SelectedValue = "ExtensiveMode", DisplayMember = ExtensiveModeString });
+            RecoveryModeList.Add(new() { SelectedValue = "NTFSModeMode", DisplayMember = NTFSModeString });
+            RecoveryModeList.Add(new() { SelectedValue = "SegmentMode", DisplayMember = SegmentModeString });
+            RecoveryModeList.Add(new() { SelectedValue = "Signature", DisplayMember = SignatureModeString });
             SelectedRecoveryMode = RecoveryModeList[0];
 
-            RegularDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "Override", DisplayMember = OverrideString });
-            RegularDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "NeverOverride", DisplayMember = NeverOverrideString });
-            RegularDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "KeepBoth", DisplayMember = KeepBothString });
+            RegularDuplicatedFileOptionList.Add(new() { SelectedValue = "Override", DisplayMember = OverrideString });
+            RegularDuplicatedFileOptionList.Add(new() { SelectedValue = "NeverOverride", DisplayMember = NeverOverrideString });
+            RegularDuplicatedFileOptionList.Add(new() { SelectedValue = "KeepBoth", DisplayMember = KeepBothString });
             SelectedRegularDuplicatedFileOption = RegularDuplicatedFileOptionList[0];
 
-            ExtensiveDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "Override", DisplayMember = OverrideString });
-            ExtensiveDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "NeverOverride", DisplayMember = NeverOverrideString });
-            ExtensiveDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "KeepBoth", DisplayMember = KeepBothString });
+            ExtensiveDuplicatedFileOptionList.Add(new() { SelectedValue = "Override", DisplayMember = OverrideString });
+            ExtensiveDuplicatedFileOptionList.Add(new() { SelectedValue = "NeverOverride", DisplayMember = NeverOverrideString });
+            ExtensiveDuplicatedFileOptionList.Add(new() { SelectedValue = "KeepBoth", DisplayMember = KeepBothString });
             SelectedExtensiveDuplicatedFileOption = ExtensiveDuplicatedFileOptionList[0];
 
-            NTFSDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "Override", DisplayMember = OverrideString });
-            NTFSDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "NeverOverride", DisplayMember = NeverOverrideString });
-            NTFSDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "KeepBoth", DisplayMember = KeepBothString });
+            NTFSDuplicatedFileOptionList.Add(new() { SelectedValue = "Override", DisplayMember = OverrideString });
+            NTFSDuplicatedFileOptionList.Add(new() { SelectedValue = "NeverOverride", DisplayMember = NeverOverrideString });
+            NTFSDuplicatedFileOptionList.Add(new() { SelectedValue = "KeepBoth", DisplayMember = KeepBothString });
             SelectedNTFSDuplicatedFileOption = NTFSDuplicatedFileOptionList[0];
 
-            SegmentDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "Override", DisplayMember = OverrideString });
-            SegmentDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "NeverOverride", DisplayMember = NeverOverrideString });
-            SegmentDuplicatedFileOptionList.Add(new ComboBoxItemModel() { SelectedValue = "KeepBoth", DisplayMember = KeepBothString });
+            SegmentDuplicatedFileOptionList.Add(new() { SelectedValue = "Override", DisplayMember = OverrideString });
+            SegmentDuplicatedFileOptionList.Add(new() { SelectedValue = "NeverOverride", DisplayMember = NeverOverrideString });
+            SegmentDuplicatedFileOptionList.Add(new() { SelectedValue = "KeepBoth", DisplayMember = KeepBothString });
             SelectedSegmentDuplicatedFileOption = SegmentDuplicatedFileOptionList[0];
 
-            RecoveryModeSuggestionList.Add(new RecoveryModeSuggestionModel()
+            RecoveryModeSuggestionList.Add(new()
             {
                 FileSystem = NTFSString,
                 Circumstances = RecentDeleteString,
                 RecommendedMode = RegularModeString
             });
 
-            RecoveryModeSuggestionList.Add(new RecoveryModeSuggestionModel()
+            RecoveryModeSuggestionList.Add(new()
             {
                 FileSystem = NTFSString,
                 Circumstances = DeleteSometimeAgoString,
                 RecommendedMode = ExtensiveModeString
             });
 
-            RecoveryModeSuggestionList.Add(new RecoveryModeSuggestionModel()
+            RecoveryModeSuggestionList.Add(new()
             {
                 FileSystem = NTFSString,
                 Circumstances = AfterFormatDiskString,
                 RecommendedMode = ExtensiveModeString
             });
 
-            RecoveryModeSuggestionList.Add(new RecoveryModeSuggestionModel()
+            RecoveryModeSuggestionList.Add(new()
             {
                 FileSystem = NTFSString,
                 Circumstances = DamagedDiskString,
                 RecommendedMode = ExtensiveModeString
             });
 
-            RecoveryModeSuggestionList.Add(new RecoveryModeSuggestionModel()
+            RecoveryModeSuggestionList.Add(new()
             {
                 FileSystem = FATString,
                 Circumstances = AnyString,

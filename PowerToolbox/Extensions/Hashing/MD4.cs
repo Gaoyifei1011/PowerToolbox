@@ -50,12 +50,12 @@ namespace PowerToolbox.Extensions.Hashing
             byte[] tail = PadBuffer();
             HashCore(tail, 0, tail.Length);
 
-            return new byte[] {
+            return [
                 (byte)(A), (byte)(A >> 8), (byte)(A >> 16), (byte)(A >> 24),
                 (byte)(B), (byte)(B >> 8), (byte)(B >> 16), (byte)(B >> 24),
                 (byte)(C), (byte)(C >> 8), (byte)(C >> 16), (byte)(C >> 24),
                 (byte)(D), (byte)(D >> 8), (byte)(D >> 16), (byte)(D >> 24)
-            };
+            ];
         }
 
         public override void Initialize()
@@ -248,7 +248,7 @@ namespace PowerToolbox.Extensions.Hashing
 
         public InternalState GetState()
         {
-            return new InternalState(hashedLength, A, B, C, D, buffer);
+            return new(hashedLength, A, B, C, D, buffer);
         }
     }
 }

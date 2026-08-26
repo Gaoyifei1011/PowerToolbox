@@ -29,7 +29,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Foundation;
 using Windows.System;
 using Windows.UI;
 
@@ -89,7 +88,7 @@ namespace PowerToolbox.Views.Windows
                 if (!string.Equals(_windowTitle, value))
                 {
                     _windowTitle = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WindowTitle)));
+                    PropertyChanged?.Invoke(this, new(nameof(WindowTitle)));
                 }
             }
         }
@@ -105,7 +104,7 @@ namespace PowerToolbox.Views.Windows
                 if (!Equals(_windowSystemBackdrop, value))
                 {
                     _windowSystemBackdrop = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WindowSystemBackdrop)));
+                    PropertyChanged?.Invoke(this, new(nameof(WindowSystemBackdrop)));
                 }
             }
         }
@@ -121,7 +120,7 @@ namespace PowerToolbox.Views.Windows
                 if (!Equals(_windowTheme, value))
                 {
                     _windowTheme = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WindowTheme)));
+                    PropertyChanged?.Invoke(this, new(nameof(WindowTheme)));
                 }
             }
         }
@@ -137,7 +136,7 @@ namespace PowerToolbox.Views.Windows
                 if (!Equals(_isWindowMaximized, value))
                 {
                     _isWindowMaximized = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsWindowMaximized)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsWindowMaximized)));
                 }
             }
         }
@@ -153,7 +152,7 @@ namespace PowerToolbox.Views.Windows
                 if (!Equals(_isBackEnabled, value))
                 {
                     _isBackEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsBackEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsBackEnabled)));
                 }
             }
         }
@@ -169,7 +168,7 @@ namespace PowerToolbox.Views.Windows
                 if (!Equals(_selectedItem, value))
                 {
                     _selectedItem = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedItem)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
                 }
             }
         }
@@ -204,7 +203,7 @@ namespace PowerToolbox.Views.Windows
             SetClassicMenuTheme((Content as FrameworkElement).ActualTheme);
 
             // 为应用主窗口添加窗口过程
-            mainWindowSubClassProc = new SUBCLASSPROC(MainWindowSubClassProc);
+            mainWindowSubClassProc = new(MainWindowSubClassProc);
             Comctl32Library.SetWindowSubclass((nint)AppWindow.Id.Value, mainWindowSubClassProc, 0, 0);
 
             SetWindowTheme();
@@ -224,17 +223,17 @@ namespace PowerToolbox.Views.Windows
                 Shell32Library.DragAcceptFiles((nint)AppWindow.Id.Value, true);
             }
 
-            NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/AllTools.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/AllTools.png") } },
                 NavigationTitle = AllToolsString,
                 NavigationTag = "AllTools",
                 ParentTag = null,
                 NavigationPage = typeof(AllToolsPage),
                 VisibleState = Visibility.Visible
             });
-            NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Seperator,
                 NavigationIcon = null,
@@ -247,17 +246,17 @@ namespace PowerToolbox.Views.Windows
             NavigationViewItemModel relaxationItem = new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/Relaxation.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/Relaxation.png") } },
                 NavigationTitle = RelaxationString,
                 NavigationTag = "Relaxation",
                 ParentTag = null,
                 NavigationPage = null,
                 VisibleState = Visibility.Visible
             };
-            relaxationItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            relaxationItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/Loaf.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/Loaf.png") } },
                 NavigationTitle = LoafString,
                 NavigationTag = "Loaf",
                 ParentTag = "Relaxation",
@@ -268,37 +267,37 @@ namespace PowerToolbox.Views.Windows
             NavigationViewItemModel fileItem = new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/File.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/File.png") } },
                 NavigationTitle = FileString,
                 NavigationTag = "File",
                 ParentTag = null,
                 NavigationPage = null,
                 VisibleState = Visibility.Visible
             };
-            fileItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            fileItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/FileManager.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/FileManager.png") } },
                 NavigationTitle = FileManagerString,
                 NavigationTag = "FileManager",
                 ParentTag = "File",
                 NavigationPage = typeof(FileManagerPage),
                 VisibleState = Visibility.Visible
             });
-            fileItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            fileItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/FileCertificate.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/FileCertificate.png") } },
                 NavigationTitle = FileCertificateString,
                 NavigationTag = "FileCertificate",
                 ParentTag = "File",
                 NavigationPage = typeof(FileCertificatePage),
                 VisibleState = Visibility.Visible
             });
-            fileItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            fileItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/FileUnlock.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/FileUnlock.png") } },
                 NavigationTitle = FileUnlockString,
                 NavigationTag = "FileUnlock",
                 ParentTag = "File",
@@ -309,47 +308,47 @@ namespace PowerToolbox.Views.Windows
             NavigationViewItemModel resourceItem = new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/Resource.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/Resource.png") } },
                 NavigationTitle = ResourceString,
                 NavigationTag = "Resource",
                 ParentTag = null,
                 NavigationPage = null,
                 VisibleState = Visibility.Visible
             };
-            resourceItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            resourceItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/DataVerifyEncrypt.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/DataVerifyEncrypt.png") } },
                 NavigationTitle = DataVertifyEncryptString,
                 NavigationTag = "DataVerifyEncrypt",
                 ParentTag = "Resource",
                 NavigationPage = typeof(DataVerifyEncryptPage),
                 VisibleState = Visibility.Visible
             });
-            resourceItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            resourceItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/DownloadManager.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/DownloadManager.png") } },
                 NavigationTitle = DownloadManagerString,
                 NavigationTag = "DownloadManager",
                 ParentTag = "Resource",
                 NavigationPage = typeof(DownloadManagerPage),
                 VisibleState = Visibility.Visible
             });
-            resourceItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            resourceItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/IconExtract.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/IconExtract.png") } },
                 NavigationTitle = IconExtractString,
                 NavigationTag = "IconExtract",
                 ParentTag = "Resource",
                 NavigationPage = typeof(IconExtractPage),
                 VisibleState = Visibility.Visible
             });
-            resourceItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            resourceItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/PriExtract.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/PriExtract.png") } },
                 NavigationTitle = PriExtractString,
                 NavigationTag = "PriExtract",
                 ParentTag = "Resource",
@@ -360,37 +359,37 @@ namespace PowerToolbox.Views.Windows
             NavigationViewItemModel personalizeItem = new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/Personalize.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/Personalize.png") } },
                 NavigationTitle = PersonalizeString,
                 NavigationTag = "Personalize",
                 ParentTag = null,
                 NavigationPage = null,
                 VisibleState = Visibility.Visible
             };
-            personalizeItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            personalizeItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/ThemeSwitch.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/ThemeSwitch.png") } },
                 NavigationTitle = ThemeSwitchString,
                 NavigationTag = "ThemeSwitch",
                 ParentTag = "Personalize",
                 NavigationPage = typeof(ThemeSwitchPage),
                 VisibleState = Visibility.Visible
             });
-            personalizeItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            personalizeItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/ShellMenu.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/ShellMenu.png") } },
                 NavigationTitle = ShellMenuString,
                 NavigationTag = "ShellMenu",
                 ParentTag = "Personalize",
                 NavigationPage = typeof(ShellMenuPage),
                 VisibleState = Visibility.Visible
             });
-            personalizeItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            personalizeItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/ContextMenuManager.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/ContextMenuManager.png") } },
                 NavigationTitle = ContextMenuManagerString,
                 NavigationTag = "ContextMenuManager",
                 ParentTag = "Personalize",
@@ -401,87 +400,87 @@ namespace PowerToolbox.Views.Windows
             NavigationViewItemModel systemItem = new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/System.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/System.png") } },
                 NavigationTitle = SystemString,
                 NavigationTag = "System",
                 ParentTag = null,
                 NavigationPage = null,
                 VisibleState = Visibility.Visible
             };
-            systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            systemItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/LoopbackManager.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/LoopbackManager.png") } },
                 NavigationTitle = LoopbackManagerString,
                 NavigationTag = "LoopbackManager",
                 ParentTag = "System",
                 NavigationPage = typeof(LoopbackManagerPage),
                 VisibleState = Visibility.Visible
             });
-            systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            systemItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/ScheduledTaskManager.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/ScheduledTaskManager.png") } },
                 NavigationTitle = ScheduledTaskManagerString,
                 NavigationTag = "ScheduledTaskManager",
                 ParentTag = "System",
                 NavigationPage = typeof(ScheduledTaskManagerPage),
                 VisibleState = Visibility.Visible
             });
-            systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            systemItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/DriverManager.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/DriverManager.png") } },
                 NavigationTitle = DriverManagerString,
                 NavigationTag = "DriverManager",
                 ParentTag = "System",
                 NavigationPage = typeof(DriverManagerPage),
                 VisibleState = Visibility.Visible
             });
-            systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            systemItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/UpdateManager.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/UpdateManager.png") } },
                 NavigationTitle = UpdateManagerString,
                 NavigationTag = "UpdateManager",
                 ParentTag = "System",
                 NavigationPage = typeof(UpdateManagerPage),
                 VisibleState = Visibility.Visible
             });
-            systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            systemItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/AdvancedSystemOptions.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/AdvancedSystemOptions.png") } },
                 NavigationTitle = AdvancedSystemOptionsString,
                 NavigationTag = "AdvancedSystemOptions",
                 ParentTag = "System",
                 NavigationPage = typeof(AdvancedSystemOptionsPage),
                 VisibleState = Visibility.Visible
             });
-            systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            systemItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/WinFR.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/WinFR.png") } },
                 NavigationTitle = WinFRString,
                 NavigationTag = "WinFR",
                 ParentTag = "System",
                 NavigationPage = typeof(WinFRPage),
                 VisibleState = Visibility.Visible
             });
-            systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            systemItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/WinSAT.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/WinSAT.png") } },
                 NavigationTitle = WinSATString,
                 NavigationTag = "WinSAT",
                 ParentTag = "System",
                 NavigationPage = typeof(WinSATPage),
                 VisibleState = Visibility.Visible
             });
-            systemItem.NavigationViewItemMenuItemsCollection.Add(new NavigationViewItemModel()
+            systemItem.NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/SystemInformation.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/SystemInformation.png") } },
                 NavigationTitle = SystemInformationString,
                 NavigationTag = "SystemInformation",
                 ParentTag = "System",
@@ -489,10 +488,10 @@ namespace PowerToolbox.Views.Windows
                 VisibleState = Visibility.Visible
             });
             NavigationViewItemMenuItemsCollection.Add(systemItem);
-            NavigationViewItemFooterMenuItemsCollection.Add(new NavigationViewItemModel()
+            NavigationViewItemFooterMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
-                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new Uri("ms-appx:///Assets/ControlIcon/Settings.png") } },
+                NavigationIcon = new ImageIcon() { Source = new BitmapImage() { UriSource = new("ms-appx:///Assets/ControlIcon/Settings.png") } },
                 NavigationTitle = SettingsString,
                 NavigationTag = "Settings",
                 ParentTag = null,
@@ -1040,7 +1039,7 @@ namespace PowerToolbox.Views.Windows
                             FlyoutShowOptions options = new()
                             {
                                 ShowMode = FlyoutShowMode.Standard,
-                                Position = Environment.OSVersion.Version.Build > 22000 ? new Point(cursorPos.X / dpi, cursorPos.Y / dpi) : new Point(cursorPos.X, cursorPos.Y)
+                                Position = Environment.OSVersion.Version.Build > 22000 ? new(cursorPos.X / dpi, cursorPos.Y / dpi) : new(cursorPos.X, cursorPos.Y)
                             };
 
                             TitlebarMenuFlyout.ShowAt(Content, options);
@@ -1078,7 +1077,7 @@ namespace PowerToolbox.Views.Windows
                         {
                             FlyoutShowOptions options = new()
                             {
-                                Position = new Point(0, 15),
+                                Position = new(0, 15),
                                 ShowMode = FlyoutShowMode.Standard
                             };
                             TitlebarMenuFlyout.ShowAt(null, options);
@@ -1090,7 +1089,7 @@ namespace PowerToolbox.Views.Windows
                             {
                                 FlyoutShowOptions options = new()
                                 {
-                                    Position = new Point(0, 45),
+                                    Position = new(0, 45),
                                     ShowMode = FlyoutShowMode.Standard
                                 };
                                 TitlebarMenuFlyout.ShowAt(null, options);
@@ -1468,7 +1467,7 @@ namespace PowerToolbox.Views.Windows
                                     continue;
                                 }
 
-                                filePropertiesList.Add(new OldAndNewPropertiesModel()
+                                filePropertiesList.Add(new()
                                 {
                                     FileName = Path.GetFileName(file),
                                     FilePath = file,
@@ -1500,7 +1499,7 @@ namespace PowerToolbox.Views.Windows
 
                             if ((new FileInfo(fileInfo.FullName).Attributes & FileAttributes.Directory) is 0)
                             {
-                                fileCertificateList.Add(new CertificateResultModel()
+                                fileCertificateList.Add(new()
                                 {
                                     FileName = fileInfo.Name,
                                     FilePath = fileInfo.FullName

@@ -43,7 +43,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isLoading, value))
                 {
                     _isLoading = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoading)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsLoading)));
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isAddMenuEnabled, value))
                 {
                     _isAddMenuEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAddMenuEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsAddMenuEnabled)));
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isRemoveMenuEnabled, value))
                 {
                     _isRemoveMenuEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRemoveMenuEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsRemoveMenuEnabled)));
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isEditMenuEnabled, value))
                 {
                     _isEditMenuEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsEditMenuEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsEditMenuEnabled)));
                 }
             }
         }
@@ -107,7 +107,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isMoveUpEnabled, value))
                 {
                     _isMoveUpEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsMoveUpEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsMoveUpEnabled)));
                 }
             }
         }
@@ -123,7 +123,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isMoveDownEnabled, value))
                 {
                     _isMoveDownEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsMoveDownEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsMoveDownEnabled)));
                 }
             }
         }

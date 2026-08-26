@@ -16,8 +16,8 @@ namespace PowerToolbox.Extensions.Encrypt
             // SM4 参数
             BlockSizeValue = 128;
             KeySizeValue = 128;
-            LegalBlockSizesValue = [new KeySizes(128, 128, 0)];
-            LegalKeySizesValue = [new KeySizes(128, 128, 0)];
+            LegalBlockSizesValue = [new(128, 128, 0)];
+            LegalKeySizesValue = [new(128, 128, 0)];
 
             // 默认参数
             Mode = CipherMode.CBC;

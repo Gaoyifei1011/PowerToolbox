@@ -95,7 +95,7 @@ namespace PowerToolbox.Services.Settings
             {
                 CultureInfo culture = CultureInfo.GetCultureInfo(appLanguage);
 
-                LanguageList.Add(new KeyValuePair<string, string>(culture.Name, culture.NativeName));
+                LanguageList.Add(new(culture.Name, culture.NativeName));
             }
         }
 

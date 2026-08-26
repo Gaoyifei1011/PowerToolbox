@@ -48,7 +48,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedItem, value))
                 {
                     _selectedItem = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedItem)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
                 }
             }
         }

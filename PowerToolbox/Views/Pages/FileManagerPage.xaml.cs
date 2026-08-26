@@ -55,7 +55,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedItem, value))
                 {
                     _selectedItem = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedItem)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
                 }
             }
         }
@@ -71,7 +71,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_currentIndex, value))
                 {
                     _currentIndex = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentIndex)));
+                    PropertyChanged?.Invoke(this, new(nameof(CurrentIndex)));
                 }
             }
         }

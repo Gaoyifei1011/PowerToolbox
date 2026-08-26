@@ -12,8 +12,8 @@ namespace PowerToolbox.Extensions.Encrypt
             KeySizeValue = 128;
             BlockSizeValue = 64;
             FeedbackSizeValue = BlockSizeValue;
-            LegalBlockSizesValue = [new KeySizes(64, 64, 0)];
-            LegalKeySizesValue = [new KeySizes(40, 2048, 8)];
+            LegalBlockSizesValue = [new(64, 64, 0)];
+            LegalKeySizesValue = [new(40, 2048, 8)];
         }
 
         /// <summary>

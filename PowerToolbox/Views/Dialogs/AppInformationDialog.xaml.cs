@@ -41,7 +41,7 @@ namespace PowerToolbox.Views.Dialogs
                 if (!Equals(_isLoadCompleted, value))
                 {
                     _isLoadCompleted = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoadCompleted)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsLoadCompleted)));
                 }
             }
         }
@@ -87,23 +87,23 @@ namespace PowerToolbox.Views.Dialogs
                         // WinUI 3 版本信息
                         if (packageInfo.packageFullName.Contains("Microsoft.WindowsAppRuntime"))
                         {
-                            dependencyInformationList.Add(new KeyValuePair<string, Version>(WindowsAppSDKVersionString, new Version(packageInfo.packageId.version.Parts.Major, packageInfo.packageId.version.Parts.Minor, packageInfo.packageId.version.Parts.Build, packageInfo.packageId.version.Parts.Revision)));
+                            dependencyInformationList.Add(new(WindowsAppSDKVersionString, new(packageInfo.packageId.version.Parts.Major, packageInfo.packageId.version.Parts.Minor, packageInfo.packageId.version.Parts.Build, packageInfo.packageId.version.Parts.Revision)));
 
                             FileVersionInfo winUI3File = FileVersionInfo.GetVersionInfo(Path.Combine(packageInfo.path, "Microsoft.UI.Xaml.Controls.dll"));
-                            dependencyInformationList.Add(new KeyValuePair<string, Version>(WinUIVersionString, new Version(winUI3File.FileMajorPart, winUI3File.FileMinorPart, winUI3File.FileBuildPart, winUI3File.FilePrivatePart)));
+                            dependencyInformationList.Add(new(WinUIVersionString, new(winUI3File.FileMajorPart, winUI3File.FileMinorPart, winUI3File.FileBuildPart, winUI3File.FilePrivatePart)));
                             break;
                         }
                     }
 
                     // .NET 版本信息
-                    dependencyInformationList.Add(new KeyValuePair<string, Version>(DoNetVersionString, new Version(RuntimeInformation.FrameworkDescription.Remove(0, 15))));
+                    dependencyInformationList.Add(new(DoNetVersionString, new(RuntimeInformation.FrameworkDescription.Remove(0, 15))));
                 }
                 return dependencyInformationList;
             });
 
             foreach (KeyValuePair<string, Version> dependencyInformation in dependencyInformationList)
             {
-                AppInformationCollection.Add(new DictionaryEntry(dependencyInformation.Key, dependencyInformation.Value));
+                AppInformationCollection.Add(new(dependencyInformation.Key, dependencyInformation.Value));
             }
 
             IsLoadCompleted = true;

@@ -20,7 +20,7 @@
                     charArray[i] = (char)((((c + offset) - offsetBase) % 26) + offsetBase);
                 }
             }
-            return new string(charArray);
+            return new(charArray);
         }
 
         /// <summary>

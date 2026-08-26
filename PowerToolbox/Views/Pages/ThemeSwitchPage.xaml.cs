@@ -64,7 +64,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_systemAppBackground, value))
                 {
                     _systemAppBackground = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SystemAppBackground)));
+                    PropertyChanged?.Invoke(this, new(nameof(SystemAppBackground)));
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_systemAppTheme, value))
                 {
                     _systemAppTheme = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SystemAppTheme)));
+                    PropertyChanged?.Invoke(this, new(nameof(SystemAppTheme)));
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_systemAppImage, value))
                 {
                     _systemAppImage = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SystemAppImage)));
+                    PropertyChanged?.Invoke(this, new(nameof(SystemAppImage)));
                 }
             }
         }
@@ -112,7 +112,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isManualCloseInfoBar, value))
                 {
                     _isManualCloseInfoBar = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsManualCloseInfoBar)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsManualCloseInfoBar)));
                 }
             }
         }
@@ -128,7 +128,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isThemeSwitchNotificationEnabled, value))
                 {
                     _isThemeSwitchNotificationEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsThemeSwitchNotificationEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsThemeSwitchNotificationEnabled)));
                 }
             }
         }
@@ -144,7 +144,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedSystemThemeStyle, value))
                 {
                     _selectedSystemThemeStyle = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedSystemThemeStyle)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedSystemThemeStyle)));
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedAppThemeStyle, value))
                 {
                     _selectedAppThemeStyle = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedAppThemeStyle)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedAppThemeStyle)));
                 }
             }
         }
@@ -176,7 +176,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isShowThemeColorInStartAndTaskbar, value))
                 {
                     _isShowThemeColorInStartAndTaskbar = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsShowThemeColorInStartAndTaskbar)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsShowThemeColorInStartAndTaskbar)));
                 }
             }
         }
@@ -192,7 +192,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isShowThemeColorInStartAndTaskbarEnabled, value))
                 {
                     _isShowThemeColorInStartAndTaskbarEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsShowThemeColorInStartAndTaskbarEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsShowThemeColorInStartAndTaskbarEnabled)));
                 }
             }
         }
@@ -208,7 +208,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isAutoThemeSwitchEnable, value))
                 {
                     _isAutoThemeSwitchEnable = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAutoThemeSwitchEnable)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsAutoThemeSwitchEnable)));
                 }
             }
         }
@@ -224,7 +224,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedAutoThemeSwitchType, value))
                 {
                     _selectedAutoThemeSwitchType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedAutoThemeSwitchType)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedAutoThemeSwitchType)));
                 }
             }
         }
@@ -240,7 +240,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isAutoSwitchSystemTheme, value))
                 {
                     _isAutoSwitchSystemTheme = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAutoSwitchSystemTheme)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsAutoSwitchSystemTheme)));
                 }
             }
         }
@@ -256,7 +256,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isAutoSwitchAppTheme, value))
                 {
                     _isAutoSwitchAppTheme = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAutoSwitchAppTheme)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsAutoSwitchAppTheme)));
                 }
             }
         }
@@ -272,7 +272,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isShowColorInDarkTheme, value))
                 {
                     _isShowColorInDarkTheme = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsShowColorInDarkTheme)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsShowColorInDarkTheme)));
                 }
             }
         }
@@ -288,7 +288,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isGettingPosition, value))
                 {
                     _isGettingPosition = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsGettingPosition)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsGettingPosition)));
                 }
             }
         }
@@ -304,7 +304,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_sunriseOffset, value))
                 {
                     _sunriseOffset = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SunriseOffset)));
+                    PropertyChanged?.Invoke(this, new(nameof(SunriseOffset)));
                 }
             }
         }
@@ -320,7 +320,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_sunsetOffset, value))
                 {
                     _sunsetOffset = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SunsetOffset)));
+                    PropertyChanged?.Invoke(this, new(nameof(SunsetOffset)));
                 }
             }
         }
@@ -336,7 +336,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_longitude, value))
                 {
                     _longitude = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Longitude)));
+                    PropertyChanged?.Invoke(this, new(nameof(Longitude)));
                 }
             }
         }
@@ -352,7 +352,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_latitude, value))
                 {
                     _latitude = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Latitude)));
+                    PropertyChanged?.Invoke(this, new(nameof(Latitude)));
                 }
             }
         }
@@ -368,7 +368,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_sunriseTime, value))
                 {
                     _sunriseTime = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SunriseTime)));
+                    PropertyChanged?.Invoke(this, new(nameof(SunriseTime)));
                 }
             }
         }
@@ -384,7 +384,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_sunsetTime, value))
                 {
                     _sunsetTime = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SunsetTime)));
+                    PropertyChanged?.Invoke(this, new(nameof(SunsetTime)));
                 }
             }
         }
@@ -400,7 +400,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isPolarNightRegion, value))
                 {
                     _isPolarNightRegion = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsPolarNightRegion)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsPolarNightRegion)));
                 }
             }
         }
@@ -416,7 +416,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isPolarDayRegion, value))
                 {
                     _isPolarDayRegion = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsPolarDayRegion)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsPolarDayRegion)));
                 }
             }
         }
@@ -432,7 +432,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_systemThemeLightTime, value))
                 {
                     _systemThemeLightTime = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SystemThemeLightTime)));
+                    PropertyChanged?.Invoke(this, new(nameof(SystemThemeLightTime)));
                 }
             }
         }
@@ -448,7 +448,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_systemThemeDarkTime, value))
                 {
                     _systemThemeDarkTime = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SystemThemeDarkTime)));
+                    PropertyChanged?.Invoke(this, new(nameof(SystemThemeDarkTime)));
                 }
             }
         }
@@ -464,7 +464,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_appThemeLightTime, value))
                 {
                     _appThemeLightTime = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AppThemeLightTime)));
+                    PropertyChanged?.Invoke(this, new(nameof(AppThemeLightTime)));
                 }
             }
         }
@@ -480,7 +480,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_appThemeDarkTime, value))
                 {
                     _appThemeDarkTime = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AppThemeDarkTime)));
+                    PropertyChanged?.Invoke(this, new(nameof(AppThemeDarkTime)));
                 }
             }
         }
@@ -497,13 +497,13 @@ namespace PowerToolbox.Views.Pages
         {
             InitializeComponent();
 
-            SystemThemeStyleList.Add(new ComboBoxItemModel() { SelectedValue = ElementTheme.Light, DisplayMember = LightString });
-            SystemThemeStyleList.Add(new ComboBoxItemModel() { SelectedValue = ElementTheme.Dark, DisplayMember = DarkString });
-            AppThemeStyleList.Add(new ComboBoxItemModel() { SelectedValue = ElementTheme.Light, DisplayMember = LightString });
-            AppThemeStyleList.Add(new ComboBoxItemModel() { SelectedValue = ElementTheme.Dark, DisplayMember = DarkString });
-            AutoThemeSwitchTypeList.Add(new ComboBoxItemModel() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[0], DisplayMember = AutoThemeSwitchTypeFixedTimeString });
-            AutoThemeSwitchTypeList.Add(new ComboBoxItemModel() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[1], DisplayMember = AutoThemeSwitchTypeSunriseSunsetString });
-            AutoThemeSwitchTypeList.Add(new ComboBoxItemModel() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[2], DisplayMember = AutoThemeSwitchTypeDarkModeString });
+            SystemThemeStyleList.Add(new() { SelectedValue = ElementTheme.Light, DisplayMember = LightString });
+            SystemThemeStyleList.Add(new() { SelectedValue = ElementTheme.Dark, DisplayMember = DarkString });
+            AppThemeStyleList.Add(new() { SelectedValue = ElementTheme.Light, DisplayMember = LightString });
+            AppThemeStyleList.Add(new() { SelectedValue = ElementTheme.Dark, DisplayMember = DarkString });
+            AutoThemeSwitchTypeList.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[0], DisplayMember = AutoThemeSwitchTypeFixedTimeString });
+            AutoThemeSwitchTypeList.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[1], DisplayMember = AutoThemeSwitchTypeSunriseSunsetString });
+            AutoThemeSwitchTypeList.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[2], DisplayMember = AutoThemeSwitchTypeDarkModeString });
             SelectedSystemThemeStyle = SystemThemeStyleList[0];
             SelectedAppThemeStyle = AppThemeStyleList[0];
             SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList[0];
@@ -1356,9 +1356,9 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
-                    SystemAppImage = new BitmapImage
+                    SystemAppImage = new BitmapImage()
                     {
-                        UriSource = new Uri(wallpaper)
+                        UriSource = new(wallpaper)
                     };
                 }
                 catch (Exception e)

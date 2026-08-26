@@ -53,7 +53,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_searchText, value))
                 {
                     _searchText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SearchText)));
+                    PropertyChanged?.Invoke(this, new(nameof(SearchText)));
                 }
             }
         }
@@ -69,7 +69,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_contextMenuResultKind, value))
                 {
                     _contextMenuResultKind = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ContextMenuResultKind)));
+                    PropertyChanged?.Invoke(this, new(nameof(ContextMenuResultKind)));
                 }
             }
         }
@@ -85,7 +85,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_contextMenuFailedContent, value))
                 {
                     _contextMenuFailedContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ContextMenuFailedContent)));
+                    PropertyChanged?.Invoke(this, new(nameof(ContextMenuFailedContent)));
                 }
             }
         }
@@ -446,7 +446,7 @@ namespace PowerToolbox.Views.Pages
                                                     int threading = Convert.ToInt32(clsidKey.GetValue("Threading", 0));
                                                     int index = blockedList.FindIndex(item => Equals(item.Key, clsid));
 
-                                                    contextMenuItemList.Add(new ContextMenuItemModel()
+                                                    contextMenuItemList.Add(new()
                                                     {
                                                         BlockedClsidType = index >= 0 && index < blockedList.Count ? Enum.TryParse(blockedList[index].Value, out BlockedClsidType blockedClsidType) ? blockedClsidType : BlockedClsidType.Unknown : BlockedClsidType.Unknown,
                                                         Clsid = clsid,
@@ -592,7 +592,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         if (Guid.TryParse(blockedClsid, out Guid clsid))
                         {
-                            blockClsidList.Add(new KeyValuePair<Guid, string>(clsid, Convert.ToString(Registry.LocalMachine)));
+                            blockClsidList.Add(new(clsid, Convert.ToString(Registry.LocalMachine)));
                         }
                     }
 
@@ -617,7 +617,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         if (Guid.TryParse(blockedClsid, out Guid clsid))
                         {
-                            blockClsidList.Add(new KeyValuePair<Guid, string>(clsid, Convert.ToString(Registry.CurrentUser)));
+                            blockClsidList.Add(new(clsid, Convert.ToString(Registry.CurrentUser)));
                         }
                     }
 

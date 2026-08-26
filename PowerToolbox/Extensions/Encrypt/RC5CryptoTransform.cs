@@ -13,13 +13,14 @@ namespace PowerToolbox.Extensions.Encrypt
         private readonly byte[] iv;           // original IV copy
         private readonly byte[] feedback;     // chaining register (for CBC/CFB/OFB)
         private bool disposed = false;
+
         private byte[] buffer;       // 在 TransformBlock 调用之间的部分数据缓冲区
         private int bufferCount = 0;
         private readonly RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
 
         public RC5CryptoTransform(byte[] key, byte[] iv, bool encrypting, CipherMode mode, PaddingMode padding, int rounds)
         {
-            engine = new RC5Engine(key, rounds);
+            engine = new(key, rounds);
             this.encrypting = encrypting;
             this.mode = mode;
             this.padding = padding;

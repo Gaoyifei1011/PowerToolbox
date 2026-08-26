@@ -26,7 +26,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_result, value))
                 {
                     _result = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Result)));
+                    PropertyChanged?.Invoke(this, new(nameof(Result)));
                 }
             }
         }

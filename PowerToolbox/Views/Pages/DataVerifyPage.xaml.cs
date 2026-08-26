@@ -99,7 +99,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedIndex, value))
                 {
                     _selectedIndex = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedIndex)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedIndex)));
                 }
             }
         }
@@ -115,7 +115,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_verifyFile, value))
                 {
                     _verifyFile = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(VerifyFile)));
+                    PropertyChanged?.Invoke(this, new(nameof(VerifyFile)));
                 }
             }
         }
@@ -131,7 +131,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_verifyContent, value))
                 {
                     _verifyContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(VerifyContent)));
+                    PropertyChanged?.Invoke(this, new(nameof(VerifyContent)));
                 }
             }
         }
@@ -147,7 +147,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_resultSeverity, value))
                 {
                     _resultSeverity = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultSeverity)));
+                    PropertyChanged?.Invoke(this, new(nameof(ResultSeverity)));
                 }
             }
         }
@@ -163,7 +163,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_resultMessage, value))
                 {
                     _resultMessage = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultMessage)));
+                    PropertyChanged?.Invoke(this, new(nameof(ResultMessage)));
                 }
             }
         }
@@ -179,7 +179,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedTextEncodingType, value))
                 {
                     _selectedTextEncodingType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTextEncodingType)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedTextEncodingType)));
                 }
             }
         }
@@ -195,7 +195,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_textEncodingCustomTypeText, value))
                 {
                     _textEncodingCustomTypeText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TextEncodingCustomTypeText)));
+                    PropertyChanged?.Invoke(this, new(nameof(TextEncodingCustomTypeText)));
                 }
             }
         }
@@ -211,7 +211,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_useUpperCase, value))
                 {
                     _useUpperCase = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UseUpperCase)));
+                    PropertyChanged?.Invoke(this, new(nameof(UseUpperCase)));
                 }
             }
         }
@@ -227,7 +227,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isVerifying, value))
                 {
                     _isVerifying = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsVerifying)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsVerifying)));
                 }
             }
         }
@@ -243,154 +243,154 @@ namespace PowerToolbox.Views.Pages
         public DataVerifyPage()
         {
             InitializeComponent();
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.ASCII), DisplayMember = ASCIIString });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.BigEndianUnicode), DisplayMember = BigEndianUnicodeString });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "ISO-8859-1", DisplayMember = ISO88591String });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "GB18030", DisplayMember = GB18030String });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "GB2312", DisplayMember = GB2312String });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "GBK", DisplayMember = GBKString });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.Unicode), DisplayMember = UnicodeString });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF32), DisplayMember = UTF32String });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF7), DisplayMember = UTF7String });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "Custom", DisplayMember = CustomString });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.ASCII), DisplayMember = ASCIIString });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.BigEndianUnicode), DisplayMember = BigEndianUnicodeString });
+            TextEncodingTypeList.Add(new() { SelectedValue = "ISO-8859-1", DisplayMember = ISO88591String });
+            TextEncodingTypeList.Add(new() { SelectedValue = "GB18030", DisplayMember = GB18030String });
+            TextEncodingTypeList.Add(new() { SelectedValue = "GB2312", DisplayMember = GB2312String });
+            TextEncodingTypeList.Add(new() { SelectedValue = "GBK", DisplayMember = GBKString });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.Unicode), DisplayMember = UnicodeString });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF32), DisplayMember = UTF32String });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF7), DisplayMember = UTF7String });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
+            TextEncodingTypeList.Add(new() { SelectedValue = "Custom", DisplayMember = CustomString });
             SelectedTextEncodingType = TextEncodingTypeList[9];
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = Blake2bString,
                 DataVerifyType = DataVerifyType.Blake2b
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = Blake3String,
                 DataVerifyType = DataVerifyType.Blake3
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = CRC32String,
                 DataVerifyType = DataVerifyType.CRC_32
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = CRC64String,
                 DataVerifyType = DataVerifyType.CRC_64
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = ED2KString,
                 DataVerifyType = DataVerifyType.ED2K
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = Has160String,
                 DataVerifyType = DataVerifyType.HAS160
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = MD2String,
                 DataVerifyType = DataVerifyType.MD2
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = MD4String,
                 DataVerifyType = DataVerifyType.MD4
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = MD5String,
                 DataVerifyType = DataVerifyType.MD5
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = RIPEMD160String,
                 DataVerifyType = DataVerifyType.RIPEMD_160
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = SHA1String,
                 DataVerifyType = DataVerifyType.SHA_1
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = SHA224String,
                 DataVerifyType = DataVerifyType.SHA_224
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = SHA256String,
                 DataVerifyType = DataVerifyType.SHA_256
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = SHA384String,
                 DataVerifyType = DataVerifyType.SHA_384
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = SHA512String,
                 DataVerifyType = DataVerifyType.SHA_512
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = SHA3224String,
                 DataVerifyType = DataVerifyType.SHA3_224
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = SHA3256String,
                 DataVerifyType = DataVerifyType.SHA3_256
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = SHA3384String,
                 DataVerifyType = DataVerifyType.SHA3_384
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = SHA3512String,
                 DataVerifyType = DataVerifyType.SHA3_512
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = Shake128String,
                 DataVerifyType = DataVerifyType.Shake128
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = Shake256String,
                 DataVerifyType = DataVerifyType.Shake256
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = SM3String,
                 DataVerifyType = DataVerifyType.SM3
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = TIGERString,
                 DataVerifyType = DataVerifyType.TIGER
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = TIGER2String,
                 DataVerifyType = DataVerifyType.TIGER2
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = WhirlpoolString,
                 DataVerifyType = DataVerifyType.WHIRLPOOL
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = XXH32String,
                 DataVerifyType = DataVerifyType.XXH32
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = XXH64String,
                 DataVerifyType = DataVerifyType.XXH64
             });
-            DataVerifyTypeList.Add(new DataVerifyTypeModel()
+            DataVerifyTypeList.Add(new()
             {
                 Name = XXH128String,
                 DataVerifyType = DataVerifyType.XXH128
@@ -760,7 +760,7 @@ namespace PowerToolbox.Views.Pages
 
                     if (!string.IsNullOrEmpty(verifyResultContent))
                     {
-                        dataVerifyResultList.Add(new DataVerifyResultModel()
+                        dataVerifyResultList.Add(new()
                         {
                             Name = dataVerifyTypeItem.Name,
                             Result = verifyResultContent

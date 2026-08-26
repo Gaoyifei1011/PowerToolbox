@@ -88,7 +88,7 @@ namespace PowerToolbox.Services.Download
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden
                     });
-                    aria2Timer = new System.Timers.Timer(1000);
+                    aria2Timer = new(1000);
                     aria2Timer.Elapsed += OnTimerElapsed;
                     aria2Timer.Start();
                 }
@@ -298,7 +298,7 @@ namespace PowerToolbox.Services.Download
                                     Aria2SemaphoreSlim?.Release();
                                 }
 
-                                DownloadProgress?.Invoke(new DownloadProgress()
+                                DownloadProgress?.Invoke(new()
                                 {
                                     DownloadID = gid,
                                     DownloadProgressState = DownloadProgressState.Queued,
@@ -397,7 +397,7 @@ namespace PowerToolbox.Services.Download
                                 {
                                     if (Aria2DownloadDict.TryGetValue(gid, out string saveFilePath))
                                     {
-                                        DownloadProgress?.Invoke(new DownloadProgress()
+                                        DownloadProgress?.Invoke(new()
                                         {
                                             DownloadID = gid,
                                             DownloadProgressState = DownloadProgressState.Queued,
@@ -506,7 +506,7 @@ namespace PowerToolbox.Services.Download
                                 {
                                     if (Aria2DownloadDict.TryGetValue(gid, out string saveFilePath))
                                     {
-                                        DownloadProgress?.Invoke(new DownloadProgress()
+                                        DownloadProgress?.Invoke(new()
                                         {
                                             DownloadID = gid,
                                             DownloadProgressState = DownloadProgressState.Paused,
@@ -616,7 +616,7 @@ namespace PowerToolbox.Services.Download
                                     if (Aria2DownloadDict.TryGetValue(gid, out string saveFilePath))
                                     {
                                         Aria2DownloadDict.Remove(gid);
-                                        DownloadProgress?.Invoke(new DownloadProgress()
+                                        DownloadProgress?.Invoke(new()
                                         {
                                             DownloadID = gid,
                                             DownloadProgressState = DownloadProgressState.Deleted,
@@ -809,7 +809,7 @@ namespace PowerToolbox.Services.Download
 
                     if (isTellStatusSuccessfully)
                     {
-                        DownloadProgress?.Invoke(new DownloadProgress()
+                        DownloadProgress?.Invoke(new()
                         {
                             DownloadID = aria2DownloadItem.Key,
                             DownloadProgressState = downloadProgressState,

@@ -36,7 +36,7 @@ namespace PowerToolbox.Extensions.Encrypt
             {
                 if (value is null)
                 {
-                    throw new ArgumentNullException("Key");
+                    throw new ArgumentNullException(nameof(Key));
                 }
 
                 byte[] key = value.Clone() as byte[];

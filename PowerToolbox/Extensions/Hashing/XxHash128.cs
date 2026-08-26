@@ -213,7 +213,7 @@ namespace PowerToolbox.Extensions.Hashing
                 fixed (byte* secret = _state.Secret)
                 {
                     DigestLong(ref _state, accumulators, secret);
-                    current = new Hash128(
+                    current = new(
                         low64: MergeAccumulators(accumulators, secret + SecretMergeAccsStartBytes, _state.TotalLength * Prime64_1),
                         high64: MergeAccumulators(accumulators, secret + SecretLengthBytes - (AccumulatorCount * sizeof(ulong)) - SecretMergeAccsStartBytes, ~(_state.TotalLength * Prime64_2)));
                 }
@@ -265,7 +265,7 @@ namespace PowerToolbox.Extensions.Hashing
 
             const ulong BitFlipL = DefaultSecretUInt64_8 ^ DefaultSecretUInt64_9;
             const ulong BitFlipH = DefaultSecretUInt64_10 ^ DefaultSecretUInt64_11;
-            return new Hash128(XxHash64Avalanche(seed ^ BitFlipL), XxHash64Avalanche(seed ^ BitFlipH));
+            return new(XxHash64Avalanche(seed ^ BitFlipL), XxHash64Avalanche(seed ^ BitFlipH));
         }
 
         private static ulong XxHash64Avalanche(ulong hash)
@@ -297,7 +297,7 @@ namespace PowerToolbox.Extensions.Hashing
             ulong keyedLo = combinedl ^ bitflipl;
             ulong keyedHi = combinedh ^ bitfliph;
 
-            return new Hash128(XxHash64Avalanche(keyedLo), XxHash64Avalanche(keyedHi));
+            return new(XxHash64Avalanche(keyedLo), XxHash64Avalanche(keyedHi));
         }
 
         private static Hash128 HashLength4To8(byte* source, uint length, ulong seed)
@@ -320,7 +320,7 @@ namespace PowerToolbox.Extensions.Hashing
             m128Low = XorShift(m128Low, 28);
             m128High = Avalanche(m128High);
 
-            return new Hash128(m128Low, m128High);
+            return new(m128Low, m128High);
         }
 
         private static Hash128 HashLength9To16(byte* source, uint length, ulong seed)
@@ -342,7 +342,7 @@ namespace PowerToolbox.Extensions.Hashing
 
             h128Low = Avalanche(h128Low);
             h128High = Avalanche(h128High);
-            return new Hash128(h128Low, h128High);
+            return new(h128Low, h128High);
         }
 
         private static Hash128 HashLength17To128(byte* source, uint length, ulong seed)
@@ -416,7 +416,7 @@ namespace PowerToolbox.Extensions.Hashing
                 InitializeAccumulators(accumulators);
                 HashInternalLoop(accumulators, source, length, secret);
 
-                return new Hash128(
+                return new(
                     low64: MergeAccumulators(accumulators, secret + SecretMergeAccsStartBytes, length * Prime64_1),
                     high64: MergeAccumulators(accumulators, secret + SecretLengthBytes - (AccumulatorCount * sizeof(ulong)) - SecretMergeAccsStartBytes, ~(length * Prime64_2)));
             }
@@ -428,7 +428,7 @@ namespace PowerToolbox.Extensions.Hashing
             ulong h128High = (accLow * Prime64_1) + (accHigh * Prime64_4) + ((length - seed) * Prime64_2);
             h128Low = Avalanche(h128Low);
             h128High = 0ul - Avalanche(h128High);
-            return new Hash128(h128Low, h128High);
+            return new(h128Low, h128High);
         }
 
         private static void Mix32Bytes(ref ulong accLow, ref ulong accHigh, byte* input1, byte* input2, ulong secret1, ulong secret2, ulong secret3, ulong secret4, ulong seed)

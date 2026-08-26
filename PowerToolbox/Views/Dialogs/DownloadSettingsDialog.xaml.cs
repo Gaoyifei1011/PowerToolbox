@@ -42,7 +42,7 @@ namespace PowerToolbox.Views.Dialogs
                 if (!Equals(_downloadFolder, value))
                 {
                     _downloadFolder = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DownloadFolder)));
+                    PropertyChanged?.Invoke(this, new(nameof(DownloadFolder)));
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace PowerToolbox.Views.Dialogs
                 if (!Equals(_doEngineMode, value))
                 {
                     _doEngineMode = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DoEngineMode)));
+                    PropertyChanged?.Invoke(this, new(nameof(DoEngineMode)));
                 }
             }
         }
@@ -71,9 +71,9 @@ namespace PowerToolbox.Views.Dialogs
         {
             InitializeComponent();
 
-            DoEngineModeList.Add(new ComboBoxItemModel() { SelectedValue = DownloadOptionsService.DoEngineModeList[0], DisplayMember = DoEngineDoString });
-            DoEngineModeList.Add(new ComboBoxItemModel() { SelectedValue = DownloadOptionsService.DoEngineModeList[1], DisplayMember = DoEngineBitsString });
-            DoEngineModeList.Add(new ComboBoxItemModel() { SelectedValue = DownloadOptionsService.DoEngineModeList[2], DisplayMember = DoEngineAria2String });
+            DoEngineModeList.Add(new() { SelectedValue = DownloadOptionsService.DoEngineModeList[0], DisplayMember = DoEngineDoString });
+            DoEngineModeList.Add(new() { SelectedValue = DownloadOptionsService.DoEngineModeList[1], DisplayMember = DoEngineBitsString });
+            DoEngineModeList.Add(new() { SelectedValue = DownloadOptionsService.DoEngineModeList[2], DisplayMember = DoEngineAria2String });
             DoEngineMode = DoEngineModeList.Find(item => string.Equals(Convert.ToString(item.SelectedValue), DownloadOptionsService.DoEngineMode, StringComparison.OrdinalIgnoreCase));
         }
 

@@ -50,7 +50,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isModifyingNow, value))
                 {
                     _isModifyingNow = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsModifyingNow)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
         }
@@ -66,7 +66,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isOperationFailed, value))
                 {
                     _isOperationFailed = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsOperationFailed)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsOperationFailed)));
                 }
             }
         }
@@ -149,7 +149,7 @@ namespace PowerToolbox.Views.Pages
 
                         if ((fileInfo.Attributes & System.IO.FileAttributes.Directory) is 0)
                         {
-                            fileCertificateList.Add(new CertificateResultModel()
+                            fileCertificateList.Add(new()
                             {
                                 FileName = storageItem.Name,
                                 FilePath = storageItem.Path
@@ -286,7 +286,7 @@ namespace PowerToolbox.Views.Pages
 
                             if ((fileInfo.Attributes & System.IO.FileAttributes.Directory) is 0)
                             {
-                                fileCertificateList.Add(new CertificateResultModel()
+                                fileCertificateList.Add(new()
                                 {
                                     FileName = fileInfo.Name,
                                     FilePath = fileInfo.FullName
@@ -343,7 +343,7 @@ namespace PowerToolbox.Views.Pages
                                     continue;
                                 }
 
-                                fileNameList.Add(new CertificateResultModel()
+                                fileNameList.Add(new()
                                 {
                                     FileName = fileInfo.Name,
                                     FilePath = fileInfo.FullName
@@ -421,7 +421,7 @@ namespace PowerToolbox.Views.Pages
 
                                 if (!result)
                                 {
-                                    operationFailedList.Add(new OperationFailedModel()
+                                    operationFailedList.Add(new()
                                     {
                                         FileName = certificateResultItem.FileName,
                                         FilePath = certificateResultItem.FilePath,
@@ -431,7 +431,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                operationFailedList.Add(new OperationFailedModel()
+                                operationFailedList.Add(new()
                                 {
                                     FileName = certificateResultItem.FileName,
                                     FilePath = certificateResultItem.FilePath,

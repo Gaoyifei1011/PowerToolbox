@@ -23,7 +23,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isOperating, value))
                 {
                     _isOperating = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsOperating)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsOperating)));
                 }
             }
         }
@@ -42,7 +42,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_iconImage, value))
                 {
                     _iconImage = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IconImage)));
+                    PropertyChanged?.Invoke(this, new(nameof(IconImage)));
                 }
             }
         }
@@ -76,7 +76,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_downloadProgressState, value))
                 {
                     _downloadProgressState = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DownloadProgressState)));
+                    PropertyChanged?.Invoke(this, new(nameof(DownloadProgressState)));
                 }
             }
         }
@@ -95,7 +95,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_completedSize, value))
                 {
                     _completedSize = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CompletedSize)));
+                    PropertyChanged?.Invoke(this, new(nameof(CompletedSize)));
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_totalSize, value))
                 {
                     _totalSize = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalSize)));
+                    PropertyChanged?.Invoke(this, new(nameof(TotalSize)));
                 }
             }
         }
@@ -133,7 +133,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_downloadSpeed, value))
                 {
                     _downloadSpeed = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DownloadSpeed)));
+                    PropertyChanged?.Invoke(this, new(nameof(DownloadSpeed)));
                 }
             }
         }

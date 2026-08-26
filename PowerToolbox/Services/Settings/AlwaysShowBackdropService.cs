@@ -24,7 +24,7 @@ namespace PowerToolbox.Services.Settings
                 if (!Equals(_alwaysShowBackdrop, value))
                 {
                     _alwaysShowBackdrop = value;
-                    PropertyChanged?.Invoke(null, new PropertyChangedEventArgs(nameof(AlwaysShowBackdrop)));
+                    PropertyChanged?.Invoke(null, new(nameof(AlwaysShowBackdrop)));
                 }
             }
         }

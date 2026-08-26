@@ -48,7 +48,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isModifyingNow, value))
                 {
                     _isModifyingNow = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsModifyingNow)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
         }
@@ -67,7 +67,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_fileUnlockState, value))
                 {
                     _fileUnlockState = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileUnlockState)));
+                    PropertyChanged?.Invoke(this, new(nameof(FileUnlockState)));
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_fileUnlockFinishedCount, value))
                 {
                     _fileUnlockFinishedCount = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileUnlockFinishedCount)));
+                    PropertyChanged?.Invoke(this, new(nameof(FileUnlockFinishedCount)));
                 }
             }
         }
@@ -99,7 +99,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_fileUnlockProcessingPercentage, value))
                 {
                     _fileUnlockProcessingPercentage = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileUnlockProgressingPercentage)));
+                    PropertyChanged?.Invoke(this, new(nameof(FileUnlockProgressingPercentage)));
                 }
             }
         }

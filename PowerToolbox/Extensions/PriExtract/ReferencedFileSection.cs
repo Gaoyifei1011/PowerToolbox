@@ -19,7 +19,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
         public ReferencedFileSection(string sectionIdentifier, BinaryReader binaryReader)
         {
-            if (!string.Equals(new string(binaryReader.ReadChars(16)), sectionIdentifier))
+            if (!string.Equals(new(binaryReader.ReadChars(16)), sectionIdentifier))
             {
                 throw new InvalidDataException("Unexpected section identifier.");
             }
@@ -59,7 +59,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 ushort folderNameLength = binaryReader.ReadUInt16();
                 ushort fullPathLength = binaryReader.ReadUInt16();
                 uint folderNameOffset = binaryReader.ReadUInt32();
-                folderInfoList.Add(new FolderInfo()
+                folderInfoList.Add(new()
                 {
                     ParentFolder = parentFolder,
                     NumFilesInFolder = numFilesInFolder,
@@ -81,7 +81,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 ushort fullPathLength = binaryReader.ReadUInt16();
                 ushort fileNameLength = binaryReader.ReadUInt16();
                 uint fileNameOffset = binaryReader.ReadUInt32();
-                fileInfoList.Add(new FileInfo()
+                fileInfoList.Add(new()
                 {
                     ParentFolder = parentFolder,
                     FullPathLength = fileNameLength,
@@ -100,7 +100,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
                 string name = binaryReader.ReadString(Encoding.Unicode, folderInfoList[i].FolderNameLength);
 
-                referencedFolders.Add(new ReferencedFileOrFolder()
+                referencedFolders.Add(new()
                 {
                     Parent = null,
                     Name = name,
@@ -125,7 +125,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 string name = binaryReader.ReadString(Encoding.Unicode, fileInfoList[i].FileNameLength);
 
                 ReferencedFileOrFolder parentFolder = fileInfoList[i].ParentFolder is not 0xFFFF ? referencedFolders[fileInfoList[i].ParentFolder] : null;
-                referencedFilesList.Add(new ReferencedFileOrFolder()
+                referencedFilesList.Add(new()
                 {
                     Parent = parentFolder,
                     Name = name,

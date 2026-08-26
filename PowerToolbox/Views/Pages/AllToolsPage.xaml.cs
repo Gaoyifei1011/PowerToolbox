@@ -18,7 +18,7 @@ namespace PowerToolbox.Views.Pages
         // 休闲工具列表
         private List<ControlItemModel> RelaxToolsList { get; } =
         [
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("Loaf"),
                 Description = ResourceService.AllToolsResource.GetString("LoafDescription"),
@@ -30,21 +30,21 @@ namespace PowerToolbox.Views.Pages
         // 文件工具列表
         private List<ControlItemModel> FileToolsList { get; } =
         [
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("FileManager"),
                 Description = ResourceService.AllToolsResource.GetString("FileManagerDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/FileManager.png",
                 NavigationPage = typeof(FileManagerPage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("FileCertificate"),
                 Description = ResourceService.AllToolsResource.GetString("FileCertificateDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/FileCertificate.png",
                 NavigationPage = typeof(FileCertificatePage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("FileUnlock"),
                 Description = ResourceService.AllToolsResource.GetString("FileUnlockDescription"),
@@ -56,28 +56,28 @@ namespace PowerToolbox.Views.Pages
         // 资源工具列表
         private List<ControlItemModel> ResourceToolsList { get; } =
         [
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("DataVerifyEncrypt"),
                 Description = ResourceService.AllToolsResource.GetString("DataVerifyEncryptDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/DataVerifyEncrypt.png",
                 NavigationPage = typeof(DataVerifyEncryptPage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("DownloadManager"),
                 Description = ResourceService.AllToolsResource.GetString("DownloadManagerDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/DownloadManager.png",
                 NavigationPage = typeof(DownloadManagerPage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("IconExtract"),
                 Description = ResourceService.AllToolsResource.GetString("IconExtractDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/IconExtract.png",
                 NavigationPage = typeof(IconExtractPage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("PriExtract"),
                 Description = ResourceService.AllToolsResource.GetString("PriExtractDescription"),
@@ -89,21 +89,21 @@ namespace PowerToolbox.Views.Pages
         // 个性化工具列表
         private List<ControlItemModel> PersonalizeToolsList { get; } =
         [
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("ThemeSwitch"),
                 Description = ResourceService.AllToolsResource.GetString("ThemeSwitchDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/ThemeSwitch.png",
                 NavigationPage = typeof(ThemeSwitchPage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("ShellMenu"),
                 Description = ResourceService.AllToolsResource.GetString("ShellMenuDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/ShellMenu.png",
                 NavigationPage = typeof(ShellMenuPage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("ContextMenuManager"),
                 Description = ResourceService.AllToolsResource.GetString("ContextMenuManagerDescription"),
@@ -115,56 +115,56 @@ namespace PowerToolbox.Views.Pages
         // 系统工具列表
         private List<ControlItemModel> SystemToolsList { get; } =
         [
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("LoopbackManager"),
                 Description = ResourceService.AllToolsResource.GetString("LoopbackManagerDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/LoopbackManager.png",
                 NavigationPage = typeof(LoopbackManagerPage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("ScheduledTaskManager"),
                 Description = ResourceService.AllToolsResource.GetString("ScheduledTaskManagerDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/ScheduledTaskManager.png",
                 NavigationPage = typeof(ScheduledTaskManagerPage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("DriverManager"),
                 Description = ResourceService.AllToolsResource.GetString("DriverManagerDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/DriverManager.png",
                 NavigationPage = typeof(DriverManagerPage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("UpdateManager"),
                 Description = ResourceService.AllToolsResource.GetString("UpdateManagerDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/UpdateManager.png",
                 NavigationPage = typeof(UpdateManagerPage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("AdvancedSystemOptions"),
                 Description = ResourceService.AllToolsResource.GetString("AdvancedSystemOptionsDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/AdvancedSystemOptions.png",
                 NavigationPage = typeof(AdvancedSystemOptionsPage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("WinFR"),
                 Description = ResourceService.AllToolsResource.GetString("WinFRDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/WinFR.png",
                 NavigationPage = typeof(WinFRPage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("WinSAT"),
                 Description = ResourceService.AllToolsResource.GetString("WinSATDescription"),
                 ImagePath = "ms-appx:///Assets/ControlIcon/WinSAT.png",
                 NavigationPage = typeof(WinSATPage)
             },
-            new ControlItemModel()
+            new()
             {
                 Title = ResourceService.AllToolsResource.GetString("SystemInformation"),
                 Description = ResourceService.AllToolsResource.GetString("SystemInformationDescription"),

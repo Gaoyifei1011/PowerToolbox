@@ -48,7 +48,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isModifyingNow, value))
                 {
                     _isModifyingNow = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsModifyingNow)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedType, value))
                 {
                     _selectedType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedType)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedType)));
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isOperationFailed, value))
                 {
                     _isOperationFailed = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsOperationFailed)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsOperationFailed)));
                 }
             }
         }
@@ -745,7 +745,7 @@ namespace PowerToolbox.Views.Pages
                                 }
                                 catch (Exception e)
                                 {
-                                    operationFailedList.Add(new OperationFailedModel()
+                                    operationFailedList.Add(new()
                                     {
                                         FileName = oldAndNewNameItem.OriginalFileName,
                                         FilePath = oldAndNewNameItem.OriginalFilePath,
@@ -761,7 +761,7 @@ namespace PowerToolbox.Views.Pages
                                 }
                                 catch (Exception e)
                                 {
-                                    operationFailedList.Add(new OperationFailedModel()
+                                    operationFailedList.Add(new()
                                     {
                                         FileName = oldAndNewNameItem.OriginalFileName,
                                         FilePath = oldAndNewNameItem.OriginalFilePath,

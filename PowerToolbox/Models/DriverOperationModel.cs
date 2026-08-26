@@ -22,7 +22,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isOperating, value))
                 {
                     _isOperating = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsOperating)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsOperating)));
                 }
             }
         }
@@ -41,7 +41,7 @@ namespace PowerToolbox.Models
                 if (!string.Equals(_driverOperation, value))
                 {
                     _driverOperation = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DriverOperation)));
+                    PropertyChanged?.Invoke(this, new(nameof(DriverOperation)));
                 }
             }
         }

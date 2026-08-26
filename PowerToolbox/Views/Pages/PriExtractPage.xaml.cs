@@ -66,7 +66,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isExtractSaveSame, value))
                 {
                     _isExtractSaveSame = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExtractSaveSame)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsExtractSaveSame)));
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isExtractSaveString, value))
                 {
                     _isExtractSaveString = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExtractSaveString)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsExtractSaveString)));
                 }
             }
         }
@@ -98,7 +98,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isExtractSaveFilePath, value))
                 {
                     _isExtractSaveFilePath = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExtractSaveFilePath)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsExtractSaveFilePath)));
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isExtractSaveEmbeddedData, value))
                 {
                     _isExtractSaveEmbeddedData = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExtractSaveEmbeddedData)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsExtractSaveEmbeddedData)));
                 }
             }
         }
@@ -130,7 +130,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedLanguage, value))
                 {
                     _selectedLanguage = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedLanguage)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedLanguage)));
                 }
             }
         }
@@ -146,7 +146,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isProcessing, value))
                 {
                     _isProcessing = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsProcessing)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsProcessing)));
                 }
             }
         }
@@ -162,7 +162,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_getResults, value))
                 {
                     _getResults = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GetResults)));
+                    PropertyChanged?.Invoke(this, new(nameof(GetResults)));
                 }
             }
         }
@@ -178,7 +178,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_selectedSaveFolder, value))
                 {
                     _selectedSaveFolder = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedSaveFolder)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedSaveFolder)));
                 }
             }
         }
@@ -194,7 +194,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedResourceCandidateKind, value))
                 {
                     _selectedResourceCandidateKind = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedResourceCandidateKind)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedResourceCandidateKind)));
                 }
             }
         }
@@ -210,7 +210,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hasStringResource, value))
                 {
                     _hasStringResource = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasStringResource)));
+                    PropertyChanged?.Invoke(this, new(nameof(HasStringResource)));
                 }
             }
         }
@@ -226,7 +226,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_stringSearchText, value))
                 {
                     _stringSearchText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StringSearchText)));
+                    PropertyChanged?.Invoke(this, new(nameof(StringSearchText)));
                 }
             }
         }
@@ -242,7 +242,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hasFilePathResource, value))
                 {
                     _hasFilePathResource = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasFilePathResource)));
+                    PropertyChanged?.Invoke(this, new(nameof(HasFilePathResource)));
                 }
             }
         }
@@ -258,7 +258,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_filePathSearchText, value))
                 {
                     _filePathSearchText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FilePathSearchText)));
+                    PropertyChanged?.Invoke(this, new(nameof(FilePathSearchText)));
                 }
             }
         }
@@ -274,7 +274,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hasEmbeddedDataResource, value))
                 {
                     _hasEmbeddedDataResource = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasEmbeddedDataResource)));
+                    PropertyChanged?.Invoke(this, new(nameof(HasEmbeddedDataResource)));
                 }
             }
         }
@@ -290,7 +290,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_embeddedDataSearchText, value))
                 {
                     _embeddedDataSearchText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EmbeddedDataSearchText)));
+                    PropertyChanged?.Invoke(this, new(nameof(EmbeddedDataSearchText)));
                 }
             }
         }
@@ -317,9 +317,9 @@ namespace PowerToolbox.Views.Pages
         {
             InitializeComponent();
             GetResults = NoSelectedFileString;
-            ResourceCandidateKindList.Add(new ComboBoxItemModel() { SelectedValue = "String", DisplayMember = StringString });
-            ResourceCandidateKindList.Add(new ComboBoxItemModel() { SelectedValue = "FilePath", DisplayMember = FilePathString });
-            ResourceCandidateKindList.Add(new ComboBoxItemModel() { SelectedValue = "EmbeddedData", DisplayMember = EmbeddedDataString });
+            ResourceCandidateKindList.Add(new() { SelectedValue = "String", DisplayMember = StringString });
+            ResourceCandidateKindList.Add(new() { SelectedValue = "FilePath", DisplayMember = FilePathString });
+            ResourceCandidateKindList.Add(new() { SelectedValue = "EmbeddedData", DisplayMember = EmbeddedDataString });
             SelectedResourceCandidateKind = ResourceCandidateKindList[0];
             Shell32Library.SHGetKnownFolderPath(new("374DE290-123F-4565-9164-39C4925E467B"), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, 0, out string downloadFolder);
             SelectedSaveFolder = downloadFolder;
@@ -1111,7 +1111,7 @@ namespace PowerToolbox.Views.Pages
 
                     for (int index = 0; index < numSections; index++)
                     {
-                        tocList.Add(new TocEntry()
+                        tocList.Add(new()
                         {
                             SectionIdentifier = new(priBinaryReader.ReadChars(16)),
                             Flags = priBinaryReader.ReadUInt16(),
@@ -1276,7 +1276,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                FilePathList.Add(new FilePathModel()
+                                                                FilePathList.Add(new()
                                                                 {
                                                                     Key = key,
                                                                     IsSelected = false,
@@ -1302,7 +1302,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                StringList.Add(new StringModel()
+                                                                StringList.Add(new()
                                                                 {
                                                                     Key = key,
                                                                     Content = string.IsNullOrEmpty(content) ? string.Empty : content,
@@ -1329,7 +1329,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                FilePathList.Add(new FilePathModel()
+                                                                FilePathList.Add(new()
                                                                 {
                                                                     Key = key,
                                                                     IsSelected = false,
@@ -1355,7 +1355,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                StringList.Add(new StringModel()
+                                                                StringList.Add(new()
                                                                 {
                                                                     Key = key,
                                                                     Content = string.IsNullOrEmpty(content) ? string.Empty : content,
@@ -1382,7 +1382,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                FilePathList.Add(new FilePathModel()
+                                                                FilePathList.Add(new()
                                                                 {
                                                                     Key = key,
                                                                     IsSelected = false,
@@ -1408,7 +1408,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                StringList.Add(new StringModel()
+                                                                StringList.Add(new()
                                                                 {
                                                                     Key = key,
                                                                     Content = string.IsNullOrEmpty(content) ? string.Empty : content,
@@ -1432,7 +1432,7 @@ namespace PowerToolbox.Views.Pages
                                                                     }
                                                                 }
 
-                                                                EmbeddedDataList.Add(new EmbeddedDataModel()
+                                                                EmbeddedDataList.Add(new()
                                                                 {
                                                                     Key = key,
                                                                     EmbeddedData = data,
@@ -1470,13 +1470,13 @@ namespace PowerToolbox.Views.Pages
 
             if (result)
             {
-                LanguageCollection.Add(new ComboBoxItemModel() { SelectedValue = "AllLanguage", DisplayMember = AllLanguageString });
+                LanguageCollection.Add(new() { SelectedValue = "AllLanguage", DisplayMember = AllLanguageString });
 
                 // 显示获取到的所有内容
                 foreach (string languageItem in languageList)
                 {
                     CultureInfo cultureInfo = CultureInfo.GetCultureInfo(languageItem);
-                    LanguageCollection.Add(new ComboBoxItemModel() { SelectedValue = cultureInfo.Name, DisplayMember = string.Format("{0}[{1}]", cultureInfo.DisplayName, languageItem) });
+                    LanguageCollection.Add(new() { SelectedValue = cultureInfo.Name, DisplayMember = string.Format("{0}[{1}]", cultureInfo.DisplayName, languageItem) });
                 }
 
                 SelectedLanguage = LanguageCollection[0];

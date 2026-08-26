@@ -24,7 +24,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
         public DecisionInfoSection(string sectionIdentifier, BinaryReader binaryReader)
         {
-            if (!string.Equals(new string(binaryReader.ReadChars(16)), sectionIdentifier))
+            if (!string.Equals(new(binaryReader.ReadChars(16)), sectionIdentifier))
             {
                 throw new InvalidDataException("Unexpected section identifier.");
             }
@@ -57,7 +57,7 @@ namespace PowerToolbox.Extensions.PriExtract
             {
                 ushort firstQualifierSetIndexIndex = binaryReader.ReadUInt16();
                 ushort numQualifierSetsInDecision = binaryReader.ReadUInt16();
-                decisionInfoList.Add(new DecisionInfo()
+                decisionInfoList.Add(new()
                 {
                     FirstQualifierSetIndexIndex = firstQualifierSetIndexIndex,
                     NumQualifierSetsInDecision = numQualifierSetsInDecision,
@@ -69,7 +69,7 @@ namespace PowerToolbox.Extensions.PriExtract
             {
                 ushort firstQualifierIndexIndex = binaryReader.ReadUInt16();
                 ushort numQualifiersInSet = binaryReader.ReadUInt16();
-                qualifierSetInfoList.Add(new QualifierSetInfo()
+                qualifierSetInfoList.Add(new()
                 {
                     FirstQualifierIndexIndex = firstQualifierIndexIndex,
                     NumQualifiersInSet = numQualifiersInSet,
@@ -83,7 +83,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 ushort priority = binaryReader.ReadUInt16();
                 ushort fallbackScore = binaryReader.ReadUInt16();
                 binaryReader.ExpectUInt16(0);
-                qualifierInfoList.Add(new QualifierInfo()
+                qualifierInfoList.Add(new()
                 {
                     Index = index,
                     Priority = priority,
@@ -99,7 +99,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 binaryReader.ReadUInt16();
                 binaryReader.ReadUInt16();
                 uint operandValueOffset = binaryReader.ReadUInt32();
-                distinctQualifierInfoList.Add(new DistinctQualifierInfo()
+                distinctQualifierInfoList.Add(new()
                 {
                     QualifierType = qualifierType,
                     OperandValueOffset = operandValueOffset,
@@ -125,7 +125,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
                 string value = binaryReader.ReadNullTerminatedString(Encoding.Unicode);
 
-                qualifiersList.Add(new Qualifier()
+                qualifiersList.Add(new()
                 {
                     Index = (ushort)i,
                     Type = distinctQualifierInfo.QualifierType,
@@ -148,7 +148,7 @@ namespace PowerToolbox.Extensions.PriExtract
                     qualifiersInSet.Add(qualifiersList[indexTableArray[qualifierSetInfoList[i].FirstQualifierIndexIndex + j]]);
                 }
 
-                qualifierSetsList.Add(new QualifierSet()
+                qualifierSetsList.Add(new()
                 {
                     Index = (ushort)i,
                     QualifiersList = qualifiersInSet
@@ -168,7 +168,7 @@ namespace PowerToolbox.Extensions.PriExtract
                     qualifierSetsInDecision.Add(qualifierSetsList[indexTableArray[decisionInfoList[i].FirstQualifierSetIndexIndex + j]]);
                 }
 
-                decisionsList.Add(new Decision()
+                decisionsList.Add(new()
                 {
                     Index = (ushort)i,
                     QualifierSetsList = qualifierSetsInDecision

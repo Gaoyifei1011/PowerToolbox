@@ -47,7 +47,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_iconImage, value))
                 {
                     _iconImage = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IconImage)));
+                    PropertyChanged?.Invoke(this, new(nameof(IconImage)));
                 }
             }
         }

@@ -64,7 +64,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isSelected, value))
                 {
                     _isSelected = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSelected)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsSelected)));
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_iconExtractResultKind, value))
                 {
                     _iconExtractResultKind = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IconExtractResultKind)));
+                    PropertyChanged?.Invoke(this, new(nameof(IconExtractResultKind)));
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isImageEmpty, value))
                 {
                     _isImageEmpty = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsImageEmpty)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsImageEmpty)));
                 }
             }
         }
@@ -112,7 +112,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isSaving, value))
                 {
                     _isSaving = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSaving)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsSaving)));
                 }
             }
         }
@@ -128,7 +128,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_getResults, value))
                 {
                     _getResults = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GetResults)));
+                    PropertyChanged?.Invoke(this, new(nameof(GetResults)));
                 }
             }
         }
@@ -144,7 +144,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_noResources, value))
                 {
                     _noResources = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NoResources)));
+                    PropertyChanged?.Invoke(this, new(nameof(NoResources)));
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedGetIconType, value))
                 {
                     _selectedGetIconType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedGetIconType)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedGetIconType)));
                 }
             }
         }
@@ -176,7 +176,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedIconFormat, value))
                 {
                     _selectedIconFormat = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedIconFormat)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedIconFormat)));
                 }
             }
         }
@@ -192,7 +192,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedIconSize, value))
                 {
                     _selectedIconSize = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedIconSize)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedIconSize)));
                 }
             }
         }
@@ -208,7 +208,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_is16SizeEnabled, value))
                 {
                     _is16SizeEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Is16SizeEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(Is16SizeEnabled)));
                 }
             }
         }
@@ -224,7 +224,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_is24SizeEnabled, value))
                 {
                     _is24SizeEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Is24SizeEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(Is24SizeEnabled)));
                 }
             }
         }
@@ -240,7 +240,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_is32SizeEnabled, value))
                 {
                     _is32SizeEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Is32SizeEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(Is32SizeEnabled)));
                 }
             }
         }
@@ -256,7 +256,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_is48SizeEnabled, value))
                 {
                     _is48SizeEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Is48SizeEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(Is48SizeEnabled)));
                 }
             }
         }
@@ -272,7 +272,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_is64SizeEnabled, value))
                 {
                     _is64SizeEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Is64SizeEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(Is64SizeEnabled)));
                 }
             }
         }
@@ -288,7 +288,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_is72SizeEnabled, value))
                 {
                     _is72SizeEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Is72SizeEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(Is72SizeEnabled)));
                 }
             }
         }
@@ -304,7 +304,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_is96SizeEnabled, value))
                 {
                     _is96SizeEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Is96SizeEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(Is96SizeEnabled)));
                 }
             }
         }
@@ -320,7 +320,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_is128SizeEnabled, value))
                 {
                     _is128SizeEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Is128SizeEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(Is128SizeEnabled)));
                 }
             }
         }
@@ -336,7 +336,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_is256SizeEnabled, value))
                 {
                     _is256SizeEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Is256SizeEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(Is256SizeEnabled)));
                 }
             }
         }
@@ -352,7 +352,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_imageSource, value))
                 {
                     _imageSource = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ImageSource)));
+                    PropertyChanged?.Invoke(this, new(nameof(ImageSource)));
                 }
             }
         }
@@ -361,21 +361,21 @@ namespace PowerToolbox.Views.Pages
 
         private List<ComboBoxItemModel> IconFormatList { get; } =
         [
-            new ComboBoxItemModel() { SelectedValue = ".ico", DisplayMember = ".ico" },
-            new ComboBoxItemModel() { SelectedValue = ".png", DisplayMember = ".png" }
+            new() { SelectedValue = ".ico", DisplayMember = ".ico" },
+            new() { SelectedValue = ".png", DisplayMember = ".png" }
         ];
 
         private List<ComboBoxItemModel> IconSizeList { get; set; } =
         [
-            new ComboBoxItemModel() { SelectedValue = 16, DisplayMember = "16 * 16" },
-            new ComboBoxItemModel() { SelectedValue = 24, DisplayMember = "24 * 24" },
-            new ComboBoxItemModel() { SelectedValue = 32, DisplayMember = "32 * 32" },
-            new ComboBoxItemModel() { SelectedValue = 48, DisplayMember = "48 * 48" },
-            new ComboBoxItemModel() { SelectedValue = 64, DisplayMember = "64 * 64" },
-            new ComboBoxItemModel() { SelectedValue = 72, DisplayMember = "72 * 72" },
-            new ComboBoxItemModel() { SelectedValue = 96, DisplayMember = "96 * 96" },
-            new ComboBoxItemModel() { SelectedValue = 128, DisplayMember = "128 * 128" },
-            new ComboBoxItemModel() { SelectedValue = 256, DisplayMember = "256 * 256" }
+            new() { SelectedValue = 16, DisplayMember = "16 * 16" },
+            new() { SelectedValue = 24, DisplayMember = "24 * 24" },
+            new() { SelectedValue = 32, DisplayMember = "32 * 32" },
+            new() { SelectedValue = 48, DisplayMember = "48 * 48" },
+            new() { SelectedValue = 64, DisplayMember = "64 * 64" },
+            new() { SelectedValue = 72, DisplayMember = "72 * 72" },
+            new() { SelectedValue = 96, DisplayMember = "96 * 96" },
+            new() { SelectedValue = 128, DisplayMember = "128 * 128" },
+            new() { SelectedValue = 256, DisplayMember = "256 * 256" }
         ];
 
         private WinRTObservableCollection<IconModel> IconCollection { get; } = [];
@@ -385,8 +385,8 @@ namespace PowerToolbox.Views.Pages
         public IconExtractPage()
         {
             InitializeComponent();
-            GetIconTypeList.Add(new ComboBoxItemModel() { SelectedValue = "FileContained", DisplayMember = FileContainedString });
-            GetIconTypeList.Add(new ComboBoxItemModel() { SelectedValue = "FileAssociated", DisplayMember = FileAssociatedString });
+            GetIconTypeList.Add(new() { SelectedValue = "FileContained", DisplayMember = FileContainedString });
+            GetIconTypeList.Add(new() { SelectedValue = "FileAssociated", DisplayMember = FileAssociatedString });
             SelectedGetIconType = GetIconTypeList[0];
             SelectedIconFormat = IconFormatList[1];
             SelectedIconSize = IconSizeList[8];
@@ -1280,7 +1280,7 @@ namespace PowerToolbox.Views.Pages
                             icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
                             memoryStream.Seek(0, SeekOrigin.Begin);
 
-                            iconsList.Add(new IconModel()
+                            iconsList.Add(new()
                             {
                                 DisplayIndex = Convert.ToString(index),
                                 IconMemoryStream = memoryStream,
@@ -1310,7 +1310,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             BitmapImage bitmapImage = new();
                             bitmapImage.SetSource(iconItem.IconMemoryStream.AsRandomAccessStream());
-                            IconCollection.Add(new IconModel()
+                            IconCollection.Add(new()
                             {
                                 DisplayIndex = iconItem.DisplayIndex,
                                 IconImage = bitmapImage
@@ -1362,7 +1362,7 @@ namespace PowerToolbox.Views.Pages
                     icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
                     memoryStream.Seek(0, SeekOrigin.Begin);
 
-                    iconsList.Add(new IconModel()
+                    iconsList.Add(new()
                     {
                         DisplayIndex = "0",
                         IconMemoryStream = memoryStream,
@@ -1389,7 +1389,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         BitmapImage bitmapImage = new();
                         bitmapImage.SetSource(iconItem.IconMemoryStream.AsRandomAccessStream());
-                        IconCollection.Add(new IconModel()
+                        IconCollection.Add(new()
                         {
                             DisplayIndex = iconItem.DisplayIndex,
                             IconImage = bitmapImage

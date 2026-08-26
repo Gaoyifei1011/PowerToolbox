@@ -20,7 +20,7 @@ namespace PowerToolbox.Views.CustomControls
                     {
                         listViewItemPresenterBorder.BorderBrush = BorderBrush;
                         listViewItemPresenterBorder.BorderThickness = BorderThickness;
-                        listViewItemPresenterBorder.Margin = new Thickness();
+                        listViewItemPresenterBorder.Margin = new();
                     }
 
                     if (VisualTreeHelper.GetChild(this, 2) is Border checkBoxListViewItemPresenterBorder)

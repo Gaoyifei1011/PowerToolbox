@@ -16,9 +16,9 @@ namespace PowerToolbox.Extensions.Encrypt
             BlockSizeValue = 64;
             KeySizeValue = 128;
             // 默认128位（可更改）
-            LegalBlockSizesValue = [new KeySizes(64, 64, 0)];
+            LegalBlockSizesValue = [new(64, 64, 0)];
             // 允许密钥大小从8到2048位在8位步长（实际使用选择128/192/256等）
-            LegalKeySizesValue = [new KeySizes(8, 2048, 8)];
+            LegalKeySizesValue = [new(8, 2048, 8)];
             Mode = CipherMode.CBC;
             Padding = PaddingMode.PKCS7;
         }

@@ -21,7 +21,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isModifyingNow, value))
                 {
                     _isModifyingNow = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsModifyingNow)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
         }
@@ -40,7 +40,7 @@ namespace PowerToolbox.Models
                 if (!string.Equals(_fileName, value))
                 {
                     _fileName = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileName)));
+                    PropertyChanged?.Invoke(this, new(nameof(FileName)));
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace PowerToolbox.Models
                 if (!string.Equals(_filePath, value))
                 {
                     _filePath = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FilePath)));
+                    PropertyChanged?.Invoke(this, new(nameof(FilePath)));
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_result, value))
                 {
                     _result = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Result)));
+                    PropertyChanged?.Invoke(this, new(nameof(Result)));
                 }
             }
         }
@@ -97,7 +97,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isModified, value))
                 {
                     _isModified = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsModified)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsModified)));
                 }
             }
         }

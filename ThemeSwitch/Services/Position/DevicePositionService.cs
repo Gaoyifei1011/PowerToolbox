@@ -35,7 +35,7 @@ namespace ThemeSwitch.Services.Position
             {
                 if (!IsInitialized && geoCoordinateWatcher is null)
                 {
-                    geoCoordinateWatcher = new GeoCoordinateWatcher(GeoPositionAccuracy.Default)
+                    geoCoordinateWatcher = new(GeoPositionAccuracy.Default)
                     {
                         MovementThreshold = 20
                     };

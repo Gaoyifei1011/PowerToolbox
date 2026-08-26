@@ -26,7 +26,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
         public ResourceMapSection(string sectionIdentifier, BinaryReader binaryReader, bool version2, ref object[] sectionList)
         {
-            if (!string.Equals(new string(binaryReader.ReadChars(16)), sectionIdentifier))
+            if (!string.Equals(new(binaryReader.ReadChars(16)), sectionIdentifier))
             {
                 throw new InvalidDataException("Unexpected section identifier.");
             }
@@ -115,7 +115,7 @@ namespace PowerToolbox.Extensions.PriExtract
                         throw new InvalidDataException();
                     }
 
-                    HierarchicalSchemaReference = new HierarchicalSchemaReference()
+                    HierarchicalSchemaReference = new()
                     {
                         Version = hierarchicalSchemaVersion,
                         UniqueName = uniqueName,
@@ -140,7 +140,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 ushort firstItem = binaryReader.ReadUInt16();
                 ushort itemInfoGroup = binaryReader.ReadUInt16();
 
-                itemToItemInfoGroupsList.Add(new ItemToItemInfoGroup()
+                itemToItemInfoGroupsList.Add(new()
                 {
                     FirstItem = firstItem,
                     ItemInfoGroup = itemInfoGroup
@@ -152,7 +152,7 @@ namespace PowerToolbox.Extensions.PriExtract
             {
                 ushort groupSize = binaryReader.ReadUInt16();
                 ushort firstItemInfo = binaryReader.ReadUInt16();
-                itemInfoGroupsList.Add(new ItemInfoGroup()
+                itemInfoGroupsList.Add(new()
                 {
                     FirstItemInfo = firstItemInfo,
                     GroupSize = groupSize
@@ -164,7 +164,7 @@ namespace PowerToolbox.Extensions.PriExtract
             {
                 ushort decision = binaryReader.ReadUInt16();
                 ushort firstCandidate = binaryReader.ReadUInt16();
-                itemInfoList.Add(new ItemInfo()
+                itemInfoList.Add(new()
                 {
                     Decision = decision,
                     FirstCandidate = firstCandidate,
@@ -184,7 +184,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 {
                     uint firstItem = r.ReadUInt32();
                     uint itemInfoGroup = r.ReadUInt32();
-                    itemToItemInfoGroupsList.Add(new ItemToItemInfoGroup()
+                    itemToItemInfoGroupsList.Add(new()
                     {
                         FirstItem = firstItem,
                         ItemInfoGroup = itemInfoGroup
@@ -195,7 +195,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 {
                     uint groupSize = r.ReadUInt32();
                     uint firstItemInfo = r.ReadUInt32();
-                    itemInfoGroupsList.Add(new ItemInfoGroup()
+                    itemInfoGroupsList.Add(new()
                     {
                         FirstItemInfo = firstItemInfo,
                         GroupSize = groupSize
@@ -206,7 +206,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 {
                     uint decision = r.ReadUInt32();
                     uint firstCandidate = r.ReadUInt32();
-                    itemInfoList.Add(new ItemInfo()
+                    itemInfoList.Add(new()
                     {
                         Decision = decision,
                         FirstCandidate = firstCandidate,
@@ -230,7 +230,7 @@ namespace PowerToolbox.Extensions.PriExtract
                     ushort sourceFileIndex = binaryReader.ReadUInt16();
                     ushort dataItemIndex = binaryReader.ReadUInt16();
                     ushort dataItemSection = binaryReader.ReadUInt16();
-                    candidateInfoList.Add(new CandidateInfo()
+                    candidateInfoList.Add(new()
                     {
                         Type = 0x01,
                         ResourceValueType = resourceValueType,
@@ -246,7 +246,7 @@ namespace PowerToolbox.Extensions.PriExtract
                     ResourceValueType resourceValueType = resourceValueTypeTableList[binaryReader.ReadByte()];
                     ushort length = binaryReader.ReadUInt16();
                     uint stringOffset = binaryReader.ReadUInt32();
-                    candidateInfoList.Add(new CandidateInfo()
+                    candidateInfoList.Add(new()
                     {
                         Type = 0x00,
                         ResourceValueType = resourceValueType,
@@ -279,7 +279,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 }
                 else
                 {
-                    itemInfoGroup = new ItemInfoGroup()
+                    itemInfoGroup = new()
                     {
                         GroupSize = 1,
                         FirstItemInfo = (uint)(itemToItemInfoGroup.ItemInfoGroup - itemInfoGroupsList.Count)
@@ -304,7 +304,7 @@ namespace PowerToolbox.Extensions.PriExtract
                         {
                             int? sourceFile = candidateInfo.SourceFileIndex is 0 ? null : candidateInfo.SourceFileIndex - 1;
 
-                            candidatesList.Add(new Candidate()
+                            candidatesList.Add(new()
                             {
                                 QualifierSet = decision.QualifierSetsList[i].Index,
                                 Type = candidateInfo.ResourceValueType,
@@ -321,7 +321,7 @@ namespace PowerToolbox.Extensions.PriExtract
                                 Length = candidateInfo.DataLength
                             };
 
-                            candidatesList.Add(new Candidate()
+                            candidatesList.Add(new()
                             {
                                 QualifierSet = decision.QualifierSetsList[i].Index,
                                 Type = candidateInfo.ResourceValueType,

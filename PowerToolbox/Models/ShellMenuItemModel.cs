@@ -25,7 +25,7 @@ namespace PowerToolbox.Models
                 if (!string.Equals(_menuTitleText, value))
                 {
                     _menuTitleText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MenuTitleText)));
+                    PropertyChanged?.Invoke(this, new(nameof(MenuTitleText)));
                 }
             }
         }
@@ -44,7 +44,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_useIcon, value))
                 {
                     _useIcon = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UseIcon)));
+                    PropertyChanged?.Invoke(this, new(nameof(UseIcon)));
                 }
             }
         }
@@ -63,7 +63,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_useProgramIcon, value))
                 {
                     _useProgramIcon = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UseProgramIcon)));
+                    PropertyChanged?.Invoke(this, new(nameof(UseProgramIcon)));
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_useThemeIcon, value))
                 {
                     _useThemeIcon = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UseThemeIcon)));
+                    PropertyChanged?.Invoke(this, new(nameof(UseThemeIcon)));
                 }
             }
         }
@@ -101,7 +101,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_menuIcon, value))
                 {
                     _menuIcon = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MenuIcon)));
+                    PropertyChanged?.Invoke(this, new(nameof(MenuIcon)));
                 }
             }
         }
@@ -120,7 +120,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isSelected, value))
                 {
                     _isSelected = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSelected)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsSelected)));
                 }
             }
         }
@@ -139,7 +139,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_menuIndex, value))
                 {
                     _menuIndex = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MenuIndex)));
+                    PropertyChanged?.Invoke(this, new(nameof(MenuIndex)));
                 }
             }
         }

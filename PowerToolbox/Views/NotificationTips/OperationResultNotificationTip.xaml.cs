@@ -21,7 +21,7 @@ namespace PowerToolbox.Views.NotificationTips
                 if (!Equals(_isSuccessOperation, value))
                 {
                     _isSuccessOperation = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSuccessOperation)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsSuccessOperation)));
                 }
             }
         }
@@ -37,7 +37,7 @@ namespace PowerToolbox.Views.NotificationTips
                 if (!string.Equals(_operationContent, value))
                 {
                     _operationContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OperationContent)));
+                    PropertyChanged?.Invoke(this, new(nameof(OperationContent)));
                 }
             }
         }

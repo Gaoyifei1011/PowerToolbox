@@ -40,7 +40,7 @@ namespace PowerToolbox.Views.Dialogs
                 if (!Equals(_updateAppResultKind, value))
                 {
                     _updateAppResultKind = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UpdateAppResultKind)));
+                    PropertyChanged?.Invoke(this, new(nameof(UpdateAppResultKind)));
                 }
             }
         }
@@ -56,7 +56,7 @@ namespace PowerToolbox.Views.Dialogs
                 if (!string.Equals(_primaryText, value))
                 {
                     _primaryText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PrimaryText)));
+                    PropertyChanged?.Invoke(this, new(nameof(PrimaryText)));
                 }
             }
         }
@@ -72,7 +72,7 @@ namespace PowerToolbox.Views.Dialogs
                 if (!string.Equals(_closeText, value))
                 {
                     _closeText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CloseText)));
+                    PropertyChanged?.Invoke(this, new(nameof(CloseText)));
                 }
             }
         }
@@ -88,7 +88,7 @@ namespace PowerToolbox.Views.Dialogs
                 if (!string.Equals(_updateDownloadString, value))
                 {
                     _updateDownloadString = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UpdateDownloadString)));
+                    PropertyChanged?.Invoke(this, new(nameof(UpdateDownloadString)));
                 }
             }
         }
@@ -104,7 +104,7 @@ namespace PowerToolbox.Views.Dialogs
                 if (!Equals(_isCancelingUpdate, value))
                 {
                     _isCancelingUpdate = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCancelingUpdate)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsCancelingUpdate)));
                 }
             }
         }

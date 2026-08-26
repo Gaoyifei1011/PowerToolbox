@@ -60,183 +60,183 @@ namespace PowerToolbox.Views.Pages
 
         private static Dictionary<string, DEVPROPKEY> DevPropKeyDict { get; } = new()
         {
-            { "DEVPKEY_NAME", new DEVPROPKEY() { fmtid = new ("B725F130-47EF-101A-A5F1-02608C9EEBAC"), pid = 10 }},
-            { "DEVPKEY_Device_DeviceDesc", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 2 }},
-            { "DEVPKEY_Device_HardwareIds", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 3 }},
-            { "DEVPKEY_Device_CompatibleIds", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 4 }},
-            { "DEVPKEY_Device_Service", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 6 }},
-            { "DEVPKEY_Device_Class", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 9 }},
-            { "DEVPKEY_Device_ClassGuid", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 10 }},
-            { "DEVPKEY_Device_Driver", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 11 }},
-            { "DEVPKEY_Device_ConfigFlags", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 12 }},
-            { "DEVPKEY_Device_Manufacturer", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 13 }},
-            { "DEVPKEY_Device_FriendlyName", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 14 }},
-            { "DEVPKEY_Device_LocationInfo", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 15 }},
-            { "DEVPKEY_Device_PDOName", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 16 }},
-            { "DEVPKEY_Device_Capabilities", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 17 }},
-            { "DEVPKEY_Device_UINumber", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 18 }},
-            { "DEVPKEY_Device_UpperFilters", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 19 }},
-            { "DEVPKEY_Device_LowerFilters", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 20 }},
-            { "DEVPKEY_Device_BusTypeGd", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 21 }},
-            { "DEVPKEY_Device_LegacyBusType", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 22 }},
-            { "DEVPKEY_Device_BusNumber", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 23 }},
-            { "DEVPKEY_Device_EnumeratorName", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 24 }},
-            { "DEVPKEY_Device_Security", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 25 }},
-            { "DEVPKEY_Device_SecuritySDS", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 26 }},
-            { "DEVPKEY_Device_DevType", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 27 }},
-            { "DEVPKEY_Device_Exclusive", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 28 }},
-            { "DEVPKEY_Device_Characteristics", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 29 }},
-            { "DEVPKEY_Device_Address", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 30 }},
-            { "DEVPKEY_Device_UINumberDescFormat", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 31 }},
-            { "DEVPKEY_Device_PowerData", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 32 }},
-            { "DEVPKEY_Device_RemovalPolicy", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 33 }},
-            { "DEVPKEY_Device_RemovalPolicyDefault", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 34 }},
-            { "DEVPKEY_Device_RemovalPolicyOverride", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 35 }},
-            { "DEVPKEY_Device_InstallState", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 36 }},
-            { "DEVPKEY_Device_LocationPaths", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 37 }},
-            { "DEVPKEY_Device_BaseContainerId", new DEVPROPKEY() { fmtid = new ("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 38 }},
-            { "DEVPKEY_Device_DevNodeStatus", new DEVPROPKEY() { fmtid = new ("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 2 }},
-            { "DEVPKEY_Device_ProblemCode", new DEVPROPKEY() { fmtid = new ("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 3 }},
-            { "DEVPKEY_Device_EjectionRelations", new DEVPROPKEY() { fmtid = new ("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 4 }},
-            { "DEVPKEY_Device_RemovalRelations", new DEVPROPKEY() { fmtid = new ("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 5 }},
-            { "DEVPKEY_Device_PowerRelations", new DEVPROPKEY() { fmtid = new ("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 6 }},
-            { "DEVPKEY_Device_BusRelations", new DEVPROPKEY() { fmtid = new ("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 7 }},
-            { "DEVPKEY_Device_Parent", new DEVPROPKEY() { fmtid = new ("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 8 }},
-            { "DEVPKEY_Device_Children", new DEVPROPKEY() { fmtid = new ("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 9 }},
-            { "DEVPKEY_Device_Siblings", new DEVPROPKEY() { fmtid = new ("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 10 }},
-            { "DEVPKEY_Device_TransportRelations", new DEVPROPKEY() { fmtid = new ("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 11 }},
-            { "DEVPKEY_Device_ProblemStatus", new DEVPROPKEY() { fmtid = new ("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 12 }},
-            { "DEVPKEY_Device_Reported", new DEVPROPKEY() { fmtid = new ("80497100-8C73-48B9-AAD9-CE387E19C56E"), pid = 2 }},
-            { "DEVPKEY_Device_Legacy", new DEVPROPKEY() { fmtid = new ("80497100-8C73-48B9-AAD9-CE387E19C56E"), pid = 3 }},
-            { "DEVPKEY_Device_ContainerId", new DEVPROPKEY() { fmtid = new ("8C7ED206-3F8A-4827-B3AB-AE9E1FAEFC6C"), pid = 2 }},
-            { "DEVPKEY_Device_InLocalMachineContainer", new DEVPROPKEY() { fmtid = new ("8C7ED206-3F8A-4827-B3AB-AE9E1FAEFC6C"), pid = 4 }},
-            { "DEVPKEY_Device_ModelId", new DEVPROPKEY() { fmtid = new ("80D81EA6-7473-4B0C-8216-EFC11A2C4C8B"), pid = 2 }},
-            { "DEVPKEY_Device_FriendlyNameAttributes", new DEVPROPKEY() { fmtid = new ("80D81EA6-7473-4B0C-8216-EFC11A2C4C8B"), pid = 3 }},
-            { "DEVPKEY_Device_ManufacturerAttributes", new DEVPROPKEY() { fmtid = new ("80D81EA6-7473-4B0C-8216-EFC11A2C4C8B"), pid = 4 }},
-            { "DEVPKEY_Device_PresenceNotForDevice", new DEVPROPKEY() { fmtid = new ("80D81EA6-7473-4B0C-8216-EFC11A2C4C8B"), pid = 5 }},
-            { "DEVPKEY_Device_SignalStrength", new DEVPROPKEY() { fmtid = new ("80D81EA6-7473-4B0C-8216-EFC11A2C4C8B"), pid = 6 }},
-            { "DEVPKEY_Device_IsAssociateableByUserAction", new DEVPROPKEY() { fmtid = new ("80D81EA6-7473-4B0C-8216-EFC11A2C4C8B"), pid = 7 }},
-            { "DEVPKEY_Numa_Proximity_Domain", new DEVPROPKEY() { fmtid = new ("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 1 }},
-            { "DEVPKEY_Device_DHP_Rebalance_Policy", new DEVPROPKEY() { fmtid = new ("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 2 }},
-            { "DEVPKEY_Device_Numa_Node", new DEVPROPKEY() { fmtid = new ("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 3 }},
-            { "DEVPKEY_Device_BusReportedDeviceDesc", new DEVPROPKEY() { fmtid = new ("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 4 }},
-            { "DEVPKEY_Device_IsPresent", new DEVPROPKEY() { fmtid = new ("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 5 }},
-            { "DEVPKEY_Device_HasProblem", new DEVPROPKEY() { fmtid = new ("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 6 }},
-            { "DEVPKEY_Device_ConfigurationId", new DEVPROPKEY() { fmtid = new ("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 7 }},
-            { "DEVPKEY_Device_ReportedDeviceIdsHash", new DEVPROPKEY() { fmtid = new ("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 8 }},
-            { "DEVPKEY_Device_PhysicalDeviceLocation", new DEVPROPKEY() { fmtid = new ("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 9 }},
-            { "DEVPKEY_Device_BiosDeviceName", new DEVPROPKEY() { fmtid = new ("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 10 }},
-            { "DEVPKEY_Device_DriverProblemDesc", new DEVPROPKEY() { fmtid = new ("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 11 }},
-            { "DEVPKEY_Device_DebuggerSafe", new DEVPROPKEY() { fmtid = new ("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 12 }},
-            { "DEVPKEY_Device_SessionId", new DEVPROPKEY() { fmtid = new ("83DA6326-97A6-4088-9453-A1923F573B29"), pid = 6 }},
-            { "DEVPKEY_Device_InstallDate", new DEVPROPKEY() { fmtid = new ("83DA6326-97A6-4088-9453-A1923F573B29"), pid = 100 }},
-            { "DEVPKEY_Device_FirstInstallDate", new DEVPROPKEY() { fmtid = new ("83DA6326-97A6-4088-9453-A1923F573B29"), pid = 101 }},
-            { "DEVPKEY_Device_LastArrivalDate", new DEVPROPKEY() { fmtid = new ("83DA6326-97A6-4088-9453-A1923F573B29"), pid = 102 }},
-            { "DEVPKEY_Device_LastRemovalDate", new DEVPROPKEY() { fmtid = new ("83DA6326-97A6-4088-9453-A1923F573B29"), pid = 103 }},
-            { "DEVPKEY_Device_DriverDate", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 2 }},
-            { "DEVPKEY_Device_DriverVersion", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 3 }},
-            { "DEVPKEY_Device_DriverDesc", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 4 }},
-            { "DEVPKEY_Device_DriverInfPath", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 5 }},
-            { "DEVPKEY_Device_DriverInfSection", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 6 }},
-            { "DEVPKEY_Device_DriverInfSectionExt", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 7 }},
-            { "DEVPKEY_Device_MatchingDeviceId", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 8 }},
-            { "DEVPKEY_Device_DriverProvider", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 9 }},
-            { "DEVPKEY_Device_DriverPropPageProvider", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 10 }},
-            { "DEVPKEY_Device_DriverCoInstallers", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 11 }},
-            { "DEVPKEY_Device_ResourcePickerTags", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 12 }},
-            { "DEVPKEY_Device_ResourcePickerExceptions", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 13 }},
-            { "DEVPKEY_Device_DriverRank", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 14 }},
-            { "DEVPKEY_Device_DriverLogoLevel", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 15 }},
-            { "DEVPKEY_Device_NoConnectSound", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 17 }},
-            { "DEVPKEY_Device_GenericDriverInstalled", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 18 }},
-            { "DEVPKEY_Device_AdditionalSoftwareRequested", new DEVPROPKEY() { fmtid = new ("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 19 }},
-            { "DEVPKEY_Device_SafeRemovalRequired", new DEVPROPKEY() { fmtid = new ("AFD97640-86A3-4210-B67C-289C41AABE55"), pid = 2 }},
-            { "DEVPKEY_Device_SafeRemovalRequiredOverride", new DEVPROPKEY() { fmtid = new ("AFD97640-86A3-4210-B67C-289C41AABE55"), pid = 3 }},
-            { "DEVPKEY_DrvPkg_Model", new DEVPROPKEY() { fmtid = new ("CF73BB51-3ABF-44A2-85E0-9A3DC7A12132"), pid = 2 }},
-            { "DEVPKEY_DrvPkg_VendorWebSite", new DEVPROPKEY() { fmtid = new ("CF73BB51-3ABF-44A2-85E0-9A3DC7A12132"), pid = 3 }},
-            { "DEVPKEY_DrvPkg_DetailedDescription", new DEVPROPKEY() { fmtid = new ("CF73BB51-3ABF-44A2-85E0-9A3DC7A12132"), pid = 4 }},
-            { "DEVPKEY_DrvPkg_DocumentationLink", new DEVPROPKEY() { fmtid = new ("CF73BB51-3ABF-44A2-85E0-9A3DC7A12132"), pid = 5 }},
-            { "DEVPKEY_DrvPkg_Icon", new DEVPROPKEY() { fmtid = new ("CF73BB51-3ABF-44A2-85E0-9A3DC7A12132"), pid = 6 }},
-            { "DEVPKEY_DrvPkg_BrandingIcon", new DEVPROPKEY() { fmtid = new ("CF73BB51-3ABF-44A2-85E0-9A3DC7A12132"), pid = 7 }},
-            { "DEVPKEY_DeviceClass_UpperFilters", new DEVPROPKEY() { fmtid = new ("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 19 }},
-            { "DEVPKEY_DeviceClass_LowerFilters", new DEVPROPKEY() { fmtid = new ("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 20 }},
-            { "DEVPKEY_DeviceClass_Security", new DEVPROPKEY() { fmtid = new ("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 25 }},
-            { "DEVPKEY_DeviceClass_SecuritySDS", new DEVPROPKEY() { fmtid = new ("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 26 }},
-            { "DEVPKEY_DeviceClass_DevType", new DEVPROPKEY() { fmtid = new ("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 27 }},
-            { "DEVPKEY_DeviceClass_Exclusive", new DEVPROPKEY() { fmtid = new ("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 28 }},
-            { "DEVPKEY_DeviceClass_Characteristics", new DEVPROPKEY() { fmtid = new ("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 29 }},
-            { "DEVPKEY_DeviceClass_Name", new DEVPROPKEY() { fmtid = new ("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 2 }},
-            { "DEVPKEY_DeviceClass_ClassName", new DEVPROPKEY() { fmtid = new ("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 3 }},
-            { "DEVPKEY_DeviceClass_Icon", new DEVPROPKEY() { fmtid = new ("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 4 }},
-            { "DEVPKEY_DeviceClass_ClassInstaller", new DEVPROPKEY() { fmtid = new ("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 5 }},
-            { "DEVPKEY_DeviceClass_PropPageProvider", new DEVPROPKEY() { fmtid = new ("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 6 }},
-            { "DEVPKEY_DeviceClass_NoInstallClass", new DEVPROPKEY() { fmtid = new ("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 7 }},
-            { "DEVPKEY_DeviceClass_NoDisplayClass", new DEVPROPKEY() { fmtid = new ("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 8 }},
-            { "DEVPKEY_DeviceClass_SilentInstall", new DEVPROPKEY() { fmtid = new ("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 9 }},
-            { "DEVPKEY_DeviceClass_NoUseClass", new DEVPROPKEY() { fmtid = new ("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 10 }},
-            { "DEVPKEY_DeviceClass_DefaultService", new DEVPROPKEY() { fmtid = new ("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 11 }},
-            { "DEVPKEY_DeviceClass_IconPath", new DEVPROPKEY() { fmtid = new ("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 12 }},
-            { "DEVPKEY_DeviceClass_DHPRebalanceOptOut", new DEVPROPKEY() { fmtid = new ("D14D3EF3-66CF-4BA2-9D38-0DDB37AB4701"), pid = 2 }},
-            { "DEVPKEY_DeviceClass_ClassCoInstallers", new DEVPROPKEY() { fmtid = new ("713D1703-A2E2-49F5-9214-56472EF3DA5C"), pid = 2 }},
-            { "DEVPKEY_DeviceInterface_FriendlyName", new DEVPROPKEY() { fmtid = new ("026E516E-B814-414B-83CD-856D6FEF4822"), pid = 2 }},
-            { "DEVPKEY_DeviceInterface_Enabled", new DEVPROPKEY() { fmtid = new ("026E516E-B814-414B-83CD-856D6FEF4822"), pid = 3 }},
-            { "DEVPKEY_DeviceInterface_ClassGuid", new DEVPROPKEY() { fmtid = new ("026E516E-B814-414B-83CD-856D6FEF4822"), pid = 4 }},
-            { "DEVPKEY_DeviceInterface_ReferenceString", new DEVPROPKEY() { fmtid = new ("026E516E-B814-414B-83CD-856D6FEF4822"), pid = 5 }},
-            { "DEVPKEY_DeviceInterface_Restricted", new DEVPROPKEY() { fmtid = new ("026E516E-B814-414B-83CD-856D6FEF4822"), pid = 6 }},
-            { "DEVPKEY_DeviceInterfaceClass_DefaultInterface", new DEVPROPKEY() { fmtid = new ("14C83A99-0B3F-44B7-BE4C-A178D3990564"), pid = 2 }},
-            { "DEVPKEY_DeviceInterfaceClass_Name", new DEVPROPKEY() { fmtid = new ("14C83A99-0B3F-44B7-BE4C-A178D3990564"), pid = 3 }},
-            { "DEVPKEY_Device_Model", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 39 }},
-            { "DEVPKEY_DeviceContainer_Address", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 51 }},
-            { "DEVPKEY_DeviceContainer_DiscoveryMethod", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 52 }},
-            { "DEVPKEY_DeviceContainer_IsEncrypted", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 53 }},
-            { "DEVPKEY_DeviceContainer_IsAuthenticated", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 54 }},
-            { "DEVPKEY_DeviceContainer_IsConnected", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 55 }},
-            { "DEVPKEY_DeviceContainer_IsPaired", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 56 }},
-            { "DEVPKEY_DeviceContainer_Icon", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 57 }},
-            { "DEVPKEY_DeviceContainer_Version", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 65 }},
-            { "DEVPKEY_DeviceContainer_Last_Seen", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 66 }},
-            { "DEVPKEY_DeviceContainer_Last_Connected", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 67 }},
-            { "DEVPKEY_DeviceContainer_IsShowInDisconnectedState", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 68 }},
-            { "DEVPKEY_DeviceContainer_IsLocalMachine", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 70 }},
-            { "DEVPKEY_DeviceContainer_MetadataPath", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 71 }},
-            { "DEVPKEY_DeviceContainer_IsMetadataSearchInProgress", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 72 }},
-            { "DEVPKEY_DeviceContainer_MetadataChecksum", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 73 }},
-            { "DEVPKEY_DeviceContainer_IsNotInterestingForDisplay", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 74 }},
-            { "DEVPKEY_DeviceContainer_LaunchDeviceStageOnDeviceConnect", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 76 }},
-            { "DEVPKEY_DeviceContainer_LaunchDeviceStageFromExplorer", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 77 }},
-            { "DEVPKEY_DeviceContainer_BaselineExperienceId", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 78 }},
-            { "DEVPKEY_DeviceContainer_IsDeviceUniquelyIdentifiable", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 79 }},
-            { "DEVPKEY_DeviceContainer_AssociationArray", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 80 }},
-            { "DEVPKEY_DeviceContainer_DeviceDescription1", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 81 }},
-            { "DEVPKEY_DeviceContainer_DeviceDescription2", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 82 }},
-            { "DEVPKEY_DeviceContainer_HasProblem", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 83 }},
-            { "DEVPKEY_DeviceContainer_IsSharedDevice", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 84 }},
-            { "DEVPKEY_DeviceContainer_IsNetworkDevice", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 85 }},
-            { "DEVPKEY_DeviceContainer_IsDefaultDevice", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 86 }},
-            { "DEVPKEY_DeviceContainer_MetadataCabinet", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 87 }},
-            { "DEVPKEY_DeviceContainer_RequiresPairingElevation", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 88 }},
-            { "DEVPKEY_DeviceContainer_ExperienceId", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 89 }},
-            { "DEVPKEY_DeviceContainer_Category", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 90 }},
-            { "DEVPKEY_DeviceContainer_Category_Desc_Singular", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 91 }},
-            { "DEVPKEY_DeviceContainer_Category_Desc_Plural", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 92 }},
-            { "DEVPKEY_DeviceContainer_Category_Icon", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 93 }},
-            { "DEVPKEY_DeviceContainer_CategoryGroup_Desc", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 94 }},
-            { "DEVPKEY_DeviceContainer_CategoryGroup_Icon", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 95 }},
-            { "DEVPKEY_DeviceContainer_PrimaryCategory", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 97 }},
-            { "DEVPKEY_DeviceContainer_UnpairUninstall", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 98 }},
-            { "DEVPKEY_DeviceContainer_RequiresUninstallElevation", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 99 }},
-            { "DEVPKEY_DeviceContainer_DeviceFunctionSubRank", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 100 }},
-            { "DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 101 }},
-            { "DEVPKEY_DeviceContainer_ConfigFlags", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 105 }},
-            { "DEVPKEY_DeviceContainer_PrivilegedPackageFamilyNames", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 106 }},
-            { "DEVPKEY_DeviceContainer_CustomPrivilegedPackageFamilyNames", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 107 }},
-            { "DEVPKEY_DeviceContainer_IsRebootRequired", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 108 }},
-            { "DEVPKEY_Device_InstanceId", new DEVPROPKEY() { fmtid = new ("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 256 }},
-            { "DEVPKEY_DeviceContainer_FriendlyName", new DEVPROPKEY() { fmtid = new ("656A3BB3-ECC0-43FD-8477-4AE0404A96CD"), pid = 12288 }},
-            { "DEVPKEY_DeviceContainer_Manufacturer", new DEVPROPKEY() { fmtid = new ("656A3BB3-ECC0-43FD-8477-4AE0404A96CD"), pid = 8192 }},
-            { "DEVPKEY_DeviceContainer_ModelName", new DEVPROPKEY() { fmtid = new ("656A3BB3-ECC0-43FD-8477-4AE0404A96CD"), pid = 8194 }},
-            { "DEVPKEY_DeviceContainer_ModelNumber", new DEVPROPKEY() { fmtid = new ("656A3BB3-ECC0-43FD-8477-4AE0404A96CD"), pid = 8195 }},
-            { "DEVPKEY_DeviceContainer_InstallInProgress", new DEVPROPKEY() { fmtid = new ("83DA6326-97A6-4088-9453-A1923F573B29"), pid = 9 }}
+            { "DEVPKEY_NAME", new() { fmtid = new("B725F130-47EF-101A-A5F1-02608C9EEBAC"), pid = 10 }},
+            { "DEVPKEY_Device_DeviceDesc", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 2 }},
+            { "DEVPKEY_Device_HardwareIds", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 3 }},
+            { "DEVPKEY_Device_CompatibleIds", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 4 }},
+            { "DEVPKEY_Device_Service", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 6 }},
+            { "DEVPKEY_Device_Class", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 9 }},
+            { "DEVPKEY_Device_ClassGuid", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 10 }},
+            { "DEVPKEY_Device_Driver", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 11 }},
+            { "DEVPKEY_Device_ConfigFlags", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 12 }},
+            { "DEVPKEY_Device_Manufacturer", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 13 }},
+            { "DEVPKEY_Device_FriendlyName", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 14 }},
+            { "DEVPKEY_Device_LocationInfo", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 15 }},
+            { "DEVPKEY_Device_PDOName", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 16 }},
+            { "DEVPKEY_Device_Capabilities", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 17 }},
+            { "DEVPKEY_Device_UINumber", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 18 }},
+            { "DEVPKEY_Device_UpperFilters", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 19 }},
+            { "DEVPKEY_Device_LowerFilters", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 20 }},
+            { "DEVPKEY_Device_BusTypeGd", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 21 }},
+            { "DEVPKEY_Device_LegacyBusType", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 22 }},
+            { "DEVPKEY_Device_BusNumber", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 23 }},
+            { "DEVPKEY_Device_EnumeratorName", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 24 }},
+            { "DEVPKEY_Device_Security", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 25 }},
+            { "DEVPKEY_Device_SecuritySDS", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 26 }},
+            { "DEVPKEY_Device_DevType", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 27 }},
+            { "DEVPKEY_Device_Exclusive", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 28 }},
+            { "DEVPKEY_Device_Characteristics", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 29 }},
+            { "DEVPKEY_Device_Address", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 30 }},
+            { "DEVPKEY_Device_UINumberDescFormat", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 31 }},
+            { "DEVPKEY_Device_PowerData", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 32 }},
+            { "DEVPKEY_Device_RemovalPolicy", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 33 }},
+            { "DEVPKEY_Device_RemovalPolicyDefault", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 34 }},
+            { "DEVPKEY_Device_RemovalPolicyOverride", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 35 }},
+            { "DEVPKEY_Device_InstallState", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 36 }},
+            { "DEVPKEY_Device_LocationPaths", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 37 }},
+            { "DEVPKEY_Device_BaseContainerId", new() { fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"), pid = 38 }},
+            { "DEVPKEY_Device_DevNodeStatus", new() { fmtid = new("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 2 }},
+            { "DEVPKEY_Device_ProblemCode", new() { fmtid = new("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 3 }},
+            { "DEVPKEY_Device_EjectionRelations", new() { fmtid = new("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 4 }},
+            { "DEVPKEY_Device_RemovalRelations", new() { fmtid = new("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 5 }},
+            { "DEVPKEY_Device_PowerRelations", new() { fmtid = new("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 6 }},
+            { "DEVPKEY_Device_BusRelations", new() { fmtid = new("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 7 }},
+            { "DEVPKEY_Device_Parent", new() { fmtid = new("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 8 }},
+            { "DEVPKEY_Device_Children", new() { fmtid = new("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 9 }},
+            { "DEVPKEY_Device_Siblings", new() { fmtid = new("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 10 }},
+            { "DEVPKEY_Device_TransportRelations", new() { fmtid = new("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 11 }},
+            { "DEVPKEY_Device_ProblemStatus", new() { fmtid = new("4340A6C5-93FA-4706-972C-7B648008A5A7"), pid = 12 }},
+            { "DEVPKEY_Device_Reported", new() { fmtid = new("80497100-8C73-48B9-AAD9-CE387E19C56E"), pid = 2 }},
+            { "DEVPKEY_Device_Legacy", new() { fmtid = new("80497100-8C73-48B9-AAD9-CE387E19C56E"), pid = 3 }},
+            { "DEVPKEY_Device_ContainerId", new() { fmtid = new("8C7ED206-3F8A-4827-B3AB-AE9E1FAEFC6C"), pid = 2 }},
+            { "DEVPKEY_Device_InLocalMachineContainer", new() { fmtid = new("8C7ED206-3F8A-4827-B3AB-AE9E1FAEFC6C"), pid = 4 }},
+            { "DEVPKEY_Device_ModelId", new() { fmtid = new("80D81EA6-7473-4B0C-8216-EFC11A2C4C8B"), pid = 2 }},
+            { "DEVPKEY_Device_FriendlyNameAttributes", new() { fmtid = new("80D81EA6-7473-4B0C-8216-EFC11A2C4C8B"), pid = 3 }},
+            { "DEVPKEY_Device_ManufacturerAttributes", new() { fmtid = new("80D81EA6-7473-4B0C-8216-EFC11A2C4C8B"), pid = 4 }},
+            { "DEVPKEY_Device_PresenceNotForDevice", new() { fmtid = new("80D81EA6-7473-4B0C-8216-EFC11A2C4C8B"), pid = 5 }},
+            { "DEVPKEY_Device_SignalStrength", new() { fmtid = new("80D81EA6-7473-4B0C-8216-EFC11A2C4C8B"), pid = 6 }},
+            { "DEVPKEY_Device_IsAssociateableByUserAction", new() { fmtid = new("80D81EA6-7473-4B0C-8216-EFC11A2C4C8B"), pid = 7 }},
+            { "DEVPKEY_Numa_Proximity_Domain", new() { fmtid = new("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 1 }},
+            { "DEVPKEY_Device_DHP_Rebalance_Policy", new() { fmtid = new("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 2 }},
+            { "DEVPKEY_Device_Numa_Node", new() { fmtid = new("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 3 }},
+            { "DEVPKEY_Device_BusReportedDeviceDesc", new() { fmtid = new("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 4 }},
+            { "DEVPKEY_Device_IsPresent", new() { fmtid = new("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 5 }},
+            { "DEVPKEY_Device_HasProblem", new() { fmtid = new("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 6 }},
+            { "DEVPKEY_Device_ConfigurationId", new() { fmtid = new("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 7 }},
+            { "DEVPKEY_Device_ReportedDeviceIdsHash", new() { fmtid = new("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 8 }},
+            { "DEVPKEY_Device_PhysicalDeviceLocation", new() { fmtid = new("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 9 }},
+            { "DEVPKEY_Device_BiosDeviceName", new() { fmtid = new("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 10 }},
+            { "DEVPKEY_Device_DriverProblemDesc", new() { fmtid = new("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 11 }},
+            { "DEVPKEY_Device_DebuggerSafe", new() { fmtid = new("540B947E-8B40-45BC-A8A2-6A0B894CBDA2"), pid = 12 }},
+            { "DEVPKEY_Device_SessionId", new() { fmtid = new("83DA6326-97A6-4088-9453-A1923F573B29"), pid = 6 }},
+            { "DEVPKEY_Device_InstallDate", new() { fmtid = new("83DA6326-97A6-4088-9453-A1923F573B29"), pid = 100 }},
+            { "DEVPKEY_Device_FirstInstallDate", new() { fmtid = new("83DA6326-97A6-4088-9453-A1923F573B29"), pid = 101 }},
+            { "DEVPKEY_Device_LastArrivalDate", new() { fmtid = new("83DA6326-97A6-4088-9453-A1923F573B29"), pid = 102 }},
+            { "DEVPKEY_Device_LastRemovalDate", new() { fmtid = new("83DA6326-97A6-4088-9453-A1923F573B29"), pid = 103 }},
+            { "DEVPKEY_Device_DriverDate", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 2 }},
+            { "DEVPKEY_Device_DriverVersion", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 3 }},
+            { "DEVPKEY_Device_DriverDesc", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 4 }},
+            { "DEVPKEY_Device_DriverInfPath", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 5 }},
+            { "DEVPKEY_Device_DriverInfSection", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 6 }},
+            { "DEVPKEY_Device_DriverInfSectionExt", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 7 }},
+            { "DEVPKEY_Device_MatchingDeviceId", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 8 }},
+            { "DEVPKEY_Device_DriverProvider", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 9 }},
+            { "DEVPKEY_Device_DriverPropPageProvider", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 10 }},
+            { "DEVPKEY_Device_DriverCoInstallers", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 11 }},
+            { "DEVPKEY_Device_ResourcePickerTags", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 12 }},
+            { "DEVPKEY_Device_ResourcePickerExceptions", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 13 }},
+            { "DEVPKEY_Device_DriverRank", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 14 }},
+            { "DEVPKEY_Device_DriverLogoLevel", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 15 }},
+            { "DEVPKEY_Device_NoConnectSound", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 17 }},
+            { "DEVPKEY_Device_GenericDriverInstalled", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 18 }},
+            { "DEVPKEY_Device_AdditionalSoftwareRequested", new() { fmtid = new("A8B865DD-2E3D-4094-AD97-E593A70C75D6"), pid = 19 }},
+            { "DEVPKEY_Device_SafeRemovalRequired", new() { fmtid = new("AFD97640-86A3-4210-B67C-289C41AABE55"), pid = 2 }},
+            { "DEVPKEY_Device_SafeRemovalRequiredOverride", new() { fmtid = new("AFD97640-86A3-4210-B67C-289C41AABE55"), pid = 3 }},
+            { "DEVPKEY_DrvPkg_Model", new() { fmtid = new("CF73BB51-3ABF-44A2-85E0-9A3DC7A12132"), pid = 2 }},
+            { "DEVPKEY_DrvPkg_VendorWebSite", new() { fmtid = new("CF73BB51-3ABF-44A2-85E0-9A3DC7A12132"), pid = 3 }},
+            { "DEVPKEY_DrvPkg_DetailedDescription", new() { fmtid = new("CF73BB51-3ABF-44A2-85E0-9A3DC7A12132"), pid = 4 }},
+            { "DEVPKEY_DrvPkg_DocumentationLink", new() { fmtid = new("CF73BB51-3ABF-44A2-85E0-9A3DC7A12132"), pid = 5 }},
+            { "DEVPKEY_DrvPkg_Icon", new() { fmtid = new("CF73BB51-3ABF-44A2-85E0-9A3DC7A12132"), pid = 6 }},
+            { "DEVPKEY_DrvPkg_BrandingIcon", new() { fmtid = new("CF73BB51-3ABF-44A2-85E0-9A3DC7A12132"), pid = 7 }},
+            { "DEVPKEY_DeviceClass_UpperFilters", new() { fmtid = new("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 19 }},
+            { "DEVPKEY_DeviceClass_LowerFilters", new() { fmtid = new("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 20 }},
+            { "DEVPKEY_DeviceClass_Security", new() { fmtid = new("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 25 }},
+            { "DEVPKEY_DeviceClass_SecuritySDS", new() { fmtid = new("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 26 }},
+            { "DEVPKEY_DeviceClass_DevType", new() { fmtid = new("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 27 }},
+            { "DEVPKEY_DeviceClass_Exclusive", new() { fmtid = new("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 28 }},
+            { "DEVPKEY_DeviceClass_Characteristics", new() { fmtid = new("4321918B-F69E-470D-A5DE-4D88C75AD24B"), pid = 29 }},
+            { "DEVPKEY_DeviceClass_Name", new() { fmtid = new("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 2 }},
+            { "DEVPKEY_DeviceClass_ClassName", new() { fmtid = new("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 3 }},
+            { "DEVPKEY_DeviceClass_Icon", new() { fmtid = new("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 4 }},
+            { "DEVPKEY_DeviceClass_ClassInstaller", new() { fmtid = new("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 5 }},
+            { "DEVPKEY_DeviceClass_PropPageProvider", new() { fmtid = new("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 6 }},
+            { "DEVPKEY_DeviceClass_NoInstallClass", new() { fmtid = new("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 7 }},
+            { "DEVPKEY_DeviceClass_NoDisplayClass", new() { fmtid = new("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 8 }},
+            { "DEVPKEY_DeviceClass_SilentInstall", new() { fmtid = new("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 9 }},
+            { "DEVPKEY_DeviceClass_NoUseClass", new() { fmtid = new("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 10 }},
+            { "DEVPKEY_DeviceClass_DefaultService", new() { fmtid = new("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 11 }},
+            { "DEVPKEY_DeviceClass_IconPath", new() { fmtid = new("259ABFFC-50A7-47CE-AF08-68C9A7D73366"), pid = 12 }},
+            { "DEVPKEY_DeviceClass_DHPRebalanceOptOut", new() { fmtid = new("D14D3EF3-66CF-4BA2-9D38-0DDB37AB4701"), pid = 2 }},
+            { "DEVPKEY_DeviceClass_ClassCoInstallers", new() { fmtid = new("713D1703-A2E2-49F5-9214-56472EF3DA5C"), pid = 2 }},
+            { "DEVPKEY_DeviceInterface_FriendlyName", new() { fmtid = new("026E516E-B814-414B-83CD-856D6FEF4822"), pid = 2 }},
+            { "DEVPKEY_DeviceInterface_Enabled", new() { fmtid = new("026E516E-B814-414B-83CD-856D6FEF4822"), pid = 3 }},
+            { "DEVPKEY_DeviceInterface_ClassGuid", new() { fmtid = new("026E516E-B814-414B-83CD-856D6FEF4822"), pid = 4 }},
+            { "DEVPKEY_DeviceInterface_ReferenceString", new() { fmtid = new("026E516E-B814-414B-83CD-856D6FEF4822"), pid = 5 }},
+            { "DEVPKEY_DeviceInterface_Restricted", new() { fmtid = new("026E516E-B814-414B-83CD-856D6FEF4822"), pid = 6 }},
+            { "DEVPKEY_DeviceInterfaceClass_DefaultInterface", new() { fmtid = new("14C83A99-0B3F-44B7-BE4C-A178D3990564"), pid = 2 }},
+            { "DEVPKEY_DeviceInterfaceClass_Name", new() { fmtid = new("14C83A99-0B3F-44B7-BE4C-A178D3990564"), pid = 3 }},
+            { "DEVPKEY_Device_Model", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 39 }},
+            { "DEVPKEY_DeviceContainer_Address", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 51 }},
+            { "DEVPKEY_DeviceContainer_DiscoveryMethod", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 52 }},
+            { "DEVPKEY_DeviceContainer_IsEncrypted", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 53 }},
+            { "DEVPKEY_DeviceContainer_IsAuthenticated", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 54 }},
+            { "DEVPKEY_DeviceContainer_IsConnected", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 55 }},
+            { "DEVPKEY_DeviceContainer_IsPaired", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 56 }},
+            { "DEVPKEY_DeviceContainer_Icon", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 57 }},
+            { "DEVPKEY_DeviceContainer_Version", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 65 }},
+            { "DEVPKEY_DeviceContainer_Last_Seen", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 66 }},
+            { "DEVPKEY_DeviceContainer_Last_Connected", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 67 }},
+            { "DEVPKEY_DeviceContainer_IsShowInDisconnectedState", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 68 }},
+            { "DEVPKEY_DeviceContainer_IsLocalMachine", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 70 }},
+            { "DEVPKEY_DeviceContainer_MetadataPath", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 71 }},
+            { "DEVPKEY_DeviceContainer_IsMetadataSearchInProgress", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 72 }},
+            { "DEVPKEY_DeviceContainer_MetadataChecksum", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 73 }},
+            { "DEVPKEY_DeviceContainer_IsNotInterestingForDisplay", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 74 }},
+            { "DEVPKEY_DeviceContainer_LaunchDeviceStageOnDeviceConnect", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 76 }},
+            { "DEVPKEY_DeviceContainer_LaunchDeviceStageFromExplorer", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 77 }},
+            { "DEVPKEY_DeviceContainer_BaselineExperienceId", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 78 }},
+            { "DEVPKEY_DeviceContainer_IsDeviceUniquelyIdentifiable", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 79 }},
+            { "DEVPKEY_DeviceContainer_AssociationArray", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 80 }},
+            { "DEVPKEY_DeviceContainer_DeviceDescription1", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 81 }},
+            { "DEVPKEY_DeviceContainer_DeviceDescription2", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 82 }},
+            { "DEVPKEY_DeviceContainer_HasProblem", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 83 }},
+            { "DEVPKEY_DeviceContainer_IsSharedDevice", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 84 }},
+            { "DEVPKEY_DeviceContainer_IsNetworkDevice", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 85 }},
+            { "DEVPKEY_DeviceContainer_IsDefaultDevice", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 86 }},
+            { "DEVPKEY_DeviceContainer_MetadataCabinet", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 87 }},
+            { "DEVPKEY_DeviceContainer_RequiresPairingElevation", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 88 }},
+            { "DEVPKEY_DeviceContainer_ExperienceId", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 89 }},
+            { "DEVPKEY_DeviceContainer_Category", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 90 }},
+            { "DEVPKEY_DeviceContainer_Category_Desc_Singular", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 91 }},
+            { "DEVPKEY_DeviceContainer_Category_Desc_Plural", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 92 }},
+            { "DEVPKEY_DeviceContainer_Category_Icon", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 93 }},
+            { "DEVPKEY_DeviceContainer_CategoryGroup_Desc", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 94 }},
+            { "DEVPKEY_DeviceContainer_CategoryGroup_Icon", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 95 }},
+            { "DEVPKEY_DeviceContainer_PrimaryCategory", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 97 }},
+            { "DEVPKEY_DeviceContainer_UnpairUninstall", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 98 }},
+            { "DEVPKEY_DeviceContainer_RequiresUninstallElevation", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 99 }},
+            { "DEVPKEY_DeviceContainer_DeviceFunctionSubRank", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 100 }},
+            { "DEVPKEY_DeviceContainer_AlwaysShowDeviceAsConnected", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 101 }},
+            { "DEVPKEY_DeviceContainer_ConfigFlags", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 105 }},
+            { "DEVPKEY_DeviceContainer_PrivilegedPackageFamilyNames", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 106 }},
+            { "DEVPKEY_DeviceContainer_CustomPrivilegedPackageFamilyNames", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 107 }},
+            { "DEVPKEY_DeviceContainer_IsRebootRequired", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 108 }},
+            { "DEVPKEY_Device_InstanceId", new() { fmtid = new("78C34FC8-104A-4ACA-9EA4-524D52996E57"), pid = 256 }},
+            { "DEVPKEY_DeviceContainer_FriendlyName", new() { fmtid = new("656A3BB3-ECC0-43FD-8477-4AE0404A96CD"), pid = 12288 }},
+            { "DEVPKEY_DeviceContainer_Manufacturer", new() { fmtid = new("656A3BB3-ECC0-43FD-8477-4AE0404A96CD"), pid = 8192 }},
+            { "DEVPKEY_DeviceContainer_ModelName", new() { fmtid = new("656A3BB3-ECC0-43FD-8477-4AE0404A96CD"), pid = 8194 }},
+            { "DEVPKEY_DeviceContainer_ModelNumber", new() { fmtid = new("656A3BB3-ECC0-43FD-8477-4AE0404A96CD"), pid = 8195 }},
+            { "DEVPKEY_DeviceContainer_InstallInProgress", new() { fmtid = new("83DA6326-97A6-4088-9453-A1923F573B29"), pid = 9 }}
         };
 
         private string _driverDescription = string.Empty;
@@ -250,7 +250,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_driverDescription, value))
                 {
                     _driverDescription = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DriverDescription)));
+                    PropertyChanged?.Invoke(this, new(nameof(DriverDescription)));
                 }
             }
         }
@@ -266,7 +266,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_driverPaneKind, value))
                 {
                     _driverPaneKind = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DriverPaneKind)));
+                    PropertyChanged?.Invoke(this, new(nameof(DriverPaneKind)));
                 }
             }
         }
@@ -282,7 +282,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_driverResultKind, value))
                 {
                     _driverResultKind = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DriverResultKind)));
+                    PropertyChanged?.Invoke(this, new(nameof(DriverResultKind)));
                 }
             }
         }
@@ -298,7 +298,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_driverFailedContent, value))
                 {
                     _driverFailedContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DriverFailedContent)));
+                    PropertyChanged?.Invoke(this, new(nameof(DriverFailedContent)));
                 }
             }
         }
@@ -314,7 +314,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_searchText, value))
                 {
                     _searchText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SearchText)));
+                    PropertyChanged?.Invoke(this, new(nameof(SearchText)));
                 }
             }
         }
@@ -330,7 +330,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isIncrease, value))
                 {
                     _isIncrease = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsIncrease)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsIncrease)));
                 }
             }
         }
@@ -346,7 +346,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedRule, value))
                 {
                     _selectedRule = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedRule)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedRule)));
                 }
             }
         }
@@ -414,7 +414,7 @@ namespace PowerToolbox.Views.Pages
             {
                 DriverResultKind = DriverResultKind.Operating;
                 Guid driverOperationGuid = Guid.NewGuid();
-                DriverOperationCollection.Add(new DriverOperationModel
+                DriverOperationCollection.Add(new()
                 {
                     DriverInfName = driver.DriverInfName,
                     DriverOperation = DeletingDriverString,
@@ -465,7 +465,7 @@ namespace PowerToolbox.Views.Pages
             {
                 DriverResultKind = DriverResultKind.Operating;
                 Guid driverOperationGuid = Guid.NewGuid();
-                DriverOperationCollection.Add(new DriverOperationModel
+                DriverOperationCollection.Add(new()
                 {
                     DriverInfName = driver.DriverInfName,
                     DriverOperation = ForceDeletingDriverString,
@@ -785,7 +785,7 @@ namespace PowerToolbox.Views.Pages
                     foreach (string fileName in openFileDialog.FileNames)
                     {
                         Guid driverOperationGuid = Guid.NewGuid();
-                        DriverOperationCollection.Add(new DriverOperationModel
+                        DriverOperationCollection.Add(new()
                         {
                             DriverInfName = Path.GetFileName(fileName),
                             DriverOperation = AddingDriverString,
@@ -878,7 +878,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         Guid driverOperationGuid = Guid.NewGuid();
 
-                        DriverOperationCollection.Add(new DriverOperationModel
+                        DriverOperationCollection.Add(new()
                         {
                             DriverInfName = Path.GetFileName(fileName),
                             DriverOperation = AddInstallingDriverString,
@@ -991,7 +991,7 @@ namespace PowerToolbox.Views.Pages
                 foreach (DriverModel driverItem in selectedDriverList)
                 {
                     Guid driverOperationGuid = Guid.NewGuid();
-                    DriverOperationCollection.Add(new DriverOperationModel
+                    DriverOperationCollection.Add(new()
                     {
                         DriverInfName = driverItem.DriverInfName,
                         DriverOperation = DeletingDriverString,
@@ -1087,7 +1087,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     Guid driverOperationGuid = Guid.NewGuid();
 
-                    DriverOperationCollection.Add(new DriverOperationModel
+                    DriverOperationCollection.Add(new()
                     {
                         DriverInfName = driverItem.DriverInfName,
                         DriverOperation = ForceDeletingDriverString,
@@ -1597,13 +1597,13 @@ namespace PowerToolbox.Views.Pages
 
                         if (deviceGuid is not null && deviceDesc is not null && driverInfPath is not null && driverDate is not null && driverVersion is not null)
                         {
-                            systemDriverInformationList.Add(new SystemDriverInformation()
+                            systemDriverInformationList.Add(new()
                             {
                                 DeviceGuid = deviceGuid is null ? Guid.NewGuid() : Guid.TryParse(Convert.ToString(deviceGuid), out Guid guid) ? guid : Guid.NewGuid(),
                                 Description = Convert.ToString(deviceDesc),
                                 InfPath = Convert.ToString(driverInfPath),
                                 Date = (DateTimeOffset)driverDate,
-                                Version = new Version(Convert.ToString(driverVersion))
+                                Version = new(Convert.ToString(driverVersion))
                             });
                         }
                     }
@@ -1621,7 +1621,7 @@ namespace PowerToolbox.Views.Pages
                         DriverOEMInfName = pnpDriverInformationItem.DriverName,
                         DriverManufacturer = pnpDriverInformationItem.ProviderName,
                         DriverDate = DateTimeOffset.Parse(pnpDriverInformationItem.DriverDate),
-                        DriverVersion = new Version(pnpDriverInformationItem.DriverVersion),
+                        DriverVersion = new(pnpDriverInformationItem.DriverVersion),
                         DriverSize = string.IsNullOrEmpty(driverLocation) ? "0B" : VolumeSizeHelper.ConvertVolumeSizeToString(GetFolderSize(Path.GetDirectoryName(driverLocation))),
                         DriverLocation = driverLocation,
                         DriverType = pnpDriverInformationItem.ClassName,
@@ -1816,7 +1816,7 @@ namespace PowerToolbox.Views.Pages
                                     byteBuffer[index] = Marshal.ReadByte(propertyBufferPtr + index);
                                 }
 
-                                key.fmtid = new Guid(byteBuffer);
+                                key.fmtid = new(byteBuffer);
                                 key.pid = Convert.ToUInt32(Marshal.ReadInt32(propertyBufferPtr, 16));
                                 value = key;
                                 break;

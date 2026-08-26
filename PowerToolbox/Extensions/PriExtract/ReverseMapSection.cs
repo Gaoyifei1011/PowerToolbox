@@ -28,7 +28,7 @@ namespace PowerToolbox.Extensions.PriExtract
         {
             SectionIdentifier = sectionIdentifier;
 
-            if (!string.Equals(new string(binaryReader.ReadChars(16)), sectionIdentifier))
+            if (!string.Equals(new(binaryReader.ReadChars(16)), sectionIdentifier))
             {
                 throw new InvalidDataException("Unexpected section identifier.");
             }
@@ -126,7 +126,7 @@ namespace PowerToolbox.Extensions.PriExtract
                         throw new InvalidDataException();
                     }
 
-                    scopesArray[index] = new ResourceMapScopeAndItem()
+                    scopesArray[index] = new()
                     {
                         Index = index,
                         Parent = null,
@@ -140,7 +140,7 @@ namespace PowerToolbox.Extensions.PriExtract
                         throw new InvalidDataException();
                     }
 
-                    itemsArray[index] = new ResourceMapScopeAndItem()
+                    itemsArray[index] = new()
                     {
                         Index = index,
                         Parent = null,

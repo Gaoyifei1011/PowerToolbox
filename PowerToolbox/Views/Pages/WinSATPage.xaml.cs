@@ -45,7 +45,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_processorSubScore, value))
                 {
                     _processorSubScore = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ProcessorSubScore)));
+                    PropertyChanged?.Invoke(this, new(nameof(ProcessorSubScore)));
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_memorySubScore, value))
                 {
                     _memorySubScore = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MemorySubScore)));
+                    PropertyChanged?.Invoke(this, new(nameof(MemorySubScore)));
                 }
             }
         }
@@ -77,7 +77,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_graphicsSubScore, value))
                 {
                     _graphicsSubScore = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GraphicsSubScore)));
+                    PropertyChanged?.Invoke(this, new(nameof(GraphicsSubScore)));
                 }
             }
         }
@@ -93,7 +93,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_gamingGraphicsSubScore, value))
                 {
                     _gamingGraphicsSubScore = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GamingGraphicsSubScore)));
+                    PropertyChanged?.Invoke(this, new(nameof(GamingGraphicsSubScore)));
                 }
             }
         }
@@ -109,7 +109,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_primaryDiskSubScore, value))
                 {
                     _primaryDiskSubScore = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PrimaryDiskSubScore)));
+                    PropertyChanged?.Invoke(this, new(nameof(PrimaryDiskSubScore)));
                 }
             }
         }
@@ -125,7 +125,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_basicScore, value))
                 {
                     _basicScore = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BasicScore)));
+                    PropertyChanged?.Invoke(this, new(nameof(BasicScore)));
                 }
             }
         }
@@ -141,7 +141,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_basicScoreExisted, value))
                 {
                     _basicScoreExisted = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BasicScoreExisted)));
+                    PropertyChanged?.Invoke(this, new(nameof(BasicScoreExisted)));
                 }
             }
         }
@@ -157,7 +157,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isNotRunningAssessment, value))
                 {
                     _isNotRunningAssessment = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsNotRunningAssessment)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsNotRunningAssessment)));
                 }
             }
         }
@@ -173,7 +173,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_resultSeverity, value))
                 {
                     _resultSeverity = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultSeverity)));
+                    PropertyChanged?.Invoke(this, new(nameof(ResultSeverity)));
                 }
             }
         }
@@ -189,7 +189,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_resultMessage, value))
                 {
                     _resultMessage = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultMessage)));
+                    PropertyChanged?.Invoke(this, new(nameof(ResultMessage)));
                 }
             }
         }
@@ -229,7 +229,7 @@ namespace PowerToolbox.Views.Pages
             IsNotRunningAssessment = false;
             try
             {
-                cWinSATCallbacks = new CWinSATCallbacks();
+                cWinSATCallbacks = new();
 
                 if (cWinSATCallbacks is not null)
                 {

@@ -127,7 +127,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedIndex, value))
                 {
                     _selectedIndex = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedIndex)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedIndex)));
                 }
             }
         }
@@ -143,7 +143,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_decryptFile, value))
                 {
                     _decryptFile = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DecryptFile)));
+                    PropertyChanged?.Invoke(this, new(nameof(DecryptFile)));
                 }
             }
         }
@@ -159,7 +159,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_decryptContent, value))
                 {
                     _decryptContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DecryptContent)));
+                    PropertyChanged?.Invoke(this, new(nameof(DecryptContent)));
                 }
             }
         }
@@ -175,7 +175,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_resultSeverity, value))
                 {
                     _resultSeverity = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultSeverity)));
+                    PropertyChanged?.Invoke(this, new(nameof(ResultSeverity)));
                 }
             }
         }
@@ -191,7 +191,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_resultMessage, value))
                 {
                     _resultMessage = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ResultMessage)));
+                    PropertyChanged?.Invoke(this, new(nameof(ResultMessage)));
                 }
             }
         }
@@ -207,7 +207,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_decryptFailedInformation, value))
                 {
                     _decryptFailedInformation = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DecryptFailedInformation)));
+                    PropertyChanged?.Invoke(this, new(nameof(DecryptFailedInformation)));
                 }
             }
         }
@@ -223,7 +223,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedDataDecryptType, value))
                 {
                     _selectedDataDecryptType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedDataDecryptType)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedDataDecryptType)));
                 }
             }
         }
@@ -239,7 +239,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hasDecryptOptions, value))
                 {
                     _hasDecryptOptions = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasDecryptOptions)));
+                    PropertyChanged?.Invoke(this, new(nameof(HasDecryptOptions)));
                 }
             }
         }
@@ -255,7 +255,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hasDecryptKey, value))
                 {
                     _hasDecryptKey = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasDecryptKey)));
+                    PropertyChanged?.Invoke(this, new(nameof(HasDecryptKey)));
                 }
             }
         }
@@ -271,7 +271,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hasDecryptKeyStringType, value))
                 {
                     _hasDecryptKeyStringType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasDecryptKeyStringType)));
+                    PropertyChanged?.Invoke(this, new(nameof(HasDecryptKeyStringType)));
                 }
             }
         }
@@ -287,7 +287,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedDecryptKeyStringType, value))
                 {
                     _selectedDecryptKeyStringType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedDecryptKeyStringType)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedDecryptKeyStringType)));
                 }
             }
         }
@@ -303,7 +303,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_decryptKeyPHText, value))
                 {
                     _decryptKeyPHText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DecryptKeyPHText)));
+                    PropertyChanged?.Invoke(this, new(nameof(DecryptKeyPHText)));
                 }
             }
         }
@@ -319,7 +319,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_decryptKeyText, value))
                 {
                     _decryptKeyText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DecryptKeyText)));
+                    PropertyChanged?.Invoke(this, new(nameof(DecryptKeyText)));
                 }
             }
         }
@@ -335,7 +335,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hasInitializationVector, value))
                 {
                     _hasInitializationVector = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasInitializationVector)));
+                    PropertyChanged?.Invoke(this, new(nameof(HasInitializationVector)));
                 }
             }
         }
@@ -351,7 +351,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_initializationVectorPHText, value))
                 {
                     _initializationVectorPHText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InitializationVectorPHText)));
+                    PropertyChanged?.Invoke(this, new(nameof(InitializationVectorPHText)));
                 }
             }
         }
@@ -367,7 +367,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_initializationVectorText, value))
                 {
                     _initializationVectorText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InitializationVectorText)));
+                    PropertyChanged?.Invoke(this, new(nameof(InitializationVectorText)));
                 }
             }
         }
@@ -383,7 +383,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedInitializationVectorStringType, value))
                 {
                     _selectedInitializationVectorStringType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedInitializationVectorStringType)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedInitializationVectorStringType)));
                 }
             }
         }
@@ -399,7 +399,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hasDecryptedBlockCipherMode, value))
                 {
                     _hasDecryptedBlockCipherMode = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasDecryptedBlockCipherMode)));
+                    PropertyChanged?.Invoke(this, new(nameof(HasDecryptedBlockCipherMode)));
                 }
             }
         }
@@ -415,7 +415,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedDecryptedBlockCipherMode, value))
                 {
                     _selectedDecryptedBlockCipherMode = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedDecryptedBlockCipherMode)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedDecryptedBlockCipherMode)));
                 }
             }
         }
@@ -431,7 +431,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hasPaddingMode, value))
                 {
                     _hasPaddingMode = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasPaddingMode)));
+                    PropertyChanged?.Invoke(this, new(nameof(HasPaddingMode)));
                 }
             }
         }
@@ -447,7 +447,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedPaddingMode, value))
                 {
                     _selectedPaddingMode = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedPaddingMode)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedPaddingMode)));
                 }
             }
         }
@@ -463,7 +463,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hasOffset, value))
                 {
                     _hasOffset = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasOffset)));
+                    PropertyChanged?.Invoke(this, new(nameof(HasOffset)));
                 }
             }
         }
@@ -479,7 +479,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_offset, value))
                 {
                     _offset = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Offset)));
+                    PropertyChanged?.Invoke(this, new(nameof(Offset)));
                 }
             }
         }
@@ -495,7 +495,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hasDecryptPrivateKey, value))
                 {
                     _hasDecryptPrivateKey = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasDecryptPrivateKey)));
+                    PropertyChanged?.Invoke(this, new(nameof(HasDecryptPrivateKey)));
                 }
             }
         }
@@ -511,7 +511,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_decryptPrivateKeyText, value))
                 {
                     _decryptPrivateKeyText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DecryptPrivateKeyText)));
+                    PropertyChanged?.Invoke(this, new(nameof(DecryptPrivateKeyText)));
                 }
             }
         }
@@ -527,7 +527,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hasRSAEncryptionPaddingMode, value))
                 {
                     _hasRSAEncryptionPaddingMode = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasRSAEncryptionPaddingMode)));
+                    PropertyChanged?.Invoke(this, new(nameof(HasRSAEncryptionPaddingMode)));
                 }
             }
         }
@@ -543,7 +543,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedRSAEncryptionPaddingMode, value))
                 {
                     _selectedRSAEncryptionPaddingMode = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedRSAEncryptionPaddingMode)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedRSAEncryptionPaddingMode)));
                 }
             }
         }
@@ -559,7 +559,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hasParseAsTextData, value))
                 {
                     _hasParseAsTextData = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasParseAsTextData)));
+                    PropertyChanged?.Invoke(this, new(nameof(HasParseAsTextData)));
                 }
             }
         }
@@ -575,7 +575,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_parseAsTextData, value))
                 {
                     _parseAsTextData = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ParseAsTextData)));
+                    PropertyChanged?.Invoke(this, new(nameof(ParseAsTextData)));
                 }
             }
         }
@@ -591,7 +591,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedTextEncodingType, value))
                 {
                     _selectedTextEncodingType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTextEncodingType)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedTextEncodingType)));
                 }
             }
         }
@@ -607,7 +607,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_textDecodingCustomTypeText, value))
                 {
                     _textDecodingCustomTypeText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TextEncodingCustomTypeText)));
+                    PropertyChanged?.Invoke(this, new(nameof(TextEncodingCustomTypeText)));
                 }
             }
         }
@@ -623,7 +623,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_saveDecryptedDataToLocalFile, value))
                 {
                     _saveDecryptedDataToLocalFile = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SaveDecryptedDataToLocalFile)));
+                    PropertyChanged?.Invoke(this, new(nameof(SaveDecryptedDataToLocalFile)));
                 }
             }
         }
@@ -639,7 +639,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_saveDecryptedFilePath, value))
                 {
                     _saveDecryptedFilePath = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SaveDecryptedFilePath)));
+                    PropertyChanged?.Invoke(this, new(nameof(SaveDecryptedFilePath)));
                 }
             }
         }
@@ -655,7 +655,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isDecrypting, value))
                 {
                     _isDecrypting = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsDecrypting)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsDecrypting)));
                 }
             }
         }
@@ -671,7 +671,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_decryptResult, value))
                 {
                     _decryptResult = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DecryptResult)));
+                    PropertyChanged?.Invoke(this, new(nameof(DecryptResult)));
                 }
             }
         }
@@ -687,7 +687,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isLargeContent, value))
                 {
                     _isLargeContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLargeContent)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsLargeContent)));
                 }
             }
         }
@@ -703,7 +703,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isBinaryFile, value))
                 {
                     _isBinaryFile = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsBinaryFile)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsBinaryFile)));
                 }
             }
         }
@@ -727,109 +727,109 @@ namespace PowerToolbox.Views.Pages
         public DataDecryptPage()
         {
             InitializeComponent();
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.AES,
                 Name = AESString
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.CaesarCipher,
                 Name = CaesarCipherString
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.ChaCha20,
                 Name = ChaCha20String
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.DES,
                 Name = DESString
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.MorseCode,
                 Name = MorseCodeString
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.Rabbit,
                 Name = RabbitString
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.RC2,
                 Name = RC2String
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.RC4,
                 Name = RC4String
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.RC5,
                 Name = RC5String
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.RC6,
                 Name = RC6String
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.Rijndael,
                 Name = RijndaelString
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.RSA,
                 Name = RSAString
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.SM4,
                 Name = SM4String
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.TripleDES,
                 Name = TripleDESString
             });
-            DataDecryptTypeList.Add(new DataDecryptTypeModel()
+            DataDecryptTypeList.Add(new()
             {
                 DataDecryptType = DataDecryptType.XOR,
                 Name = XORString
             });
             SelectedDataDecryptType = DataDecryptTypeList[0];
-            DecryptKeyStringTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
-            DecryptKeyStringTypeList.Add(new ComboBoxItemModel() { SelectedValue = "Base64", DisplayMember = Base64String });
-            InitializationVectorStringTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
-            InitializationVectorStringTypeList.Add(new ComboBoxItemModel() { SelectedValue = "Base64", DisplayMember = Base64String });
-            DecryptedBlockCipherModeList.Add(new ComboBoxItemModel() { SelectedValue = CipherMode.CBC, DisplayMember = CBCString });
-            DecryptedBlockCipherModeList.Add(new ComboBoxItemModel() { SelectedValue = CipherMode.ECB, DisplayMember = ECBString });
-            DecryptedBlockCipherModeList.Add(new ComboBoxItemModel() { SelectedValue = CipherMode.OFB, DisplayMember = OFBString });
-            DecryptedBlockCipherModeList.Add(new ComboBoxItemModel() { SelectedValue = CipherMode.CFB, DisplayMember = CFBString });
-            DecryptedBlockCipherModeList.Add(new ComboBoxItemModel() { SelectedValue = CipherMode.CTS, DisplayMember = CTSString });
-            PaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = PaddingMode.None, DisplayMember = NonePaddingString });
-            PaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = PaddingMode.PKCS7, DisplayMember = Pkcs7String });
-            PaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = PaddingMode.Zeros, DisplayMember = ZerosString });
-            PaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = PaddingMode.ANSIX923, DisplayMember = ANSIX923String });
-            PaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = PaddingMode.ISO10126, DisplayMember = ISO10126String });
-            RSAEncryptionPaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = RSAEncryptionPaddingMode.Pkcs1, DisplayMember = Pkcs1String });
-            RSAEncryptionPaddingModeList.Add(new ComboBoxItemModel() { SelectedValue = RSAEncryptionPaddingMode.Oaep, DisplayMember = OaepString });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.ASCII), DisplayMember = ASCIIString });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.BigEndianUnicode), DisplayMember = BigEndianUnicodeString });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "ISO-8859-1", DisplayMember = ISO88591String });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "GB18030", DisplayMember = GB18030String });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "GB2312", DisplayMember = GB2312String });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "GBK", DisplayMember = GBKString });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.Unicode), DisplayMember = UnicodeString });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF32), DisplayMember = UTF32String });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF7), DisplayMember = UTF7String });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
-            TextEncodingTypeList.Add(new ComboBoxItemModel() { SelectedValue = "Custom", DisplayMember = CustomString });
+            DecryptKeyStringTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
+            DecryptKeyStringTypeList.Add(new() { SelectedValue = "Base64", DisplayMember = Base64String });
+            InitializationVectorStringTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
+            InitializationVectorStringTypeList.Add(new() { SelectedValue = "Base64", DisplayMember = Base64String });
+            DecryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.CBC, DisplayMember = CBCString });
+            DecryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.ECB, DisplayMember = ECBString });
+            DecryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.OFB, DisplayMember = OFBString });
+            DecryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.CFB, DisplayMember = CFBString });
+            DecryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.CTS, DisplayMember = CTSString });
+            PaddingModeList.Add(new() { SelectedValue = PaddingMode.None, DisplayMember = NonePaddingString });
+            PaddingModeList.Add(new() { SelectedValue = PaddingMode.PKCS7, DisplayMember = Pkcs7String });
+            PaddingModeList.Add(new() { SelectedValue = PaddingMode.Zeros, DisplayMember = ZerosString });
+            PaddingModeList.Add(new() { SelectedValue = PaddingMode.ANSIX923, DisplayMember = ANSIX923String });
+            PaddingModeList.Add(new() { SelectedValue = PaddingMode.ISO10126, DisplayMember = ISO10126String });
+            RSAEncryptionPaddingModeList.Add(new() { SelectedValue = RSAEncryptionPaddingMode.Pkcs1, DisplayMember = Pkcs1String });
+            RSAEncryptionPaddingModeList.Add(new() { SelectedValue = RSAEncryptionPaddingMode.Oaep, DisplayMember = OaepString });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.ASCII), DisplayMember = ASCIIString });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.BigEndianUnicode), DisplayMember = BigEndianUnicodeString });
+            TextEncodingTypeList.Add(new() { SelectedValue = "ISO-8859-1", DisplayMember = ISO88591String });
+            TextEncodingTypeList.Add(new() { SelectedValue = "GB18030", DisplayMember = GB18030String });
+            TextEncodingTypeList.Add(new() { SelectedValue = "GB2312", DisplayMember = GB2312String });
+            TextEncodingTypeList.Add(new() { SelectedValue = "GBK", DisplayMember = GBKString });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.Unicode), DisplayMember = UnicodeString });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF32), DisplayMember = UTF32String });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF7), DisplayMember = UTF7String });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
+            TextEncodingTypeList.Add(new() { SelectedValue = "Custom", DisplayMember = CustomString });
             SelectedTextEncodingType = TextEncodingTypeList[9];
 
             SelectedIndex = 0;

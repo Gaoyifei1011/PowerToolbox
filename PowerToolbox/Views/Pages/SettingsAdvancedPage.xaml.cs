@@ -33,7 +33,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isRestarting, value))
                 {
                     _isRestarting = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRestarting)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsRestarting)));
                 }
             }
         }
@@ -49,7 +49,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_fileShellMenu, value))
                 {
                     _fileShellMenu = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileShellMenu)));
+                    PropertyChanged?.Invoke(this, new(nameof(FileShellMenu)));
                 }
             }
         }

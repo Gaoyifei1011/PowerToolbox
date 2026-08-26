@@ -19,7 +19,7 @@ namespace PowerToolbox.Extensions.DataType.Class
 
         public void Execute(object parameter)
         {
-            ExecuteRequested?.Invoke(this, new ExecuteRequestedEventArgs(parameter));
+            ExecuteRequested?.Invoke(this, new(parameter));
         }
 
         event EventHandler<object> Microsoft.UI.Xaml.Input.ICommand.CanExecuteChanged

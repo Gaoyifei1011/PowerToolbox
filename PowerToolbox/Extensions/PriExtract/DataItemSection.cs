@@ -19,7 +19,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
         public DataItemSection(string sectionIdentifier, BinaryReader binaryReader)
         {
-            if (!string.Equals(new string(binaryReader.ReadChars(16)), sectionIdentifier))
+            if (!string.Equals(new(binaryReader.ReadChars(16)), sectionIdentifier))
             {
                 throw new InvalidDataException("Unexpected section identifier.");
             }
@@ -56,7 +56,7 @@ namespace PowerToolbox.Extensions.PriExtract
             {
                 ushort stringOffset = binaryReader.ReadUInt16();
                 ushort stringLength = binaryReader.ReadUInt16();
-                dataItemsList.Add(new ByteSpan()
+                dataItemsList.Add(new()
                 {
                     Offset = sectionPosition + dataStartOffset + stringOffset,
                     Length = stringLength
@@ -67,7 +67,7 @@ namespace PowerToolbox.Extensions.PriExtract
             {
                 uint blobOffset = binaryReader.ReadUInt32();
                 uint blobLength = binaryReader.ReadUInt32();
-                dataItemsList.Add(new ByteSpan()
+                dataItemsList.Add(new()
                 {
                     Offset = sectionPosition + dataStartOffset + blobOffset,
                     Length = blobLength

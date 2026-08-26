@@ -126,7 +126,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedItem, value))
                 {
                     _selectedItem = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedItem)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
                 }
             }
         }
@@ -142,7 +142,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_windowsUpdateVersion, value))
                 {
                     _windowsUpdateVersion = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WindowsUpdateVersion)));
+                    PropertyChanged?.Invoke(this, new(nameof(WindowsUpdateVersion)));
                 }
             }
         }
@@ -158,7 +158,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_wuapiDllVersion, value))
                 {
                     _wuapiDllVersion = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WuapiDllVersion)));
+                    PropertyChanged?.Invoke(this, new(nameof(WuapiDllVersion)));
                 }
             }
         }
@@ -174,7 +174,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isCheckUpdateEnabled, value))
                 {
                     _isCheckUpdateEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCheckUpdateEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsCheckUpdateEnabled)));
                 }
             }
         }
@@ -190,7 +190,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isChecking, value))
                 {
                     _isChecking = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsChecking)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsChecking)));
                 }
             }
         }
@@ -206,7 +206,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isAvailableHideEnabled, value))
                 {
                     _isAvailableHideEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAvailableHideEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsAvailableHideEnabled)));
                 }
             }
         }
@@ -222,7 +222,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isAvailableInstallEnabled, value))
                 {
                     _isAvailableInstallEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAvailableInstallEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsAvailableInstallEnabled)));
                 }
             }
         }
@@ -238,7 +238,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isAvailableCancelInstallEnabled, value))
                 {
                     _isAvailableCancelInstallEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAvailableCancelInstallEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsAvailableCancelInstallEnabled)));
                 }
             }
         }
@@ -254,7 +254,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isInstalledUninstallEnabled, value))
                 {
                     _isInstalledUninstallEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsInstalledUninstallEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsInstalledUninstallEnabled)));
                 }
             }
         }
@@ -270,7 +270,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isInstalledCancelInstallEnabled, value))
                 {
                     _isInstalledCancelInstallEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsInstalledCancelInstallEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsInstalledCancelInstallEnabled)));
                 }
             }
         }
@@ -286,7 +286,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isHiddenShowEnabled, value))
                 {
                     _isHiddenShowEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsHiddenShowEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsHiddenShowEnabled)));
                 }
             }
         }
@@ -302,7 +302,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isExcludeDrivers, value))
                 {
                     _isExcludeDrivers = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExcludeDrivers)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsExcludeDrivers)));
                 }
             }
         }
@@ -318,7 +318,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isCleaning, value))
                 {
                     _isCleaning = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCleaning)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsCleaning)));
                 }
             }
         }
@@ -334,7 +334,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isUpdateCompletedNeedRebootPrompt, value))
                 {
                     _isUpdateCompletedNeedRebootPrompt = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsUpdateCompletedNeedRebootPrompt)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsUpdateCompletedNeedRebootPrompt)));
                 }
             }
         }
@@ -350,7 +350,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isPreviewChannelChangedNeedRebootPrompt, value))
                 {
                     _isPreviewChannelChangedNeedRebootPrompt = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsPreviewChannelChangedNeedRebootPrompt)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsPreviewChannelChangedNeedRebootPrompt)));
                 }
             }
         }
@@ -366,7 +366,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isIncludePotentiallySupersededUpdate, value))
                 {
                     _isIncludePotentiallySupersededUpdate = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsIncludePotentiallySupersededUpdate)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsIncludePotentiallySupersededUpdate)));
                 }
             }
         }
@@ -382,7 +382,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedUpdateSource, value))
                 {
                     _selectedUpdateSource = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedUpdateSource)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedUpdateSource)));
                 }
             }
         }
@@ -403,10 +403,10 @@ namespace PowerToolbox.Views.Pages
         {
             InitializeComponent();
             SelectedItem = UpdateManagerSelctorBar.Items[0];
-            UpdateSourceList.Add(new ComboBoxItemModel() { SelectedValue = "Microsoft Update", DisplayMember = MicrosoftUpdateString });
-            UpdateSourceList.Add(new ComboBoxItemModel() { SelectedValue = "DCat Flighting Prod", DisplayMember = DCatFlightingProdString });
-            UpdateSourceList.Add(new ComboBoxItemModel() { SelectedValue = "Windows Store(DCat Prod)", DisplayMember = WindowsStoreString });
-            UpdateSourceList.Add(new ComboBoxItemModel() { SelectedValue = "Windows Update", DisplayMember = WindowsUpdateString });
+            UpdateSourceList.Add(new() { SelectedValue = "Microsoft Update", DisplayMember = MicrosoftUpdateString });
+            UpdateSourceList.Add(new() { SelectedValue = "DCat Flighting Prod", DisplayMember = DCatFlightingProdString });
+            UpdateSourceList.Add(new() { SelectedValue = "Windows Store(DCat Prod)", DisplayMember = WindowsStoreString });
+            UpdateSourceList.Add(new() { SelectedValue = "Windows Update", DisplayMember = WindowsUpdateString });
             SelectedUpdateSource = UpdateSourceList[0];
         }
 
@@ -2599,7 +2599,7 @@ namespace PowerToolbox.Views.Pages
                                 IsUpdateCanceled = false,
                                 IsUpdatePreparing = false,
                                 UpdatePercentage = 0,
-                                WindowsDriverInformation = new WindowsDriverInformation(),
+                                WindowsDriverInformation = new(),
                                 DeviceProblemNumber = string.Empty,
                                 DriverClass = string.Empty,
                                 DriverHardwareID = string.Empty,

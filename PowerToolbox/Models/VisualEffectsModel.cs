@@ -21,7 +21,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isVisualEnabled, value))
                 {
                     _isVisualEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsVisualEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsVisualEnabled)));
                 }
             }
         }

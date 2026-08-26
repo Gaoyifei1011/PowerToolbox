@@ -47,7 +47,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_loadImageCompleted, value))
                 {
                     _loadImageCompleted = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LoadImageCompleted)));
+                    PropertyChanged?.Invoke(this, new(nameof(LoadImageCompleted)));
                 }
             }
         }
@@ -63,7 +63,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_loafImage, value))
                 {
                     _loafImage = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LoafImage)));
+                    PropertyChanged?.Invoke(this, new(nameof(LoafImage)));
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isLoafing, value))
                 {
                     _isLoafing = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLoafing)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsLoafing)));
                 }
             }
         }
@@ -95,7 +95,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_blockAllKeys, value))
                 {
                     _blockAllKeys = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BlockAllKeys)));
+                    PropertyChanged?.Invoke(this, new(nameof(BlockAllKeys)));
                 }
             }
         }
@@ -111,7 +111,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedSimulateUpdateStyle, value))
                 {
                     _selectedSimulateUpdateStyle = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedSimulateUpdateStyle)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedSimulateUpdateStyle)));
                 }
             }
         }
@@ -127,7 +127,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_durationTime, value))
                 {
                     _durationTime = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DurationTime)));
+                    PropertyChanged?.Invoke(this, new(nameof(DurationTime)));
                 }
             }
         }
@@ -143,7 +143,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedAfterSimulatedOperation, value))
                 {
                     _selectedAfterSimulatedOperation = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedAfterSimulateOperation)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedAfterSimulateOperation)));
                 }
             }
         }
@@ -157,14 +157,14 @@ namespace PowerToolbox.Views.Pages
         public LoafPage()
         {
             InitializeComponent();
-            SimulateUpdateStyleList.Add(new ComboBoxItemModel() { SelectedValue = SimulateUpdateKind.Windows11, DisplayMember = Windows11StyleString });
-            SimulateUpdateStyleList.Add(new ComboBoxItemModel() { SelectedValue = SimulateUpdateKind.Windows10, DisplayMember = Windows10StyleString });
-            AfterSimulateOperationList.Add(new ComboBoxItemModel() { SelectedValue = "None", DisplayMember = NoneString });
-            AfterSimulateOperationList.Add(new ComboBoxItemModel() { SelectedValue = "LockScreen", DisplayMember = LockScreenString });
-            AfterSimulateOperationList.Add(new ComboBoxItemModel() { SelectedValue = "LogOff", DisplayMember = LogOffString });
-            AfterSimulateOperationList.Add(new ComboBoxItemModel() { SelectedValue = "Sleep", DisplayMember = SleepString });
-            AfterSimulateOperationList.Add(new ComboBoxItemModel() { SelectedValue = "Restart", DisplayMember = RestartString });
-            AfterSimulateOperationList.Add(new ComboBoxItemModel() { SelectedValue = "Shutdown", DisplayMember = ShutdownString });
+            SimulateUpdateStyleList.Add(new() { SelectedValue = SimulateUpdateKind.Windows11, DisplayMember = Windows11StyleString });
+            SimulateUpdateStyleList.Add(new() { SelectedValue = SimulateUpdateKind.Windows10, DisplayMember = Windows10StyleString });
+            AfterSimulateOperationList.Add(new() { SelectedValue = "None", DisplayMember = NoneString });
+            AfterSimulateOperationList.Add(new() { SelectedValue = "LockScreen", DisplayMember = LockScreenString });
+            AfterSimulateOperationList.Add(new() { SelectedValue = "LogOff", DisplayMember = LogOffString });
+            AfterSimulateOperationList.Add(new() { SelectedValue = "Sleep", DisplayMember = SleepString });
+            AfterSimulateOperationList.Add(new() { SelectedValue = "Restart", DisplayMember = RestartString });
+            AfterSimulateOperationList.Add(new() { SelectedValue = "Shutdown", DisplayMember = ShutdownString });
             SelectedSimulateUpdateStyle = SimulateUpdateStyleList[0];
             SelectedAfterSimulateOperation = AfterSimulateOperationList[0];
         }
@@ -222,7 +222,7 @@ namespace PowerToolbox.Views.Pages
                 catch (Exception e)
                 {
                     isLoadWallpaperFailed = true;
-                    LoafImage = ActualTheme is ElementTheme.Light ? new(new Uri("ms-appx:///Assets/Images/LoafLightWallpaper.jpg")) : new(new Uri("ms-appx:///Assets/Images/LoafDarkWallpaper.jpg"));
+                    LoafImage = ActualTheme is ElementTheme.Light ? new(new("ms-appx:///Assets/Images/LoafLightWallpaper.jpg")) : new(new("ms-appx:///Assets/Images/LoafDarkWallpaper.jpg"));
                     LoadImageCompleted = true;
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoafPage), nameof(OnNavigatedTo), 2, e);
                 }
@@ -259,7 +259,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (isLoadWallpaperFailed)
             {
-                LoafImage = ActualTheme is ElementTheme.Light ? new(new Uri("ms-appx:///Assets/Images/LoafLightWallpaper.jpg")) : new(new Uri("ms-appx:///Assets/Images/LoafDarkWallpaper.jpg"));
+                LoafImage = ActualTheme is ElementTheme.Light ? new(new("ms-appx:///Assets/Images/LoafLightWallpaper.jpg")) : new(new("ms-appx:///Assets/Images/LoafDarkWallpaper.jpg"));
             }
         }
 

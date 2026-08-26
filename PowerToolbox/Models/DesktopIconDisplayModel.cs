@@ -21,7 +21,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isIconVisible, value))
                 {
                     _isIconVisible = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsIconVisible)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsIconVisible)));
                 }
             }
         }

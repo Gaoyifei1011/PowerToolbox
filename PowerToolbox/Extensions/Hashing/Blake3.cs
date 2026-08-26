@@ -19,7 +19,7 @@ namespace PowerToolbox.Extensions.Hashing
             HashSizeValue = (int)Blake3Constants.OutLen * 8;
             State = 0;
 
-            _chunkState = new Blake3ChunkState(key, 0, flags);
+            _chunkState = new(key, 0, flags);
             _key = key;
             _cvStack = new uint[54][];
             for (int i = 0; i < 54; i++)
@@ -83,7 +83,7 @@ namespace PowerToolbox.Extensions.Hashing
                     uint[] chunkCv = _chunkState.Output().ChainingValue();
                     ulong totalChunks = _chunkState.ChunkCounter + 1;
                     AddChunkChainingValue(chunkCv, totalChunks);
-                    _chunkState = new Blake3ChunkState(_key, totalChunks, _flags);
+                    _chunkState = new(_key, totalChunks, _flags);
                 }
 
                 int want = Blake3Constants.ChunkLen - _chunkState.Len;
@@ -112,7 +112,7 @@ namespace PowerToolbox.Extensions.Hashing
         {
             State = 0;
 
-            _chunkState = new Blake3ChunkState(_key, 0, _flags);
+            _chunkState = new(_key, 0, _flags);
             for (int i = 0; i < 54; i++)
             {
                 for (int j = 0; j < 8; j++)

@@ -68,7 +68,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (BreadCollection.Count is 0 && Equals(GetCurrentPageType(), PageList[0]))
             {
-                BreadCollection.Add(new DictionaryEntry
+                BreadCollection.Add(new()
                 {
                     Key = "ShellMenu",
                     Value = ShellMenuString
@@ -76,7 +76,7 @@ namespace PowerToolbox.Views.Pages
             }
             else if (BreadCollection.Count is 1 && Equals(GetCurrentPageType(), PageList[1]))
             {
-                BreadCollection.Add(new DictionaryEntry()
+                BreadCollection.Add(new()
                 {
                     Key = "ShellMenuEdit",
                     Value = ShellMenuEditString

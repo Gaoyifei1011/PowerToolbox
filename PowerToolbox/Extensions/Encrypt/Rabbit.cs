@@ -23,8 +23,8 @@ namespace PowerToolbox.Extensions.Encrypt
             KeySizeValue = KeySizeInBits;
             BlockSizeValue = BlockSizeInBits;
             FeedbackSizeValue = BlockSizeValue;
-            LegalBlockSizesValue = [new KeySizes(BlockSizeInBits, BlockSizeInBits, 0)];  // 128-bit
-            LegalKeySizesValue = [new KeySizes(KeySizeInBits, KeySizeInBits, 0)];  // 128-bit
+            LegalBlockSizesValue = [new(BlockSizeInBits, BlockSizeInBits, 0)];  // 128-bit
+            LegalKeySizesValue = [new(KeySizeInBits, KeySizeInBits, 0)];  // 128-bit
 
             Mode = CipherMode.CBC;  // same as default
             Padding = PaddingMode.None;

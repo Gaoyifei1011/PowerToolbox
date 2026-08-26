@@ -72,7 +72,7 @@ namespace PowerToolbox
         {
             LogService.Initialize();
             LanguageService.InitializeLanguage();
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(LanguageService.AppLanguage.Key);
+            Thread.CurrentThread.CurrentUICulture = new(LanguageService.AppLanguage.Key);
 
             AlwaysShowBackdropService.InitializeAlwaysShowBackdrop();
             BackdropService.InitializeBackdrop();

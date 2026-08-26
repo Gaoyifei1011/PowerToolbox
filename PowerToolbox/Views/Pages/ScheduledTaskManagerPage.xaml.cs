@@ -61,7 +61,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_scheduledTaskDescription, value))
                 {
                     _scheduledTaskDescription = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ScheduledTaskDescription)));
+                    PropertyChanged?.Invoke(this, new(nameof(ScheduledTaskDescription)));
                 }
             }
         }
@@ -77,7 +77,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_scheduledTaskResultKind, value))
                 {
                     _scheduledTaskResultKind = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ScheduledTaskResultKind)));
+                    PropertyChanged?.Invoke(this, new(nameof(ScheduledTaskResultKind)));
                 }
             }
         }
@@ -93,7 +93,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_scheduledTaskFailedContent, value))
                 {
                     _scheduledTaskFailedContent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ScheduledTaskFailedContent)));
+                    PropertyChanged?.Invoke(this, new(nameof(ScheduledTaskFailedContent)));
                 }
             }
         }
@@ -109,7 +109,7 @@ namespace PowerToolbox.Views.Pages
                 if (!string.Equals(_searchText, value))
                 {
                     _searchText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SearchText)));
+                    PropertyChanged?.Invoke(this, new(nameof(SearchText)));
                 }
             }
         }
@@ -125,7 +125,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isModifiedFailed, value))
                 {
                     _isModifiedFailed = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsModifiedFailed)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsModifiedFailed)));
                 }
             }
         }
@@ -159,7 +159,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     try
                     {
-                        taskService = (ITaskService)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("0F87369F-A4E5-4CFC-BD3E-73E6154572DD")));
+                        taskService = (ITaskService)Activator.CreateInstance(Type.GetTypeFromCLSID(new("0F87369F-A4E5-4CFC-BD3E-73E6154572DD")));
                     }
                     catch (Exception e)
                     {
@@ -198,7 +198,7 @@ namespace PowerToolbox.Views.Pages
                     try
                     {
                         scheduledTask.RegisteredTask.Enabled = false;
-                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new ScheduledTaskModel()
+                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new()
                         {
                             LastRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
                             LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
@@ -228,7 +228,7 @@ namespace PowerToolbox.Views.Pages
                 else
                 {
                     IsModifiedFailed = true;
-                    ScheduledTaskFailedList.Add(new ScheduledTaskFailedModel()
+                    ScheduledTaskFailedList.Add(new()
                     {
                         Name = scheduledTask.Name,
                         Path = scheduledTask.Path,
@@ -255,7 +255,7 @@ namespace PowerToolbox.Views.Pages
                     try
                     {
                         scheduledTask.RegisteredTask.Enabled = true;
-                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new ScheduledTaskModel()
+                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new()
                         {
                             LastRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
                             LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
@@ -285,7 +285,7 @@ namespace PowerToolbox.Views.Pages
                 else
                 {
                     IsModifiedFailed = true;
-                    ScheduledTaskFailedList.Add(new ScheduledTaskFailedModel()
+                    ScheduledTaskFailedList.Add(new()
                     {
                         Name = scheduledTask.Name,
                         Path = scheduledTask.Path,
@@ -312,7 +312,7 @@ namespace PowerToolbox.Views.Pages
                     try
                     {
                         scheduledTask.RegisteredTask.Run(null);
-                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new ScheduledTaskModel()
+                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new()
                         {
                             LastRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
                             LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
@@ -342,7 +342,7 @@ namespace PowerToolbox.Views.Pages
                 else
                 {
                     IsModifiedFailed = true;
-                    ScheduledTaskFailedList.Add(new ScheduledTaskFailedModel()
+                    ScheduledTaskFailedList.Add(new()
                     {
                         Name = scheduledTask.Name,
                         Path = scheduledTask.Path,
@@ -369,7 +369,7 @@ namespace PowerToolbox.Views.Pages
                     try
                     {
                         scheduledTask.RegisteredTask.Stop(0);
-                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new ScheduledTaskModel()
+                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new()
                         {
                             LastRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
                             LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
@@ -399,7 +399,7 @@ namespace PowerToolbox.Views.Pages
                 else
                 {
                     IsModifiedFailed = true;
-                    ScheduledTaskFailedList.Add(new ScheduledTaskFailedModel()
+                    ScheduledTaskFailedList.Add(new()
                     {
                         Name = scheduledTask.Name,
                         Path = scheduledTask.Path,
@@ -500,7 +500,7 @@ namespace PowerToolbox.Views.Pages
                 else
                 {
                     IsModifiedFailed = true;
-                    ScheduledTaskFailedList.Add(new ScheduledTaskFailedModel()
+                    ScheduledTaskFailedList.Add(new()
                     {
                         Name = scheduledTask.Name,
                         Path = scheduledTask.Path,
@@ -734,7 +734,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                ScheduledTaskFailedList.Add(new ScheduledTaskFailedModel()
+                                ScheduledTaskFailedList.Add(new()
                                 {
                                     Name = scheduledTaskItem.Name,
                                     Path = scheduledTaskItem.Path,
@@ -823,7 +823,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                ScheduledTaskFailedList.Add(new ScheduledTaskFailedModel()
+                                ScheduledTaskFailedList.Add(new()
                                 {
                                     Name = scheduledTaskItem.Name,
                                     Path = scheduledTaskItem.Path,
@@ -906,7 +906,7 @@ namespace PowerToolbox.Views.Pages
                             }
                             catch (Exception e)
                             {
-                                ScheduledTaskFailedList.Add(new ScheduledTaskFailedModel()
+                                ScheduledTaskFailedList.Add(new()
                                 {
                                     Name = scheduledTaskItem.Name,
                                     Path = scheduledTaskItem.Path,

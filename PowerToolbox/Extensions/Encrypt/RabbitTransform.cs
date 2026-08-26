@@ -427,7 +427,7 @@ namespace PowerToolbox.Extensions.Encrypt
             DWord[] k = new DWord[4];
             for (int j = 0; j < 4; j++)
             {
-                k[j] = new DWord(key, j * 4);
+                k[j] = new(key, j * 4);
             }
 
             for (int j = 0; j < 8; j++)
@@ -465,8 +465,8 @@ namespace PowerToolbox.Extensions.Encrypt
         private void SetupIV(byte[] iv)
         {
             DWord[] i = new DWord[4];
-            i[0] = new DWord(iv, 0);
-            i[2] = new DWord(iv, 4);
+            i[0] = new(iv, 0);
+            i[2] = new(iv, 4);
             i[1] = (i[0] >> 16) | i[2].MaskUpper();
             i[3] = (i[2] << 16) | i[0].MaskLower();
 

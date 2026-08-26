@@ -87,7 +87,7 @@ namespace PowerToolbox.Services.Download
                         }
                     }
 
-                    DownloadProgress?.Invoke(new DownloadProgress()
+                    DownloadProgress?.Invoke(new()
                     {
                         DownloadID = doDownloadStatusCallback.DownloadID,
                         DownloadProgressState = DownloadProgressState.Queued,
@@ -122,7 +122,7 @@ namespace PowerToolbox.Services.Download
 
                         if (continueResult is 0)
                         {
-                            DownloadProgress?.Invoke(new DownloadProgress()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = downloadID,
                                 DownloadProgressState = DownloadProgressState.Queued,
@@ -153,7 +153,7 @@ namespace PowerToolbox.Services.Download
 
                         if (pauseResult is 0)
                         {
-                            DownloadProgress?.Invoke(new DownloadProgress()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = downloadID,
                                 DownloadProgressState = DownloadProgressState.Paused,
@@ -186,7 +186,7 @@ namespace PowerToolbox.Services.Download
                         {
                             downloadValue.doDownloadStatusCallback.StatusChanged -= OnStatusChanged;
                             DeliveryOptimizationDict.Remove(downloadID);
-                            DownloadProgress?.Invoke(new DownloadProgress()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = downloadID,
                                 DownloadProgressState = DownloadProgressState.Deleted,
@@ -212,7 +212,7 @@ namespace PowerToolbox.Services.Download
             {
                 if (DeliveryOptimizationDict.TryGetValue(callback.DownloadID, out (string saveFilePath, IDODownload doDownload, DODownloadStatusCallback doDownloadStatusCallback) downloadValue))
                 {
-                    DownloadProgress?.Invoke(new DownloadProgress()
+                    DownloadProgress?.Invoke(new()
                     {
                         DownloadID = callback.DownloadID,
                         DownloadProgressState = DownloadProgressState.Downloading,
@@ -236,7 +236,7 @@ namespace PowerToolbox.Services.Download
                     {
                         if (DeliveryOptimizationDict.TryGetValue(callback.DownloadID, out (string saveFilePath, IDODownload doDownload, DODownloadStatusCallback doDownloadStatusCallback) downloadValue))
                         {
-                            DownloadProgress?.Invoke(new DownloadProgress()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = callback.DownloadID,
                                 DownloadProgressState = DownloadProgressState.Finished,
@@ -268,7 +268,7 @@ namespace PowerToolbox.Services.Download
                     {
                         if (DeliveryOptimizationDict.TryGetValue(callback.DownloadID, out (string saveFilePath, IDODownload doDownload, DODownloadStatusCallback doDownloadStatusCallback) downloadValue))
                         {
-                            DownloadProgress?.Invoke(new DownloadProgress()
+                            DownloadProgress?.Invoke(new()
                             {
                                 DownloadID = callback.DownloadID,
                                 DownloadProgressState = DownloadProgressState.Failed,

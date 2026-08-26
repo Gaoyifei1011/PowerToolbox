@@ -183,7 +183,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isUpdating, value))
                 {
                     _isUpdating = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsUpdating)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsUpdating)));
                 }
             }
         }
@@ -202,7 +202,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isUpdatePreparing, value))
                 {
                     _isUpdatePreparing = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsUpdatePreparing)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsUpdatePreparing)));
                 }
             }
         }
@@ -221,7 +221,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isUpdateCanceled, value))
                 {
                     _isUpdateCanceled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsUpdateCanceled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsUpdateCanceled)));
                 }
             }
         }
@@ -240,7 +240,7 @@ namespace PowerToolbox.Models
                 if (!string.Equals(_updateProgress, value))
                 {
                     _updateProgress = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UpdateProgress)));
+                    PropertyChanged?.Invoke(this, new(nameof(UpdateProgress)));
                 }
             }
         }
@@ -256,7 +256,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_updatePercentage, value))
                 {
                     _updatePercentage = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UpdatePercentage)));
+                    PropertyChanged?.Invoke(this, new(nameof(UpdatePercentage)));
                 }
             }
         }

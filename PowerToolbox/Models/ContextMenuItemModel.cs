@@ -24,7 +24,7 @@ namespace PowerToolbox.Models
                 if (!Equals(_isEnabled, value))
                 {
                     _isEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsEnabled)));
                 }
             }
         }

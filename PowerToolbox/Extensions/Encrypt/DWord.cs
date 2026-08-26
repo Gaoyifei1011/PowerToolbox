@@ -21,7 +21,7 @@
 
         public static implicit operator DWord(uint value)
         {
-            return new DWord(value);
+            return new(value);
         }
 
         public static explicit operator uint(DWord value)

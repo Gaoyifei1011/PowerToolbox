@@ -40,7 +40,7 @@ namespace PowerToolbox.Views.Dialogs
                 if (!Equals(_isPrimaryEnabled, value))
                 {
                     _isPrimaryEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsPrimaryEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsPrimaryEnabled)));
                 }
             }
         }
@@ -56,7 +56,7 @@ namespace PowerToolbox.Views.Dialogs
                 if (!string.Equals(_downloadLinkText, value))
                 {
                     _downloadLinkText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DownloadLinkText)));
+                    PropertyChanged?.Invoke(this, new(nameof(DownloadLinkText)));
                 }
             }
         }
@@ -72,7 +72,7 @@ namespace PowerToolbox.Views.Dialogs
                 if (!string.Equals(_downloadFileNameText, value))
                 {
                     _downloadFileNameText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DownloadFileNameText)));
+                    PropertyChanged?.Invoke(this, new(nameof(DownloadFileNameText)));
                 }
             }
         }
@@ -88,7 +88,7 @@ namespace PowerToolbox.Views.Dialogs
                 if (!string.Equals(_downloadFolderText, value))
                 {
                     _downloadFolderText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DownloadFolderText)));
+                    PropertyChanged?.Invoke(this, new(nameof(DownloadFolderText)));
                 }
             }
         }

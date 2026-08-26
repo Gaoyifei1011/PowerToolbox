@@ -19,7 +19,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         private readonly Guid CLSID_FileOpenDialog = new("DC1C5A9C-E88A-4DDE-A5A1-60F82A20AEF7");
         private IFileOpenDialog fileOpenDialog;
 
-        private nint Handle { get; } = handle is 0 ? throw new Win32Exception("窗口句柄不可以为空") : handle;
+        private nint Handle { get; } = handle is 0 ? throw new Win32Exception("Invalid window handle") : handle;
 
         public string Description { get; set; } = string.Empty;
 

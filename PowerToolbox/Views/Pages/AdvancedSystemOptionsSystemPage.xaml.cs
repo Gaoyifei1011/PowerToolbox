@@ -60,7 +60,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isHibernationEnabled, value))
                 {
                     _isHibernationEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsHibernationEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsHibernationEnabled)));
                 }
             }
         }
@@ -76,7 +76,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isHibernationOpened, value))
                 {
                     _isHibernationOpened = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsHibernationOpened)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsHibernationOpened)));
                 }
             }
         }
@@ -92,7 +92,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedHibernationFileType, value))
                 {
                     _selectedHibernationFileType = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedHibernationFileType)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedHibernationFileType)));
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hibernationFileSize, value))
                 {
                     _hibernationFileSize = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HibernationFileSize)));
+                    PropertyChanged?.Invoke(this, new(nameof(HibernationFileSize)));
                 }
             }
         }
@@ -124,7 +124,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_hibernationFilePercent, value))
                 {
                     _hibernationFilePercent = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HibernationFilePercent)));
+                    PropertyChanged?.Invoke(this, new(nameof(HibernationFilePercent)));
                 }
             }
         }
@@ -140,7 +140,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isFastStartupEnabled, value))
                 {
                     _isFastStartupEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsFastStartupEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsFastStartupEnabled)));
                 }
             }
         }
@@ -156,7 +156,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isGeneratingBatteryReport, value))
                 {
                     _isGeneratingBatteryReport = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsGeneratingBatteryReport)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsGeneratingBatteryReport)));
                 }
             }
         }
@@ -172,7 +172,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_selectedNotifyMode, value))
                 {
                     _selectedNotifyMode = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedNotifyMode)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedNotifyMode)));
                 }
             }
         }
@@ -188,7 +188,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isBackgroundAppsTaskEnabled, value))
                 {
                     _isBackgroundAppsTaskEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsBackgroundAppsTaskEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsBackgroundAppsTaskEnabled)));
                 }
             }
         }
@@ -204,7 +204,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isSystemReservedStorageLoadingOrUpdating, value))
                 {
                     _isSystemReservedStorageLoadingOrUpdating = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSystemReservedStorageLoadingOrUpdating)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsSystemReservedStorageLoadingOrUpdating)));
                 }
             }
         }
@@ -220,7 +220,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isSystemReservedStorageEnabled, value))
                 {
                     _isSystemReservedStorageEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSystemReservedStorageEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsSystemReservedStorageEnabled)));
                 }
             }
         }
@@ -236,7 +236,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isVirtualizationBasedSecurityEnabled, value))
                 {
                     _isVirtualizationBasedSecurityEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsVirtualizationBasedSecurityEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsVirtualizationBasedSecurityEnabled)));
                 }
             }
         }
@@ -252,7 +252,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isNICOffloadSettingsEnabled, value))
                 {
                     _isNICOffloadSettingsEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsNICOffloadSettingsEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsNICOffloadSettingsEnabled)));
                 }
             }
         }
@@ -268,7 +268,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isClosingWakeUpTask, value))
                 {
                     _isClosingWakeUpTask = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsClosingWakeUpTask)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsClosingWakeUpTask)));
                 }
             }
         }
@@ -284,7 +284,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isRestartingGraphicsDriver, value))
                 {
                     _isRestartingGraphicsDriver = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRestartingGraphicsDriver)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsRestartingGraphicsDriver)));
                 }
             }
         }
@@ -300,7 +300,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isWindowsPhotoViewerEnabled, value))
                 {
                     _isWindowsPhotoViewerEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsWindowsPhotoViewerEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsWindowsPhotoViewerEnabled)));
                 }
             }
         }
@@ -316,7 +316,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(_isApprovalModeForBuiltinAdministratorAccountEnabled, value))
                 {
                     _isApprovalModeForBuiltinAdministratorAccountEnabled = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsApprovalModeForBuiltinAdministratorAccountEnabled)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsApprovalModeForBuiltinAdministratorAccountEnabled)));
                 }
             }
         }
@@ -332,12 +332,12 @@ namespace PowerToolbox.Views.Pages
         public AdvancedSystemOptionsSystemPage()
         {
             InitializeComponent();
-            HibernationFileTypeList.Add(new ComboBoxItemModel() { DisplayMember = HibernationFileTypeReducedString, SelectedValue = "HibernationFileTypeReduced" });
-            HibernationFileTypeList.Add(new ComboBoxItemModel() { DisplayMember = HibernationFileTypeFullString, SelectedValue = "HibernationFileTypeFull" });
-            NotifyModeList.Add(new ComboBoxItemModel() { DisplayMember = AlwaysNotifyString, SelectedValue = UacLevel.AlwaysNotify });
-            NotifyModeList.Add(new ComboBoxItemModel() { DisplayMember = NotifyString, SelectedValue = UacLevel.Notify });
-            NotifyModeList.Add(new ComboBoxItemModel() { DisplayMember = NotifyWithoutDimmingString, SelectedValue = UacLevel.NotifyWithoutDimming });
-            NotifyModeList.Add(new ComboBoxItemModel() { DisplayMember = NeverNotifyString, SelectedValue = UacLevel.NeverNotify });
+            HibernationFileTypeList.Add(new() { DisplayMember = HibernationFileTypeReducedString, SelectedValue = "HibernationFileTypeReduced" });
+            HibernationFileTypeList.Add(new() { DisplayMember = HibernationFileTypeFullString, SelectedValue = "HibernationFileTypeFull" });
+            NotifyModeList.Add(new() { DisplayMember = AlwaysNotifyString, SelectedValue = UacLevel.AlwaysNotify });
+            NotifyModeList.Add(new() { DisplayMember = NotifyString, SelectedValue = UacLevel.Notify });
+            NotifyModeList.Add(new() { DisplayMember = NotifyWithoutDimmingString, SelectedValue = UacLevel.NotifyWithoutDimming });
+            NotifyModeList.Add(new() { DisplayMember = NeverNotifyString, SelectedValue = UacLevel.NeverNotify });
         }
 
         #region 第一部分：重载父类事件
@@ -1339,10 +1339,10 @@ namespace PowerToolbox.Views.Pages
                                 deviceId = dxgiAdapterDesc.DeviceId;
                                 deviceName = string.Empty;
                                 vendor = dxgiAdapterDesc.VendorId;
-                                string[] deviceArray = GetDevices(new Guid("1CA05180-A699-450A-9A0C-DE4FBE3DDD89"), CM_GET_DEVICE_INTERFACE_LIST_FLAGS.CM_GET_DEVICE_INTERFACE_LIST_PRESENT);
+                                string[] deviceArray = GetDevices(new("1CA05180-A699-450A-9A0C-DE4FBE3DDD89"), CM_GET_DEVICE_INTERFACE_LIST_FLAGS.CM_GET_DEVICE_INTERFACE_LIST_PRESENT);
                                 DEVPROPKEY devPropKey = new()
                                 {
-                                    fmtid = new Guid("A45C254E-DF1C-4EFD-8020-67D146A850E0"),
+                                    fmtid = new("A45C254E-DF1C-4EFD-8020-67D146A850E0"),
                                     pid = 2
                                 };
                                 foreach (string dev in deviceArray)
@@ -1369,7 +1369,7 @@ namespace PowerToolbox.Views.Pages
                         {
                             Process pnputilProcess = new()
                             {
-                                StartInfo = new ProcessStartInfo
+                                StartInfo = new()
                                 {
                                     FileName = "pnputil.exe",
                                     Arguments = "/restart-device \"" + id + "\"",
@@ -1487,7 +1487,7 @@ namespace PowerToolbox.Views.Pages
             List<string> wakeUpTaskList = [];
             try
             {
-                ITaskService service = (ITaskService)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("0F87369F-A4E5-4CFC-BD3E-73E6154572DD")));
+                ITaskService service = (ITaskService)Activator.CreateInstance(Type.GetTypeFromCLSID(new("0F87369F-A4E5-4CFC-BD3E-73E6154572DD")));
                 service.Connect();
                 if (service.Connected)
                 {
@@ -1541,7 +1541,7 @@ namespace PowerToolbox.Views.Pages
         {
             try
             {
-                ITaskService taskService = (ITaskService)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("0F87369F-A4E5-4CFC-BD3E-73E6154572DD")));
+                ITaskService taskService = (ITaskService)Activator.CreateInstance(Type.GetTypeFromCLSID(new("0F87369F-A4E5-4CFC-BD3E-73E6154572DD")));
                 taskService.Connect();
                 Queue<ITaskFolder> taskFolderQueue = new();
                 taskFolderQueue.Enqueue(taskService.GetFolder("\\"));

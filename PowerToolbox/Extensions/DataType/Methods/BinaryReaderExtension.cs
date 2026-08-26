@@ -27,7 +27,7 @@ namespace PowerToolbox.Extensions.DataType.Methods
 
         public static void ExpectString(this BinaryReader reader, string str)
         {
-            if (!string.Equals(new string(reader.ReadChars(str.Length)), str))
+            if (!string.Equals(new(reader.ReadChars(str.Length)), str))
             {
                 throw new InvalidDataException("Unexpected value read.");
             }
@@ -36,7 +36,7 @@ namespace PowerToolbox.Extensions.DataType.Methods
         public static string ReadString(this BinaryReader reader, Encoding encoding, int length)
         {
             using BinaryReader binaryReader = new(reader.BaseStream, encoding, true);
-            return new string(binaryReader.ReadChars(length));
+            return new(binaryReader.ReadChars(length));
         }
 
         public static string ReadNullTerminatedString(this BinaryReader reader, Encoding encoding)
