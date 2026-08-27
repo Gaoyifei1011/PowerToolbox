@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace PowerToolbox.Extensions.Encrypt
 {
-    public class RC5CryptoTransform : ICryptoTransform
+    internal class RC5CryptoTransform : ICryptoTransform
     {
         private readonly RC5Engine engine;
         private readonly bool encrypting;
@@ -18,7 +18,7 @@ namespace PowerToolbox.Extensions.Encrypt
         private int bufferCount = 0;
         private readonly RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
 
-        public RC5CryptoTransform(byte[] key, byte[] iv, bool encrypting, CipherMode mode, PaddingMode padding, int rounds)
+        internal RC5CryptoTransform(byte[] key, byte[] iv, bool encrypting, CipherMode mode, PaddingMode padding, int rounds)
         {
             engine = new(key, rounds);
             this.encrypting = encrypting;

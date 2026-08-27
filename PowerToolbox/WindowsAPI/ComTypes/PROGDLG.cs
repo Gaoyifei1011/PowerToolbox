@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 控制进度对话框操作的标志。
     /// </summary>
     [Flags]
-    public enum PROGDLG : uint
+    internal enum PROGDLG : uint
     {
         /// <summary>
         /// 正常进度对话框行为。

@@ -3,7 +3,7 @@
     /// <summary>
     /// 位置信息引用的源媒体类型。
     /// </summary>
-    public enum SPOST
+    internal enum SPOST
     {
         /// <summary>
         /// .pnf 文件中未存储任何源媒体信息。 在这种情况下，将忽略 OEMSourceMediaLocation 的值。

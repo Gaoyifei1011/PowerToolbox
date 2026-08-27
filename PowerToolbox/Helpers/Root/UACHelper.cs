@@ -9,12 +9,12 @@ namespace PowerToolbox.Helpers.Root
     /// <summary>
     /// 用户账户控制辅助类
     /// </summary>
-    public static class UACHelper
+    internal static class UACHelper
     {
         /// <summary>
         /// 获取用户账户控制通知模式
         /// </summary>
-        public static UacLevel GetUacLevel()
+        internal static UacLevel GetUacLevel()
         {
             try
             {
@@ -53,7 +53,7 @@ namespace PowerToolbox.Helpers.Root
         /// <summary>
         /// 设置用户账户控制通知模式
         /// </summary>
-        public static void SetUacLevel(UacLevel uacLevel)
+        internal static void SetUacLevel(UacLevel uacLevel)
         {
             try
             {

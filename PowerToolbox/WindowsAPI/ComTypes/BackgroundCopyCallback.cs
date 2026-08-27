@@ -5,14 +5,14 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// <summary>
     /// IBackgroundCopyCallback 接口的实现
     /// </summary>
-    public class BackgroundCopyCallback : IBackgroundCopyCallback
+    internal class BackgroundCopyCallback : IBackgroundCopyCallback
     {
-        public string DownloadID { get; set; }
+        internal string DownloadID { get; set; }
 
         /// <summary>
         /// 下载状态发生变化时触发的事件
         /// </summary>
-        public event Action<BackgroundCopyCallback, IBackgroundCopyJob, BG_JOB_STATE> StatusChanged;
+        internal event Action<BackgroundCopyCallback, IBackgroundCopyJob, BG_JOB_STATE> StatusChanged;
 
         public int JobTransferred(IBackgroundCopyJob pJob)
         {

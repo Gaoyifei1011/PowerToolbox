@@ -1,6 +1,6 @@
 ﻿namespace PowerToolbox.WindowsAPI.PInvoke.Setupapi
 {
-    public enum SP_COPY
+    internal enum SP_COPY
     {
         /// <summary>
         /// 无任何标志

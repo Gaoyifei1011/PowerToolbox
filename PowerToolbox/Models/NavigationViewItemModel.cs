@@ -9,46 +9,46 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 导航控件项数据模型
     /// </summary>
-    public sealed class NavigationViewItemModel
+    internal sealed class NavigationViewItemModel
     {
         /// <summary>
         /// 导航控件项具体类型
         /// </summary>
-        public NavigationViewItemKind NavigationViewItemKind { get; set; }
+        internal NavigationViewItemKind NavigationViewItemKind { get; set; }
 
         /// <summary>
         /// 导航图标
         /// </summary>
-        public IconElement NavigationIcon { get; set; }
+        internal IconElement NavigationIcon { get; set; }
 
         /// <summary>
         /// 导航标题
         /// </summary>
-        public string NavigationTitle { get; set; }
+        internal string NavigationTitle { get; set; }
 
         /// <summary>
         /// 导航标签
         /// </summary>
-        public string NavigationTag { get; set; }
+        internal string NavigationTag { get; set; }
 
         /// <summary>
         /// 导航子标签中对应的父标签
         /// </summary>
-        public string ParentTag { get; set; }
+        internal string ParentTag { get; set; }
 
         /// <summary>
         /// 导航类型
         /// </summary>
-        public Type NavigationPage { get; set; }
+        internal Type NavigationPage { get; set; }
 
         /// <summary>
         /// 可视状态
         /// </summary>
-        public Visibility VisibleState { get; set; }
+        internal Visibility VisibleState { get; set; }
 
         /// <summary>
         /// 子菜单项
         /// </summary>
-        public WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemMenuItemsCollection { get; } = [];
+        internal WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemMenuItemsCollection { get; } = [];
     }
 }

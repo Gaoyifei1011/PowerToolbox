@@ -6,19 +6,19 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 描述适配器的本地标识符。
     /// </summary>
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct LUID
+    internal struct LUID
     {
         /// <summary>
         /// 指定包含 ID 的无符号小号的 DWORD。
         /// </summary>
-        public uint LowPart;
+        internal uint LowPart;
 
         /// <summary>
         /// 指定包含 ID 的有符号高号的 LONG。
         /// </summary>
-        public int HighPart;
+        internal int HighPart;
 
-        public readonly long Value => (long)(((ulong)HighPart) << 32 | LowPart);
+        internal readonly long Value => (long)(((ulong)HighPart) << 32 | LowPart);
 
         public override readonly string ToString()
         {

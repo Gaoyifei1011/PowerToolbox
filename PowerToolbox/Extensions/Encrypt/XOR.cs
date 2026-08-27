@@ -3,12 +3,12 @@
     /// <summary>
     /// 异或加密算法实现
     /// </summary>
-    public class XOR
+    internal class XOR
     {
         /// <summary>
         /// 异或加密
         /// </summary>
-        public static string XOREncrypt(string contentData, string secretKey)
+        internal static string XOREncrypt(string contentData, string secretKey)
         {
             char[] data = contentData.ToCharArray();
             char[] key = secretKey.ToCharArray();
@@ -22,7 +22,7 @@
         /// <summary>
         /// 异或解密
         /// </summary>
-        public static string XORDecrypt(string contentData, string secretKey)
+        internal static string XORDecrypt(string contentData, string secretKey)
         {
             char[] key = secretKey.ToCharArray();
             char[] data = contentData.ToCharArray();

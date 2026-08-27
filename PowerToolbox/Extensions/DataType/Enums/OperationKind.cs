@@ -3,7 +3,7 @@
     /// <summary>
     /// 操作通知类型
     /// </summary>
-    public enum OperationKind
+    internal enum OperationKind
     {
         AddDriverAllSuccessfully,
         AddDriverFailed,

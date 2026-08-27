@@ -9,9 +9,9 @@ namespace PowerToolbox.Views.Dialogs
     /// <summary>
     /// 应用重启对话框
     /// </summary>
-    public sealed partial class RestartAppsDialog : ContentDialog
+    internal sealed partial class RestartAppsDialog : ContentDialog
     {
-        public RestartAppsDialog()
+        internal RestartAppsDialog()
         {
             InitializeComponent();
         }

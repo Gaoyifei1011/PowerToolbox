@@ -3,7 +3,7 @@
     /// <summary>
     /// 指定桌面壁纸的显示方式。
     /// </summary>
-    public enum DESKTOP_WALLPAPER_POSITION
+    internal enum DESKTOP_WALLPAPER_POSITION
     {
         /// <summary>
         /// 将图像居中;不要拉伸。 这相当于 IActiveDesktop 中的WPSTYLE_CENTER样式。

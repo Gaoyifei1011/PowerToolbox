@@ -1,9 +1,9 @@
 ﻿namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class DecisionInfo
+    internal sealed class DecisionInfo
     {
-        public ushort FirstQualifierSetIndexIndex { get; set; }
+        internal ushort FirstQualifierSetIndexIndex { get; set; }
 
-        public ushort NumQualifierSetsInDecision { get; set; }
+        internal ushort NumQualifierSetsInDecision { get; set; }
     }
 }

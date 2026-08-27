@@ -8,7 +8,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.KernelAppCore
     /// <summary>
     /// Kernel.AppCore.dll 函数库
     /// </summary>
-    public static class KernelAppCoreLibrary
+    internal static class KernelAppCoreLibrary
     {
         private const string KernelAppCore = "kernel.appcore.dll";
 
@@ -22,6 +22,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.KernelAppCore
         /// <param name="count">缓冲区中的结构数。</param>
         /// <returns>如果该函数成功，则返回 ERROR_SUCCESS。 否则，该函数将返回错误代码。</returns>
         [DllImport(KernelAppCore, CharSet = CharSet.Unicode, EntryPoint = "GetCurrentPackageInfo", PreserveSig = true, SetLastError = false)]
-        public static extern int GetCurrentPackageInfo(PACKAGE_FLAGS flags, ref uint bufferLength, [MarshalAs(UnmanagedType.LPArray)] byte[] buffer, out uint count);
+        internal static extern int GetCurrentPackageInfo(PACKAGE_FLAGS flags, ref uint bufferLength, [MarshalAs(UnmanagedType.LPArray)] byte[] buffer, out uint count);
     }
 }

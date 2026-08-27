@@ -3,7 +3,7 @@
 namespace PowerToolbox.WindowsAPI.PInvoke.User32
 {
     [Flags]
-    public enum SPI : uint
+    internal enum SPI : uint
     {
         /// <summary>
         /// 确定警告蜂鸣器是否已打开。

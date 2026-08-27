@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// SM3 算法实现
     /// </summary>
-    public class SM3 : HashAlgorithm
+    internal class SM3 : HashAlgorithm
     {
         private int bufferFilled;
         private ulong byteCount;
@@ -19,7 +19,7 @@ namespace PowerToolbox.Extensions.Hashing
             0xA96F30BC, 0x163138AA, 0xE38DEE4D, 0xB0FB0E4E
         ];
 
-        public SM3()
+        internal SM3()
         {
             HashSizeValue = 256;
             Initialize();

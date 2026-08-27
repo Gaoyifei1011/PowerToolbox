@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// XXH32 校验实现
     /// </summary>
-    public class XxHash32 : HashAlgorithm
+    internal class XxHash32 : HashAlgorithm
     {
         private const uint PRIME32_1 = 2654435761U;
         private const uint PRIME32_2 = 2246822519U;
@@ -66,7 +66,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// <summary>
         /// 使用默认种子 0 初始化 XxHash32 类的新实例
         /// </summary>
-        public XxHash32()
+        internal XxHash32()
         {
             Initialize(0);
         }
@@ -75,7 +75,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// 初始化 XxHash32 类的新实例，并将种子设置为指定的值
         /// </summary>
         /// <param name="seed">表示用于 XxHash32 计算的种子</param>
-        public XxHash32(uint seed)
+        internal XxHash32(uint seed)
         {
             Initialize(seed);
         }
@@ -83,7 +83,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// <summary>
         /// 获取计算后的哈希码的值
         /// </summary>
-        public uint HashUInt32
+        internal uint HashUInt32
         {
             get { return State is 0 ? _Hash32 : throw new InvalidOperationException("Hash computation has not yet completed."); }
         }
@@ -91,7 +91,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// <summary>
         /// 获取或设置 xxHash32 算法使用的种子值
         /// </summary>
-        public uint Seed
+        internal uint Seed
         {
             get { return _Seed32; }
 
@@ -163,7 +163,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// <summary>
         /// 调用此方法将数据输入哈希
         /// </summary>
-        public void FeedInput(byte[] array, int start, int count)
+        internal void FeedInput(byte[] array, int start, int count)
         {
             HashCore(array, start, count);
         }
@@ -171,7 +171,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// <summary>
         /// 一旦使用 FeedInput 提供了所有输入，就调用此方法以获取最终计算的哈希值
         /// </summary>
-        public void ComputeResult(out uint result)
+        internal void ComputeResult(out uint result)
         {
             _Hash32 = _TotalLength >= 16 ? RotateLeft32(_ACC32_1, 1) + RotateLeft32(_ACC32_2, 7) + RotateLeft32(_ACC32_3, 12) + RotateLeft32(_ACC32_4, 18) : _Seed32 + PRIME32_5;
             _Hash32 += (uint)_TotalLength;

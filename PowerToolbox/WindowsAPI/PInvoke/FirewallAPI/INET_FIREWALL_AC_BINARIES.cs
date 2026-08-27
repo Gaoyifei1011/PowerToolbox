@@ -6,16 +6,16 @@ namespace PowerToolbox.WindowsAPI.PInvoke.FirewallAPI
     /// 包含应用容器中运行的应用程序的二进制路径。
     /// </summary>
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct INET_FIREWALL_AC_BINARIES
+    internal struct INET_FIREWALL_AC_BINARIES
     {
         /// <summary>
         /// 二进制文件成员中的路径数。
         /// </summary>
-        public uint count;
+        internal uint count;
 
         /// <summary>
         /// 应用容器中运行的应用程序的路径。
         /// </summary>
-        public nint binaries;
+        internal nint binaries;
     }
 }

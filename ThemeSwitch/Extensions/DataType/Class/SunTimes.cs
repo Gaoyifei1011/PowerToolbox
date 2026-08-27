@@ -1,15 +1,15 @@
 ﻿namespace ThemeSwitch.Extensions.DataType.Class
 {
-    public class SunTimes
+    internal class SunTimes
     {
-        public int SunriseHour;
-        public int SunriseMinute;
-        public int SunsetHour;
-        public int SunsetMinute;
-        public string Text;
-        public bool HasSunrise;
-        public bool HasSunset;
-        public bool IsPolarDay;
-        public bool IsPolarNight;
+        internal int SunriseHour;
+        internal int SunriseMinute;
+        internal int SunsetHour;
+        internal int SunsetMinute;
+        internal string Text;
+        internal bool HasSunrise;
+        internal bool HasSunset;
+        internal bool IsPolarDay;
+        internal bool IsPolarNight;
     }
 }

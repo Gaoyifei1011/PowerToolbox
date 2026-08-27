@@ -4,19 +4,19 @@ using System.Text;
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class UnknownSection
+    internal sealed class UnknownSection
     {
-        public uint SectionQualifier { get; private set; }
+        internal uint SectionQualifier { get; private set; }
 
-        public uint Flags { get; private set; }
+        internal uint Flags { get; private set; }
 
-        public uint SectionFlags { get; private set; }
+        internal uint SectionFlags { get; private set; }
 
-        public uint SectionLength { get; private set; }
+        internal uint SectionLength { get; private set; }
 
-        public byte[] SectionContent { get; private set; }
+        internal byte[] SectionContent { get; private set; }
 
-        public UnknownSection(string sectionIdentifier, BinaryReader binaryReader)
+        internal UnknownSection(string sectionIdentifier, BinaryReader binaryReader)
         {
             if (!new string(binaryReader.ReadChars(16)).Equals(sectionIdentifier))
             {

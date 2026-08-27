@@ -2,9 +2,9 @@
 
 namespace PowerToolbox.Extensions.Hashing
 {
-    public static class Blake3Functions
+    internal static class Blake3Functions
     {
-        public static void G(ref uint[] state, uint a, uint b, uint c, uint d, uint mx, uint my)
+        internal static void G(ref uint[] state, uint a, uint b, uint c, uint d, uint mx, uint my)
         {
             state[a] = state[a] + state[b] + mx;
             state[d] = (state[d] ^ state[a]).RotateRight(16);
@@ -16,7 +16,7 @@ namespace PowerToolbox.Extensions.Hashing
             state[b] = (state[b] ^ state[c]).RotateRight(7);
         }
 
-        public static void Round(ref uint[] state, uint[] m)
+        internal static void Round(ref uint[] state, uint[] m)
         {
             G(ref state, 0, 4, 8, 12, m[0], m[1]);
             G(ref state, 1, 5, 9, 13, m[2], m[3]);
@@ -28,7 +28,7 @@ namespace PowerToolbox.Extensions.Hashing
             G(ref state, 3, 4, 9, 14, m[14], m[15]);
         }
 
-        public static void Permute(ref uint[] m)
+        internal static void Permute(ref uint[] m)
         {
             uint[] permuted = new uint[16];
             for (int i = 0; i < 16; i++)
@@ -38,7 +38,7 @@ namespace PowerToolbox.Extensions.Hashing
             m = permuted;
         }
 
-        public static uint[] Compress(uint[] chainingValue, uint[] blockWords, ulong counter, uint blockLen, uint flags)
+        internal static uint[] Compress(uint[] chainingValue, uint[] blockWords, ulong counter, uint blockLen, uint flags)
         {
             uint[] state =
             [
@@ -73,12 +73,12 @@ namespace PowerToolbox.Extensions.Hashing
             return state;
         }
 
-        public static uint[] First8Words(uint[] compressionOutput)
+        internal static uint[] First8Words(uint[] compressionOutput)
         {
             return compressionOutput.Slice(0, 8);
         }
 
-        public static void WordsFromLittleEndianBytes(byte[] bytes, ref uint[] words)
+        internal static void WordsFromLittleEndianBytes(byte[] bytes, ref uint[] words)
         {
             for (int i = 0, j = 0; i < bytes.Length; i += 4, j++)
             {
@@ -87,7 +87,7 @@ namespace PowerToolbox.Extensions.Hashing
             }
         }
 
-        public static Blake3Output ParentOutput(uint[] leftChildCv, uint[] rightChildCv, uint[] key, uint flags)
+        internal static Blake3Output ParentOutput(uint[] leftChildCv, uint[] rightChildCv, uint[] key, uint flags)
         {
             uint[] blockWords = new uint[16];
             Array.Copy(leftChildCv, 0, blockWords, 0, 8);
@@ -102,7 +102,7 @@ namespace PowerToolbox.Extensions.Hashing
             };
         }
 
-        public static uint[] ParentCv(uint[] leftChildCv, uint[] rightChildCv, uint[] key, uint flags)
+        internal static uint[] ParentCv(uint[] leftChildCv, uint[] rightChildCv, uint[] key, uint flags)
         {
             return ParentOutput(leftChildCv, rightChildCv, key, flags).ChainingValue();
         }

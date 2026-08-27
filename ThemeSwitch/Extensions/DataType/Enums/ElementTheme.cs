@@ -3,7 +3,7 @@
     /// <summary>
     /// 主题值
     /// </summary>
-    public enum ElementTheme
+    internal enum ElementTheme
     {
         Default = 0,
         Light = 1,

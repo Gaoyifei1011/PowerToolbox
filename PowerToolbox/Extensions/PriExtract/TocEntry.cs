@@ -1,17 +1,17 @@
 ﻿namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class TocEntry
+    internal sealed class TocEntry
     {
-        public string SectionIdentifier { get; set; }
+        internal string SectionIdentifier { get; set; }
 
-        public ushort Flags { get; set; }
+        internal ushort Flags { get; set; }
 
-        public ushort SectionFlags { get; set; }
+        internal ushort SectionFlags { get; set; }
 
-        public uint SectionQualifier { get; set; }
+        internal uint SectionQualifier { get; set; }
 
-        public uint SectionOffset { get; set; }
+        internal uint SectionOffset { get; set; }
 
-        public uint SectionLength { get; set; }
+        internal uint SectionLength { get; set; }
     }
 }

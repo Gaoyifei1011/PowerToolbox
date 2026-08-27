@@ -14,11 +14,11 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 数据校验与加密页面
     /// </summary>
-    public sealed partial class DataVerifyEncryptPage : Page, INotifyPropertyChanged
+    internal sealed partial class DataVerifyEncryptPage : Page, INotifyPropertyChanged
     {
         private SelectorBarItem _selectedItem;
 
-        public SelectorBarItem SelectedItem
+        internal SelectorBarItem SelectedItem
         {
             get { return _selectedItem; }
 
@@ -36,7 +36,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DataVerifyEncryptPage()
+        internal DataVerifyEncryptPage()
         {
             InitializeComponent();
         }
@@ -139,7 +139,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取当前导航到的页
         /// </summary>
-        public Type GetCurrentPageType()
+        internal Type GetCurrentPageType()
         {
             return DataVerifyEncryptFrame.CurrentSourcePageType;
         }
@@ -147,7 +147,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取当前导航控件内容对应的页面
         /// </summary>
-        public object GetFrameContent()
+        internal object GetFrameContent()
         {
             return DataVerifyEncryptFrame.Content;
         }

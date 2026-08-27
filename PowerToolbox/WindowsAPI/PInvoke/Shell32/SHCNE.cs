@@ -3,7 +3,7 @@
 namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
 {
     [Flags]
-    public enum SHCNE : uint
+    internal enum SHCNE : uint
     {
         /// <summary>
         /// 非文件夹项的名称已更改。 必须在uFlags 中指定SHCNF_IDLIST或SHCNF_PATH。 dwItem1 包含项的上一个 PIDL 或名称。 dwItem2 包含项的新 PIDL 或名称。

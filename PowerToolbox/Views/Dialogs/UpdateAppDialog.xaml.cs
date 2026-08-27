@@ -18,7 +18,7 @@ namespace PowerToolbox.Views.Dialogs
     /// <summary>
     /// 更新应用对话框
     /// </summary>
-    public sealed partial class UpdateAppDialog : ContentDialog, INotifyPropertyChanged
+    internal sealed partial class UpdateAppDialog : ContentDialog, INotifyPropertyChanged
     {
         private readonly string CancelString = ResourceService.DialogResource.GetString("Cancel");
         private readonly string CloseString = ResourceService.DialogResource.GetString("Close");
@@ -31,7 +31,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private UpdateAppResultKind _updateAppResultKind = UpdateAppResultKind.Initialize;
 
-        public UpdateAppResultKind UpdateAppResultKind
+        internal UpdateAppResultKind UpdateAppResultKind
         {
             get { return _updateAppResultKind; }
 
@@ -47,7 +47,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private string _primaryText;
 
-        public string PrimaryText
+        internal string PrimaryText
         {
             get { return _primaryText; }
 
@@ -63,7 +63,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private string _closeText;
 
-        public string CloseText
+        internal string CloseText
         {
             get { return _closeText; }
 
@@ -79,7 +79,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private string _updateDownloadString;
 
-        public string UpdateDownloadString
+        internal string UpdateDownloadString
         {
             get { return _updateDownloadString; }
 
@@ -95,7 +95,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private bool _isCancelingUpdate;
 
-        public bool IsCancelingUpdate
+        internal bool IsCancelingUpdate
         {
             get { return _isCancelingUpdate; }
 
@@ -111,7 +111,7 @@ namespace PowerToolbox.Views.Dialogs
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public UpdateAppDialog()
+        internal UpdateAppDialog()
         {
             InitializeComponent();
             PrimaryText = UpdateString;

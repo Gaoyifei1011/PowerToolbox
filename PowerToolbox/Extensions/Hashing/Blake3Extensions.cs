@@ -2,21 +2,21 @@
 
 namespace PowerToolbox.Extensions.Hashing
 {
-    public static class Blake3Extensions
+    internal static class Blake3Extensions
     {
-        public static uint RotateRight(this uint self, int count)
+        internal static uint RotateRight(this uint self, int count)
         {
             return (self >> count) | (self << (32 - count));
         }
 
-        public static T[] Slice<T>(this T[] self, int index, int length)
+        internal static T[] Slice<T>(this T[] self, int index, int length)
         {
             T[] slice = new T[length];
             Array.Copy(self, index, slice, 0, length);
             return slice;
         }
 
-        public static uint FromLeBytes(byte[] bytes)
+        internal static uint FromLeBytes(byte[] bytes)
         {
             if (BitConverter.IsLittleEndian)
             {
@@ -26,7 +26,7 @@ namespace PowerToolbox.Extensions.Hashing
             return (uint)(bytes[3] << 24) | (uint)(bytes[2] << 16) | (uint)(bytes[1] << 8) | bytes[0];
         }
 
-        public static byte[] ToLeBytes(this uint self)
+        internal static byte[] ToLeBytes(this uint self)
         {
             if (BitConverter.IsLittleEndian)
             {

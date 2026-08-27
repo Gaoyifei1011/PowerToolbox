@@ -6,31 +6,31 @@ using System.Text;
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class PriDescriptorSection
+    internal sealed class PriDescriptorSection
     {
-        public uint SectionQualifier { get; private set; }
+        internal uint SectionQualifier { get; private set; }
 
-        public uint Flags { get; private set; }
+        internal uint Flags { get; private set; }
 
-        public uint SectionFlags { get; private set; }
+        internal uint SectionFlags { get; private set; }
 
-        public uint SectionLength { get; private set; }
+        internal uint SectionLength { get; private set; }
 
-        public PriDescriptorFlags PriFlags { get; private set; }
+        internal PriDescriptorFlags PriFlags { get; private set; }
 
-        public IReadOnlyList<int> HierarchicalSchemaSectionsList { get; private set; }
+        internal IReadOnlyList<int> HierarchicalSchemaSectionsList { get; private set; }
 
-        public IReadOnlyList<int> DecisionInfoSectionsList { get; private set; }
+        internal IReadOnlyList<int> DecisionInfoSectionsList { get; private set; }
 
-        public IReadOnlyList<int> ResourceMapSectionsList { get; private set; }
+        internal IReadOnlyList<int> ResourceMapSectionsList { get; private set; }
 
-        public IReadOnlyList<int> ReferencedFileSectionsList { get; private set; }
+        internal IReadOnlyList<int> ReferencedFileSectionsList { get; private set; }
 
-        public IReadOnlyList<int> DataItemSectionsList { get; private set; }
+        internal IReadOnlyList<int> DataItemSectionsList { get; private set; }
 
-        public int? PrimaryResourceMapSection { get; private set; }
+        internal int? PrimaryResourceMapSection { get; private set; }
 
-        public PriDescriptorSection(string sectionIdentifier, BinaryReader binaryReader)
+        internal PriDescriptorSection(string sectionIdentifier, BinaryReader binaryReader)
         {
             if (!string.Equals(new(binaryReader.ReadChars(16)), sectionIdentifier))
             {

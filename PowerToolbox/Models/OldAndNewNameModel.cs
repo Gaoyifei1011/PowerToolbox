@@ -5,14 +5,14 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 文件名称模型
     /// </summary>
-    public sealed class OldAndNewNameModel : INotifyPropertyChanged
+    internal sealed class OldAndNewNameModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 是否处于修改状态中
         /// </summary>
         private bool _isModifyingNow;
 
-        public bool IsModifyingNow
+        internal bool IsModifyingNow
         {
             get { return _isModifyingNow; }
 
@@ -31,7 +31,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private string _originalFileName;
 
-        public string OriginalFileName
+        internal string OriginalFileName
         {
             get { return _originalFileName; }
 
@@ -50,7 +50,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private string _originalFilePath;
 
-        public string OriginalFilePath
+        internal string OriginalFilePath
         {
             get { return _originalFilePath; }
 
@@ -69,7 +69,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private string _newFileName;
 
-        public string NewFileName
+        internal string NewFileName
         {
             get { return _newFileName; }
 
@@ -88,7 +88,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private string _newFilePath;
 
-        public string NewFilePath
+        internal string NewFilePath
         {
             get { return _newFilePath; }
 

@@ -3,7 +3,7 @@
     /// <summary>
     /// 要安装的挂钩过程的类型。
     /// </summary>
-    public enum HOOKTYPE
+    internal enum HOOKTYPE
     {
         /// <summary>
         /// 安装挂钩过程，用于监视由于对话框、消息框、菜单或滚动条中的输入事件而生成的消息。 有关详细信息，请参阅 MessageProc 挂钩过程。

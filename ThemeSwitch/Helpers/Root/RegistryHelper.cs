@@ -8,12 +8,12 @@ namespace ThemeSwitch.Helpers.Root
     /// <summary>
     /// 注册表读取辅助类
     /// </summary>
-    public static class RegistryHelper
+    internal static class RegistryHelper
     {
         /// <summary>
         /// 读取注册表指定项的内容
         /// </summary>
-        public static T ReadRegistryKey<T>(RegistryKey rootRegistryKey, string rootKey, string key)
+        internal static T ReadRegistryKey<T>(RegistryKey rootRegistryKey, string rootKey, string key)
         {
             T value = default;
             try
@@ -64,7 +64,7 @@ namespace ThemeSwitch.Helpers.Root
         /// <summary>
         /// 保存注册表指定项的内容
         /// </summary>
-        public static bool SaveRegistryKey<T>(RegistryKey rootRegistryKey, string rootKey, string key, T value, bool isExpandString = false)
+        internal static bool SaveRegistryKey<T>(RegistryKey rootRegistryKey, string rootKey, string key, T value, bool isExpandString = false)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace ThemeSwitch.Helpers.Root
         /// 移除注册表指定项
         /// </summary>
 
-        public static bool RemoveRegistryKey(RegistryKey rootRegistryKey, string rootKey, string key = null)
+        internal static bool RemoveRegistryKey(RegistryKey rootRegistryKey, string rootKey, string key = null)
         {
             try
             {

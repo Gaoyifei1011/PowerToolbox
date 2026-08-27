@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Dxgi
     /// <summary>
     /// Dxgi.dll 函数库
     /// </summary>
-    public static class DxgiLibrary
+    internal static class DxgiLibrary
     {
         private const string Dxgi = "dxgi.dll";
 
@@ -17,6 +17,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Dxgi
         /// <param name="ppFactory">指向 IDXGIFactory 对象的指针的地址。</param>
         /// <returns>如果成功 ， 则返回S_OK;否则， 返回以下 DXGI_ERROR之一。</returns>
         [DllImport(Dxgi, CharSet = CharSet.Unicode, EntryPoint = "CreateDXGIFactory", PreserveSig = true, SetLastError = false)]
-        public static extern int CreateDXGIFactory(ref Guid riid, out nint ppFactory);
+        internal static extern int CreateDXGIFactory(ref Guid riid, out nint ppFactory);
     }
 }

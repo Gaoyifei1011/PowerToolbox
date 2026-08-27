@@ -5,7 +5,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// Sha224 校验实现
     /// </summary>
-    public class Sha224 : HashAlgorithm
+    internal class Sha224 : HashAlgorithm
     {
         private ulong count;
         private int processingBufferCount;
@@ -33,7 +33,7 @@ namespace PowerToolbox.Extensions.Hashing
             0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
         ];
 
-        public Sha224()
+        internal Sha224()
         {
             HashSizeValue = 224;
             Initialize();

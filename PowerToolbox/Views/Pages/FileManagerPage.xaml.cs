@@ -16,7 +16,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 文件管理页面
     /// </summary>
-    public sealed partial class FileManagerPage : Page, INotifyPropertyChanged
+    internal sealed partial class FileManagerPage : Page, INotifyPropertyChanged
     {
         private readonly string ChangeRuleString = ResourceService.FileManagerResource.GetString("ChangeRule");
         private readonly string NameChangeRule1String = ResourceService.FileManagerResource.GetString("NameChangeRule1");
@@ -46,7 +46,7 @@ namespace PowerToolbox.Views.Pages
 
         private SelectorBarItem _selectedItem;
 
-        public SelectorBarItem SelectedItem
+        internal SelectorBarItem SelectedItem
         {
             get { return _selectedItem; }
 
@@ -62,7 +62,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _currentIndex = 0;
 
-        public int CurrentIndex
+        internal int CurrentIndex
         {
             get { return _currentIndex; }
 
@@ -92,7 +92,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public FileManagerPage()
+        internal FileManagerPage()
         {
             InitializeComponent();
             NameChangeRuleList.Add(NameChangeRule1String);
@@ -279,7 +279,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取当前导航到的页
         /// </summary>
-        public Type GetCurrentPageType()
+        internal Type GetCurrentPageType()
         {
             return FileManagerFrame.CurrentSourcePageType;
         }
@@ -287,7 +287,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取当前导航控件内容对应的页面
         /// </summary>
-        public object GetFrameContent()
+        internal object GetFrameContent()
         {
             return FileManagerFrame.Content;
         }
@@ -295,7 +295,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 显示使用说明
         /// </summary>
-        public void ShowUseInstruction()
+        internal void ShowUseInstruction()
         {
             if (!FileManagerSplitView.IsPaneOpen)
             {

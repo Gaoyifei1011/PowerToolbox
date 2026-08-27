@@ -1,21 +1,21 @@
 ﻿namespace PowerToolbox.Extensions.DataType.Class
 {
-    public class PnpDriverInformation
+    internal class PnpDriverInformation
     {
-        public string DriverName { get; set; }
+        internal string DriverName { get; set; }
 
-        public string OriginalName { get; set; }
+        internal string OriginalName { get; set; }
 
-        public string ProviderName { get; set; }
+        internal string ProviderName { get; set; }
 
-        public string ClassName { get; set; }
+        internal string ClassName { get; set; }
 
-        public string ClassGuid { get; set; }
+        internal string ClassGuid { get; set; }
 
-        public string DriverVersion { get; set; }
+        internal string DriverVersion { get; set; }
 
-        public string DriverDate { get; set; }
+        internal string DriverDate { get; set; }
 
-        public string SignerName { get; set; }
+        internal string SignerName { get; set; }
     }
 }

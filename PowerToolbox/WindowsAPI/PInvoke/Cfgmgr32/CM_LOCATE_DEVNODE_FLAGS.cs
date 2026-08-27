@@ -1,6 +1,6 @@
 ﻿namespace PowerToolbox.WindowsAPI.PInvoke.Cfgmgr32
 {
-    public enum CM_LOCATE_DEVNODE_FLAGS : uint
+    internal enum CM_LOCATE_DEVNODE_FLAGS : uint
     {
         /// <summary>
         /// 仅当设备当前在设备树中配置设备时，该函数才会检索指定设备的设备实例句柄。

@@ -7,11 +7,11 @@ namespace PowerToolbox.Views.Dialogs
     /// <summary>
     /// 许可证文字内容对话框
     /// </summary>
-    public sealed partial class LicenseDialog : ContentDialog, INotifyPropertyChanged
+    internal sealed partial class LicenseDialog : ContentDialog, INotifyPropertyChanged
     {
         private string _licenseText = Encoding.UTF8.GetString(Strings.Resources.LICENSE);
 
-        public string LicenseText
+        internal string LicenseText
         {
             get { return _licenseText; }
 
@@ -27,7 +27,7 @@ namespace PowerToolbox.Views.Dialogs
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public LicenseDialog()
+        internal LicenseDialog()
         {
             InitializeComponent();
         }

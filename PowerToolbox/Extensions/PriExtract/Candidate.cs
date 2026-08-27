@@ -2,16 +2,16 @@
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class Candidate
+    internal sealed class Candidate
     {
-        public ushort QualifierSet { get; set; }
+        internal ushort QualifierSet { get; set; }
 
-        public ResourceValueType Type { get; set; }
+        internal ResourceValueType Type { get; set; }
 
-        public int? SourceFileIndex { get; set; }
+        internal int? SourceFileIndex { get; set; }
 
-        public (ushort DataItemSection, ushort DataItemIndex) DataItemSectionAndIndex { get; set; }
+        internal (ushort DataItemSection, ushort DataItemIndex) DataItemSectionAndIndex { get; set; }
 
-        public ByteSpan Data { get; set; }
+        internal ByteSpan Data { get; set; }
     }
 }

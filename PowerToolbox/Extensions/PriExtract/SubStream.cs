@@ -3,13 +3,13 @@ using System.IO;
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class SubStream(Stream baseStream, long subStreamPosition, long subStreamLength) : Stream
+    internal sealed class SubStream(Stream baseStream, long subStreamPosition, long subStreamLength) : Stream
     {
         private readonly Stream baseStream = baseStream;
         private readonly long subStreamPosition = subStreamPosition;
         private readonly long subStreamLength = subStreamLength;
 
-        public long SubStreamPosition
+        internal long SubStreamPosition
         {
             get { return subStreamPosition; }
         }

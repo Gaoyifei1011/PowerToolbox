@@ -3,7 +3,7 @@
     /// <summary>
     /// 请求的设备实例属性的 property-data-type 标识符
     /// </summary>
-    public enum DEVPROP_TYPE
+    internal enum DEVPROP_TYPE
     {
         /// <summary>
         /// 在 Windows Vista 和更高版本的 Windows 中，DEVPROP_TYPE_EMPTY标识符表示一个特殊的基数据类型标识符，该标识符指示属性不存在。

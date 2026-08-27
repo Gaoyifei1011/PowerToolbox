@@ -7,7 +7,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 为捆绑包清单中的 <Resource> 元素提供只读对象模型。
     /// </summary>
     [ComImport, Guid("3B53A497-3C5C-48D1-9EA3-BB7EAC8CD7D4"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IAppxManifestQualifiedResource
+    internal interface IAppxManifestQualifiedResource
     {
         /// <summary>
         /// 检索资源的语言。

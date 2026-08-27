@@ -6,13 +6,13 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// <summary>
     /// 提供异步下载完成时使用的回调。 此接口由调用 IUpdateDownloader：：BeginDownload 方法的程序员实现。
     /// </summary>
-    public class DownloadCompletedCallback : IDownloadCompletedCallback
+    internal class DownloadCompletedCallback : IDownloadCompletedCallback
     {
-        public IDownloadJob DownloadJob { get; private set; }
+        internal IDownloadJob DownloadJob { get; private set; }
 
-        public IDownloadCompletedCallbackArgs CallbackArgs { get; private set; }
+        internal IDownloadCompletedCallbackArgs CallbackArgs { get; private set; }
 
-        public event EventHandler DownloadCompleted;
+        internal event EventHandler DownloadCompleted;
 
         /// <summary>
         /// 处理通过调用 IUpdateInstaller.BeginInstall 或 IUpdateInstaller.BeginUninstall 启动的异步安装或卸载完成的通知。

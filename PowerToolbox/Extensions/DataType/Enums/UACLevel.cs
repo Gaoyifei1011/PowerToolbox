@@ -1,6 +1,6 @@
 ﻿namespace PowerToolbox.Extensions.DataType.Enums
 {
-    public enum UacLevel
+    internal enum UacLevel
     {
         /// <summary>
         /// 从不通知

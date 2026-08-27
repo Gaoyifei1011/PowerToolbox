@@ -9,9 +9,9 @@ namespace PowerToolbox.Extensions.Encrypt
     /// 支持ECB， CBC， CFB， OFB, CTS （CTS是通过CBC偷回模拟-见注释）
     /// 支持PaddingMode: None， PKCS7, Zeros, ANSIX923, ISO10126。
     /// </summary>
-    public class SM4 : SymmetricAlgorithm
+    internal class SM4 : SymmetricAlgorithm
     {
-        public SM4()
+        internal SM4()
         {
             // SM4 参数
             BlockSizeValue = 128;

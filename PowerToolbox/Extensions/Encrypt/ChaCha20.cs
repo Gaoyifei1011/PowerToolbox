@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// ChaCha20 对称加密算法实现
     /// </summary>
-    public class ChaCha20
+    internal class ChaCha20
     {
         // ChaCha20 生成 64 字节的块
         private const int BlockSize = 64;
@@ -14,7 +14,7 @@ namespace PowerToolbox.Extensions.Encrypt
         /// <summary>
         /// 生成随机密钥
         /// </summary>
-        public static byte[] GenerateKey()
+        internal static byte[] GenerateKey()
         {
             byte[] key = new byte[32];
             RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
@@ -26,7 +26,7 @@ namespace PowerToolbox.Extensions.Encrypt
         /// <summary>
         /// 生成初始化向量
         /// </summary>
-        public static byte[] GenerateIV()
+        internal static byte[] GenerateIV()
         {
             byte[] iv = new byte[12];
             RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
@@ -38,7 +38,7 @@ namespace PowerToolbox.Extensions.Encrypt
         /// <summary>
         /// 加密/解密：密钥（32字节），nonce（12字节），可选的初始计数器（默认0）
         /// </summary>
-        public static byte[] Encrypt(byte[] key, byte[] nonce, byte[] plaintext, uint counter = 0)
+        internal static byte[] Encrypt(byte[] key, byte[] nonce, byte[] plaintext, uint counter = 0)
         {
             if (key is null)
             {
@@ -92,7 +92,7 @@ namespace PowerToolbox.Extensions.Encrypt
         /// <summary>
         /// 解密与流密码的加密相同
         /// </summary>
-        public static byte[] Decrypt(byte[] key, byte[] nonce, byte[] ciphertext, uint counter = 0)
+        internal static byte[] Decrypt(byte[] key, byte[] nonce, byte[] ciphertext, uint counter = 0)
         {
             return Encrypt(key, nonce, ciphertext, counter);
         }

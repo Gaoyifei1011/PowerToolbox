@@ -8,7 +8,7 @@ namespace ThemeSwitch.Services.Controls.Settings
     /// <summary>
     /// 自动切换主题服务
     /// </summary>
-    public static class AutoThemeSwitchService
+    internal static class AutoThemeSwitchService
     {
         private static readonly string autoThemeSwitchEnableKey = ConfigKey.AutoThemeSwitchEnableKey;
         private static readonly string autoThemeSwitchTypeKey = ConfigKey.AutoThemeSwitchTypeKey;
@@ -22,56 +22,56 @@ namespace ThemeSwitch.Services.Controls.Settings
         private static readonly string sunriseOffsetKey = ConfigKey.SunriseOffsetKey;
         private static readonly string sunsetOffsetKey = ConfigKey.SunsetOffsetKey;
 
-        public static bool DefaultAutoThemeSwitchEnable { get; } = false;
+        internal static bool DefaultAutoThemeSwitchEnable { get; } = false;
 
-        public static string DefaultAutoThemeSwitchType { get; private set; }
+        internal static string DefaultAutoThemeSwitchType { get; private set; }
 
-        public static bool DefaultAutoSwitchSystemTheme { get; } = false;
+        internal static bool DefaultAutoSwitchSystemTheme { get; } = false;
 
-        public static bool DefaultAutoSwitchAppTheme { get; } = false;
+        internal static bool DefaultAutoSwitchAppTheme { get; } = false;
 
-        public static bool DefaultIsShowColorInDarkTheme { get; } = false;
+        internal static bool DefaultIsShowColorInDarkTheme { get; } = false;
 
-        public static TimeSpan DefaultSystemThemeLightTime { get; } = new(7, 0, 0);
+        internal static TimeSpan DefaultSystemThemeLightTime { get; } = new(7, 0, 0);
 
-        public static TimeSpan DefaultSystemThemeDarkTime { get; } = new(19, 0, 0);
+        internal static TimeSpan DefaultSystemThemeDarkTime { get; } = new(19, 0, 0);
 
-        public static TimeSpan DefaultAppThemeLightTime { get; } = new(7, 0, 0);
+        internal static TimeSpan DefaultAppThemeLightTime { get; } = new(7, 0, 0);
 
-        public static TimeSpan DefaultAppThemeDarkTime { get; } = new(19, 0, 0);
+        internal static TimeSpan DefaultAppThemeDarkTime { get; } = new(19, 0, 0);
 
-        public static int DefaultSunriseOffset { get; } = 0;
+        internal static int DefaultSunriseOffset { get; } = 0;
 
-        public static int DefaultSunsetOffset { get; } = 0;
+        internal static int DefaultSunsetOffset { get; } = 0;
 
-        public static bool AutoThemeSwitchEnable { get; set; }
+        internal static bool AutoThemeSwitchEnable { get; set; }
 
-        public static string AutoThemeSwitchType { get; set; }
+        internal static string AutoThemeSwitchType { get; set; }
 
-        public static bool AutoSwitchSystemTheme { get; set; }
+        internal static bool AutoSwitchSystemTheme { get; set; }
 
-        public static bool AutoSwitchAppTheme { get; set; }
+        internal static bool AutoSwitchAppTheme { get; set; }
 
-        public static bool IsShowColorInDarkTheme { get; set; }
+        internal static bool IsShowColorInDarkTheme { get; set; }
 
-        public static TimeSpan SystemThemeLightTime { get; set; }
+        internal static TimeSpan SystemThemeLightTime { get; set; }
 
-        public static TimeSpan SystemThemeDarkTime { get; set; }
+        internal static TimeSpan SystemThemeDarkTime { get; set; }
 
-        public static TimeSpan AppThemeLightTime { get; set; }
+        internal static TimeSpan AppThemeLightTime { get; set; }
 
-        public static TimeSpan AppThemeDarkTime { get; set; }
+        internal static TimeSpan AppThemeDarkTime { get; set; }
 
-        public static int SunriseOffset { get; set; }
+        internal static int SunriseOffset { get; set; }
 
-        public static int SunsetOffset { get; set; }
+        internal static int SunsetOffset { get; set; }
 
-        public static List<string> AutoThemeSwitchTypeList { get; } = ["FixedTime", "SunriseSunset", "DarkMode"];
+        internal static List<string> AutoThemeSwitchTypeList { get; } = ["FixedTime", "SunriseSunset", "DarkMode"];
 
         /// <summary>
         /// 获取设置存储的自动切换主题所有选项值
         /// </summary>
-        public static void InitializeOrUpdateAutoThemeSwitch()
+        internal static void InitializeOrUpdateAutoThemeSwitch()
         {
             DefaultAutoThemeSwitchType = AutoThemeSwitchTypeList[0];
             AutoThemeSwitchEnable = GetAutoThemeSwitchEnable();

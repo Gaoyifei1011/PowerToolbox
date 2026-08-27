@@ -3,7 +3,7 @@
     /// <summary>
     /// 指示计时器要执行的操作的标志。
     /// </summary>
-    public enum PDTIMER : uint
+    internal enum PDTIMER : uint
     {
         /// <summary>
         /// 将计时器重置为零。 将从调用此方法时开始计算进度。

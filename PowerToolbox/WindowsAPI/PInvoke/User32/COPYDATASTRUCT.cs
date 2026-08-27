@@ -6,22 +6,22 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
     /// 包含要通过 WM_COPYDATA 消息传递给另一个应用程序的数据。
     /// </summary>
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct COPYDATASTRUCT
+    internal struct COPYDATASTRUCT
     {
         /// <summary>
         /// 要传递给接收应用程序的数据类型。 接收应用程序定义有效类型。
         /// </summary>
-        public nint dwData;
+        internal nint dwData;
 
         /// <summary>
         /// lpData 成员指向的数据的大小（以字节为单位）。
         /// </summary>
-        public int cbData;
+        internal int cbData;
 
         /// <summary>
         /// 要传递给接收应用程序的数据。 此成员可以为 NULL。
         /// </summary>
         [MarshalAs(UnmanagedType.LPWStr)]
-        public string lpData;
+        internal string lpData;
     }
 }

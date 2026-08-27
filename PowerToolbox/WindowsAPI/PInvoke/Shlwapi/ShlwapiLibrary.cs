@@ -10,7 +10,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shlwapi
     /// <summary>
     /// Shlwapi.dll 函数库
     /// </summary>
-    public static class ShlwapiLibrary
+    internal static class ShlwapiLibrary
     {
         private const string Shlwapi = "shlwapi.dll";
 
@@ -20,7 +20,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shlwapi
         /// <param name="pszIconFile">指向长度为 null 的字符串的指针，MAX_PATH包含文件位置字符串。 它应采用“路径，iconindex”的形式。 函数返回时，pszIconFile 将指向文件的路径。</param>
         /// <returns>返回有效的图标索引值。</returns>
         [DllImport(Shlwapi, CharSet = CharSet.Unicode, EntryPoint = "PathParseIconLocationW", PreserveSig = true)]
-        public static extern int PathParseIconLocation(StringBuilder pszIconFile);
+        internal static extern int PathParseIconLocation(StringBuilder pszIconFile);
 
         /// <summary>
         /// 打开或创建文件，并检索要读取或写入该文件的流。
@@ -33,7 +33,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shlwapi
         /// <param name="ppstm">接收与文件关联的流的 IStream 接口指针。</param>
         /// <returns>如果此函数成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [DllImport(Shlwapi, CharSet = CharSet.Unicode, EntryPoint = "SHCreateStreamOnFileEx", PreserveSig = true)]
-        public static extern int SHCreateStreamOnFileEx([MarshalAs(UnmanagedType.LPWStr)] string pszFile, STGM grfMode, uint dwAttributes, bool fCreate, [MarshalAs(UnmanagedType.Interface)] IStream pstmTemplate, [MarshalAs(UnmanagedType.Interface)] out IStream ppstm);
+        internal static extern int SHCreateStreamOnFileEx([MarshalAs(UnmanagedType.LPWStr)] string pszFile, STGM grfMode, uint dwAttributes, bool fCreate, [MarshalAs(UnmanagedType.Interface)] IStream pstmTemplate, [MarshalAs(UnmanagedType.Interface)] out IStream ppstm);
 
         /// <summary>
         /// 以间接字符串的形式给定该资源时，提取指定的文本资源 (以“@”符号) 开头的字符串。
@@ -44,6 +44,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shlwapi
         /// <param name="ppvReserved">未使用;设置为 NULL。</param>
         /// <returns>如果此函数成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [DllImport(Shlwapi, CharSet = CharSet.Unicode, EntryPoint = "SHLoadIndirectString", ExactSpelling = true, PreserveSig = true)]
-        public static extern int SHLoadIndirectString([MarshalAs(UnmanagedType.LPWStr)] string pszSource, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszOutBuf, int cchOutBuf, nint ppvReserved);
+        internal static extern int SHLoadIndirectString([MarshalAs(UnmanagedType.LPWStr)] string pszSource, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszOutBuf, int cchOutBuf, nint ppvReserved);
     }
 }

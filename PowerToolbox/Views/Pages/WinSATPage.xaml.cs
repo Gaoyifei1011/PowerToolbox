@@ -20,7 +20,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 系统评估页面
     /// </summary>
-    public sealed partial class WinSATPage : Page, INotifyPropertyChanged
+    internal sealed partial class WinSATPage : Page, INotifyPropertyChanged
     {
         private readonly string ErrorMessageString = ResourceService.WinSATResource.GetString("ErrorMessage");
         private readonly string SuccessMessageString = ResourceService.WinSATResource.GetString("SuccessMessage");
@@ -36,7 +36,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _processorSubScore;
 
-        public string ProcessorSubScore
+        internal string ProcessorSubScore
         {
             get { return _processorSubScore; }
 
@@ -52,7 +52,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _memorySubScore;
 
-        public string MemorySubScore
+        internal string MemorySubScore
         {
             get { return _memorySubScore; }
 
@@ -68,7 +68,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _graphicsSubScore;
 
-        public string GraphicsSubScore
+        internal string GraphicsSubScore
         {
             get { return _graphicsSubScore; }
 
@@ -84,7 +84,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _gamingGraphicsSubScore;
 
-        public string GamingGraphicsSubScore
+        internal string GamingGraphicsSubScore
         {
             get { return _gamingGraphicsSubScore; }
 
@@ -100,7 +100,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _primaryDiskSubScore;
 
-        public string PrimaryDiskSubScore
+        internal string PrimaryDiskSubScore
         {
             get { return _primaryDiskSubScore; }
 
@@ -116,7 +116,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _basicScore;
 
-        public string BasicScore
+        internal string BasicScore
         {
             get { return _basicScore; }
 
@@ -132,7 +132,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _basicScoreExisted;
 
-        public bool BasicScoreExisted
+        internal bool BasicScoreExisted
         {
             get { return _basicScoreExisted; }
 
@@ -148,7 +148,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isNotRunningAssessment = true;
 
-        public bool IsNotRunningAssessment
+        internal bool IsNotRunningAssessment
         {
             get { return _isNotRunningAssessment; }
 
@@ -180,7 +180,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _resultMessage;
 
-        public string ResultMessage
+        internal string ResultMessage
         {
             get { return _resultMessage; }
 
@@ -196,7 +196,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public WinSATPage()
+        internal WinSATPage()
         {
             InitializeComponent();
         }

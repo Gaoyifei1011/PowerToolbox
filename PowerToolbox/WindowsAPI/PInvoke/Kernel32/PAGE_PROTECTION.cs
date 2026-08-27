@@ -3,7 +3,7 @@
     /// <summary>
     /// 指定文件映射对象的页面保护。
     /// </summary>
-    public enum PAGE_PROTECTION
+    internal enum PAGE_PROTECTION
     {
         /// <summary>
         /// 允许映射视图进行只读或写入时复制访问。 尝试写入特定区域会导致访问冲突。hFile 参数指定的文件句柄必须使用 GENERIC_READ 访问权限创建。

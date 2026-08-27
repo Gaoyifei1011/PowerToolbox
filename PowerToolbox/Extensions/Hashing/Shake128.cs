@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace PowerToolbox.Extensions.Hashing
 {
-    public sealed class Shake128 : HashAlgorithm
+    internal sealed class Shake128 : HashAlgorithm
     {
         // SHAKE128 parameters
         private const int RateBytes = 168; // 1344 bits / 8
@@ -33,11 +33,11 @@ namespace PowerToolbox.Extensions.Hashing
         ];
 
         // default 32 bytes output
-        public Shake128() : this(32)
+        internal Shake128() : this(32)
         {
         }
 
-        public Shake128(int outputLengthBytes)
+        internal Shake128(int outputLengthBytes)
         {
             if (outputLengthBytes <= 0)
             {

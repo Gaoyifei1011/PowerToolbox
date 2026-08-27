@@ -6,7 +6,7 @@ namespace PowerToolboxShellExtension.WindowsAPI.PInvoke.Shell32
     /// <summary>
     /// Shell32.dll 函数库
     /// </summary>
-    public static partial class Shell32Library
+    internal static partial class Shell32Library
     {
         private const string Shell32 = "shell32.dll";
 
@@ -21,7 +21,7 @@ namespace PowerToolboxShellExtension.WindowsAPI.PInvoke.Shell32
         /// <param name="nShowCmd">指定应用程序在打开时如何显示应用程序的标志。 如果 lpFile 指定文档文件，则标志将直接传递给关联的应用程序。 由应用程序决定如何处理它。 它可以是在 ShowWindow 函数的 nCmdShow 参数中指定的任何值。</param>
         /// <returns>如果函数成功，则返回大于 32 的值。 如果函数失败，它将返回一个错误值，该值指示失败的原因。 返回值被强制转换为 HINSTANCE，以实现与 16 位 Windows 应用程序的向后兼容性。</returns>
         [LibraryImport(Shell32, EntryPoint = "ShellExecuteW", SetLastError = false, StringMarshalling = StringMarshalling.Utf16), PreserveSig]
-        public static partial int ShellExecute(nint hwnd, [MarshalAs(UnmanagedType.LPWStr)] string lpOperation, [MarshalAs(UnmanagedType.LPWStr)] string lpFile, string lpParameters, [MarshalAs(UnmanagedType.LPWStr)] string lpDirectory, int nShowCmd);
+        internal static partial int ShellExecute(nint hwnd, [MarshalAs(UnmanagedType.LPWStr)] string lpOperation, [MarshalAs(UnmanagedType.LPWStr)] string lpFile, string lpParameters, [MarshalAs(UnmanagedType.LPWStr)] string lpDirectory, int nShowCmd);
 
         /// <summary>
         /// 检索由文件夹的 KNOWNFOLDERID 标识的已知文件夹的完整路径。
@@ -38,6 +38,6 @@ namespace PowerToolboxShellExtension.WindowsAPI.PInvoke.Shell32
         /// </param>
         /// <returns>如果成功，则返回S_OK，否则返回错误值</returns>
         [LibraryImport(Shell32, EntryPoint = "SHGetKnownFolderPath", SetLastError = false, StringMarshalling = StringMarshalling.Utf16), PreserveSig]
-        public static partial int SHGetKnownFolderPath(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, nint hToken, [MarshalAs(UnmanagedType.LPWStr)] out string pszPath);
+        internal static partial int SHGetKnownFolderPath(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, nint hToken, [MarshalAs(UnmanagedType.LPWStr)] out string pszPath);
     }
 }

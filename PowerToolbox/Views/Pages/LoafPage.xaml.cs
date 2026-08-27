@@ -22,7 +22,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 摸鱼页面
     /// </summary>
-    public sealed partial class LoafPage : Page, INotifyPropertyChanged
+    internal sealed partial class LoafPage : Page, INotifyPropertyChanged
     {
         private readonly string LoafTimeString = ResourceService.LoafResource.GetString("LoafTime");
         private readonly string LockScreenString = ResourceService.LoafResource.GetString("LockScreen");
@@ -38,7 +38,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _loadImageCompleted;
 
-        public bool LoadImageCompleted
+        internal bool LoadImageCompleted
         {
             get { return _loadImageCompleted; }
 
@@ -54,7 +54,7 @@ namespace PowerToolbox.Views.Pages
 
         private BitmapImage _loafImage;
 
-        public BitmapImage LoafImage
+        internal BitmapImage LoafImage
         {
             get { return _loafImage; }
 
@@ -70,7 +70,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isLoafing;
 
-        public bool IsLoafing
+        internal bool IsLoafing
         {
             get { return _isLoafing; }
 
@@ -86,7 +86,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _blockAllKeys = true;
 
-        public bool BlockAllKeys
+        internal bool BlockAllKeys
         {
             get { return _blockAllKeys; }
 
@@ -102,7 +102,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedSimulateUpdateStyle;
 
-        public ComboBoxItemModel SelectedSimulateUpdateStyle
+        internal ComboBoxItemModel SelectedSimulateUpdateStyle
         {
             get { return _selectedSimulateUpdateStyle; }
 
@@ -118,7 +118,7 @@ namespace PowerToolbox.Views.Pages
 
         private TimeSpan _durationTime = new(0, 30, 0);
 
-        public TimeSpan DurationTime
+        internal TimeSpan DurationTime
         {
             get { return _durationTime; }
 
@@ -134,7 +134,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedAfterSimulatedOperation;
 
-        public ComboBoxItemModel SelectedAfterSimulateOperation
+        internal ComboBoxItemModel SelectedAfterSimulateOperation
         {
             get { return _selectedAfterSimulatedOperation; }
 
@@ -154,7 +154,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public LoafPage()
+        internal LoafPage()
         {
             InitializeComponent();
             SimulateUpdateStyleList.Add(new() { SelectedValue = SimulateUpdateKind.Windows11, DisplayMember = Windows11StyleString });

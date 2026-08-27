@@ -1,20 +1,20 @@
 ﻿namespace PowerToolbox.Extensions.Encrypt
 {
-    public readonly struct DWord
+    internal readonly struct DWord
     {
         private readonly uint Value;
 
-        public DWord(uint value) : this()
+        internal DWord(uint value) : this()
         {
             Value = value;
         }
 
-        public DWord(ulong value) : this()
+        internal DWord(ulong value) : this()
         {
             Value = (uint)value;
         }
 
-        public DWord(byte[] buffer, int offset) : this()
+        internal DWord(byte[] buffer, int offset) : this()
         {
             Value = (uint)((buffer[offset + 3] << 24) | (buffer[offset + 2] << 16) | (buffer[offset + 1] << 8) | buffer[offset]);
         }
@@ -69,20 +69,20 @@
             return value.Value >> shiftAmount;
         }
 
-        public static readonly DWord False = 0;
-        public static readonly DWord True = 1;
+        internal static readonly DWord False = 0;
+        internal static readonly DWord True = 1;
 
-        public DWord RotateLeft(int n)
+        internal DWord RotateLeft(int n)
         {
             return (Value << n) | (Value >> (32 - n));
         }
 
-        public DWord MaskUpper()
+        internal DWord MaskUpper()
         {
             return Value & 0xFFFF0000;
         }
 
-        public DWord MaskLower()
+        internal DWord MaskLower()
         {
             return Value & 0x0000FFFF;
         }

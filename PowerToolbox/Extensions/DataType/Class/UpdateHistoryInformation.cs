@@ -6,46 +6,46 @@ namespace PowerToolbox.Extensions.DataType.Class
     /// <summary>
     /// 更新历史记录信息
     /// </summary>
-    public class UpdateHistoryInformation
+    internal class UpdateHistoryInformation
     {
         /// <summary>
         /// 更新历史记录条目
         /// </summary>
-        public IUpdateHistoryEntry2 UpdateHistoryEntry { get; set; }
+        internal IUpdateHistoryEntry2 UpdateHistoryEntry { get; set; }
 
         /// <summary>
         /// 更新的客户端应用程序的标识符
         /// </summary>
-        public string ClientApplicationID { get; set; }
+        internal string ClientApplicationID { get; set; }
 
         /// <summary>
         /// 更新的日期和时间
         /// </summary>
-        public DateTimeOffset Date { get; set; }
+        internal DateTimeOffset Date { get; set; }
 
         /// <summary>
         /// 更新返回的 HRESULT 值
         /// </summary>
-        public int HResult { get; set; }
+        internal int HResult { get; set; }
 
         /// <summary>
         /// 更新操作的结果
         /// </summary>
-        public OperationResultCode OperationResultCode { get; set; }
+        internal OperationResultCode OperationResultCode { get; set; }
 
         /// <summary>
         /// 更新支持信息的超链接
         /// </summary>
-        public string SupportUrl { get; set; }
+        internal string SupportUrl { get; set; }
 
         /// <summary>
         /// 更新标题
         /// </summary>
-        public string Title { get; set; }
+        internal string Title { get; set; }
 
         /// <summary>
         /// 更新的标识符
         /// </summary>
-        public string UpdateID { get; set; }
+        internal string UpdateID { get; set; }
     }
 }

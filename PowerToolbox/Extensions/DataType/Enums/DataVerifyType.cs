@@ -3,7 +3,7 @@
     /// <summary>
     /// 数据校验类型
     /// </summary>
-    public enum DataVerifyType
+    internal enum DataVerifyType
     {
         Blake2b = 0,
         Blake3 = 1,

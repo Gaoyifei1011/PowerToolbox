@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
     /// 以下一个或多个值的组合，这些值指示其他结构成员的内容和有效性
     /// </summary>
     [Flags]
-    public enum ShellExecuteMaskFlags : uint
+    internal enum ShellExecuteMaskFlags : uint
     {
         /// <summary>
         /// 默认值

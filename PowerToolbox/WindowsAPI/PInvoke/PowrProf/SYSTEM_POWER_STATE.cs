@@ -1,6 +1,6 @@
 ﻿namespace PowerToolbox.WindowsAPI.PInvoke.PowrProf
 {
-    public enum SYSTEM_POWER_STATE
+    internal enum SYSTEM_POWER_STATE
     {
         /// <summary>
         /// 未指定的系统电源状态。

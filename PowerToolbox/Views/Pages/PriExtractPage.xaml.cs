@@ -33,7 +33,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 包资源索引提取页面
     /// </summary>
-    public sealed partial class PriExtractPage : Page, INotifyPropertyChanged
+    internal sealed partial class PriExtractPage : Page, INotifyPropertyChanged
     {
         private readonly string AllLanguageString = ResourceService.PriExtractResource.GetString("AllLanguage");
         private readonly string DragOverContentString = ResourceService.PriExtractResource.GetString("DragOverContent");
@@ -57,7 +57,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isExtractSaveSame;
 
-        public bool IsExtractSaveSame
+        internal bool IsExtractSaveSame
         {
             get { return _isExtractSaveSame; }
 
@@ -73,7 +73,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isExtractSaveString;
 
-        public bool IsExtractSaveString
+        internal bool IsExtractSaveString
         {
             get { return _isExtractSaveString; }
 
@@ -89,7 +89,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isExtractSaveFilePath;
 
-        public bool IsExtractSaveFilePath
+        internal bool IsExtractSaveFilePath
         {
             get { return _isExtractSaveFilePath; }
 
@@ -105,7 +105,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isExtractSaveEmbeddedData;
 
-        public bool IsExtractSaveEmbeddedData
+        internal bool IsExtractSaveEmbeddedData
         {
             get { return _isExtractSaveEmbeddedData; }
 
@@ -121,7 +121,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedLanguage;
 
-        public ComboBoxItemModel SelectedLanguage
+        internal ComboBoxItemModel SelectedLanguage
         {
             get { return _selectedLanguage; }
 
@@ -137,7 +137,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isProcessing;
 
-        public bool IsProcessing
+        internal bool IsProcessing
         {
             get { return _isProcessing; }
 
@@ -153,7 +153,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _getResults;
 
-        public string GetResults
+        internal string GetResults
         {
             get { return _getResults; }
 
@@ -169,7 +169,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _selectedSaveFolder;
 
-        public string SelectedSaveFolder
+        internal string SelectedSaveFolder
         {
             get { return _selectedSaveFolder; }
 
@@ -185,7 +185,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedResourceCandidateKind;
 
-        public ComboBoxItemModel SelectedResourceCandidateKind
+        internal ComboBoxItemModel SelectedResourceCandidateKind
         {
             get { return _selectedResourceCandidateKind; }
 
@@ -201,7 +201,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasStringResource;
 
-        public bool HasStringResource
+        internal bool HasStringResource
         {
             get { return _hasStringResource; }
 
@@ -217,7 +217,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _stringSearchText;
 
-        public string StringSearchText
+        internal string StringSearchText
         {
             get { return _stringSearchText; }
 
@@ -233,7 +233,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasFilePathResource;
 
-        public bool HasFilePathResource
+        internal bool HasFilePathResource
         {
             get { return _hasFilePathResource; }
 
@@ -249,7 +249,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _filePathSearchText;
 
-        public string FilePathSearchText
+        internal string FilePathSearchText
         {
             get { return _filePathSearchText; }
 
@@ -265,7 +265,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEmbeddedDataResource;
 
-        public bool HasEmbeddedDataResource
+        internal bool HasEmbeddedDataResource
         {
             get { return _hasEmbeddedDataResource; }
 
@@ -281,7 +281,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _embeddedDataSearchText;
 
-        public string EmbeddedDataSearchText
+        internal string EmbeddedDataSearchText
         {
             get { return _embeddedDataSearchText; }
 
@@ -313,7 +313,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public PriExtractPage()
+        internal PriExtractPage()
         {
             InitializeComponent();
             GetResults = NoSelectedFileString;
@@ -1053,7 +1053,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 解析 PRI 资源文件
         /// </summary>
-        public async Task ParseResourceFileAsync(string filePath)
+        internal async Task ParseResourceFileAsync(string filePath)
         {
             isLoadCompleted = false;
             IsProcessing = true;

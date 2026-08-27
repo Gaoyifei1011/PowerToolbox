@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
     /// 扩展键标志、事件注入标志、上下文代码和转换状态标志。
     /// </summary>
     [Flags]
-    public enum KBDLLHOOKSTRUCTFLAGS
+    internal enum KBDLLHOOKSTRUCTFLAGS
     {
         /// <summary>
         /// 测试扩展键标志。

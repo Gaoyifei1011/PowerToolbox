@@ -29,7 +29,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 数据解密页面
     /// </summary>
-    public sealed partial class DataDecryptPage : Page, INotifyPropertyChanged
+    internal sealed partial class DataDecryptPage : Page, INotifyPropertyChanged
     {
         private readonly string AllFilesString = ResourceService.DataDecryptResource.GetString("AllFiles");
         private readonly string ASCIIString = ResourceService.DataDecryptResource.GetString("ASCII");
@@ -118,7 +118,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _selectedIndex = 0;
 
-        public int SelectedIndex
+        internal int SelectedIndex
         {
             get { return _selectedIndex; }
 
@@ -134,7 +134,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _decryptFile;
 
-        public string DecryptFile
+        internal string DecryptFile
         {
             get { return _decryptFile; }
 
@@ -150,7 +150,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _decryptContent;
 
-        public string DecryptContent
+        internal string DecryptContent
         {
             get { return _decryptContent; }
 
@@ -182,7 +182,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _resultMessage;
 
-        public string ResultMessage
+        internal string ResultMessage
         {
             get { return _resultMessage; }
 
@@ -198,7 +198,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _decryptFailedInformation;
 
-        public string DecryptFailedInformation
+        internal string DecryptFailedInformation
         {
             get { return _decryptFailedInformation; }
 
@@ -214,7 +214,7 @@ namespace PowerToolbox.Views.Pages
 
         private DataDecryptTypeModel _selectedDataDecryptType;
 
-        public DataDecryptTypeModel SelectedDataDecryptType
+        internal DataDecryptTypeModel SelectedDataDecryptType
         {
             get { return _selectedDataDecryptType; }
 
@@ -230,7 +230,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasDecryptOptions;
 
-        public bool HasDecryptOptions
+        internal bool HasDecryptOptions
         {
             get { return _hasDecryptOptions; }
 
@@ -246,7 +246,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasDecryptKey;
 
-        public bool HasDecryptKey
+        internal bool HasDecryptKey
         {
             get { return _hasDecryptKey; }
 
@@ -262,7 +262,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasDecryptKeyStringType;
 
-        public bool HasDecryptKeyStringType
+        internal bool HasDecryptKeyStringType
         {
             get { return _hasDecryptKeyStringType; }
 
@@ -278,7 +278,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedDecryptKeyStringType;
 
-        public ComboBoxItemModel SelectedDecryptKeyStringType
+        internal ComboBoxItemModel SelectedDecryptKeyStringType
         {
             get { return _selectedDecryptKeyStringType; }
 
@@ -294,7 +294,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _decryptKeyPHText = string.Empty;
 
-        public string DecryptKeyPHText
+        internal string DecryptKeyPHText
         {
             get { return _decryptKeyPHText; }
 
@@ -310,7 +310,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _decryptKeyText = string.Empty;
 
-        public string DecryptKeyText
+        internal string DecryptKeyText
         {
             get { return _decryptKeyText; }
 
@@ -326,7 +326,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasInitializationVector;
 
-        public bool HasInitializationVector
+        internal bool HasInitializationVector
         {
             get { return _hasInitializationVector; }
 
@@ -342,7 +342,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _initializationVectorPHText = string.Empty;
 
-        public string InitializationVectorPHText
+        internal string InitializationVectorPHText
         {
             get { return _initializationVectorPHText; }
 
@@ -358,7 +358,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _initializationVectorText = string.Empty;
 
-        public string InitializationVectorText
+        internal string InitializationVectorText
         {
             get { return _initializationVectorText; }
 
@@ -374,7 +374,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedInitializationVectorStringType;
 
-        public ComboBoxItemModel SelectedInitializationVectorStringType
+        internal ComboBoxItemModel SelectedInitializationVectorStringType
         {
             get { return _selectedInitializationVectorStringType; }
 
@@ -390,7 +390,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasDecryptedBlockCipherMode;
 
-        public bool HasDecryptedBlockCipherMode
+        internal bool HasDecryptedBlockCipherMode
         {
             get { return _hasDecryptedBlockCipherMode; }
 
@@ -406,7 +406,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedDecryptedBlockCipherMode;
 
-        public ComboBoxItemModel SelectedDecryptedBlockCipherMode
+        internal ComboBoxItemModel SelectedDecryptedBlockCipherMode
         {
             get { return _selectedDecryptedBlockCipherMode; }
 
@@ -422,7 +422,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasPaddingMode;
 
-        public bool HasPaddingMode
+        internal bool HasPaddingMode
         {
             get { return _hasPaddingMode; }
 
@@ -438,7 +438,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedPaddingMode;
 
-        public ComboBoxItemModel SelectedPaddingMode
+        internal ComboBoxItemModel SelectedPaddingMode
         {
             get { return _selectedPaddingMode; }
 
@@ -454,7 +454,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasOffset;
 
-        public bool HasOffset
+        internal bool HasOffset
         {
             get { return _hasOffset; }
 
@@ -470,7 +470,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _offset;
 
-        public int Offset
+        internal int Offset
         {
             get { return _offset; }
 
@@ -486,7 +486,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasDecryptPrivateKey;
 
-        public bool HasDecryptPrivateKey
+        internal bool HasDecryptPrivateKey
         {
             get { return _hasDecryptPrivateKey; }
 
@@ -502,7 +502,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _decryptPrivateKeyText;
 
-        public string DecryptPrivateKeyText
+        internal string DecryptPrivateKeyText
         {
             get { return _decryptPrivateKeyText; }
 
@@ -518,7 +518,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasRSAEncryptionPaddingMode;
 
-        public bool HasRSAEncryptionPaddingMode
+        internal bool HasRSAEncryptionPaddingMode
         {
             get { return _hasRSAEncryptionPaddingMode; }
 
@@ -534,7 +534,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedRSAEncryptionPaddingMode;
 
-        public ComboBoxItemModel SelectedRSAEncryptionPaddingMode
+        internal ComboBoxItemModel SelectedRSAEncryptionPaddingMode
         {
             get { return _selectedRSAEncryptionPaddingMode; }
 
@@ -550,7 +550,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasParseAsTextData;
 
-        public bool HasParseAsTextData
+        internal bool HasParseAsTextData
         {
             get { return _hasParseAsTextData; }
 
@@ -566,7 +566,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _parseAsTextData;
 
-        public bool ParseAsTextData
+        internal bool ParseAsTextData
         {
             get { return _parseAsTextData; }
 
@@ -582,7 +582,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedTextEncodingType;
 
-        public ComboBoxItemModel SelectedTextEncodingType
+        internal ComboBoxItemModel SelectedTextEncodingType
         {
             get { return _selectedTextEncodingType; }
 
@@ -598,7 +598,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _textDecodingCustomTypeText;
 
-        public string TextEncodingCustomTypeText
+        internal string TextEncodingCustomTypeText
         {
             get { return _textDecodingCustomTypeText; }
 
@@ -614,7 +614,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _saveDecryptedDataToLocalFile;
 
-        public bool SaveDecryptedDataToLocalFile
+        internal bool SaveDecryptedDataToLocalFile
         {
             get { return _saveDecryptedDataToLocalFile; }
 
@@ -630,7 +630,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _saveDecryptedFilePath = string.Empty;
 
-        public string SaveDecryptedFilePath
+        internal string SaveDecryptedFilePath
         {
             get { return _saveDecryptedFilePath; }
 
@@ -646,7 +646,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isDecrypting;
 
-        public bool IsDecrypting
+        internal bool IsDecrypting
         {
             get { return _isDecrypting; }
 
@@ -662,7 +662,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _decryptResult;
 
-        public string DecryptResult
+        internal string DecryptResult
         {
             get { return _decryptResult; }
 
@@ -678,7 +678,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isLargeContent;
 
-        public bool IsLargeContent
+        internal bool IsLargeContent
         {
             get { return _isLargeContent; }
 
@@ -694,7 +694,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isBinaryFile;
 
-        public bool IsBinaryFile
+        internal bool IsBinaryFile
         {
             get { return _isBinaryFile; }
 
@@ -724,7 +724,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DataDecryptPage()
+        internal DataDecryptPage()
         {
             InitializeComponent();
             DataDecryptTypeList.Add(new()
@@ -3070,7 +3070,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 检查读取的文件是否是文本文件
         /// </summary>
-        public static bool CheckIsTextFile(string fileName)
+        internal static bool CheckIsTextFile(string fileName)
         {
             bool isTextFile = true;
             try

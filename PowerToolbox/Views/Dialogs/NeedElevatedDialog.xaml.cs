@@ -12,9 +12,9 @@ namespace PowerToolbox.Views.Dialogs
     /// <summary>
     /// 需要提权信息对话框
     /// </summary>
-    public sealed partial class NeedElevatedDialog : ContentDialog
+    internal sealed partial class NeedElevatedDialog : ContentDialog
     {
-        public NeedElevatedDialog()
+        internal NeedElevatedDialog()
         {
             InitializeComponent();
         }

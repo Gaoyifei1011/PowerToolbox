@@ -1,9 +1,9 @@
 ﻿namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class ItemInfo
+    internal sealed class ItemInfo
     {
-        public uint Decision { get; set; }
+        internal uint Decision { get; set; }
 
-        public uint FirstCandidate { get; set; }
+        internal uint FirstCandidate { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// IShellItem 接口继承自 IUnknown 接口。
     /// </summary>
     [ComImport, Guid("43826D1E-E718-42EE-BC55-A1E261C37BFE"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IShellItem
+    internal interface IShellItem
     {
         /// <summary>
         /// 绑定到由处理程序 ID 值 (BHID) 指定的项的处理程序。

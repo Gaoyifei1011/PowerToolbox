@@ -25,7 +25,7 @@ namespace PowerToolbox.Views.Windows
     /// <summary>
     /// 模拟更新窗口
     /// </summary>
-    public sealed partial class SimulateUpdateWindow : Window, INotifyPropertyChanged
+    internal sealed partial class SimulateUpdateWindow : Window, INotifyPropertyChanged
     {
         private readonly string Windows10UpdateText1String = ResourceService.SimulateUpdateResource.GetString("Windows10UpdateText1");
         private readonly string Windows11UpdateText1String = ResourceService.SimulateUpdateResource.GetString("Windows11UpdateText1");
@@ -38,11 +38,11 @@ namespace PowerToolbox.Views.Windows
         private nint hHook = 0;
         private HOOKPROC keyBoardHookProc;
 
-        public new static SimulateUpdateWindow Current { get; private set; }
+        internal new static SimulateUpdateWindow Current { get; private set; }
 
         private SimulateUpdateKind _simulateUpdateKind;
 
-        public SimulateUpdateKind SimulateUpdateKind
+        internal SimulateUpdateKind SimulateUpdateKind
         {
             get { return _simulateUpdateKind; }
 
@@ -58,7 +58,7 @@ namespace PowerToolbox.Views.Windows
 
         private string _windows11UpdateText;
 
-        public string Windows11UpdateText
+        internal string Windows11UpdateText
         {
             get { return _windows11UpdateText; }
 
@@ -74,7 +74,7 @@ namespace PowerToolbox.Views.Windows
 
         private string _windows10UpdateText;
 
-        public string Windows10UpdateText
+        internal string Windows10UpdateText
         {
             get { return _windows10UpdateText; }
 
@@ -92,7 +92,7 @@ namespace PowerToolbox.Views.Windows
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public SimulateUpdateWindow(SimulateUpdateKind simulateUpdateKind, TimeSpan duration, bool blockAllKeys, string afterSimulateOperation)
+        internal SimulateUpdateWindow(SimulateUpdateKind simulateUpdateKind, TimeSpan duration, bool blockAllKeys, string afterSimulateOperation)
         {
             Current = this;
             InitializeComponent();
@@ -220,7 +220,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 自定义钩子消息处理
         /// </summary>
-        public nint OnKeyboardHookProc(int nCode, nuint wParam, nint lParam)
+        internal nint OnKeyboardHookProc(int nCode, nuint wParam, nint lParam)
         {
             // 处理键盘钩子消息
             if (nCode >= 0)
@@ -286,7 +286,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 停止摸鱼
         /// </summary>
-        public void StopLoaf()
+        internal void StopLoaf()
         {
             Cursor.Show();
             StopHook();
@@ -324,7 +324,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 停止模拟自动更新
         /// </summary>
-        public void StopSimulateUpdate()
+        internal void StopSimulateUpdate()
         {
             if (simulateUpdateTimer is not null)
             {

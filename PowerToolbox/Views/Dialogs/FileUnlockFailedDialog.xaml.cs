@@ -21,7 +21,7 @@ namespace PowerToolbox.Views.Dialogs
     /// <summary>
     /// 文件解锁错误信息列表对话框
     /// </summary>
-    public sealed partial class FileUnlockFailedDialog : ContentDialog
+    internal sealed partial class FileUnlockFailedDialog : ContentDialog
     {
         private readonly string ExceptionCodeString = ResourceService.DialogResource.GetString("ExceptionCode");
         private readonly string ExceptionMessageString = ResourceService.DialogResource.GetString("ExceptionMessage");
@@ -32,7 +32,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private WinRTObservableCollection<FileUnlockFailedModel> FileUnlockFailedCollection { get; } = [];
 
-        public FileUnlockFailedDialog(List<FileUnlockFailedModel> fileUnlockFailedList)
+        internal FileUnlockFailedDialog(List<FileUnlockFailedModel> fileUnlockFailedList)
         {
             InitializeComponent();
 

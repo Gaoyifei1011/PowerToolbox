@@ -19,7 +19,7 @@ namespace PowerToolbox.Views.Dialogs
     /// <summary>
     /// 错误信息列表对话框
     /// </summary>
-    public sealed partial class OperationFailedDialog : ContentDialog
+    internal sealed partial class OperationFailedDialog : ContentDialog
     {
         private readonly string ExceptionCodeString = ResourceService.DialogResource.GetString("ExceptionCode");
         private readonly string ExceptionMessageString = ResourceService.DialogResource.GetString("ExceptionMessage");
@@ -28,7 +28,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private WinRTObservableCollection<OperationFailedModel> OperationFailedCollection { get; } = [];
 
-        public OperationFailedDialog(List<OperationFailedModel> operationFailedList)
+        internal OperationFailedDialog(List<OperationFailedModel> operationFailedList)
         {
             InitializeComponent();
 

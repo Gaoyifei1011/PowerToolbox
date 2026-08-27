@@ -29,7 +29,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 文件属性页面
     /// </summary>
-    public sealed partial class FilePropertiesPage : Page, INotifyPropertyChanged
+    internal sealed partial class FilePropertiesPage : Page, INotifyPropertyChanged
     {
         private readonly string ArchiveString = ResourceService.FilePropertiesResource.GetString("Archive");
         private readonly string CreateDateString = ResourceService.FilePropertiesResource.GetString("CreateDate");
@@ -46,7 +46,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isReadOnlyChecked;
 
-        public bool IsReadOnlyChecked
+        internal bool IsReadOnlyChecked
         {
             get { return _isReadOnlyChecked; }
 
@@ -62,7 +62,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isArchiveChecked;
 
-        public bool IsArchiveChecked
+        internal bool IsArchiveChecked
         {
             get { return _isArchiveChecked; }
 
@@ -78,7 +78,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isCreateDateChecked;
 
-        public bool IsCreateDateChecked
+        internal bool IsCreateDateChecked
         {
             get { return _isCreateDateChecked; }
 
@@ -94,7 +94,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isHideChecked;
 
-        public bool IsHideChecked
+        internal bool IsHideChecked
         {
             get { return _isHideChecked; }
 
@@ -110,7 +110,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isSystemChecked;
 
-        public bool IsSystemChecked
+        internal bool IsSystemChecked
         {
             get { return _isSystemChecked; }
 
@@ -126,7 +126,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isModifyDateChecked;
 
-        public bool IsModifyDateChecked
+        internal bool IsModifyDateChecked
         {
             get { return _isModifyDateChecked; }
 
@@ -142,7 +142,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isModifyingNow;
 
-        public bool IsModifyingNow
+        internal bool IsModifyingNow
         {
             get { return _isModifyingNow; }
 
@@ -158,7 +158,7 @@ namespace PowerToolbox.Views.Pages
 
         private DateTimeOffset _createDate = DateTimeOffset.Now;
 
-        public DateTimeOffset CreateDate
+        internal DateTimeOffset CreateDate
         {
             get { return _createDate; }
 
@@ -174,7 +174,7 @@ namespace PowerToolbox.Views.Pages
 
         private TimeSpan _createTime = DateTimeOffset.Now.TimeOfDay;
 
-        public TimeSpan CreateTime
+        internal TimeSpan CreateTime
         {
             get { return _createTime; }
 
@@ -190,7 +190,7 @@ namespace PowerToolbox.Views.Pages
 
         private DateTimeOffset _modifyDate = DateTimeOffset.Now;
 
-        public DateTimeOffset ModifyDate
+        internal DateTimeOffset ModifyDate
         {
             get { return _modifyDate; }
 
@@ -206,7 +206,7 @@ namespace PowerToolbox.Views.Pages
 
         private TimeSpan _modifyTime = DateTimeOffset.Now.TimeOfDay;
 
-        public TimeSpan ModifyTime
+        internal TimeSpan ModifyTime
         {
             get { return _modifyTime; }
 
@@ -222,7 +222,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isOperationFailed;
 
-        public bool IsOperationFailed
+        internal bool IsOperationFailed
         {
             get { return _isOperationFailed; }
 
@@ -242,7 +242,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public FilePropertiesPage()
+        internal FilePropertiesPage()
         {
             InitializeComponent();
         }
@@ -737,7 +737,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 添加到文件属性页面
         /// </summary>
-        public void AddToFilePropertiesPage(List<OldAndNewPropertiesModel> filePropertiesList)
+        internal void AddToFilePropertiesPage(List<OldAndNewPropertiesModel> filePropertiesList)
         {
             lock (filePropertiesLock)
             {

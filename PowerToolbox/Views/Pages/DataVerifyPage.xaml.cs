@@ -25,7 +25,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 数据校验页面
     /// </summary>
-    public sealed partial class DataVerifyPage : Page, INotifyPropertyChanged
+    internal sealed partial class DataVerifyPage : Page, INotifyPropertyChanged
     {
         private readonly string ASCIIString = ResourceService.DataVerifyResource.GetString("ASCII");
         private readonly string BigEndianUnicodeString = ResourceService.DataVerifyResource.GetString("BigEndianUnicode");
@@ -90,7 +90,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _selectedIndex = 0;
 
-        public int SelectedIndex
+        internal int SelectedIndex
         {
             get { return _selectedIndex; }
 
@@ -106,7 +106,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _verifyFile;
 
-        public string VerifyFile
+        internal string VerifyFile
         {
             get { return _verifyFile; }
 
@@ -122,7 +122,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _verifyContent;
 
-        public string VerifyContent
+        internal string VerifyContent
         {
             get { return _verifyContent; }
 
@@ -154,7 +154,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _resultMessage;
 
-        public string ResultMessage
+        internal string ResultMessage
         {
             get { return _resultMessage; }
 
@@ -170,7 +170,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedTextEncodingType;
 
-        public ComboBoxItemModel SelectedTextEncodingType
+        internal ComboBoxItemModel SelectedTextEncodingType
         {
             get { return _selectedTextEncodingType; }
 
@@ -186,7 +186,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _textEncodingCustomTypeText;
 
-        public string TextEncodingCustomTypeText
+        internal string TextEncodingCustomTypeText
         {
             get { return _textEncodingCustomTypeText; }
 
@@ -202,7 +202,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _useUpperCase;
 
-        public bool UseUpperCase
+        internal bool UseUpperCase
         {
             get { return _useUpperCase; }
 
@@ -218,7 +218,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isVerifying;
 
-        public bool IsVerifying
+        internal bool IsVerifying
         {
             get { return _isVerifying; }
 
@@ -240,7 +240,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DataVerifyPage()
+        internal DataVerifyPage()
         {
             InitializeComponent();
             TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.ASCII), DisplayMember = ASCIIString });

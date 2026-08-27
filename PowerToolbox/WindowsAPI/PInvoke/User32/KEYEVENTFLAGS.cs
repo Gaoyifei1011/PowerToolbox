@@ -3,7 +3,7 @@
     /// <summary>
     /// 指定击键的各个方面。
     /// </summary>
-    public enum KEYEVENTFLAGS
+    internal enum KEYEVENTFLAGS
     {
         /// <summary>
         /// 按下密钥。

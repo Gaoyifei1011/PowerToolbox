@@ -1,11 +1,11 @@
 ﻿namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class ScopeExInfo
+    internal sealed class ScopeExInfo
     {
-        public ushort ScopeIndex { get; set; }
+        internal ushort ScopeIndex { get; set; }
 
-        public ushort ChildCount { get; set; }
+        internal ushort ChildCount { get; set; }
 
-        public ushort FirstChildIndex { get; set; }
+        internal ushort FirstChildIndex { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Imagehlp
     /// <summary>
     /// Imagehlp.dll 函数库
     /// </summary>
-    public static class ImagehlpLibrary
+    internal static class ImagehlpLibrary
     {
         private const string Imagehlp = "imagehlp.dll";
 
@@ -20,6 +20,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Imagehlp
         /// <returns>如果函数成功，则返回值为 TRUE。如果函数失败，则返回值为 FALSE。</returns>
         [DllImport(Imagehlp, CharSet = CharSet.Unicode, EntryPoint = "ImageRemoveCertificate", PreserveSig = true, SetLastError = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool ImageRemoveCertificate(nint handle, int index);
+        internal static extern bool ImageRemoveCertificate(nint handle, int index);
     }
 }

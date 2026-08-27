@@ -5,7 +5,7 @@ namespace PowerToolbox.Extensions.Hashing
 {    /// <summary>
      /// SHA3 512 算法实现
      /// </summary>
-    public class Sha3_512 : HashAlgorithm
+    internal class Sha3_512 : HashAlgorithm
     {
         private const int rateBytes = 72;
         private const int outputBytes = 64;
@@ -38,7 +38,7 @@ namespace PowerToolbox.Extensions.Hashing
             0x0000000080000001UL, 0x8000000080008008UL
         ];
 
-        public Sha3_512()
+        internal Sha3_512()
         {
             HashSizeValue = 512;
             Initialize();

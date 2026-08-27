@@ -2,19 +2,19 @@
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class CandidateInfo
+    internal sealed class CandidateInfo
     {
-        public byte Type { get; set; }
+        internal byte Type { get; set; }
 
-        public ResourceValueType ResourceValueType { get; set; }
+        internal ResourceValueType ResourceValueType { get; set; }
 
-        public ushort SourceFileIndex { get; set; }
+        internal ushort SourceFileIndex { get; set; }
 
-        public ushort DataItemIndex { get; set; }
-        public ushort DataItemSection { get; set; }
+        internal ushort DataItemIndex { get; set; }
+        internal ushort DataItemSection { get; set; }
 
-        public ushort DataLength { get; set; }
+        internal ushort DataLength { get; set; }
 
-        public uint DataOffset { get; set; }
+        internal uint DataOffset { get; set; }
     }
 }

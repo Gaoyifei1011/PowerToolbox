@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// MD2 校验实现
     /// </summary>
-    public class MD2 : HashAlgorithm
+    internal class MD2 : HashAlgorithm
     {
         private int count;
         private readonly byte[] currentState = new byte[16];
@@ -34,7 +34,7 @@ namespace PowerToolbox.Extensions.Hashing
             0x31, 0x44, 0x50, 0xb4, 0x8f, 0xed, 0x1f, 0x1a, 0xdb, 0x99, 0x8d, 0x33, 0x9f, 0x11, 0x83, 0x14
         ];
 
-        public MD2()
+        internal MD2()
         {
             HashSizeValue = 128;
             Initialize();

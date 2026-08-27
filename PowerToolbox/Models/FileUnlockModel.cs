@@ -7,39 +7,39 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 文件解锁数据类型
     /// </summary>
-    public class FileUnlockModel : INotifyPropertyChanged
+    internal class FileUnlockModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 是否为目录
         /// </summary>
-        public bool IsDirectory { get; set; }
+        internal bool IsDirectory { get; set; }
 
         /// <summary>
         /// 文件 / 文件夹名称
         /// </summary>
-        public string FileFolderName { get; set; }
+        internal string FileFolderName { get; set; }
 
         /// <summary>
         /// 文件 / 文件夹路径
         /// </summary>
-        public string FileFolderPath { get; set; }
+        internal string FileFolderPath { get; set; }
 
         /// <summary>
         /// 文件 / 文件夹类型
         /// </summary>
-        public string FileFolderType { get; set; }
+        internal string FileFolderType { get; set; }
 
         /// <summary>
         /// 文件 / 文件夹数量
         /// </summary>
-        public string FileFolderAmount { get; set; }
+        internal string FileFolderAmount { get; set; }
 
         /// <summary>
         /// 是否处于修改状态中
         /// </summary>
         private bool _isModifyingNow;
 
-        public bool IsModifyingNow
+        internal bool IsModifyingNow
         {
             get { return _isModifyingNow; }
 
@@ -58,7 +58,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private FileUnlockState _fileUnlockState;
 
-        public FileUnlockState FileUnlockState
+        internal FileUnlockState FileUnlockState
         {
             get { return _fileUnlockState; }
 
@@ -74,7 +74,7 @@ namespace PowerToolbox.Models
 
         private int _fileUnlockFinishedCount;
 
-        public int FileUnlockFinishedCount
+        internal int FileUnlockFinishedCount
         {
             get { return _fileUnlockFinishedCount; }
 
@@ -90,7 +90,7 @@ namespace PowerToolbox.Models
 
         private int _fileUnlockProcessingPercentage;
 
-        public int FileUnlockProgressingPercentage
+        internal int FileUnlockProgressingPercentage
         {
             get { return _fileUnlockProcessingPercentage; }
 
@@ -107,7 +107,7 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 子文件列表
         /// </summary>
-        public List<string> SubFileList { get; } = [];
+        internal List<string> SubFileList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

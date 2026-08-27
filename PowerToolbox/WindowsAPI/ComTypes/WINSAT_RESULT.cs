@@ -3,7 +3,7 @@
     /// <summary>
     /// 评估的返回值
     /// </summary>
-    public enum WINSAT_RESULT : uint
+    internal enum WINSAT_RESULT : uint
     {
         /// <summary>
         /// 评估已成功完成。

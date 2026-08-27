@@ -12,14 +12,14 @@ namespace PowerToolbox.Helpers.Root
     /// <summary>
     /// 注册表读取辅助类
     /// </summary>
-    public static class RegistryHelper
+    internal static class RegistryHelper
     {
-        public static event EventHandler<string> NotifyKeyValueChanged;
+        internal static event EventHandler<string> NotifyKeyValueChanged;
 
         /// <summary>
         /// 检测注册表项是否存在
         /// </summary>
-        public static bool IsRegistryKeyExisted(RegistryKey rootRegistryKey, string rootKey)
+        internal static bool IsRegistryKeyExisted(RegistryKey rootRegistryKey, string rootKey)
         {
             bool isRegistryKeyExisted = false;
             try
@@ -38,7 +38,7 @@ namespace PowerToolbox.Helpers.Root
         /// <summary>
         /// 读取注册表指定项的内容
         /// </summary>
-        public static T ReadRegistryKey<T>(RegistryKey rootRegistryKey, string rootKey, string key)
+        internal static T ReadRegistryKey<T>(RegistryKey rootRegistryKey, string rootKey, string key)
         {
             T value = default;
             try
@@ -88,7 +88,7 @@ namespace PowerToolbox.Helpers.Root
         /// <summary>
         /// 删除注册表项
         /// </summary>
-        public static void DeleteRegistryKey(RegistryKey rootRegistryKey, string rootKey, bool isCrusive)
+        internal static void DeleteRegistryKey(RegistryKey rootRegistryKey, string rootKey, bool isCrusive)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace PowerToolbox.Helpers.Root
         /// <summary>
         /// 保存注册表指定项的内容
         /// </summary>
-        public static bool SaveRegistryKey<T>(RegistryKey rootRegistryKey, string rootKey, string key, T value, bool isExpandString = false)
+        internal static bool SaveRegistryKey<T>(RegistryKey rootRegistryKey, string rootKey, string key, T value, bool isExpandString = false)
         {
             try
             {
@@ -167,7 +167,7 @@ namespace PowerToolbox.Helpers.Root
         /// <summary>
         /// 移除注册表指定项
         /// </summary>
-        public static bool RemoveRegistryKey(RegistryKey rootRegistryKey, string rootKey, string key = null)
+        internal static bool RemoveRegistryKey(RegistryKey rootRegistryKey, string rootKey, string key = null)
         {
             try
             {
@@ -199,7 +199,7 @@ namespace PowerToolbox.Helpers.Root
         /// <summary>
         /// 枚举并递归当前注册表项的所有子项
         /// </summary>
-        public static RegistryEnumKeyItem EnumSubKey(RegistryKey rootRegistryKey, string rootKey)
+        internal static RegistryEnumKeyItem EnumSubKey(RegistryKey rootRegistryKey, string rootKey)
         {
             RegistryEnumKeyItem registryEnumKeyItem = new();
 
@@ -234,7 +234,7 @@ namespace PowerToolbox.Helpers.Root
         /// <summary>
         /// 添加注册表监控
         /// </summary>
-        public static bool MonitorRegistryValueChange(RegistryKey rootRegistryKey, string rootKey)
+        internal static bool MonitorRegistryValueChange(RegistryKey rootRegistryKey, string rootKey)
         {
             ManualResetEvent manualResetEvent = null;
             RegisteredWaitHandle registeredWaitHandle = null;

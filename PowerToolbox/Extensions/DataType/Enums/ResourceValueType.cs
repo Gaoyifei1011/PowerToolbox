@@ -1,6 +1,6 @@
 ﻿namespace PowerToolbox.Extensions.DataType.Enums
 {
-    public enum ResourceValueType
+    internal enum ResourceValueType
     {
         UnicodeString,
         UnicodePath,

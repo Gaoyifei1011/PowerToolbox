@@ -15,7 +15,7 @@ namespace ThemeSwitch.Services.Root
     /// <summary>
     /// 日志记录
     /// </summary>
-    public static class LogService
+    internal static class LogService
     {
         private static readonly string notAvailable = "N/A";
         private static SemaphoreSlim logSemaphoreSlim = new(1, 1);
@@ -26,7 +26,7 @@ namespace ThemeSwitch.Services.Root
         /// <summary>
         /// 初始化日志记录
         /// </summary>
-        public static void Initialize()
+        internal static void Initialize()
         {
             Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, 0, out string localAppDataPath);
 
@@ -61,7 +61,7 @@ namespace ThemeSwitch.Services.Root
         /// <summary>
         /// 写入日志
         /// </summary>
-        public static void WriteLog(TraceEventType traceEventType, string nameSpaceName, string className, string methodName, int index, Exception exception)
+        internal static void WriteLog(TraceEventType traceEventType, string nameSpaceName, string className, string methodName, int index, Exception exception)
         {
             Task.Run(() =>
             {
@@ -140,7 +140,7 @@ namespace ThemeSwitch.Services.Root
         /// <summary>
         /// 打开日志记录文件夹
         /// </summary>
-        public static void OpenLogFolder()
+        internal static void OpenLogFolder()
         {
             if (isInitialized)
             {
@@ -161,7 +161,7 @@ namespace ThemeSwitch.Services.Root
         /// <summary>
         /// 关闭日志记录服务
         /// </summary>
-        public static void CloseLog()
+        internal static void CloseLog()
         {
             try
             {

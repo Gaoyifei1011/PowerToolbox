@@ -20,11 +20,11 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 设置高级选项页面
     /// </summary>
-    public sealed partial class SettingsAdvancedPage : Page, INotifyPropertyChanged
+    internal sealed partial class SettingsAdvancedPage : Page, INotifyPropertyChanged
     {
         private bool _isRestarting = false;
 
-        public bool IsRestarting
+        internal bool IsRestarting
         {
             get { return _isRestarting; }
 
@@ -40,7 +40,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _fileShellMenu = FileShellMenuService.FileShellMenu;
 
-        public bool FileShellMenu
+        internal bool FileShellMenu
         {
             get { return _fileShellMenu; }
 
@@ -56,7 +56,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public SettingsAdvancedPage()
+        internal SettingsAdvancedPage()
         {
             InitializeComponent();
         }

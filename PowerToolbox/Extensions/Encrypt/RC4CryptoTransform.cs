@@ -9,7 +9,7 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// 使用托管库计算输入数据的 RC4 哈希值
     /// </summary>
-    public class RC4CryptoTransform : RC4, ICryptoTransform
+    internal class RC4CryptoTransform : RC4, ICryptoTransform
     {
         private byte[] key;
         private byte[] state = new byte[256];

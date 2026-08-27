@@ -5,14 +5,14 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 文件证书操作结果数据模型
     /// </summary>
-    public sealed class CertificateResultModel : INotifyPropertyChanged
+    internal sealed class CertificateResultModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 是否处于修改状态中
         /// </summary>
         private bool _isModifyingNow;
 
-        public bool IsModifyingNow
+        internal bool IsModifyingNow
         {
             get { return _isModifyingNow; }
 
@@ -31,7 +31,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private string _fileName;
 
-        public string FileName
+        internal string FileName
         {
             get { return _fileName; }
 
@@ -50,7 +50,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private string _filePath;
 
-        public string FilePath
+        internal string FilePath
         {
             get { return _filePath; }
 
@@ -69,7 +69,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private bool _result;
 
-        public bool Result
+        internal bool Result
         {
             get { return _result; }
 
@@ -88,7 +88,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private bool _isModified;
 
-        public bool IsModified
+        internal bool IsModified
         {
             get { return _isModified; }
 

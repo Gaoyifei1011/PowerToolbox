@@ -14,7 +14,7 @@ namespace PowerToolbox.Services.Settings
     /// <summary>
     /// 应用下载设置服务
     /// </summary>
-    public static class DownloadOptionsService
+    internal static class DownloadOptionsService
     {
         private static readonly string downloadFolderKey = ConfigKey.DownloadFolderKey;
         private static readonly string doEngineModeKey = ConfigKey.DoEngineModeKey;
@@ -22,16 +22,16 @@ namespace PowerToolbox.Services.Settings
         private static string defaultDoEngineMode;
         private static string defaultDownloadFolder;
 
-        public static string DownloadFolder { get; private set; }
+        internal static string DownloadFolder { get; private set; }
 
-        public static string DoEngineMode { get; private set; }
+        internal static string DoEngineMode { get; private set; }
 
-        public static List<string> DoEngineModeList { get; } = ["DeliveryOptimization", "Bits", "Aria2"];
+        internal static List<string> DoEngineModeList { get; } = ["DeliveryOptimization", "Bits", "Aria2"];
 
         /// <summary>
         /// 应用在初始化前获取设置存储的下载目录设置值，并创建默认下载目录
         /// </summary>
-        public static void InitializeDownloadOptions()
+        internal static void InitializeDownloadOptions()
         {
             Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, 0, out string downloadFolder);
             defaultDoEngineMode = DoEngineModeList[0];
@@ -92,7 +92,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 下载位置发生修改时修改设置存储的下载位置值
         /// </summary>
-        public static void SetFolder(string downloadFolder)
+        internal static void SetFolder(string downloadFolder)
         {
             DownloadFolder = downloadFolder;
             LocalSettingsService.SaveSetting(downloadFolderKey, downloadFolder);
@@ -101,7 +101,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 应用下载引擎发生修改时修改设置存储的下载引擎方式值
         /// </summary>
-        public static void SetDoEngineMode(string doEngineMode)
+        internal static void SetDoEngineMode(string doEngineMode)
         {
             DoEngineMode = doEngineMode;
             LocalSettingsService.SaveSetting(doEngineModeKey, doEngineMode);

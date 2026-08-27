@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Encrypt
     /// SM4分组密码核心实现
     /// 提供密钥扩展和单块加密/解密
     /// </summary>
-    public static class SM4Engine
+    internal static class SM4Engine
     {
         // System parameter FK
         private static readonly uint[] FK =
@@ -51,7 +51,7 @@ namespace PowerToolbox.Extensions.Encrypt
         /// <summary>
         /// Key expansion: input 16 bytes key -> 32 round keys (uint)
         /// </summary>
-        public static uint[] KeyExpansion(byte[] key)
+        internal static uint[] KeyExpansion(byte[] key)
         {
             if (key is null || key.Length is not 16)
             {
@@ -89,7 +89,7 @@ namespace PowerToolbox.Extensions.Encrypt
         /// <summary>
         /// Encrypt one 16-byte block
         /// </summary>
-        public static void EncryptBlock(byte[] input, int inOff, uint[] rk, byte[] output, int outOff)
+        internal static void EncryptBlock(byte[] input, int inOff, uint[] rk, byte[] output, int outOff)
         {
             uint[] X = new uint[36];
             for (int i = 0; i < 4; i++)
@@ -114,7 +114,7 @@ namespace PowerToolbox.Extensions.Encrypt
         /// <summary>
         /// Decrypt one 16-byte block (round keys in reverse)
         /// </summary>
-        public static void DecryptBlock(byte[] input, int inOff, uint[] rk, byte[] output, int outOff)
+        internal static void DecryptBlock(byte[] input, int inOff, uint[] rk, byte[] output, int outOff)
         {
             uint[] X = new uint[36];
             for (int i = 0; i < 4; i++)

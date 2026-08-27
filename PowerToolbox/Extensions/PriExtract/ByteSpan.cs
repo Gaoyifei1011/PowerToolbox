@@ -1,9 +1,9 @@
 ﻿namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class ByteSpan
+    internal sealed class ByteSpan
     {
-        public long Offset { get; set; }
+        internal long Offset { get; set; }
 
-        public uint Length { get; set; }
+        internal uint Length { get; set; }
     }
 }

@@ -12,21 +12,21 @@ namespace PowerToolboxShellExtension.Services.Shell
     /// <summary>
     /// 自定义扩展菜单服务
     /// </summary>
-    public static class ShellMenuService
+    internal static class ShellMenuService
     {
         // 对应的键值：Software\PowerToolbox\Personalize\ShellMenu
         private static readonly string shellMenuKey = @"Software\PowerToolbox\ShellMenu";
 
-        public static DirectoryInfo ShellMenuConfigDirectory { get; private set; }
+        internal static DirectoryInfo ShellMenuConfigDirectory { get; private set; }
 
-        public static ShellMenuItem RootShellMenuItem { get; private set; }
+        internal static ShellMenuItem RootShellMenuItem { get; private set; }
 
-        public static List<string> FileMatchRuleList { get; } = ["None", "Name", "NameRegex", "Extension", "All"];
+        internal static List<string> FileMatchRuleList { get; } = ["None", "Name", "NameRegex", "Extension", "All"];
 
         /// <summary>
         /// 初始化自定义扩展菜单配置
         /// </summary>
-        public static void InitializeShellMenu()
+        internal static void InitializeShellMenu()
         {
             Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, nint.Zero, out string localAppDataPath);
 
@@ -53,7 +53,7 @@ namespace PowerToolboxShellExtension.Services.Shell
         /// <summary>
         /// 获取菜单项
         /// </summary>
-        public static ShellMenuItem GetShellMenuItem()
+        internal static ShellMenuItem GetShellMenuItem()
         {
             // 获取根菜单项下的所有子项（包括递归后的项）
             RegistryEnumKeyItem shellMenuRegistryKeyItem = RegistryHelper.EnumSubKey(shellMenuKey);

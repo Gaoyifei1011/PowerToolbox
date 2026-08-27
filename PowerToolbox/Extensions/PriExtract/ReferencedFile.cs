@@ -2,12 +2,12 @@
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class ReferencedFileOrFolder
+    internal sealed class ReferencedFileOrFolder
     {
-        public string Name { get; set; }
+        internal string Name { get; set; }
 
-        public ReferencedFileOrFolder Parent { get; set; }
+        internal ReferencedFileOrFolder Parent { get; set; }
 
-        public IReadOnlyList<ReferencedFileOrFolder> Children { get; set; }
+        internal IReadOnlyList<ReferencedFileOrFolder> Children { get; set; }
     }
 }

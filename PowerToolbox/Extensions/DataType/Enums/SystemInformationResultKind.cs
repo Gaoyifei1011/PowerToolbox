@@ -3,7 +3,7 @@
     /// <summary>
     /// 系统信息结果数据模型
     /// </summary>
-    public enum SystemInformationResultKind
+    internal enum SystemInformationResultKind
     {
         None = 0,
         Loading = 1,

@@ -24,9 +24,9 @@ namespace PowerToolbox
         private bool isDisposed;
         private Icon windowIcon;
 
-        public Window MainWindow { get; private set; }
+        internal Window MainWindow { get; private set; }
 
-        public MainApp()
+        internal MainApp()
         {
             SynchronizationContext.SetSynchronizationContext(new DispatcherQueueSynchronizationContext(DispatcherQueue.GetForCurrentThread()));
             InitializeComponent();

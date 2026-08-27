@@ -2,12 +2,12 @@
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class CandidateSet
+    internal sealed class CandidateSet
     {
-        public (int SchemaSectionIndex, int ResourceMapItemIndex) ResourceMapSectionAndIndex { get; set; }
+        internal (int SchemaSectionIndex, int ResourceMapItemIndex) ResourceMapSectionAndIndex { get; set; }
 
-        public ushort DecisionIndex { get; set; }
+        internal ushort DecisionIndex { get; set; }
 
-        public IReadOnlyList<Candidate> CandidatesList { get; set; }
+        internal IReadOnlyList<Candidate> CandidatesList { get; set; }
     }
 }

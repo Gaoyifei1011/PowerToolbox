@@ -3,7 +3,7 @@
 namespace PowerToolbox.WindowsAPI.PInvoke.Advapi32
 {
     [Flags]
-    public enum SHTDN_REASON : uint
+    internal enum SHTDN_REASON : uint
     {
         /// <summary>
         /// 应用程序问题。

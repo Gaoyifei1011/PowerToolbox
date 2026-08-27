@@ -12,9 +12,9 @@ namespace PowerToolbox.Views.Dialogs
     /// <summary>
     /// 打开自启任务失败提示
     /// </summary>
-    public sealed partial class OpenStartupTaskFailedDialog : ContentDialog
+    internal sealed partial class OpenStartupTaskFailedDialog : ContentDialog
     {
-        public OpenStartupTaskFailedDialog()
+        internal OpenStartupTaskFailedDialog()
         {
             InitializeComponent();
         }

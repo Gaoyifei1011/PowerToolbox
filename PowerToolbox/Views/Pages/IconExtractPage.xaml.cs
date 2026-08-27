@@ -32,7 +32,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 提取图标页面
     /// </summary>
-    public sealed partial class IconExtractPage : Page, INotifyPropertyChanged
+    internal sealed partial class IconExtractPage : Page, INotifyPropertyChanged
     {
         private readonly string DragOverContentString = ResourceService.IconExtractResource.GetString("DragOverContent");
         private readonly string FileAssociatedString = ResourceService.IconExtractResource.GetString("FileAssociated");
@@ -55,7 +55,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isSelected;
 
-        public bool IsSelected
+        internal bool IsSelected
         {
             get { return _isSelected; }
 
@@ -71,7 +71,7 @@ namespace PowerToolbox.Views.Pages
 
         private IconExtractResultKind _iconExtractResultKind = IconExtractResultKind.Welcome;
 
-        public IconExtractResultKind IconExtractResultKind
+        internal IconExtractResultKind IconExtractResultKind
         {
             get { return _iconExtractResultKind; }
 
@@ -87,7 +87,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isImageEmpty;
 
-        public bool IsImageEmpty
+        internal bool IsImageEmpty
         {
             get { return _isImageEmpty; }
 
@@ -103,7 +103,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isSaving;
 
-        public bool IsSaving
+        internal bool IsSaving
         {
             get { return _isSaving; }
 
@@ -119,7 +119,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _getResults;
 
-        public string GetResults
+        internal string GetResults
         {
             get { return _getResults; }
 
@@ -135,7 +135,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _noResources;
 
-        public string NoResources
+        internal string NoResources
         {
             get { return _noResources; }
 
@@ -151,7 +151,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedGetIconType;
 
-        public ComboBoxItemModel SelectedGetIconType
+        internal ComboBoxItemModel SelectedGetIconType
         {
             get { return _selectedGetIconType; }
 
@@ -167,7 +167,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedIconFormat;
 
-        public ComboBoxItemModel SelectedIconFormat
+        internal ComboBoxItemModel SelectedIconFormat
         {
             get { return _selectedIconFormat; }
 
@@ -183,7 +183,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedIconSize;
 
-        public ComboBoxItemModel SelectedIconSize
+        internal ComboBoxItemModel SelectedIconSize
         {
             get { return _selectedIconSize; }
 
@@ -199,7 +199,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _is16SizeEnabled;
 
-        public bool Is16SizeEnabled
+        internal bool Is16SizeEnabled
         {
             get { return _is16SizeEnabled; }
 
@@ -215,7 +215,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _is24SizeEnabled;
 
-        public bool Is24SizeEnabled
+        internal bool Is24SizeEnabled
         {
             get { return _is24SizeEnabled; }
 
@@ -231,7 +231,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _is32SizeEnabled;
 
-        public bool Is32SizeEnabled
+        internal bool Is32SizeEnabled
         {
             get { return _is32SizeEnabled; }
 
@@ -247,7 +247,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _is48SizeEnabled;
 
-        public bool Is48SizeEnabled
+        internal bool Is48SizeEnabled
         {
             get { return _is48SizeEnabled; }
 
@@ -263,7 +263,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _is64SizeEnabled;
 
-        public bool Is64SizeEnabled
+        internal bool Is64SizeEnabled
         {
             get { return _is64SizeEnabled; }
 
@@ -279,7 +279,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _is72SizeEnabled;
 
-        public bool Is72SizeEnabled
+        internal bool Is72SizeEnabled
         {
             get { return _is72SizeEnabled; }
 
@@ -295,7 +295,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _is96SizeEnabled;
 
-        public bool Is96SizeEnabled
+        internal bool Is96SizeEnabled
         {
             get { return _is96SizeEnabled; }
 
@@ -311,7 +311,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _is128SizeEnabled;
 
-        public bool Is128SizeEnabled
+        internal bool Is128SizeEnabled
         {
             get { return _is128SizeEnabled; }
 
@@ -327,7 +327,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _is256SizeEnabled;
 
-        public bool Is256SizeEnabled
+        internal bool Is256SizeEnabled
         {
             get { return _is256SizeEnabled; }
 
@@ -343,7 +343,7 @@ namespace PowerToolbox.Views.Pages
 
         private ImageSource _imageSource;
 
-        public ImageSource ImageSource
+        internal ImageSource ImageSource
         {
             get { return _imageSource; }
 
@@ -357,7 +357,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        public List<ComboBoxItemModel> GetIconTypeList { get; } = [];
+        internal List<ComboBoxItemModel> GetIconTypeList { get; } = [];
 
         private List<ComboBoxItemModel> IconFormatList { get; } =
         [
@@ -382,7 +382,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public IconExtractPage()
+        internal IconExtractPage()
         {
             InitializeComponent();
             GetIconTypeList.Add(new() { SelectedValue = "FileContained", DisplayMember = FileContainedString });
@@ -1250,7 +1250,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 解析带有图标的二进制文件
         /// </summary>
-        public async Task ParseIconFileAsync(string iconFilePath)
+        internal async Task ParseIconFileAsync(string iconFilePath)
         {
             if (IconExtractResultKind is not IconExtractResultKind.Parsing)
             {
@@ -1345,7 +1345,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取文件关联的图标
         /// </summary>
-        public async Task GetFileAssociatedIconAsync(string iconFilePath)
+        internal async Task GetFileAssociatedIconAsync(string iconFilePath)
         {
             IconCollection.Clear();
             IconExtractResultKind = IconExtractResultKind.Parsing;
@@ -1423,7 +1423,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 检查是否正在解析中或保存中
         /// </summary>
-        public bool GetIsNotParsingOrSaving(IconExtractResultKind iconExtractResultKind, bool isSaving)
+        internal bool GetIsNotParsingOrSaving(IconExtractResultKind iconExtractResultKind, bool isSaving)
         {
             return iconExtractResultKind is not IconExtractResultKind.Parsing && !isSaving;
         }
@@ -1431,7 +1431,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 保存获取到的 ico 图片到 Icon 文件
         /// </summary>
-        public static bool SaveIcon(IEnumerable<Bitmap> imageList, string outputPath)
+        internal static bool SaveIcon(IEnumerable<Bitmap> imageList, string outputPath)
         {
             try
             {

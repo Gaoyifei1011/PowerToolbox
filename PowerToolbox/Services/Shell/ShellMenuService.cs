@@ -17,17 +17,17 @@ namespace PowerToolbox.Services.Shell
     /// <summary>
     /// 自定义扩展菜单服务
     /// </summary>
-    public static class ShellMenuService
+    internal static class ShellMenuService
     {
         // Stable Software\PowerToolbox\Personalize\ShellMenu
         private static readonly string shellMenuKey = @"Software\PowerToolbox\ShellMenu";
 
-        public static DirectoryInfo ShellMenuConfigDirectory { get; private set; }
+        internal static DirectoryInfo ShellMenuConfigDirectory { get; private set; }
 
         /// <summary>
         /// 初始化自定义扩展菜单配置
         /// </summary>
-        public static void InitializeShellMenu()
+        internal static void InitializeShellMenu()
         {
             Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, 0, out string localAppDataPath);
 
@@ -51,7 +51,7 @@ namespace PowerToolbox.Services.Shell
         /// <summary>
         /// 获取菜单项
         /// </summary>
-        public static ShellMenuItem GetShellMenuItem()
+        internal static ShellMenuItem GetShellMenuItem()
         {
             // 获取根菜单项下的所有子项（包括递归后的项）
             RegistryEnumKeyItem shellMenuRegistryKeyItem = RegistryHelper.EnumSubKey(Registry.CurrentUser, shellMenuKey);
@@ -62,7 +62,7 @@ namespace PowerToolbox.Services.Shell
         /// <summary>
         /// 保存菜单项设置
         /// </summary>
-        public static void SaveShellMenuItem(string menuKey, ShellMenuItem shellMenuItem)
+        internal static void SaveShellMenuItem(string menuKey, ShellMenuItem shellMenuItem)
         {
             RegistryHelper.SaveRegistryKey(Registry.CurrentUser, menuKey, "MenuGuid", Convert.ToString(shellMenuItem.MenuGuid));
             RegistryHelper.SaveRegistryKey(Registry.CurrentUser, menuKey, "MenuTitleText", shellMenuItem.MenuTitleText);
@@ -87,7 +87,7 @@ namespace PowerToolbox.Services.Shell
         /// <summary>
         /// 删除菜单项
         /// </summary>
-        public static void RemoveShellMenuItem(string menuKey)
+        internal static void RemoveShellMenuItem(string menuKey)
         {
             Task.Run(() =>
             {
@@ -305,7 +305,7 @@ namespace PowerToolbox.Services.Shell
         /// <summary>
         /// 获取上次更新的时间
         /// </summary>
-        public static DateTimeOffset GetLastUpdateTime()
+        internal static DateTimeOffset GetLastUpdateTime()
         {
             int? lastUpdateTime = RegistryHelper.ReadRegistryKey<int?>(Registry.CurrentUser, "ShellMenu", "LastUpdateTime");
             return lastUpdateTime.HasValue ? DateTimeOffset.FromUnixTimeSeconds(lastUpdateTime.Value) : DateTimeOffset.FromUnixTimeSeconds(0);
@@ -314,7 +314,7 @@ namespace PowerToolbox.Services.Shell
         /// <summary>
         /// 更新上次更新的时间
         /// </summary>
-        public static void UpdateLastUpdateTime()
+        internal static void UpdateLastUpdateTime()
         {
             RegistryHelper.SaveRegistryKey(Registry.CurrentUser, "ShellMenu", "LastUpdateTime", DateTimeOffset.Now.ToUnixTimeSeconds());
         }

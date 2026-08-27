@@ -30,7 +30,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 网络回环管理页面
     /// </summary>
-    public sealed partial class LoopbackManagerPage : Page, INotifyPropertyChanged
+    internal sealed partial class LoopbackManagerPage : Page, INotifyPropertyChanged
     {
         private readonly string LoopbackInformationString = ResourceService.LoopbackManagerResource.GetString("LoopbackInformation");
         private readonly string LoopbackEmptyDescriptionString = ResourceService.LoopbackManagerResource.GetString("LoopbackEmptyDescription");
@@ -41,7 +41,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _loopbackDescription = string.Empty;
 
-        public string LoopbackDescription
+        internal string LoopbackDescription
         {
             get { return _loopbackDescription; }
 
@@ -57,7 +57,7 @@ namespace PowerToolbox.Views.Pages
 
         private LoopbackResultKind _loopbackResultKind;
 
-        public LoopbackResultKind LoopbackResultKind
+        internal LoopbackResultKind LoopbackResultKind
         {
             get { return _loopbackResultKind; }
 
@@ -73,7 +73,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _loopbackFailedContent;
 
-        public string LoopbackFailedContent
+        internal string LoopbackFailedContent
         {
             get { return _loopbackFailedContent; }
 
@@ -89,7 +89,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _searchText = string.Empty;
 
-        public string SearchText
+        internal string SearchText
         {
             get { return _searchText; }
 
@@ -105,7 +105,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isSaved;
 
-        public bool IsSaved
+        internal bool IsSaved
         {
             get { return _isSaved; }
 
@@ -125,7 +125,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public LoopbackManagerPage()
+        internal LoopbackManagerPage()
         {
             InitializeComponent();
         }

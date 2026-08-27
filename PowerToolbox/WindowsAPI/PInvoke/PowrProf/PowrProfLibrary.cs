@@ -9,7 +9,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.PowrProf
     /// <summary>
     /// PowrProf.dll 函数库
     /// </summary>
-    public static class PowrProfLibrary
+    internal static class PowrProfLibrary
     {
         private const string PowrProf = "powrProf.dll";
 
@@ -20,7 +20,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.PowrProf
         /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
         [DllImport(PowrProf, CharSet = CharSet.Unicode, EntryPoint = "GetPwrCapabilities", PreserveSig = true, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool GetPwrCapabilities(out SYSTEM_POWER_CAPABILITIES systemPowerCapabilities);
+        internal static extern bool GetPwrCapabilities(out SYSTEM_POWER_CAPABILITIES systemPowerCapabilities);
 
         /// <summary>
         /// 为当前用户设置活动电源方案。
@@ -29,7 +29,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.PowrProf
         /// <param name="SchemeGuid">电源方案的标识符。</param>
         /// <returns>如果调用成功，则返回 ERROR_SUCCESS (零) ;如果调用失败，则返回非零值。</returns>
         [DllImport(PowrProf, CharSet = CharSet.Unicode, EntryPoint = "PowerSetActiveScheme", PreserveSig = true, SetLastError = true)]
-        public static extern uint PowerSetActiveScheme(nint UserRootPowerKey, Guid SchemeGuid);
+        internal static extern uint PowerSetActiveScheme(nint UserRootPowerKey, Guid SchemeGuid);
 
         /// <summary>
         /// 通过关闭电源来暂停系统。 根据 休眠 参数，系统将进入暂停 (睡眠) 状态或休眠 (S4) 。
@@ -39,6 +39,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.PowrProf
         /// <param name="bWakeupEventsDisabled">如果此参数为 TRUE，则系统将禁用所有唤醒事件。 如果参数为 FALSE，则任何系统唤醒事件仍保持启用状态。</param>
         /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。</returns>
         [DllImport(PowrProf, CharSet = CharSet.Unicode, EntryPoint = "SetSuspendState", PreserveSig = true, SetLastError = false)]
-        public static extern bool SetSuspendState(bool bHibernate, bool bForce, bool bWakeupEventsDisabled);
+        internal static extern bool SetSuspendState(bool bHibernate, bool bForce, bool bWakeupEventsDisabled);
     }
 }

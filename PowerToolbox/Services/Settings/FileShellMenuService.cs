@@ -6,18 +6,18 @@ namespace PowerToolbox.Services.Settings
     /// <summary>
     /// 文件右键菜单设置服务
     /// </summary>
-    public static class FileShellMenuService
+    internal static class FileShellMenuService
     {
         private static readonly string settingsKey = ConfigKey.FileShellMenuKey;
 
         private static readonly bool defaultFileShellMenu = true;
 
-        public static bool FileShellMenu { get; private set; }
+        internal static bool FileShellMenu { get; private set; }
 
         /// <summary>
         /// 应用在初始化前获取设置存储的文件右键菜单显示值
         /// </summary>
-        public static void InitializeFileShellMenu()
+        internal static void InitializeFileShellMenu()
         {
             FileShellMenu = GetFileShellMenu();
         }
@@ -41,7 +41,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 文件右键菜单显示值发生修改时修改设置存储的文件右键菜单显示值
         /// </summary>
-        public static void SetFileShellMenu(bool fileShellMenu)
+        internal static void SetFileShellMenu(bool fileShellMenu)
         {
             FileShellMenu = fileShellMenu;
             LocalSettingsService.SaveSetting(settingsKey, fileShellMenu);

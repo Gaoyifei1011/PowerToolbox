@@ -28,7 +28,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 扩展名称页面
     /// </summary>
-    public sealed partial class ExtensionNamePage : Page, INotifyPropertyChanged
+    internal sealed partial class ExtensionNamePage : Page, INotifyPropertyChanged
     {
         private readonly string DragOverContentString = ResourceService.ExtensionNameResource.GetString("DragOverContent");
         private readonly string ModifyingNowString = ResourceService.ExtensionNameResource.GetString("ModifyingNow");
@@ -39,7 +39,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isModifyingNow;
 
-        public bool IsModifyingNow
+        internal bool IsModifyingNow
         {
             get { return _isModifyingNow; }
 
@@ -55,7 +55,7 @@ namespace PowerToolbox.Views.Pages
 
         private ExtensionNameSelectedKind _selectedKind = ExtensionNameSelectedKind.None;
 
-        public ExtensionNameSelectedKind SelectedKind
+        internal ExtensionNameSelectedKind SelectedKind
         {
             get { return _selectedKind; }
 
@@ -71,7 +71,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _changeToText;
 
-        public string ChangeToText
+        internal string ChangeToText
         {
             get { return _changeToText; }
 
@@ -87,7 +87,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _searchText;
 
-        public string SearchText
+        internal string SearchText
         {
             get { return _searchText; }
 
@@ -103,7 +103,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _replaceText;
 
-        public string ReplaceText
+        internal string ReplaceText
         {
             get { return _replaceText; }
 
@@ -119,7 +119,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isOperationFailed;
 
-        public bool IsOperationFailed
+        internal bool IsOperationFailed
         {
             get { return _isOperationFailed; }
 
@@ -139,7 +139,7 @@ namespace PowerToolbox.Views.Pages
 
         private WinRTObservableCollection<OldAndNewNameModel> ExtensionNameCollection { get; } = [];
 
-        public ExtensionNamePage()
+        internal ExtensionNamePage()
         {
             InitializeComponent();
         }
@@ -633,7 +633,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 添加到扩展名称页面
         /// </summary>
-        public void AddToExtensionNamePage(List<OldAndNewNameModel> extensionNameList)
+        internal void AddToExtensionNamePage(List<OldAndNewNameModel> extensionNameList)
         {
             lock (extensionNameLock)
             {

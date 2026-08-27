@@ -1,13 +1,13 @@
 ﻿namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class HierarchicalSchemaReference
+    internal sealed class HierarchicalSchemaReference
     {
-        public HierarchicalSchemaVersion Version { get; set; }
+        internal HierarchicalSchemaVersion Version { get; set; }
 
-        public uint Unknown1 { get; set; }
+        internal uint Unknown1 { get; set; }
 
-        public uint Unknown2 { get; set; }
+        internal uint Unknown2 { get; set; }
 
-        public string UniqueName { get; set; }
+        internal string UniqueName { get; set; }
     }
 }

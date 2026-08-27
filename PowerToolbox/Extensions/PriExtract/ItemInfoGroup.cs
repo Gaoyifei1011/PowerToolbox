@@ -1,9 +1,9 @@
 ﻿namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class ItemInfoGroup
+    internal sealed class ItemInfoGroup
     {
-        public uint GroupSize { get; set; }
+        internal uint GroupSize { get; set; }
 
-        public uint FirstItemInfo { get; set; }
+        internal uint FirstItemInfo { get; set; }
     }
 }

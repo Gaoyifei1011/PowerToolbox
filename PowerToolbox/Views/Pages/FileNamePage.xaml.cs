@@ -28,7 +28,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 文件名称页面
     /// </summary>
-    public sealed partial class FileNamePage : Page, INotifyPropertyChanged
+    internal sealed partial class FileNamePage : Page, INotifyPropertyChanged
     {
         private readonly string AutoString = ResourceService.FileNameResource.GetString("Auto");
         private readonly string DragOverContentString = ResourceService.FileNameResource.GetString("DragOverContent");
@@ -40,7 +40,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isChecked = false;
 
-        public bool IsChecked
+        internal bool IsChecked
         {
             get { return _isChecked; }
 
@@ -56,7 +56,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isModifyingNow;
 
-        public bool IsModifyingNow
+        internal bool IsModifyingNow
         {
             get { return _isModifyingNow; }
 
@@ -72,7 +72,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _renameRule = "<#>";
 
-        public string RenameRule
+        internal string RenameRule
         {
             get { return _renameRule; }
 
@@ -88,7 +88,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _startNumber = "1";
 
-        public string StartNumber
+        internal string StartNumber
         {
             get { return _startNumber; }
 
@@ -104,7 +104,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _extensionName;
 
-        public string ExtensionName
+        internal string ExtensionName
         {
             get { return _extensionName; }
 
@@ -120,7 +120,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _lookUpText = string.Empty;
 
-        public string LookUpText
+        internal string LookUpText
         {
             get { return _lookUpText; }
 
@@ -136,7 +136,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _replaceText = string.Empty;
 
-        public string ReplaceText
+        internal string ReplaceText
         {
             get { return _replaceText; }
 
@@ -152,7 +152,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedNumberFormat;
 
-        public ComboBoxItemModel SelectedNumberFormat
+        internal ComboBoxItemModel SelectedNumberFormat
         {
             get { return _selectedNumberFormat; }
 
@@ -168,7 +168,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isOperationFailed;
 
-        public bool IsOperationFailed
+        internal bool IsOperationFailed
         {
             get { return _isOperationFailed; }
 
@@ -190,7 +190,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public FileNamePage()
+        internal FileNamePage()
         {
             InitializeComponent();
             NumberFormatList.Add(new() { SelectedValue = "Auto", DisplayMember = AutoString });
@@ -726,7 +726,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 添加到文件名称页面
         /// </summary>
-        public void AddToFileNamePage(List<OldAndNewNameModel> filenameList)
+        internal void AddToFileNamePage(List<OldAndNewNameModel> filenameList)
         {
             lock (fileNameLock)
             {

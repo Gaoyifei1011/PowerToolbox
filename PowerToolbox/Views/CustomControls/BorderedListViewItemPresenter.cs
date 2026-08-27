@@ -8,9 +8,9 @@ namespace PowerToolbox.Views.CustomControls
     /// <summary>
     /// 带边框的表示列表项的视觉元素
     /// </summary>
-    public partial class BorderedListViewItemPresenter : ListViewItemPresenter
+    internal partial class BorderedListViewItemPresenter : ListViewItemPresenter
     {
-        public BorderedListViewItemPresenter()
+        internal BorderedListViewItemPresenter()
         {
             Loaded += (sender, args) =>
             {

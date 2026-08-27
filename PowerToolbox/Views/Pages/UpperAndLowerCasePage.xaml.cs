@@ -28,7 +28,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 大写小写页面
     /// </summary>
-    public sealed partial class UpperAndLowerCasePage : Page, INotifyPropertyChanged
+    internal sealed partial class UpperAndLowerCasePage : Page, INotifyPropertyChanged
     {
         private readonly string DragOverContentString = ResourceService.UpperAndLowerCaseResource.GetString("DragOverContent");
         private readonly string ModifyingNowString = ResourceService.UpperAndLowerCaseResource.GetString("ModifyingNow");
@@ -39,7 +39,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isModifyingNow;
 
-        public bool IsModifyingNow
+        internal bool IsModifyingNow
         {
             get { return _isModifyingNow; }
 
@@ -55,7 +55,7 @@ namespace PowerToolbox.Views.Pages
 
         private UpperAndLowerSelectedKind _selectedType = UpperAndLowerSelectedKind.None;
 
-        public UpperAndLowerSelectedKind SelectedType
+        internal UpperAndLowerSelectedKind SelectedType
         {
             get { return _selectedType; }
 
@@ -71,7 +71,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isOperationFailed;
 
-        public bool IsOperationFailed
+        internal bool IsOperationFailed
         {
             get { return _isOperationFailed; }
 
@@ -91,7 +91,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public UpperAndLowerCasePage()
+        internal UpperAndLowerCasePage()
         {
             InitializeComponent();
         }
@@ -559,7 +559,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 添加到大写小写页面
         /// </summary>
-        public void AddToUpperAndLowerCasePage(List<OldAndNewNameModel> upperAndLowerCaseList)
+        internal void AddToUpperAndLowerCasePage(List<OldAndNewNameModel> upperAndLowerCaseList)
         {
             lock (upperAndLowerCaseLock)
             {

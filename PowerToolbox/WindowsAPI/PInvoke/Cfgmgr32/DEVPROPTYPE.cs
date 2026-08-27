@@ -1,6 +1,6 @@
 ﻿namespace PowerToolbox.WindowsAPI.PInvoke.Cfgmgr32
 {
-    public enum DEVPROPTYPE : uint
+    internal enum DEVPROPTYPE : uint
     {
         DEVPROP_TYPE_EMPTY = 0,
         DEVPROP_TYPE_NULL = 1,

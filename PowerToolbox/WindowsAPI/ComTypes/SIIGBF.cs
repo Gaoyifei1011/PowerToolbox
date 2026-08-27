@@ -3,7 +3,7 @@
     /// <summary>
     /// 收缩位图标志
     /// </summary>
-    public enum SIIGBF
+    internal enum SIIGBF
     {
         /// <summary>
         /// 根据需要收缩位图以适应，保留其纵横比。

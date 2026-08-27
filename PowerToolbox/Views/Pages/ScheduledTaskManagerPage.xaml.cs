@@ -34,7 +34,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 计划任务管理页面
     /// </summary>
-    public sealed partial class ScheduledTaskManagerPage : Page, INotifyPropertyChanged
+    internal sealed partial class ScheduledTaskManagerPage : Page, INotifyPropertyChanged
     {
         private readonly string NotAvailableString = ResourceService.ScheduledTaskManagerResource.GetString("NotAvailable");
         private readonly string ScheduledTaskInformationString = ResourceService.ScheduledTaskManagerResource.GetString("ScheduledTaskInformation");
@@ -52,7 +52,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _scheduledTaskDescription;
 
-        public string ScheduledTaskDescription
+        internal string ScheduledTaskDescription
         {
             get { return _scheduledTaskDescription; }
 
@@ -68,7 +68,7 @@ namespace PowerToolbox.Views.Pages
 
         private ScheduledTaskResultKind _scheduledTaskResultKind;
 
-        public ScheduledTaskResultKind ScheduledTaskResultKind
+        internal ScheduledTaskResultKind ScheduledTaskResultKind
         {
             get { return _scheduledTaskResultKind; }
 
@@ -84,7 +84,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _scheduledTaskFailedContent;
 
-        public string ScheduledTaskFailedContent
+        internal string ScheduledTaskFailedContent
         {
             get { return _scheduledTaskFailedContent; }
 
@@ -100,7 +100,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _searchText = string.Empty;
 
-        public string SearchText
+        internal string SearchText
         {
             get { return _searchText; }
 
@@ -116,7 +116,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isModifiedFailed;
 
-        public bool IsModifiedFailed
+        internal bool IsModifiedFailed
         {
             get { return _isModifiedFailed; }
 
@@ -138,7 +138,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ScheduledTaskManagerPage()
+        internal ScheduledTaskManagerPage()
         {
             InitializeComponent();
         }

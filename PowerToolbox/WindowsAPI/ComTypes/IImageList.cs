@@ -9,7 +9,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 公开操作图像列表并与之交互的方法。
     /// </summary>
     [ComImport, Guid("46EB5926-582E-4017-9FDF-E8998DAA0950"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IImageList
+    internal interface IImageList
     {
         /// <summary>
         /// 向图像列表添加图像。

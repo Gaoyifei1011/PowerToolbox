@@ -5,14 +5,14 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 包文件索引嵌入的数据内容数据模型
     /// </summary>
-    public sealed class EmbeddedDataModel : INotifyPropertyChanged
+    internal sealed class EmbeddedDataModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 是否已选择
         /// </summary>
         private bool _isSelected;
 
-        public bool IsSelected
+        internal bool IsSelected
         {
             get { return _isSelected; }
 
@@ -29,12 +29,12 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 嵌入的数据对应的键
         /// </summary>
-        public string Key { get; set; }
+        internal string Key { get; set; }
 
         /// <summary>
         /// 嵌入的数据
         /// </summary>
-        public byte[] EmbeddedData { get; set; }
+        internal byte[] EmbeddedData { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

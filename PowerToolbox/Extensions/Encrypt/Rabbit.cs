@@ -5,7 +5,7 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// Rabbit 对称加密算法实现
     /// </summary>
-    public sealed class Rabbit : SymmetricAlgorithm
+    internal sealed class Rabbit : SymmetricAlgorithm
     {
         #region Constants
 
@@ -18,7 +18,7 @@ namespace PowerToolbox.Extensions.Encrypt
         /// <summary>
         /// 创建一个新实例
         /// </summary>
-        public Rabbit() : base()
+        internal Rabbit() : base()
         {
             KeySizeValue = KeySizeInBits;
             BlockSizeValue = BlockSizeInBits;

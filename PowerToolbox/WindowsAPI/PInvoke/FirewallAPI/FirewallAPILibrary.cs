@@ -5,7 +5,7 @@
 
 namespace PowerToolbox.WindowsAPI.PInvoke.FirewallAPI
 {
-    public static class FirewallAPILibrary
+    internal static class FirewallAPILibrary
     {
         private const string FirewallAPI = "FirewallAPI.dll";
 
@@ -17,7 +17,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.FirewallAPI
         /// <param name="ppPublicACs">应用容器结构元素的列表。</param>
         /// <returns>如果成功，则返回ERROR_SUCCESS，否则返回错误值。如果内存不可用，将返回ERROR_OUTOFMEMORY。</returns>
         [DllImport(FirewallAPI, CharSet = CharSet.Unicode, EntryPoint = "NetworkIsolationEnumAppContainers", PreserveSig = true, SetLastError = false)]
-        public static extern uint NetworkIsolationEnumAppContainers(NETISO_FLAG Flags, out uint pdwCntPublicACs, out nint ppPublicACs);
+        internal static extern uint NetworkIsolationEnumAppContainers(NETISO_FLAG Flags, out uint pdwCntPublicACs, out nint ppPublicACs);
 
         /// <summary>
         /// 用于释放分配给一个或多个应用容器的内存资源
@@ -25,7 +25,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.FirewallAPI
         /// <param name="pPublicAppCs">要释放的应用容器内存资源。</param>
         /// <returns>返回 ERROR_SUCCESS。</returns>
         [DllImport(FirewallAPI, CharSet = CharSet.Unicode, EntryPoint = "NetworkIsolationFreeAppContainers", PreserveSig = true, SetLastError = false)]
-        public static extern int NetworkIsolationFreeAppContainers(nint pPublicAppCs);
+        internal static extern int NetworkIsolationFreeAppContainers(nint pPublicAppCs);
 
         /// <summary>
         /// 用于检索有关一个或多个应用容器的配置信息。
@@ -34,7 +34,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.FirewallAPI
         /// <param name="appContainerSids">安全标识符 (允许发送环回流量的应用容器) SID。 用于调试目的。</param>
         /// <returns>如果成功，则返回ERROR_SUCCESS，否则返回错误值。</returns>
         [DllImport(FirewallAPI, CharSet = CharSet.Unicode, EntryPoint = "NetworkIsolationGetAppContainerConfig", PreserveSig = true, SetLastError = false)]
-        public static extern uint NetworkIsolationGetAppContainerConfig(out uint pdwNumPublicAppCs, out nint appContainerSids);
+        internal static extern uint NetworkIsolationGetAppContainerConfig(out uint pdwNumPublicAppCs, out nint appContainerSids);
 
         /// <summary>
         /// 用于设置一个或多个应用容器的配置。
@@ -43,6 +43,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.FirewallAPI
         /// <param name="appContainerSids">安全标识符 (允许发送环回流量的应用容器) SID。 用于调试目的。</param>
         /// <returns>如果成功，则返回ERROR_SUCCESS，否则返回错误值。</returns>
         [DllImport(FirewallAPI, CharSet = CharSet.Unicode, EntryPoint = "NetworkIsolationSetAppContainerConfig", PreserveSig = true, SetLastError = false)]
-        public static extern uint NetworkIsolationSetAppContainerConfig(int dwNumPublicAppCs, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] SID_AND_ATTRIBUTES[] appContainerSids);
+        internal static extern uint NetworkIsolationSetAppContainerConfig(int dwNumPublicAppCs, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] SID_AND_ATTRIBUTES[] appContainerSids);
     }
 }

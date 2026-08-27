@@ -5,7 +5,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// MD4 校验实现
     /// </summary>
-    public class MD4 : HashAlgorithm
+    internal class MD4 : HashAlgorithm
     {
         private const uint A0 = 0x67452301U;
         private const uint B0 = 0xEFCDAB89U;
@@ -13,11 +13,11 @@ namespace PowerToolbox.Extensions.Hashing
         private const uint D0 = 0x10325476U;
         private uint A, B, C, D;
         private long hashedLength;
-        public const int HASHLENGTH = 16;
-        public const int BLOCKLENGTH = 64;
+        internal const int HASHLENGTH = 16;
+        internal const int BLOCKLENGTH = 64;
         private byte[] buffer;
 
-        public MD4()
+        internal MD4()
         {
             buffer = new byte[BLOCKLENGTH];
             Initialize();
@@ -67,7 +67,7 @@ namespace PowerToolbox.Extensions.Hashing
             hashedLength = 0;
         }
 
-        public void Initialize(InternalState state)
+        internal void Initialize(InternalState state)
         {
             hashedLength = state.hashedLength;
             A = state.A;
@@ -229,13 +229,13 @@ namespace PowerToolbox.Extensions.Hashing
             D += dd;
         }
 
-        public struct InternalState
+        internal struct InternalState
         {
-            public uint A, B, C, D;
-            public long hashedLength;
-            public byte[] Buffer;
+            internal uint A, B, C, D;
+            internal long hashedLength;
+            internal byte[] Buffer;
 
-            public InternalState(long hashedLength, uint A, uint B, uint C, uint D, byte[] Buffer)
+            internal InternalState(long hashedLength, uint A, uint B, uint C, uint D, byte[] Buffer)
             {
                 this.hashedLength = hashedLength;
                 this.A = A;
@@ -246,7 +246,7 @@ namespace PowerToolbox.Extensions.Hashing
             }
         }
 
-        public InternalState GetState()
+        internal InternalState GetState()
         {
             return new(hashedLength, A, B, C, D, buffer);
         }

@@ -3,7 +3,7 @@
 namespace PowerToolbox.WindowsAPI.PInvoke.User32
 {
     [Flags]
-    public enum SPIF
+    internal enum SPIF
     {
         None = 0x00,
 

@@ -2,14 +2,14 @@
 
 namespace PowerToolbox.Models
 {
-    public class NavigationPaneIconDisplayModel : INotifyPropertyChanged
+    internal class NavigationPaneIconDisplayModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 导航窗格图标是否显示
         /// </summary>
         private bool _isIconVisible;
 
-        public bool IsIconVisible
+        internal bool IsIconVisible
         {
             get { return _isIconVisible; }
 
@@ -26,12 +26,12 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 导航窗格图标显示名称
         /// </summary>
-        public string DisplayName { get; set; }
+        internal string DisplayName { get; set; }
 
         /// <summary>
         /// 导航窗格图标标签
         /// </summary>
-        public string IconTag { get; set; }
+        internal string IconTag { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

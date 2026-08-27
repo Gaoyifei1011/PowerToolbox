@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// Blake2b 校验实现
     /// </summary>
-    public sealed class Blake2b : HashAlgorithm
+    internal sealed class Blake2b : HashAlgorithm
     {
         private const int BlockBytes = 128;
         private const int MaxHashBytes = 64;
@@ -46,7 +46,7 @@ namespace PowerToolbox.Extensions.Hashing
         private readonly int hashLength;
         private readonly byte[] key;
 
-        public Blake2b(int hashBytes = 64, byte[] key = null)
+        internal Blake2b(int hashBytes = 64, byte[] key = null)
         {
             if (hashBytes <= 0 || hashBytes > MaxHashBytes)
             {

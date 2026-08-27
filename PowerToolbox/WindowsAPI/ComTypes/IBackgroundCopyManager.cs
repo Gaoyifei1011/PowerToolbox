@@ -7,7 +7,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 创建传输作业，检索包含队列中作业的枚举器对象，并从队列中检索单个作业。
     /// </summary>
     [ComImport, Guid("5CE34C0D-0DC9-4C1F-897C-DAA1B78CEE7C"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IBackgroundCopyManager
+    internal interface IBackgroundCopyManager
     {
         /// <summary>
         /// 创建作业。

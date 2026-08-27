@@ -1,6 +1,6 @@
 ﻿namespace PowerToolbox.WindowsAPI.PInvoke.Setupapi
 {
-    public enum SUOI_Flags
+    internal enum SUOI_Flags
     {
         SUOI_NONE = 0x0000,
 

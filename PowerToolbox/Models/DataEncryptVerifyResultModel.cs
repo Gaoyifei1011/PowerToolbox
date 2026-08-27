@@ -5,19 +5,19 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 数据加密校验结果数据模型
     /// </summary>
-    public class DataVerifyResultModel : INotifyPropertyChanged
+    internal class DataVerifyResultModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 加密 / 校验名称
         /// </summary>
-        public string Name { get; set; }
+        internal string Name { get; set; }
 
         /// <summary>
         /// 加密 / 校验后的结果
         /// </summary>
         private string _result;
 
-        public string Result
+        internal string Result
         {
             get { return _result; }
 

@@ -24,14 +24,14 @@ namespace PowerToolbox.Views.Dialogs
     /// <summary>
     /// 添加下载任务对话框
     /// </summary>
-    public sealed partial class AddDownloadTaskDialog : ContentDialog, INotifyPropertyChanged
+    internal sealed partial class AddDownloadTaskDialog : ContentDialog, INotifyPropertyChanged
     {
         private readonly string SelectFolderString = ResourceService.DialogResource.GetString("SelectFolder");
         private bool isAllowClosed = false;
 
         private bool _isPrimaryEnabled;
 
-        public bool IsPrimaryEnabled
+        internal bool IsPrimaryEnabled
         {
             get { return _isPrimaryEnabled; }
 
@@ -47,7 +47,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private string _downloadLinkText;
 
-        public string DownloadLinkText
+        internal string DownloadLinkText
         {
             get { return _downloadLinkText; }
 
@@ -63,7 +63,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private string _downloadFileNameText;
 
-        public string DownloadFileNameText
+        internal string DownloadFileNameText
         {
             get { return _downloadFileNameText; }
 
@@ -79,7 +79,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private string _downloadFolderText = DownloadOptionsService.DownloadFolder;
 
-        public string DownloadFolderText
+        internal string DownloadFolderText
         {
             get { return _downloadFolderText; }
 
@@ -95,7 +95,7 @@ namespace PowerToolbox.Views.Dialogs
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public AddDownloadTaskDialog()
+        internal AddDownloadTaskDialog()
         {
             InitializeComponent();
             IsPrimaryButtonEnabled = !string.IsNullOrEmpty(DownloadLinkText) && !string.IsNullOrEmpty(DownloadFolderText);

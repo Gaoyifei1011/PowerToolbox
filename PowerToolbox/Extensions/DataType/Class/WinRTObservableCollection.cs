@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.DataType.Class
     /// <summary>
     /// 扩展 ObservableCollection，以通知 WinUI 3 集合已经发生变化
     /// </summary>
-    public class WinRTObservableCollection<T> : ObservableCollection<T>, Microsoft.UI.Xaml.Interop.INotifyCollectionChanged
+    internal class WinRTObservableCollection<T> : ObservableCollection<T>, Microsoft.UI.Xaml.Interop.INotifyCollectionChanged
     {
         public new event Microsoft.UI.Xaml.Interop.NotifyCollectionChangedEventHandler CollectionChanged;
 

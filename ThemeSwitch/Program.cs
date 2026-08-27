@@ -19,7 +19,7 @@ using ThemeSwitch.WindowsAPI.PInvoke.User32;
 
 namespace ThemeSwitch
 {
-    public static class Program
+    internal static class Program
     {
         private static readonly System.Timers.Timer timer = new()
         {
@@ -27,13 +27,13 @@ namespace ThemeSwitch
             Enabled = true
         };
 
-        public static ManualResetEvent ManualResetEvent { get; set; }
+        internal static ManualResetEvent ManualResetEvent { get; set; }
 
         /// <summary>
         /// 主题切换后台程序
         /// </summary>
         [STAThread]
-        public static void Main()
+        internal static void Main()
         {
             if (!RuntimeHelper.IsMSIX)
             {

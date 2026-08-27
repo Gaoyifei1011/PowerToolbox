@@ -8,9 +8,9 @@ namespace PowerToolbox.Views.CustomControls
     /// <summary>
     /// 带扩展器的表示列表项的视觉元素
     /// </summary>
-    public partial class ExpanderListViewItemPresenter : ListViewItemPresenter
+    internal partial class ExpanderListViewItemPresenter : ListViewItemPresenter
     {
-        public ExpanderListViewItemPresenter()
+        internal ExpanderListViewItemPresenter()
         {
             Loaded += (sender, args) =>
             {

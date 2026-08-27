@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace PowerToolbox.Extensions.DataType.Class
 {
-    public class DispatcherQueueSynchronizationContext(DispatcherQueue dispatcherQueue) : SynchronizationContext
+    internal class DispatcherQueueSynchronizationContext(DispatcherQueue dispatcherQueue) : SynchronizationContext
     {
         private readonly DispatcherQueue dispatcherQueue = dispatcherQueue;
 

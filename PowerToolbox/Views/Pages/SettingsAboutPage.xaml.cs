@@ -23,13 +23,13 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 关于页面
     /// </summary>
-    public sealed partial class SettingsAboutPage : Page, INotifyPropertyChanged
+    internal sealed partial class SettingsAboutPage : Page, INotifyPropertyChanged
     {
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
 
         private bool _isChecking;
 
-        public bool IsChecking
+        internal bool IsChecking
         {
             get { return _isChecking; }
 
@@ -67,7 +67,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public SettingsAboutPage()
+        internal SettingsAboutPage()
         {
             InitializeComponent();
         }

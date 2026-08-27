@@ -12,12 +12,12 @@ namespace PowerToolbox.Helpers.Root
     /// <summary>
     /// 文件缩略图辅助类
     /// </summary>
-    public static class ThumbnailHelper
+    internal static class ThumbnailHelper
     {
         /// <summary>
         /// 获取文件缩略图
         /// </summary>
-        public static Bitmap GetThumbnailBitmap(string filePath, int size)
+        internal static Bitmap GetThumbnailBitmap(string filePath, int size)
         {
             try
             {

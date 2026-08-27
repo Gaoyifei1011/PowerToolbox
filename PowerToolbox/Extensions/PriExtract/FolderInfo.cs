@@ -1,21 +1,21 @@
 ﻿namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class FolderInfo
+    internal sealed class FolderInfo
     {
-        public ushort ParentFolder { get; set; }
+        internal ushort ParentFolder { get; set; }
 
-        public ushort NumFoldersInFolder { get; set; }
+        internal ushort NumFoldersInFolder { get; set; }
 
-        public ushort FirstFolderInFolder { get; set; }
+        internal ushort FirstFolderInFolder { get; set; }
 
-        public ushort NumFilesInFolder { get; set; }
+        internal ushort NumFilesInFolder { get; set; }
 
-        public ushort FirstFileInFolder { get; set; }
+        internal ushort FirstFileInFolder { get; set; }
 
-        public ushort FolderNameLength { get; set; }
+        internal ushort FolderNameLength { get; set; }
 
-        public ushort FullPathLength { get; set; }
+        internal ushort FullPathLength { get; set; }
 
-        public uint FolderNameOffset { get; set; }
+        internal uint FolderNameOffset { get; set; }
     }
 }

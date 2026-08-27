@@ -8,7 +8,7 @@ namespace PowerToolboxShellExtension.WindowsAPI.ComTypes
     /// 提供用于查找 GUID 标识的服务的通用访问机制。
     /// </summary>
     [GeneratedComInterface, Guid("6D5140C1-7436-11CE-8034-00AA006009FA")]
-    public partial interface IServiceProvider
+    internal partial interface IServiceProvider
     {
         /// <summary>
         /// 充当通过 IServiceProvider 实现公开的任何服务的工厂方法。

@@ -3,7 +3,7 @@
     /// <summary>
     /// 驱动管理结果数据模型
     /// </summary>
-    public enum DriverResultKind
+    internal enum DriverResultKind
     {
         None = 0,
         Loading = 1,

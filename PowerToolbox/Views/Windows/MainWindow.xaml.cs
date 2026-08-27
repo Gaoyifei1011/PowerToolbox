@@ -40,7 +40,7 @@ namespace PowerToolbox.Views.Windows
     /// <summary>
     /// 应用主窗口
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    internal partial class MainWindow : Window, INotifyPropertyChanged
     {
         private readonly string AdvancedSystemOptionsString = ResourceService.WindowResource.GetString("AdvancedSystemOptions");
         private readonly string AllToolsString = ResourceService.WindowResource.GetString("AllTools");
@@ -75,11 +75,11 @@ namespace PowerToolbox.Views.Windows
         private readonly SUBCLASSPROC mainWindowSubClassProc;
         private bool isProgrammaticExpand;
 
-        public new static MainWindow Current { get; private set; }
+        internal new static MainWindow Current { get; private set; }
 
         private string _windowTitle;
 
-        public string WindowTitle
+        internal string WindowTitle
         {
             get { return _windowTitle; }
 
@@ -95,7 +95,7 @@ namespace PowerToolbox.Views.Windows
 
         private SystemBackdrop _windowSystemBackdrop;
 
-        public SystemBackdrop WindowSystemBackdrop
+        internal SystemBackdrop WindowSystemBackdrop
         {
             get { return _windowSystemBackdrop; }
 
@@ -111,7 +111,7 @@ namespace PowerToolbox.Views.Windows
 
         private ElementTheme _windowTheme;
 
-        public ElementTheme WindowTheme
+        internal ElementTheme WindowTheme
         {
             get { return _windowTheme; }
 
@@ -127,7 +127,7 @@ namespace PowerToolbox.Views.Windows
 
         private bool _isWindowMaximized;
 
-        public bool IsWindowMaximized
+        internal bool IsWindowMaximized
         {
             get { return _isWindowMaximized; }
 
@@ -143,7 +143,7 @@ namespace PowerToolbox.Views.Windows
 
         private bool _isBackEnabled;
 
-        public bool IsBackEnabled
+        internal bool IsBackEnabled
         {
             get { return _isBackEnabled; }
 
@@ -159,7 +159,7 @@ namespace PowerToolbox.Views.Windows
 
         private NavigationViewItemModel _selectedItem;
 
-        public NavigationViewItemModel SelectedItem
+        internal NavigationViewItemModel SelectedItem
         {
             get { return _selectedItem; }
 
@@ -173,13 +173,13 @@ namespace PowerToolbox.Views.Windows
             }
         }
 
-        public WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemMenuItemsCollection { get; } = [];
+        internal WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemMenuItemsCollection { get; } = [];
 
-        public WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemFooterMenuItemsCollection { get; } = [];
+        internal WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemFooterMenuItemsCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public MainWindow()
+        internal MainWindow()
         {
             Current = this;
             InitializeComponent();
@@ -781,7 +781,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 设置应用显示的主题
         /// </summary>
-        public void SetWindowTheme()
+        internal void SetWindowTheme()
         {
             WindowTheme = string.Equals(ThemeService.AppTheme, ThemeService.ThemeList[0]) ? Application.Current.RequestedTheme is ApplicationTheme.Light ? ElementTheme.Light : ElementTheme.Dark : Enum.TryParse(ThemeService.AppTheme, out ElementTheme elementTheme) ? elementTheme : ElementTheme.Default;
         }
@@ -1138,7 +1138,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 页面向前导航
         /// </summary>
-        public void NavigateTo(Type navigationPageType, object parameter = null)
+        internal void NavigateTo(Type navigationPageType, object parameter = null)
         {
             try
             {
@@ -1157,7 +1157,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 页面向后导航
         /// </summary>
-        public void NavigationFrom()
+        internal void NavigationFrom()
         {
             if (GetFrameContent() is ShellMenuPage shellMenuPage && shellMenuPage.BreadCollection.Count is 2)
             {
@@ -1180,7 +1180,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 获取当前导航到的页
         /// </summary>
-        public Type GetCurrentPageType()
+        internal Type GetCurrentPageType()
         {
             return (MainNavigationView.Content as Frame).CurrentSourcePageType;
         }
@@ -1188,7 +1188,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 获取当前导航控件内容对应的页面
         /// </summary>
-        public object GetFrameContent()
+        internal object GetFrameContent()
         {
             return (MainNavigationView.Content as Frame).Content;
         }
@@ -1196,7 +1196,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 检查当前页面是否能向后导航
         /// </summary>
-        public bool CanGoBack()
+        internal bool CanGoBack()
         {
             return (MainNavigationView.Content as Frame).CanGoBack;
         }
@@ -1204,7 +1204,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 获取选中项
         /// </summary>
-        public NavigationViewItemModel GetSelectedItem(Type currentPageType, WinRTObservableCollection<NavigationViewItemModel> navigationViewItemMenuItemCollection)
+        internal NavigationViewItemModel GetSelectedItem(Type currentPageType, WinRTObservableCollection<NavigationViewItemModel> navigationViewItemMenuItemCollection)
         {
             foreach (NavigationViewItemModel navigationViewItem in navigationViewItemMenuItemCollection)
             {
@@ -1274,7 +1274,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 显示内容对话框
         /// </summary>
-        public async Task<ContentDialogResult> ShowDialogAsync(ContentDialog contentDialog)
+        internal async Task<ContentDialogResult> ShowDialogAsync(ContentDialog contentDialog)
         {
             ContentDialogResult dialogResult = ContentDialogResult.None;
             bool isDialogOpening = false;
@@ -1309,7 +1309,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 使用教学提示显示应用内通知
         /// </summary>
-        public async Task ShowNotificationAsync(TeachingTip teachingTip, int duration = 2000)
+        internal async Task ShowNotificationAsync(TeachingTip teachingTip, int duration = 2000)
         {
             if (teachingTip is not null && Content is Page page && page.Content is Grid grid)
             {
@@ -1337,7 +1337,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 将提权模式下拖放获得到的文件列表发送到各个页面
         /// </summary>
-        public async Task SendReceivedFilesListAsync(List<string> filesList)
+        internal async Task SendReceivedFilesListAsync(List<string> filesList)
         {
             object currentFrameContent = GetFrameContent();
             if (currentFrameContent is DataVerifyEncryptPage dataVerifyEncryptPage)

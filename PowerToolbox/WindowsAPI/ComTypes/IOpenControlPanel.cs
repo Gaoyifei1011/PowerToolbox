@@ -7,7 +7,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 公开检索控制面板的视图状态、单个控制面板项的路径以及打开控制面板本身或单个控制面板项的方法。
     /// </summary>
     [ComImport, Guid("D11AD862-66DE-4DF4-BF6C-1F5621996AF1"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IOpenControlPanel
+    internal interface IOpenControlPanel
     {
         /// <summary>
         /// 打开指定的控制面板项（可选）到特定页面。

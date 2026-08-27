@@ -7,7 +7,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// IDOManager 接口用于创建新的下载，并枚举现有下载。
     /// </summary>
     [ComImport, Guid("400E2D4A-1431-4C1A-A748-39CA472CFDB1"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IDOManager
+    internal interface IDOManager
     {
         /// <summary>
         /// 创建新的下载。

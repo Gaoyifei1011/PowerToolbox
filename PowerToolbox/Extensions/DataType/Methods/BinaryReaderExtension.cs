@@ -7,9 +7,9 @@ namespace PowerToolbox.Extensions.DataType.Methods
     /// <summary>
     /// BinaryReader 类的扩展方法
     /// </summary>
-    public static class BinaryReaderExtension
+    internal static class BinaryReaderExtension
     {
-        public static void ExpectUInt16(this BinaryReader reader, ushort expectedValue)
+        internal static void ExpectUInt16(this BinaryReader reader, ushort expectedValue)
         {
             if (!reader.ReadUInt16().Equals(expectedValue))
             {
@@ -17,7 +17,7 @@ namespace PowerToolbox.Extensions.DataType.Methods
             }
         }
 
-        public static void ExpectUInt32(this BinaryReader reader, uint expectedValue)
+        internal static void ExpectUInt32(this BinaryReader reader, uint expectedValue)
         {
             if (!reader.ReadUInt32().Equals(expectedValue))
             {
@@ -25,7 +25,7 @@ namespace PowerToolbox.Extensions.DataType.Methods
             }
         }
 
-        public static void ExpectString(this BinaryReader reader, string str)
+        internal static void ExpectString(this BinaryReader reader, string str)
         {
             if (!string.Equals(new(reader.ReadChars(str.Length)), str))
             {
@@ -33,13 +33,13 @@ namespace PowerToolbox.Extensions.DataType.Methods
             }
         }
 
-        public static string ReadString(this BinaryReader reader, Encoding encoding, int length)
+        internal static string ReadString(this BinaryReader reader, Encoding encoding, int length)
         {
             using BinaryReader binaryReader = new(reader.BaseStream, encoding, true);
             return new(binaryReader.ReadChars(length));
         }
 
-        public static string ReadNullTerminatedString(this BinaryReader reader, Encoding encoding)
+        internal static string ReadNullTerminatedString(this BinaryReader reader, Encoding encoding)
         {
             using BinaryReader binaryReader = new(reader.BaseStream, encoding, true);
             StringBuilder result = new();

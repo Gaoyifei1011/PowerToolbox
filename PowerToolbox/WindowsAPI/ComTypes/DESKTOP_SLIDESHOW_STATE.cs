@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 幻灯片放映的当前状态
     /// </summary>
     [Flags]
-    public enum DESKTOP_SLIDESHOW_STATE
+    internal enum DESKTOP_SLIDESHOW_STATE
     {
         /// <summary>
         /// 已启用幻灯片放映。

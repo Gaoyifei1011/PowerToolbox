@@ -3,7 +3,7 @@
     /// <summary>
     /// SendMessageTimeout 函数的行为。
     /// </summary>
-    public enum SMTO
+    internal enum SMTO
     {
         /// <summary>
         /// 在等待函数返回时，不会阻止调用线程处理其他请求。

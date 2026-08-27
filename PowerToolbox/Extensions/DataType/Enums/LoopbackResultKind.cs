@@ -3,7 +3,7 @@
     /// <summary>
     /// 网络回环管理结果数据模型
     /// </summary>
-    public enum LoopbackResultKind
+    internal enum LoopbackResultKind
     {
         None = 0,
         Loading = 1,

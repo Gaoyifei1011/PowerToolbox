@@ -3,73 +3,73 @@ using System.Runtime.InteropServices;
 
 namespace PowerToolbox.Extensions.Hashing
 {
-    public static unsafe class XxHashShared
+    internal static unsafe class XxHashShared
     {
-        public const int StripeLengthBytes = 64;
-        public const int SecretLengthBytes = 192;
-        public const int SecretSizeMin = 136;
-        public const int SecretLastAccStartBytes = 7;
-        public const int SecretConsumeRateBytes = 8;
-        public const int SecretMergeAccsStartBytes = 11;
-        public const int NumStripesPerBlock = (SecretLengthBytes - StripeLengthBytes) / SecretConsumeRateBytes;
-        public const int AccumulatorCount = StripeLengthBytes / sizeof(ulong);
-        public const int MidSizeMaxBytes = 240;
-        public const int InternalBufferStripes = InternalBufferLengthBytes / StripeLengthBytes;
-        public const int InternalBufferLengthBytes = 256;
+        internal const int StripeLengthBytes = 64;
+        internal const int SecretLengthBytes = 192;
+        internal const int SecretSizeMin = 136;
+        internal const int SecretLastAccStartBytes = 7;
+        internal const int SecretConsumeRateBytes = 8;
+        internal const int SecretMergeAccsStartBytes = 11;
+        internal const int NumStripesPerBlock = (SecretLengthBytes - StripeLengthBytes) / SecretConsumeRateBytes;
+        internal const int AccumulatorCount = StripeLengthBytes / sizeof(ulong);
+        internal const int MidSizeMaxBytes = 240;
+        internal const int InternalBufferStripes = InternalBufferLengthBytes / StripeLengthBytes;
+        internal const int InternalBufferLengthBytes = 256;
 
         // 将 DefaultSecret byte[] 转换为 ulong[]（对应关系见上文）
-        public const ulong DefaultSecretUInt64_0 = 0xBE4BA423396CFEB8;
+        internal const ulong DefaultSecretUInt64_0 = 0xBE4BA423396CFEB8;
 
-        public const ulong DefaultSecretUInt64_1 = 0x1CAD21F72C81017C;
-        public const ulong DefaultSecretUInt64_2 = 0xDB979083E96DD4DE;
-        public const ulong DefaultSecretUInt64_3 = 0x1F67B3B7A4A44072;
-        public const ulong DefaultSecretUInt64_4 = 0x78E5C0CC4EE679CB;
-        public const ulong DefaultSecretUInt64_5 = 0x2172FFCC7DD05A82;
-        public const ulong DefaultSecretUInt64_6 = 0x8E2443F7744608B8;
-        public const ulong DefaultSecretUInt64_7 = 0x4C263A81E69035E0;
-        public const ulong DefaultSecretUInt64_8 = 0xCB00C391BB52283C;
-        public const ulong DefaultSecretUInt64_9 = 0xA32E531B8B65D088;
-        public const ulong DefaultSecretUInt64_10 = 0x4EF90DA297486471;
-        public const ulong DefaultSecretUInt64_11 = 0xD8ACDEA946EF1938;
-        public const ulong DefaultSecretUInt64_12 = 0x3F349CE33F76FAA8;
-        public const ulong DefaultSecretUInt64_13 = 0x1D4F0BC7C7BBDCF9;
-        public const ulong DefaultSecretUInt64_14 = 0x3159B4CD4BE0518A;
-        public const ulong DefaultSecretUInt64_15 = 0x647378D9C97E9FC8;
+        internal const ulong DefaultSecretUInt64_1 = 0x1CAD21F72C81017C;
+        internal const ulong DefaultSecretUInt64_2 = 0xDB979083E96DD4DE;
+        internal const ulong DefaultSecretUInt64_3 = 0x1F67B3B7A4A44072;
+        internal const ulong DefaultSecretUInt64_4 = 0x78E5C0CC4EE679CB;
+        internal const ulong DefaultSecretUInt64_5 = 0x2172FFCC7DD05A82;
+        internal const ulong DefaultSecretUInt64_6 = 0x8E2443F7744608B8;
+        internal const ulong DefaultSecretUInt64_7 = 0x4C263A81E69035E0;
+        internal const ulong DefaultSecretUInt64_8 = 0xCB00C391BB52283C;
+        internal const ulong DefaultSecretUInt64_9 = 0xA32E531B8B65D088;
+        internal const ulong DefaultSecretUInt64_10 = 0x4EF90DA297486471;
+        internal const ulong DefaultSecretUInt64_11 = 0xD8ACDEA946EF1938;
+        internal const ulong DefaultSecretUInt64_12 = 0x3F349CE33F76FAA8;
+        internal const ulong DefaultSecretUInt64_13 = 0x1D4F0BC7C7BBDCF9;
+        internal const ulong DefaultSecretUInt64_14 = 0x3159B4CD4BE0518A;
+        internal const ulong DefaultSecretUInt64_15 = 0x647378D9C97E9FC8;
 
         // 将 DefaultSecret 的偏移量偏移 3 字节，byte[] => ulong[]
-        public const ulong DefaultSecret3UInt64_0 = 0x81017CBE4BA42339;
+        internal const ulong DefaultSecret3UInt64_0 = 0x81017CBE4BA42339;
 
-        public const ulong DefaultSecret3UInt64_1 = 0x6DD4DE1CAD21F72C;
-        public const ulong DefaultSecret3UInt64_2 = 0xA44072DB979083E9;
-        public const ulong DefaultSecret3UInt64_3 = 0xE679CB1F67B3B7A4;
-        public const ulong DefaultSecret3UInt64_4 = 0xD05A8278E5C0CC4E;
-        public const ulong DefaultSecret3UInt64_5 = 0x4608B82172FFCC7D;
-        public const ulong DefaultSecret3UInt64_6 = 0x9035E08E2443F774;
-        public const ulong DefaultSecret3UInt64_7 = 0x52283C4C263A81E6;
-        public const ulong DefaultSecret3UInt64_8 = 0x65D088CB00C391BB;
-        public const ulong DefaultSecret3UInt64_9 = 0x486471A32E531B8B;
-        public const ulong DefaultSecret3UInt64_10 = 0xEF19384EF90DA297;
-        public const ulong DefaultSecret3UInt64_11 = 0x76FAA8D8ACDEA946;
-        public const ulong DefaultSecret3UInt64_12 = 0xBBDCF93F349CE33F;
-        public const ulong DefaultSecret3UInt64_13 = 0xE0518A1D4F0BC7C7;
+        internal const ulong DefaultSecret3UInt64_1 = 0x6DD4DE1CAD21F72C;
+        internal const ulong DefaultSecret3UInt64_2 = 0xA44072DB979083E9;
+        internal const ulong DefaultSecret3UInt64_3 = 0xE679CB1F67B3B7A4;
+        internal const ulong DefaultSecret3UInt64_4 = 0xD05A8278E5C0CC4E;
+        internal const ulong DefaultSecret3UInt64_5 = 0x4608B82172FFCC7D;
+        internal const ulong DefaultSecret3UInt64_6 = 0x9035E08E2443F774;
+        internal const ulong DefaultSecret3UInt64_7 = 0x52283C4C263A81E6;
+        internal const ulong DefaultSecret3UInt64_8 = 0x65D088CB00C391BB;
+        internal const ulong DefaultSecret3UInt64_9 = 0x486471A32E531B8B;
+        internal const ulong DefaultSecret3UInt64_10 = 0xEF19384EF90DA297;
+        internal const ulong DefaultSecret3UInt64_11 = 0x76FAA8D8ACDEA946;
+        internal const ulong DefaultSecret3UInt64_12 = 0xBBDCF93F349CE33F;
+        internal const ulong DefaultSecret3UInt64_13 = 0xE0518A1D4F0BC7C7;
 
-        public const ulong Prime64_1 = 0x9E3779B185EBCA87UL;
-        public const ulong Prime64_2 = 0xC2B2AE3D27D4EB4FUL;
-        public const ulong Prime64_3 = 0x165667B19E3779F9UL;
-        public const ulong Prime64_4 = 0x85EBCA77C2B2AE63UL;
-        public const ulong Prime64_5 = 0x27D4EB2F165667C5UL;
+        internal const ulong Prime64_1 = 0x9E3779B185EBCA87UL;
+        internal const ulong Prime64_2 = 0xC2B2AE3D27D4EB4FUL;
+        internal const ulong Prime64_3 = 0x165667B19E3779F9UL;
+        internal const ulong Prime64_4 = 0x85EBCA77C2B2AE63UL;
+        internal const ulong Prime64_5 = 0x27D4EB2F165667C5UL;
 
-        public const uint Prime32_1 = 0x9E3779B1U;
-        public const uint Prime32_2 = 0x85EBCA77U;
-        public const uint Prime32_3 = 0xC2B2AE3DU;
-        public const uint Prime32_4 = 0x27D4EB2FU;
-        public const uint Prime32_5 = 0x165667B1U;
+        internal const uint Prime32_1 = 0x9E3779B1U;
+        internal const uint Prime32_2 = 0x85EBCA77U;
+        internal const uint Prime32_3 = 0xC2B2AE3DU;
+        internal const uint Prime32_4 = 0x27D4EB2FU;
+        internal const uint Prime32_5 = 0x165667B1U;
 
         /// <summary>
         /// 获取在未提供种子时的默认密钥
         /// </summary>
         /// <remarks>这与从种子0导出的自定义秘密相同</remarks>
-        public static readonly byte[] DefaultSecret =
+        internal static readonly byte[] DefaultSecret =
         [
             0xb8, 0xfe, 0x6c, 0x39, 0x23, 0xa4, 0x4b, 0xbe, // DefaultSecretUInt64_0
             0x7c, 0x01, 0x81, 0x2c, 0xf7, 0x21, 0xad, 0x1c, // DefaultSecretUInt64_1
@@ -97,7 +97,7 @@ namespace PowerToolbox.Extensions.Hashing
             0xaf, 0xd7, 0xfb, 0xca, 0xbb, 0x4b, 0x40, 0x7e, // DefaultSecretUInt64_23
         ];
 
-        public static void Initialize(ref State state, ulong seed)
+        internal static void Initialize(ref State state, ulong seed)
         {
             state.Seed = seed;
 
@@ -119,7 +119,7 @@ namespace PowerToolbox.Extensions.Hashing
             Reset(ref state);
         }
 
-        public static void Reset(ref State state)
+        internal static void Reset(ref State state)
         {
             state.BufferedCount = 0;
             state.StripesProcessedInCurrentBlock = 0;
@@ -131,7 +131,7 @@ namespace PowerToolbox.Extensions.Hashing
             }
         }
 
-        public static void Append(ref State state, byte[] source)
+        internal static void Append(ref State state, byte[] source)
         {
             state.TotalLength += (uint)source.Length;
 
@@ -218,7 +218,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// <summary>
         /// This is a stronger avalanche, preferable when input has not been previously mixed
         /// </summary>
-        public static ulong Rrmxmx(ulong hash, uint length)
+        internal static ulong Rrmxmx(ulong hash, uint length)
         {
             hash ^= BitOperations.RotateLeft(hash, 49) ^ BitOperations.RotateLeft(hash, 24);
             hash *= 0x9FB21C651E98DF25;
@@ -227,7 +227,7 @@ namespace PowerToolbox.Extensions.Hashing
             return XorShift(hash, 28);
         }
 
-        public static void HashInternalLoop(ulong* accumulators, byte* source, uint length, byte* secret)
+        internal static void HashInternalLoop(ulong* accumulators, byte* source, uint length, byte* secret)
         {
             const int StripesPerBlock = (SecretLengthBytes - StripeLengthBytes) / SecretConsumeRateBytes;
             const int BlockLen = StripeLengthBytes * StripesPerBlock;
@@ -241,7 +241,7 @@ namespace PowerToolbox.Extensions.Hashing
             Accumulate512(accumulators, source + length - StripeLengthBytes, secret + (SecretLengthBytes - StripeLengthBytes - SecretLastAccStartBytes));
         }
 
-        public static void ConsumeStripes(ulong* accumulators, ref ulong stripesSoFar, ulong stripesPerBlock, byte* source, ulong stripes, byte* secret)
+        internal static void ConsumeStripes(ulong* accumulators, ref ulong stripesSoFar, ulong stripesPerBlock, byte* source, ulong stripes, byte* secret)
         {
             ulong stripesToEndOfBlock = stripesPerBlock - stripesSoFar;
             if (stripesToEndOfBlock <= stripes)
@@ -260,7 +260,7 @@ namespace PowerToolbox.Extensions.Hashing
             }
         }
 
-        public static void CopyAccumulators(ref State state, ulong* accumulators)
+        internal static void CopyAccumulators(ref State state, ulong* accumulators)
         {
             fixed (ulong* stateAccumulators = state.Accumulators)
             {
@@ -273,7 +273,7 @@ namespace PowerToolbox.Extensions.Hashing
             }
         }
 
-        public static void DigestLong(ref State state, ulong* accumulators, byte* secret)
+        internal static void DigestLong(ref State state, ulong* accumulators, byte* secret)
         {
             fixed (byte* buffer = state.Buffer)
             {
@@ -298,7 +298,7 @@ namespace PowerToolbox.Extensions.Hashing
             }
         }
 
-        public static void InitializeAccumulators(ulong* accumulators)
+        internal static void InitializeAccumulators(ulong* accumulators)
         {
             accumulators[0] = Prime32_3;
             accumulators[1] = Prime64_1;
@@ -310,7 +310,7 @@ namespace PowerToolbox.Extensions.Hashing
             accumulators[7] = Prime32_1;
         }
 
-        public static ulong MergeAccumulators(ulong* accumulators, byte* secret, ulong start)
+        internal static ulong MergeAccumulators(ulong* accumulators, byte* secret, ulong start)
         {
             ulong result64 = start;
 
@@ -322,7 +322,7 @@ namespace PowerToolbox.Extensions.Hashing
             return Avalanche(result64);
         }
 
-        public static ulong Mix16Bytes(byte* source, ulong secretLow, ulong secretHigh, ulong seed)
+        internal static ulong Mix16Bytes(byte* source, ulong secretLow, ulong secretHigh, ulong seed)
         {
             return Multiply64To128ThenFold(ReadUInt64LE(source) ^ (secretLow + seed), ReadUInt64LE(source + sizeof(ulong)) ^ (secretHigh - seed));
         }
@@ -330,7 +330,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// <summary>
         /// Calculates a 32-bit to 64-bit long multiply
         /// </summary>
-        public static ulong Multiply32To64(uint v1, uint v2)
+        internal static ulong Multiply32To64(uint v1, uint v2)
         {
             return (ulong)v1 * v2;
         }
@@ -338,7 +338,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// <summary>
         /// This is a fast avalanche stage, suitable when input bits are already partially mixed
         /// </summary>
-        public static ulong Avalanche(ulong hash)
+        internal static ulong Avalanche(ulong hash)
         {
             hash = XorShift(hash, 37);
             hash *= 0x165667919E3779F9;
@@ -346,7 +346,7 @@ namespace PowerToolbox.Extensions.Hashing
             return hash;
         }
 
-        public static ulong Multiply64To128(ulong left, ulong right, out ulong lower)
+        internal static ulong Multiply64To128(ulong left, ulong right, out ulong lower)
         {
             ulong lowerLow = Multiply32To64((uint)left, (uint)right);
             ulong higherLow = Multiply32To64((uint)(left >> 32), (uint)right);
@@ -362,13 +362,13 @@ namespace PowerToolbox.Extensions.Hashing
         /// <summary>
         /// 计算一个 64 位到 128 位的乘法，然后进行 XOR 折叠
         /// </summary>
-        public static ulong Multiply64To128ThenFold(ulong left, ulong right)
+        internal static ulong Multiply64To128ThenFold(ulong left, ulong right)
         {
             ulong upper = Multiply64To128(left, right, out ulong lower);
             return lower ^ upper;
         }
 
-        public static void DeriveSecretFromSeed(byte* destinationSecret, ulong seed)
+        internal static void DeriveSecretFromSeed(byte* destinationSecret, ulong seed)
         {
             fixed (byte* defaultSecret = DefaultSecret)
             {
@@ -403,7 +403,7 @@ namespace PowerToolbox.Extensions.Hashing
             }
         }
 
-        public static void Accumulate512(ulong* accumulators, byte* source, byte* secret)
+        internal static void Accumulate512(ulong* accumulators, byte* source, byte* secret)
         {
             Accumulate512Inlined(accumulators, source, secret);
         }
@@ -433,17 +433,17 @@ namespace PowerToolbox.Extensions.Hashing
             }
         }
 
-        public static ulong XorShift(ulong value, int shift)
+        internal static ulong XorShift(ulong value, int shift)
         {
             return value ^ (value >> shift);
         }
 
-        public static uint ReadUInt32LE(byte* data)
+        internal static uint ReadUInt32LE(byte* data)
         {
             return BitConverter.IsLittleEndian ? ReadUnaligned<uint>(data) : BinaryPrimitives.ReverseEndianness(ReadUnaligned<uint>(data));
         }
 
-        public static ulong ReadUInt64LE(byte* data)
+        internal static ulong ReadUInt64LE(byte* data)
         {
             return BitConverter.IsLittleEndian ? ReadUnaligned<ulong>(data) : BinaryPrimitives.ReverseEndianness(ReadUnaligned<ulong>(data));
         }
@@ -472,42 +472,42 @@ namespace PowerToolbox.Extensions.Hashing
         }
 
         [StructLayout(LayoutKind.Auto)]
-        public struct State
+        internal struct State
         {
             /// <summary>
             /// The accumulators. Length is AccumulatorCount
             /// </summary>
-            public fixed ulong Accumulators[AccumulatorCount];
+            internal fixed ulong Accumulators[AccumulatorCount];
 
             /// <summary>
             /// Used to store a custom secret generated from a seed. Length is SecretLengthBytes
             /// </summary>
-            public fixed byte Secret[SecretLengthBytes];
+            internal fixed byte Secret[SecretLengthBytes];
 
             /// <summary>
             /// The internal buffer. Length is InternalBufferLengthBytes
             /// </summary>
-            public fixed byte Buffer[InternalBufferLengthBytes];
+            internal fixed byte Buffer[InternalBufferLengthBytes];
 
             /// <summary>
             /// The amount of memory in Buffer
             /// </summary>
-            public uint BufferedCount;
+            internal uint BufferedCount;
 
             /// <summary>
             /// Number of stripes processed in the current block
             /// </summary>
-            public ulong StripesProcessedInCurrentBlock;
+            internal ulong StripesProcessedInCurrentBlock;
 
             /// <summary>
             /// Total length hashed
             /// </summary>
-            public ulong TotalLength;
+            internal ulong TotalLength;
 
             /// <summary>
             /// The seed employed (possibly 0)
             /// </summary>
-            public ulong Seed;
+            internal ulong Seed;
         }
     }
 }

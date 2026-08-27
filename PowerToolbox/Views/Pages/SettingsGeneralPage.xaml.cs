@@ -25,7 +25,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 设置通用选项页面
     /// </summary>
-    public sealed partial class SettingsGeneralPage : Page, INotifyPropertyChanged
+    internal sealed partial class SettingsGeneralPage : Page, INotifyPropertyChanged
     {
         private readonly string BackdropAcrylicString = ResourceService.SettingsGeneralResource.GetString("BackdropAcrylic");
         private readonly string BackdropAcrylicBaseString = ResourceService.SettingsGeneralResource.GetString("BackdropAcrylicBase");
@@ -42,7 +42,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _theme;
 
-        public ComboBoxItemModel Theme
+        internal ComboBoxItemModel Theme
         {
             get { return _theme; }
 
@@ -58,7 +58,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _backdrop = default;
 
-        public ComboBoxItemModel Backdrop
+        internal ComboBoxItemModel Backdrop
         {
             get { return _backdrop; }
 
@@ -74,7 +74,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _alwaysShowBackdrop = AlwaysShowBackdropService.AlwaysShowBackdrop;
 
-        public bool AlwaysShowBackdrop
+        internal bool AlwaysShowBackdrop
         {
             get { return _alwaysShowBackdrop; }
 
@@ -90,7 +90,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _alwaysShowBackdropEnabled;
 
-        public bool AlwaysShowBackdropEnabled
+        internal bool AlwaysShowBackdropEnabled
         {
             get { return _alwaysShowBackdropEnabled; }
 
@@ -106,7 +106,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _advancedEffectsEnabled;
 
-        public bool AdvancedEffectsEnabled
+        internal bool AdvancedEffectsEnabled
         {
             get { return _advancedEffectsEnabled; }
 
@@ -122,7 +122,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _appLanguage;
 
-        public ComboBoxItemModel AppLanguage
+        internal ComboBoxItemModel AppLanguage
         {
             get { return _appLanguage; }
 
@@ -138,7 +138,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _topMost = TopMostService.TopMost;
 
-        public bool TopMost
+        internal bool TopMost
         {
             get { return _topMost; }
 
@@ -160,7 +160,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public SettingsGeneralPage()
+        internal SettingsGeneralPage()
         {
             InitializeComponent();
 

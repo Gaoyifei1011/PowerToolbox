@@ -3,7 +3,7 @@
 namespace PowerToolbox.WindowsAPI.PInvoke.Kernel32
 {
     [Flags]
-    public enum FileMapAccess
+    internal enum FileMapAccess
     {
         /// <summary>
         /// 映射文件的复制写入视图。 必须使用 PAGE_READONLY、PAGE_EXECUTE_READ、PAGE_WRITECOPY、PAGE_EXECUTE_WRITECOPY、PAGE_READWRITE或 PAGE_EXECUTE_READWRITE 保护来创建文件映射对象。

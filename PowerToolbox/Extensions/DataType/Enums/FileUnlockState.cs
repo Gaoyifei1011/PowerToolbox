@@ -3,7 +3,7 @@
     /// <summary>
     /// 文件解锁状态
     /// </summary>
-    public enum FileUnlockState
+    internal enum FileUnlockState
     {
         NotStarted = 0,
         Processing = 1,

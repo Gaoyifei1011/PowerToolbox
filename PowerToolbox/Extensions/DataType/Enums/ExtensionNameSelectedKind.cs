@@ -3,7 +3,7 @@
     /// <summary>
     /// 扩展名称页面中单选框选中要操作的类型
     /// </summary>
-    public enum ExtensionNameSelectedKind
+    internal enum ExtensionNameSelectedKind
     {
         None = 0,
         IsSameExtensionName = 1,

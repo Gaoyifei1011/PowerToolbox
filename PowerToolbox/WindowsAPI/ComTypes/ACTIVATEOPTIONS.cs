@@ -3,7 +3,7 @@
     /// <summary>
     /// 以下一个或多个标志用于支持设计模式、调试和测试方案。
     /// </summary>
-    public enum ACTIVATEOPTIONS
+    internal enum ACTIVATEOPTIONS
     {
         /// <summary>
         /// 不设置任何标志。

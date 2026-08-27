@@ -32,14 +32,14 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 设置页面
     /// </summary>
-    public sealed partial class SettingsPage : Page, INotifyPropertyChanged
+    internal sealed partial class SettingsPage : Page, INotifyPropertyChanged
     {
         private readonly string AppNameString = ResourceService.SettingsResource.GetString("AppName");
         private Guid IID_ITaskbarManagerDesktopAppSupportStatics = new("CDFEFD63-E879-4134-B9A7-8283F05F9480");
 
         private SelectorBarItem _selectedItem;
 
-        public SelectorBarItem SelectedItem
+        internal SelectorBarItem SelectedItem
         {
             get { return _selectedItem; }
 
@@ -57,7 +57,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public SettingsPage()
+        internal SettingsPage()
         {
             InitializeComponent();
         }
@@ -361,7 +361,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 显示设置说明
         /// </summary>
-        public void ShowSettingsInstruction()
+        internal void ShowSettingsInstruction()
         {
             if (!SettingsSplitView.IsPaneOpen)
             {

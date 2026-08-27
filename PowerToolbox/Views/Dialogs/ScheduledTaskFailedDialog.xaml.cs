@@ -19,7 +19,7 @@ namespace PowerToolbox.Views.Dialogs
     /// <summary>
     /// 计划任务操作错误信息列表对话框
     /// </summary>
-    public sealed partial class ScheduledTaskFailedDialog : ContentDialog
+    internal sealed partial class ScheduledTaskFailedDialog : ContentDialog
     {
         private readonly string ExceptionCodeString = ResourceService.DialogResource.GetString("ExceptionCode");
         private readonly string ExceptionMessageString = ResourceService.DialogResource.GetString("ExceptionMessage");
@@ -28,7 +28,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private WinRTObservableCollection<ScheduledTaskFailedModel> ScheduledTaskFailedCollection { get; } = [];
 
-        public ScheduledTaskFailedDialog(List<ScheduledTaskFailedModel> scheduledTaskFailedList)
+        internal ScheduledTaskFailedDialog(List<ScheduledTaskFailedModel> scheduledTaskFailedList)
         {
             InitializeComponent();
 

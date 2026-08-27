@@ -29,7 +29,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 数据加密页面
     /// </summary>
-    public sealed partial class DataEncryptPage : Page, INotifyPropertyChanged
+    internal sealed partial class DataEncryptPage : Page, INotifyPropertyChanged
     {
         private readonly string AllFilesString = ResourceService.DataEncryptResource.GetString("AllFiles");
         private readonly string AESString = ResourceService.DataEncryptResource.GetString("AES");
@@ -116,7 +116,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _selectedIndex = 0;
 
-        public int SelectedIndex
+        internal int SelectedIndex
         {
             get { return _selectedIndex; }
 
@@ -132,7 +132,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _encryptFile;
 
-        public string EncryptFile
+        internal string EncryptFile
         {
             get { return _encryptFile; }
 
@@ -148,7 +148,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _encryptContent;
 
-        public string EncryptContent
+        internal string EncryptContent
         {
             get { return _encryptContent; }
 
@@ -180,7 +180,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _resultMessage;
 
-        public string ResultMessage
+        internal string ResultMessage
         {
             get { return _resultMessage; }
 
@@ -196,7 +196,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _encryptFailedInformation;
 
-        public string EncryptFailedInformation
+        internal string EncryptFailedInformation
         {
             get { return _encryptFailedInformation; }
 
@@ -212,7 +212,7 @@ namespace PowerToolbox.Views.Pages
 
         private DataEncryptTypeModel _selectedDataEncryptType;
 
-        public DataEncryptTypeModel SelectedDataEncryptType
+        internal DataEncryptTypeModel SelectedDataEncryptType
         {
             get { return _selectedDataEncryptType; }
 
@@ -228,7 +228,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEncryptOptions;
 
-        public bool HasEncryptOptions
+        internal bool HasEncryptOptions
         {
             get { return _hasEncryptOptions; }
 
@@ -244,7 +244,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEncryptKey;
 
-        public bool HasEncryptKey
+        internal bool HasEncryptKey
         {
             get { return _hasEncryptKey; }
 
@@ -260,7 +260,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEncryptKeyStringType;
 
-        public bool HasEncryptKeyStringType
+        internal bool HasEncryptKeyStringType
         {
             get { return _hasEncryptKeyStringType; }
 
@@ -276,7 +276,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedEncryptKeyStringType;
 
-        public ComboBoxItemModel SelectedEncryptKeyStringType
+        internal ComboBoxItemModel SelectedEncryptKeyStringType
         {
             get { return _selectedEncryptKeyStringType; }
 
@@ -292,7 +292,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _encryptKeyPHText = string.Empty;
 
-        public string EncryptKeyPHText
+        internal string EncryptKeyPHText
         {
             get { return _encryptKeyPHText; }
 
@@ -308,7 +308,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _encryptKeyText = string.Empty;
 
-        public string EncryptKeyText
+        internal string EncryptKeyText
         {
             get { return _encryptKeyText; }
 
@@ -324,7 +324,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasInitializationVector;
 
-        public bool HasInitializationVector
+        internal bool HasInitializationVector
         {
             get { return _hasInitializationVector; }
 
@@ -340,7 +340,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _initializationVectorPHText = string.Empty;
 
-        public string InitializationVectorPHText
+        internal string InitializationVectorPHText
         {
             get { return _initializationVectorPHText; }
 
@@ -356,7 +356,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _initializationVectorText = string.Empty;
 
-        public string InitializationVectorText
+        internal string InitializationVectorText
         {
             get { return _initializationVectorText; }
 
@@ -372,7 +372,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedInitializationVectorStringType;
 
-        public ComboBoxItemModel SelectedInitializationVectorStringType
+        internal ComboBoxItemModel SelectedInitializationVectorStringType
         {
             get { return _selectedInitializationVectorStringType; }
 
@@ -388,7 +388,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEncryptedBlockCipherMode;
 
-        public bool HasEncryptedBlockCipherMode
+        internal bool HasEncryptedBlockCipherMode
         {
             get { return _hasEncryptedBlockCipherMode; }
 
@@ -404,7 +404,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedEncryptedBlockCipherMode;
 
-        public ComboBoxItemModel SelectedEncryptedBlockCipherMode
+        internal ComboBoxItemModel SelectedEncryptedBlockCipherMode
         {
             get { return _selectedEncryptedBlockCipherMode; }
 
@@ -420,7 +420,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasPaddingMode;
 
-        public bool HasPaddingMode
+        internal bool HasPaddingMode
         {
             get { return _hasPaddingMode; }
 
@@ -436,7 +436,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedPaddingMode;
 
-        public ComboBoxItemModel SelectedPaddingMode
+        internal ComboBoxItemModel SelectedPaddingMode
         {
             get { return _selectedPaddingMode; }
 
@@ -452,7 +452,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasOffset;
 
-        public bool HasOffset
+        internal bool HasOffset
         {
             get { return _hasOffset; }
 
@@ -468,7 +468,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _offset;
 
-        public int Offset
+        internal int Offset
         {
             get { return _offset; }
 
@@ -484,7 +484,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEncryptPublicKey;
 
-        public bool HasEncryptPublicKey
+        internal bool HasEncryptPublicKey
         {
             get { return _hasEncryptPublicKey; }
 
@@ -500,7 +500,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _encryptPublicKeyText;
 
-        public string EncryptPublicKeyText
+        internal string EncryptPublicKeyText
         {
             get { return _encryptPublicKeyText; }
 
@@ -516,7 +516,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEncryptPrivateKey;
 
-        public bool HasEncryptPrivateKey
+        internal bool HasEncryptPrivateKey
         {
             get { return _hasEncryptPrivateKey; }
 
@@ -532,7 +532,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _encryptPrivateKeyText;
 
-        public string EncryptPrivateKeyText
+        internal string EncryptPrivateKeyText
         {
             get { return _encryptPrivateKeyText; }
 
@@ -548,7 +548,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasRSAEncryptionPaddingMode;
 
-        public bool HasRSAEncryptionPaddingMode
+        internal bool HasRSAEncryptionPaddingMode
         {
             get { return _hasRSAEncryptionPaddingMode; }
 
@@ -564,7 +564,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedRSAEncryptionPaddingMode;
 
-        public ComboBoxItemModel SelectedRSAEncryptionPaddingMode
+        internal ComboBoxItemModel SelectedRSAEncryptionPaddingMode
         {
             get { return _selectedRSAEncryptionPaddingMode; }
 
@@ -580,7 +580,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasRSAEncryptionOtherOptions;
 
-        public bool HasRSAEncryptionOtherOptions
+        internal bool HasRSAEncryptionOtherOptions
         {
             get { return _hasRSAEncryptionOtherOptions; }
 
@@ -596,7 +596,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedTextEncodingType;
 
-        public ComboBoxItemModel SelectedTextEncodingType
+        internal ComboBoxItemModel SelectedTextEncodingType
         {
             get { return _selectedTextEncodingType; }
 
@@ -612,7 +612,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _textEncodingCustomTypeText;
 
-        public string TextEncodingCustomTypeText
+        internal string TextEncodingCustomTypeText
         {
             get { return _textEncodingCustomTypeText; }
 
@@ -628,7 +628,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _saveEncryptedDataToLocalFile;
 
-        public bool SaveEncryptedDataToLocalFile
+        internal bool SaveEncryptedDataToLocalFile
         {
             get { return _saveEncryptedDataToLocalFile; }
 
@@ -644,7 +644,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _saveEncryptedFilePath = string.Empty;
 
-        public string SaveEncryptedFilePath
+        internal string SaveEncryptedFilePath
         {
             get { return _saveEncryptedFilePath; }
 
@@ -660,7 +660,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isEncrypting;
 
-        public bool IsEncrypting
+        internal bool IsEncrypting
         {
             get { return _isEncrypting; }
 
@@ -676,7 +676,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _encryptResult;
 
-        public string EncryptResult
+        internal string EncryptResult
         {
             get { return _encryptResult; }
 
@@ -692,7 +692,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isLargeContent;
 
-        public bool IsLargeContent
+        internal bool IsLargeContent
         {
             get { return _isLargeContent; }
 
@@ -722,7 +722,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DataEncryptPage()
+        internal DataEncryptPage()
         {
             InitializeComponent();
             DataEncryptTypeList.Add(new()

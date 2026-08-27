@@ -5,19 +5,19 @@ using System.Text;
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class ReferencedFileSection
+    internal sealed class ReferencedFileSection
     {
-        public uint SectionQualifier { get; private set; }
+        internal uint SectionQualifier { get; private set; }
 
-        public uint Flags { get; private set; }
+        internal uint Flags { get; private set; }
 
-        public uint SectionFlags { get; private set; }
+        internal uint SectionFlags { get; private set; }
 
-        public uint SectionLength { get; private set; }
+        internal uint SectionLength { get; private set; }
 
-        public IReadOnlyList<ReferencedFileOrFolder> ReferencedFilesList { get; private set; }
+        internal IReadOnlyList<ReferencedFileOrFolder> ReferencedFilesList { get; private set; }
 
-        public ReferencedFileSection(string sectionIdentifier, BinaryReader binaryReader)
+        internal ReferencedFileSection(string sectionIdentifier, BinaryReader binaryReader)
         {
             if (!string.Equals(new(binaryReader.ReadChars(16)), sectionIdentifier))
             {

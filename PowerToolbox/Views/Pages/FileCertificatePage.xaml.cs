@@ -30,7 +30,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 数字签名页面
     /// </summary>
-    public sealed partial class FileCertificatePage : Page, INotifyPropertyChanged
+    internal sealed partial class FileCertificatePage : Page, INotifyPropertyChanged
     {
         private readonly string DragOverContentString = ResourceService.FileCertificateResource.GetString("DragOverContent");
         private readonly string ModifyingNowString = ResourceService.FileCertificateResource.GetString("ModifyingNow");
@@ -41,7 +41,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isModifyingNow = false;
 
-        public bool IsModifyingNow
+        internal bool IsModifyingNow
         {
             get { return _isModifyingNow; }
 
@@ -57,7 +57,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isOperationFailed;
 
-        public bool IsOperationFailed
+        internal bool IsOperationFailed
         {
             get { return _isOperationFailed; }
 
@@ -77,7 +77,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public FileCertificatePage()
+        internal FileCertificatePage()
         {
             InitializeComponent();
         }
@@ -382,7 +382,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 添加到数字签名页面
         /// </summary>
-        public void AddToFileCertificatePage(List<CertificateResultModel> fileCertificateList)
+        internal void AddToFileCertificatePage(List<CertificateResultModel> fileCertificateList)
         {
             lock (fileCertificateLock)
             {

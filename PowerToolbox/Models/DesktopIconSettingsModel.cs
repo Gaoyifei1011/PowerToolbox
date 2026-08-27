@@ -6,39 +6,39 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 桌面图标数据模型
     /// </summary>
-    public class DesktopIconSettingsModel : INotifyPropertyChanged
+    internal class DesktopIconSettingsModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 图标注册表路径
         /// </summary>
-        public string IconRegistryKeyPath { get; set; }
+        internal string IconRegistryKeyPath { get; set; }
 
         /// <summary>
         /// 图标位置路径
         /// </summary>
-        public string IconLocationPath { get; set; }
+        internal string IconLocationPath { get; set; }
 
         /// <summary>
         /// 图标标签
         /// </summary>
-        public string IconTag { get; set; }
+        internal string IconTag { get; set; }
 
         /// <summary>
         /// 图标索引
         /// </summary>
-        public int IconIndex { get; set; }
+        internal int IconIndex { get; set; }
 
         /// <summary>
         /// 图标显示名称
         /// </summary>
-        public string DisplayName { get; set; }
+        internal string DisplayName { get; set; }
 
         /// <summary>
         /// 文件图标
         /// </summary>
         private ImageSource _iconImage;
 
-        public ImageSource IconImage
+        internal ImageSource IconImage
         {
             get { return _iconImage; }
 

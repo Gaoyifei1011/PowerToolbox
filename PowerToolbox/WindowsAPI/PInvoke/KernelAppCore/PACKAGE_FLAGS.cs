@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.KernelAppCore
     /// 指定如何处理包。
     /// </summary>
     [Flags]
-    public enum PACKAGE_FLAGS : uint
+    internal enum PACKAGE_FLAGS : uint
     {
         /// <summary>
         /// 包中应用的最大数目。

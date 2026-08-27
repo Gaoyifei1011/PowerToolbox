@@ -19,7 +19,7 @@ namespace PowerToolbox
     /// <summary>
     /// PowerToolbox 桌面程序
     /// </summary>
-    public class Program
+    internal class Program
     {
         private static readonly Guid CLSID_ApplicationActivationManager = new("45BA127D-10A8-46EA-8AB7-56EA9078943C");
         private static readonly IApplicationActivationManager applicationActivationManager = (IApplicationActivationManager)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_ApplicationActivationManager));
@@ -28,7 +28,7 @@ namespace PowerToolbox
         /// 应用程序的主入口点
         /// </summary>
         [STAThread]
-        public static void Main(string[] args)
+        internal static void Main(string[] args)
         {
             if (RuntimeHelper.IsMSIX)
             {

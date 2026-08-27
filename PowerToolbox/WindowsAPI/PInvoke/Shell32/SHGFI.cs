@@ -1,6 +1,6 @@
 ﻿namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
 {
-    public enum SHGFI : uint
+    internal enum SHGFI : uint
     {
         /// <summary>
         /// 修改 SHGFI_ICON，导致函数检索文件的大型图标。 还必须设置 SHGFI_ICON 标志。

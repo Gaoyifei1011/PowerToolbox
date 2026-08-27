@@ -6,12 +6,12 @@ namespace PowerToolbox.Helpers.Controls
     /// <summary>
     /// Xaml 可视化树辅助类
     /// </summary>
-    public static class XamlTreeHelper
+    internal static class XamlTreeHelper
     {
         /// <summary>
         /// 寻找当前控件的子控件
         /// </summary>
-        public static T FindDescendant<T>(DependencyObject parent, string childName = null) where T : DependencyObject
+        internal static T FindDescendant<T>(DependencyObject parent, string childName = null) where T : DependencyObject
         {
             if (parent is not null)
             {

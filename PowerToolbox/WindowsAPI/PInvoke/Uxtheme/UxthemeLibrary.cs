@@ -8,7 +8,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Uxtheme
     /// <summary>
     /// Uxtheme.dll 函数库
     /// </summary>
-    public static class UxthemeLibrary
+    internal static class UxthemeLibrary
     {
         private const string Uxtheme = "uxtheme.dll";
 
@@ -17,12 +17,12 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Uxtheme
         /// </summary>
         /// <param name="preferredAppMode">菜单样式</param>
         [DllImport(Uxtheme, CharSet = CharSet.Unicode, EntryPoint = "#135", PreserveSig = true, SetLastError = false)]
-        public static extern int SetPreferredAppMode(PreferredAppMode preferredAppMode);
+        internal static extern int SetPreferredAppMode(PreferredAppMode preferredAppMode);
 
         /// <summary>
         /// 刷新右键菜单样式
         /// </summary>
         [DllImport(Uxtheme, CharSet = CharSet.Unicode, EntryPoint = "#136", PreserveSig = true, SetLastError = false)]
-        public static extern int FlushMenuThemes();
+        internal static extern int FlushMenuThemes();
     }
 }

@@ -8,28 +8,28 @@ namespace ThemeSwitch.Services.Position
     /// <summary>
     /// 设备位置服务
     /// </summary>
-    public static class DevicePositionService
+    internal static class DevicePositionService
     {
         private static GeoCoordinateWatcher geoCoordinateWatcher = null;
 
-        public static GeoPositionStatus GeoPositionStatus { get; private set; } = GeoPositionStatus.NoData;
+        internal static GeoPositionStatus GeoPositionStatus { get; private set; } = GeoPositionStatus.NoData;
 
-        public static GeoPositionPermission Permission { get; private set; } = GeoPositionPermission.Unknown;
+        internal static GeoPositionPermission Permission { get; private set; } = GeoPositionPermission.Unknown;
 
-        public static double Longitude { get; private set; }
+        internal static double Longitude { get; private set; }
 
-        public static double Latitude { get; private set; }
+        internal static double Latitude { get; private set; }
 
-        public static bool IsInitialized { get; private set; }
+        internal static bool IsInitialized { get; private set; }
 
-        public static bool IsLoaded { get; private set; }
+        internal static bool IsLoaded { get; private set; }
 
-        public static event Action StatusOrPositionChanged;
+        internal static event Action StatusOrPositionChanged;
 
         /// <summary>
         /// 位置服务初始化
         /// </summary>
-        public static void Initialize()
+        internal static void Initialize()
         {
             try
             {
@@ -55,7 +55,7 @@ namespace ThemeSwitch.Services.Position
         /// <summary>
         /// 位置服务卸载
         /// </summary>
-        public static void UnInitialize()
+        internal static void UnInitialize()
         {
             try
             {

@@ -5,15 +5,15 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// RC5 引擎（RC5-32）实现
     /// </summary>
-    public class RC5Engine
+    internal class RC5Engine
     {
         private readonly int r;
         private readonly uint[] S;
         private const uint P32 = 0xB7E15163;
         private const uint Q32 = 0x9E3779B9;
-        public const int BlockSizeBytes = 8;
+        internal const int BlockSizeBytes = 8;
 
-        public RC5Engine(byte[] key, int rounds)
+        internal RC5Engine(byte[] key, int rounds)
         {
             if (rounds <= 0)
             {
@@ -56,7 +56,7 @@ namespace PowerToolbox.Extensions.Encrypt
             Array.Clear(L, 0, L.Length);
         }
 
-        public void EncryptBlock(byte[] input, int inOff, byte[] output, int outOff)
+        internal void EncryptBlock(byte[] input, int inOff, byte[] output, int outOff)
         {
             uint A = ToUInt32LE(input, inOff);
             uint B = ToUInt32LE(input, inOff + 4);
@@ -71,7 +71,7 @@ namespace PowerToolbox.Extensions.Encrypt
             WriteUInt32LE(output, outOff + 4, B);
         }
 
-        public void DecryptBlock(byte[] input, int inOff, byte[] output, int outOff)
+        internal void DecryptBlock(byte[] input, int inOff, byte[] output, int outOff)
         {
             uint A = ToUInt32LE(input, inOff);
             uint B = ToUInt32LE(input, inOff + 4);

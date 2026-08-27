@@ -8,7 +8,7 @@ namespace PowerToolboxShellExtension.WindowsAPI.ComTypes
     /// 公开检索有关文件夹显示选项的信息的方法，选择该文件夹中的指定项目，并设置文件夹的视图模式。
     /// </summary>
     [GeneratedComInterface, Guid("CDE725B0-CCC9-4519-917E-325D72FAB4CE")]
-    public partial interface IFolderView
+    internal partial interface IFolderView
     {
         /// <summary>
         /// 获取包含表示文件夹当前视图模式的值的地址。

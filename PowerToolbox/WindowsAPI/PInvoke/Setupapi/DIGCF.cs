@@ -3,7 +3,7 @@
     /// <summary>
     /// 类型为 DWORD 的变量，指定用于筛选添加到设备信息集的设备信息元素的控制选项。 此参数可以是零个或多个以下标志的按位 OR。
     /// </summary>
-    public enum DIGCF
+    internal enum DIGCF
     {
         /// <summary>
         /// 仅为指定的设备接口类返回与系统默认设备接口关联的设备（如果已设置设备接口）。

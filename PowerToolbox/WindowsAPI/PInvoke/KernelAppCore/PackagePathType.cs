@@ -3,7 +3,7 @@
     /// <summary>
     /// 指示要在查询中检索路径或有关包的其他信息的文件夹路径的类型。
     /// </summary>
-    public enum PackagePathType
+    internal enum PackagePathType
     {
         /// <summary>
         /// 检索应用程序的原始安装文件夹中的包路径。

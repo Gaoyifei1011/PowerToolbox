@@ -8,7 +8,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Advapi32
     /// <summary>
     /// Advapi32.dll 函数库
     /// </summary>
-    public static class Advapi32Library
+    internal static class Advapi32Library
     {
         private const string Advapi32 = "advapi32.dll";
 
@@ -27,7 +27,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Advapi32
         /// <returns>如果该函数成功，则返回值为非零值。</returns>
         [DllImport(Advapi32, CharSet = CharSet.Unicode, EntryPoint = "AdjustTokenPrivileges", PreserveSig = true, SetLastError = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool AdjustTokenPrivileges(nint TokenHandle, [MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges, ref TOKEN_PRIVILEGES NewState, uint BufferLength, nint PreviousState, nint ReturnLength);
+        internal static extern bool AdjustTokenPrivileges(nint TokenHandle, [MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges, ref TOKEN_PRIVILEGES NewState, uint BufferLength, nint PreviousState, nint ReturnLength);
 
         /// <summary>
         /// 启动指定计算机的关闭和可选重启，并选择性地记录关闭的原因。
@@ -48,7 +48,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Advapi32
         /// <returns>如果函数成功，则返回值为非零。如果函数失败，则返回值为零。</returns>
         [DllImport(Advapi32, CharSet = CharSet.Unicode, EntryPoint = "InitiateSystemShutdownExW", PreserveSig = true, SetLastError = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool InitiateSystemShutdownEx([MarshalAs(UnmanagedType.LPWStr)] string lpMachineName, [MarshalAs(UnmanagedType.LPWStr)] string lpMessage, uint dwTimeout, [MarshalAs(UnmanagedType.Bool)] bool bForceAppsClosed, [MarshalAs(UnmanagedType.Bool)] bool bRebootAfterShutdown, SHTDN_REASON dwReason);
+        internal static extern bool InitiateSystemShutdownEx([MarshalAs(UnmanagedType.LPWStr)] string lpMachineName, [MarshalAs(UnmanagedType.LPWStr)] string lpMessage, uint dwTimeout, [MarshalAs(UnmanagedType.Bool)] bool bForceAppsClosed, [MarshalAs(UnmanagedType.Bool)] bool bRebootAfterShutdown, SHTDN_REASON dwReason);
 
         /// <summary>
         /// LookupPrivilegeValue 函数检索指定系统上用于本地表示指定特权名称的 本地唯一标识符（LUID）。
@@ -59,7 +59,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Advapi32
         /// <returns>如果函数成功，该函数将返回非零。如果函数失败，则返回零。 </returns>
         [DllImport(Advapi32, CharSet = CharSet.Unicode, EntryPoint = "LookupPrivilegeValueW", PreserveSig = true, SetLastError = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool LookupPrivilegeValue([MarshalAs(UnmanagedType.LPWStr)] string lpSystemName, [MarshalAs(UnmanagedType.LPWStr)] string lpName, out LUID lpLuid);
+        internal static extern bool LookupPrivilegeValue([MarshalAs(UnmanagedType.LPWStr)] string lpSystemName, [MarshalAs(UnmanagedType.LPWStr)] string lpName, out LUID lpLuid);
 
         /// <summary>
         /// OpenProcessToken 函数打开与进程关联的访问令牌。
@@ -70,7 +70,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Advapi32
         /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。 要获得更多的错误信息，请调用 GetLastError。</returns>
         [DllImport(Advapi32, CharSet = CharSet.Unicode, EntryPoint = "OpenProcessToken", PreserveSig = true, SetLastError = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool OpenProcessToken(nint processHandle, uint desiredAccess, out nint tokenHandle);
+        internal static extern bool OpenProcessToken(nint processHandle, uint desiredAccess, out nint tokenHandle);
 
         /// <summary>
         /// 通知调用方对指定注册表项的属性或内容的更改。
@@ -82,6 +82,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Advapi32
         /// <param name="asynchronous">如果此参数为 TRUE，则函数将立即返回并通过向指定事件发出信号来报告更改。 如果此参数为 FALSE，则函数在发生更改之前不会返回 。</param>
         /// <returns>如果函数成功，则返回值为 ERROR_SUCCESS。如果函数失败，则返回值为 Winerror.h 中定义的非零错误代码。</returns>
         [DllImport(Advapi32, CharSet = CharSet.Unicode, ExactSpelling = true, EntryPoint = "RegNotifyChangeKeyValue", PreserveSig = true, SetLastError = false)]
-        public static extern int RegNotifyChangeKeyValue(nint hKey, [MarshalAs(UnmanagedType.Bool)] bool watchSubtree, REG_NOTIFY_FILTER notifyFilter, nint hEvent, [MarshalAs(UnmanagedType.Bool)] bool asynchronous);
+        internal static extern int RegNotifyChangeKeyValue(nint hKey, [MarshalAs(UnmanagedType.Bool)] bool watchSubtree, REG_NOTIFY_FILTER notifyFilter, nint hEvent, [MarshalAs(UnmanagedType.Bool)] bool asynchronous);
     }
 }

@@ -3,7 +3,7 @@
     /// <summary>
     /// 包的处理器体系结构。
     /// </summary>
-    public enum PROCESSOR_ARCHITECTURE : uint
+    internal enum PROCESSOR_ARCHITECTURE : uint
     {
         /// <summary>
         /// x86 处理器体系结构。

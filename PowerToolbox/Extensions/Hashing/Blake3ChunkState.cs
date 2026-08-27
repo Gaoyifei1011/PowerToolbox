@@ -2,24 +2,24 @@
 
 namespace PowerToolbox.Extensions.Hashing
 {
-    public class Blake3ChunkState(uint[] key, ulong chunkCounter, uint flags)
+    internal class Blake3ChunkState(uint[] key, ulong chunkCounter, uint flags)
     {
-        public readonly ulong ChunkCounter = chunkCounter;
+        internal readonly ulong ChunkCounter = chunkCounter;
         private byte[] _block = new byte[Blake3Constants.BlockLen];
         private byte _blockLen = 0;
         private byte _blocksCompressed = 0;
 
-        public int Len
+        internal int Len
         {
             get { return Blake3Constants.BlockLen * _blocksCompressed + _blockLen; }
         }
 
-        public uint StartFlag
+        internal uint StartFlag
         {
             get { return _blocksCompressed is 0 ? Blake3Constants.ChunkStart : 0; }
         }
 
-        public void Update(byte[] input)
+        internal void Update(byte[] input)
         {
             while (input.Length > 0)
             {
@@ -41,7 +41,7 @@ namespace PowerToolbox.Extensions.Hashing
             }
         }
 
-        public Blake3Output Output()
+        internal Blake3Output Output()
         {
             uint[] blockWords = new uint[16];
             Blake3Functions.WordsFromLittleEndianBytes(_block, ref blockWords);

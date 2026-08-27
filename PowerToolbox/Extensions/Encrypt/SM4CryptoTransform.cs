@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace PowerToolbox.Extensions.Encrypt
 {
-    public class SM4CryptoTransform : ICryptoTransform
+    internal class SM4CryptoTransform : ICryptoTransform
     {
         private readonly uint[] rk; // round keys
         private readonly byte[] iv;
@@ -17,7 +17,7 @@ namespace PowerToolbox.Extensions.Encrypt
 
         private bool finalized = false;
 
-        public SM4CryptoTransform(byte[] key, byte[] iv, CipherMode mode, PaddingMode padding, bool encrypting)
+        internal SM4CryptoTransform(byte[] key, byte[] iv, CipherMode mode, PaddingMode padding, bool encrypting)
         {
             rk = SM4Engine.KeyExpansion(key);
             this.iv = (byte[])iv.Clone();

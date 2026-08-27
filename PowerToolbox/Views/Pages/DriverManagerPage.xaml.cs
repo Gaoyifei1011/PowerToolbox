@@ -34,7 +34,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 驱动管理页面
     /// </summary>
-    public sealed partial class DriverManagerPage : Page, INotifyPropertyChanged
+    internal sealed partial class DriverManagerPage : Page, INotifyPropertyChanged
     {
         private readonly string AddingDriverFailedString = ResourceService.DriverManagerResource.GetString("AddingDriverFailed");
         private readonly string AddingDriverString = ResourceService.DriverManagerResource.GetString("AddingDriver");
@@ -241,7 +241,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _driverDescription = string.Empty;
 
-        public string DriverDescription
+        internal string DriverDescription
         {
             get { return _driverDescription; }
 
@@ -257,7 +257,7 @@ namespace PowerToolbox.Views.Pages
 
         private DriverPaneKind _driverPaneKind;
 
-        public DriverPaneKind DriverPaneKind
+        internal DriverPaneKind DriverPaneKind
         {
             get { return _driverPaneKind; }
 
@@ -273,7 +273,7 @@ namespace PowerToolbox.Views.Pages
 
         private DriverResultKind _driverResultKind;
 
-        public DriverResultKind DriverResultKind
+        internal DriverResultKind DriverResultKind
         {
             get { return _driverResultKind; }
 
@@ -289,7 +289,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _driverFailedContent;
 
-        public string DriverFailedContent
+        internal string DriverFailedContent
         {
             get { return _driverFailedContent; }
 
@@ -305,7 +305,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _searchText = string.Empty;
 
-        public string SearchText
+        internal string SearchText
         {
             get { return _searchText; }
 
@@ -321,7 +321,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isIncrease = true;
 
-        public bool IsIncrease
+        internal bool IsIncrease
         {
             get { return _isIncrease; }
 
@@ -337,7 +337,7 @@ namespace PowerToolbox.Views.Pages
 
         private DriverSortRuleKind _selectedRule = DriverSortRuleKind.DeviceName;
 
-        public DriverSortRuleKind SelectedRule
+        internal DriverSortRuleKind SelectedRule
         {
             get { return _selectedRule; }
 
@@ -359,7 +359,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DriverManagerPage()
+        internal DriverManagerPage()
         {
             InitializeComponent();
         }
@@ -1880,7 +1880,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取文件夹大小
         /// </summary>
-        public long GetFolderSize(string directoryPath)
+        internal long GetFolderSize(string directoryPath)
         {
             long totalSize = 0;
 

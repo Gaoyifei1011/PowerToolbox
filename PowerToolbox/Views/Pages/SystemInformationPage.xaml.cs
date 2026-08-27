@@ -28,7 +28,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 系统信息页面
     /// </summary>
-    public sealed partial class SystemInformationPage : Page, INotifyPropertyChanged
+    internal sealed partial class SystemInformationPage : Page, INotifyPropertyChanged
     {
         private bool isInitialized;
         private readonly string AvailablePhysicalMemoryString = ResourceService.SystemInformationResource.GetString("AvailablePhysicalMemory");
@@ -68,7 +68,7 @@ namespace PowerToolbox.Views.Pages
 
         private SystemInformationResultKind _systemInformationResultKind;
 
-        public SystemInformationResultKind SystemInformationResultKind
+        internal SystemInformationResultKind SystemInformationResultKind
         {
             get { return _systemInformationResultKind; }
 
@@ -84,7 +84,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _systemInformationFailedContent;
 
-        public string SystemInformationFailedContent
+        internal string SystemInformationFailedContent
         {
             get { return _systemInformationFailedContent; }
 
@@ -102,7 +102,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public SystemInformationPage()
+        internal SystemInformationPage()
         {
             InitializeComponent();
         }

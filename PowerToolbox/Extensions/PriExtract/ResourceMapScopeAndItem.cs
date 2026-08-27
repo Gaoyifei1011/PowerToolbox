@@ -2,14 +2,14 @@
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class ResourceMapScopeAndItem
+    internal sealed class ResourceMapScopeAndItem
     {
-        public ushort Index { get; set; }
+        internal ushort Index { get; set; }
 
-        public ResourceMapScopeAndItem Parent { get; set; }
+        internal ResourceMapScopeAndItem Parent { get; set; }
 
-        public string Name { get; set; }
+        internal string Name { get; set; }
 
-        public IReadOnlyList<ResourceMapScopeAndItem> Children { get; set; }
+        internal IReadOnlyList<ResourceMapScopeAndItem> Children { get; set; }
     }
 }

@@ -38,7 +38,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 主题切换页面
     /// </summary>
-    public sealed partial class ThemeSwitchPage : Page, INotifyPropertyChanged
+    internal sealed partial class ThemeSwitchPage : Page, INotifyPropertyChanged
     {
         private readonly string AutoThemeSwitchTypeDarkModeString = ResourceService.ThemeSwitchResource.GetString("AutoThemeSwitchTypeDarkMode");
         private readonly string AutoThemeSwitchTypeFixedTimeString = ResourceService.ThemeSwitchResource.GetString("AutoThemeSwitchTypeFixedTime");
@@ -55,7 +55,7 @@ namespace PowerToolbox.Views.Pages
 
         private Brush _systemAppBackground;
 
-        public Brush SystemAppBackground
+        internal Brush SystemAppBackground
         {
             get { return _systemAppBackground; }
 
@@ -71,7 +71,7 @@ namespace PowerToolbox.Views.Pages
 
         private ElementTheme _systemAppTheme;
 
-        public ElementTheme SystemAppTheme
+        internal ElementTheme SystemAppTheme
         {
             get { return _systemAppTheme; }
 
@@ -87,7 +87,7 @@ namespace PowerToolbox.Views.Pages
 
         private ImageSource _systemAppImage;
 
-        public ImageSource SystemAppImage
+        internal ImageSource SystemAppImage
         {
             get { return _systemAppImage; }
 
@@ -103,7 +103,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isManualCloseInfoBar;
 
-        public bool IsManualCloseInfoBar
+        internal bool IsManualCloseInfoBar
         {
             get { return _isManualCloseInfoBar; }
 
@@ -119,7 +119,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isThemeSwitchNotificationEnabled;
 
-        public bool IsThemeSwitchNotificationEnabled
+        internal bool IsThemeSwitchNotificationEnabled
         {
             get { return _isThemeSwitchNotificationEnabled; }
 
@@ -135,7 +135,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedSystemThemeStyle;
 
-        public ComboBoxItemModel SelectedSystemThemeStyle
+        internal ComboBoxItemModel SelectedSystemThemeStyle
         {
             get { return _selectedSystemThemeStyle; }
 
@@ -151,7 +151,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedAppThemeStyle;
 
-        public ComboBoxItemModel SelectedAppThemeStyle
+        internal ComboBoxItemModel SelectedAppThemeStyle
         {
             get { return _selectedAppThemeStyle; }
 
@@ -167,7 +167,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isShowThemeColorInStartAndTaskbar;
 
-        public bool IsShowThemeColorInStartAndTaskbar
+        internal bool IsShowThemeColorInStartAndTaskbar
         {
             get { return _isShowThemeColorInStartAndTaskbar; }
 
@@ -183,7 +183,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isShowThemeColorInStartAndTaskbarEnabled;
 
-        public bool IsShowThemeColorInStartAndTaskbarEnabled
+        internal bool IsShowThemeColorInStartAndTaskbarEnabled
         {
             get { return _isShowThemeColorInStartAndTaskbarEnabled; }
 
@@ -199,7 +199,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isAutoThemeSwitchEnable = AutoThemeSwitchService.AutoThemeSwitchEnable;
 
-        public bool IsAutoThemeSwitchEnable
+        internal bool IsAutoThemeSwitchEnable
         {
             get { return _isAutoThemeSwitchEnable; }
 
@@ -215,7 +215,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedAutoThemeSwitchType;
 
-        public ComboBoxItemModel SelectedAutoThemeSwitchType
+        internal ComboBoxItemModel SelectedAutoThemeSwitchType
         {
             get { return _selectedAutoThemeSwitchType; }
 
@@ -231,7 +231,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isAutoSwitchSystemTheme = AutoThemeSwitchService.AutoSwitchSystemTheme;
 
-        public bool IsAutoSwitchSystemTheme
+        internal bool IsAutoSwitchSystemTheme
         {
             get { return _isAutoSwitchSystemTheme; }
 
@@ -247,7 +247,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isAutoSwitchAppTheme = AutoThemeSwitchService.AutoSwitchAppTheme;
 
-        public bool IsAutoSwitchAppTheme
+        internal bool IsAutoSwitchAppTheme
         {
             get { return _isAutoSwitchAppTheme; }
 
@@ -263,7 +263,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isShowColorInDarkTheme = AutoThemeSwitchService.IsShowColorInDarkTheme;
 
-        public bool IsShowColorInDarkTheme
+        internal bool IsShowColorInDarkTheme
         {
             get { return _isShowColorInDarkTheme; }
 
@@ -279,7 +279,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isGettingPosition;
 
-        public bool IsGettingPosition
+        internal bool IsGettingPosition
         {
             get { return _isGettingPosition; }
 
@@ -295,7 +295,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _sunriseOffset = AutoThemeSwitchService.SunriseOffset;
 
-        public int SunriseOffset
+        internal int SunriseOffset
         {
             get { return _sunriseOffset; }
 
@@ -311,7 +311,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _sunsetOffset = AutoThemeSwitchService.SunsetOffset;
 
-        public int SunsetOffset
+        internal int SunsetOffset
         {
             get { return _sunsetOffset; }
 
@@ -327,7 +327,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _longitude;
 
-        public string Longitude
+        internal string Longitude
         {
             get { return _longitude; }
 
@@ -343,7 +343,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _latitude;
 
-        public string Latitude
+        internal string Latitude
         {
             get { return _latitude; }
 
@@ -359,7 +359,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _sunriseTime;
 
-        public string SunriseTime
+        internal string SunriseTime
         {
             get { return _sunriseTime; }
 
@@ -375,7 +375,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _sunsetTime;
 
-        public string SunsetTime
+        internal string SunsetTime
         {
             get { return _sunsetTime; }
 
@@ -391,7 +391,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isPolarNightRegion;
 
-        public bool IsPolarNightRegion
+        internal bool IsPolarNightRegion
         {
             get { return _isPolarNightRegion; }
 
@@ -407,7 +407,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isPolarDayRegion;
 
-        public bool IsPolarDayRegion
+        internal bool IsPolarDayRegion
         {
             get { return _isPolarDayRegion; }
 
@@ -423,7 +423,7 @@ namespace PowerToolbox.Views.Pages
 
         private TimeSpan _systemThemeLightTime = AutoThemeSwitchService.SystemThemeLightTime;
 
-        public TimeSpan SystemThemeLightTime
+        internal TimeSpan SystemThemeLightTime
         {
             get { return _systemThemeLightTime; }
 
@@ -439,7 +439,7 @@ namespace PowerToolbox.Views.Pages
 
         private TimeSpan _systemThemeDarkTime = AutoThemeSwitchService.SystemThemeDarkTime;
 
-        public TimeSpan SystemThemeDarkTime
+        internal TimeSpan SystemThemeDarkTime
         {
             get { return _systemThemeDarkTime; }
 
@@ -455,7 +455,7 @@ namespace PowerToolbox.Views.Pages
 
         private TimeSpan _appThemeLightTime = AutoThemeSwitchService.AppThemeLightTime;
 
-        public TimeSpan AppThemeLightTime
+        internal TimeSpan AppThemeLightTime
         {
             get { return _appThemeLightTime; }
 
@@ -471,7 +471,7 @@ namespace PowerToolbox.Views.Pages
 
         private TimeSpan _appThemeDarkTime = AutoThemeSwitchService.AppThemeDarkTime;
 
-        public TimeSpan AppThemeDarkTime
+        internal TimeSpan AppThemeDarkTime
         {
             get { return _appThemeDarkTime; }
 
@@ -493,7 +493,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ThemeSwitchPage()
+        internal ThemeSwitchPage()
         {
             InitializeComponent();
 
@@ -1319,7 +1319,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 初始化系统主题设置内容
         /// </summary>
-        public async Task InitializeSystemThemeSettingsAsync()
+        internal async Task InitializeSystemThemeSettingsAsync()
         {
             Dictionary<string, object> wallpaperDict = await Task.Run(() =>
             {

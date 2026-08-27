@@ -13,7 +13,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
     /// <summary>
     /// Shell32.dll 函数库
     /// </summary>
-    public static class Shell32Library
+    internal static class Shell32Library
     {
         private const string Shell32 = "shell32.dll";
 
@@ -23,7 +23,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// <param name="hwnd">正在注册是否接受已删除文件的窗口的标识符。</param>
         /// <param name="fAccept">一个值，该值指示 hWnd 参数标识的窗口是否接受已删除的文件。 如果接受已删除的文件，则此值为 TRUE ;如果值为 FALSE ，则表示停止接受已删除的文件。</param>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "DragAcceptFiles", PreserveSig = true, SetLastError = false)]
-        public static extern void DragAcceptFiles(nint hwnd, [MarshalAs(UnmanagedType.Bool)] bool fAccept);
+        internal static extern void DragAcceptFiles(nint hwnd, [MarshalAs(UnmanagedType.Bool)] bool fAccept);
 
         /// <summary>
         /// 检索由于成功拖放操作而删除的文件的名称。
@@ -39,7 +39,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// 如果索引值介于零和已删除文件总数之间，并且 lpszFile 缓冲区地址为 NULL，则返回值是缓冲区所需的大小（以字符为单位）， 不包括 终止 null 字符。
         /// </returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "DragQueryFileW", PreserveSig = true, SetLastError = false)]
-        public static extern uint DragQueryFile(nuint hDrop, uint iFile, [Out, MarshalAs(UnmanagedType.LPArray)] char[] lpszFile, uint cch);
+        internal static extern uint DragQueryFile(nuint hDrop, uint iFile, [Out, MarshalAs(UnmanagedType.LPArray)] char[] lpszFile, uint cch);
 
         /// <summary>
         /// 检索在拖放操作期间删除文件时鼠标指针的位置。
@@ -49,14 +49,14 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// <returns>如果删除发生在窗口的工作区中，则为 TRUE;否则为 FALSE。</returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "DragQueryPoint", PreserveSig = true, SetLastError = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool DragQueryPoint(nuint hDrop, out Point lppt);
+        internal static extern bool DragQueryPoint(nuint hDrop, out Point lppt);
 
         /// <summary>
         /// 描述已删除的文件的结构的标识符。 此句柄是从WM_DROPFILES消息的 wParam 参数检索的。
         /// </summary>
         /// <param name="hDrop">释放系统分配用于将文件名传输到应用程序的内存。</param>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "DragFinish", PreserveSig = true, SetLastError = false)]
-        public static extern void DragFinish(nuint hDrop);
+        internal static extern void DragFinish(nuint hDrop);
 
         /// <summary>
         /// 返回与指定文件路径关联的 ITEMIDLIST 结构。
@@ -64,14 +64,14 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// <param name="pszPath">指向包含路径的以 null 结尾的 Unicode 字符串的指针。 此字符串的长度应不超过 MAX_PATH 个字符，包括终止 null 字符。</param>
         /// <returns>返回指向对应于路径的 ITEMIDLIST 结构的指针。</returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "ILCreateFromPathW", PreserveSig = true, SetLastError = false)]
-        public static extern nint ILCreateFromPath([MarshalAs(UnmanagedType.LPWStr)] string pszPath);
+        internal static extern nint ILCreateFromPath([MarshalAs(UnmanagedType.LPWStr)] string pszPath);
 
         /// <summary>
         /// 释放 Shell 分配的 ITEMIDLIST 结构。
         /// </summary>
         /// <param name="pidl">指向要释放的 ITEMIDLIST 结构的指针。 此参数可以为 NULL。</param>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "ILFree", PreserveSig = true, SetLastError = false)]
-        public static extern void ILFree(nint pidl);
+        internal static extern void ILFree(nint pidl);
 
         /// <summary>
         /// 返回 ITEMIDLIST 结构的大小（以字节为单位）。
@@ -79,7 +79,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// <param name="pidl">指向 ITEMIDLIST 结构的指针。</param>
         /// <returns>pidl 指定的 ITEMIDLIST 结构的大小（以字节为单位）。</returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "ILGetSize", PreserveSig = true, SetLastError = false)]
-        public static extern int ILGetSize(nint pidl);
+        internal static extern int ILGetSize(nint pidl);
 
         /// <summary>
         /// 显示一个对话框，允许用户从嵌入在资源（如可执行文件或 DLL 文件）中的可用选项中选择图标。
@@ -90,7 +90,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// <param name="pnIconIndex">指向整数的指针，该整数在条目上指定初始选定内容的索引，并且当此函数成功返回时，接收所选图标的索引。</param>
         /// <returns>如果成功，则返回 1;否则为 0。</returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "PickIconDlg", PreserveSig = true, SetLastError = false)]
-        public static extern bool PickIconDlg(nint hWnd, StringBuilder pszIconPath, int cchIconPath, ref int pnIconIndex);
+        internal static extern bool PickIconDlg(nint hWnd, StringBuilder pszIconPath, int cchIconPath, ref int pnIconIndex);
 
         /// <summary>
         /// 通知系统应用程序已执行的事件。 如果应用程序执行可能影响 Shell 的操作，则应使用此函数。
@@ -100,7 +100,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// <param name="dwItem1">可选。 第一个与事件相关的值。</param>
         /// <param name="dwItem2">可选。 第二个与事件相关的值。</param>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "SHChangeNotify", PreserveSig = true, SetLastError = false)]
-        public static extern void SHChangeNotify(SHCNE wEventId, SHCNF uFlags, nint dwItem1, nint dwItem2);
+        internal static extern void SHChangeNotify(SHCNE wEventId, SHCNF uFlags, nint dwItem1, nint dwItem2);
 
         /// <summary>
         /// 从分析名称创建和初始化命令行管理程序项对象。
@@ -119,7 +119,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// <param name="ppv">此方法成功返回时，包含 riid 中请求的接口指针。这通常是IShellItem或IShellItem2。</param>
         /// <returns>如果此函数成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "SHCreateItemFromParsingName", PreserveSig = true, SetLastError = false)]
-        public static extern int SHCreateItemFromParsingName([MarshalAs(UnmanagedType.LPWStr)] string pszPath, IBindCtx pbc, Guid riid, [MarshalAs(UnmanagedType.Interface)] out IShellItem ppv);
+        internal static extern int SHCreateItemFromParsingName([MarshalAs(UnmanagedType.LPWStr)] string pszPath, IBindCtx pbc, Guid riid, [MarshalAs(UnmanagedType.Interface)] out IShellItem ppv);
 
         /// <summary>
         /// 检索文件系统中有关对象的信息，例如文件、文件夹、目录或驱动器根目录。
@@ -140,7 +140,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// 如果 uFlags 包含 SHGFI_EXETYPE 标志，则返回值指定可执行文件的类型。
         /// </returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "SHGetFileInfoW", PreserveSig = true, SetLastError = false)]
-        public static extern nint SHGetFileInfo([MarshalAs(UnmanagedType.LPWStr)] string pszPath, uint dwFileAttributes, out SHFILEINFO psfi, uint cbFileInfo, SHGFI uFlags);
+        internal static extern nint SHGetFileInfo([MarshalAs(UnmanagedType.LPWStr)] string pszPath, uint dwFileAttributes, out SHFILEINFO psfi, uint cbFileInfo, SHGFI uFlags);
 
         /// <summary>
         /// 检索图像列表。
@@ -150,7 +150,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// <param name="ppvObj">此方法返回时，包含 riid 中请求的接口指针。 这通常是 IImageList。</param>
         /// <returns>如果此函数成功，它将返回 S_OK。 否则，它将返回 HRESULT 错误代码。</returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "SHGetImageList", PreserveSig = true, SetLastError = false)]
-        public static extern int SHGetImageList(SHIL iImageList, Guid riid, [MarshalAs(UnmanagedType.Interface)] out IImageList ppvObj);
+        internal static extern int SHGetImageList(SHIL iImageList, Guid riid, [MarshalAs(UnmanagedType.Interface)] out IImageList ppvObj);
 
         /// <summary>
         /// 检索由文件夹的 KNOWNFOLDERID 标识的已知文件夹的完整路径。
@@ -167,7 +167,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// </param>
         /// <returns>如果成功，则返回S_OK，否则返回错误值</returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "SHGetKnownFolderPath", PreserveSig = true, SetLastError = false)]
-        public static extern int SHGetKnownFolderPath(Guid rfid, KNOWN_FOLDER_FLAG dwFlags, nint hToken, [MarshalAs(UnmanagedType.LPWStr)] out string pszPath);
+        internal static extern int SHGetKnownFolderPath(Guid rfid, KNOWN_FOLDER_FLAG dwFlags, nint hToken, [MarshalAs(UnmanagedType.LPWStr)] out string pszPath);
 
         /// <summary>
         /// 显示一组文件的合并属性表。 显示所有文件通用的属性值，而不同的属性值显示字符串 (多个值) 。
@@ -176,7 +176,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// <param name="dwFlags">保留。 必须设置为 0。</param>
         /// <returns>如果此函数成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "SHMultiFileProperties", PreserveSig = true, SetLastError = false)]
-        public static extern nint SHMultiFileProperties(IDataObject pdtobj, int dwFlags);
+        internal static extern nint SHMultiFileProperties(IDataObject pdtobj, int dwFlags);
 
         /// <summary>
         /// 打开 Windows 资源管理器窗口，其中选定了特定文件夹中的指定项目。
@@ -187,6 +187,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
         /// <param name="dwFlags">可选标志。</param>
         /// <returns>如果此函数成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [DllImport(Shell32, CharSet = CharSet.Unicode, EntryPoint = "SHOpenFolderAndSelectItems", ExactSpelling = false, PreserveSig = true)]
-        public static extern int SHOpenFolderAndSelectItems(nint pidlFolder, uint cidl, nint apidl, uint dwFlags);
+        internal static extern int SHOpenFolderAndSelectItems(nint pidlFolder, uint cidl, nint apidl, uint dwFlags);
     }
 }

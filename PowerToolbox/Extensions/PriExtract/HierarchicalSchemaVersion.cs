@@ -1,15 +1,15 @@
 ﻿namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class HierarchicalSchemaVersion
+    internal sealed class HierarchicalSchemaVersion
     {
-        public ushort MajorVersion { get; set; }
+        internal ushort MajorVersion { get; set; }
 
-        public ushort MinorVersion { get; set; }
+        internal ushort MinorVersion { get; set; }
 
-        public uint Checksum { get; set; }
+        internal uint Checksum { get; set; }
 
-        public uint NumScopes { get; set; }
+        internal uint NumScopes { get; set; }
 
-        public uint NumItems { get; set; }
+        internal uint NumItems { get; set; }
     }
 }

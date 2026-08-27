@@ -15,16 +15,16 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 自定义扩展菜单页面
     /// </summary>
-    public sealed partial class ShellMenuPage : Page
+    internal sealed partial class ShellMenuPage : Page
     {
         private readonly string ShellMenuString = ResourceService.ShellMenuResource.GetString("ShellMenu");
         private readonly string ShellMenuEditString = ResourceService.ShellMenuResource.GetString("ShellMenuEdit");
 
-        public List<Type> PageList { get; } = [typeof(ShellMenuListPage), typeof(ShellMenuEditPage)];
+        internal List<Type> PageList { get; } = [typeof(ShellMenuListPage), typeof(ShellMenuEditPage)];
 
-        public WinRTObservableCollection<DictionaryEntry> BreadCollection { get; } = [];
+        internal WinRTObservableCollection<DictionaryEntry> BreadCollection { get; } = [];
 
-        public ShellMenuPage()
+        internal ShellMenuPage()
         {
             InitializeComponent();
         }
@@ -101,7 +101,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 页面向前导航
         /// </summary>
-        public void NavigateTo(Type navigationPageType, object parameter = null, bool? slideDirection = null)
+        internal void NavigateTo(Type navigationPageType, object parameter = null, bool? slideDirection = null)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取当前导航到的页
         /// </summary>
-        public Type GetCurrentPageType()
+        internal Type GetCurrentPageType()
         {
             return ShellMenuFrame.CurrentSourcePageType;
         }

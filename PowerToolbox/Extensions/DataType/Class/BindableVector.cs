@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PowerToolbox.Extensions.DataType.Class
 {
-    public class BindableVector : IList, IBindableVector
+    internal class BindableVector : IList, IBindableVector
     {
         private readonly IList implementation;
 

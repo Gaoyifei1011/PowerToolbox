@@ -5,7 +5,7 @@ namespace PowerToolbox.Helpers.Root
     /// <summary>
     /// 包含控制屏幕关闭以及系统休眠相关的方法。
     /// </summary>
-    public static class SystemSleepHelper
+    internal static class SystemSleepHelper
     {
         /// <summary>
         /// 设置此线程此时开始一直将处于运行状态，此时计算机不应该进入睡眠状态。
@@ -16,7 +16,7 @@ namespace PowerToolbox.Helpers.Root
         /// 表示是否应该同时保持屏幕不关闭。
         /// 对于游戏、视频和演示相关的任务需要保持屏幕不关闭；而对于后台服务、下载和监控等任务则不需要。
         /// </param>
-        public static void PreventForCurrentThread(bool keepDisplayOn = true)
+        internal static void PreventForCurrentThread(bool keepDisplayOn = true)
         {
             if (keepDisplayOn)
             {
@@ -31,7 +31,7 @@ namespace PowerToolbox.Helpers.Root
         /// <summary>
         /// 恢复此线程的运行状态，操作系统现在可以正常进入睡眠状态和关闭屏幕。
         /// </summary>
-        public static void RestoreForCurrentThread()
+        internal static void RestoreForCurrentThread()
         {
             Kernel32Library.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
         }
@@ -43,7 +43,7 @@ namespace PowerToolbox.Helpers.Root
         /// 表示是否应该同时保持屏幕不关闭。
         /// 对于游戏、视频和演示相关的任务需要保持屏幕不关闭；而对于后台服务、下载和监控等任务则不需要。
         /// </param>
-        public static void ResetIdle(bool keepDisplayOn = true)
+        internal static void ResetIdle(bool keepDisplayOn = true)
         {
             if (keepDisplayOn)
             {

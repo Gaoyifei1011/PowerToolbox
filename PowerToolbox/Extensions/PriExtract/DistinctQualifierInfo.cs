@@ -2,10 +2,10 @@
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class DistinctQualifierInfo
+    internal sealed class DistinctQualifierInfo
     {
-        public QualifierType QualifierType { get; set; }
+        internal QualifierType QualifierType { get; set; }
 
-        public uint OperandValueOffset { get; set; }
+        internal uint OperandValueOffset { get; set; }
     }
 }

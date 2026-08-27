@@ -6,14 +6,14 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 数据加密类型数据模型
     /// </summary>
-    public class DataEncryptTypeModel : INotifyPropertyChanged
+    internal class DataEncryptTypeModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 数据加密类型是否被选择
         /// </summary>
         private bool _isSelected;
 
-        public bool IsSelected
+        internal bool IsSelected
         {
             get { return _isSelected; }
 
@@ -30,12 +30,12 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 数据加密类型名称
         /// </summary>
-        public string Name { get; set; }
+        internal string Name { get; set; }
 
         /// <summary>
         /// 数据加密类型
         /// </summary>
-        public DataEncryptType DataEncryptType { get; set; }
+        internal DataEncryptType DataEncryptType { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

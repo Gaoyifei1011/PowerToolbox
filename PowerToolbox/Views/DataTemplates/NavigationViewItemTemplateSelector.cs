@@ -8,7 +8,7 @@ namespace PowerToolbox.Views.DataTemplates
     /// <summary>
     /// 导航项数据模板选择器
     /// </summary>
-    public class NavigationViewItemTemplateSelector : DataTemplateSelector
+    internal class NavigationViewItemTemplateSelector : DataTemplateSelector
     {
         public DataTemplate NavigationViewItemTemplate { get; set; }
 

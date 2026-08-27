@@ -6,11 +6,11 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// RC5 对称加密算法实现
     /// </summary>
-    public class RC5 : SymmetricAlgorithm
+    internal class RC5 : SymmetricAlgorithm
     {
         private int rounds = 12;
 
-        public RC5()
+        internal RC5()
         {
             // RC5-32块大小 64位
             BlockSizeValue = 64;
@@ -26,7 +26,7 @@ namespace PowerToolbox.Extensions.Encrypt
         /// <summary>
         /// 轮数 (rounds)
         /// </summary>
-        public int Rounds
+        internal int Rounds
         {
             get { return rounds; }
 

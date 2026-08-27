@@ -3,7 +3,7 @@
     /// <summary>
     /// 编辑菜单类型
     /// </summary>
-    public enum ShellEditKind
+    internal enum ShellEditKind
     {
         AddMenu = 0,
         EditMenu = 1

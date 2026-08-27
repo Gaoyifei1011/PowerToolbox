@@ -7,7 +7,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// IDXGIFactory 接口实现用于生成 DXGI 对象的方法， (处理全屏转换) 。
     /// </summary>
     [ComImport, Guid("C1B6694F-FF09-44A9-B03C-77900A0A1D17"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public partial interface IDXGIFactory6
+    internal partial interface IDXGIFactory6
     {
         /// <summary>
         /// 将应用程序定义的数据设置为 对象，并将该数据与 GUID 相关联。

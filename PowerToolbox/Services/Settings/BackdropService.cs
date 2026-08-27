@@ -11,14 +11,14 @@ namespace PowerToolbox.Services.Settings
     /// <summary>
     /// 应用背景色设置服务
     /// </summary>
-    public static class BackdropService
+    internal static class BackdropService
     {
         private static readonly string settingsKey = ConfigKey.BackdropKey;
         private static string defaultAppBackdrop;
 
         private static string _appBackdrop;
 
-        public static string AppBackdrop
+        internal static string AppBackdrop
         {
             get { return _appBackdrop; }
 
@@ -32,14 +32,14 @@ namespace PowerToolbox.Services.Settings
             }
         }
 
-        public static List<string> BackdropList { get; } = [nameof(ElementTheme.Default), nameof(MicaKind) + nameof(MicaKind.Base), nameof(MicaKind) + nameof(MicaKind.BaseAlt), nameof(DesktopAcrylicKind) + nameof(DesktopAcrylicKind.Default), nameof(DesktopAcrylicKind) + nameof(DesktopAcrylicKind.Base), nameof(DesktopAcrylicKind) + nameof(DesktopAcrylicKind.Thin)];
+        internal static List<string> BackdropList { get; } = [nameof(ElementTheme.Default), nameof(MicaKind) + nameof(MicaKind.Base), nameof(MicaKind) + nameof(MicaKind.BaseAlt), nameof(DesktopAcrylicKind) + nameof(DesktopAcrylicKind.Default), nameof(DesktopAcrylicKind) + nameof(DesktopAcrylicKind.Base), nameof(DesktopAcrylicKind) + nameof(DesktopAcrylicKind.Thin)];
 
-        public static event PropertyChangedEventHandler PropertyChanged;
+        internal static event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// 应用在初始化前获取设置存储的背景色值
         /// </summary>
-        public static void InitializeBackdrop()
+        internal static void InitializeBackdrop()
         {
             defaultAppBackdrop = BackdropList.Find(item => string.Equals(item, nameof(ElementTheme.Default), StringComparison.OrdinalIgnoreCase));
             AppBackdrop = GetBackdrop();
@@ -65,7 +65,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 应用背景色发生修改时修改设置存储的背景色值
         /// </summary>
-        public static void SetBackdrop(string backdrop)
+        internal static void SetBackdrop(string backdrop)
         {
             AppBackdrop = backdrop;
             LocalSettingsService.SaveSetting(settingsKey, backdrop);

@@ -14,12 +14,12 @@ namespace PowerToolboxShellExtension.Helpers.Root
     /// <summary>
     /// 注册表读取辅助类
     /// </summary>
-    public static class RegistryHelper
+    internal static class RegistryHelper
     {
         /// <summary>
         /// 读取注册表指定项的内容
         /// </summary>
-        public static T ReadRegistryKey<T>(string rootKey, string key)
+        internal static T ReadRegistryKey<T>(string rootKey, string key)
         {
             T value = default;
             try
@@ -104,7 +104,7 @@ namespace PowerToolboxShellExtension.Helpers.Root
         /// <summary>
         /// 枚举并递归当前注册表项的所有子项
         /// </summary>
-        public static RegistryEnumKeyItem EnumSubKey(string rootKey)
+        internal static RegistryEnumKeyItem EnumSubKey(string rootKey)
         {
             RegistryEnumKeyItem registryEnumKeyItem = new();
 

@@ -3,7 +3,7 @@
     /// <summary>
     /// 描述重启管理器所针对的应用程序的当前状态。
     /// </summary>
-    public enum RM_APP_STATUS
+    internal enum RM_APP_STATUS
     {
         /// <summary>
         /// 应用程序处于未由任何其他枚举状态描述的状态。

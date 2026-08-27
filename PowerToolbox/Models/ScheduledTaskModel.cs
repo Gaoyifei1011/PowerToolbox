@@ -7,14 +7,14 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 计划任务数据模型
     /// </summary>
-    public class ScheduledTaskModel : INotifyPropertyChanged
+    internal class ScheduledTaskModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 计划任务是否已启用
         /// </summary>
         private bool _isEnabled;
 
-        public bool IsEnabled
+        internal bool IsEnabled
         {
             get { return _isEnabled; }
 
@@ -33,7 +33,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private bool _isProcessing;
 
-        public bool IsProcessing
+        internal bool IsProcessing
         {
             get { return _isProcessing; }
 
@@ -50,34 +50,34 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 计划任务图标
         /// </summary>
-        public ImageSource TaskIcon { get; set; }
+        internal ImageSource TaskIcon { get; set; }
 
         /// <summary>
         /// 计划任务名称
         /// </summary>
-        public string Name { get; set; }
+        internal string Name { get; set; }
 
         /// <summary>
         /// 计划任务的作者
         /// </summary>
-        public string Author { get; set; }
+        internal string Author { get; set; }
 
         /// <summary>
         /// 计划任务描述
         /// </summary>
-        public string Description { get; set; }
+        internal string Description { get; set; }
 
         /// <summary>
         /// 计划任务路径
         /// </summary>
-        public string Path { get; set; }
+        internal string Path { get; set; }
 
         /// <summary>
         /// 计划任务状态
         /// </summary>
         private string _state;
 
-        public string State
+        internal string State
         {
             get { return _state; }
 
@@ -96,7 +96,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private string _lastRunTime;
 
-        public string LastRunTime
+        internal string LastRunTime
         {
             get { return _lastRunTime; }
 
@@ -115,7 +115,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private string _lastTaskResult;
 
-        public string LastTaskResult
+        internal string LastTaskResult
         {
             get { return _lastTaskResult; }
 
@@ -134,7 +134,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private string _nextRunTime;
 
-        public string NextRunTime
+        internal string NextRunTime
         {
             get { return _nextRunTime; }
 
@@ -151,27 +151,27 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 计划任务程序路径
         /// </summary>
-        public string ProcessPath { get; set; }
+        internal string ProcessPath { get; set; }
 
         /// <summary>
         /// 计划任务启动参数
         /// </summary>
-        public string ProcessArguments { get; set; }
+        internal string ProcessArguments { get; set; }
 
         /// <summary>
         /// 计划任务版本
         /// </summary>
-        public string Version { get; set; }
+        internal string Version { get; set; }
 
         /// <summary>
         /// 已注册的计划任务
         /// </summary>
-        public IRegisteredTask RegisteredTask { get; set; }
+        internal IRegisteredTask RegisteredTask { get; set; }
 
         /// <summary>
         /// 计划任务所属的文件夹
         /// </summary>
-        public ITaskFolder TaskFolder { get; set; }
+        internal ITaskFolder TaskFolder { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

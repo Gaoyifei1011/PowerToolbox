@@ -6,25 +6,25 @@ using System.Text;
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class ReverseMapSection
+    internal sealed class ReverseMapSection
     {
-        public string SectionIdentifier { get; private set; }
+        internal string SectionIdentifier { get; private set; }
 
-        public uint SectionQualifier { get; private set; }
+        internal uint SectionQualifier { get; private set; }
 
-        public uint Flags { get; private set; }
+        internal uint Flags { get; private set; }
 
-        public uint SectionFlags { get; private set; }
+        internal uint SectionFlags { get; private set; }
 
-        public uint SectionLength { get; private set; }
+        internal uint SectionLength { get; private set; }
 
-        public uint[] Mapping { get; private set; }
+        internal uint[] Mapping { get; private set; }
 
-        public IReadOnlyList<ResourceMapScopeAndItem> ScopesList { get; private set; }
+        internal IReadOnlyList<ResourceMapScopeAndItem> ScopesList { get; private set; }
 
-        public IReadOnlyList<ResourceMapScopeAndItem> ItemsList { get; private set; }
+        internal IReadOnlyList<ResourceMapScopeAndItem> ItemsList { get; private set; }
 
-        public ReverseMapSection(string sectionIdentifier, BinaryReader binaryReader)
+        internal ReverseMapSection(string sectionIdentifier, BinaryReader binaryReader)
         {
             SectionIdentifier = sectionIdentifier;
 

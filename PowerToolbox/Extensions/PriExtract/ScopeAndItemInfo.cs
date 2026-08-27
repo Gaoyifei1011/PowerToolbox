@@ -1,17 +1,17 @@
 ﻿namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class ScopeAndItemInfo
+    internal sealed class ScopeAndItemInfo
     {
-        public ushort Parent { get; set; }
+        internal ushort Parent { get; set; }
 
-        public ushort FullPathLength { get; set; }
+        internal ushort FullPathLength { get; set; }
 
-        public bool IsScope { get; set; }
+        internal bool IsScope { get; set; }
 
-        public bool NameInAscii { get; set; }
+        internal bool NameInAscii { get; set; }
 
-        public uint NameOffset { get; set; }
+        internal uint NameOffset { get; set; }
 
-        public ushort Index { get; set; }
+        internal ushort Index { get; set; }
     }
 }

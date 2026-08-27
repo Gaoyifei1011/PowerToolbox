@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// Whirlpool 校验实现
     /// </summary>
-    public class Whirlpool : HashAlgorithm
+    internal class Whirlpool : HashAlgorithm
     {
         private readonly byte[] bitLength = new byte[32];
         private readonly byte[] currentHash = new byte[64];
@@ -191,13 +191,13 @@ namespace PowerToolbox.Extensions.Hashing
         /// <summary>
         /// Initializes a new instance of the Whirlpool class.
         /// </summary>
-        public Whirlpool()
+        internal Whirlpool()
         {
             HashSizeValue = 512;
             Initialize();
         }
 
-        public new static Whirlpool Create()
+        internal new static Whirlpool Create()
         {
             return new();
         }

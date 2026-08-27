@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// XXH64 校验实现
     /// </summary>
-    public sealed class XXHash64 : HashAlgorithm
+    internal sealed class XXHash64 : HashAlgorithm
     {
         private const ulong PRIME64_1 = 11400714785074694791UL;
         private const ulong PRIME64_2 = 14029467366897019727UL;
@@ -27,7 +27,7 @@ namespace PowerToolbox.Extensions.Hashing
         private int currentIndex;
         private byte[] currentArray;
 
-        public XXHash64(uint seed)
+        internal XXHash64(uint seed)
         {
             HashSizeValue = 64;
             seed64 = seed;

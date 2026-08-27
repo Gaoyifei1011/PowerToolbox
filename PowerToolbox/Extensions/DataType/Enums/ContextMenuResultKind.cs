@@ -3,7 +3,7 @@
     /// <summary>
     /// 右键菜单管理结果数据模型
     /// </summary>
-    public enum ContextMenuResultKind
+    internal enum ContextMenuResultKind
     {
         None = 0,
         Loading = 1,

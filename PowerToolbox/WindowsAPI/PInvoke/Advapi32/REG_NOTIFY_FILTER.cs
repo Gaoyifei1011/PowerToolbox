@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Advapi32
     /// 该值指示应报告的更改
     /// </summary>
     [Flags]
-    public enum REG_NOTIFY_FILTER
+    internal enum REG_NOTIFY_FILTER
     {
         /// <summary>
         /// 通知调用方是添加还是删除了子项。

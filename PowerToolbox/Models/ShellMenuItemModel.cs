@@ -9,14 +9,14 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 扩展菜单项数据模型
     /// </summary>
-    public sealed class ShellMenuItemModel : INotifyPropertyChanged
+    internal sealed class ShellMenuItemModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 菜单标题
         /// </summary>
         private string _menuTitleText;
 
-        public string MenuTitleText
+        internal string MenuTitleText
         {
             get { return _menuTitleText; }
 
@@ -35,7 +35,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private bool _useIcon;
 
-        public bool UseIcon
+        internal bool UseIcon
         {
             get { return _useIcon; }
 
@@ -54,7 +54,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private bool _useProgramIcon;
 
-        public bool UseProgramIcon
+        internal bool UseProgramIcon
         {
             get { return _useProgramIcon; }
 
@@ -73,7 +73,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private bool _useThemeIcon;
 
-        public bool UseThemeIcon
+        internal bool UseThemeIcon
         {
             get { return _useThemeIcon; }
 
@@ -92,7 +92,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private ImageSource _menuIcon;
 
-        public ImageSource MenuIcon
+        internal ImageSource MenuIcon
         {
             get { return _menuIcon; }
 
@@ -111,7 +111,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private bool _isSelected;
 
-        public bool IsSelected
+        internal bool IsSelected
         {
             get { return _isSelected; }
 
@@ -130,7 +130,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private int _menuIndex;
 
-        public int MenuIndex
+        internal int MenuIndex
         {
             get { return _menuIndex; }
 
@@ -147,82 +147,82 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 菜单键值
         /// </summary>
-        public string MenuKey { get; set; }
+        internal string MenuKey { get; set; }
 
         /// <summary>
         /// 菜单项 GUID 值
         /// </summary>
-        public Guid MenuGuid { get; set; }
+        internal Guid MenuGuid { get; set; }
 
         /// <summary>
         /// 菜单类型
         /// </summary>
-        public MenuType MenuType { get; set; }
+        internal MenuType MenuType { get; set; }
 
         /// <summary>
         /// 默认的菜单项图标
         /// </summary>
-        public string DefaultIconPath { get; set; }
+        internal string DefaultIconPath { get; set; }
 
         /// <summary>
         /// 浅色主题下的菜单项图标
         /// </summary>
-        public string LightThemeIconPath { get; set; }
+        internal string LightThemeIconPath { get; set; }
 
         /// <summary>
         /// 深色主题下的菜单项图标
         /// </summary>
-        public string DarkThemeIconPath { get; set; }
+        internal string DarkThemeIconPath { get; set; }
 
         /// <summary>
         /// 菜单程序路径
         /// </summary>
-        public string MenuProgramPathText { get; set; }
+        internal string MenuProgramPathText { get; set; }
 
         /// <summary>
         /// 菜单参数
         /// </summary>
-        public string MenuParameter { get; set; }
+        internal string MenuParameter { get; set; }
 
         /// <summary>
         /// 是否总是需要提权运行
         /// </summary>
-        public bool IsAlwaysRunAsAdministrator { get; set; }
+        internal bool IsAlwaysRunAsAdministrator { get; set; }
 
         /// <summary>
         /// 是否启用文件夹背景菜单项
         /// </summary>
-        public bool FolderBackground { get; set; }
+        internal bool FolderBackground { get; set; }
 
         /// <summary>
         /// 是否启用文件夹桌面菜单项
         /// </summary>
-        public bool FolderDesktop { get; set; }
+        internal bool FolderDesktop { get; set; }
 
         /// <summary>
         /// 是否启用文件夹目录菜单项
         /// </summary>
-        public bool FolderDirectory { get; set; }
+        internal bool FolderDirectory { get; set; }
 
         /// <summary>
         /// 是否启用文件夹驱动器菜单项
         /// </summary>
-        public bool FolderDrive { get; set; }
+        internal bool FolderDrive { get; set; }
 
         /// <summary>
         /// 菜单项文件匹配规则
         /// </summary>
-        public string MenuFileMatchRule { get; set; }
+        internal string MenuFileMatchRule { get; set; }
 
         /// <summary>
         /// 菜单项文件匹配格式
         /// </summary>
-        public string MenuFileMatchFormatText { get; set; }
+        internal string MenuFileMatchFormatText { get; set; }
 
         /// <summary>
         /// 子菜单
         /// </summary>
-        public WinRTObservableCollection<ShellMenuItemModel> SubMenuItemCollection { get; set; } = [];
+        internal WinRTObservableCollection<ShellMenuItemModel> SubMenuItemCollection { get; set; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

@@ -3,7 +3,7 @@
 namespace PowerToolbox.WindowsAPI.PInvoke.Shell32
 {
     [Flags]
-    public enum SHCNF
+    internal enum SHCNF
     {
         /// <summary>
         /// dwItem1 和 dwItem2 是 ITEMIDLIST 结构的地址，表示受更改影响的项 () 。 每个 ITEMIDLIST 都必须相对于桌面文件夹。

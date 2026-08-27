@@ -19,7 +19,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 高级系统选项页面
     /// </summary>
-    public sealed partial class AdvancedSystemOptionsPage : Page, INotifyPropertyChanged
+    internal sealed partial class AdvancedSystemOptionsPage : Page, INotifyPropertyChanged
     {
         private readonly string AdvancedSystemOptionsString = ResourceService.AdvancedSystemOptionsResource.GetString("AdvancedSystemOptions");
         private readonly string PersonalizationString = ResourceService.AdvancedSystemOptionsResource.GetString("Personalization");
@@ -29,7 +29,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isAdvancedSettingsInfoWarning;
 
-        public bool IsAdvancedSettingsInfoWarning
+        internal bool IsAdvancedSettingsInfoWarning
         {
             get { return _isAdvancedSettingsInfoWarning; }
 
@@ -45,7 +45,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isRestartExplorerVisible;
 
-        public bool IsRestartExplorerVisible
+        internal bool IsRestartExplorerVisible
         {
             get { return _isRestartExplorerVisible; }
 
@@ -61,7 +61,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isRestartPCVisible;
 
-        public bool IsRestartPCVisible
+        internal bool IsRestartPCVisible
         {
             get { return _isRestartPCVisible; }
 
@@ -77,7 +77,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isRestarting;
 
-        public bool IsRestarting
+        internal bool IsRestarting
         {
             get { return _isRestarting; }
 
@@ -93,7 +93,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _restartExplorerText;
 
-        public string RestartExplorerText
+        internal string RestartExplorerText
         {
             get { return _restartExplorerText; }
 
@@ -107,13 +107,13 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        public List<Type> PageList { get; } = [typeof(AdvancedSystemOptionsListPage), typeof(AdvancedSystemOptionsPersonalizationPage), typeof(AdvancedSystemOptionsSystemPage)];
+        internal List<Type> PageList { get; } = [typeof(AdvancedSystemOptionsListPage), typeof(AdvancedSystemOptionsPersonalizationPage), typeof(AdvancedSystemOptionsSystemPage)];
 
-        public WinRTObservableCollection<DictionaryEntry> BreadCollection { get; } = [];
+        internal WinRTObservableCollection<DictionaryEntry> BreadCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public AdvancedSystemOptionsPage()
+        internal AdvancedSystemOptionsPage()
         {
             InitializeComponent();
             RestartExplorerText = RestartExplorerString;
@@ -275,7 +275,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 页面向前导航
         /// </summary>
-        public void NavigateTo(Type navigationPageType, object parameter = null, bool? slideDirection = null)
+        internal void NavigateTo(Type navigationPageType, object parameter = null, bool? slideDirection = null)
         {
             try
             {
@@ -293,7 +293,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取当前导航到的页
         /// </summary>
-        public Type GetCurrentPageType()
+        internal Type GetCurrentPageType()
         {
             return AdvancedSystemOptionsFrame.CurrentSourcePageType;
         }

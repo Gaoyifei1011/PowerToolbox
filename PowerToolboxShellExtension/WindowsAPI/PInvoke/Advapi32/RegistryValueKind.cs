@@ -3,7 +3,7 @@
     /// <summary>
     /// 注册表值类型
     /// </summary>
-    public enum RegistryValueKind
+    internal enum RegistryValueKind
     {
         /// <summary>
         /// 没有定义的值类型。

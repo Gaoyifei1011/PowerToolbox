@@ -3,7 +3,7 @@
     /// <summary>
     /// 数据解密类型
     /// </summary>
-    public enum DataDecryptType
+    internal enum DataDecryptType
     {
         AES = 0,
         CaesarCipher = 1,

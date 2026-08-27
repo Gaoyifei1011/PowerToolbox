@@ -3,7 +3,7 @@
     /// <summary>
     /// 定义指定 已知文件夹 的特殊检索选项的常量 (例如，在调用 SHGetKnownFolderIDList 函数以检索已知文件夹) 的路径时使用。 这些值取代了具有并行含义的 CSIDL 值。
     /// </summary>
-    public enum KNOWN_FOLDER_FLAG : uint
+    internal enum KNOWN_FOLDER_FLAG : uint
     {
         /// <summary>
         /// 指定没有特殊检索选项。

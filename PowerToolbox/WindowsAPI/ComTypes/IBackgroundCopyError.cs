@@ -9,7 +9,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 若要获取 IBackgroundCopyError 对象，请调用 IBackgroundCopyJob：：GetError 方法。
     /// </summary>
     [ComImport, Guid("19C613A0-FCB8-4F28-81AE-897C3D078F81"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IBackgroundCopyError
+    internal interface IBackgroundCopyError
     {
         /// <summary>
         /// 检索错误代码并确定发生错误的上下文。

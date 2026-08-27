@@ -32,7 +32,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 高级系统选项——系统页面
     /// </summary>
-    public sealed partial class AdvancedSystemOptionsSystemPage : Page, INotifyPropertyChanged
+    internal sealed partial class AdvancedSystemOptionsSystemPage : Page, INotifyPropertyChanged
     {
         private readonly string AlwaysNotifyString = ResourceService.AdvancedSystemOptionsSystemResource.GetString("AlwaysNotify");
         private readonly string NeverNotifyString = ResourceService.AdvancedSystemOptionsSystemResource.GetString("NeverNotify");
@@ -51,7 +51,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isHibernationEnabled;
 
-        public bool IsHibernationEnabled
+        internal bool IsHibernationEnabled
         {
             get { return _isHibernationEnabled; }
 
@@ -67,7 +67,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isHibernationOpened;
 
-        public bool IsHibernationOpened
+        internal bool IsHibernationOpened
         {
             get { return _isHibernationOpened; }
 
@@ -83,7 +83,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedHibernationFileType;
 
-        public ComboBoxItemModel SelectedHibernationFileType
+        internal ComboBoxItemModel SelectedHibernationFileType
         {
             get { return _selectedHibernationFileType; }
 
@@ -99,7 +99,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _hibernationFileSize;
 
-        public string HibernationFileSize
+        internal string HibernationFileSize
         {
             get { return _hibernationFileSize; }
 
@@ -115,7 +115,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _hibernationFilePercent;
 
-        public int HibernationFilePercent
+        internal int HibernationFilePercent
         {
             get { return _hibernationFilePercent; }
 
@@ -131,7 +131,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isFastStartupEnabled;
 
-        public bool IsFastStartupEnabled
+        internal bool IsFastStartupEnabled
         {
             get { return _isFastStartupEnabled; }
 
@@ -147,7 +147,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isGeneratingBatteryReport;
 
-        public bool IsGeneratingBatteryReport
+        internal bool IsGeneratingBatteryReport
         {
             get { return _isGeneratingBatteryReport; }
 
@@ -163,7 +163,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedNotifyMode;
 
-        public ComboBoxItemModel SelectedNotifyMode
+        internal ComboBoxItemModel SelectedNotifyMode
         {
             get { return _selectedNotifyMode; }
 
@@ -179,7 +179,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isBackgroundAppsTaskEnabled;
 
-        public bool IsBackgroundAppsTaskEnabled
+        internal bool IsBackgroundAppsTaskEnabled
         {
             get { return _isBackgroundAppsTaskEnabled; }
 
@@ -195,7 +195,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isSystemReservedStorageLoadingOrUpdating;
 
-        public bool IsSystemReservedStorageLoadingOrUpdating
+        internal bool IsSystemReservedStorageLoadingOrUpdating
         {
             get { return _isSystemReservedStorageLoadingOrUpdating; }
 
@@ -211,7 +211,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isSystemReservedStorageEnabled;
 
-        public bool IsSystemReservedStorageEnabled
+        internal bool IsSystemReservedStorageEnabled
         {
             get { return _isSystemReservedStorageEnabled; }
 
@@ -227,7 +227,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isVirtualizationBasedSecurityEnabled;
 
-        public bool IsVirtualizationBasedSecurityEnabled
+        internal bool IsVirtualizationBasedSecurityEnabled
         {
             get { return _isVirtualizationBasedSecurityEnabled; }
 
@@ -243,7 +243,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isNICOffloadSettingsEnabled;
 
-        public bool IsNICOffloadSettingsEnabled
+        internal bool IsNICOffloadSettingsEnabled
         {
             get { return _isNICOffloadSettingsEnabled; }
 
@@ -259,7 +259,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isClosingWakeUpTask;
 
-        public bool IsClosingWakeUpTask
+        internal bool IsClosingWakeUpTask
         {
             get { return _isClosingWakeUpTask; }
 
@@ -275,7 +275,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isRestartingGraphicsDriver;
 
-        public bool IsRestartingGraphicsDriver
+        internal bool IsRestartingGraphicsDriver
         {
             get { return _isRestartingGraphicsDriver; }
 
@@ -291,7 +291,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isWindowsPhotoViewerEnabled;
 
-        public bool IsWindowsPhotoViewerEnabled
+        internal bool IsWindowsPhotoViewerEnabled
         {
             get { return _isWindowsPhotoViewerEnabled; }
 
@@ -307,7 +307,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isApprovalModeForBuiltinAdministratorAccountEnabled;
 
-        public bool IsApprovalModeForBuiltinAdministratorAccountEnabled
+        internal bool IsApprovalModeForBuiltinAdministratorAccountEnabled
         {
             get { return _isApprovalModeForBuiltinAdministratorAccountEnabled; }
 
@@ -329,7 +329,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public AdvancedSystemOptionsSystemPage()
+        internal AdvancedSystemOptionsSystemPage()
         {
             InitializeComponent();
             HibernationFileTypeList.Add(new() { DisplayMember = HibernationFileTypeReducedString, SelectedValue = "HibernationFileTypeReduced" });
@@ -1482,7 +1482,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取持续唤醒任务列表
         /// </summary>
-        public static List<string> GetWaskUpTaskList()
+        internal static List<string> GetWaskUpTaskList()
         {
             List<string> wakeUpTaskList = [];
             try

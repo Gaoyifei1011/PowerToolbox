@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Kernel32
     /// 线程的执行要求。
     /// </summary>
     [Flags]
-    public enum EXECUTION_STATE : uint
+    internal enum EXECUTION_STATE : uint
     {
         /// <summary>
         /// 通过重置系统空闲计时器强制系统处于工作状态。

@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace PowerToolbox.Extensions.Hashing
 {
-    public sealed class Shake256 : HashAlgorithm
+    internal sealed class Shake256 : HashAlgorithm
     {
         // SHAKE256 parameters
         private const int RateBytes = 136; // 1088 bits / 8
@@ -32,11 +32,11 @@ namespace PowerToolbox.Extensions.Hashing
         ];
 
         // default 32 bytes output
-        public Shake256() : this(32)
+        internal Shake256() : this(32)
         {
         }
 
-        public Shake256(int outputLengthBytes)
+        internal Shake256(int outputLengthBytes)
         {
             if (outputLengthBytes <= 0)
             {

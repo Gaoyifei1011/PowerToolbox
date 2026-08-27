@@ -8,7 +8,7 @@ namespace PowerToolbox.Services.Settings
     /// <summary>
     /// 自动切换主题服务
     /// </summary>
-    public static class AutoThemeSwitchService
+    internal static class AutoThemeSwitchService
     {
         private static readonly string autoThemeSwitchEnableKey = ConfigKey.AutoThemeSwitchEnableKey;
         private static readonly string autoThemeSwitchTypeKey = ConfigKey.AutoThemeSwitchTypeKey;
@@ -22,56 +22,56 @@ namespace PowerToolbox.Services.Settings
         private static readonly string sunriseOffsetKey = ConfigKey.SunriseOffsetKey;
         private static readonly string sunsetOffsetKey = ConfigKey.SunsetOffsetKey;
 
-        public static bool DefaultAutoThemeSwitchEnable { get; } = false;
+        internal static bool DefaultAutoThemeSwitchEnable { get; } = false;
 
-        public static string DefaultAutoThemeSwitchType { get; private set; }
+        internal static string DefaultAutoThemeSwitchType { get; private set; }
 
-        public static bool DefaultAutoSwitchSystemTheme { get; } = false;
+        internal static bool DefaultAutoSwitchSystemTheme { get; } = false;
 
-        public static bool DefaultAutoSwitchAppTheme { get; } = false;
+        internal static bool DefaultAutoSwitchAppTheme { get; } = false;
 
-        public static bool DefaultIsShowColorInDarkTheme { get; } = false;
+        internal static bool DefaultIsShowColorInDarkTheme { get; } = false;
 
-        public static TimeSpan DefaultSystemThemeLightTime { get; } = new(7, 0, 0);
+        internal static TimeSpan DefaultSystemThemeLightTime { get; } = new(7, 0, 0);
 
-        public static TimeSpan DefaultSystemThemeDarkTime { get; } = new(19, 0, 0);
+        internal static TimeSpan DefaultSystemThemeDarkTime { get; } = new(19, 0, 0);
 
-        public static TimeSpan DefaultAppThemeLightTime { get; } = new(7, 0, 0);
+        internal static TimeSpan DefaultAppThemeLightTime { get; } = new(7, 0, 0);
 
-        public static TimeSpan DefaultAppThemeDarkTime { get; } = new(19, 0, 0);
+        internal static TimeSpan DefaultAppThemeDarkTime { get; } = new(19, 0, 0);
 
-        public static int DefaultSunriseOffset { get; } = 0;
+        internal static int DefaultSunriseOffset { get; } = 0;
 
-        public static int DefaultSunsetOffset { get; } = 0;
+        internal static int DefaultSunsetOffset { get; } = 0;
 
-        public static bool AutoThemeSwitchEnable { get; set; }
+        internal static bool AutoThemeSwitchEnable { get; set; }
 
-        public static string AutoThemeSwitchType { get; set; }
+        internal static string AutoThemeSwitchType { get; set; }
 
-        public static bool AutoSwitchSystemTheme { get; set; }
+        internal static bool AutoSwitchSystemTheme { get; set; }
 
-        public static bool AutoSwitchAppTheme { get; set; }
+        internal static bool AutoSwitchAppTheme { get; set; }
 
-        public static bool IsShowColorInDarkTheme { get; set; }
+        internal static bool IsShowColorInDarkTheme { get; set; }
 
-        public static TimeSpan SystemThemeLightTime { get; set; }
+        internal static TimeSpan SystemThemeLightTime { get; set; }
 
-        public static TimeSpan SystemThemeDarkTime { get; set; }
+        internal static TimeSpan SystemThemeDarkTime { get; set; }
 
-        public static TimeSpan AppThemeLightTime { get; set; }
+        internal static TimeSpan AppThemeLightTime { get; set; }
 
-        public static TimeSpan AppThemeDarkTime { get; set; }
+        internal static TimeSpan AppThemeDarkTime { get; set; }
 
-        public static int SunriseOffset { get; set; }
+        internal static int SunriseOffset { get; set; }
 
-        public static int SunsetOffset { get; set; }
+        internal static int SunsetOffset { get; set; }
 
-        public static List<string> AutoThemeSwitchTypeList { get; } = ["FixedTime", "SunriseSunset", "DarkMode"];
+        internal static List<string> AutoThemeSwitchTypeList { get; } = ["FixedTime", "SunriseSunset", "DarkMode"];
 
         /// <summary>
         /// 应用在初始化前获取设置存储的自动切换主题所有选项值
         /// </summary>
-        public static void InitializeAutoThemeSwitch()
+        internal static void InitializeAutoThemeSwitch()
         {
             DefaultAutoThemeSwitchType = AutoThemeSwitchTypeList[0];
             AutoThemeSwitchEnable = GetAutoThemeSwitchEnable();
@@ -310,7 +310,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 自动切换主题启用值发生修改时修改设置存储的自动切换主题启用值
         /// </summary>
-        public static void SetAutoThemeSwitchEnable(bool autoThemeSwitchEnable)
+        internal static void SetAutoThemeSwitchEnable(bool autoThemeSwitchEnable)
         {
             AutoThemeSwitchEnable = autoThemeSwitchEnable;
             LocalSettingsService.SaveSetting(autoThemeSwitchEnableKey, autoThemeSwitchEnable);
@@ -319,7 +319,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 自动切换主题类型值发生修改时修改设置存储的自动切换主题类型值
         /// </summary>
-        public static void SetAutoThemeSwitchType(string autoThemeSwitchType)
+        internal static void SetAutoThemeSwitchType(string autoThemeSwitchType)
         {
             AutoThemeSwitchType = autoThemeSwitchType;
             LocalSettingsService.SaveSetting(autoThemeSwitchTypeKey, autoThemeSwitchType);
@@ -328,7 +328,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 自动切换系统主题启用值发生修改时修改设置存储的自动切换系统主题启用值
         /// </summary>
-        public static void SetAutoSwitchSystemTheme(bool autoSwitchSystemTheme)
+        internal static void SetAutoSwitchSystemTheme(bool autoSwitchSystemTheme)
         {
             AutoSwitchSystemTheme = autoSwitchSystemTheme;
             LocalSettingsService.SaveSetting(autoSwitchSystemThemeKey, autoSwitchSystemTheme);
@@ -337,7 +337,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 自动切换应用主题启用值发生修改时修改设置存储的自动切换系统主题启用值
         /// </summary>
-        public static void SetAutoSwitchAppTheme(bool autoSwitchAppTheme)
+        internal static void SetAutoSwitchAppTheme(bool autoSwitchAppTheme)
         {
             AutoSwitchAppTheme = autoSwitchAppTheme;
             LocalSettingsService.SaveSetting(autoSwitchAppThemeKey, autoSwitchAppTheme);
@@ -346,7 +346,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 切换系统深色主题时显示主题色值发生修改时修改设置存储的切换系统深色主题时显示主题色值
         /// </summary>
-        public static void SetIsShowColorInDarkTheme(bool isShowColorInDarkTheme)
+        internal static void SetIsShowColorInDarkTheme(bool isShowColorInDarkTheme)
         {
             IsShowColorInDarkTheme = isShowColorInDarkTheme;
             LocalSettingsService.SaveSetting(isShowColorInDarkThemeKey, isShowColorInDarkTheme);
@@ -355,7 +355,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 自动切换系统浅色主题时间值发生修改时修改设置存储的自动切换系统浅色主题时间值
         /// </summary>
-        public static void SetSystemThemeLightTime(TimeSpan systemThemeLightTime)
+        internal static void SetSystemThemeLightTime(TimeSpan systemThemeLightTime)
         {
             SystemThemeLightTime = systemThemeLightTime;
             LocalSettingsService.SaveSetting(systemThemeLightTimeKey, systemThemeLightTime.ToString());
@@ -364,7 +364,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 自动切换系统深色主题时间值发生修改时修改设置存储的自动切换系统深色主题时间值
         /// </summary>
-        public static void SetSystemThemeDarkTime(TimeSpan systemThemeDarkTime)
+        internal static void SetSystemThemeDarkTime(TimeSpan systemThemeDarkTime)
         {
             SystemThemeDarkTime = systemThemeDarkTime;
             LocalSettingsService.SaveSetting(systemThemeDarkTimeKey, systemThemeDarkTime.ToString());
@@ -373,7 +373,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 自动切换系统浅色主题时间值发生修改时修改设置存储的自动切换系统浅色主题时间值
         /// </summary>
-        public static void SetAppThemeLightTime(TimeSpan appThemeLightTime)
+        internal static void SetAppThemeLightTime(TimeSpan appThemeLightTime)
         {
             AppThemeLightTime = appThemeLightTime;
             LocalSettingsService.SaveSetting(appThemeLightTimeKey, appThemeLightTime.ToString());
@@ -382,7 +382,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 自动切换系统深色主题时间值发生修改时修改设置存储的自动切换系统深色主题时间值
         /// </summary>
-        public static void SetAppThemeDarkTime(TimeSpan appThemeDarkTime)
+        internal static void SetAppThemeDarkTime(TimeSpan appThemeDarkTime)
         {
             AppThemeDarkTime = appThemeDarkTime;
             LocalSettingsService.SaveSetting(appThemeDarkTimeKey, appThemeDarkTime.ToString());
@@ -391,7 +391,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 日出时间值发生修改时修改设置存储的日出时间值
         /// </summary>
-        public static void SetSunriseOffset(int sunriseOffset)
+        internal static void SetSunriseOffset(int sunriseOffset)
         {
             SunriseOffset = sunriseOffset;
             LocalSettingsService.SaveSetting(sunriseOffsetKey, sunriseOffset);
@@ -400,7 +400,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 日落时间值发生修改时修改设置存储的日落时间值
         /// </summary>
-        public static void SetSunsetOffset(int sunsetOffset)
+        internal static void SetSunsetOffset(int sunsetOffset)
         {
             SunsetOffset = sunsetOffset;
             LocalSettingsService.SaveSetting(sunsetOffsetKey, sunsetOffset);

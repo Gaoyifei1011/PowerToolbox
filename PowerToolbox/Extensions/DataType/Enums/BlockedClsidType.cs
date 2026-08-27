@@ -3,7 +3,7 @@
     /// <summary>
     /// 菜单项禁止启用原因类型
     /// </summary>
-    public enum BlockedClsidType
+    internal enum BlockedClsidType
     {
         Unknown = 0,
         CurrentUser = 1,

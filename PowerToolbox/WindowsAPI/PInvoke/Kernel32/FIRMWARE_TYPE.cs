@@ -3,7 +3,7 @@
     /// <summary>
     /// 指定固件类型
     /// </summary>
-    public enum FIRMWARE_TYPE
+    internal enum FIRMWARE_TYPE
     {
         /// <summary>
         /// 固件类型未知。

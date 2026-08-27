@@ -27,14 +27,14 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 自定义扩展菜单列表页面
     /// </summary>
-    public sealed partial class ShellMenuListPage : Page, INotifyPropertyChanged
+    internal sealed partial class ShellMenuListPage : Page, INotifyPropertyChanged
     {
         private DateTimeOffset lastUpdateTime;
         private ShellMenuItemModel selectedItem;
 
         private bool _isLoading;
 
-        public bool IsLoading
+        internal bool IsLoading
         {
             get { return _isLoading; }
 
@@ -50,7 +50,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isAddMenuEnabled;
 
-        public bool IsAddMenuEnabled
+        internal bool IsAddMenuEnabled
         {
             get { return _isAddMenuEnabled; }
 
@@ -66,7 +66,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isRemoveMenuEnabled;
 
-        public bool IsRemoveMenuEnabled
+        internal bool IsRemoveMenuEnabled
         {
             get { return _isRemoveMenuEnabled; }
 
@@ -82,7 +82,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isEditMenuEnabled;
 
-        public bool IsEditMenuEnabled
+        internal bool IsEditMenuEnabled
         {
             get { return _isEditMenuEnabled; }
 
@@ -98,7 +98,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isMoveUpEnabled;
 
-        public bool IsMoveUpEnabled
+        internal bool IsMoveUpEnabled
         {
             get { return _isMoveUpEnabled; }
 
@@ -114,7 +114,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isMoveDownEnabled;
 
-        public bool IsMoveDownEnabled
+        internal bool IsMoveDownEnabled
         {
             get { return _isMoveDownEnabled; }
 
@@ -132,7 +132,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ShellMenuListPage()
+        internal ShellMenuListPage()
         {
             InitializeComponent();
         }

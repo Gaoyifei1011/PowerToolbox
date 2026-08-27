@@ -8,7 +8,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 表示包清单的对象模型，该模型提供用于访问清单元素和属性的方法。
     /// </summary>
     [ComImport, Guid("D06F67BC-B31D-4EBA-A8AF-638E73E77B4D"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IAppxManifestReader2
+    internal interface IAppxManifestReader2
     {
         /// <summary>
         /// 获取清单中定义的包标识符。

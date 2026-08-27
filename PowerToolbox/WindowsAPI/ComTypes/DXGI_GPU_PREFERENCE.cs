@@ -3,7 +3,7 @@
     /// <summary>
     /// 要运行应用的 GPU 首选项。
     /// </summary>
-    public enum DXGI_GPU_PREFERENCE
+    internal enum DXGI_GPU_PREFERENCE
     {
         /// <summary>
         /// 无 GPU 首选项。

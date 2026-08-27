@@ -2,10 +2,10 @@
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class Decision
+    internal sealed class Decision
     {
-        public ushort Index { get; set; }
+        internal ushort Index { get; set; }
 
-        public IReadOnlyList<QualifierSet> QualifierSetsList { get; set; }
+        internal IReadOnlyList<QualifierSet> QualifierSetsList { get; set; }
     }
 }

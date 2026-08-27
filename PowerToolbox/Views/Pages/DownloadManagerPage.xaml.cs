@@ -37,7 +37,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 下载管理页面
     /// </summary>
-    public sealed partial class DownloadManagerPage : Page
+    internal sealed partial class DownloadManagerPage : Page
     {
         private readonly string DownloadingCountInfoString = ResourceService.DownloadManagerResource.GetString("DownloadingCountInfo");
         private readonly string FileShareString = ResourceService.DownloadManagerResource.GetString("FileShare");
@@ -47,7 +47,7 @@ namespace PowerToolbox.Views.Pages
 
         private WinRTObservableCollection<DownloadModel> DownloadCollection { get; } = [];
 
-        public DownloadManagerPage()
+        internal DownloadManagerPage()
         {
             InitializeComponent();
         }

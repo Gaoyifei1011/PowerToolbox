@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// ED2K 校验实现
     /// </summary>
-    public class ED2K : HashAlgorithm
+    internal class ED2K : HashAlgorithm
     {
         private const int BLOCKSIZE = 9500 * 1024;
         private readonly byte[] nullArray = [];
@@ -17,7 +17,7 @@ namespace PowerToolbox.Extensions.Hashing
         private byte[] redHash;
         private byte[] blueHash;
 
-        public ED2K()
+        internal ED2K()
         {
             nullMd4Hash = md4.ComputeHash(nullArray);
             md4.Initialize();

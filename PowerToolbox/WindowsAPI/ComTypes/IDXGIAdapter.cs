@@ -7,7 +7,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// IDXGIAdapter 接口表示显示子系统 (包括一个或多个 GPU、DAC 和视频内存) 。
     /// </summary>
     [ComImport, Guid("2411E7E1-12AC-4CCF-BD14-9798E8534DC0"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IDXGIAdapter
+    internal interface IDXGIAdapter
     {
         /// <summary>
         /// 将应用程序定义的数据设置为 对象，并将该数据与 GUID 相关联。

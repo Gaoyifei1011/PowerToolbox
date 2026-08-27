@@ -7,12 +7,12 @@ namespace PowerToolbox.Helpers.Root
     /// <summary>
     /// 关机重启辅助类
     /// </summary>
-    public static partial class ShutdownHelper
+    internal static partial class ShutdownHelper
     {
         /// <summary>
         /// 重启设备
         /// </summary>
-        public static void Restart(string message, TimeSpan timeout)
+        internal static void Restart(string message, TimeSpan timeout)
         {
             Advapi32Library.OpenProcessToken(Kernel32Library.GetCurrentProcess(), 0x00000020, out nint tokenHandle);
             TOKEN_PRIVILEGES tokenPrivileges = new()
@@ -31,7 +31,7 @@ namespace PowerToolbox.Helpers.Root
         /// <summary>
         /// 关闭设备
         /// </summary>
-        public static void Shutdown(string message, TimeSpan timeout)
+        internal static void Shutdown(string message, TimeSpan timeout)
         {
             Advapi32Library.OpenProcessToken(Kernel32Library.GetCurrentProcess(), 0x00000020, out nint tokenHandle);
             TOKEN_PRIVILEGES tokenPrivileges = new()

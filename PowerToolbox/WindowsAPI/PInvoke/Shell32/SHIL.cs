@@ -3,7 +3,7 @@
     /// <summary>
     /// 列表中包含的图像类型。
     /// </summary>
-    public enum SHIL : int
+    internal enum SHIL : int
     {
         /// <summary>
         /// 图像大小通常为 32x32 像素。 但是，如果在“显示属性”的“外观”选项卡的“效果”部分选择了“使用大图标”选项，则图像为 48x48 像素。

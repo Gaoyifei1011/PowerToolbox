@@ -5,14 +5,14 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 包文件索引文件路径数据模型
     /// </summary>
-    public sealed class FilePathModel : INotifyPropertyChanged
+    internal sealed class FilePathModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 是否已选择
         /// </summary>
         private bool _isSelected;
 
-        public bool IsSelected
+        internal bool IsSelected
         {
             get { return _isSelected; }
 
@@ -29,12 +29,12 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 文件路径对应的键
         /// </summary>
-        public string Key { get; set; }
+        internal string Key { get; set; }
 
         /// <summary>
         /// 文件路径对应的绝对路径
         /// </summary>
-        public string AbsolutePath { get; set; }
+        internal string AbsolutePath { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

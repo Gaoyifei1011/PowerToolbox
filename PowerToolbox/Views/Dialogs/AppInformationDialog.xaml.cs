@@ -24,7 +24,7 @@ namespace PowerToolbox.Views.Dialogs
     /// <summary>
     /// 应用信息对话框
     /// </summary>
-    public sealed partial class AppInformationDialog : ContentDialog, INotifyPropertyChanged
+    internal sealed partial class AppInformationDialog : ContentDialog, INotifyPropertyChanged
     {
         private readonly string DoNetVersionString = ResourceService.DialogResource.GetString("DoNetVersion");
         private readonly string WindowsAppSDKVersionString = ResourceService.DialogResource.GetString("WindowsAppSDKVersion");
@@ -32,7 +32,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private bool _isLoadCompleted = false;
 
-        public bool IsLoadCompleted
+        internal bool IsLoadCompleted
         {
             get { return _isLoadCompleted; }
 
@@ -50,7 +50,7 @@ namespace PowerToolbox.Views.Dialogs
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public AppInformationDialog()
+        internal AppInformationDialog()
         {
             InitializeComponent();
         }

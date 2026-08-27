@@ -3,7 +3,7 @@
     /// <summary>
     /// 驱动排序规则
     /// </summary>
-    public enum DriverSortRuleKind
+    internal enum DriverSortRuleKind
     {
         DeviceName = 0,
         InfName = 1,

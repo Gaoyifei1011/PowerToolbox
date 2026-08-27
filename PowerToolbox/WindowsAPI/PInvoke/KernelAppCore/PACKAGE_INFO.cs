@@ -6,38 +6,38 @@ namespace PowerToolbox.WindowsAPI.PInvoke.KernelAppCore
     /// 表示包标识信息，其中包括包标识符、全名和安装位置。
     /// </summary>
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct PACKAGE_INFO
+    internal struct PACKAGE_INFO
     {
         /// <summary>
         /// 保留值；请勿使用。
         /// </summary>
-        public uint reserved;
+        internal uint reserved;
 
         /// <summary>
         /// 包的属性。
         /// </summary>
-        public uint flags;
+        internal uint flags;
 
         /// <summary>
         /// 包的位置。
         /// </summary>
         [MarshalAs(UnmanagedType.LPWStr)]
-        public string path;
+        internal string path;
 
         /// <summary>
         /// 包全名。
         /// </summary>
         [MarshalAs(UnmanagedType.LPWStr)]
-        public string packageFullName;
+        internal string packageFullName;
 
         /// <summary>
         /// 包系列名称。
         /// </summary>
-        [MarshalAs(UnmanagedType.LPWStr)] public string packageFamilyName;
+        [MarshalAs(UnmanagedType.LPWStr)] internal string packageFamilyName;
 
         /// <summary>
         /// 包标识符 (ID) 。
         /// </summary>
-        public PACKAGE_ID packageId;
+        internal PACKAGE_ID packageId;
     }
 }

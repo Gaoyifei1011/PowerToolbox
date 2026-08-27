@@ -8,9 +8,9 @@ namespace PowerToolbox.Views.Dialogs
     /// <summary>
     /// 下载文件检查对话框
     /// </summary>
-    public sealed partial class FileCheckDialog : ContentDialog
+    internal sealed partial class FileCheckDialog : ContentDialog
     {
-        public FileCheckDialog()
+        internal FileCheckDialog()
         {
             InitializeComponent();
         }

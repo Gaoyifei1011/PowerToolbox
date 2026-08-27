@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// Has160 校验实现
     /// </summary>
-    public sealed class Has160 : HashAlgorithm
+    internal sealed class Has160 : HashAlgorithm
     {
         private const int BlockSizeBytes = 64; // 512 bits
         private readonly byte[] _buffer = new byte[BlockSizeBytes];
@@ -71,7 +71,7 @@ namespace PowerToolbox.Extensions.Hashing
             [11,6,1,12]
         ];
 
-        public Has160()
+        internal Has160()
         {
             // HashSizeValue is in bits
             HashSizeValue = 160;

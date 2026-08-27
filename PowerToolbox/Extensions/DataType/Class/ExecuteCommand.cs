@@ -6,11 +6,11 @@ using System.Windows.Input;
 
 namespace PowerToolbox.Extensions.DataType.Class
 {
-    public class ExecuteCommand : ICommand, Microsoft.UI.Xaml.Input.ICommand
+    internal class ExecuteCommand : ICommand, Microsoft.UI.Xaml.Input.ICommand
     {
         public event EventHandler CanExecuteChanged;
 
-        public event EventHandler<ExecuteRequestedEventArgs> ExecuteRequested;
+        internal event EventHandler<ExecuteRequestedEventArgs> ExecuteRequested;
 
         public bool CanExecute(object parameter)
         {

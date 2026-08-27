@@ -3,7 +3,7 @@
     /// <summary>
     /// 驱动浮出面板类型
     /// </summary>
-    public enum DriverPaneKind
+    internal enum DriverPaneKind
     {
         UseInstruction = 0,
         TaskManager = 1,

@@ -24,7 +24,7 @@ namespace PowerToolbox.Services.Download
     /// <summary>
     /// Aria2 下载服务
     /// </summary>
-    public static class Aria2Service
+    internal static class Aria2Service
     {
         private static readonly string aria2FilePath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Mile.Aria2.exe");
         private static readonly string defaultAria2Arguments = "-c --enable-rpc=true --rpc-allow-origin-all=true --rpc-listen-all=true --rpc-listen-port=6600 --stop-with-process={0} -D";
@@ -36,13 +36,13 @@ namespace PowerToolbox.Services.Download
 
         private static Dictionary<string, string> Aria2DownloadDict { get; } = [];
 
-        public static string Aria2ConfPath { get; private set; }
+        internal static string Aria2ConfPath { get; private set; }
 
-        public static event Action<DownloadProgress> DownloadProgress;
+        internal static event Action<DownloadProgress> DownloadProgress;
 
         /// 初始化Aria2配置文件
         /// </summary>
-        public static void InitializeAria2Conf()
+        internal static void InitializeAria2Conf()
         {
             try
             {
@@ -73,7 +73,7 @@ namespace PowerToolbox.Services.Download
         /// <summary>
         /// 初始化运行 Aria2 下载进程和下载监控服务
         /// </summary>
-        public static void Initialize()
+        internal static void Initialize()
         {
             Task.Run(() =>
             {
@@ -102,7 +102,7 @@ namespace PowerToolbox.Services.Download
         /// <summary>
         /// 关闭 Aria2 下载监控服务
         /// </summary>
-        public static void Release()
+        internal static void Release()
         {
             Task.Run(() =>
             {
@@ -124,7 +124,7 @@ namespace PowerToolbox.Services.Download
         /// <summary>
         /// 判断Aria2 rpc 端口是否存在
         /// </summary>
-        public static async Task<bool> IsAria2ExistedAsync()
+        internal static async Task<bool> IsAria2ExistedAsync()
         {
             try
             {
@@ -161,7 +161,7 @@ namespace PowerToolbox.Services.Download
         /// <summary>
         /// 使用下载链接创建下载
         /// </summary>
-        public static void CreateDownload(string url, string saveFilePath)
+        internal static void CreateDownload(string url, string saveFilePath)
         {
             Task.Run(async () =>
             {
@@ -322,7 +322,7 @@ namespace PowerToolbox.Services.Download
         /// <summary>
         /// 继续下载
         /// </summary>
-        public static void ContinueDownload(string downloadID)
+        internal static void ContinueDownload(string downloadID)
         {
             Task.Run(async () =>
             {
@@ -431,7 +431,7 @@ namespace PowerToolbox.Services.Download
         /// <summary>
         /// 暂停下载
         /// </summary>
-        public static void PauseDownload(string downloadID)
+        internal static void PauseDownload(string downloadID)
         {
             Task.Run(async () =>
             {
@@ -540,7 +540,7 @@ namespace PowerToolbox.Services.Download
         /// <summary>
         /// 删除下载
         /// </summary>
-        public static void DeleteDownload(string downloadID)
+        internal static void DeleteDownload(string downloadID)
         {
             Task.Run(async () =>
             {

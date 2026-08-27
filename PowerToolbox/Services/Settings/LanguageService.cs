@@ -24,7 +24,7 @@ namespace PowerToolbox.Services.Settings
     /// <summary>
     /// 应用语言设置服务
     /// </summary>
-    public static class LanguageService
+    internal static class LanguageService
     {
         private static readonly string settingsKey = ConfigKey.LanguageKey;
         private static readonly Guid CLSID_AppxFactory = new("5842A140-FF9F-4166-8F5C-62F5B7B0C781");
@@ -32,18 +32,18 @@ namespace PowerToolbox.Services.Settings
         private static readonly string resourceKey = @"Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\{0}\ResourcesConfig";
         private static KeyValuePair<string, string> defaultAppLanguage;
 
-        public static KeyValuePair<string, string> AppLanguage { get; private set; }
+        internal static KeyValuePair<string, string> AppLanguage { get; private set; }
 
-        public static FlowDirection FlowDirection { get; private set; }
+        internal static FlowDirection FlowDirection { get; private set; }
 
         private static readonly List<string> AppLanguagesList = [];
 
-        public static List<KeyValuePair<string, string>> LanguageList { get; } = [];
+        internal static List<KeyValuePair<string, string>> LanguageList { get; } = [];
 
         /// <summary>
         /// 应用在初始化前获取设置存储的语言值，如果设置值为空，设定默认的应用语言值
         /// </summary>
-        public static void InitializeLanguage()
+        internal static void InitializeLanguage()
         {
             InitializeLanguageList();
             defaultAppLanguage = LanguageList.Find(item => string.Equals(item.Key, "en-US", StringComparison.OrdinalIgnoreCase));
@@ -179,7 +179,7 @@ namespace PowerToolbox.Services.Settings
         /// <summary>
         /// 语言发生修改时修改设置存储的语言值
         /// </summary>
-        public static void SetLanguage(KeyValuePair<string, string> language)
+        internal static void SetLanguage(KeyValuePair<string, string> language)
         {
             AppLanguage = language;
             LocalSettingsService.SaveSetting(settingsKey, language.Key);

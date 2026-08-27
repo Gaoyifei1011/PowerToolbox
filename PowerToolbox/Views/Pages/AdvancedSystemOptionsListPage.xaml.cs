@@ -10,11 +10,11 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 高级系统选项——列表页面
     /// </summary>
-    public sealed partial class AdvancedSystemOptionsListPage : Page
+    internal sealed partial class AdvancedSystemOptionsListPage : Page
     {
         private AdvancedSystemOptionsPage advancedSystemOptionsPage;
 
-        public AdvancedSystemOptionsListPage()
+        internal AdvancedSystemOptionsListPage()
         {
             InitializeComponent();
         }

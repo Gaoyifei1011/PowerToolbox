@@ -8,7 +8,7 @@ namespace PowerToolboxShellExtension.WindowsAPI.ComTypes
     /// 提供一种简单的方法来支持容器中对象与其站点之间的通信。
     /// </summary>
     [GeneratedComInterface, Guid("FC4801A3-2BA9-11CF-A229-00AA003D7352")]
-    public partial interface IObjectWithSite
+    internal partial interface IObjectWithSite
     {
         /// <summary>
         /// 允许容器向对象传递指向其站点接口的指针。

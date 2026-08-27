@@ -8,11 +8,11 @@ namespace PowerToolbox.Views.NotificationTips
     /// <summary>
     /// 操作完成后应用内通知
     /// </summary>
-    public sealed partial class OperationResultNotificationTip : TeachingTip, INotifyPropertyChanged
+    internal sealed partial class OperationResultNotificationTip : TeachingTip, INotifyPropertyChanged
     {
         private bool _isSuccessOperation;
 
-        public bool IsSuccessOperation
+        internal bool IsSuccessOperation
         {
             get { return _isSuccessOperation; }
 
@@ -28,7 +28,7 @@ namespace PowerToolbox.Views.NotificationTips
 
         private string _operationContent;
 
-        public string OperationContent
+        internal string OperationContent
         {
             get { return _operationContent; }
 
@@ -44,7 +44,7 @@ namespace PowerToolbox.Views.NotificationTips
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public OperationResultNotificationTip(OperationKind operationKind)
+        internal OperationResultNotificationTip(OperationKind operationKind)
         {
             InitializeComponent();
 
@@ -260,7 +260,7 @@ namespace PowerToolbox.Views.NotificationTips
             }
         }
 
-        public OperationResultNotificationTip(OperationKind operationKind, bool operationResult)
+        internal OperationResultNotificationTip(OperationKind operationKind, bool operationResult)
         {
             InitializeComponent();
 
@@ -370,7 +370,7 @@ namespace PowerToolbox.Views.NotificationTips
             }
         }
 
-        public OperationResultNotificationTip(OperationKind operationKind, int successItems, int failedItems)
+        internal OperationResultNotificationTip(OperationKind operationKind, int successItems, int failedItems)
         {
             InitializeComponent();
 
@@ -416,7 +416,7 @@ namespace PowerToolbox.Views.NotificationTips
             }
         }
 
-        public OperationResultNotificationTip(OperationKind operationKind, int statusKind)
+        internal OperationResultNotificationTip(OperationKind operationKind, int statusKind)
         {
             InitializeComponent();
 

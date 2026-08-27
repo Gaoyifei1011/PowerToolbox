@@ -13,7 +13,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 所有工具页面
     /// </summary>
-    public sealed partial class AllToolsPage : Page
+    internal sealed partial class AllToolsPage : Page
     {
         // 休闲工具列表
         private List<ControlItemModel> RelaxToolsList { get; } =
@@ -173,7 +173,7 @@ namespace PowerToolbox.Views.Pages
             }
         ];
 
-        public AllToolsPage()
+        internal AllToolsPage()
         {
             InitializeComponent();
         }

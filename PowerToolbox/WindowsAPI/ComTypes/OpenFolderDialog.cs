@@ -14,18 +14,18 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// <summary>
     /// 文件夹选取框
     /// </summary>
-    public class OpenFolderDialog(nint handle) : IDisposable
+    internal class OpenFolderDialog(nint handle) : IDisposable
     {
         private readonly Guid CLSID_FileOpenDialog = new("DC1C5A9C-E88A-4DDE-A5A1-60F82A20AEF7");
         private IFileOpenDialog fileOpenDialog;
 
         private nint Handle { get; } = handle is 0 ? throw new Win32Exception("Invalid window handle") : handle;
 
-        public string Description { get; set; } = string.Empty;
+        internal string Description { get; set; } = string.Empty;
 
-        public string SelectedPath { get; set; } = string.Empty;
+        internal string SelectedPath { get; set; } = string.Empty;
 
-        public Environment.SpecialFolder RootFolder { get; set; } = Environment.SpecialFolder.Desktop;
+        internal Environment.SpecialFolder RootFolder { get; set; } = Environment.SpecialFolder.Desktop;
 
         ~OpenFolderDialog()
         {
@@ -35,7 +35,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <summary>
         /// 显示文件夹选取对话框
         /// </summary>
-        public DialogResult ShowDialog()
+        internal DialogResult ShowDialog()
         {
             try
             {

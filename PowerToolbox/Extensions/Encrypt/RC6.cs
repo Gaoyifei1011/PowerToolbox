@@ -5,9 +5,9 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// RC6 对称加密算法实现
     /// </summary>
-    public class RC6 : SymmetricAlgorithm
+    internal class RC6 : SymmetricAlgorithm
     {
-        public RC6()
+        internal RC6()
         {
             BlockSizeValue = 128;
             KeySizeValue = 128;

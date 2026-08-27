@@ -7,14 +7,14 @@ using System.ComponentModel;
 
 namespace PowerToolbox.Models
 {
-    public sealed class DownloadModel : INotifyPropertyChanged
+    internal sealed class DownloadModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 下载操作是否正在进行中
         /// </summary>
         private bool _isOperating;
 
-        public bool IsOperating
+        internal bool IsOperating
         {
             get { return _isOperating; }
 
@@ -33,7 +33,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private ImageSource _iconImage;
 
-        public ImageSource IconImage
+        internal ImageSource IconImage
         {
             get { return _iconImage; }
 
@@ -50,24 +50,24 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 任务在下载状态时，获取的GID码。该值唯一
         /// </summary>
-        public string DownloadID { get; set; }
+        internal string DownloadID { get; set; }
 
         /// <summary>
         /// 下载文件名称
         /// </summary>
-        public string FileName { get; set; }
+        internal string FileName { get; set; }
 
         /// <summary>
         /// 文件下载保存的路径
         /// </summary>
-        public string FilePath { get; set; }
+        internal string FilePath { get; set; }
 
         /// <summary>
         /// 文件下载状态
         /// </summary>
         private DownloadProgressState _downloadProgressState;
 
-        public DownloadProgressState DownloadProgressState
+        internal DownloadProgressState DownloadProgressState
         {
             get { return _downloadProgressState; }
 
@@ -86,7 +86,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private double _completedSize;
 
-        public double CompletedSize
+        internal double CompletedSize
         {
             get { return _completedSize; }
 
@@ -105,7 +105,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private double _totalSize;
 
-        public double TotalSize
+        internal double TotalSize
         {
             get { return _totalSize; }
 
@@ -124,7 +124,7 @@ namespace PowerToolbox.Models
         /// </summary>
         private double _downloadSpeed;
 
-        public double DownloadSpeed
+        internal double DownloadSpeed
         {
             get { return _downloadSpeed; }
 

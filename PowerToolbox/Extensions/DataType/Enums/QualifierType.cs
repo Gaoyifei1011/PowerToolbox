@@ -1,6 +1,6 @@
 ﻿namespace PowerToolbox.Extensions.DataType.Enums
 {
-    public enum QualifierType
+    internal enum QualifierType
     {
         Language,
         Contrast,

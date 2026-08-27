@@ -3,12 +3,12 @@
     /// <summary>
     /// 凯撒密码对称加密实现
     /// </summary>
-    public static class CaesarCipher
+    internal static class CaesarCipher
     {
         /// <summary>
         /// 凯撒密码加密
         /// </summary>
-        public static string CaesarEncrypt(string input, int offset)
+        internal static string CaesarEncrypt(string input, int offset)
         {
             char[] charArray = input.ToCharArray();
             for (int i = 0; i < charArray.Length; i++)
@@ -26,7 +26,7 @@
         /// <summary>
         /// 凯撒密码解密
         /// </summary>
-        public static string CaesarDecrypt(string input, int offset)
+        internal static string CaesarDecrypt(string input, int offset)
         {
             return CaesarEncrypt(input, 26 - (offset % 26));
         }

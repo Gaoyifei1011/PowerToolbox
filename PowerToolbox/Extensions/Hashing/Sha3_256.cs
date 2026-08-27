@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// SHA3 256 算法实现
     /// </summary>
-    public class Sha3_256 : HashAlgorithm
+    internal class Sha3_256 : HashAlgorithm
     {
         private const int rateBytes = 136;
         private const int outputBytes = 32;
@@ -39,7 +39,7 @@ namespace PowerToolbox.Extensions.Hashing
             0x0000000080000001UL, 0x8000000080008008UL
         ];
 
-        public Sha3_256()
+        internal Sha3_256()
         {
             HashSizeValue = 256;
             Initialize();

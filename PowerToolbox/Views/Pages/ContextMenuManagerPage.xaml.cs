@@ -33,7 +33,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 右键菜单管理页面
     /// </summary>
-    public sealed partial class ContextMenuManagerPage : Page, INotifyPropertyChanged
+    internal sealed partial class ContextMenuManagerPage : Page, INotifyPropertyChanged
     {
         private const string packageComPackageKey = @"SOFTWARE\Classes\PackagedCom\Package";
         private const string blockedKey = @"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked";
@@ -44,7 +44,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _searchText = string.Empty;
 
-        public string SearchText
+        internal string SearchText
         {
             get { return _searchText; }
 
@@ -60,7 +60,7 @@ namespace PowerToolbox.Views.Pages
 
         private ContextMenuResultKind _contextMenuResultKind;
 
-        public ContextMenuResultKind ContextMenuResultKind
+        internal ContextMenuResultKind ContextMenuResultKind
         {
             get { return _contextMenuResultKind; }
 
@@ -76,7 +76,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _contextMenuFailedContent;
 
-        public string ContextMenuFailedContent
+        internal string ContextMenuFailedContent
         {
             get { return _contextMenuFailedContent; }
 
@@ -96,7 +96,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ContextMenuManagerPage()
+        internal ContextMenuManagerPage()
         {
             InitializeComponent();
         }

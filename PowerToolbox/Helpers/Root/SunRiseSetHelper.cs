@@ -6,12 +6,12 @@ namespace PowerToolbox.Helpers.Root
     /// <summary>
     /// 日出日落辅助类
     /// </summary>
-    public static class SunRiseSetHelper
+    internal static class SunRiseSetHelper
     {
         /// <summary>
         /// 根据经纬度年月日计算日出日落时间
         /// </summary>
-        public static SunTimes CalculateSunriseSunset(double latitude, double longitude, int year, int month, int day)
+        internal static SunTimes CalculateSunriseSunset(double latitude, double longitude, int year, int month, int day)
         {
             bool isPolarNight;
             bool isPolarDay;

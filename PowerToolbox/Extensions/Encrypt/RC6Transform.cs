@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace PowerToolbox.Extensions.Encrypt
 {
-    public class RC6Transform(byte[] key, byte[] iv, bool encrypt, CipherMode mode, PaddingMode padding) : ICryptoTransform
+    internal class RC6Transform(byte[] key, byte[] iv, bool encrypt, CipherMode mode, PaddingMode padding) : ICryptoTransform
     {
         private const int BLOCK_SIZE = 16;
         private const int R = 20;

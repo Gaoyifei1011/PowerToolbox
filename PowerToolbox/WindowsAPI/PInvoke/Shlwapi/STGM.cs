@@ -9,7 +9,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Shlwapi
     /// STGM 常量是指示创建和删除对象的条件以及对象的访问模式的标志。 STGM 常量包含在 IStorage、 IStream 和 IPropertySetStorage 接口以及 StgCreateDocfile、 StgCreateStorageEx、 StgCreateDocfileOnILockBytes、 StgOpenStorage 和 StgOpenStorageEx 函数中。
     /// </summary>
     [Flags]
-    public enum STGM : uint
+    internal enum STGM : uint
     {
         /// <summary>
         /// 指示在直接模式下，每次对存储或流元素的更改都会在发生时写入。 如果既未指定 STGM_DIRECT ，也未指定 STGM_TRANSACTED ，则这是默认值。

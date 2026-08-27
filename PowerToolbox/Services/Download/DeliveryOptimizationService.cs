@@ -19,7 +19,7 @@ namespace PowerToolbox.Services.Download
     /// <summary>
     /// 下载服务
     /// </summary>
-    public static class DeliveryOptimizationService
+    internal static class DeliveryOptimizationService
     {
         private static readonly string displayName = "PowerToolbox";
         private static readonly object deliveryOptimizationLock = new();
@@ -27,12 +27,12 @@ namespace PowerToolbox.Services.Download
 
         private static Dictionary<string, (string saveFilePath, IDODownload doDownload, DODownloadStatusCallback doDownloadStatusCallback)> DeliveryOptimizationDict { get; } = [];
 
-        public static event Action<DownloadProgress> DownloadProgress;
+        internal static event Action<DownloadProgress> DownloadProgress;
 
         /// <summary>
         /// 应用关闭时终止所有下载任务
         /// </summary>
-        public static void TerminateDownload()
+        internal static void TerminateDownload()
         {
             Task.Factory.StartNew((param) =>
             {
@@ -49,7 +49,7 @@ namespace PowerToolbox.Services.Download
         /// <summary>
         /// 使用下载链接创建下载
         /// </summary>
-        public static void CreateDownload(string url, string saveFilePath)
+        internal static void CreateDownload(string url, string saveFilePath)
         {
             Task.Factory.StartNew((param) =>
             {
@@ -110,7 +110,7 @@ namespace PowerToolbox.Services.Download
         /// <summary>
         /// 继续下载
         /// </summary>
-        public static void ContinueDownload(string downloadID)
+        internal static void ContinueDownload(string downloadID)
         {
             Task.Factory.StartNew((param) =>
             {
@@ -141,7 +141,7 @@ namespace PowerToolbox.Services.Download
         /// <summary>
         /// 暂停下载
         /// </summary>
-        public static void PauseDownload(string downloadID)
+        internal static void PauseDownload(string downloadID)
         {
             Task.Factory.StartNew((param) =>
             {
@@ -172,7 +172,7 @@ namespace PowerToolbox.Services.Download
         /// <summary>
         /// 删除下载
         /// </summary>
-        public static void DeleteDownload(string downloadID)
+        internal static void DeleteDownload(string downloadID)
         {
             Task.Factory.StartNew((param) =>
             {

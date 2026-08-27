@@ -3,7 +3,7 @@
     /// <summary>
     /// 指定由 RM_PROCESS_INFO 结构描述的应用程序的类型。
     /// </summary>
-    public enum RM_APP_TYPE
+    internal enum RM_APP_TYPE
     {
         /// <summary>
         /// 应用程序不能归类为任何其他类型。 此类型的应用程序只能通过强制关闭来关闭。

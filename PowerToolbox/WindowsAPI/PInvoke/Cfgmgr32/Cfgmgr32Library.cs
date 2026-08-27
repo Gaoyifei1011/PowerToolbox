@@ -7,7 +7,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Cfgmgr32
     /// <summary>
     /// Cfgmgr32.dll 函数库
     /// </summary>
-    public static class Cfgmgr32Library
+    internal static class Cfgmgr32Library
     {
         private const string Cfgmgr32 = "cfgmgr32.dll";
 
@@ -19,7 +19,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Cfgmgr32
         /// <param name="ulFlags">ULONG 类型的变量，它提供以下标志值，这些标志值在调用方提供设备实例标识符时适用。</param>
         /// <returns>如果操作成功，CM_Locate_DevNode 返回CR_SUCCESS。 否则，该函数将返回 Cfgmgr32.h中定义的 CR_Xxx 错误代码之一。</returns>
         [DllImport(Cfgmgr32, CharSet = CharSet.Unicode, EntryPoint = "CM_Locate_DevNodeW", PreserveSig = true, SetLastError = false)]
-        public static extern int CM_Locate_DevNode(out uint pdnDevInst, [MarshalAs(UnmanagedType.LPWStr)] string pDeviceID, CM_LOCATE_DEVNODE_FLAGS ulFlags);
+        internal static extern int CM_Locate_DevNode(out uint pdnDevInst, [MarshalAs(UnmanagedType.LPWStr)] string pDeviceID, CM_LOCATE_DEVNODE_FLAGS ulFlags);
 
         /// <summary>
         /// CM_Get_DevNode_Property 函数检索设备实例属性。
@@ -32,7 +32,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Cfgmgr32
         /// <param name="ulFlags">保留。 必须设置为零。</param>
         /// <returns>如果操作成功，函数将返回CR_SUCCESS。 否则，它将返回 Cfgmgr32.h 中定义的CR_前缀错误代码之一。</returns>
         [DllImport(Cfgmgr32, CharSet = CharSet.Unicode, EntryPoint = "CM_Get_DevNode_PropertyW", PreserveSig = true, SetLastError = false)]
-        public static extern int CM_Get_DevNode_Property(uint devInst, ref DEVPROPKEY PropertyKey, out DEVPROPTYPE PropertyType, nint PropertyBuffer, ref uint PropertyBufferSize, uint ulFlags);
+        internal static extern int CM_Get_DevNode_Property(uint devInst, ref DEVPROPKEY PropertyKey, out DEVPROPTYPE PropertyType, nint PropertyBuffer, ref uint PropertyBufferSize, uint ulFlags);
 
         /// <summary>
         /// CM_Get_Device_Interface_List_Size 函数检索必须传递给 CM_Get_Device_Interface_List 函数的缓冲区大小。
@@ -43,7 +43,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Cfgmgr32
         /// <param name="ulFlags">包含以下调用方提供的标志</param>
         /// <returns>如果操作成功，该函数将返回 CR_SUCCESS。 否则，它会返回一个错误代码，其中 CR_ 前缀，如 Cfgmgr32.h 中定义。</returns>
         [DllImport(Cfgmgr32, CharSet = CharSet.Unicode, EntryPoint = "CM_Get_Device_Interface_List_SizeW", PreserveSig = true, SetLastError = false)]
-        public static extern int CM_Get_Device_Interface_List_Size(out uint pulLen, in Guid InterfaceClassGuid, [MarshalAs(UnmanagedType.LPWStr)] string pDeviceID, CM_GET_DEVICE_INTERFACE_LIST_FLAGS ulFlags);
+        internal static extern int CM_Get_Device_Interface_List_Size(out uint pulLen, in Guid InterfaceClassGuid, [MarshalAs(UnmanagedType.LPWStr)] string pDeviceID, CM_GET_DEVICE_INTERFACE_LIST_FLAGS ulFlags);
 
         /// <summary>
         /// CM_Get_Device_Interface_List 函数检索属于指定 设备接口类的设备接口实例列表。
@@ -55,6 +55,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Cfgmgr32
         /// <param name="ulFlags">包含以下调用方提供的标志</param>
         /// <returns></returns>
         [DllImport(Cfgmgr32, CharSet = CharSet.Unicode, EntryPoint = "CM_Get_Device_Interface_ListW", PreserveSig = true, SetLastError = false)]
-        public static extern int CM_Get_Device_Interface_List(in Guid InterfaceClassGuid, [MarshalAs(UnmanagedType.LPWStr)] string pDeviceID, [Out] byte[] Buffer, uint BufferLen, CM_GET_DEVICE_INTERFACE_LIST_FLAGS ulFlags);
+        internal static extern int CM_Get_Device_Interface_List(in Guid InterfaceClassGuid, [MarshalAs(UnmanagedType.LPWStr)] string pDeviceID, [Out] byte[] Buffer, uint BufferLen, CM_GET_DEVICE_INTERFACE_LIST_FLAGS ulFlags);
     }
 }

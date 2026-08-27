@@ -3,7 +3,7 @@
     /// <summary>
     /// 菜单类型
     /// </summary>
-    public enum MenuType
+    internal enum MenuType
     {
         /// <summary>
         /// 一级菜单

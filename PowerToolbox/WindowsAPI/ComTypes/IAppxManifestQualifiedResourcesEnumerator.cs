@@ -7,7 +7,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 枚举程序包清单中定义的限定资源。
     /// </summary>
     [ComImport, Guid("8EF6ADFE-3762-4A8F-9373-2FC5D444C8D2"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IAppxManifestQualifiedResourcesEnumerator
+    internal interface IAppxManifestQualifiedResourcesEnumerator
     {
         /// <summary>
         /// 获取枚举器当前位置的资源。

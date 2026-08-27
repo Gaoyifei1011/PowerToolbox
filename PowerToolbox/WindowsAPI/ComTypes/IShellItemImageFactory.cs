@@ -8,7 +8,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 公开用于返回 Shell 项图标或缩略图的方法。 如果请求的项没有可用的缩略图或图标，可以从 Shell 提供每个类的图标。
     /// </summary>
     [ComImport, Guid("BCC18B79-BA16-442F-80C4-8A59C30C463B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IShellItemImageFactory
+    internal interface IShellItemImageFactory
     {
         /// <summary>
         /// 获取表示 IShellItem的 HBITMAP。 默认行为是加载缩略图。 如果当前 IShellItem没有缩略图，它将检索项图标的 HBITMAP。 如果未缓存缩略图或图标，则会提取该缩略图或图标。

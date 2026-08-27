@@ -24,7 +24,7 @@ namespace PowerToolbox.Views.Dialogs
     /// <summary>
     /// 下载设置对话框
     /// </summary>
-    public sealed partial class DownloadSettingsDialog : ContentDialog, INotifyPropertyChanged
+    internal sealed partial class DownloadSettingsDialog : ContentDialog, INotifyPropertyChanged
     {
         private readonly string DoEngineAria2String = ResourceService.DialogResource.GetString("DoEngineAria2");
         private readonly string DoEngineBitsString = ResourceService.DialogResource.GetString("DoEngineBits");
@@ -33,7 +33,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private string _downloadFolder = DownloadOptionsService.DownloadFolder;
 
-        public string DownloadFolder
+        internal string DownloadFolder
         {
             get { return _downloadFolder; }
 
@@ -49,7 +49,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private ComboBoxItemModel _doEngineMode;
 
-        public ComboBoxItemModel DoEngineMode
+        internal ComboBoxItemModel DoEngineMode
         {
             get { return _doEngineMode; }
 
@@ -67,7 +67,7 @@ namespace PowerToolbox.Views.Dialogs
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DownloadSettingsDialog()
+        internal DownloadSettingsDialog()
         {
             InitializeComponent();
 

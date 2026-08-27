@@ -8,7 +8,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 允许在管理多个窗口的 Windows 应用商店应用中访问 DataTransferManager 方法。
     /// </summary>
     [ComImport, Guid("3A3DCD6C-3EAB-43DC-BCDE-45671CE800C8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IDataTransferManagerInterop
+    internal interface IDataTransferManagerInterop
     {
         /// <summary>
         /// 获取指定窗口的 DataTransferManager 实例。

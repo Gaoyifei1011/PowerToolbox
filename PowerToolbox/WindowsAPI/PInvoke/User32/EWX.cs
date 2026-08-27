@@ -1,6 +1,6 @@
 ﻿namespace PowerToolbox.WindowsAPI.PInvoke.User32
 {
-    public enum EWX
+    internal enum EWX
     {
         /// <summary>
         /// 关闭调用 ExitWindowsEx 函数的进程登录会话中运行的所有进程。 然后，它会注销用户。

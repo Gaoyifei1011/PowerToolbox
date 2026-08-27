@@ -8,7 +8,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 创建用于读取和写入应用包的对象。
     /// </summary>
     [ComImport, Guid("BEB94909-E451-438B-B5A7-D79E767B75D8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IAppxFactory
+    internal interface IAppxFactory
     {
         /// <summary>
         /// 创建可向其添加文件的只写包对象。

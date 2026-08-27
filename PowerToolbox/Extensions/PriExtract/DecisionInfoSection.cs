@@ -6,23 +6,23 @@ using System.Text;
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class DecisionInfoSection
+    internal sealed class DecisionInfoSection
     {
-        public uint SectionQualifier { get; private set; }
+        internal uint SectionQualifier { get; private set; }
 
-        public uint Flags { get; private set; }
+        internal uint Flags { get; private set; }
 
-        public uint SectionFlags { get; private set; }
+        internal uint SectionFlags { get; private set; }
 
-        public uint SectionLength { get; private set; }
+        internal uint SectionLength { get; private set; }
 
-        public IReadOnlyList<Decision> DecisionsList { get; private set; }
+        internal IReadOnlyList<Decision> DecisionsList { get; private set; }
 
-        public IReadOnlyList<QualifierSet> QualifierSetsList { get; private set; }
+        internal IReadOnlyList<QualifierSet> QualifierSetsList { get; private set; }
 
-        public IReadOnlyList<Qualifier> QualifiersList { get; private set; }
+        internal IReadOnlyList<Qualifier> QualifiersList { get; private set; }
 
-        public DecisionInfoSection(string sectionIdentifier, BinaryReader binaryReader)
+        internal DecisionInfoSection(string sectionIdentifier, BinaryReader binaryReader)
         {
             if (!string.Equals(new(binaryReader.ReadChars(16)), sectionIdentifier))
             {

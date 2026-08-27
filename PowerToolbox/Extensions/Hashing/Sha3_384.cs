@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// SHA3 384 算法实现
     /// </summary>
-    public class Sha3_384 : HashAlgorithm
+    internal class Sha3_384 : HashAlgorithm
     {
         private const int rateBytes = 104;
         private const int outputBytes = 48;
@@ -39,7 +39,7 @@ namespace PowerToolbox.Extensions.Hashing
             0x0000000080000001UL, 0x8000000080008008UL
         ];
 
-        public Sha3_384()
+        internal Sha3_384()
         {
             HashSizeValue = 384;
             Initialize();

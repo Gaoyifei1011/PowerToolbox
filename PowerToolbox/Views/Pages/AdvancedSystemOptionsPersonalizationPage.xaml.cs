@@ -32,7 +32,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 高级系统选项——个性化页面
     /// </summary>
-    public sealed partial class AdvancedSystemOptionsPersonalizationPage : Page, INotifyPropertyChanged
+    internal sealed partial class AdvancedSystemOptionsPersonalizationPage : Page, INotifyPropertyChanged
     {
         private readonly string controlPanelPath = "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}";
         private readonly string homePath = "{F874310E-B6B7-47DC-BC84-B9E6B38F5903}";
@@ -140,7 +140,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isRebuildingIconCache;
 
-        public bool IsRebuildingIconCache
+        internal bool IsRebuildingIconCache
         {
             get { return _isRebuildingIconCache; }
 
@@ -156,7 +156,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isIconSelected;
 
-        public bool IsIconSelected
+        internal bool IsIconSelected
         {
             get { return _isIconSelected; }
 
@@ -172,7 +172,7 @@ namespace PowerToolbox.Views.Pages
 
         private DesktopIconSettingsModel _selectedIconItem;
 
-        public DesktopIconSettingsModel SelectedIconItem
+        internal DesktopIconSettingsModel SelectedIconItem
         {
             get { return _selectedIconItem; }
 
@@ -188,7 +188,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _rightClickMenuStyle;
 
-        public ComboBoxItemModel RightClickMenuStyle
+        internal ComboBoxItemModel RightClickMenuStyle
         {
             get { return _rightClickMenuStyle; }
 
@@ -204,7 +204,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _fileExplorerStyle;
 
-        public ComboBoxItemModel FileExplorerStyle
+        internal ComboBoxItemModel FileExplorerStyle
         {
             get { return _fileExplorerStyle; }
 
@@ -220,7 +220,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isSyncProviderNotificationsEnabled;
 
-        public bool IsSyncProviderNotificationsEnabled
+        internal bool IsSyncProviderNotificationsEnabled
         {
             get { return _isSyncProviderNotificationsEnabled; }
 
@@ -236,7 +236,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _fileExplorerHomePosition;
 
-        public ComboBoxItemModel FileExplorerHomePosition
+        internal ComboBoxItemModel FileExplorerHomePosition
         {
             get { return _fileExplorerHomePosition; }
 
@@ -252,7 +252,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isShortcutWithoutShortcutTextEnabled;
 
-        public bool IsShortcutWithoutShortcutTextEnabled
+        internal bool IsShortcutWithoutShortcutTextEnabled
         {
             get { return _isShortcutWithoutShortcutTextEnabled; }
 
@@ -268,7 +268,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _visualEffectsPlan;
 
-        public ComboBoxItemModel VisualEffectsPlan
+        internal ComboBoxItemModel VisualEffectsPlan
         {
             get { return _visualEffectsPlan; }
 
@@ -284,7 +284,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isUpdatingVisualEffects;
 
-        public bool IsUpdatingVisualEffects
+        internal bool IsUpdatingVisualEffects
         {
             get { return _isUpdatingVisualEffects; }
 
@@ -316,7 +316,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public AdvancedSystemOptionsPersonalizationPage()
+        internal AdvancedSystemOptionsPersonalizationPage()
         {
             InitializeComponent();
             RightClickMenuStyleList.Add(new() { DisplayMember = Windows11ModernMenuString, SelectedValue = "Windows11ModernMenu" });

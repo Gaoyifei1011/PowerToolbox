@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 定义可用于“打开”或“保存”对话框的选项集
     /// </summary>
     [Flags]
-    public enum FILEOPENDIALOGOPTIONS : uint
+    internal enum FILEOPENDIALOGOPTIONS : uint
     {
         /// <summary>
         /// 保存文件时，在覆盖同名的现有文件之前进行提示。这是“保存”对话框的默认值。

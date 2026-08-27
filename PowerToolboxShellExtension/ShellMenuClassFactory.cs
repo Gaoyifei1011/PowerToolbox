@@ -11,11 +11,11 @@ namespace PowerToolboxShellExtension
     /// 允许创建对象的类。
     /// </summary>
     [GeneratedComClass]
-    public partial class ShellMenuClassFactory : IClassFactory
+    internal partial class ShellMenuClassFactory : IClassFactory
     {
         private readonly IExplorerCommand explorerCommand = new ExplorerCommand(ShellMenuService.RootShellMenuItem);
 
-        public unsafe int CreateInstance(nint pUnkOuter, in Guid riid, out nint ppvObject)
+        public int CreateInstance(nint pUnkOuter, in Guid riid, out nint ppvObject)
         {
             if (!pUnkOuter.Equals(nint.Zero))
             {

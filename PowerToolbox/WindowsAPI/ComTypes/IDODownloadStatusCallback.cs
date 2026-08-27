@@ -7,7 +7,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// IDODownloadStatusCallback 接口用于接收有关下载的通知。
     /// </summary>
     [ComImport, Guid("D166E8E3-A90E-4392-8E87-05E996D3747D"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IDODownloadStatusCallback
+    internal interface IDODownloadStatusCallback
     {
         /// <summary>
         /// 每当下载状态发生更改时，传递优化将调用此方法的实现。

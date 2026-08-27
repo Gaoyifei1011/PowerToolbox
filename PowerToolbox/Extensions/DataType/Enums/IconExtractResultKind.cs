@@ -3,7 +3,7 @@
     /// <summary>
     /// 图标提取数据结果模型
     /// </summary>
-    public enum IconExtractResultKind
+    internal enum IconExtractResultKind
     {
         Welcome = 0,
         Parsing = 1,

@@ -7,24 +7,24 @@ using System.Text;
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class ResourceMapSection
+    internal sealed class ResourceMapSection
     {
-        public uint SectionQualifier { get; private set; }
+        internal uint SectionQualifier { get; private set; }
 
-        public uint Flags { get; private set; }
+        internal uint Flags { get; private set; }
 
-        public uint SectionFlags { get; private set; }
+        internal uint SectionFlags { get; private set; }
 
-        public uint SectionLength { get; private set; }
+        internal uint SectionLength { get; private set; }
 
-        public HierarchicalSchemaReference HierarchicalSchemaReference { get; private set; }
-        public int SchemaSectionIndex { get; private set; }
+        internal HierarchicalSchemaReference HierarchicalSchemaReference { get; private set; }
+        internal int SchemaSectionIndex { get; private set; }
 
-        public int DecisionInfoSectionIndex { get; private set; }
+        internal int DecisionInfoSectionIndex { get; private set; }
 
-        public IReadOnlyDictionary<ushort, CandidateSet> CandidateSetsDict { get; private set; }
+        internal IReadOnlyDictionary<ushort, CandidateSet> CandidateSetsDict { get; private set; }
 
-        public ResourceMapSection(string sectionIdentifier, BinaryReader binaryReader, bool version2, ref object[] sectionList)
+        internal ResourceMapSection(string sectionIdentifier, BinaryReader binaryReader, bool version2, ref object[] sectionList)
         {
             if (!string.Equals(new(binaryReader.ReadChars(16)), sectionIdentifier))
             {

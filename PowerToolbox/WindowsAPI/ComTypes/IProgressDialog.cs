@@ -7,7 +7,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// 公开方法，这些方法为应用程序提供显示进度对话框的选项。 此接口由进度对话框对象 (CLSID_ProgressDialog) 导出。 此对象是向用户显示操作进度的通用方法。 它通常在删除、上传、复制、移动或下载大量文件时使用。
     /// </summary>
     [ComImport, Guid("EBBC7C04-315E-11d2-B62F-006097DF5BD4"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IProgressDialog
+    internal interface IProgressDialog
     {
         /// <summary>
         /// 启动进度对话框。

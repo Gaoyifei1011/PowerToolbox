@@ -1,8 +1,8 @@
 ﻿namespace PowerToolbox.Extensions.Hashing
 {
-    public static class BinaryPrimitives
+    internal static class BinaryPrimitives
     {
-        public static uint ReverseEndianness(uint value)
+        internal static uint ReverseEndianness(uint value)
         {
             // 这利用了 JIT 可以检测 ROL32 / ROR32 模式并输出正确内置函数的事实
             //
@@ -26,7 +26,7 @@
                 + BitOperations.RotateLeft(value & 0xFF00FF00u, 8); // ww yy
         }
 
-        public static ulong ReverseEndianness(ulong value)
+        internal static ulong ReverseEndianness(ulong value)
         {
             // 对 32 位值的操作比对 64 位值的操作吞吐量更高，因此需要分解
             return ((ulong)ReverseEndianness((uint)value) << 32) + ReverseEndianness((uint)(value >> 32));

@@ -7,11 +7,11 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 驱动器数据模型
     /// </summary>
-    public class DriveModel : INotifyPropertyChanged
+    internal class DriveModel : INotifyPropertyChanged
     {
         private bool _isSelected;
 
-        public bool IsSelected
+        internal bool IsSelected
         {
             get { return _isSelected; }
 
@@ -25,42 +25,42 @@ namespace PowerToolbox.Models
             }
         }
 
-        public ImageSource DiskImage { get; set; }
+        internal ImageSource DiskImage { get; set; }
 
         /// <summary>
         /// 驱动器名称
         /// </summary>
-        public string Name { get; set; }
+        internal string Name { get; set; }
 
         /// <summary>
         /// 驱动器空间
         /// </summary>
-        public string Space { get; set; }
+        internal string Space { get; set; }
 
         /// <summary>
         /// 是否为系统卷
         /// </summary>
-        public bool IsSystemDrive { get; set; }
+        internal bool IsSystemDrive { get; set; }
 
         /// <summary>
         /// 驱动器已使用空间百分比
         /// </summary>
-        public double DriveUsedPercentage { get; set; }
+        internal double DriveUsedPercentage { get; set; }
 
         /// <summary>
         /// 驱动器可用空间警告（可用空间在 5% - 10%）
         /// </summary>
-        public bool IsAvailableSpaceWarning { get; set; }
+        internal bool IsAvailableSpaceWarning { get; set; }
 
         /// <summary>
         /// 存储空间是否不可用（可用空间在 0% - 5%）
         /// </summary>
-        public bool IsAvailableSpaceError { get; set; }
+        internal bool IsAvailableSpaceError { get; set; }
 
         /// <summary>
         /// 驱动器信息
         /// </summary>
-        public DriveInfo DriveInfo { get; set; }
+        internal DriveInfo DriveInfo { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

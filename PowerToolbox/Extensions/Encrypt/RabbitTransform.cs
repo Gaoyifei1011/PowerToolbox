@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// 使用 Rabbit 算法对数据执行加密转换
     /// </summary>
-    public class RabbitTransform : ICryptoTransform
+    internal class RabbitTransform : ICryptoTransform
     {
         /// <summary>
         /// 创建一个新实例
@@ -15,7 +15,7 @@ namespace PowerToolbox.Extensions.Encrypt
         /// <param name="rgbIV">64 位 IV（可选）</param>
         /// <exception cref="ArgumentNullException">密钥不能为空</exception>
         /// <exception cref="ArgumentOutOfRangeException">密钥必须为128位（16字节）。-或- 初始向量（IV）必须为64位（8字节）</exception>
-        public RabbitTransform(byte[] rgbKey, byte[] rgbIV, bool isEncrypt, PaddingMode paddingMode)
+        internal RabbitTransform(byte[] rgbKey, byte[] rgbIV, bool isEncrypt, PaddingMode paddingMode)
         {
             if (rgbKey is null)
             {
@@ -326,7 +326,7 @@ namespace PowerToolbox.Extensions.Encrypt
             ExtractOutput();
             for (int i = 0; i < count; i++)
             {
-                int s = (byte)(S[i / 4] >> (i % 4 * 8));
+                int s = (byte)(uint)(S[i / 4] >> (i % 4 * 8));
                 outputBuffer[outputOffset + i] = (byte)(inputBuffer[inputOffset + i] ^ s);
             }
         }

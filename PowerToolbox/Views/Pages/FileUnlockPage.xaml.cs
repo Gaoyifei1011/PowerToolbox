@@ -29,7 +29,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 文件解锁页面
     /// </summary>
-    public sealed partial class FileUnlockPage : Page, INotifyPropertyChanged
+    internal sealed partial class FileUnlockPage : Page, INotifyPropertyChanged
     {
         private readonly string DragOverContentString = ResourceService.FileUnlockResource.GetString("DragOverContent");
         private readonly string FileString = ResourceService.FileUnlockResource.GetString("File");
@@ -42,7 +42,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isModifyingNow;
 
-        public bool IsModifyingNow
+        internal bool IsModifyingNow
         {
             get { return _isModifyingNow; }
 
@@ -58,7 +58,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isOperationCancelling;
 
-        public bool IsOperationCancelling
+        internal bool IsOperationCancelling
         {
             get { return _isOperationCancelling; }
 
@@ -74,7 +74,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isOperationFailed;
 
-        public bool IsOperationFailed
+        internal bool IsOperationFailed
         {
             get { return _isOperationFailed; }
 
@@ -94,7 +94,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public FileUnlockPage()
+        internal FileUnlockPage()
         {
             InitializeComponent();
         }
@@ -387,7 +387,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 添加到文件解锁页面
         /// </summary>
-        public async Task AddToFileUnlockPageAsync(List<FileUnlockModel> fileUnlockList)
+        internal async Task AddToFileUnlockPageAsync(List<FileUnlockModel> fileUnlockList)
         {
             await Task.Run(() =>
             {

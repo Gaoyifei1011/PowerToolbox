@@ -7,7 +7,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// XXH128 校验实现
     /// </summary>
-    public sealed unsafe class XxHash128
+    internal sealed unsafe class XxHash128
     {
         /// <summary>
         /// XXH128 生成 16 字节的哈希
@@ -19,14 +19,14 @@ namespace PowerToolbox.Extensions.Hashing
         /// <summary>
         /// 使用默认种子值 0 初始化 XxHash128 类的新实例
         /// </summary>
-        public XxHash128() : this(0)
+        internal XxHash128() : this(0)
         {
         }
 
         /// <summary>
         /// 使用指定的种子初始化 XxHash128 类的新实例
         /// </summary>
-        public XxHash128(long seed)
+        internal XxHash128(long seed)
         {
             Initialize(ref _state, (ulong)seed);
         }
@@ -44,7 +44,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// </summary>
         /// <param name="source">要哈希的数据</param>
         /// <returns>所提供数据的 XXH128 128 位哈希码</returns>
-        public static byte[] Hash(byte[] source)
+        internal static byte[] Hash(byte[] source)
         {
             return Hash(source, seed: 0);
         }
@@ -55,7 +55,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// <param name="source">要哈希的数据</param>
         /// <param name="seed">The seed value for this hash computation</param>
         /// <returns>所提供数据的 XXH128 128 位哈希码</returns>
-        public static byte[] Hash(byte[] source, long seed)
+        internal static byte[] Hash(byte[] source, long seed)
         {
             if (source is null)
             {
@@ -74,7 +74,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// <param name="destination">接收计算得出的128位哈希码的缓冲区</param>
         /// <param name="seed">此哈希计算的种子值。默认值为零</param>
         /// <returns>写入目标的字节数</returns>
-        public static int Hash(byte[] source, byte[] destination, long seed = 0)
+        internal static int Hash(byte[] source, byte[] destination, long seed = 0)
         {
             if (!TryHash(source, destination, out int bytesWritten, seed))
             {
@@ -92,7 +92,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// <param name="bytesWritten">当此方法返回时，包含写入目标的字节数</param>
         /// <param name="seed">此哈希计算的种子值。默认值为零</param>
         /// <returns><see langword="true"/> if destination is long enough to receive the computed hash value (16 bytes); otherwise, <see langword="false"/>.</returns>
-        public static bool TryHash(byte[] source, byte[] destination, out int bytesWritten, long seed = 0)
+        internal static bool TryHash(byte[] source, byte[] destination, out int bytesWritten, long seed = 0)
         {
             if (destination.Length >= sizeof(ulong) * 2)
             {
@@ -135,7 +135,7 @@ namespace PowerToolbox.Extensions.Hashing
             return HashLengthOver240(sourcePtr, length, (ulong)seed);
         }
 
-        public void Reset()
+        internal void Reset()
         {
             XxHashShared.Reset(ref _state);
         }
@@ -143,7 +143,7 @@ namespace PowerToolbox.Extensions.Hashing
         /// <summary>
         /// 将源的内容追加到当前哈希计算已处理的数据中
         /// </summary>
-        public void Append(Stream stream, int bufferSize = 1024 * 64)
+        internal void Append(Stream stream, int bufferSize = 1024 * 64)
         {
             if (stream is null)
             {
@@ -182,12 +182,12 @@ namespace PowerToolbox.Extensions.Hashing
         /// 将源的内容追加到当前哈希计算已处理的数据中
         /// </summary>
         /// <param name="source">要处理的数据</param>
-        public void Append(byte[] source)
+        internal void Append(byte[] source)
         {
             XxHashShared.Append(ref _state, source);
         }
 
-        public byte[] GetCurrentHash()
+        internal byte[] GetCurrentHash()
         {
             byte[] ret = new byte[HashLengthInBytes];
             GetCurrentHashCore(ret);
@@ -446,8 +446,8 @@ namespace PowerToolbox.Extensions.Hashing
 
         private readonly struct Hash128(ulong low64, ulong high64)
         {
-            public readonly ulong Low64 = low64;
-            public readonly ulong High64 = high64;
+            internal readonly ulong Low64 = low64;
+            internal readonly ulong High64 = high64;
         }
     }
 }

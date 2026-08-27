@@ -28,7 +28,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 自定义扩展菜单编辑页面
     /// </summary>
-    public sealed partial class ShellMenuEditPage : Page, INotifyPropertyChanged
+    internal sealed partial class ShellMenuEditPage : Page, INotifyPropertyChanged
     {
         private readonly string AllString = ResourceService.ShellMenuEditResource.GetString("All");
         private readonly string ExtensionString = ResourceService.ShellMenuEditResource.GetString("Extension");
@@ -53,7 +53,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _menuTitleText;
 
-        public string MenuTitleText
+        internal string MenuTitleText
         {
             get { return _menuTitleText; }
 
@@ -69,7 +69,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _useIcon;
 
-        public bool UseIcon
+        internal bool UseIcon
         {
             get { return _useIcon; }
 
@@ -85,7 +85,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _useProgramIcon;
 
-        public bool UseProgramIcon
+        internal bool UseProgramIcon
         {
             get { return _useProgramIcon; }
 
@@ -101,7 +101,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _useThemeIcon;
 
-        public bool UseThemeIcon
+        internal bool UseThemeIcon
         {
             get { return _useThemeIcon; }
 
@@ -117,7 +117,7 @@ namespace PowerToolbox.Views.Pages
 
         private ImageSource _defaultIconImage;
 
-        public ImageSource DefaultIconImage
+        internal ImageSource DefaultIconImage
         {
             get { return _defaultIconImage; }
 
@@ -133,7 +133,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _defaultIconPath;
 
-        public string DefaultIconPath
+        internal string DefaultIconPath
         {
             get { return _defaultIconPath; }
 
@@ -149,7 +149,7 @@ namespace PowerToolbox.Views.Pages
 
         private ImageSource _lightThemeIconImage;
 
-        public ImageSource LightThemeIconImage
+        internal ImageSource LightThemeIconImage
         {
             get { return _lightThemeIconImage; }
 
@@ -165,7 +165,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _lightThemeIconPath;
 
-        public string LightThemeIconPath
+        internal string LightThemeIconPath
         {
             get { return _lightThemeIconPath; }
 
@@ -181,7 +181,7 @@ namespace PowerToolbox.Views.Pages
 
         private ImageSource _darkThemeIconImage;
 
-        public ImageSource DarkThemeIconImage
+        internal ImageSource DarkThemeIconImage
         {
             get { return _darkThemeIconImage; }
 
@@ -197,7 +197,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _darkThemeIconPath;
 
-        public string DarkThemeIconPath
+        internal string DarkThemeIconPath
         {
             get { return _darkThemeIconPath; }
 
@@ -213,7 +213,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _menuProgramPathText;
 
-        public string MenuProgramPathText
+        internal string MenuProgramPathText
         {
             get { return _menuProgramPathText; }
 
@@ -229,7 +229,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _menuParameterText;
 
-        public string MenuParameterText
+        internal string MenuParameterText
         {
             get { return _menuParameterText; }
 
@@ -245,7 +245,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isAlwaysRunAsAdministrator;
 
-        public bool IsAlwaysRunAsAdministrator
+        internal bool IsAlwaysRunAsAdministrator
         {
             get { return _isAlwaysRunAsAdministrator; }
 
@@ -261,7 +261,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _folderBackgroundMatch;
 
-        public bool FolderBackgroundMatch
+        internal bool FolderBackgroundMatch
         {
             get { return _folderBackgroundMatch; }
 
@@ -277,7 +277,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _folderDesktopMatch;
 
-        public bool FolderDesktopMatch
+        internal bool FolderDesktopMatch
         {
             get { return _folderDesktopMatch; }
 
@@ -293,7 +293,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _folderDirectoryMatch;
 
-        public bool FolderDirectoryMatch
+        internal bool FolderDirectoryMatch
         {
             get { return _folderDirectoryMatch; }
 
@@ -309,7 +309,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _folderDriveMatch;
 
-        public bool FolderDriveMatch
+        internal bool FolderDriveMatch
         {
             get { return _folderDriveMatch; }
 
@@ -325,7 +325,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedFileMatchRule;
 
-        public ComboBoxItemModel SelectedFileMatchRule
+        internal ComboBoxItemModel SelectedFileMatchRule
         {
             get { return _selectedFileMatchRule; }
 
@@ -341,7 +341,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _needInputMatchFormat;
 
-        public bool NeedInputMatchFormat
+        internal bool NeedInputMatchFormat
         {
             get { return _needInputMatchFormat; }
 
@@ -357,7 +357,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _menuFileMatchFormatPHText;
 
-        public string MenuFileMatchFormatPHText
+        internal string MenuFileMatchFormatPHText
         {
             get { return _menuFileMatchFormatPHText; }
 
@@ -373,7 +373,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _menuFileMatchFormatText;
 
-        public string MenuFileMatchFormatText
+        internal string MenuFileMatchFormatText
         {
             get { return _menuFileMatchFormatText; }
 
@@ -391,7 +391,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ShellMenuEditPage()
+        internal ShellMenuEditPage()
         {
             InitializeComponent();
 

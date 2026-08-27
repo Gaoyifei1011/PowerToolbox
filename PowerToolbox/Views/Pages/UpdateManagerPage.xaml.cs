@@ -34,7 +34,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// Windows 更新管理页面
     /// </summary>
-    public sealed partial class UpdateManagerPage : Page, INotifyPropertyChanged
+    internal sealed partial class UpdateManagerPage : Page, INotifyPropertyChanged
     {
         private readonly string CurrentChannelString = ResourceService.UpdateManagerResource.GetString("CurrentChannel");
         private readonly string CurrentConfigString = ResourceService.UpdateManagerResource.GetString("CurrentConfig");
@@ -117,7 +117,7 @@ namespace PowerToolbox.Views.Pages
 
         private SelectorBarItem _selectedItem;
 
-        public SelectorBarItem SelectedItem
+        internal SelectorBarItem SelectedItem
         {
             get { return _selectedItem; }
 
@@ -133,7 +133,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _windowsUpdateVersion;
 
-        public string WindowsUpdateVersion
+        internal string WindowsUpdateVersion
         {
             get { return _windowsUpdateVersion; }
 
@@ -149,7 +149,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _wuapiDllVersion;
 
-        public string WuapiDllVersion
+        internal string WuapiDllVersion
         {
             get { return _wuapiDllVersion; }
 
@@ -165,7 +165,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isCheckUpdateEnabled = true;
 
-        public bool IsCheckUpdateEnabled
+        internal bool IsCheckUpdateEnabled
         {
             get { return _isCheckUpdateEnabled; }
 
@@ -181,7 +181,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isChecking;
 
-        public bool IsChecking
+        internal bool IsChecking
         {
             get { return _isChecking; }
 
@@ -293,7 +293,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isExcludeDrivers;
 
-        public bool IsExcludeDrivers
+        internal bool IsExcludeDrivers
         {
             get { return _isExcludeDrivers; }
 
@@ -309,7 +309,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isCleaning;
 
-        public bool IsCleaning
+        internal bool IsCleaning
         {
             get { return _isCleaning; }
 
@@ -325,7 +325,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isUpdateCompletedNeedRebootPrompt;
 
-        public bool IsUpdateCompletedNeedRebootPrompt
+        internal bool IsUpdateCompletedNeedRebootPrompt
         {
             get { return _isUpdateCompletedNeedRebootPrompt; }
 
@@ -341,7 +341,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isPreviewChannelChangedNeedRebootPrompt;
 
-        public bool IsPreviewChannelChangedNeedRebootPrompt
+        internal bool IsPreviewChannelChangedNeedRebootPrompt
         {
             get { return _isPreviewChannelChangedNeedRebootPrompt; }
 
@@ -357,7 +357,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isIncludePotentiallySupersededUpdate;
 
-        public bool IsIncludePotentiallySupersededUpdate
+        internal bool IsIncludePotentiallySupersededUpdate
         {
             get { return _isIncludePotentiallySupersededUpdate; }
 
@@ -373,7 +373,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedUpdateSource;
 
-        public ComboBoxItemModel SelectedUpdateSource
+        internal ComboBoxItemModel SelectedUpdateSource
         {
             get { return _selectedUpdateSource; }
 
@@ -399,7 +399,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public UpdateManagerPage()
+        internal UpdateManagerPage()
         {
             InitializeComponent();
             SelectedItem = UpdateManagerSelctorBar.Items[0];

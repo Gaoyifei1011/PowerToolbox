@@ -3,9 +3,9 @@
     /// <summary>
     /// 系统主题辅助类
     /// </summary>
-    public static class ThemeHelper
+    internal static class ThemeHelper
     {
-        public static bool AppsUseLightTheme { get; } = false;
+        internal static bool AppsUseLightTheme { get; } = false;
 
         static ThemeHelper()
         {

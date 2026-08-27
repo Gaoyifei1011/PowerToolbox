@@ -38,7 +38,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 文件恢复页面
     /// </summary>
-    public sealed partial class WinFRPage : Page, INotifyPropertyChanged
+    internal sealed partial class WinFRPage : Page, INotifyPropertyChanged
     {
         private bool isInitialized;
         private readonly string DriveImagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), "Imageres.dll");
@@ -79,7 +79,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isDriveLoadCompleted;
 
-        public bool IsDriveLoadCompleted
+        internal bool IsDriveLoadCompleted
         {
             get { return _isDriveLoadCompleted; }
 
@@ -95,7 +95,7 @@ namespace PowerToolbox.Views.Pages
 
         private DriveModel _selectedItem;
 
-        public DriveModel SelectedItem
+        internal DriveModel SelectedItem
         {
             get { return _selectedItem; }
 
@@ -111,7 +111,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isManualCloseInfoBar;
 
-        public bool IsManualCloseInfoBar
+        internal bool IsManualCloseInfoBar
         {
             get { return _isManualCloseInfoBar; }
 
@@ -127,7 +127,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isWinFRInstalled;
 
-        public bool IsWinFRInstalled
+        internal bool IsWinFRInstalled
         {
             get { return _isWinFRInstalled; }
 
@@ -143,7 +143,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _saveFolder;
 
-        public string SaveFolder
+        internal string SaveFolder
         {
             get { return _saveFolder; }
 
@@ -159,7 +159,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedRecoveryMode;
 
-        public ComboBoxItemModel SelectedRecoveryMode
+        internal ComboBoxItemModel SelectedRecoveryMode
         {
             get { return _selectedRecoveryMode; }
 
@@ -175,7 +175,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _useCustomLogFolder;
 
-        public bool UseCustomLogFolder
+        internal bool UseCustomLogFolder
         {
             get { return _useCustomLogFolder; }
 
@@ -191,7 +191,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _logSaveFolder;
 
-        public string LogSaveFolder
+        internal string LogSaveFolder
         {
             get { return _logSaveFolder; }
 
@@ -207,7 +207,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _regularRestoreContent;
 
-        public string RegularRestoreContent
+        internal string RegularRestoreContent
         {
             get { return _regularRestoreContent; }
 
@@ -223,7 +223,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedRegularDuplicatedFileOption;
 
-        public ComboBoxItemModel SelectedRegularDuplicatedFileOption
+        internal ComboBoxItemModel SelectedRegularDuplicatedFileOption
         {
             get { return _selectedRegularDuplicatedFileOption; }
 
@@ -239,7 +239,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _extensiveRestoreContent;
 
-        public string ExtensiveRestoreContent
+        internal string ExtensiveRestoreContent
         {
             get { return _extensiveRestoreContent; }
 
@@ -255,7 +255,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedExtensiveDuplicatedFileOption;
 
-        public ComboBoxItemModel SelectedExtensiveDuplicatedFileOption
+        internal ComboBoxItemModel SelectedExtensiveDuplicatedFileOption
         {
             get { return _selectedExtensiveDuplicatedFileOption; }
 
@@ -271,7 +271,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _ntfsRestoreContent;
 
-        public string NTFSRestoreContent
+        internal string NTFSRestoreContent
         {
             get { return _ntfsRestoreContent; }
 
@@ -287,7 +287,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _ntfsRestoreFromRecyclebin;
 
-        public bool NTFSRestoreFromRecyclebin
+        internal bool NTFSRestoreFromRecyclebin
         {
             get { return _ntfsRestoreFromRecyclebin; }
 
@@ -303,7 +303,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _ntfsRestoreSystemFile;
 
-        public bool NTFSRestoreSystemFile
+        internal bool NTFSRestoreSystemFile
         {
             get { return _ntfsRestoreSystemFile; }
 
@@ -319,7 +319,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedNTFSDuplicatedFileOption;
 
-        public ComboBoxItemModel SelectedNTFSDuplicatedFileOption
+        internal ComboBoxItemModel SelectedNTFSDuplicatedFileOption
         {
             get { return _selectedNTFSDuplicatedFileOption; }
 
@@ -335,7 +335,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _ntfsRestoreNonMainDataStream;
 
-        public bool NTFSRestoreNonMainDataStream
+        internal bool NTFSRestoreNonMainDataStream
         {
             get { return _ntfsRestoreNonMainDataStream; }
 
@@ -351,7 +351,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _ntfsUseCustomFileFilterType;
 
-        public bool NTFSUseCustomFileFilterType
+        internal bool NTFSUseCustomFileFilterType
         {
             get { return _ntfsUseCustomFileFilterType; }
 
@@ -367,7 +367,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _ntfsCustomFileFilterType;
 
-        public string NTFSCustomFileFilterType
+        internal string NTFSCustomFileFilterType
         {
             get { return _ntfsCustomFileFilterType; }
 
@@ -383,7 +383,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _segmentRestoreContent;
 
-        public string SegmentRestoreContent
+        internal string SegmentRestoreContent
         {
             get { return _segmentRestoreContent; }
 
@@ -399,7 +399,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _segmentRestoreFromRecyclebin;
 
-        public bool SegmentRestoreFromRecyclebin
+        internal bool SegmentRestoreFromRecyclebin
         {
             get { return _segmentRestoreFromRecyclebin; }
 
@@ -415,7 +415,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _segmentRestoreSystemFile;
 
-        public bool SegmentRestoreSystemFile
+        internal bool SegmentRestoreSystemFile
         {
             get { return _segmentRestoreSystemFile; }
 
@@ -431,7 +431,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedSegmentDuplicatedFileOption;
 
-        public ComboBoxItemModel SelectedSegmentDuplicatedFileOption
+        internal ComboBoxItemModel SelectedSegmentDuplicatedFileOption
         {
             get { return _selectedSegmentDuplicatedFileOption; }
 
@@ -447,7 +447,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _segmentRestoreNonMainDataStream;
 
-        public bool SegmentRestoreNonMainDataStream
+        internal bool SegmentRestoreNonMainDataStream
         {
             get { return _segmentRestoreNonMainDataStream; }
 
@@ -463,7 +463,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _segmentUseCustomFileFilterType;
 
-        public bool SegmentUseCustomFileFilterType
+        internal bool SegmentUseCustomFileFilterType
         {
             get { return _segmentUseCustomFileFilterType; }
 
@@ -479,7 +479,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _segmentCustomFileFilterType;
 
-        public string SegmentCustomFileFilterType
+        internal string SegmentCustomFileFilterType
         {
             get { return _segmentCustomFileFilterType; }
 
@@ -495,7 +495,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _segmentSourceDeviceNumberSectors;
 
-        public int SegmentSourceDeviceNumberSectors
+        internal int SegmentSourceDeviceNumberSectors
         {
             get { return _segmentSourceDeviceNumberSectors; }
 
@@ -511,7 +511,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _segmentSourceDeviceClusterSize;
 
-        public int SegmentSourceDeviceClusterSize
+        internal int SegmentSourceDeviceClusterSize
         {
             get { return _segmentSourceDeviceClusterSize; }
 
@@ -527,7 +527,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _signatureUseRestoreSpecificExtensionGroups;
 
-        public bool SignatureUseRestoreSpecificExtensionGroups
+        internal bool SignatureUseRestoreSpecificExtensionGroups
         {
             get { return _signatureUseRestoreSpecificExtensionGroups; }
 
@@ -543,7 +543,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _signatureRestoreSpecificExtensionGroupsType;
 
-        public string SignatureRestoreSpecificExtensionGroupsType
+        internal string SignatureRestoreSpecificExtensionGroupsType
         {
             get { return _signatureRestoreSpecificExtensionGroupsType; }
 
@@ -559,7 +559,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _signatureSourceDeviceNumberSectors;
 
-        public int SignatureSourceDeviceNumberSectors
+        internal int SignatureSourceDeviceNumberSectors
         {
             get { return _signatureSourceDeviceNumberSectors; }
 
@@ -575,7 +575,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _signatureSourceDeviceClusterSize;
 
-        public int SignatureSourceDeviceClusterSize
+        internal int SignatureSourceDeviceClusterSize
         {
             get { return _signatureSourceDeviceClusterSize; }
 
@@ -605,7 +605,7 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public WinFRPage()
+        internal WinFRPage()
         {
             InitializeComponent();
 

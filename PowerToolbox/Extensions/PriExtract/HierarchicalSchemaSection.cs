@@ -5,23 +5,23 @@ using System.Text;
 
 namespace PowerToolbox.Extensions.PriExtract
 {
-    public sealed class HierarchicalSchemaSection
+    internal sealed class HierarchicalSchemaSection
     {
-        public uint SectionQualifier { get; private set; }
+        internal uint SectionQualifier { get; private set; }
 
-        public uint Flags { get; private set; }
+        internal uint Flags { get; private set; }
 
-        public uint SectionFlags { get; private set; }
+        internal uint SectionFlags { get; private set; }
 
-        public uint SectionLength { get; private set; }
+        internal uint SectionLength { get; private set; }
 
-        public HierarchicalSchemaVersion Version { get; private set; }
-        public string UniqueName { get; private set; }
-        public string Name { get; private set; }
-        public IReadOnlyList<ResourceMapScopeAndItem> ScopesList { get; private set; }
-        public IReadOnlyList<ResourceMapScopeAndItem> ItemsList { get; private set; }
+        internal HierarchicalSchemaVersion Version { get; private set; }
+        internal string UniqueName { get; private set; }
+        internal string Name { get; private set; }
+        internal IReadOnlyList<ResourceMapScopeAndItem> ScopesList { get; private set; }
+        internal IReadOnlyList<ResourceMapScopeAndItem> ItemsList { get; private set; }
 
-        public HierarchicalSchemaSection(string sectionIdentifier, BinaryReader binaryReader, bool extendedVersion)
+        internal HierarchicalSchemaSection(string sectionIdentifier, BinaryReader binaryReader, bool extendedVersion)
         {
             if (!string.Equals(new(binaryReader.ReadChars(16)), sectionIdentifier))
             {
