@@ -13,13 +13,10 @@ namespace PowerToolbox.Extensions.Encrypt
     {
         internal SM4()
         {
-            // SM4 参数
             BlockSizeValue = 128;
             KeySizeValue = 128;
             LegalBlockSizesValue = [new(128, 128, 0)];
             LegalKeySizesValue = [new(128, 128, 0)];
-
-            // 默认参数
             Mode = CipherMode.CBC;
             Padding = PaddingMode.PKCS7;
         }

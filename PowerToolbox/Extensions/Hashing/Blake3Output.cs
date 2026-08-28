@@ -17,6 +17,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         internal void RootOutputBytes(ref byte[] outSlice)
         {
+            if (outSlice is null)
+            {
+                return;
+            }
+
             ulong outputBlockCounter = 0;
             for (int i = 0; i < outSlice.Length; i += 2 * (int)Blake3Constants.OutLen)
             {

@@ -43,6 +43,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
+            if (array is null)
+            {
+                return;
+            }
+
             for (int i = ibStart; i < ibStart + cbSize; i++)
             {
                 currentHash = (currentHash >> 8) ^ crc32Table[array[i] ^ currentHash & 0xff];

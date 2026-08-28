@@ -7,13 +7,9 @@ namespace PowerToolbox.Extensions.Encrypt
     /// </summary>
     internal sealed class Rabbit : SymmetricAlgorithm
     {
-        #region Constants
-
         private const int KeySizeInBits = 128;
         private const int IVSizeInBits = 64;
         private const int BlockSizeInBits = 64;
-
-        #endregion Constants
 
         /// <summary>
         /// 创建一个新实例
@@ -25,21 +21,18 @@ namespace PowerToolbox.Extensions.Encrypt
             FeedbackSizeValue = BlockSizeValue;
             LegalBlockSizesValue = [new(BlockSizeInBits, BlockSizeInBits, 0)];  // 128-bit
             LegalKeySizesValue = [new(KeySizeInBits, KeySizeInBits, 0)];  // 128-bit
-
             Mode = CipherMode.CBC;  // same as default
             Padding = PaddingMode.None;
         }
 
-        #region SymmetricAlgorithm
-
         public override ICryptoTransform CreateDecryptor(byte[] rgbKey, byte[] rgbIV)
         {
-            return new RabbitTransform(rgbKey, rgbIV, false, Padding);
+            return new RabbitCryptoTransform(rgbKey, rgbIV, false, Padding);
         }
 
         public override ICryptoTransform CreateEncryptor(byte[] rgbKey, byte[] rgbIV)
         {
-            return new RabbitTransform(rgbKey, rgbIV, true, Padding);
+            return new RabbitCryptoTransform(rgbKey, rgbIV, true, Padding);
         }
 
         public override void GenerateIV()
@@ -56,17 +49,16 @@ namespace PowerToolbox.Extensions.Encrypt
             RandomNumberGenerator.Create().GetBytes(KeyValue);
         }
 
-        #endregion SymmetricAlgorithm
-
-        #region SymmetricAlgorithm Overrides
-
         public override int BlockSize
         {
             get { return base.BlockSize; }
 
             set
             {
-                if (value is not BlockSizeInBits) { throw new CryptographicException("Block size must be 128 bits."); }
+                if (value is not BlockSizeInBits)
+                {
+                    throw new CryptographicException("Block size must be 128 bits.");
+                }
                 BlockSizeValue = value;
             }
         }
@@ -102,7 +94,7 @@ namespace PowerToolbox.Extensions.Encrypt
 
             set
             {
-                PaddingValue = value switch
+                base.Padding = value switch
                 {
                     PaddingMode.None => value,
                     PaddingMode.PKCS7 => value,
@@ -113,7 +105,5 @@ namespace PowerToolbox.Extensions.Encrypt
                 };
             }
         }
-
-        #endregion SymmetricAlgorithm Overrides
     }
 }

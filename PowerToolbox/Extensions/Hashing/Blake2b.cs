@@ -38,11 +38,9 @@ namespace PowerToolbox.Extensions.Hashing
 
         private readonly ulong[] m = new ulong[16];
         private readonly ulong[] v = new ulong[16];
-
         private readonly byte[] buffer = new byte[BlockBytes];
         private int bufferPos;
         private ulong totalBytes;
-
         private readonly int hashLength;
         private readonly byte[] key;
 
@@ -124,6 +122,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private void Update(byte[] data, int offset, int count)
         {
+            if (data is null)
+            {
+                return;
+            }
+
             int pos = offset;
             int remaining = count;
             while (remaining > 0)
@@ -134,32 +137,47 @@ namespace PowerToolbox.Extensions.Hashing
                 pos += take;
                 remaining -= take;
 
-                if (bufferPos == BlockBytes)
+                if (bufferPos is BlockBytes)
                 {
                     // compress full block
                     Compress(buffer, 0, false);
-                    totalBytes += (ulong)BlockBytes;
+                    totalBytes += BlockBytes;
                     bufferPos = 0;
                 }
             }
         }
 
-        private static ulong ROR(ulong x, int n) => (x >> n) | (x << (64 - n));
+        private static ulong ROR(ulong x, int n)
+        {
+            return (x >> n) | (x << (64 - n));
+        }
 
         private void Compress(byte[] block, int offset, bool isLast)
         {
+            if (block is null)
+            {
+                return;
+            }
+
             // load message words m[0..15] as little-endian
             for (int i = 0; i < 16; i++)
             {
                 int j = offset + i * 8;
                 ulong v0 = 0UL;
-                for (int b = 0; b < 8; b++) v0 |= ((ulong)block.Length > (uint)j + (uint)b ? (ulong)block[j + b] : 0UL) << (8 * b);
+                for (int b = 0; b < 8; b++) v0 |= ((ulong)block.Length > (uint)j + (uint)b ? block[j + b] : 0UL) << (8 * b);
                 m[i] = v0;
             }
 
             // initialize v
-            for (int i = 0; i < 8; i++) v[i] = h[i];
-            for (int i = 0; i < 8; i++) v[i + 8] = IV[i];
+            for (int i = 0; i < 8; i++)
+            {
+                v[i] = h[i];
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                v[i + 8] = IV[i];
+            }
 
             // counter t: total bytes compressed so far + block length
             // we use little-endian 128-bit counter split into v[12], v[13]
@@ -189,7 +207,9 @@ namespace PowerToolbox.Extensions.Hashing
             }
 
             for (int i = 0; i < 8; i++)
+            {
                 h[i] ^= v[i] ^ v[i + 8];
+            }
         }
 
         /// <summary>

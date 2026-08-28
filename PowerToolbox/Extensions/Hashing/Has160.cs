@@ -10,24 +10,12 @@ namespace PowerToolbox.Extensions.Hashing
     {
         private const int BlockSizeBytes = 64; // 512 bits
         private readonly byte[] _buffer = new byte[BlockSizeBytes];
-        private int _bufferPos;                 // number bytes currently in buffer
-        private ulong _byteCount;               // total message bytes processed
+        private int _bufferPos; // number bytes currently in buffer
+        private ulong _byteCount; // total message bytes processed
         private readonly uint[] _h = new uint[5]; // chaining variables H0..H4
-
-        // rotation sequence for A (20 values, repeated each block)
-        private static readonly byte[] A_ROT =
-        [
-            5,11,7,15,6,13,8,14,7,12,9,11,8,15,6,12,9,14,5,13
-        ];
-
-        // rotation for B per round (round 0..3)
-        private static readonly byte[] B_ROT = [10, 17, 25, 30];
-
-        // round constants
-        private static readonly uint[] K =
-        [
-            0x00000000u, 0x5A827999u, 0x6ED9EBA1u, 0x8F1BBCDCu
-        ];
+        private static readonly byte[] A_ROT = [5, 11, 7, 15, 6, 13, 8, 14, 7, 12, 9, 11, 8, 15, 6, 12, 9, 14, 5, 13]; // rotation sequence for A (20 values, repeated each block)
+        private static readonly byte[] B_ROT = [10, 17, 25, 30]; // rotation for B per round (round 0..3)
+        private static readonly uint[] K = [0x00000000u, 0x5A827999u, 0x6ED9EBA1u, 0x8F1BBCDCu]; // round constants
 
         // message orders per round (20 indices each)
         private static readonly int[][] MSG_ORDER =
@@ -106,7 +94,6 @@ namespace PowerToolbox.Extensions.Hashing
 
             int offset = ibStart;
             int remaining = cbSize;
-
             _byteCount += (ulong)cbSize;
 
             // fill buffer to full blocks
@@ -195,6 +182,11 @@ namespace PowerToolbox.Extensions.Hashing
         /// </summary>
         private void ProcessBlock(byte[] block, int offset)
         {
+            if (block is null)
+            {
+                return;
+            }
+
             // load 16 words W[0..15] in little-endian
             uint[] W = new uint[16];
             for (int i = 0; i < 16; i++)

@@ -11,6 +11,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         internal static T[] Slice<T>(this T[] self, int index, int length)
         {
+            if (self is null)
+            {
+                return default;
+            }
+
             T[] slice = new T[length];
             Array.Copy(self, index, slice, 0, length);
             return slice;
@@ -18,6 +23,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         internal static uint FromLeBytes(byte[] bytes)
         {
+            if (bytes is null)
+            {
+                return default;
+            }
+
             if (BitConverter.IsLittleEndian)
             {
                 return BitConverter.ToUInt32(bytes, 0);

@@ -6,6 +6,11 @@ namespace PowerToolbox.Extensions.Hashing
     {
         internal static void G(ref uint[] state, uint a, uint b, uint c, uint d, uint mx, uint my)
         {
+            if (state is null)
+            {
+                return;
+            }
+
             state[a] = state[a] + state[b] + mx;
             state[d] = (state[d] ^ state[a]).RotateRight(16);
             state[c] = state[c] + state[d];
@@ -18,6 +23,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         internal static void Round(ref uint[] state, uint[] m)
         {
+            if (state is null)
+            {
+                return;
+            }
+
             G(ref state, 0, 4, 8, 12, m[0], m[1]);
             G(ref state, 1, 5, 9, 13, m[2], m[3]);
             G(ref state, 2, 6, 10, 14, m[4], m[5]);
@@ -30,6 +40,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         internal static void Permute(ref uint[] m)
         {
+            if (m is null)
+            {
+                return;
+            }
+
             uint[] permuted = new uint[16];
             for (int i = 0; i < 16; i++)
             {
@@ -40,6 +55,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         internal static uint[] Compress(uint[] chainingValue, uint[] blockWords, ulong counter, uint blockLen, uint flags)
         {
+            if (chainingValue is null || blockWords is null)
+            {
+                return default;
+            }
+
             uint[] state =
             [
                 chainingValue[0], chainingValue[1], chainingValue[2],
@@ -75,11 +95,21 @@ namespace PowerToolbox.Extensions.Hashing
 
         internal static uint[] First8Words(uint[] compressionOutput)
         {
+            if (compressionOutput is null)
+            {
+                return default;
+            }
+
             return compressionOutput.Slice(0, 8);
         }
 
         internal static void WordsFromLittleEndianBytes(byte[] bytes, ref uint[] words)
         {
+            if (bytes is null || words is null)
+            {
+                return;
+            }
+
             for (int i = 0, j = 0; i < bytes.Length; i += 4, j++)
             {
                 byte[] bytesBlock = bytes.Slice(i, 4);
@@ -89,6 +119,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         internal static Blake3Output ParentOutput(uint[] leftChildCv, uint[] rightChildCv, uint[] key, uint flags)
         {
+            if (leftChildCv is null || rightChildCv is null || key is null)
+            {
+                return default;
+            }
+
             uint[] blockWords = new uint[16];
             Array.Copy(leftChildCv, 0, blockWords, 0, 8);
             Array.Copy(rightChildCv, 0, blockWords, 8, 8);
@@ -104,6 +139,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         internal static uint[] ParentCv(uint[] leftChildCv, uint[] rightChildCv, uint[] key, uint flags)
         {
+            if (leftChildCv is null || rightChildCv is null || key is null)
+            {
+                return default;
+            }
+
             return ParentOutput(leftChildCv, rightChildCv, key, flags).ChainingValue();
         }
     }

@@ -3,25 +3,20 @@ using System.Security.Cryptography;
 
 namespace PowerToolbox.Extensions.Encrypt
 {
-    internal class RC6Transform(byte[] key, byte[] iv, bool encrypt, CipherMode mode, PaddingMode padding) : ICryptoTransform
+    internal class RC6CryptoTransform(byte[] key, byte[] iv, bool encrypt, CipherMode mode, PaddingMode padding) : ICryptoTransform
     {
         private const int BLOCK_SIZE = 16;
         private const int R = 20;
         private const uint P32 = 0xB7E15163;
         private const uint Q32 = 0x9E3779B9;
-
         private readonly uint[] S = GenerateKeySchedule(key);
         private readonly bool encrypt = encrypt;
         private readonly byte[] IV = iv != null ? (byte[])iv.Clone() : new byte[BLOCK_SIZE];
         private readonly CipherMode mode = mode;
         private readonly PaddingMode padding = padding;
-
         public bool CanTransformMultipleBlocks => true;
-
         public bool CanReuseTransform => false;
-
         public int InputBlockSize => BLOCK_SIZE;
-
         public int OutputBlockSize => BLOCK_SIZE;
 
         public void Dispose()
@@ -31,8 +26,13 @@ namespace PowerToolbox.Extensions.Encrypt
 
         private static uint[] GenerateKeySchedule(byte[] key)
         {
+            if (key is null)
+            {
+                return default;
+            }
+
             int c = key.Length / 4;
-            if (key.Length % 4 != 0)
+            if (key.Length % 4 is not 0)
             {
                 c++;
             }
@@ -77,6 +77,11 @@ namespace PowerToolbox.Extensions.Encrypt
 
         private void EncryptBlock(byte[] input, byte[] output)
         {
+            if (input is null || output is null)
+            {
+                return;
+            }
+
             uint A = BitConverter.ToUInt32(input, 0);
             uint B = BitConverter.ToUInt32(input, 4);
             uint C = BitConverter.ToUInt32(input, 8);
@@ -107,6 +112,11 @@ namespace PowerToolbox.Extensions.Encrypt
 
         private void DecryptBlock(byte[] input, byte[] output)
         {
+            if (input is null || output is null)
+            {
+                return;
+            }
+
             uint A = BitConverter.ToUInt32(input, 0);
             uint B = BitConverter.ToUInt32(input, 4);
             uint C = BitConverter.ToUInt32(input, 8);
@@ -137,52 +147,57 @@ namespace PowerToolbox.Extensions.Encrypt
 
         public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
         {
+            if (inputBuffer is null || outputBuffer is null)
+            {
+                return default;
+            }
+
             byte[] block = new byte[BLOCK_SIZE];
             Array.Copy(inputBuffer, inputOffset, block, 0, BLOCK_SIZE);
-
             byte[] outBlock = new byte[BLOCK_SIZE];
 
             switch (mode)
             {
                 case CipherMode.ECB:
-                    if (encrypt)
                     {
-                        EncryptBlock(block, outBlock);
+                        if (encrypt)
+                        {
+                            EncryptBlock(block, outBlock);
+                        }
+                        else
+                        {
+                            DecryptBlock(block, outBlock);
+                        }
+                        break;
                     }
-                    else
-                    {
-                        DecryptBlock(block, outBlock);
-                    }
-
-                    break;
-
                 case CipherMode.CBC:
-                    if (encrypt)
                     {
-                        for (int i = 0; i < BLOCK_SIZE; i++)
+                        if (encrypt)
                         {
-                            block[i] ^= IV[i];
+                            for (int i = 0; i < BLOCK_SIZE; i++)
+                            {
+                                block[i] ^= IV[i];
+                            }
+
+                            EncryptBlock(block, outBlock);
+                            Buffer.BlockCopy(outBlock, 0, IV, 0, BLOCK_SIZE);
                         }
-
-                        EncryptBlock(block, outBlock);
-                        Buffer.BlockCopy(outBlock, 0, IV, 0, BLOCK_SIZE);
-                    }
-                    else
-                    {
-                        byte[] temp = new byte[BLOCK_SIZE];
-                        Array.Copy(block, temp, BLOCK_SIZE);
-
-                        DecryptBlock(block, outBlock);
-
-                        for (int i = 0; i < BLOCK_SIZE; i++)
+                        else
                         {
-                            outBlock[i] ^= IV[i];
+                            byte[] temp = new byte[BLOCK_SIZE];
+                            Array.Copy(block, temp, BLOCK_SIZE);
+
+                            DecryptBlock(block, outBlock);
+
+                            for (int i = 0; i < BLOCK_SIZE; i++)
+                            {
+                                outBlock[i] ^= IV[i];
+                            }
+
+                            Buffer.BlockCopy(temp, 0, IV, 0, BLOCK_SIZE);
                         }
-
-                        Buffer.BlockCopy(temp, 0, IV, 0, BLOCK_SIZE);
+                        break;
                     }
-                    break;
-
                 case CipherMode.CFB:
                     {
                         byte[] keystream = new byte[BLOCK_SIZE];
@@ -194,9 +209,8 @@ namespace PowerToolbox.Extensions.Encrypt
                         }
 
                         Buffer.BlockCopy(encrypt ? outBlock : block, 0, IV, 0, BLOCK_SIZE);
+                        break;
                     }
-                    break;
-
                 case CipherMode.OFB:
                     {
                         EncryptBlock(IV, IV);
@@ -204,26 +218,28 @@ namespace PowerToolbox.Extensions.Encrypt
                         {
                             outBlock[i] = (byte)(block[i] ^ IV[i]);
                         }
+                        break;
                     }
-                    break;
-
                 case CipherMode.CTS:
                     {
                         throw new NotSupportedException("CTS 请用 TransformFinalBlock 内部处理");
                     }
-
                 default:
                     {
                         throw new CryptographicException("不支持的 CipherMode");
                     }
             }
-
             Buffer.BlockCopy(outBlock, 0, outputBuffer, outputOffset, BLOCK_SIZE);
             return BLOCK_SIZE;
         }
 
         public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
         {
+            if (inputBuffer is null)
+            {
+                return default;
+            }
+
             if (mode is CipherMode.CTS)
             {
                 return ProcessCTS(inputBuffer, inputOffset, inputCount);
@@ -260,6 +276,11 @@ namespace PowerToolbox.Extensions.Encrypt
 
         private byte[] ApplyPadding(byte[] data, int offset, int count)
         {
+            if (data is null)
+            {
+                return default;
+            }
+
             int pad = BLOCK_SIZE - count % BLOCK_SIZE;
             byte[] result = new byte[count + pad];
             Array.Copy(data, offset, result, 0, count);
@@ -278,7 +299,6 @@ namespace PowerToolbox.Extensions.Encrypt
                         }
                         break;
                     }
-
                 case PaddingMode.ANSIX923:
                     {
                         result[result.Length - 1] = (byte)pad;
@@ -291,9 +311,8 @@ namespace PowerToolbox.Extensions.Encrypt
                             randomNumberGenerator.GetBytes(result, count, pad - 1);
                         }
                         result[result.Length - 1] = (byte)pad;
+                        break;
                     }
-                    break;
-
                 default:
                     {
                         throw new CryptographicException("不支持 PaddingMode.None 的自动填充");
@@ -305,13 +324,17 @@ namespace PowerToolbox.Extensions.Encrypt
 
         private byte[] RemovePadding(byte[] data)
         {
+            if (data is null)
+            {
+                return default;
+            }
+
             switch (padding)
             {
                 case PaddingMode.None:
                     {
                         return data;
                     }
-
                 case PaddingMode.Zeros:
                     {
                         int i = data.Length;
@@ -341,6 +364,11 @@ namespace PowerToolbox.Extensions.Encrypt
 
         private byte[] ProcessCTS(byte[] input, int offset, int count)
         {
+            if (input is null)
+            {
+                return default;
+            }
+
             int full = count / BLOCK_SIZE * BLOCK_SIZE;
             int remain = count % BLOCK_SIZE;
 

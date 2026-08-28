@@ -85,6 +85,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
+            if (array is null)
+            {
+                return;
+            }
+
             crc64Result = ~crc64Result;
             for (int i = 0; i < cbSize; i++)
             {

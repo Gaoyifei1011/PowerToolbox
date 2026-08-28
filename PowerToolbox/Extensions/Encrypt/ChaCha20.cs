@@ -94,6 +94,31 @@ namespace PowerToolbox.Extensions.Encrypt
         /// </summary>
         internal static byte[] Decrypt(byte[] key, byte[] nonce, byte[] ciphertext, uint counter = 0)
         {
+            if (key is null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            if (nonce is null)
+            {
+                throw new ArgumentNullException(nameof(nonce));
+            }
+
+            if (ciphertext is null)
+            {
+                throw new ArgumentNullException(nameof(ciphertext));
+            }
+
+            if (key.Length is not 32)
+            {
+                throw new ArgumentException("Key must be 32 bytes.", nameof(key));
+            }
+
+            if (nonce.Length is not 12)
+            {
+                throw new ArgumentException("Nonce must be 12 bytes.", nameof(nonce));
+            }
+
             return Encrypt(key, nonce, ciphertext, counter);
         }
 
@@ -102,6 +127,11 @@ namespace PowerToolbox.Extensions.Encrypt
         /// </summary>
         private static void GenerateBlock(byte[] key, byte[] nonce, uint counter, byte[] output)
         {
+            if (key is null || nonce is null || output is null || key.Length is 0 || nonce.Length is 0 || output.Length is 0)
+            {
+                return;
+            }
+
             uint[] state = new uint[16];
             uint[] working = new uint[16];
 
@@ -170,6 +200,11 @@ namespace PowerToolbox.Extensions.Encrypt
 
         private static uint ToUInt32LittleEndian(byte[] buf, int offset)
         {
+            if (buf is null || buf.Length is 0)
+            {
+                return default;
+            }
+
             if (BitConverter.IsLittleEndian)
             {
                 return BitConverter.ToUInt32(buf, offset);
@@ -177,15 +212,17 @@ namespace PowerToolbox.Extensions.Encrypt
             else
             {
                 // Big-endian machine: reverse 4 bytes
-                return (uint)buf[offset]
-                     | (uint)buf[offset + 1] << 8
-                     | (uint)buf[offset + 2] << 16
-                     | (uint)buf[offset + 3] << 24;
+                return buf[offset] | (uint)buf[offset + 1] << 8 | (uint)buf[offset + 2] << 16 | (uint)buf[offset + 3] << 24;
             }
         }
 
         private static void WriteUInt32LittleEndian(byte[] buf, int offset, uint value)
         {
+            if (buf is null || buf.Length is 0)
+            {
+                return;
+            }
+
             if (BitConverter.IsLittleEndian)
             {
                 byte[] tmp = BitConverter.GetBytes(value);

@@ -51,11 +51,14 @@ namespace PowerToolbox.Extensions.Hashing
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
-            int i;
+            if (array is null)
+            {
+                return;
+            }
 
+            int i;
             int index = count;
             count = (index + cbSize) & 0xf;
-
             int partLength = 16 - index;
 
             if (cbSize >= partLength)
@@ -100,6 +103,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private void Transform(byte[] state, byte[] checksum, byte[] block, int index)
         {
+            if (state is null || checksum is null || block is null)
+            {
+                return;
+            }
+
             Buffer.BlockCopy(state, 0, X, 0, 16);
             Buffer.BlockCopy(block, index, X, 16, 16);
 

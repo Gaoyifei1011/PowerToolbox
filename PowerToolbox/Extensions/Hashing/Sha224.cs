@@ -55,6 +55,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
+            if (array is null)
+            {
+                return;
+            }
+
             int i;
 
             if (processingBufferCount is not 0)
@@ -91,7 +96,6 @@ namespace PowerToolbox.Extensions.Hashing
         protected override byte[] HashFinal()
         {
             ProcessFinalBlock(processingBuffer, 0, processingBufferCount);
-
             byte[] hashBuffer = new byte[28];
             for (int i = 0; i < 7; i++)
             {
@@ -107,6 +111,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private void ProcessBlock(byte[] inputBuffer, int inputOffset)
         {
+            if (inputBuffer is null)
+            {
+                return;
+            }
+
             count += 64;
 
             for (int i = 0; i < 16; i++)
@@ -165,6 +174,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private void ProcessFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
         {
+            if (inputBuffer is null)
+            {
+                return;
+            }
+
             ulong total = count + (ulong)inputCount;
             int paddingSize = 56 - (int)(total % 64);
 
@@ -198,6 +212,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private static void AddLength(ulong length, byte[] buffer, int position)
         {
+            if (buffer is null)
+            {
+                return;
+            }
+
             buffer[position++] = (byte)(length >> 56);
             buffer[position++] = (byte)(length >> 48);
             buffer[position++] = (byte)(length >> 40);

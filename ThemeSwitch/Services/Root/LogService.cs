@@ -63,6 +63,11 @@ namespace ThemeSwitch.Services.Root
         /// </summary>
         internal static void WriteLog(TraceEventType traceEventType, string nameSpaceName, string className, string methodName, int index, Exception exception)
         {
+            if (string.IsNullOrEmpty(nameSpaceName) || string.IsNullOrEmpty(className) || string.IsNullOrEmpty(methodName) || exception is null)
+            {
+                return;
+            }
+
             Task.Run(() =>
             {
                 if (logSemaphoreSlim is not null)

@@ -6,10 +6,15 @@
     internal static class CaesarCipher
     {
         /// <summary>
-        /// 凯撒密码加密
+        /// 加密
         /// </summary>
         internal static string CaesarEncrypt(string input, int offset)
         {
+            if (string.IsNullOrEmpty(input))
+            {
+                return default;
+            }
+
             char[] charArray = input.ToCharArray();
             for (int i = 0; i < charArray.Length; i++)
             {
@@ -24,10 +29,15 @@
         }
 
         /// <summary>
-        /// 凯撒密码解密
+        /// 解密
         /// </summary>
         internal static string CaesarDecrypt(string input, int offset)
         {
+            if (string.IsNullOrEmpty(input))
+            {
+                return default;
+            }
+
             return CaesarEncrypt(input, 26 - (offset % 26));
         }
     }

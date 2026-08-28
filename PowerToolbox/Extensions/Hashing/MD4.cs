@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 
 namespace PowerToolbox.Extensions.Hashing
 {
@@ -25,6 +26,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
+            if (array is null)
+            {
+                return;
+            }
+
             int n = (int)(hashedLength % BLOCKLENGTH);
             int partLen = BLOCKLENGTH - n;
             int i = 0;
@@ -32,7 +38,7 @@ namespace PowerToolbox.Extensions.Hashing
 
             if (cbSize >= partLen)
             {
-                System.Buffer.BlockCopy(array, ibStart, buffer, n, partLen);
+                Buffer.BlockCopy(array, ibStart, buffer, n, partLen);
                 TransformMd4Block(buffer, 0);
                 i = partLen;
                 while (i + BLOCKLENGTH - 1 < cbSize)
@@ -42,7 +48,10 @@ namespace PowerToolbox.Extensions.Hashing
                 }
                 n = 0;
             }
-            if (i < cbSize) System.Buffer.BlockCopy(array, ibStart + i, buffer, n, cbSize - i);
+            if (i < cbSize)
+            {
+                Buffer.BlockCopy(array, ibStart + i, buffer, n, cbSize - i);
+            }
         }
 
         protected override byte[] HashFinal()
@@ -50,7 +59,8 @@ namespace PowerToolbox.Extensions.Hashing
             byte[] tail = PadBuffer();
             HashCore(tail, 0, tail.Length);
 
-            return [
+            return
+            [
                 (byte)(A), (byte)(A >> 8), (byte)(A >> 16), (byte)(A >> 24),
                 (byte)(B), (byte)(B >> 8), (byte)(B >> 16), (byte)(B >> 24),
                 (byte)(C), (byte)(C >> 8), (byte)(C >> 16), (byte)(C >> 24),
@@ -77,7 +87,7 @@ namespace PowerToolbox.Extensions.Hashing
             buffer = (byte[])state.Buffer.Clone();
         }
 
-        protected byte[] PadBuffer()
+        private byte[] PadBuffer()
         {
             int padding;
             int n = (int)(hashedLength % BLOCKLENGTH);
@@ -97,8 +107,13 @@ namespace PowerToolbox.Extensions.Hashing
             return pad;
         }
 
-        protected void TransformMd4Block(byte[] bytes, int i)
+        private void TransformMd4Block(byte[] bytes, int i)
         {
+            if (bytes is null)
+            {
+                return;
+            }
+
             uint x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, xA, xB, xC, xD, xE, xF;
             x0 = (bytes[i] & 0xFFU) | (bytes[i + 1] & 0xFFU) << 8 | (bytes[i + 2] & 0xFFU) << 16 | (uint)(bytes[i + 3]) << 24;
             x1 = (bytes[i + 4] & 0xFFU) | (bytes[i + 5] & 0xFFU) << 8 | (bytes[i + 6] & 0xFFU) << 16 | (uint)(bytes[i + 7]) << 24;
@@ -227,28 +242,6 @@ namespace PowerToolbox.Extensions.Hashing
             B += bb;
             C += cc;
             D += dd;
-        }
-
-        internal struct InternalState
-        {
-            internal uint A, B, C, D;
-            internal long hashedLength;
-            internal byte[] Buffer;
-
-            internal InternalState(long hashedLength, uint A, uint B, uint C, uint D, byte[] Buffer)
-            {
-                this.hashedLength = hashedLength;
-                this.A = A;
-                this.B = B;
-                this.C = C;
-                this.D = D;
-                this.Buffer = (byte[])Buffer.Clone();
-            }
-        }
-
-        internal InternalState GetState()
-        {
-            return new(hashedLength, A, B, C, D, buffer);
         }
     }
 }

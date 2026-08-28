@@ -17,7 +17,7 @@ namespace PowerToolbox.Extensions.Encrypt
         }
 
         /// <summary>
-        /// 创建加密对象的实例以执行RC4算法。
+        /// 创建加密对象的实例以执行 RC4 算法。
         /// </summary>
         internal new static RC4 Create()
         {
@@ -29,6 +29,11 @@ namespace PowerToolbox.Extensions.Encrypt
         /// </summary>
         internal new static RC4 Create(string algName)
         {
+            if (string.IsNullOrEmpty(algName))
+            {
+                return default;
+            }
+
             object alg = CryptoConfig.CreateFromName(algName);
             alg ??= new RC4CryptoTransform();
             return alg as RC4;

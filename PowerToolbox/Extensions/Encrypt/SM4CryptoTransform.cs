@@ -5,17 +5,18 @@ namespace PowerToolbox.Extensions.Encrypt
 {
     internal class SM4CryptoTransform : ICryptoTransform
     {
-        private readonly uint[] rk; // round keys
+        private readonly uint[] rk;
         private readonly byte[] iv;
         private readonly CipherMode mode;
         private readonly PaddingMode padding;
         private readonly bool encrypting;
-        private const int BlockSize = 16; // bytes
-
-        // state for feedback modes:
-        private readonly byte[] feedback; // previous cipher/block for CBC/CFB/OFB
-
+        private const int BlockSize = 16;
+        private readonly byte[] feedback;
         private bool finalized = false;
+        public bool CanReuseTransform => false;
+        public bool CanTransformMultipleBlocks => true;
+        public int InputBlockSize => BlockSize;
+        public int OutputBlockSize => BlockSize;
 
         internal SM4CryptoTransform(byte[] key, byte[] iv, CipherMode mode, PaddingMode padding, bool encrypting)
         {
@@ -26,14 +27,6 @@ namespace PowerToolbox.Extensions.Encrypt
             this.encrypting = encrypting;
             feedback = (byte[])this.iv.Clone();
         }
-
-        public bool CanReuseTransform => false;
-
-        public bool CanTransformMultipleBlocks => true;
-
-        public int InputBlockSize => BlockSize;
-
-        public int OutputBlockSize => BlockSize;
 
         public void Dispose()
         {
@@ -60,6 +53,11 @@ namespace PowerToolbox.Extensions.Encrypt
         /// </summary>
         public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
         {
+            if (inputBuffer is null || outputBuffer is null)
+            {
+                return default;
+            }
+
             if (finalized)
             {
                 throw new InvalidOperationException("Transform already finalized.");
@@ -81,7 +79,7 @@ namespace PowerToolbox.Extensions.Encrypt
             for (int pos = 0; pos < inputCount; pos += BlockSize)
             {
                 Buffer.BlockCopy(inputBuffer, inputOffset + pos, outputBuffer, outputOffset + pos, BlockSize);
-                ProcessBlockInternal(outputBuffer, outputOffset + pos, true, outputBuffer, outputOffset + pos, blockCopyMode: true);
+                ProcessBlockInternal(outputBuffer, outputOffset + pos, outputBuffer, outputOffset + pos);
                 processed += BlockSize;
             }
 
@@ -93,6 +91,11 @@ namespace PowerToolbox.Extensions.Encrypt
         /// </summary>
         public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
         {
+            if (inputBuffer is null)
+            {
+                return default;
+            }
+
             if (finalized)
             {
                 throw new InvalidOperationException("Transform already finalized.");
@@ -118,7 +121,7 @@ namespace PowerToolbox.Extensions.Encrypt
 
                 for (int off = 0; off < outLen; off += BlockSize)
                 {
-                    ProcessBlockInternal(dataWithPad, off, true, outBuf, off, blockCopyMode: false);
+                    ProcessBlockInternal(dataWithPad, off, outBuf, off);
                 }
                 return outBuf;
             }
@@ -133,7 +136,7 @@ namespace PowerToolbox.Extensions.Encrypt
                 byte[] tmp = new byte[inputCount];
                 for (int off = 0; off < inputCount; off += BlockSize)
                 {
-                    ProcessBlockInternal(inputBuffer, inputOffset + off, false, tmp, off, blockCopyMode: false);
+                    ProcessBlockInternal(inputBuffer, inputOffset + off, tmp, off);
                 }
 
                 // remove padding
@@ -144,8 +147,13 @@ namespace PowerToolbox.Extensions.Encrypt
 
         // Basic internal single-block processor that handles modes and calls SM4 single-block encrypt/decrypt.
         // If blockCopyMode==true, input buffer and output buffer may be the same; we're careful.
-        private void ProcessBlockInternal(byte[] inBuf, int inOff, bool forTransformBlock, byte[] outBuf, int outOff, bool blockCopyMode)
+        private void ProcessBlockInternal(byte[] inBuf, int inOff, byte[] outBuf, int outOff)
         {
+            if (inBuf is null || outBuf is null)
+            {
+                return;
+            }
+
             byte[] inputBlock = new byte[BlockSize];
             Buffer.BlockCopy(inBuf, inOff, inputBlock, 0, BlockSize);
             byte[] outputBlock = new byte[BlockSize];
@@ -162,62 +170,63 @@ namespace PowerToolbox.Extensions.Encrypt
                         {
                             SM4Engine.DecryptBlock(inputBlock, 0, rk, outputBlock, 0);
                         }
+                        break;
                     }
-                    break;
-
                 case CipherMode.CBC:
                 case CipherMode.CTS: // handled earlier for final block; here process normal full-block CBC rounds
-                    if (encrypting)
                     {
-                        // XOR with feedback (IV or prev cipher)
-                        for (int i = 0; i < BlockSize; i++)
+                        if (encrypting)
                         {
-                            inputBlock[i] ^= feedback[i];
-                        }
+                            // XOR with feedback (IV or prev cipher)
+                            for (int i = 0; i < BlockSize; i++)
+                            {
+                                inputBlock[i] ^= feedback[i];
+                            }
 
-                        SM4Engine.EncryptBlock(inputBlock, 0, rk, outputBlock, 0);
-                        Buffer.BlockCopy(outputBlock, 0, feedback, 0, BlockSize); // update feedback
-                    }
-                    else
-                    {
-                        // decrypt then XOR with feedback to get plaintext, update feedback with current cipher
-                        SM4Engine.DecryptBlock(inputBlock, 0, rk, outputBlock, 0);
-                        for (int i = 0; i < BlockSize; i++)
+                            SM4Engine.EncryptBlock(inputBlock, 0, rk, outputBlock, 0);
+                            Buffer.BlockCopy(outputBlock, 0, feedback, 0, BlockSize); // update feedback
+                        }
+                        else
                         {
-                            outputBlock[i] ^= feedback[i];
+                            // decrypt then XOR with feedback to get plaintext, update feedback with current cipher
+                            SM4Engine.DecryptBlock(inputBlock, 0, rk, outputBlock, 0);
+                            for (int i = 0; i < BlockSize; i++)
+                            {
+                                outputBlock[i] ^= feedback[i];
+                            }
+
+                            Buffer.BlockCopy(inBuf, inOff, feedback, 0, BlockSize); // previous cipher becomes new feedback
                         }
-
-                        Buffer.BlockCopy(inBuf, inOff, feedback, 0, BlockSize); // previous cipher becomes new feedback
+                        break;
                     }
-                    break;
-
                 case CipherMode.CFB:
-                    if (encrypting)
                     {
-                        // keystream = E(feedback)
-                        byte[] ks = new byte[BlockSize];
-                        SM4Engine.EncryptBlock(feedback, 0, rk, ks, 0);
-                        for (int i = 0; i < BlockSize; i++)
+                        if (encrypting)
                         {
-                            outputBlock[i] = (byte)(ks[i] ^ inputBlock[i]);
+                            // keystream = E(feedback)
+                            byte[] ks = new byte[BlockSize];
+                            SM4Engine.EncryptBlock(feedback, 0, rk, ks, 0);
+                            for (int i = 0; i < BlockSize; i++)
+                            {
+                                outputBlock[i] = (byte)(ks[i] ^ inputBlock[i]);
+                            }
+                            // feedback = ciphertext
+                            Buffer.BlockCopy(outputBlock, 0, feedback, 0, BlockSize);
                         }
-                        // feedback = ciphertext
-                        Buffer.BlockCopy(outputBlock, 0, feedback, 0, BlockSize);
-                    }
-                    else
-                    {
-                        // keystream = E(feedback)
-                        byte[] ks = new byte[BlockSize];
-                        SM4Engine.EncryptBlock(feedback, 0, rk, ks, 0);
-                        for (int i = 0; i < BlockSize; i++)
+                        else
                         {
-                            outputBlock[i] = (byte)(ks[i] ^ inputBlock[i]);
+                            // keystream = E(feedback)
+                            byte[] ks = new byte[BlockSize];
+                            SM4Engine.EncryptBlock(feedback, 0, rk, ks, 0);
+                            for (int i = 0; i < BlockSize; i++)
+                            {
+                                outputBlock[i] = (byte)(ks[i] ^ inputBlock[i]);
+                            }
+                            // feedback = ciphertext (inputBlock)
+                            Buffer.BlockCopy(inBuf, inOff, feedback, 0, BlockSize);
                         }
-                        // feedback = ciphertext (inputBlock)
-                        Buffer.BlockCopy(inBuf, inOff, feedback, 0, BlockSize);
+                        break;
                     }
-                    break;
-
                 case CipherMode.OFB:
                     {
                         // feedback = E(feedback)
@@ -229,23 +238,23 @@ namespace PowerToolbox.Extensions.Encrypt
                             outputBlock[i] = (byte)(ks[i] ^ inputBlock[i]);
                         }
                         // update feedback to ks
-                        Buffer.BlockCopy(ks, 0, feedback, 0, BlockSize);
+                        Buffer.BlockCopy(ks, 0, feedback, 0, BlockSize); break;
                     }
-                    break;
-
                 default:
                     {
                         throw new NotSupportedException($"CipherMode {mode} not supported.");
                     }
             }
-
             Buffer.BlockCopy(outputBlock, 0, outBuf, outOff, BlockSize);
         }
 
-        #region CTS emulation (CBC-stealing fallback)
-
         private byte[] TransformFinalBlock_CTS_Encrypt(byte[] inputBuffer, int inputOffset, int inputCount)
         {
+            if (inputBuffer is null)
+            {
+                return default;
+            }
+
             // We'll implement a CBC-based CTS emulation:
             // - If inputCount is multiple of blocksize -> behave like CBC + no special steal.
             // - If not multiple:
@@ -266,14 +275,14 @@ namespace PowerToolbox.Extensions.Encrypt
                     }
 
                     byte[] outb = new byte[BlockSize];
-                    ProcessBlockInternal(inputBuffer, inputOffset, true, outb, 0, blockCopyMode: false);
+                    ProcessBlockInternal(inputBuffer, inputOffset, outb, 0);
                     return outb;
                 }
                 byte[] padded = ApplyPadding(inputBuffer, inputOffset, inputCount, BlockSize, padding);
                 byte[] outb2 = new byte[padded.Length];
                 for (int i = 0; i < padded.Length; i += BlockSize)
                 {
-                    ProcessBlockInternal(padded, i, true, outb2, i, blockCopyMode: false);
+                    ProcessBlockInternal(padded, i, outb2, i);
                 }
 
                 return outb2;
@@ -287,7 +296,7 @@ namespace PowerToolbox.Extensions.Encrypt
                 byte[] outFull = new byte[inputCount];
                 for (int i = 0; i < inputCount; i += BlockSize)
                 {
-                    ProcessBlockInternal(inputBuffer, inputOffset + i, true, outFull, i, blockCopyMode: false);
+                    ProcessBlockInternal(inputBuffer, inputOffset + i, outFull, i);
                 }
 
                 return outFull;
@@ -298,14 +307,14 @@ namespace PowerToolbox.Extensions.Encrypt
             byte[] headOut = new byte[headBytes];
             for (int i = 0; i < headBytes; i += BlockSize)
             {
-                ProcessBlockInternal(inputBuffer, inputOffset + i, true, headOut, i, blockCopyMode: false);
+                ProcessBlockInternal(inputBuffer, inputOffset + i, headOut, i);
             }
 
             // process penultimate full block (Pn-1)
             byte[] penBlock = new byte[BlockSize];
             Buffer.BlockCopy(inputBuffer, inputOffset + headBytes, penBlock, 0, BlockSize);
             byte[] penCipher = new byte[BlockSize];
-            ProcessBlockInternal(penBlock, 0, true, penCipher, 0, blockCopyMode: false);
+            ProcessBlockInternal(penBlock, 0, penCipher, 0);
 
             // process last partial Pn (length rem): pad with zeros to blocksize, encrypt using current feedback (which is penCipher)
             byte[] lastPartial = new byte[BlockSize];
@@ -318,7 +327,7 @@ namespace PowerToolbox.Extensions.Encrypt
             Buffer.BlockCopy(penCipher, 0, feedback, 0, BlockSize);
 
             byte[] tempCipher = new byte[BlockSize];
-            ProcessBlockInternal(lastPartial, 0, true, tempCipher, 0, blockCopyMode: false);
+            ProcessBlockInternal(lastPartial, 0, tempCipher, 0);
 
             // restore feedback (but also set feedback to tempCipher for consistency)
             Buffer.BlockCopy(tempCipher, 0, feedback, 0, BlockSize);
@@ -334,6 +343,11 @@ namespace PowerToolbox.Extensions.Encrypt
 
         private byte[] TransformFinalBlock_CTS_Decrypt(byte[] inputBuffer, int inputOffset, int inputCount)
         {
+            if (inputBuffer is null)
+            {
+                return default;
+            }
+
             // For decryption: inverse of above approach.
             // If inputCount is multiple of blocksize -> treat as CBC.
             if (inputCount <= BlockSize)
@@ -347,11 +361,11 @@ namespace PowerToolbox.Extensions.Encrypt
                     }
 
                     byte[] outb = new byte[BlockSize];
-                    ProcessBlockInternal(inputBuffer, inputOffset, false, outb, 0, blockCopyMode: false);
+                    ProcessBlockInternal(inputBuffer, inputOffset, outb, 0);
                     return outb;
                 }
                 byte[] tmp = new byte[inputCount];
-                ProcessBlockInternal(inputBuffer, inputOffset, false, tmp, 0, blockCopyMode: false);
+                ProcessBlockInternal(inputBuffer, inputOffset, tmp, 0);
                 return RemovePadding(tmp, 0, tmp.Length, padding);
             }
 
@@ -361,7 +375,7 @@ namespace PowerToolbox.Extensions.Encrypt
                 byte[] full = new byte[inputCount];
                 for (int i = 0; i < inputCount; i += BlockSize)
                 {
-                    ProcessBlockInternal(inputBuffer, inputOffset + i, false, full, i, blockCopyMode: false);
+                    ProcessBlockInternal(inputBuffer, inputOffset + i, full, i);
                 }
 
                 return RemovePadding(full, 0, full.Length, padding);
@@ -375,7 +389,7 @@ namespace PowerToolbox.Extensions.Encrypt
             byte[] headPlain = new byte[headBytes];
             for (int i = 0; i < headBytes; i += BlockSize)
             {
-                ProcessBlockInternal(inputBuffer, inputOffset + i, false, headPlain, i, blockCopyMode: false);
+                ProcessBlockInternal(inputBuffer, inputOffset + i, headPlain, i);
             }
 
             // extract Tenc_first_r and Cn-1
@@ -437,12 +451,13 @@ namespace PowerToolbox.Extensions.Encrypt
             return result;
         }
 
-        #endregion CTS emulation (CBC-stealing fallback)
-
-        #region Padding helpers
-
         private static byte[] ApplyPadding(byte[] input, int offset, int length, int blockSize, PaddingMode mode)
         {
+            if (input is null)
+            {
+                return default;
+            }
+
             if (mode is PaddingMode.None)
             {
                 if (length % blockSize is not 0)
@@ -472,20 +487,22 @@ namespace PowerToolbox.Extensions.Encrypt
                         {
                             output[i] = (byte)pad;
                         }
+                        break;
                     }
-                    break;
-
                 case PaddingMode.Zeros:
-                    // already zero-initialized
-                    break;
-
+                    {
+                        // already zero-initialized
+                        break;
+                    }
                 case PaddingMode.ANSIX923:
                     {
-                        for (int i = length; i < output.Length - 1; i++) output[i] = 0x00;
+                        for (int i = length; i < output.Length - 1; i++)
+                        {
+                            output[i] = 0x00;
+                        }
                         output[output.Length - 1] = (byte)pad;
+                        break;
                     }
-                    break;
-
                 case PaddingMode.ISO10126:
                     {
                         RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
@@ -493,20 +510,23 @@ namespace PowerToolbox.Extensions.Encrypt
                         randomNumberGenerator.GetBytes(randomBytes);
                         Buffer.BlockCopy(randomBytes, 0, output, length, randomBytes.Length);
                         output[output.Length - 1] = (byte)pad;
+                        break;
                     }
-                    break;
-
                 default:
                     {
                         throw new CryptographicException("Unsupported padding mode: " + mode);
                     }
             }
-
             return output;
         }
 
         private static byte[] RemovePadding(byte[] input, int offset, int length, PaddingMode mode)
         {
+            if (input is null)
+            {
+                return default;
+            }
+
             if (length is 0)
             {
                 return [];
@@ -515,17 +535,18 @@ namespace PowerToolbox.Extensions.Encrypt
             switch (mode)
             {
                 case PaddingMode.None:
-                    return SubArray(input, offset, length);
-
-                case PaddingMode.Zeros:
-                    int newLen = length;
-                    while (newLen > 0 && input[offset + newLen - 1] is 0x00)
                     {
-                        newLen--;
+                        return SubArray(input, offset, length);
                     }
-
-                    return SubArray(input, offset, newLen);
-
+                case PaddingMode.Zeros:
+                    {
+                        int newLen = length;
+                        while (newLen > 0 && input[offset + newLen - 1] is 0x00)
+                        {
+                            newLen--;
+                        }
+                        return SubArray(input, offset, newLen);
+                    }
                 case PaddingMode.PKCS7:
                     {
                         byte pad = input[offset + length - 1];
@@ -566,17 +587,22 @@ namespace PowerToolbox.Extensions.Encrypt
                         return pad <= 0 || pad > BlockSize ? throw new CryptographicException("Invalid ISO10126 padding.") : SubArray(input, offset, length - pad);
                     }
                 default:
-                    throw new CryptographicException("Unsupported padding mode: " + mode);
+                    {
+                        throw new CryptographicException("Unsupported padding mode: " + mode);
+                    }
             }
         }
 
         private static byte[] SubArray(byte[] a, int offset, int length)
         {
+            if (a is null)
+            {
+                return default;
+            }
+
             byte[] r = new byte[length];
             Buffer.BlockCopy(a, offset, r, 0, length);
             return r;
         }
-
-        #endregion Padding helpers
     }
 }

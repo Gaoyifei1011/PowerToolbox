@@ -21,6 +21,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         internal void Update(byte[] input)
         {
+            if (input is null)
+            {
+                return;
+            }
+
             while (input.Length > 0)
             {
                 if (_blockLen is Blake3Constants.BlockLen)

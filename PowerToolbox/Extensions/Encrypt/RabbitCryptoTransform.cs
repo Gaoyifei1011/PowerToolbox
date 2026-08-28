@@ -6,16 +6,37 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// 使用 Rabbit 算法对数据执行加密转换
     /// </summary>
-    internal class RabbitTransform : ICryptoTransform
+    internal class RabbitCryptoTransform : ICryptoTransform
     {
+        private readonly byte[] DecryptionBuffer; // used to store last block under decrypting as to work around CryptoStream implementation details
+        private bool DecryptionBufferInUse;
+
+        private readonly bool IsEncrypt;
+        private readonly PaddingMode PaddingMode;
+
+        public bool CanReuseTransform => false;
+
+        public bool CanTransformMultipleBlocks => true;
+
+        public int InputBlockSize => 16;  // in bytes
+
+        public int OutputBlockSize => 16;  // in bytes
+
+        private readonly DWord[] X;   // state variables
+        private readonly DWord[] C;   // counter variable
+        private DWord Carry;          // counter carry - actually just a boolean
+        private static readonly DWord[] A = [0x4D34D34D, 0xD34D34D3, 0x34D34D34, 0x4D34D34D, 0xD34D34D3, 0x34D34D34, 0x4D34D34D, 0xD34D34D3];
+        private readonly DWord[] G;   // temporary state - to avoid allocating new array every time
+        private readonly DWord[] S;   // temporary state - to avoid allocating new array every time
+
         /// <summary>
-        /// 创建一个新实例
+        /// 创建实例
         /// </summary>
         /// <param name="rgbKey">128 位密钥</param>
         /// <param name="rgbIV">64 位 IV（可选）</param>
         /// <exception cref="ArgumentNullException">密钥不能为空</exception>
         /// <exception cref="ArgumentOutOfRangeException">密钥必须为128位（16字节）。-或- 初始向量（IV）必须为64位（8字节）</exception>
-        internal RabbitTransform(byte[] rgbKey, byte[] rgbIV, bool isEncrypt, PaddingMode paddingMode)
+        internal RabbitCryptoTransform(byte[] rgbKey, byte[] rgbIV, bool isEncrypt, PaddingMode paddingMode)
         {
             if (rgbKey is null)
             {
@@ -47,19 +68,6 @@ namespace PowerToolbox.Extensions.Encrypt
                 SetupIV(rgbIV);
             }
         }
-
-        private readonly bool IsEncrypt;
-        private readonly PaddingMode PaddingMode;
-
-        #region ICryptoTransform
-
-        public bool CanReuseTransform => false;
-
-        public bool CanTransformMultipleBlocks => true;
-
-        public int InputBlockSize => 16;  // in bytes
-
-        public int OutputBlockSize => 16;  // in bytes
 
         public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
         {
@@ -286,10 +294,6 @@ namespace PowerToolbox.Extensions.Encrypt
             }
         }
 
-        #endregion ICryptoTransform
-
-        #region IDisposable
-
         /// <summary>
         /// 释放资源
         /// </summary>
@@ -312,15 +316,13 @@ namespace PowerToolbox.Extensions.Encrypt
             }
         }
 
-        #endregion IDisposable
-
-        #region Helpers
-
-        private readonly byte[] DecryptionBuffer; // used to store last block under decrypting as to work around CryptoStream implementation details
-        private bool DecryptionBufferInUse;
-
         private void ProcessBytes(byte[] inputBuffer, int inputOffset, int count, byte[] outputBuffer, int outputOffset)
         {
+            if (inputBuffer is null || outputBuffer is null)
+            {
+                return;
+            }
+
             CounterUpdate();
             NextState();
             ExtractOutput();
@@ -410,17 +412,6 @@ namespace PowerToolbox.Extensions.Encrypt
                 return outputBuffer;
             }
         }
-
-        #endregion Helpers
-
-        #region Implementation
-
-        private readonly DWord[] X;   // state variables
-        private readonly DWord[] C;   // counter variable
-        private DWord Carry;          // counter carry - actually just a boolean
-        private static readonly DWord[] A = [0x4D34D34D, 0xD34D34D3, 0x34D34D34, 0x4D34D34D, 0xD34D34D3, 0x34D34D34, 0x4D34D34D, 0xD34D34D3];
-        private readonly DWord[] G;   // temporary state - to avoid allocating new array every time
-        private readonly DWord[] S;   // temporary state - to avoid allocating new array every time
 
         private void SetupKey(byte[] key)
         {
@@ -522,7 +513,5 @@ namespace PowerToolbox.Extensions.Encrypt
             S[2] = X[4] ^ (X[1] >> 16) ^ (X[7] << 16);
             S[3] = X[6] ^ (X[3] >> 16) ^ (X[1] << 16);
         }
-
-        #endregion Implementation
     }
 }

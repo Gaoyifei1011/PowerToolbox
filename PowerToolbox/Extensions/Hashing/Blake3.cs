@@ -39,8 +39,6 @@ namespace PowerToolbox.Extensions.Hashing
             KeyValue = key;
         }
 
-        #region Overrides
-
         public override byte[] Hash
         {
             get { return HashFinal(); }
@@ -58,8 +56,7 @@ namespace PowerToolbox.Extensions.Hashing
             {
                 if (State is not 0)
                 {
-                    throw new CryptographicException(
-                        "Tried to set key on a non-clean hasher");
+                    throw new CryptographicException("Tried to set key on a non-clean hasher");
                 }
 
                 KeyValue = value;
@@ -69,6 +66,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
+            if (array is null)
+            {
+                return;
+            }
+
             if (State is 0)
             {
                 State = 1;
@@ -123,10 +125,13 @@ namespace PowerToolbox.Extensions.Hashing
             _cvStackLen = 0;
         }
 
-        #endregion Overrides
-
         private static uint[] KeyWordsFromKey(byte[] key)
         {
+            if (key is null)
+            {
+                return default;
+            }
+
             if (key.Length is not Blake3Constants.KeyLen)
             {
                 throw new CryptographicException($"Expected a {Blake3Constants.KeyLen} bytes long key, got a {key.Length} long one");
@@ -139,6 +144,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private void PushStack(uint[] cv)
         {
+            if (cv is null)
+            {
+                return;
+            }
+
             _cvStack[_cvStackLen] = cv;
             _cvStackLen++;
         }
@@ -151,6 +161,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private void AddChunkChainingValue(uint[] newCv, ulong totalChunks)
         {
+            if (newCv is null)
+            {
+                return;
+            }
+
             while ((totalChunks & 1) is 0)
             {
                 newCv = Blake3Functions.ParentCv(PopStack(), newCv, _key, _flags);

@@ -19,6 +19,9 @@ using ThemeSwitch.WindowsAPI.PInvoke.User32;
 
 namespace ThemeSwitch
 {
+    /// <summary>
+    /// 主题切换 桌面程序
+    /// </summary>
     internal static class Program
     {
         private static readonly System.Timers.Timer timer = new()

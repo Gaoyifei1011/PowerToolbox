@@ -201,7 +201,6 @@ namespace PowerToolbox.Extensions.Encrypt
                 x = (byte)(x + 1);
                 y = (byte)(state[x] + y);
                 SwapBytes(state, x, y);
-
                 xorIndex = (byte)(state[x] + state[y]);
                 outputBuffer[outputOffset + counter] = (byte)(inputBuffer[inputOffset + counter] ^ state[xorIndex]);
             }
@@ -210,9 +209,12 @@ namespace PowerToolbox.Extensions.Encrypt
 
         private void SwapBytes(byte[] buffer, int index1, int index2)
         {
-            byte tmp = buffer[index1];
-            buffer[index1] = buffer[index2];
-            buffer[index2] = tmp;
+            if (buffer is null)
+            {
+                return;
+            }
+
+            (buffer[index2], buffer[index1]) = (buffer[index1], buffer[index2]);
         }
 
         private void CheckInput(byte[] inputBuffer, int inputOffset, int inputCount)

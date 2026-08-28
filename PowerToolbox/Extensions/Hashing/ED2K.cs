@@ -24,10 +24,17 @@ namespace PowerToolbox.Extensions.Hashing
         }
 
         public override bool CanReuseTransform
-        { get { return true; } }
+        {
+            get { return true; }
+        }
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
+            if (array is null)
+            {
+                return;
+            }
+
             while (cbSize is not 0)
             {
                 if (cbSize < missing)

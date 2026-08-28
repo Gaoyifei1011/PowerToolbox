@@ -1,4 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
+
+// 抑制 CA1822 警告
+#pragma warning disable CA1822
 
 namespace PowerToolbox.Extensions.Encrypt
 {
@@ -20,12 +24,27 @@ namespace PowerToolbox.Extensions.Encrypt
 
         public override ICryptoTransform CreateEncryptor(byte[] rgbKey, byte[] rgbIV)
         {
-            return new RC6Transform(rgbKey, rgbIV, true, ModeValue, PaddingValue);
+            CheckKeyIV(rgbKey, rgbIV);
+            return new RC6CryptoTransform(rgbKey, rgbIV, true, ModeValue, PaddingValue);
         }
 
         public override ICryptoTransform CreateDecryptor(byte[] rgbKey, byte[] rgbIV)
         {
-            return new RC6Transform(rgbKey, rgbIV, false, ModeValue, PaddingValue);
+            CheckKeyIV(rgbKey, rgbIV);
+            return new RC6CryptoTransform(rgbKey, rgbIV, false, ModeValue, PaddingValue);
+        }
+
+        private void CheckKeyIV(byte[] key, byte[] iv)
+        {
+            if (key is null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            if (iv is null)
+            {
+                throw new ArgumentNullException(nameof(iv));
+            }
         }
 
         public override void GenerateIV()

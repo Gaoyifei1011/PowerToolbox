@@ -13,10 +13,13 @@ namespace PowerToolbox.Extensions.Encrypt
         private readonly byte[] iv;           // original IV copy
         private readonly byte[] feedback;     // chaining register (for CBC/CFB/OFB)
         private bool disposed = false;
-
         private byte[] buffer;       // 在 TransformBlock 调用之间的部分数据缓冲区
         private int bufferCount = 0;
         private readonly RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+        public bool CanReuseTransform => false;
+        public bool CanTransformMultipleBlocks => true;
+        public int InputBlockSize => blockSize;
+        public int OutputBlockSize => blockSize;
 
         internal RC5CryptoTransform(byte[] key, byte[] iv, bool encrypting, CipherMode mode, PaddingMode padding, int rounds)
         {
@@ -30,7 +33,7 @@ namespace PowerToolbox.Extensions.Encrypt
                 throw new ArgumentNullException(nameof(iv));
             }
 
-            if (iv.Length != RC5Engine.BlockSizeBytes)
+            if (iv.Length is not RC5Engine.BlockSizeBytes)
             {
                 throw new ArgumentException("IV must be 8 bytes.", nameof(iv));
             }
@@ -43,20 +46,12 @@ namespace PowerToolbox.Extensions.Encrypt
             buffer = new byte[blockSize];
             bufferCount = 0;
 
-            // CTS：仅在mode == CBC且padding == None时允许
+            // CTS：仅在 mode == CBC 且 padding == None 时允许
             if (this.mode is CipherMode.CTS && this.padding is not PaddingMode.None)
             {
                 throw new CryptographicException("CTS mode requires PaddingMode.None in this implementation.");
             }
         }
-
-        public bool CanReuseTransform => false;
-
-        public bool CanTransformMultipleBlocks => true;
-
-        public int InputBlockSize => blockSize;
-
-        public int OutputBlockSize => blockSize;
 
         /// <summary>
         /// 处理尽可能多的完整块，缓冲剩余部分
@@ -140,7 +135,10 @@ namespace PowerToolbox.Extensions.Encrypt
                     {
                         // XOR plaintext with feedback, encrypt -> ciphertext, update feedback
                         byte[] x = new byte[blockSize];
-                        for (int i = 0; i < blockSize; i++) x[i] = (byte)(work[pos + i] ^ feedback[i]);
+                        for (int i = 0; i < blockSize; i++)
+                        {
+                            x[i] = (byte)(work[pos + i] ^ feedback[i]);
+                        }
                         engine.EncryptBlock(x, 0, outputBuffer, outputOffset + write);
                         Buffer.BlockCopy(outputBuffer, outputOffset + write, feedback, 0, blockSize);
                         Array.Clear(x, 0, blockSize);
@@ -151,7 +149,9 @@ namespace PowerToolbox.Extensions.Encrypt
                         byte[] tmp = new byte[blockSize];
                         engine.DecryptBlock(work, pos, tmp, 0);
                         for (int i = 0; i < blockSize; i++)
+                        {
                             outputBuffer[outputOffset + write + i] = (byte)(tmp[i] ^ feedback[i]);
+                        }
                         // update feedback to current ciphertext
                         Buffer.BlockCopy(work, pos, feedback, 0, blockSize);
                         Array.Clear(tmp, 0, blockSize);
@@ -214,7 +214,6 @@ namespace PowerToolbox.Extensions.Encrypt
                     {
                         Buffer.BlockCopy(buffer, 0, newBuf, remain, rem);
                     }
-
                     buffer = newBuf;
                     bufferCount = newBuf.Length;
                     Array.Clear(work, 0, work.Length);
@@ -233,7 +232,7 @@ namespace PowerToolbox.Extensions.Encrypt
         }
 
         /// <summary>
-        /// 完成填充/ CTS处理
+        /// 完成填充 CTS 处理
         /// </summary>
         public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
         {
@@ -626,7 +625,7 @@ namespace PowerToolbox.Extensions.Encrypt
             else
             {
                 // Decrypting: input must be multiple of block size (except in CFB/OFB stream cases where we may accept partial)
-                if ((total % blockSize) != 0)
+                if ((total % blockSize) is not 0)
                 {
                     // In stream modes CFB/OFB we can process partial bytes as keystream XOR
                     if (mode is CipherMode.CFB || mode is CipherMode.OFB)
@@ -841,7 +840,6 @@ namespace PowerToolbox.Extensions.Encrypt
             Array.Clear(all, 0, all.Length);
             Array.Clear(buffer, 0, buffer.Length);
             bufferCount = 0;
-
             return result;
         }
 

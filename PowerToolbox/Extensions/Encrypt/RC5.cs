@@ -34,7 +34,7 @@ namespace PowerToolbox.Extensions.Encrypt
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(Rounds));
                 }
 
                 rounds = value;
