@@ -35,7 +35,7 @@ namespace PowerToolbox.Extensions.Hashing
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
-            if (cbSize is 0)
+            if (array is null || cbSize is 0)
             {
                 return;
             }
@@ -83,6 +83,7 @@ namespace PowerToolbox.Extensions.Hashing
             int k = (56 - ((bufferFilled + 1) % 64) + 64) % 64;
             int padLen = 1 + k + 8;
             byte[] finalBytes = new byte[bufferFilled + padLen];
+
             if (bufferFilled > 0)
             {
                 Buffer.BlockCopy(buffer, 0, finalBytes, 0, bufferFilled);
@@ -141,6 +142,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private void ProcessBlock(byte[] block, int offset)
         {
+            if (block is null)
+            {
+                return;
+            }
+
             uint[] W = new uint[68];
             uint[] W1 = new uint[64];
 

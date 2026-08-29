@@ -81,9 +81,11 @@ namespace PowerToolbox.Views.Pages
         private readonly string VerifyingString = ResourceService.DataVerifyResource.GetString("Verifying");
         private readonly string VerifyTypeNotSelectedString = ResourceService.DataVerifyResource.GetString("VerifyTypeNotSelected");
         private readonly string WhirlpoolString = ResourceService.DataVerifyResource.GetString("Whirlpool");
+        private readonly string XXH3128String = ResourceService.DataVerifyResource.GetString("XXH3128");
         private readonly string XXH32String = ResourceService.DataVerifyResource.GetString("XXH32");
+        private readonly string XXH364String = ResourceService.DataVerifyResource.GetString("XXH364");
         private readonly string XXH64String = ResourceService.DataVerifyResource.GetString("XXH64");
-        private readonly string XXH128String = ResourceService.DataVerifyResource.GetString("XXH128");
+
         private int selectVerifyIndex = -1;
         private string selectedVerifyFile = string.Empty;
         private string selectedVerifyContent = string.Empty;
@@ -392,8 +394,8 @@ namespace PowerToolbox.Views.Pages
             });
             DataVerifyTypeList.Add(new()
             {
-                Name = XXH128String,
-                DataVerifyType = DataVerifyType.XXH128
+                Name = XXH3128String,
+                DataVerifyType = DataVerifyType.XXH3_128Bits
             });
 
             SelectedIndex = 0;
@@ -1779,7 +1781,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         try
                         {
-                            XxHash128 xxhash128 = new();
+                            XxHash3_128Bits xxhash128 = new();
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {

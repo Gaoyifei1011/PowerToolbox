@@ -34,12 +34,9 @@ namespace PowerToolbox.Extensions.PriExtract
             SectionFlags = binaryReader.ReadUInt16();
             SectionLength = binaryReader.ReadUInt32();
             binaryReader.ExpectUInt32(0);
-
             binaryReader.BaseStream.Seek(SectionLength - 16 - 24, SeekOrigin.Current);
-
             binaryReader.ExpectUInt32(0xDEF5FADE);
             binaryReader.ExpectUInt32(SectionLength);
-
             binaryReader.BaseStream.Seek(-8 - (SectionLength - 16 - 24), SeekOrigin.Current);
 
             using SubStream subStream = new(binaryReader.BaseStream, binaryReader.BaseStream.Position, (int)SectionLength - 16 - 24);
@@ -114,15 +111,12 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             long dataStartOffset = binaryReader.BaseStream.Position;
-
             List<Qualifier> qualifiersList = new(numQualifiers);
 
             for (int i = 0; i < numQualifiers; i++)
             {
                 DistinctQualifierInfo distinctQualifierInfo = distinctQualifierInfoList[qualifierInfoList[i].Index];
-
                 binaryReader.BaseStream.Seek(dataStartOffset + distinctQualifierInfo.OperandValueOffset * 2, SeekOrigin.Begin);
-
                 string value = binaryReader.ReadNullTerminatedString(Encoding.Unicode);
 
                 qualifiersList.Add(new()
@@ -136,7 +130,6 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             QualifiersList = qualifiersList;
-
             List<QualifierSet> qualifierSetsList = new(numQualifierSets);
 
             for (int i = 0; i < numQualifierSets; i++)
@@ -156,7 +149,6 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             QualifierSetsList = qualifierSetsList;
-
             List<Decision> decisionsList = new(numDecisions);
 
             for (int i = 0; i < numDecisions; i++)

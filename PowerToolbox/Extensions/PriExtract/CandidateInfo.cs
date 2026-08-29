@@ -11,6 +11,7 @@ namespace PowerToolbox.Extensions.PriExtract
         internal ushort SourceFileIndex { get; set; }
 
         internal ushort DataItemIndex { get; set; }
+
         internal ushort DataItemSection { get; set; }
 
         internal ushort DataLength { get; set; }

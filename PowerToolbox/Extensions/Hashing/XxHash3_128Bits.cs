@@ -5,9 +5,9 @@ using static PowerToolbox.Extensions.Hashing.XxHashShared;
 namespace PowerToolbox.Extensions.Hashing
 {
     /// <summary>
-    /// XXH128 校验实现
+    /// XXH3_128Bits 校验实现
     /// </summary>
-    internal sealed unsafe class XxHash128
+    internal sealed unsafe class XxHash3_128Bits
     {
         /// <summary>
         /// XXH128 生成 16 字节的哈希
@@ -17,24 +17,24 @@ namespace PowerToolbox.Extensions.Hashing
         private State _state;
 
         /// <summary>
-        /// 使用默认种子值 0 初始化 XxHash128 类的新实例
+        /// 使用默认种子值 0 初始化 XxHash3_128Bits 类的新实例
         /// </summary>
-        internal XxHash128() : this(0)
+        internal XxHash3_128Bits() : this(0)
         {
         }
 
         /// <summary>
-        /// 使用指定的种子初始化 XxHash128 类的新实例
+        /// 使用指定的种子初始化 XxHash3_128Bits 类的新实例
         /// </summary>
-        internal XxHash128(long seed)
+        internal XxHash3_128Bits(long seed)
         {
             Initialize(ref _state, (ulong)seed);
         }
 
         /// <summary>
-        /// 使用另一个实例的状态初始化 XxHash128 类的新实例
+        /// 使用另一个实例的状态初始化 XxHash3_128Bits 类的新实例
         /// </summary>
-        private XxHash128(State state)
+        private XxHash3_128Bits(State state)
         {
             _state = state;
         }
@@ -46,6 +46,11 @@ namespace PowerToolbox.Extensions.Hashing
         /// <returns>所提供数据的 XXH128 128 位哈希码</returns>
         internal static byte[] Hash(byte[] source)
         {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             return Hash(source, seed: 0);
         }
 
@@ -76,6 +81,11 @@ namespace PowerToolbox.Extensions.Hashing
         /// <returns>写入目标的字节数</returns>
         internal static int Hash(byte[] source, byte[] destination, long seed = 0)
         {
+            if (source is null || destination is null)
+            {
+                return default;
+            }
+
             if (!TryHash(source, destination, out int bytesWritten, seed))
             {
                 ThrowDestinationTooShort();
@@ -94,6 +104,12 @@ namespace PowerToolbox.Extensions.Hashing
         /// <returns><see langword="true"/> if destination is long enough to receive the computed hash value (16 bytes); otherwise, <see langword="false"/>.</returns>
         internal static bool TryHash(byte[] source, byte[] destination, out int bytesWritten, long seed = 0)
         {
+            if (source is null || destination is null)
+            {
+                bytesWritten = default;
+                return default;
+            }
+
             if (destination.Length >= sizeof(ulong) * 2)
             {
                 Hash128 hash = HashToHash128(source, seed);
@@ -108,6 +124,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private static Hash128 HashToHash128(byte[] source, long seed = 0)
         {
+            if (source is null)
+            {
+                return default;
+            }
+
             uint length = (uint)source.Length;
             fixed (byte* sourcePtr = source)
             {
@@ -213,9 +234,7 @@ namespace PowerToolbox.Extensions.Hashing
                 fixed (byte* secret = _state.Secret)
                 {
                     DigestLong(ref _state, accumulators, secret);
-                    current = new(
-                        low64: MergeAccumulators(accumulators, secret + SecretMergeAccsStartBytes, _state.TotalLength * Prime64_1),
-                        high64: MergeAccumulators(accumulators, secret + SecretLengthBytes - (AccumulatorCount * sizeof(ulong)) - SecretMergeAccsStartBytes, ~(_state.TotalLength * Prime64_2)));
+                    current = new(low64: MergeAccumulators(accumulators, secret + SecretMergeAccsStartBytes, _state.TotalLength * Prime64_1), high64: MergeAccumulators(accumulators, secret + SecretLengthBytes - (AccumulatorCount * sizeof(ulong)) - SecretMergeAccsStartBytes, ~(_state.TotalLength * Prime64_2)));
                 }
             }
             else
@@ -231,6 +250,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private static void WriteBigEndian128(in Hash128 hash, byte[] destination)
         {
+            if (destination is null)
+            {
+                return;
+            }
+
             ulong low = hash.Low64;
             ulong high = hash.High64;
             if (BitConverter.IsLittleEndian)
@@ -288,7 +312,6 @@ namespace PowerToolbox.Extensions.Hashing
             byte c3 = source[length - 1];
 
             uint combinedl = ((uint)c1 << 16) | ((uint)c2 << 24) | c3 | (length << 8);
-
             uint combinedh = BitOperations.RotateLeft(BinaryPrimitives.ReverseEndianness(combinedl), 13);
             const uint SecretXorL = unchecked((uint)DefaultSecretUInt64_0) ^ (uint)(DefaultSecretUInt64_0 >> 32);
             const uint SecretXorH = unchecked((uint)DefaultSecretUInt64_1) ^ (uint)(DefaultSecretUInt64_1 >> 32);
@@ -309,7 +332,6 @@ namespace PowerToolbox.Extensions.Hashing
             ulong input64 = inputLo + ((ulong)inputHi << 32);
             ulong bitflip = (DefaultSecretUInt64_2 ^ DefaultSecretUInt64_3) + seed;
             ulong keyed = input64 ^ bitflip;
-
             ulong m128High = Multiply64To128(keyed, Prime64_1 + (length << 2), out ulong m128Low);
 
             m128High += m128Low << 1;
@@ -353,17 +375,25 @@ namespace PowerToolbox.Extensions.Hashing
             switch ((length - 1) / 32)
             {
                 default: // case 3
-                    Mix32Bytes(ref accLow, ref accHigh, source + 48, source + length - 64, DefaultSecretUInt64_12, DefaultSecretUInt64_13, DefaultSecretUInt64_14, DefaultSecretUInt64_15, seed);
-                    goto case 2;
+                    {
+                        Mix32Bytes(ref accLow, ref accHigh, source + 48, source + length - 64, DefaultSecretUInt64_12, DefaultSecretUInt64_13, DefaultSecretUInt64_14, DefaultSecretUInt64_15, seed);
+                        goto case 2;
+                    }
                 case 2:
-                    Mix32Bytes(ref accLow, ref accHigh, source + 32, source + length - 48, DefaultSecretUInt64_8, DefaultSecretUInt64_9, DefaultSecretUInt64_10, DefaultSecretUInt64_11, seed);
-                    goto case 1;
+                    {
+                        Mix32Bytes(ref accLow, ref accHigh, source + 32, source + length - 48, DefaultSecretUInt64_8, DefaultSecretUInt64_9, DefaultSecretUInt64_10, DefaultSecretUInt64_11, seed);
+                        goto case 1;
+                    }
                 case 1:
-                    Mix32Bytes(ref accLow, ref accHigh, source + 16, source + length - 32, DefaultSecretUInt64_4, DefaultSecretUInt64_5, DefaultSecretUInt64_6, DefaultSecretUInt64_7, seed);
-                    goto case 0;
+                    {
+                        Mix32Bytes(ref accLow, ref accHigh, source + 16, source + length - 32, DefaultSecretUInt64_4, DefaultSecretUInt64_5, DefaultSecretUInt64_6, DefaultSecretUInt64_7, seed);
+                        goto case 0;
+                    }
                 case 0:
-                    Mix32Bytes(ref accLow, ref accHigh, source, source + length - 16, DefaultSecretUInt64_0, DefaultSecretUInt64_1, DefaultSecretUInt64_2, DefaultSecretUInt64_3, seed);
-                    break;
+                    {
+                        Mix32Bytes(ref accLow, ref accHigh, source, source + length - 16, DefaultSecretUInt64_0, DefaultSecretUInt64_1, DefaultSecretUInt64_2, DefaultSecretUInt64_3, seed);
+                        break;
+                    }
             }
 
             return AvalancheHash(accLow, accHigh, length, seed);
@@ -416,9 +446,7 @@ namespace PowerToolbox.Extensions.Hashing
                 InitializeAccumulators(accumulators);
                 HashInternalLoop(accumulators, source, length, secret);
 
-                return new(
-                    low64: MergeAccumulators(accumulators, secret + SecretMergeAccsStartBytes, length * Prime64_1),
-                    high64: MergeAccumulators(accumulators, secret + SecretLengthBytes - (AccumulatorCount * sizeof(ulong)) - SecretMergeAccsStartBytes, ~(length * Prime64_2)));
+                return new(low64: MergeAccumulators(accumulators, secret + SecretMergeAccsStartBytes, length * Prime64_1), high64: MergeAccumulators(accumulators, secret + SecretLengthBytes - (AccumulatorCount * sizeof(ulong)) - SecretMergeAccsStartBytes, ~(length * Prime64_2)));
             }
         }
 
@@ -442,12 +470,6 @@ namespace PowerToolbox.Extensions.Hashing
         private static void ThrowDestinationTooShort()
         {
             throw new ArgumentException("Destination is too short", "destination");
-        }
-
-        private readonly struct Hash128(ulong low64, ulong high64)
-        {
-            internal readonly ulong Low64 = low64;
-            internal readonly ulong High64 = high64;
         }
     }
 }

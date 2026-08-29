@@ -13,23 +13,40 @@ namespace PowerToolbox.Extensions.Hashing
         private const uint PRIME32_3 = 3266489917U;
         private const uint PRIME32_4 = 668265263U;
         private const uint PRIME32_5 = 374761393U;
-
         private static readonly Func<byte[], int, uint> FuncGetLittleEndianUInt32;
         private static readonly Func<uint, uint> FuncGetFinalHashUInt32;
-
         private uint _Seed32;
-
         private uint _ACC32_1;
         private uint _ACC32_2;
         private uint _ACC32_3;
         private uint _ACC32_4;
-
         private uint _Hash32;
-
         private int _RemainingLength;
         private long _TotalLength = 0;
         private int _CurrentIndex;
         private byte[] _CurrentArray;
+
+        /// <summary>
+        /// 获取或设置 xxHash32 算法使用的种子值
+        /// </summary>
+        internal uint Seed
+        {
+            get { return _Seed32; }
+
+            set
+            {
+                if (value != _Seed32)
+                {
+                    if (State is not 0)
+                    {
+                        throw new InvalidOperationException("Hash computation has not yet completed.");
+                    }
+
+                    _Seed32 = value;
+                    Initialize();
+                }
+            }
+        }
 
         static XxHash32()
         {
@@ -89,28 +106,6 @@ namespace PowerToolbox.Extensions.Hashing
         }
 
         /// <summary>
-        /// 获取或设置 xxHash32 算法使用的种子值
-        /// </summary>
-        internal uint Seed
-        {
-            get { return _Seed32; }
-
-            set
-            {
-                if (value != _Seed32)
-                {
-                    if (State is not 0)
-                    {
-                        throw new InvalidOperationException("Hash computation has not yet completed.");
-                    }
-
-                    _Seed32 = value;
-                    Initialize();
-                }
-            }
-        }
-
-        /// <summary>
         /// 初始化此实例以进行新的哈希计算
         /// </summary>
         public override void Initialize()
@@ -129,6 +124,11 @@ namespace PowerToolbox.Extensions.Hashing
         /// <param name="cbSize">字节数组中用作数据的字节数</param>
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
+            if (array is null)
+            {
+                return;
+            }
+
             if (State is not 1)
             {
                 State = 1;
@@ -153,7 +153,7 @@ namespace PowerToolbox.Extensions.Hashing
             }
             _TotalLength += cbSize;
 
-            if (_RemainingLength != 0)
+            if (_RemainingLength is not 0)
             {
                 _CurrentArray = array;
                 _CurrentIndex = ibStart;
@@ -165,6 +165,11 @@ namespace PowerToolbox.Extensions.Hashing
         /// </summary>
         internal void FeedInput(byte[] array, int start, int count)
         {
+            if (array is null)
+            {
+                return;
+            }
+
             HashCore(array, start, count);
         }
 

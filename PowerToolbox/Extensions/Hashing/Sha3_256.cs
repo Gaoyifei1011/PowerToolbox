@@ -116,6 +116,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private void AbsorbBlock(byte[] buffer, int offset)
         {
+            if (buffer is null)
+            {
+                return;
+            }
+
             for (int i = 0; i < rateBytes / 8; i++)
             {
                 ulong lane = ReadULongLE(buffer, offset + i * 8);
@@ -126,6 +131,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private static void KeccakF1600(ulong[] A)
         {
+            if (A is null)
+            {
+                return;
+            }
+
             for (int round = 0; round < 24; round++)
             {
                 ulong[] C = new ulong[5];
@@ -176,6 +186,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private static ulong ReadULongLE(byte[] b, int offset)
         {
+            if (b is null)
+            {
+                return default;
+            }
+
             return b[offset]
                 | ((ulong)b[offset + 1] << 8)
                 | ((ulong)b[offset + 2] << 16)
@@ -188,6 +203,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private static void WriteULongLE(ulong v, byte[] b, int offset)
         {
+            if (b is null)
+            {
+                return;
+            }
+
             b[offset + 0] = (byte)(v & 0xFF);
             b[offset + 1] = (byte)((v >> 8) & 0xFF);
             b[offset + 2] = (byte)((v >> 16) & 0xFF);

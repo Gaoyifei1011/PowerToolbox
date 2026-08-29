@@ -163,6 +163,11 @@ namespace PowerToolbox.Extensions.Hashing
         /// </summary>
         private void KeccakAbsorbBlock(byte[] block, int offset)
         {
+            if (block is null)
+            {
+                return;
+            }
+
             // XOR block into state lanes
             int laneIndex = 0;
             for (int i = 0; i < RateBytes; i += 8)

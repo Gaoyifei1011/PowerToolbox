@@ -16,9 +16,13 @@ namespace PowerToolbox.Extensions.PriExtract
         internal uint SectionLength { get; private set; }
 
         internal HierarchicalSchemaVersion Version { get; private set; }
+
         internal string UniqueName { get; private set; }
+
         internal string Name { get; private set; }
+
         internal IReadOnlyList<ResourceMapScopeAndItem> ScopesList { get; private set; }
+
         internal IReadOnlyList<ResourceMapScopeAndItem> ItemsList { get; private set; }
 
         internal HierarchicalSchemaSection(string sectionIdentifier, BinaryReader binaryReader, bool extendedVersion)
@@ -33,12 +37,9 @@ namespace PowerToolbox.Extensions.PriExtract
             SectionFlags = binaryReader.ReadUInt16();
             SectionLength = binaryReader.ReadUInt32();
             binaryReader.ExpectUInt32(0);
-
             binaryReader.BaseStream.Seek(SectionLength - 16 - 24, SeekOrigin.Current);
-
             binaryReader.ExpectUInt32(0xDEF5FADE);
             binaryReader.ExpectUInt32(SectionLength);
-
             binaryReader.BaseStream.Seek(-8 - (SectionLength - 16 - 24), SeekOrigin.Current);
 
             using SubStream subStream = new(binaryReader.BaseStream, binaryReader.BaseStream.Position, (int)SectionLength - 16 - 24);
@@ -59,7 +60,6 @@ namespace PowerToolbox.Extensions.PriExtract
             binaryReader.ExpectUInt16(0);
 
             bool extendedHNames = false;
-
             if (extendedVersion)
             {
                 extendedHNames = new string(binaryReader.ReadChars(16)) switch
@@ -164,16 +164,9 @@ namespace PowerToolbox.Extensions.PriExtract
 
             for (int i = 0; i < numScopes + numItems; i++)
             {
-                long pos = scopeAndItemInfoList[i].NameInAscii
-                    ? asciiDataOffset + scopeAndItemInfoList[i].NameOffset
-                    : unicodeDataOffset + scopeAndItemInfoList[i].NameOffset * 2;
-
+                long pos = scopeAndItemInfoList[i].NameInAscii ? asciiDataOffset + scopeAndItemInfoList[i].NameOffset : unicodeDataOffset + scopeAndItemInfoList[i].NameOffset * 2;
                 binaryReader.BaseStream.Seek(pos, SeekOrigin.Begin);
-
-                string name = scopeAndItemInfoList[i].FullPathLength is not 0
-                    ? binaryReader.ReadNullTerminatedString(scopeAndItemInfoList[i].NameInAscii ? Encoding.ASCII : Encoding.Unicode)
-                    : string.Empty;
-
+                string name = scopeAndItemInfoList[i].FullPathLength is not 0 ? binaryReader.ReadNullTerminatedString(scopeAndItemInfoList[i].NameInAscii ? Encoding.ASCII : Encoding.Unicode) : string.Empty;
                 ushort index = scopeAndItemInfoList[i].Index;
 
                 if (scopeAndItemInfoList[i].IsScope)
@@ -209,7 +202,6 @@ namespace PowerToolbox.Extensions.PriExtract
             for (int i = 0; i < numScopes + numItems; i++)
             {
                 ushort index = scopeAndItemInfoList[i].Index;
-
                 ushort parent = scopeAndItemInfoList[scopeAndItemInfoList[i].Parent].Index;
 
                 if (parent is not 0xFFFF)

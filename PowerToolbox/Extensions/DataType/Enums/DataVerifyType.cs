@@ -32,6 +32,7 @@
         WHIRLPOOL = 24,
         XXH32 = 25,
         XXH64 = 26,
-        XXH128 = 27,
+        XXH3_64Bits = 27,
+        XXH3_128Bits = 28,
     }
 }

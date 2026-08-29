@@ -143,6 +143,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         private void KeccakAbsorbBlock(byte[] block, int offset)
         {
+            if (block is null)
+            {
+                return;
+            }
+
             int laneIndex = 0;
             for (int i = 0; i < RateBytes; i += 8)
             {

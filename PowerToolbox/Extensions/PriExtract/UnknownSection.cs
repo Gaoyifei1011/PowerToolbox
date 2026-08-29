@@ -28,19 +28,15 @@ namespace PowerToolbox.Extensions.PriExtract
             SectionFlags = binaryReader.ReadUInt16();
             SectionLength = binaryReader.ReadUInt32();
             binaryReader.ExpectUInt32(0);
-
             binaryReader.BaseStream.Seek(SectionLength - 16 - 24, SeekOrigin.Current);
-
             binaryReader.ExpectUInt32(0xDEF5FADE);
             binaryReader.ExpectUInt32(SectionLength);
-
             binaryReader.BaseStream.Seek(-8 - (SectionLength - 16 - 24), SeekOrigin.Current);
 
             using SubStream subStream = new(binaryReader.BaseStream, binaryReader.BaseStream.Position, (int)SectionLength - 16 - 24);
             using BinaryReader subBinaryReader = new(subStream, Encoding.ASCII);
 
             int contentLength = (int)(binaryReader.BaseStream.Length - binaryReader.BaseStream.Position);
-
             SectionContent = binaryReader.ReadBytes(contentLength);
         }
     }

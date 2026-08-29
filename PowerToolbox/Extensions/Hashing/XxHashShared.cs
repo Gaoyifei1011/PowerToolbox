@@ -133,6 +133,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         internal static void Append(ref State state, byte[] source)
         {
+            if (source is null)
+            {
+                return;
+            }
+
             state.TotalLength += (uint)source.Length;
 
             fixed (byte* buffer = state.Buffer)
@@ -385,7 +390,6 @@ namespace PowerToolbox.Extensions.Hashing
         /// </summary>
         private static void Accumulate(ulong* accumulators, byte* source, byte* secret, int stripesToProcess, bool scramble = false, int blockCount = 1)
         {
-            byte* secretForAccumulate = secret;
             byte* secretForScramble = secret + (SecretLengthBytes - StripeLengthBytes);
 
             for (int j = 0; j < blockCount; j++)
@@ -465,8 +469,7 @@ namespace PowerToolbox.Extensions.Hashing
             return t;
         }
 
-        private static void WriteUnaligned<T>(void* destination, T value)
-            where T : unmanaged
+        private static void WriteUnaligned<T>(void* destination, T value) where T : unmanaged
         {
             Buffer.MemoryCopy(&value, destination, sizeof(T), sizeof(T));
         }

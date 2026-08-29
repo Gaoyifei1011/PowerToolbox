@@ -156,7 +156,6 @@ namespace PowerToolbox.Extensions.Hashing
             int inputOffset = 0;
             Array.Clear(partialBlock, bufferFill, 64 - bufferFill);
             partialBlock[bufferFill] = paddingByte;
-
             ulong bitLength = ((ulong)totalBytesProcessed + (ulong)bufferFill) << 3;
 
             if (bufferFill >= 56)

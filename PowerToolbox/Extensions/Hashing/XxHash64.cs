@@ -93,6 +93,11 @@ namespace PowerToolbox.Extensions.Hashing
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
+            if (array is null)
+            {
+                return;
+            }
+
             if (State is not 1)
             {
                 State = 1;

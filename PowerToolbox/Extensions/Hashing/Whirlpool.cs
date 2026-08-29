@@ -213,13 +213,18 @@ namespace PowerToolbox.Extensions.Hashing
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
+            if (array is null)
+            {
+                return;
+            }
+
             ulong sizeBits = (ulong)cbSize * 8;
             int gap = (8 - ((int)sizeBits & 7)) & 7;
             int remainder = bufferBits & 7;
             uint currentByte;
-
             uint carry = 0;
             ulong value = sizeBits;
+
             for (int i = 31; i >= 0 && (carry is not 0 || value is not 0); i--)
             {
                 carry += bitLength[i] + ((uint)value & 0xff);

@@ -18,6 +18,7 @@ namespace PowerToolbox.Extensions.PriExtract
         internal uint SectionLength { get; private set; }
 
         internal HierarchicalSchemaReference HierarchicalSchemaReference { get; private set; }
+
         internal int SchemaSectionIndex { get; private set; }
 
         internal int DecisionInfoSectionIndex { get; private set; }
@@ -36,12 +37,9 @@ namespace PowerToolbox.Extensions.PriExtract
             SectionFlags = binaryReader.ReadUInt16();
             SectionLength = binaryReader.ReadUInt32();
             binaryReader.ExpectUInt32(0);
-
             binaryReader.BaseStream.Seek(SectionLength - 16 - 24, SeekOrigin.Current);
-
             binaryReader.ExpectUInt32(0xDEF5FADE);
             binaryReader.ExpectUInt32(SectionLength);
-
             binaryReader.BaseStream.Seek(-8 - (SectionLength - 16 - 24), SeekOrigin.Current);
 
             using SubStream subStream = new(binaryReader.BaseStream, binaryReader.BaseStream.Position, (int)SectionLength - 16 - 24);
@@ -87,6 +85,7 @@ namespace PowerToolbox.Extensions.PriExtract
             byte[] schemaReferenceDataArray = binaryReader.ReadBytes(hierarchicalSchemaReferenceLength);
 
             if (schemaReferenceDataArray.Length is not 0)
+            {
                 using (BinaryReader r = new(new MemoryStream(schemaReferenceDataArray, false)))
                 {
                     ushort majorVersion = r.ReadUInt16();
@@ -123,6 +122,7 @@ namespace PowerToolbox.Extensions.PriExtract
                         Unknown2 = unknown2,
                     };
                 }
+            }
 
             List<ResourceValueType> resourceValueTypeTableList = new(resourceValueTypeTableSize);
 
@@ -264,7 +264,6 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             long stringDataStartOffset = binaryReader.BaseStream.Position;
-
             Dictionary<ushort, CandidateSet> candidateSetsList = [];
 
             for (int itemToItemInfoGroupIndex = 0; itemToItemInfoGroupIndex < itemToItemInfoGroupsList.Count; itemToItemInfoGroupIndex++)
@@ -289,11 +288,8 @@ namespace PowerToolbox.Extensions.PriExtract
                 for (uint itemInfoIndex = itemInfoGroup.FirstItemInfo; itemInfoIndex < itemInfoGroup.FirstItemInfo + itemInfoGroup.GroupSize; itemInfoIndex++)
                 {
                     ItemInfo itemInfo = itemInfoList[(int)itemInfoIndex];
-
                     ushort decisionIndex = (ushort)itemInfo.Decision;
-
                     Decision decision = (sectionList[DecisionInfoSectionIndex] as DecisionInfoSection)?.DecisionsList[decisionIndex];
-
                     List<Candidate> candidatesList = new(decision.QualifierSetsList.Count);
 
                     for (int i = 0; i < decision.QualifierSetsList.Count; i++)
@@ -303,7 +299,6 @@ namespace PowerToolbox.Extensions.PriExtract
                         if (candidateInfo.Type is 0x01)
                         {
                             int? sourceFile = candidateInfo.SourceFileIndex is 0 ? null : candidateInfo.SourceFileIndex - 1;
-
                             candidatesList.Add(new()
                             {
                                 QualifierSet = decision.QualifierSetsList[i].Index,
