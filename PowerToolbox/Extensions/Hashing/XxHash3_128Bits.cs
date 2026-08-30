@@ -5,7 +5,7 @@ using static PowerToolbox.Extensions.Hashing.XxHashShared;
 namespace PowerToolbox.Extensions.Hashing
 {
     /// <summary>
-    /// XXH3_128Bits 校验实现
+    /// XXH3 128位 校验实现
     /// </summary>
     internal sealed unsafe class XxHash3_128Bits
     {

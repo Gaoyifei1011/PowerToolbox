@@ -397,6 +397,11 @@ namespace PowerToolbox.Views.Pages
                 Name = XXH3128String,
                 DataVerifyType = DataVerifyType.XXH3_128Bits
             });
+            DataVerifyTypeList.Add(new()
+            {
+                Name = XXH364String,
+                DataVerifyType = DataVerifyType.XXH3_64Bits
+            });
 
             SelectedIndex = 0;
             ResultSeverity = InfoBarSeverity.Informational;
@@ -1777,11 +1782,11 @@ namespace PowerToolbox.Views.Pages
                         }
                         break;
                     }
-                case DataVerifyType.XXH128:
+                case DataVerifyType.XXH3_64Bits:
                     {
                         try
                         {
-                            XxHash3_128Bits xxhash128 = new();
+                            XxHash3_64bits xxhash3_64Bits = new();
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
@@ -1790,15 +1795,13 @@ namespace PowerToolbox.Views.Pages
                                     if (File.Exists(contentData))
                                     {
                                         FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
-                                        xxhash128.Append(fileStream);
-                                        hashBytes = xxhash128.GetCurrentHash();
+                                        hashBytes = xxhash3_64Bits.ComputeHash(fileStream);
                                         fileStream.Dispose();
                                     }
                                 }
                                 else if (selectedVerifyIndex is 1)
                                 {
-                                    xxhash128.Append(Encoding.UTF8.GetBytes(contentData));
-                                    hashBytes = xxhash128.GetCurrentHash();
+                                    hashBytes = xxhash3_64Bits.ComputeHash(Encoding.UTF8.GetBytes(contentData));
                                 }
                             }
 
@@ -1809,7 +1812,43 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.XXH128) + 1, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.XXH3_64Bits) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.XXH3_128Bits:
+                    {
+                        try
+                        {
+                            XxHash3_128Bits xxhash3_128Bits = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        xxhash3_128Bits.Append(fileStream);
+                                        hashBytes = xxhash3_128Bits.GetCurrentHash();
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    xxhash3_128Bits.Append(Encoding.UTF8.GetBytes(contentData));
+                                    hashBytes = xxhash3_128Bits.GetCurrentHash();
+                                }
+                            }
+
+                            if (hashBytes is not null)
+                            {
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.XXH3_128Bits) + 1, e);
                         }
                         break;
                     }
