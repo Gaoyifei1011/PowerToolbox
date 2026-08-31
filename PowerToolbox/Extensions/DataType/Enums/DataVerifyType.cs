@@ -10,6 +10,7 @@
         CRC_32,
         CRC_64,
         ED2K,
+        EdonR256,
         HAS160,
         MD2,
         MD4,

@@ -15,6 +15,7 @@ DataVerifyType=Data verify type
 DragAndDrop=Drag and drop to verify file data
 DragOverContent=Add to Data Verify page
 ED2K=ED2K
+EdonR256=EDON-R-256
 File=File
 FileInitialize=Please select a file for verification
 FileNotExisted=File not existed

@@ -15,6 +15,7 @@ DataVerifyType=数据校验类型
 DragAndDrop=拖放来校验文件的数据
 DragOverContent=添加到“数据校验”页面中
 ED2K=ED2K
+EdonR256=EDON-R-256
 File=文件
 FileInitialize=请选择文件进行校验
 FileNotExisted=文件不存在
