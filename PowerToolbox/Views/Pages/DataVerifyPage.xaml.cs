@@ -70,6 +70,8 @@ namespace PowerToolbox.Views.Pages
         private readonly string Shake128String = ResourceService.DataVerifyResource.GetString("Shake128");
         private readonly string Shake256String = ResourceService.DataVerifyResource.GetString("Shake256");
         private readonly string SM3String = ResourceService.DataVerifyResource.GetString("SM3");
+        private readonly string Snefru128String = ResourceService.DataVerifyResource.GetString("Snefru128");
+        private readonly string Snefru256String = ResourceService.DataVerifyResource.GetString("Snefru256");
         private readonly string TextEncodingInvalidString = ResourceService.DataVerifyResource.GetString("TextEncodingInvalid");
         private readonly string TIGERString = ResourceService.DataVerifyResource.GetString("TIGER");
         private readonly string TIGER2String = ResourceService.DataVerifyResource.GetString("TIGER2");
@@ -257,152 +259,37 @@ namespace PowerToolbox.Views.Pages
             TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
             TextEncodingTypeList.Add(new() { SelectedValue = "Custom", DisplayMember = CustomString });
             SelectedTextEncodingType = TextEncodingTypeList[9];
-            DataVerifyTypeList.Add(new()
-            {
-                Name = Blake2bString,
-                DataVerifyType = DataVerifyType.Blake2b
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = Blake3String,
-                DataVerifyType = DataVerifyType.Blake3
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = CRC32String,
-                DataVerifyType = DataVerifyType.CRC_32
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = CRC64String,
-                DataVerifyType = DataVerifyType.CRC_64
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = ED2KString,
-                DataVerifyType = DataVerifyType.ED2K
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = Has160String,
-                DataVerifyType = DataVerifyType.HAS160
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = MD2String,
-                DataVerifyType = DataVerifyType.MD2
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = MD4String,
-                DataVerifyType = DataVerifyType.MD4
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = MD5String,
-                DataVerifyType = DataVerifyType.MD5
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = RIPEMD160String,
-                DataVerifyType = DataVerifyType.RIPEMD_160
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = SHA1String,
-                DataVerifyType = DataVerifyType.SHA_1
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = SHA224String,
-                DataVerifyType = DataVerifyType.SHA_224
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = SHA256String,
-                DataVerifyType = DataVerifyType.SHA_256
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = SHA384String,
-                DataVerifyType = DataVerifyType.SHA_384
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = SHA512String,
-                DataVerifyType = DataVerifyType.SHA_512
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = SHA3224String,
-                DataVerifyType = DataVerifyType.SHA3_224
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = SHA3256String,
-                DataVerifyType = DataVerifyType.SHA3_256
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = SHA3384String,
-                DataVerifyType = DataVerifyType.SHA3_384
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = SHA3512String,
-                DataVerifyType = DataVerifyType.SHA3_512
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = Shake128String,
-                DataVerifyType = DataVerifyType.Shake128
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = Shake256String,
-                DataVerifyType = DataVerifyType.Shake256
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = SM3String,
-                DataVerifyType = DataVerifyType.SM3
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = TIGERString,
-                DataVerifyType = DataVerifyType.TIGER
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = TIGER2String,
-                DataVerifyType = DataVerifyType.TIGER2
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = WhirlpoolString,
-                DataVerifyType = DataVerifyType.WHIRLPOOL
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = XXH32String,
-                DataVerifyType = DataVerifyType.XXH32
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = XXH64String,
-                DataVerifyType = DataVerifyType.XXH64
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = XXH3128String,
-                DataVerifyType = DataVerifyType.XXH3_128Bits
-            });
-            DataVerifyTypeList.Add(new()
-            {
-                Name = XXH364String,
-                DataVerifyType = DataVerifyType.XXH3_64Bits
-            });
-
+            DataVerifyTypeList.Add(new() { Name = Blake2bString, DataVerifyType = DataVerifyType.Blake2b });
+            DataVerifyTypeList.Add(new() { Name = Blake3String, DataVerifyType = DataVerifyType.Blake3 });
+            DataVerifyTypeList.Add(new() { Name = CRC32String, DataVerifyType = DataVerifyType.CRC_32 });
+            DataVerifyTypeList.Add(new() { Name = CRC64String, DataVerifyType = DataVerifyType.CRC_64 });
+            DataVerifyTypeList.Add(new() { Name = ED2KString, DataVerifyType = DataVerifyType.ED2K });
+            DataVerifyTypeList.Add(new() { Name = Has160String, DataVerifyType = DataVerifyType.HAS160 });
+            DataVerifyTypeList.Add(new() { Name = MD2String, DataVerifyType = DataVerifyType.MD2 });
+            DataVerifyTypeList.Add(new() { Name = MD4String, DataVerifyType = DataVerifyType.MD4 });
+            DataVerifyTypeList.Add(new() { Name = MD5String, DataVerifyType = DataVerifyType.MD5 });
+            DataVerifyTypeList.Add(new() { Name = RIPEMD160String, DataVerifyType = DataVerifyType.RIPEMD_160 });
+            DataVerifyTypeList.Add(new() { Name = SHA1String, DataVerifyType = DataVerifyType.SHA_1 });
+            DataVerifyTypeList.Add(new() { Name = SHA224String, DataVerifyType = DataVerifyType.SHA_224 });
+            DataVerifyTypeList.Add(new() { Name = SHA256String, DataVerifyType = DataVerifyType.SHA_256 });
+            DataVerifyTypeList.Add(new() { Name = SHA384String, DataVerifyType = DataVerifyType.SHA_384 });
+            DataVerifyTypeList.Add(new() { Name = SHA512String, DataVerifyType = DataVerifyType.SHA_512 });
+            DataVerifyTypeList.Add(new() { Name = SHA3224String, DataVerifyType = DataVerifyType.SHA3_224 });
+            DataVerifyTypeList.Add(new() { Name = SHA3256String, DataVerifyType = DataVerifyType.SHA3_256 });
+            DataVerifyTypeList.Add(new() { Name = SHA3384String, DataVerifyType = DataVerifyType.SHA3_384 });
+            DataVerifyTypeList.Add(new() { Name = SHA3512String, DataVerifyType = DataVerifyType.SHA3_512 });
+            DataVerifyTypeList.Add(new() { Name = Shake128String, DataVerifyType = DataVerifyType.Shake128 });
+            DataVerifyTypeList.Add(new() { Name = Shake256String, DataVerifyType = DataVerifyType.Shake256 });
+            DataVerifyTypeList.Add(new() { Name = SM3String, DataVerifyType = DataVerifyType.SM3 });
+            DataVerifyTypeList.Add(new() { Name = Snefru128String, DataVerifyType = DataVerifyType.Snefru128 });
+            DataVerifyTypeList.Add(new() { Name = Snefru256String, DataVerifyType = DataVerifyType.Snefru256 });
+            DataVerifyTypeList.Add(new() { Name = TIGERString, DataVerifyType = DataVerifyType.TIGER });
+            DataVerifyTypeList.Add(new() { Name = TIGER2String, DataVerifyType = DataVerifyType.TIGER2 });
+            DataVerifyTypeList.Add(new() { Name = WhirlpoolString, DataVerifyType = DataVerifyType.WHIRLPOOL });
+            DataVerifyTypeList.Add(new() { Name = XXH32String, DataVerifyType = DataVerifyType.XXH32 });
+            DataVerifyTypeList.Add(new() { Name = XXH64String, DataVerifyType = DataVerifyType.XXH64 });
+            DataVerifyTypeList.Add(new() { Name = XXH3128String, DataVerifyType = DataVerifyType.XXH3_128Bits });
+            DataVerifyTypeList.Add(new() { Name = XXH364String, DataVerifyType = DataVerifyType.XXH3_64Bits });
             SelectedIndex = 0;
             ResultSeverity = InfoBarSeverity.Informational;
             if (SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
@@ -1604,6 +1491,76 @@ namespace PowerToolbox.Views.Pages
                         catch (Exception e)
                         {
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.SM3) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.Snefru128:
+                    {
+                        try
+                        {
+                            Snefru128 snefru128 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = snefru128.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = snefru128.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
+                            }
+                            snefru128.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.Snefru128) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.Snefru256:
+                    {
+                        try
+                        {
+                            Snefru256 snefru256 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = snefru256.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = snefru256.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
+                            }
+                            snefru256.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.Snefru256) + 1, e);
                         }
                         break;
                     }
