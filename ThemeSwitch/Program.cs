@@ -816,7 +816,7 @@ namespace ThemeSwitch
                 return false;
             }
             byte[] byteData = (byte[])data;
-            return byteData.Length > 24 && byteData[23] == 0x10 && byteData[24] == 0x00;
+            return byteData.Length > 24 && byteData[23] is 0x10 && byteData[24] is 0x00;
         }
     }
 }

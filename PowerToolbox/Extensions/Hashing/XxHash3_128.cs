@@ -7,7 +7,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// XXH3 128位 校验实现
     /// </summary>
-    internal sealed unsafe class XxHash3_128Bits
+    internal sealed unsafe class XxHash3_128
     {
         internal const int StripeLengthBytes = 64;
         internal const int SecretLengthBytes = 192;
@@ -109,24 +109,24 @@ namespace PowerToolbox.Extensions.Hashing
         private State _state;
 
         /// <summary>
-        /// 使用默认种子值 0 初始化 XxHash3_128Bits 类的新实例
+        /// 使用默认种子值 0 初始化 XxHash3_128 类的新实例
         /// </summary>
-        internal XxHash3_128Bits() : this(0)
+        internal XxHash3_128() : this(0)
         {
         }
 
         /// <summary>
-        /// 使用指定的种子初始化 XxHash3_128Bits 类的新实例
+        /// 使用指定的种子初始化 XxHash3_128 类的新实例
         /// </summary>
-        internal XxHash3_128Bits(long seed)
+        internal XxHash3_128(long seed)
         {
             Initialize(ref _state, (ulong)seed);
         }
 
         /// <summary>
-        /// 使用另一个实例的状态初始化 XxHash3_128Bits 类的新实例
+        /// 使用另一个实例的状态初始化 XxHash3_128 类的新实例
         /// </summary>
-        private XxHash3_128Bits(State state)
+        private XxHash3_128(State state)
         {
             _state = state;
         }

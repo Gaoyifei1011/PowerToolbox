@@ -11,7 +11,7 @@ namespace PowerToolbox.Extensions.Encrypt
         private const uint Q32 = 0x9E3779B9;
         private readonly uint[] S = GenerateKeySchedule(key);
         private readonly bool encrypt = encrypt;
-        private readonly byte[] IV = iv != null ? (byte[])iv.Clone() : new byte[BLOCK_SIZE];
+        private readonly byte[] IV = iv is not null ? (byte[])iv.Clone() : new byte[BLOCK_SIZE];
         private readonly CipherMode mode = mode;
         private readonly PaddingMode padding = padding;
         public bool CanTransformMultipleBlocks => true;
@@ -258,9 +258,9 @@ namespace PowerToolbox.Extensions.Encrypt
             }
             else
             {
-                if (inputCount % BLOCK_SIZE != 0)
+                if (inputCount % BLOCK_SIZE is not 0)
                 {
-                    throw new CryptographicException("密文长度不正确");
+                    throw new CryptographicException("The ciphertext length is incorrect");
                 }
 
                 byte[] buffer = new byte[inputCount];
@@ -338,7 +338,7 @@ namespace PowerToolbox.Extensions.Encrypt
                 case PaddingMode.Zeros:
                     {
                         int i = data.Length;
-                        while (i > 0 && data[i - 1] == 0) i--;
+                        while (i > 0 && data[i - 1] is 0) i--;
                         byte[] r0 = new byte[i];
                         Array.Copy(data, r0, i);
                         return r0;

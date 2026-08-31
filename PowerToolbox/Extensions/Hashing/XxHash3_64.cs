@@ -8,7 +8,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// XXH3 64位 校验实现
     /// </summary>
-    internal sealed class XxHash3_64bits : HashAlgorithm
+    internal sealed class XxHash3_64 : HashAlgorithm
     {
         private const uint PRIME32_1 = 0x9E3779B1U;
         private const uint PRIME32_2 = 0x85EBCA77U;
@@ -57,11 +57,11 @@ namespace PowerToolbox.Extensions.Hashing
             0xaf, 0xd7, 0xfb, 0xca, 0xbb, 0x4b, 0x40, 0x7e
         ];
 
-        internal XxHash3_64bits() : this(0)
+        internal XxHash3_64() : this(0)
         {
         }
 
-        internal XxHash3_64bits(ulong seed)
+        internal XxHash3_64(ulong seed)
         {
             _seed = seed;
             _stream = new MemoryStream();
