@@ -81,6 +81,8 @@ namespace PowerToolbox.Views.Pages
         private readonly string TIGER2String = ResourceService.DataVerifyResource.GetString("TIGER2");
         private readonly string UnicodeString = ResourceService.DataVerifyResource.GetString("Unicode");
         private readonly string UnknownErrorString = ResourceService.DataVerifyResource.GetString("UnknownError");
+        private readonly string UseLowerCaseString = ResourceService.DataVerifyResource.GetString("UseLowerCase");
+        private readonly string UseUpperCaseString = ResourceService.DataVerifyResource.GetString("UseUpperCase");
         private readonly string UTF32String = ResourceService.DataVerifyResource.GetString("UTF32");
         private readonly string UTF7String = ResourceService.DataVerifyResource.GetString("UTF7");
         private readonly string UTF8String = ResourceService.DataVerifyResource.GetString("UTF8");
@@ -208,18 +210,18 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _useUpperCase;
+        private ComboBoxItemModel _selectedUpperCaseType;
 
-        internal bool UseUpperCase
+        internal ComboBoxItemModel SelectedUpperCaseType
         {
-            get { return _useUpperCase; }
+            get { return _selectedUpperCaseType; }
 
             set
             {
-                if (!Equals(_useUpperCase, value))
+                if (!Equals(_selectedUpperCaseType, value))
                 {
-                    _useUpperCase = value;
-                    PropertyChanged?.Invoke(this, new(nameof(UseUpperCase)));
+                    _selectedUpperCaseType = value;
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedUpperCaseType)));
                 }
             }
         }
@@ -243,6 +245,8 @@ namespace PowerToolbox.Views.Pages
         private List<ComboBoxItemModel> TextEncodingTypeList { get; } = [];
 
         private List<DataVerifyTypeModel> DataVerifyTypeList { get; } = [];
+
+        private List<ComboBoxItemModel> UpperCaseTypeList { get; } = [];
 
         private WinRTObservableCollection<DataVerifyResultModel> DataVerifyResultCollection { get; } = [];
 
@@ -298,6 +302,9 @@ namespace PowerToolbox.Views.Pages
             DataVerifyTypeList.Add(new() { Name = XXH64String, DataVerifyType = DataVerifyType.XXH64 });
             DataVerifyTypeList.Add(new() { Name = XXH3128String, DataVerifyType = DataVerifyType.XXH3_128 });
             DataVerifyTypeList.Add(new() { Name = XXH364String, DataVerifyType = DataVerifyType.XXH3_64 });
+            UpperCaseTypeList.Add(new() { SelectedValue = "UseLowerCase", DisplayMember = UseLowerCaseString });
+            UpperCaseTypeList.Add(new() { SelectedValue = "SelectedUpperCaseType", DisplayMember = UseUpperCaseString });
+            SelectedUpperCaseType = UpperCaseTypeList[0];
             SelectedIndex = 0;
             ResultSeverity = InfoBarSeverity.Informational;
             if (SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
@@ -517,24 +524,31 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 输出格式为大写字母
+        /// 输出格式选项发生变化时触发的事件
         /// </summary>
-        private void OnUseUpperCaseChecked(object sender, RoutedEventArgs args)
+        private void OnUseUpperCaseSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            foreach (DataVerifyResultModel dataVerifyResultItem in DataVerifyResultCollection)
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedUpperCaseType, comboBox.SelectedItem))
             {
-                dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToUpperInvariant();
-            }
-        }
+                SelectedUpperCaseType = comboBox.SelectedItem is ComboBoxItemModel upperCaseType ? upperCaseType : null;
 
-        /// <summary>
-        /// 输出格式为小写字母
-        /// </summary>
-        private void OnUseUpperCaseUnchecked(object sender, RoutedEventArgs args)
-        {
-            foreach (DataVerifyResultModel dataVerifyResultItem in DataVerifyResultCollection)
-            {
-                dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToLowerInvariant();
+                if (SelectedUpperCaseType is not null)
+                {
+                    if (Equals(SelectedUpperCaseType, UpperCaseTypeList[0]))
+                    {
+                        foreach (DataVerifyResultModel dataVerifyResultItem in DataVerifyResultCollection)
+                        {
+                            dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToLowerInvariant();
+                        }
+                    }
+                    else if (Equals(SelectedUpperCaseType, UpperCaseTypeList[1]))
+                    {
+                        foreach (DataVerifyResultModel dataVerifyResultItem in DataVerifyResultCollection)
+                        {
+                            dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToUpperInvariant();
+                        }
+                    }
+                }
             }
         }
 
@@ -674,19 +688,19 @@ namespace PowerToolbox.Views.Pages
                 return dataVerifyResultList;
             });
 
-            if (UseUpperCase)
-            {
-                foreach (DataVerifyResultModel dataVerifyResultItem in dataVerifyResultList)
-                {
-                    dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToUpperInvariant();
-                    DataVerifyResultCollection.Add(dataVerifyResultItem);
-                }
-            }
-            else
+            if (Equals(SelectedUpperCaseType, UpperCaseTypeList[0]))
             {
                 foreach (DataVerifyResultModel dataVerifyResultItem in dataVerifyResultList)
                 {
                     dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToLowerInvariant();
+                    DataVerifyResultCollection.Add(dataVerifyResultItem);
+                }
+            }
+            else if (Equals(SelectedUpperCaseType, UpperCaseTypeList[1]))
+            {
+                foreach (DataVerifyResultModel dataVerifyResultItem in dataVerifyResultList)
+                {
+                    dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToUpperInvariant();
                     DataVerifyResultCollection.Add(dataVerifyResultItem);
                 }
             }

@@ -444,20 +444,16 @@
                     VerticalAlignment="Center"
                     Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('Operation')}" />
 
-                <CheckBox
+                <ComboBox
                     Grid.Column="2"
-                    MinWidth="0"
-                    Margin="0,0,10,0"
-                    Checked="{x:Bind OnUseUpperCaseChecked}"
-                    IsChecked="{x:Bind UseUpperCase, Mode=TwoWay}"
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    DisplayMemberPath="DisplayMember"
                     IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}"
-                    Unchecked="{x:Bind OnUseUpperCaseUnchecked}">
-
-                    <Grid>
-                        <TextBlock Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('UseUpperCaseString')}" Visibility="{x:Bind UseUpperCase, Mode=OneWay}" />
-                        <TextBlock Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('UseLowerCaseString')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(UseUpperCase), Mode=OneWay}" />
-                    </Grid>
-                </CheckBox>
+                    ItemsSource="{x:Bind UpperCaseTypeList}"
+                    SelectedItem="{x:Bind SelectedUpperCaseType, Mode=OneWay}"
+                    SelectionChanged="{x:Bind OnUseUpperCaseSelectionChanged}"
+                    Style="{StaticResource ComboBoxStyle}" />
 
                 <Button
                     Grid.Column="3"
