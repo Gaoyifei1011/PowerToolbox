@@ -41,7 +41,10 @@ namespace PowerToolbox.Views.Pages
         private readonly string CustomString = ResourceService.DataVerifyResource.GetString("Custom");
         private readonly string DragOverContentString = ResourceService.DataVerifyResource.GetString("DragOverContent");
         private readonly string ED2KString = ResourceService.DataVerifyResource.GetString("ED2K");
+        private readonly string EdonR224String = ResourceService.DataVerifyResource.GetString("EdonR224");
         private readonly string EdonR256String = ResourceService.DataVerifyResource.GetString("EdonR256");
+        private readonly string EdonR384String = ResourceService.DataVerifyResource.GetString("EdonR384");
+        private readonly string EdonR512String = ResourceService.DataVerifyResource.GetString("EdonR512");
         private readonly string FileInitializeString = ResourceService.DataVerifyResource.GetString("FileInitialize");
         private readonly string FileNotExistedString = ResourceService.DataVerifyResource.GetString("FileNotExisted");
         private readonly string FileNotSelectedString = ResourceService.DataVerifyResource.GetString("FileNotSelected");
@@ -265,7 +268,10 @@ namespace PowerToolbox.Views.Pages
             DataVerifyTypeList.Add(new() { Name = CRC32String, DataVerifyType = DataVerifyType.CRC_32 });
             DataVerifyTypeList.Add(new() { Name = CRC64String, DataVerifyType = DataVerifyType.CRC_64 });
             DataVerifyTypeList.Add(new() { Name = ED2KString, DataVerifyType = DataVerifyType.ED2K });
+            DataVerifyTypeList.Add(new() { Name = EdonR224String, DataVerifyType = DataVerifyType.EdonR224 });
             DataVerifyTypeList.Add(new() { Name = EdonR256String, DataVerifyType = DataVerifyType.EdonR256 });
+            DataVerifyTypeList.Add(new() { Name = EdonR384String, DataVerifyType = DataVerifyType.EdonR384 });
+            DataVerifyTypeList.Add(new() { Name = EdonR512String, DataVerifyType = DataVerifyType.EdonR512 });
             DataVerifyTypeList.Add(new() { Name = Has160String, DataVerifyType = DataVerifyType.HAS160 });
             DataVerifyTypeList.Add(new() { Name = MD2String, DataVerifyType = DataVerifyType.MD2 });
             DataVerifyTypeList.Add(new() { Name = MD4String, DataVerifyType = DataVerifyType.MD4 });
@@ -912,6 +918,41 @@ namespace PowerToolbox.Views.Pages
                         }
                         break;
                     }
+                case DataVerifyType.EdonR224:
+                    {
+                        try
+                        {
+                            EdonR224 edonR224 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = edonR224.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = edonR224.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
+                            }
+                            edonR224.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.EdonR224) + 1, e);
+                        }
+                        break;
+                    }
                 case DataVerifyType.EdonR256:
                     {
                         try
@@ -944,6 +985,76 @@ namespace PowerToolbox.Views.Pages
                         catch (Exception e)
                         {
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.EdonR256) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.EdonR384:
+                    {
+                        try
+                        {
+                            EdonR384 edonR384 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = edonR384.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = edonR384.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
+                            }
+                            edonR384.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.EdonR384) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.EdonR512:
+                    {
+                        try
+                        {
+                            EdonR512 edonR512 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = edonR512.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = edonR512.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
+                            }
+                            edonR512.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.EdonR512) + 1, e);
                         }
                         break;
                     }
