@@ -5,7 +5,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// Sha224 校验实现
     /// </summary>
-    internal class Sha224 : HashAlgorithm
+    internal sealed class Sha224 : HashAlgorithm
     {
         private ulong count;
         private int processingBufferCount;

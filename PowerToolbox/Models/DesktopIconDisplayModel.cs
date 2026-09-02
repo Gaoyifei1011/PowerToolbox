@@ -5,7 +5,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 桌面图标显示数据模型
     /// </summary>
-    internal class DesktopIconDisplayModel : INotifyPropertyChanged
+    internal sealed class DesktopIconDisplayModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 图标是否显示

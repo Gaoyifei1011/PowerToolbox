@@ -19,6 +19,11 @@ namespace PowerToolbox.Helpers.Root
         /// </summary>
         internal static Bitmap GetThumbnailBitmap(string filePath, int size)
         {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return default;
+            }
+
             try
             {
                 int result = Shell32Library.SHCreateItemFromParsingName(filePath, null, typeof(IShellItem).GUID, out IShellItem shellItem);
@@ -63,6 +68,11 @@ namespace PowerToolbox.Helpers.Root
         /// </summary>
         private static Bitmap CreateAlphaBitmap(Bitmap srcBitmap, PixelFormat targetPixelFormat)
         {
+            if (srcBitmap is null)
+            {
+                return default;
+            }
+
             Bitmap bitmap = new(srcBitmap.Width, srcBitmap.Height, targetPixelFormat);
             Rectangle bitmapBound = new(0, 0, srcBitmap.Width, srcBitmap.Height);
             BitmapData srcData = srcBitmap.LockBits(bitmapBound, ImageLockMode.ReadOnly, srcBitmap.PixelFormat);

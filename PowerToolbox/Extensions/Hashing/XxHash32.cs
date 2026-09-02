@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// XXH32 校验实现
     /// </summary>
-    internal class XxHash32 : HashAlgorithm
+    internal sealed class XxHash32 : HashAlgorithm
     {
         private const uint PRIME32_1 = 2654435761U;
         private const uint PRIME32_2 = 2246822519U;

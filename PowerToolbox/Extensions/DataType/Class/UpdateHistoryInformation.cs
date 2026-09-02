@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.DataType.Class
     /// <summary>
     /// 更新历史记录信息
     /// </summary>
-    internal class UpdateHistoryInformation
+    internal sealed class UpdateHistoryInformation
     {
         /// <summary>
         /// 更新历史记录条目

@@ -2,7 +2,7 @@
 
 namespace PowerToolbox.Models
 {
-    internal class NavigationPaneIconDisplayModel : INotifyPropertyChanged
+    internal sealed class NavigationPaneIconDisplayModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 导航窗格图标是否显示

@@ -3,7 +3,7 @@
     /// <summary>
     /// 日出时间
     /// </summary>
-    internal class SunTimes
+    internal sealed class SunTimes
     {
         internal int SunriseHour;
         internal int SunriseMinute;

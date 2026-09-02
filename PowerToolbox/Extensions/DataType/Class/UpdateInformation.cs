@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.DataType.Class
     /// <summary>
     /// 更新条目信息
     /// </summary>
-    internal class UpdateInformation
+    internal sealed class UpdateInformation
     {
         /// <summary>
         /// 更新条目

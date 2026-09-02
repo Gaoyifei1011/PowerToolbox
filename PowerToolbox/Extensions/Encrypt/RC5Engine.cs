@@ -5,7 +5,7 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// RC5 引擎（RC5-32）实现
     /// </summary>
-    internal class RC5Engine
+    internal sealed class RC5Engine
     {
         private readonly int r;
         private readonly uint[] S;

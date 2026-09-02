@@ -3,7 +3,7 @@
     /// <summary>
     /// 异或加密算法实现
     /// </summary>
-    internal class XOR
+    internal sealed class XOR
     {
         /// <summary>
         /// 异或加密

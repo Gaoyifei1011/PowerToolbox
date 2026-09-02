@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// Crc64 校验实现
     /// </summary>
-    internal class Crc64 : HashAlgorithm
+    internal sealed class Crc64 : HashAlgorithm
     {
         private ulong crc64Result = 0;
 

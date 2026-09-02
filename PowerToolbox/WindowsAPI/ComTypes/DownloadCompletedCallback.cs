@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// <summary>
     /// 提供异步下载完成时使用的回调。 此接口由调用 IUpdateDownloader：：BeginDownload 方法的程序员实现。
     /// </summary>
-    internal class DownloadCompletedCallback : IDownloadCompletedCallback
+    internal sealed class DownloadCompletedCallback : IDownloadCompletedCallback
     {
         internal IDownloadJob DownloadJob { get; private set; }
 

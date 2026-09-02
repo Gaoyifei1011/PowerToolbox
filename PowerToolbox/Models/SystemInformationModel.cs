@@ -3,7 +3,7 @@
     /// <summary>
     /// 系统信息数据模型
     /// </summary>
-    internal class SystemInformationModel
+    internal sealed class SystemInformationModel
     {
         /// <summary>
         /// 项目

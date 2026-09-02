@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// MD4 校验实现
     /// </summary>
-    internal class MD4 : HashAlgorithm
+    internal sealed class MD4 : HashAlgorithm
     {
         private const uint A0 = 0x67452301U;
         private const uint B0 = 0xEFCDAB89U;

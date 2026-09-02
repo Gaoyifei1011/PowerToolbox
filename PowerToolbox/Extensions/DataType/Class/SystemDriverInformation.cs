@@ -5,7 +5,7 @@ namespace PowerToolbox.Extensions.DataType.Class
     /// <summary>
     /// 系统驱动条目信息
     /// </summary>
-    internal class SystemDriverInformation
+    internal sealed class SystemDriverInformation
     {
         /// <summary>
         /// 驱动 ID 号

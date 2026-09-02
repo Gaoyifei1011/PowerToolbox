@@ -6,7 +6,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 数据加密类型数据模型
     /// </summary>
-    internal class DataEncryptTypeModel : INotifyPropertyChanged
+    internal sealed class DataEncryptTypeModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 数据加密类型是否被选择

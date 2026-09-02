@@ -9,7 +9,7 @@ namespace PowerToolboxShellExtension
     /// <summary>
     /// PowerToolbox 右键菜单扩展
     /// </summary>
-    internal class Program
+    internal sealed class Program
     {
         internal static StrategyBasedComWrappers StrategyBasedComWrappers { get; } = new();
 

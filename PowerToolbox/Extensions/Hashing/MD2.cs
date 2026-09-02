@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// MD2 校验实现
     /// </summary>
-    internal class MD2 : HashAlgorithm
+    internal sealed class MD2 : HashAlgorithm
     {
         private int count;
         private readonly byte[] currentState = new byte[16];

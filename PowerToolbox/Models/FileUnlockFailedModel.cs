@@ -5,7 +5,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 解锁失败信息模型
     /// </summary>
-    internal class FileUnlockFailedModel
+    internal sealed class FileUnlockFailedModel
     {
         /// <summary>
         /// 解锁失败的文件名称

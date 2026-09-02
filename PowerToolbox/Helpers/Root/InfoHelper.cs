@@ -9,7 +9,5 @@ namespace PowerToolbox.Helpers.Root
     internal static class InfoHelper
     {
         internal static Version AppVersion { get; } = Assembly.GetExecutingAssembly().GetName().Version;
-
-        internal static Version SystemVersion { get; } = Environment.OSVersion.Version;
     }
 }

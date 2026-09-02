@@ -7,7 +7,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 右键菜单项数据模型
     /// </summary>
-    internal class ContextMenuModel
+    internal sealed class ContextMenuModel
     {
         /// <summary>
         /// 菜单图标

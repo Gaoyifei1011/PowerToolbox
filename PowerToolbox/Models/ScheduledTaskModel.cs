@@ -7,7 +7,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 计划任务数据模型
     /// </summary>
-    internal class ScheduledTaskModel : INotifyPropertyChanged
+    internal sealed class ScheduledTaskModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 计划任务是否已启用

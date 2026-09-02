@@ -7,7 +7,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 驱动器数据模型
     /// </summary>
-    internal class DriveModel : INotifyPropertyChanged
+    internal sealed class DriveModel : INotifyPropertyChanged
     {
         private bool _isSelected;
 

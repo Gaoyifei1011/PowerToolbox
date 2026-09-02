@@ -5,7 +5,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 驱动数据模型
     /// </summary>
-    internal class DriverModel
+    internal sealed class DriverModel
     {
         /// <summary>
         /// 驱动名称

@@ -3,7 +3,7 @@
     /// <summary>
     /// 系统信息
     /// </summary>
-    internal class SystemInformation
+    internal sealed class SystemInformation
     {
         /// <summary>
         /// 主机名称

@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace PowerToolbox.Extensions.DataType.Class
 {
-    internal class ExecuteCommand : ICommand, Microsoft.UI.Xaml.Input.ICommand
+    internal sealed class ExecuteCommand : ICommand, Microsoft.UI.Xaml.Input.ICommand
     {
         public event EventHandler CanExecuteChanged;
 

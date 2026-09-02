@@ -6,7 +6,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 桌面图标数据模型
     /// </summary>
-    internal class DesktopIconSettingsModel : INotifyPropertyChanged
+    internal sealed class DesktopIconSettingsModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 图标注册表路径

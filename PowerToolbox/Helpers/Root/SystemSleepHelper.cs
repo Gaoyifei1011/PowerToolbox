@@ -35,24 +35,5 @@ namespace PowerToolbox.Helpers.Root
         {
             Kernel32Library.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
         }
-
-        /// <summary>
-        /// 重置系统睡眠或者关闭屏幕的计时器，这样系统睡眠或者屏幕能够继续持续工作设定的超时时间。
-        /// </summary>
-        /// <param name="keepDisplayOn">
-        /// 表示是否应该同时保持屏幕不关闭。
-        /// 对于游戏、视频和演示相关的任务需要保持屏幕不关闭；而对于后台服务、下载和监控等任务则不需要。
-        /// </param>
-        internal static void ResetIdle(bool keepDisplayOn = true)
-        {
-            if (keepDisplayOn)
-            {
-                Kernel32Library.SetThreadExecutionState(EXECUTION_STATE.ES_SYSTEM_REQUIRED | EXECUTION_STATE.ES_DISPLAY_REQUIRED);
-            }
-            else
-            {
-                Kernel32Library.SetThreadExecutionState(EXECUTION_STATE.ES_SYSTEM_REQUIRED);
-            }
-        }
     }
 }

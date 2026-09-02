@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace PowerToolbox.Extensions.DataType.Class
 {
-    internal class BindableIterator(IEnumerable enumerable) : IBindableIterator
+    internal sealed class BindableIterator(IEnumerable enumerable) : IBindableIterator
     {
         private readonly IEnumerator enumerator = enumerable.GetEnumerator();
 

@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// Crc32 校验实现
     /// </summary>
-    internal class Crc32 : HashAlgorithm
+    internal sealed class Crc32 : HashAlgorithm
     {
         private uint currentHash;
 

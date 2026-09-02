@@ -1,6 +1,6 @@
 ﻿namespace ThemeSwitch.Extensions.DataType.Class
 {
-    internal class SunTimes
+    internal sealed class SunTimes
     {
         internal int SunriseHour;
         internal int SunriseMinute;

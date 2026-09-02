@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// <summary>
     /// 定义 Invoke 方法，该方法处理有关异步安装或卸载正在进行的进度的通知。 此接口由调用 IUpdateInstaller.BeginInstall 方法或 IUpdateInstaller.BeginUninstall 方法的程序员实现。
     /// </summary>
-    internal class InstallationProgressChangedCallback : IInstallationProgressChangedCallback
+    internal sealed class InstallationProgressChangedCallback : IInstallationProgressChangedCallback
     {
         internal IInstallationJob InstallationJob { get; private set; }
 

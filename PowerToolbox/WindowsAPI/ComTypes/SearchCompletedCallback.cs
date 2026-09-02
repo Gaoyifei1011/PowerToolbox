@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// <summary>
     /// 包含处理异步搜索操作完成通知的方法。 此接口由调用 IUpdateSearcher.BeginSearch 方法的程序员实现。
     /// </summary>
-    internal class SearchCompletedCallback : ISearchCompletedCallback
+    internal sealed class SearchCompletedCallback : ISearchCompletedCallback
     {
         internal ISearchJob SearchJob { get; private set; }
 

@@ -8,7 +8,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 右键菜单 ID 项
     /// </summary>
-    internal class ContextMenuItemModel : INotifyPropertyChanged
+    internal sealed class ContextMenuItemModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 菜单是否启用

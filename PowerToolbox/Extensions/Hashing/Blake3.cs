@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// Blake3 校验实现
     /// </summary>
-    internal class Blake3 : KeyedHashAlgorithm
+    internal sealed class Blake3 : KeyedHashAlgorithm
     {
         private Blake3ChunkState _chunkState;
         private uint[] _key;

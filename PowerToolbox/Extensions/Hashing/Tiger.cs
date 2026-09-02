@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// Tiger 校验实现
     /// </summary>
-    internal class Tiger : HashAlgorithm
+    internal sealed class Tiger : HashAlgorithm
     {
         private readonly byte paddingByte;
         private byte[] partialBlock;

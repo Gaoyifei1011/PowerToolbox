@@ -5,7 +5,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// <summary>
     /// IDODownloadStatusCallback 接口的实现
     /// </summary>
-    internal class DODownloadStatusCallback : IDODownloadStatusCallback
+    internal sealed class DODownloadStatusCallback : IDODownloadStatusCallback
     {
         internal string DownloadID { get; set; }
 

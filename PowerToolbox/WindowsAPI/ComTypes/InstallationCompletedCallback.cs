@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// <summary>
     /// 处理指示异步安装或卸载已完成的通知。 此接口由调用 IUpdateInstaller.BeginInstall 或 IUpdateInstaller.BeginUninstall 方法的程序员实现。
     /// </summary>
-    internal class InstallationCompletedCallback : IInstallationCompletedCallback
+    internal sealed class InstallationCompletedCallback : IInstallationCompletedCallback
     {
         internal IInstallationJob InstallationJob { get; private set; }
 

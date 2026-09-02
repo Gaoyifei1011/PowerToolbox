@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// RC5 对称加密算法实现
     /// </summary>
-    internal class RC5 : SymmetricAlgorithm
+    internal sealed class RC5 : SymmetricAlgorithm
     {
         private int rounds = 12;
 

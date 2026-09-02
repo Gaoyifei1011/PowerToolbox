@@ -2,7 +2,7 @@
 
 namespace PowerToolbox.Extensions.Hashing
 {
-    internal class Blake3Output
+    internal sealed class Blake3Output
     {
         internal uint[] InputChainingValue;
         internal uint[] BlockWords;

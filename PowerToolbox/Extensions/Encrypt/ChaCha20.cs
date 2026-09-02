@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// ChaCha20 对称加密算法实现
     /// </summary>
-    internal class ChaCha20
+    internal sealed class ChaCha20
     {
         // ChaCha20 生成 64 字节的块
         private const int BlockSize = 64;

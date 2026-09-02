@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// 使用 Rabbit 算法对数据执行加密转换
     /// </summary>
-    internal class RabbitCryptoTransform : ICryptoTransform
+    internal sealed class RabbitCryptoTransform : ICryptoTransform
     {
         private readonly byte[] DecryptionBuffer; // used to store last block under decrypting as to work around CryptoStream implementation details
         private bool DecryptionBufferInUse;

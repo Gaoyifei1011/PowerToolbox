@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// <summary>
     /// 处理指示异步下载操作进度更改的通知。 此接口由调用 IUpdateDownloader.BeginDownload 方法的程序员实现。
     /// </summary>
-    internal class DownloadProgressChangedCallback : IDownloadProgressChangedCallback
+    internal sealed class DownloadProgressChangedCallback : IDownloadProgressChangedCallback
     {
         internal IDownloadJob DownloadJob { get; private set; }
 

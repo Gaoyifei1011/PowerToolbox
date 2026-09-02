@@ -3,7 +3,7 @@
     /// <summary>
     /// 视觉效果选项
     /// </summary>
-    internal class VisualEffects
+    internal sealed class VisualEffects
     {
         /// <summary>
         /// 视觉效果方案

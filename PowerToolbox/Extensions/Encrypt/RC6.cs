@@ -9,7 +9,7 @@ namespace PowerToolbox.Extensions.Encrypt
     /// <summary>
     /// RC6 对称加密算法实现
     /// </summary>
-    internal class RC6 : SymmetricAlgorithm
+    internal sealed class RC6 : SymmetricAlgorithm
     {
         internal RC6()
         {

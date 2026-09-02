@@ -3,7 +3,7 @@
     /// <summary>
     /// 恢复模式建议数据模型
     /// </summary>
-    internal class RecoveryModeSuggestionModel
+    internal sealed class RecoveryModeSuggestionModel
     {
         /// <summary>
         /// 文件系统

@@ -2,7 +2,7 @@
 
 namespace PowerToolbox.Extensions.Hashing
 {
-    internal class Blake3ChunkState(uint[] key, ulong chunkCounter, uint flags)
+    internal sealed class Blake3ChunkState(uint[] key, ulong chunkCounter, uint flags)
     {
         internal readonly ulong ChunkCounter = chunkCounter;
         private byte[] _block = new byte[Blake3Constants.BlockLen];

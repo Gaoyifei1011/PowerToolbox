@@ -7,7 +7,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
     /// 包含有关低级别键盘输入事件的信息。
     /// </summary>
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    internal class KBDLLHOOKSTRUCT
+    internal sealed class KBDLLHOOKSTRUCT
     {
         /// <summary>
         /// 虚拟密钥代码。 代码必须是 1 到 254 范围内的值。

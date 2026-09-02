@@ -3,7 +3,7 @@
     /// <summary>
     /// 注册表保留键值的句柄
     /// </summary>
-    internal class ReservedKeyHandles
+    internal sealed class ReservedKeyHandles
     {
         /// <summary>
         /// 从属此键的注册表项定义当前用户的首选项。 这些首选项包括环境变量的设置、有关程序组的数据、颜色、打印机、网络连接和应用程序首选项。 通过此密钥，可以更轻松地建立当前用户的设置;密钥映射到 HKEY_USERS中的当前用户的分支。 在 HKEY_CURRENT_USER中，软件供应商存储当前用户特定的首选项，供其应用程序使用。 例如，Microsoft 创建 HKEY_CURRENT_USER\Software\Microsoft 密钥供其应用程序使用，每个应用程序在 Microsoft 密钥下创建自己的子项。

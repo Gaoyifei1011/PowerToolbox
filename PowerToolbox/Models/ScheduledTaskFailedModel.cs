@@ -5,7 +5,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 失败计划任务数据模型
     /// </summary>
-    internal class ScheduledTaskFailedModel
+    internal sealed class ScheduledTaskFailedModel
     {
         /// <summary>
         /// 计划任务名称

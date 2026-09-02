@@ -5,7 +5,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// <summary>
     /// IBackgroundCopyCallback 接口的实现
     /// </summary>
-    internal class BackgroundCopyCallback : IBackgroundCopyCallback
+    internal sealed class BackgroundCopyCallback : IBackgroundCopyCallback
     {
         internal string DownloadID { get; set; }
 

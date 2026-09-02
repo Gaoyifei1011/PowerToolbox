@@ -3,7 +3,7 @@
     /// <summary>
     /// 下拉框数据模型
     /// </summary>
-    public class ComboBoxItemModel
+    public sealed class ComboBoxItemModel
     {
         /// <summary>
         /// 选中值

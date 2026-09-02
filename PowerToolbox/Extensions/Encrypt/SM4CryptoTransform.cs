@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace PowerToolbox.Extensions.Encrypt
 {
-    internal class SM4CryptoTransform : ICryptoTransform
+    internal sealed class SM4CryptoTransform : ICryptoTransform
     {
         private readonly uint[] rk;
         private readonly byte[] iv;

@@ -5,7 +5,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 数据校验类型数据模型
     /// </summary>
-    internal class DataVerifyTypeModel
+    internal sealed class DataVerifyTypeModel
     {
         /// <summary>
         /// 数据校验类型名称

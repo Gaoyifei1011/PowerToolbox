@@ -7,7 +7,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 文件解锁数据类型
     /// </summary>
-    internal class FileUnlockModel : INotifyPropertyChanged
+    internal sealed class FileUnlockModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 是否为目录

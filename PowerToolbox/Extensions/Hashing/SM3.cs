@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// SM3 校验实现
     /// </summary>
-    internal class SM3 : HashAlgorithm
+    internal sealed class SM3 : HashAlgorithm
     {
         private int bufferFilled;
         private ulong byteCount;

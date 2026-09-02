@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
     /// <summary>
     /// 实现 IWinSATInitiateEvents 的类。实现这个类来获取进度信息和完成通知。
     /// </summary>
-    internal class CWinSATCallbacks : IWinSATInitiateEvents
+    internal sealed class CWinSATCallbacks : IWinSATInitiateEvents
     {
         /// <summary>
         /// 评估的返回值。

@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace PowerToolbox.Extensions.Encrypt
 {
-    internal class RC5CryptoTransform : ICryptoTransform
+    internal sealed class RC5CryptoTransform : ICryptoTransform
     {
         private readonly RC5Engine engine;
         private readonly bool encrypting;

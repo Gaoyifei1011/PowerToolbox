@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// Whirlpool 校验实现
     /// </summary>
-    internal class Whirlpool : HashAlgorithm
+    internal sealed class Whirlpool : HashAlgorithm
     {
         private readonly byte[] bitLength = new byte[32];
         private readonly byte[] currentHash = new byte[64];

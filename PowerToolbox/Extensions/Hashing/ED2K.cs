@@ -6,7 +6,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// <summary>
     /// ED2K 校验实现
     /// </summary>
-    internal class ED2K : HashAlgorithm
+    internal sealed class ED2K : HashAlgorithm
     {
         private const int BLOCKSIZE = 9500 * 1024;
         private readonly byte[] nullArray = [];

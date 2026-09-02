@@ -19,7 +19,7 @@ namespace PowerToolbox
     /// <summary>
     /// PowerToolbox 桌面程序
     /// </summary>
-    internal class Program
+    internal sealed class Program
     {
         private static readonly Guid CLSID_ApplicationActivationManager = new("45BA127D-10A8-46EA-8AB7-56EA9078943C");
         private static readonly IApplicationActivationManager applicationActivationManager = (IApplicationActivationManager)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_ApplicationActivationManager));

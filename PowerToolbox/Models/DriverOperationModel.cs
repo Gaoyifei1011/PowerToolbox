@@ -6,7 +6,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 驱动操作数据模型
     /// </summary>
-    internal class DriverOperationModel : INotifyPropertyChanged
+    internal sealed class DriverOperationModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 驱动操作是否正在进行中

@@ -1,6 +1,6 @@
 ﻿namespace PowerToolbox.Extensions.DataType.Class
 {
-    internal class PnpDriverInformation
+    internal sealed class PnpDriverInformation
     {
         internal string DriverName { get; set; }
 

@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace PowerToolbox.Extensions.DataType.Class
 {
-    internal class BindableVectorView(IList list) : BindableVector(list), IBindableVectorView
+    internal sealed class BindableVectorView(IList list) : BindableVector(list), IBindableVectorView
     {
         public override bool IsReadOnly
         {

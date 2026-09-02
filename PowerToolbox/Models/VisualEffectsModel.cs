@@ -5,7 +5,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 视觉效果数据模型
     /// </summary>
-    internal class VisualEffectsModel : INotifyPropertyChanged
+    internal sealed class VisualEffectsModel : INotifyPropertyChanged
     {
         /// <summary>
         /// 开启 / 禁用视觉效果

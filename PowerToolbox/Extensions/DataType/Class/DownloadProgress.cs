@@ -5,7 +5,7 @@ namespace PowerToolbox.Extensions.DataType.Class
     /// <summary>
     /// 下载进度
     /// </summary>
-    internal class DownloadProgress
+    internal sealed class DownloadProgress
     {
         /// <summary>
         /// 下载对应的 ID
