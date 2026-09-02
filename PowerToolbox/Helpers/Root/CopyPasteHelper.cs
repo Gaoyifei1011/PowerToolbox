@@ -15,6 +15,11 @@ namespace PowerToolbox.Helpers.Root
         /// </summary>
         internal static bool CopyToClipboard(string content)
         {
+            if (string.IsNullOrEmpty(content))
+            {
+                return false;
+            }
+
             try
             {
                 Clipboard.SetText(content);

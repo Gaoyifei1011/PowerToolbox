@@ -15,6 +15,11 @@ namespace PowerToolbox.Services.Root
         /// </summary>
         internal static T ReadSetting<T>(string key)
         {
+            if (string.IsNullOrEmpty(key))
+            {
+                return default;
+            }
+
             return RegistryHelper.ReadRegistryKey<T>(Registry.CurrentUser, settingsKey, key);
         }
 
@@ -23,6 +28,11 @@ namespace PowerToolbox.Services.Root
         /// </summary>
         internal static void SaveSetting<T>(string key, T value)
         {
+            if (string.IsNullOrEmpty(key))
+            {
+                return;
+            }
+
             RegistryHelper.SaveRegistryKey(Registry.CurrentUser, settingsKey, key, value);
         }
     }

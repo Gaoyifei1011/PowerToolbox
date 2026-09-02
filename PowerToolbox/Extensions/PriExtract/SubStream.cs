@@ -46,6 +46,11 @@ namespace PowerToolbox.Extensions.PriExtract
 
         public override int Read(byte[] buffer, int offset, int count)
         {
+            if (buffer is null)
+            {
+                return default;
+            }
+
             if (Position < 0)
             {
                 throw new InvalidOperationException("Cannot read when position is negative.");
@@ -77,6 +82,11 @@ namespace PowerToolbox.Extensions.PriExtract
 
         public override void Write(byte[] buffer, int offset, int count)
         {
+            if (buffer is null)
+            {
+                return;
+            }
+
             throw new NotSupportedException();
         }
     }

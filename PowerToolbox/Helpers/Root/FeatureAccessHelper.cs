@@ -33,6 +33,11 @@ namespace PowerToolbox.Helpers.Root
         /// </summary>
         internal static string GetFeatureId(string feature)
         {
+            if (string.IsNullOrEmpty(feature))
+            {
+                return string.Empty;
+            }
+
             return RegistryHelper.ReadRegistryKey<string>(Registry.LocalMachine, string.Format(@"{0}\{1}", @"SOFTWARE\Microsoft\Windows\CurrentVersion\AppModel\LimitedAccessFeatures", feature), null);
         }
 

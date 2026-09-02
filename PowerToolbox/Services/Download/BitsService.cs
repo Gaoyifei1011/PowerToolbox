@@ -70,6 +70,11 @@ namespace PowerToolbox.Services.Download
         /// </summary>
         internal static void CreateDownload(string url, string saveFilePath)
         {
+            if (string.IsNullOrEmpty(url) || string.IsNullOrEmpty(saveFilePath))
+            {
+                return;
+            }
+
             Task.Factory.StartNew((param) =>
             {
                 try
@@ -121,6 +126,11 @@ namespace PowerToolbox.Services.Download
         /// </summary>
         internal static void ContinueDownload(string downloadID)
         {
+            if (string.IsNullOrEmpty(downloadID))
+            {
+                return;
+            }
+
             Task.Factory.StartNew((param) =>
             {
                 lock (bitsLock)
@@ -152,6 +162,11 @@ namespace PowerToolbox.Services.Download
         /// </summary>
         internal static void PauseDownload(string downloadID)
         {
+            if (string.IsNullOrEmpty(downloadID))
+            {
+                return;
+            }
+
             Task.Factory.StartNew((param) =>
             {
                 lock (bitsLock)
@@ -183,6 +198,11 @@ namespace PowerToolbox.Services.Download
         /// </summary>
         internal static void DeleteDownload(string downloadID)
         {
+            if (string.IsNullOrEmpty(downloadID))
+            {
+                return;
+            }
+
             Task.Factory.StartNew((param) =>
             {
                 lock (bitsLock)
