@@ -56,6 +56,10 @@ namespace PowerToolbox.Views.Pages
         private readonly string GBKString = ResourceService.DataVerifyResource.GetString("GBK");
         private readonly string Has160String = ResourceService.DataVerifyResource.GetString("Has160");
         private readonly string ISO88591String = ResourceService.DataVerifyResource.GetString("ISO88591");
+        private readonly string Keccak224String = ResourceService.DataVerifyResource.GetString("Keccak224");
+        private readonly string Keccak256String = ResourceService.DataVerifyResource.GetString("Keccak256");
+        private readonly string Keccak384String = ResourceService.DataVerifyResource.GetString("Keccak384");
+        private readonly string Keccak512String = ResourceService.DataVerifyResource.GetString("Keccak512");
         private readonly string MD2String = ResourceService.DataVerifyResource.GetString("MD2");
         private readonly string MD4String = ResourceService.DataVerifyResource.GetString("MD4");
         private readonly string MD5String = ResourceService.DataVerifyResource.GetString("MD5");
@@ -277,10 +281,15 @@ namespace PowerToolbox.Views.Pages
             DataVerifyTypeList.Add(new() { Name = EdonR256String, DataVerifyType = DataVerifyType.EdonR256 });
             DataVerifyTypeList.Add(new() { Name = EdonR384String, DataVerifyType = DataVerifyType.EdonR384 });
             DataVerifyTypeList.Add(new() { Name = EdonR512String, DataVerifyType = DataVerifyType.EdonR512 });
+            DataVerifyTypeList.Add(new() { Name = Keccak224String, DataVerifyType = DataVerifyType.Keccak224 });
+            DataVerifyTypeList.Add(new() { Name = Keccak256String, DataVerifyType = DataVerifyType.Keccak256 });
+            DataVerifyTypeList.Add(new() { Name = Keccak384String, DataVerifyType = DataVerifyType.Keccak384 });
+            DataVerifyTypeList.Add(new() { Name = Keccak512String, DataVerifyType = DataVerifyType.Keccak512 });
             DataVerifyTypeList.Add(new() { Name = Has160String, DataVerifyType = DataVerifyType.HAS160 });
             DataVerifyTypeList.Add(new() { Name = MD2String, DataVerifyType = DataVerifyType.MD2 });
             DataVerifyTypeList.Add(new() { Name = MD4String, DataVerifyType = DataVerifyType.MD4 });
             DataVerifyTypeList.Add(new() { Name = MD5String, DataVerifyType = DataVerifyType.MD5 });
+            DataVerifyTypeList.Add(new() { Name = RIPEMD128String, DataVerifyType = DataVerifyType.RIPEMD_128 });
             DataVerifyTypeList.Add(new() { Name = RIPEMD160String, DataVerifyType = DataVerifyType.RIPEMD_160 });
             DataVerifyTypeList.Add(new() { Name = SHA1String, DataVerifyType = DataVerifyType.SHA_1 });
             DataVerifyTypeList.Add(new() { Name = SHA224String, DataVerifyType = DataVerifyType.SHA_224 });
@@ -1105,6 +1114,146 @@ namespace PowerToolbox.Views.Pages
                         catch (Exception e)
                         {
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.HAS160) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.Keccak224:
+                    {
+                        try
+                        {
+                            Keccak keccak = new(224);
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = keccak.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = keccak.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
+                            }
+                            keccak.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.Keccak224) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.Keccak256:
+                    {
+                        try
+                        {
+                            Keccak keccak = new(256);
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = keccak.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = keccak.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
+                            }
+                            keccak.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.Keccak256) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.Keccak384:
+                    {
+                        try
+                        {
+                            Keccak keccak = new(384);
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = keccak.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = keccak.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
+                            }
+                            keccak.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.Keccak384) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.Keccak512:
+                    {
+                        try
+                        {
+                            Keccak keccak = new(512);
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = keccak.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = keccak.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
+                            }
+                            keccak.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.Keccak512) + 1, e);
                         }
                         break;
                     }
