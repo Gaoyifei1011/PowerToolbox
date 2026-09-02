@@ -38,6 +38,7 @@ MultiSelect=Multi-select
 NoMultiFile=Please do not select multiple files
 OpenLocalFile=OpenLocalFile
 Operation=Operation
+RIPEMD128=RIPEMD_128
 RIPEMD160=RIPEMD_160
 SelectAll=Select all
 SelectFile=Select file

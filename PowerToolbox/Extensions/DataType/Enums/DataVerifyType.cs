@@ -18,6 +18,7 @@
         MD2,
         MD4,
         MD5,
+        RIPEMD_128,
         RIPEMD_160,
         SHA_1,
         SHA_224,

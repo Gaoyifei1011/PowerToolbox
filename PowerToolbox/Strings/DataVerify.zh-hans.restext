@@ -38,6 +38,7 @@ MultiSelect=多选
 NoMultiFile=请不要选择多个文件
 OpenLocalFile=打开本地文件
 Operation=操作
+RIPEMD128=RIPEMD_128
 RIPEMD160=RIPEMD_160
 SelectAll=全选
 SelectFile=选择文件

@@ -60,6 +60,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string MD4String = ResourceService.DataVerifyResource.GetString("MD4");
         private readonly string MD5String = ResourceService.DataVerifyResource.GetString("MD5");
         private readonly string NoMultiFileString = ResourceService.DataVerifyResource.GetString("NoMultiFile");
+        private readonly string RIPEMD128String = ResourceService.DataVerifyResource.GetString("RIPEMD128");
         private readonly string RIPEMD160String = ResourceService.DataVerifyResource.GetString("RIPEMD160");
         private readonly string SelectFileString = ResourceService.DataVerifyResource.GetString("SelectFile");
         private readonly string SHA1String = ResourceService.DataVerifyResource.GetString("SHA1");
@@ -1209,6 +1210,41 @@ namespace PowerToolbox.Views.Pages
                         catch (Exception e)
                         {
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.MD5) + 1, e);
+                        }
+                        break;
+                    }
+                case DataVerifyType.RIPEMD_128:
+                    {
+                        try
+                        {
+                            RIPEMD128 ripemd128 = new();
+                            byte[] hashBytes = null;
+                            if (contentData is not null)
+                            {
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = ripemd128.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = ripemd128.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
+                            }
+                            ripemd128.Dispose();
+
+                            if (hashBytes is not null)
+                            {
+                                verifiedData = Convert.ToString(BitConverter.ToString(hashBytes).Replace("-", string.Empty));
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetVerifiedData), Convert.ToInt32(DataVerifyType.RIPEMD_128) + 1, e);
                         }
                         break;
                     }
