@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 namespace PowerToolbox.Extensions.Hashing
 {
     /// <summary>
-    /// EDON-R-384 哈希校验实现
+    /// EDON-R-384 校验实现
     /// EDON-R-384 Hash Algorithm
     /// Pure C# implementation compatible with .NET Framework.
     /// Based on the EDON-R reference implementation.

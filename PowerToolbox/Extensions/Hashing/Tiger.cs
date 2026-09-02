@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 namespace PowerToolbox.Extensions.Hashing
 {
     /// <summary>
-    /// Tiger 算法实现
+    /// Tiger 校验实现
     /// </summary>
     internal class Tiger : HashAlgorithm
     {

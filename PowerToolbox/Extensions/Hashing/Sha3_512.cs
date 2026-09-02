@@ -2,9 +2,10 @@
 using System.Security.Cryptography;
 
 namespace PowerToolbox.Extensions.Hashing
-{    /// <summary>
-     /// SHA3 512 算法实现
-     /// </summary>
+{
+    /// <summary>
+    /// SHA3 512 算法实现
+    /// </summary>
     internal class Sha3_512 : HashAlgorithm
     {
         private const int rateBytes = 72;

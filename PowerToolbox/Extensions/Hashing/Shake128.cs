@@ -3,6 +3,9 @@ using System.Security.Cryptography;
 
 namespace PowerToolbox.Extensions.Hashing
 {
+    /// <summary>
+    /// Shake128 校验实现
+    /// </summary>
     internal sealed class Shake128 : HashAlgorithm
     {
         // SHAKE128 parameters
@@ -21,7 +24,7 @@ namespace PowerToolbox.Extensions.Hashing
             get { return HashSizeValue; }
         }
 
-        // Keccak round constants
+        // KeccakBase round constants
         private static readonly ulong[] KeccakRoundConstants =
         [
             0x0000000000000001UL, 0x0000000000008082UL, 0x800000000000808aUL, 0x8000000080008000UL,
@@ -187,7 +190,7 @@ namespace PowerToolbox.Extensions.Hashing
         }
 
         /// <summary>
-        /// Keccak-f[1600] permutation
+        /// KeccakBase-f[1600] permutation
         /// </summary>
         private void KeccakF1600()
         {

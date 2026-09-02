@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 namespace PowerToolbox.Extensions.Hashing
 {
     /// <summary>
-    /// SM3 算法实现
+    /// SM3 校验实现
     /// </summary>
     internal class SM3 : HashAlgorithm
     {

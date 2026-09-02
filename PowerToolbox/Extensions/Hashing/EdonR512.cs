@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 namespace PowerToolbox.Extensions.Hashing
 {
     /// <summary>
-    /// EDON-R-512 哈希校验实现
+    /// EDON-R-512 校验实现
     /// EDON-R-512 hash algorithm
     /// Pure C# implementation compatible with .NET Framework
     /// Hash size : 512 bits / 64 bytes
