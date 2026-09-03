@@ -7,9 +7,13 @@ namespace PowerToolbox.Views.Dialogs
     /// </summary>
     internal sealed partial class ClosingWindowDialog : ContentDialog
     {
+        #region 第一部分：构造函数
+
         internal ClosingWindowDialog()
         {
             InitializeComponent();
         }
+
+        #endregion 第一部分：构造函数
     }
 }

@@ -26,13 +26,19 @@ namespace PowerToolbox.Views.Dialogs
     /// </summary>
     internal sealed partial class AppInformationDialog : ContentDialog, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string DoNetVersionString = ResourceService.DialogResource.GetString("DoNetVersion");
         private readonly string WindowsAppSDKVersionString = ResourceService.DialogResource.GetString("WindowsAppSDKVersion");
         private readonly string WinUIVersionString = ResourceService.DialogResource.GetString("WinUIVersion");
 
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
+
         private bool _isLoadCompleted = false;
 
-        internal bool IsLoadCompleted
+        private bool IsLoadCompleted
         {
             get { return _isLoadCompleted; }
 
@@ -50,17 +56,76 @@ namespace PowerToolbox.Views.Dialogs
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal AppInformationDialog()
         {
             InitializeComponent();
         }
+
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：挂载事件处理
 
         /// <summary>
         /// 应用信息初始化触发的事件
         /// </summary>
         private async void OnLoaded(object sender, RoutedEventArgs args)
         {
-            List<KeyValuePair<string, Version>> dependencyInformationList = await Task.Run(() =>
+            List<KeyValuePair<string, Version>> dependencyInformationList = await GetDependencyInformationListAsync();
+
+            if (dependencyInformationList is not null && dependencyInformationList.Count > 0)
+            {
+                foreach (KeyValuePair<string, Version> dependencyInformation in dependencyInformationList)
+                {
+                    AppInformationCollection.Add(new(dependencyInformation.Key, dependencyInformation.Value));
+                }
+            }
+
+            IsLoadCompleted = true;
+        }
+
+        /// <summary>
+        /// 复制应用信息
+        /// </summary>
+        private async void OnCopyAppInformationClicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            bool copyResult = false;
+            ContentDialogButtonClickDeferral contentDialogButtonClickDeferral = args.GetDeferral();
+
+            try
+            {
+                string appInformation = await GetAppInformationStringAsync([.. AppInformationCollection]);
+
+                if (!string.IsNullOrEmpty(appInformation))
+                {
+                    copyResult = CopyPasteHelper.CopyToClipboard(Convert.ToString(appInformation));
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AppInformationDialog), nameof(OnCopyAppInformationClicked), 1, e);
+            }
+            finally
+            {
+                contentDialogButtonClickDeferral.Complete();
+            }
+
+            await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+        }
+
+        #endregion 第四部分：挂载事件处理
+
+        #region 第五部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 获取依赖信息列表
+        /// </summary>
+        private async Task<List<KeyValuePair<string, Version>>> GetDependencyInformationListAsync()
+        {
+            return await Task.Run(() =>
             {
                 List<KeyValuePair<string, Version>> dependencyInformationList = [];
                 uint bufferLength = 0;
@@ -100,50 +165,27 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 return dependencyInformationList;
             });
-
-            foreach (KeyValuePair<string, Version> dependencyInformation in dependencyInformationList)
-            {
-                AppInformationCollection.Add(new(dependencyInformation.Key, dependencyInformation.Value));
-            }
-
-            IsLoadCompleted = true;
         }
 
         /// <summary>
-        /// 复制应用信息
+        /// 获取应用信息
         /// </summary>
-        private async void OnCopyAppInformationClicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private async Task<string> GetAppInformationStringAsync(List<DictionaryEntry> appInformationList)
         {
-            bool copyResult = false;
-            ContentDialogButtonClickDeferral contentDialogButtonClickDeferral = args.GetDeferral();
-
-            try
+            return await Task.Run(() =>
             {
-                StringBuilder stringBuilder = await Task.Run(() =>
+                StringBuilder stringBuilder = new();
+                foreach (DictionaryEntry appInformationItem in AppInformationCollection)
                 {
-                    StringBuilder stringBuilder = new();
-                    foreach (DictionaryEntry appInformationItem in AppInformationCollection)
-                    {
-                        stringBuilder.Append(appInformationItem.Key);
-                        stringBuilder.Append(appInformationItem.Value);
-                        stringBuilder.Append(Environment.NewLine);
-                    }
+                    stringBuilder.Append(appInformationItem.Key);
+                    stringBuilder.Append(appInformationItem.Value);
+                    stringBuilder.Append(Environment.NewLine);
+                }
 
-                    return stringBuilder;
-                });
-
-                copyResult = CopyPasteHelper.CopyToClipboard(Convert.ToString(stringBuilder));
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AppInformationDialog), nameof(OnCopyAppInformationClicked), 1, e);
-            }
-            finally
-            {
-                contentDialogButtonClickDeferral.Complete();
-            }
-
-            await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                return Convert.ToString(stringBuilder);
+            });
         }
+
+        #endregion 第五部分：数据操作与业务逻辑
     }
 }
