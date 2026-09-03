@@ -31,13 +31,9 @@ namespace PowerToolbox.Services.Settings
         private static readonly IAppxFactory appxFactory = Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_AppxFactory)) as IAppxFactory;
         private static readonly string resourceKey = @"Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\{0}\ResourcesConfig";
         private static KeyValuePair<string, string> defaultAppLanguage;
-
         internal static KeyValuePair<string, string> AppLanguage { get; private set; }
-
         internal static FlowDirection FlowDirection { get; private set; }
-
         private static readonly List<string> AppLanguagesList = [];
-
         internal static List<KeyValuePair<string, string>> LanguageList { get; } = [];
 
         /// <summary>
@@ -104,6 +100,12 @@ namespace PowerToolbox.Services.Settings
         /// </summary>
         private static bool IsExistsInLanguageList(CultureInfo currentCulture, out KeyValuePair<string, string> language)
         {
+            if (currentCulture is null)
+            {
+                language = default;
+                return false;
+            }
+
             foreach (KeyValuePair<string, string> languageItem in LanguageList)
             {
                 if (string.Equals(languageItem.Key, currentCulture.Name, StringComparison.OrdinalIgnoreCase))

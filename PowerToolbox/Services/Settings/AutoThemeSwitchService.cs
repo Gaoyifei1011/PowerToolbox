@@ -21,51 +21,28 @@ namespace PowerToolbox.Services.Settings
         private static readonly string appThemeDarkTimeKey = ConfigKey.AppThemeDarkTimeKey;
         private static readonly string sunriseOffsetKey = ConfigKey.SunriseOffsetKey;
         private static readonly string sunsetOffsetKey = ConfigKey.SunsetOffsetKey;
-
         internal static bool DefaultAutoThemeSwitchEnable { get; } = false;
-
         internal static string DefaultAutoThemeSwitchType { get; private set; }
-
         internal static bool DefaultAutoSwitchSystemTheme { get; } = false;
-
         internal static bool DefaultAutoSwitchAppTheme { get; } = false;
-
         internal static bool DefaultIsShowColorInDarkTheme { get; } = false;
-
         internal static TimeSpan DefaultSystemThemeLightTime { get; } = new(7, 0, 0);
-
         internal static TimeSpan DefaultSystemThemeDarkTime { get; } = new(19, 0, 0);
-
         internal static TimeSpan DefaultAppThemeLightTime { get; } = new(7, 0, 0);
-
         internal static TimeSpan DefaultAppThemeDarkTime { get; } = new(19, 0, 0);
-
         internal static int DefaultSunriseOffset { get; } = 0;
-
         internal static int DefaultSunsetOffset { get; } = 0;
-
         internal static bool AutoThemeSwitchEnable { get; set; }
-
         internal static string AutoThemeSwitchType { get; set; }
-
         internal static bool AutoSwitchSystemTheme { get; set; }
-
         internal static bool AutoSwitchAppTheme { get; set; }
-
         internal static bool IsShowColorInDarkTheme { get; set; }
-
         internal static TimeSpan SystemThemeLightTime { get; set; }
-
         internal static TimeSpan SystemThemeDarkTime { get; set; }
-
         internal static TimeSpan AppThemeLightTime { get; set; }
-
         internal static TimeSpan AppThemeDarkTime { get; set; }
-
         internal static int SunriseOffset { get; set; }
-
         internal static int SunsetOffset { get; set; }
-
         internal static List<string> AutoThemeSwitchTypeList { get; } = ["FixedTime", "SunriseSunset", "DarkMode"];
 
         /// <summary>

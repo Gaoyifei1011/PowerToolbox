@@ -9,9 +9,7 @@ namespace PowerToolbox.Services.Settings
     internal static class FileShellMenuService
     {
         private static readonly string settingsKey = ConfigKey.FileShellMenuKey;
-
         private static readonly bool defaultFileShellMenu = true;
-
         internal static bool FileShellMenu { get; private set; }
 
         /// <summary>

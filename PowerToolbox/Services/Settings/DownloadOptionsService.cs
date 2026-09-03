@@ -18,14 +18,10 @@ namespace PowerToolbox.Services.Settings
     {
         private static readonly string downloadFolderKey = ConfigKey.DownloadFolderKey;
         private static readonly string doEngineModeKey = ConfigKey.DoEngineModeKey;
-
         private static string defaultDoEngineMode;
         private static string defaultDownloadFolder;
-
         internal static string DownloadFolder { get; private set; }
-
         internal static string DoEngineMode { get; private set; }
-
         internal static List<string> DoEngineModeList { get; } = ["DeliveryOptimization", "Bits", "Aria2"];
 
         /// <summary>
@@ -94,6 +90,11 @@ namespace PowerToolbox.Services.Settings
         /// </summary>
         internal static void SetFolder(string downloadFolder)
         {
+            if (string.IsNullOrEmpty(downloadFolder))
+            {
+                return;
+            }
+
             DownloadFolder = downloadFolder;
             LocalSettingsService.SaveSetting(downloadFolderKey, downloadFolder);
         }
@@ -103,6 +104,11 @@ namespace PowerToolbox.Services.Settings
         /// </summary>
         internal static void SetDoEngineMode(string doEngineMode)
         {
+            if (string.IsNullOrEmpty(doEngineMode))
+            {
+                return;
+            }
+
             DoEngineMode = doEngineMode;
             LocalSettingsService.SaveSetting(doEngineModeKey, doEngineMode);
         }

@@ -10,7 +10,6 @@ namespace PowerToolbox.Services.Settings
     internal static class AlwaysShowBackdropService
     {
         private static readonly string settingsKey = ConfigKey.AlwaysShowBackdropKey;
-
         private static readonly bool defaultAlwaysShowBackdrop = false;
 
         private static bool _alwaysShowBackdrop;
