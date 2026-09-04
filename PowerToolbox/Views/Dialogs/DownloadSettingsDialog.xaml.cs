@@ -26,14 +26,20 @@ namespace PowerToolbox.Views.Dialogs
     /// </summary>
     internal sealed partial class DownloadSettingsDialog : ContentDialog, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string DoEngineAria2String = ResourceService.DialogResource.GetString("DoEngineAria2");
         private readonly string DoEngineBitsString = ResourceService.DialogResource.GetString("DoEngineBits");
         private readonly string DoEngineDoString = ResourceService.DialogResource.GetString("DoEngineDo");
         private readonly string SelectFolderString = ResourceService.DialogResource.GetString("SelectFolder");
 
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
+
         private string _downloadFolder = DownloadOptionsService.DownloadFolder;
 
-        internal string DownloadFolder
+        private string DownloadFolder
         {
             get { return _downloadFolder; }
 
@@ -49,7 +55,7 @@ namespace PowerToolbox.Views.Dialogs
 
         private ComboBoxItemModel _doEngineMode;
 
-        internal ComboBoxItemModel DoEngineMode
+        private ComboBoxItemModel DoEngineMode
         {
             get { return _doEngineMode; }
 
@@ -67,17 +73,22 @@ namespace PowerToolbox.Views.Dialogs
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal DownloadSettingsDialog()
         {
             InitializeComponent();
-
             DoEngineModeList.Add(new() { SelectedValue = DownloadOptionsService.DoEngineModeList[0], DisplayMember = DoEngineDoString });
             DoEngineModeList.Add(new() { SelectedValue = DownloadOptionsService.DoEngineModeList[1], DisplayMember = DoEngineBitsString });
             DoEngineModeList.Add(new() { SelectedValue = DownloadOptionsService.DoEngineModeList[2], DisplayMember = DoEngineAria2String });
             DoEngineMode = DoEngineModeList.Find(item => string.Equals(Convert.ToString(item.SelectedValue), DownloadOptionsService.DoEngineMode, StringComparison.OrdinalIgnoreCase));
         }
 
-        #region 第一部分：下载设置对话框——挂载的事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：挂载事件处理
 
         /// <summary>
         /// 关闭对话框
@@ -92,17 +103,7 @@ namespace PowerToolbox.Views.Dialogs
         /// </summary>
         private void OnDownloadOpenFolderClicked(Hyperlink sender, HyperlinkClickEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start(DownloadFolder);
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnDownloadOpenFolderClicked), 1, e);
-                }
-            });
+            OpenDownloadFolder(DownloadFolder);
         }
 
         /// <summary>
@@ -159,17 +160,7 @@ namespace PowerToolbox.Views.Dialogs
         /// </summary>
         private void OnOpenDeliveryOptimizationClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("ms-settings:delivery-optimization");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnOpenDeliveryOptimizationClicked), 1, e);
-                }
-            });
+            OpenDeliveryOptimization();
         }
 
         /// <summary>
@@ -196,6 +187,67 @@ namespace PowerToolbox.Views.Dialogs
         /// </summary>
         private void OnConfigurationClicked(object sender, RoutedEventArgs args)
         {
+            OpenAria2Configuration();
+        }
+
+        /// <summary>
+        /// 疑难解答
+        /// </summary>
+        private void OnTroubleShootClicked(Hyperlink sender, HyperlinkClickEventArgs args)
+        {
+            OpenTroubleShoot();
+        }
+
+        #endregion 第四部分：挂载事件处理
+
+        #region 第五部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 打开下载文件夹
+        /// </summary>
+        private void OpenDownloadFolder(string downloadFolder)
+        {
+            if (string.IsNullOrEmpty(downloadFolder))
+            {
+                return;
+            }
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start(downloadFolder);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OpenDownloadFolder), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 打开传递优化
+        /// </summary>
+        private void OpenDeliveryOptimization()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("ms-settings:delivery-optimization");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OpenDeliveryOptimization), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 打开 Aria2 配置文件
+        /// </summary>
+        private void OpenAria2Configuration()
+        {
             Task.Run(() =>
             {
                 if (!File.Exists(Aria2Service.Aria2ConfPath))
@@ -209,15 +261,15 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnConfigurationClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OpenAria2Configuration), 1, e);
                 }
             });
         }
 
         /// <summary>
-        /// 疑难解答
+        /// 打开疑难解答
         /// </summary>
-        private void OnTroubleShootClicked(Hyperlink sender, HyperlinkClickEventArgs args)
+        private void OpenTroubleShoot()
         {
             Task.Run(() =>
             {
@@ -227,11 +279,11 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OnTroubleShootClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadSettingsDialog), nameof(OpenTroubleShoot), 1, e);
                 }
             });
         }
 
-        #endregion 第一部分：下载设置对话框——挂载的事件
+        #endregion 第五部分：数据操作与业务逻辑
     }
 }

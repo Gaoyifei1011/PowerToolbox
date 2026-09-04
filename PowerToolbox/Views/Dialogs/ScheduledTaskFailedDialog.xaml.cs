@@ -21,12 +21,22 @@ namespace PowerToolbox.Views.Dialogs
     /// </summary>
     internal sealed partial class ScheduledTaskFailedDialog : ContentDialog
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string ExceptionCodeString = ResourceService.DialogResource.GetString("ExceptionCode");
         private readonly string ExceptionMessageString = ResourceService.DialogResource.GetString("ExceptionMessage");
         private readonly string ScheduledTaskNameCopyString = ResourceService.DialogResource.GetString("ScheduledTaskNameCopy");
         private readonly string ScheduledTaskPathCopyString = ResourceService.DialogResource.GetString("ScheduledTaskPathCopy");
 
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
+
         private WinRTObservableCollection<ScheduledTaskFailedModel> ScheduledTaskFailedCollection { get; } = [];
+
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
 
         internal ScheduledTaskFailedDialog(List<ScheduledTaskFailedModel> scheduledTaskFailedList)
         {
@@ -38,6 +48,10 @@ namespace PowerToolbox.Views.Dialogs
             }
         }
 
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：命令调用处理
+
         /// <summary>
         /// 复制异常信息
         /// </summary>
@@ -45,24 +59,19 @@ namespace PowerToolbox.Views.Dialogs
         {
             if (args.Parameter is ScheduledTaskFailedModel scheduledTaskFailedItem)
             {
-                StringBuilder stringBuilder = await Task.Run(() =>
-                {
-                    StringBuilder stringBuilder = new();
-                    stringBuilder.Append(ScheduledTaskNameCopyString);
-                    stringBuilder.AppendLine(scheduledTaskFailedItem.Name);
-                    stringBuilder.Append(ScheduledTaskPathCopyString);
-                    stringBuilder.AppendLine(scheduledTaskFailedItem.Path);
-                    stringBuilder.Append(ExceptionMessageString);
-                    stringBuilder.AppendLine(scheduledTaskFailedItem.Exception.Message);
-                    stringBuilder.Append(ExceptionCodeString);
-                    stringBuilder.AppendLine(string.Format("0x{0:X8}", scheduledTaskFailedItem.Exception.HResult));
-                    return stringBuilder;
-                });
+                string scheduledTaskFailedString = await GetScheduledTaskFailedStringAsync([scheduledTaskFailedItem]);
 
-                bool copyResult = CopyPasteHelper.CopyToClipboard(Convert.ToString(stringBuilder));
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                if (!string.IsNullOrEmpty(scheduledTaskFailedString))
+                {
+                    bool copyResult = CopyPasteHelper.CopyToClipboard(scheduledTaskFailedString);
+                    await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                }
             }
         }
+
+        #endregion 第四部分：命令调用处理
+
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 复制所有的错误内容到剪贴板
@@ -74,27 +83,12 @@ namespace PowerToolbox.Views.Dialogs
 
             try
             {
-                StringBuilder stringBuilder = await Task.Run(() =>
+                string scheduledTaskFailedString = await GetScheduledTaskFailedStringAsync([.. ScheduledTaskFailedCollection]);
+
+                if (!string.IsNullOrEmpty(scheduledTaskFailedString))
                 {
-                    StringBuilder stringBuilder = new();
-
-                    foreach (ScheduledTaskFailedModel scheduledTaskFailedItem in ScheduledTaskFailedCollection)
-                    {
-                        stringBuilder.Append(ScheduledTaskNameCopyString);
-                        stringBuilder.AppendLine(scheduledTaskFailedItem.Name);
-                        stringBuilder.Append(ScheduledTaskPathCopyString);
-                        stringBuilder.AppendLine(scheduledTaskFailedItem.Path);
-                        stringBuilder.Append(ExceptionMessageString);
-                        stringBuilder.AppendLine(scheduledTaskFailedItem.Exception.Message);
-                        stringBuilder.Append(ExceptionCodeString);
-                        stringBuilder.AppendLine(string.Format("0x{0:X8}", scheduledTaskFailedItem.Exception.HResult));
-                        stringBuilder.AppendLine();
-                    }
-
-                    return stringBuilder;
-                });
-
-                copyResult = CopyPasteHelper.CopyToClipboard(Convert.ToString(stringBuilder));
+                    copyResult = CopyPasteHelper.CopyToClipboard(scheduledTaskFailedString);
+                }
             }
             catch (Exception e)
             {
@@ -113,6 +107,57 @@ namespace PowerToolbox.Views.Dialogs
         /// </summary>
         private void OnOpenScheduledTaskProgramClicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+            OpenScheduledTaskProgram();
+        }
+
+        #endregion 第五部分：挂载事件处理
+
+        #region 第六部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 获取计划任务失败信息内容
+        /// </summary>
+        private async Task<string> GetScheduledTaskFailedStringAsync(List<ScheduledTaskFailedModel> scheduledTaskFailedList)
+        {
+            if (scheduledTaskFailedList is null || scheduledTaskFailedList.Count is 0)
+            {
+                return default;
+            }
+
+            return await Task.Run(() =>
+            {
+                try
+                {
+                    StringBuilder stringBuilder = new();
+
+                    foreach (ScheduledTaskFailedModel scheduledTaskFailedItem in scheduledTaskFailedList)
+                    {
+                        stringBuilder.Append(ScheduledTaskNameCopyString);
+                        stringBuilder.AppendLine(scheduledTaskFailedItem.Name);
+                        stringBuilder.Append(ScheduledTaskPathCopyString);
+                        stringBuilder.AppendLine(scheduledTaskFailedItem.Path);
+                        stringBuilder.Append(ExceptionMessageString);
+                        stringBuilder.AppendLine(scheduledTaskFailedItem.Exception.Message);
+                        stringBuilder.Append(ExceptionCodeString);
+                        stringBuilder.AppendLine(string.Format("0x{0:X8}", scheduledTaskFailedItem.Exception.HResult));
+                        stringBuilder.AppendLine();
+                    }
+
+                    return Convert.ToString(stringBuilder);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskFailedDialog), nameof(GetScheduledTaskFailedStringAsync), 1, e);
+                    return default;
+                }
+            });
+        }
+
+        /// <summary>
+        /// 打开计划任务程序
+        /// </summary>
+        private void OpenScheduledTaskProgram()
+        {
             Task.Run(() =>
             {
                 try
@@ -121,9 +166,11 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskFailedDialog), nameof(OnOpenScheduledTaskProgramClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskFailedDialog), nameof(OpenScheduledTaskProgram), 1, e);
                 }
             });
         }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }

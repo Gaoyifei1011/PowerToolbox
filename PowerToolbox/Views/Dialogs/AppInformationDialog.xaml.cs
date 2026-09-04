@@ -172,17 +172,30 @@ namespace PowerToolbox.Views.Dialogs
         /// </summary>
         private async Task<string> GetAppInformationStringAsync(List<DictionaryEntry> appInformationList)
         {
+            if (appInformationList is null || appInformationList.Count is 0)
+            {
+                return default;
+            }
+
             return await Task.Run(() =>
             {
-                StringBuilder stringBuilder = new();
-                foreach (DictionaryEntry appInformationItem in AppInformationCollection)
+                try
                 {
-                    stringBuilder.Append(appInformationItem.Key);
-                    stringBuilder.Append(appInformationItem.Value);
-                    stringBuilder.Append(Environment.NewLine);
-                }
+                    StringBuilder stringBuilder = new();
+                    foreach (DictionaryEntry appInformationItem in AppInformationCollection)
+                    {
+                        stringBuilder.Append(appInformationItem.Key);
+                        stringBuilder.Append(appInformationItem.Value);
+                        stringBuilder.Append(Environment.NewLine);
+                    }
 
-                return Convert.ToString(stringBuilder);
+                    return Convert.ToString(stringBuilder);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AppInformationDialog), nameof(GetAppInformationStringAsync), 1, e);
+                    return default;
+                }
             });
         }
 

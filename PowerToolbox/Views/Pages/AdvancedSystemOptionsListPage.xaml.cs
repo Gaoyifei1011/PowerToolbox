@@ -12,14 +12,22 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class AdvancedSystemOptionsListPage : Page
     {
+        #region 第一部分：常量、资源与状态字段
+
         private AdvancedSystemOptionsPage advancedSystemOptionsPage;
+
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：构造函数
 
         internal AdvancedSystemOptionsListPage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第二部分：构造函数
+
+        #region 第三部分：父类虚方法重写
 
         protected override void OnNavigatedTo(NavigationEventArgs args)
         {
@@ -31,9 +39,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第一部分：重写父类事件
+        #endregion 第三部分：父类虚方法重写
 
-        #region 第二部分：高级系统选项——列表页面——挂载的事件
+        #region 第四部分：挂载事件处理
 
         /// <summary>
         /// 打开高级系统选项——个性化页面
@@ -51,6 +59,6 @@ namespace PowerToolbox.Views.Pages
             advancedSystemOptionsPage?.NavigateTo(advancedSystemOptionsPage.PageList[2], advancedSystemOptionsPage, true);
         }
 
-        #endregion 第二部分：高级系统选项——列表页面——挂载的事件
+        #endregion 第四部分：挂载事件处理
     }
 }

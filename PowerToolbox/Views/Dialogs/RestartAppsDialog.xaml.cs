@@ -11,10 +11,16 @@ namespace PowerToolbox.Views.Dialogs
     /// </summary>
     internal sealed partial class RestartAppsDialog : ContentDialog
     {
+        #region 第一部分：构造函数
+
         internal RestartAppsDialog()
         {
             InitializeComponent();
         }
+
+        #endregion 第一部分：构造函数
+
+        #region 第二部分：挂载事件处理
 
         /// <summary>
         /// 重启应用，并关闭其他进程
@@ -24,5 +30,7 @@ namespace PowerToolbox.Views.Dialogs
             Application.Restart();
             (Microsoft.UI.Xaml.Application.Current as MainApp).Dispose();
         }
+
+        #endregion 第二部分：挂载事件处理
     }
 }

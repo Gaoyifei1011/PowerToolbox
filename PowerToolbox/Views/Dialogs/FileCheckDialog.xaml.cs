@@ -10,9 +10,13 @@ namespace PowerToolbox.Views.Dialogs
     /// </summary>
     internal sealed partial class FileCheckDialog : ContentDialog
     {
+        #region 第一部分：构造函数
+
         internal FileCheckDialog()
         {
             InitializeComponent();
         }
+
+        #endregion 第一部分：构造函数
     }
 }

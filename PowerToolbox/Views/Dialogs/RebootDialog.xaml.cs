@@ -9,8 +9,14 @@ namespace PowerToolbox.Views.Dialogs
     /// </summary>
     internal sealed partial class RebootDialog : ContentDialog
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string InstallDriverRebootString = ResourceService.DialogResource.GetString("InstallDriverReboot");
         private readonly string UnInstallDriverRebootString = ResourceService.DialogResource.GetString("UnInstallDriverReboot");
+
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：构造函数
 
         internal RebootDialog(DriverInstallKind driverInstallKind)
         {
@@ -29,5 +35,7 @@ namespace PowerToolbox.Views.Dialogs
                     }
             }
         }
+
+        #endregion 第二部分：构造函数
     }
 }

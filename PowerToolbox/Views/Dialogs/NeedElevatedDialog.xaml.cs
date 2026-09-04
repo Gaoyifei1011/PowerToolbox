@@ -14,15 +14,31 @@ namespace PowerToolbox.Views.Dialogs
     /// </summary>
     internal sealed partial class NeedElevatedDialog : ContentDialog
     {
+        #region 第一部分：构造函数
+
         internal NeedElevatedDialog()
         {
             InitializeComponent();
         }
 
+        #endregion 第一部分：构造函数
+
+        #region 第二部分：挂载事件处理
+
         /// <summary>
         /// 提权运行该应用
         /// </summary>
         private void OnRunAsAdministratorClicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            RunAsAdministrator();
+        }
+
+        #endregion 第二部分：挂载事件处理
+
+        /// <summary>
+        /// 提权运行该应用
+        /// </summary>
+        private void RunAsAdministrator()
         {
             Task.Run(() =>
             {

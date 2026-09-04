@@ -14,15 +14,42 @@ namespace PowerToolbox.Views.Dialogs
     /// </summary>
     internal sealed partial class OpenStartupTaskFailedDialog : ContentDialog
     {
+        #region 第一部分：构造函数
+
         internal OpenStartupTaskFailedDialog()
         {
             InitializeComponent();
         }
 
+        #endregion 第一部分：构造函数
+
+        #region 第二部分：挂载事件处理
+
         /// <summary>
         /// 打开任务管理器
         /// </summary>
         private void OnOpenTaskManagerClicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            OpenTaskManager();
+        }
+
+        /// <summary>
+        /// 打开组策略
+        /// </summary>
+
+        private void OnOpenGroupPolicyClicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            OpenGroupPolicy();
+        }
+
+        #endregion 第二部分：挂载事件处理
+
+        #region 第三部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 打开任务管理器
+        /// </summary>
+        private void OpenTaskManager()
         {
             Task.Run(() =>
             {
@@ -32,7 +59,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(OpenStartupTaskFailedDialog), nameof(OnOpenTaskManagerClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(OpenStartupTaskFailedDialog), nameof(OpenTaskManager), 1, e);
                 }
             });
         }
@@ -40,8 +67,7 @@ namespace PowerToolbox.Views.Dialogs
         /// <summary>
         /// 打开组策略
         /// </summary>
-
-        private void OnOpenGroupPolicyClicked(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private void OpenGroupPolicy()
         {
             Task.Run(() =>
             {
@@ -51,9 +77,11 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(OpenStartupTaskFailedDialog), nameof(OnOpenGroupPolicyClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(OpenStartupTaskFailedDialog), nameof(OpenGroupPolicy), 1, e);
                 }
             });
         }
+
+        #endregion 第三部分：数据操作与业务逻辑
     }
 }
