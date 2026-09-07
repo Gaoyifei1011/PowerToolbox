@@ -34,6 +34,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class AdvancedSystemOptionsSystemPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string AlwaysNotifyString = ResourceService.AdvancedSystemOptionsSystemResource.GetString("AlwaysNotify");
         private readonly string NeverNotifyString = ResourceService.AdvancedSystemOptionsSystemResource.GetString("NeverNotify");
         private readonly string NotifyString = ResourceService.AdvancedSystemOptionsSystemResource.GetString("Notify");
@@ -47,11 +49,14 @@ namespace PowerToolbox.Views.Pages
         private readonly Guid OutstandingPerformance = new("E9A42B02-D5DF-448D-AA00-03F14749EB61");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly string[] extensionsArray = [".avif", ".bmp", ".dib", ".gif", ".heic", ".heif", ".hif", ".ico", ".jfif", ".jpe", ".jpeg", ".jpg", ".jxl", ".jxr", ".png", ".tga", ".thumb", ".tif", ".tiff", ".webp"];
+        private bool isInitialized;
         private AdvancedSystemOptionsPage advancedSystemOptionsPage;
+
+        #endregion 第一部分：常量、资源与状态字段
 
         private bool _isHibernationEnabled;
 
-        internal bool IsHibernationEnabled
+        private bool IsHibernationEnabled
         {
             get { return _isHibernationEnabled; }
 
@@ -67,7 +72,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isHibernationOpened;
 
-        internal bool IsHibernationOpened
+        private bool IsHibernationOpened
         {
             get { return _isHibernationOpened; }
 
@@ -83,7 +88,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedHibernationFileType;
 
-        internal ComboBoxItemModel SelectedHibernationFileType
+        private ComboBoxItemModel SelectedHibernationFileType
         {
             get { return _selectedHibernationFileType; }
 
@@ -99,7 +104,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _hibernationFileSize;
 
-        internal string HibernationFileSize
+        private string HibernationFileSize
         {
             get { return _hibernationFileSize; }
 
@@ -115,7 +120,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _hibernationFilePercent;
 
-        internal int HibernationFilePercent
+        private int HibernationFilePercent
         {
             get { return _hibernationFilePercent; }
 
@@ -131,7 +136,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isFastStartupEnabled;
 
-        internal bool IsFastStartupEnabled
+        private bool IsFastStartupEnabled
         {
             get { return _isFastStartupEnabled; }
 
@@ -147,7 +152,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isGeneratingBatteryReport;
 
-        internal bool IsGeneratingBatteryReport
+        private bool IsGeneratingBatteryReport
         {
             get { return _isGeneratingBatteryReport; }
 
@@ -163,7 +168,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedNotifyMode;
 
-        internal ComboBoxItemModel SelectedNotifyMode
+        private ComboBoxItemModel SelectedNotifyMode
         {
             get { return _selectedNotifyMode; }
 
@@ -179,7 +184,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isBackgroundAppsTaskEnabled;
 
-        internal bool IsBackgroundAppsTaskEnabled
+        private bool IsBackgroundAppsTaskEnabled
         {
             get { return _isBackgroundAppsTaskEnabled; }
 
@@ -195,7 +200,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isSystemReservedStorageLoadingOrUpdating;
 
-        internal bool IsSystemReservedStorageLoadingOrUpdating
+        private bool IsSystemReservedStorageLoadingOrUpdating
         {
             get { return _isSystemReservedStorageLoadingOrUpdating; }
 
@@ -211,7 +216,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isSystemReservedStorageEnabled;
 
-        internal bool IsSystemReservedStorageEnabled
+        private bool IsSystemReservedStorageEnabled
         {
             get { return _isSystemReservedStorageEnabled; }
 
@@ -227,7 +232,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isVirtualizationBasedSecurityEnabled;
 
-        internal bool IsVirtualizationBasedSecurityEnabled
+        private bool IsVirtualizationBasedSecurityEnabled
         {
             get { return _isVirtualizationBasedSecurityEnabled; }
 
@@ -243,7 +248,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isNICOffloadSettingsEnabled;
 
-        internal bool IsNICOffloadSettingsEnabled
+        private bool IsNICOffloadSettingsEnabled
         {
             get { return _isNICOffloadSettingsEnabled; }
 
@@ -259,7 +264,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isClosingWakeUpTask;
 
-        internal bool IsClosingWakeUpTask
+        private bool IsClosingWakeUpTask
         {
             get { return _isClosingWakeUpTask; }
 
@@ -275,7 +280,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isRestartingGraphicsDriver;
 
-        internal bool IsRestartingGraphicsDriver
+        private bool IsRestartingGraphicsDriver
         {
             get { return _isRestartingGraphicsDriver; }
 
@@ -291,7 +296,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isWindowsPhotoViewerEnabled;
 
-        internal bool IsWindowsPhotoViewerEnabled
+        private bool IsWindowsPhotoViewerEnabled
         {
             get { return _isWindowsPhotoViewerEnabled; }
 
@@ -307,7 +312,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isApprovalModeForBuiltinAdministratorAccountEnabled;
 
-        internal bool IsApprovalModeForBuiltinAdministratorAccountEnabled
+        private bool IsApprovalModeForBuiltinAdministratorAccountEnabled
         {
             get { return _isApprovalModeForBuiltinAdministratorAccountEnabled; }
 
@@ -332,12 +337,6 @@ namespace PowerToolbox.Views.Pages
         internal AdvancedSystemOptionsSystemPage()
         {
             InitializeComponent();
-            HibernationFileTypeList.Add(new() { DisplayMember = HibernationFileTypeReducedString, SelectedValue = "HibernationFileTypeReduced" });
-            HibernationFileTypeList.Add(new() { DisplayMember = HibernationFileTypeFullString, SelectedValue = "HibernationFileTypeFull" });
-            NotifyModeList.Add(new() { DisplayMember = AlwaysNotifyString, SelectedValue = UacLevel.AlwaysNotify });
-            NotifyModeList.Add(new() { DisplayMember = NotifyString, SelectedValue = UacLevel.Notify });
-            NotifyModeList.Add(new() { DisplayMember = NotifyWithoutDimmingString, SelectedValue = UacLevel.NotifyWithoutDimming });
-            NotifyModeList.Add(new() { DisplayMember = NeverNotifyString, SelectedValue = UacLevel.NeverNotify });
         }
 
         #region 第一部分：重载父类事件
@@ -354,206 +353,7 @@ namespace PowerToolbox.Views.Pages
                 advancedSystemOptionsPage = targetPage;
             }
 
-            if (RuntimeHelper.IsElevated)
-            {
-                SYSTEM_POWER_CAPABILITIES systemPowerCapabilities = await Task.Run(() =>
-                {
-                    PowrProfLibrary.GetPwrCapabilities(out SYSTEM_POWER_CAPABILITIES systemPowerCapabilities);
-                    return systemPowerCapabilities;
-                });
-                IsHibernationEnabled = systemPowerCapabilities.SystemS4;
-                IsHibernationOpened = systemPowerCapabilities.HiberFilePresent;
-
-                (int hiberFileType, int hiberFileSizePercent) = await Task.Run(() =>
-                {
-                    int hiberFileType = RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Power", "HiberFileType");
-                    int hiberFileSizePercent = RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Power", "HiberFileSizePercent");
-                    return ValueTuple.Create(hiberFileType, hiberFileSizePercent);
-                });
-                if (hiberFileType is 1)
-                {
-                    SelectedHibernationFileType = HibernationFileTypeList[0];
-                    HibernationFilePercent = 20;
-                }
-                else if (hiberFileType is 2)
-                {
-                    SelectedHibernationFileType = HibernationFileTypeList[1];
-                    if (hiberFileSizePercent < 40)
-                    {
-                        HibernationFilePercent = 40;
-                    }
-                    else if (hiberFileSizePercent > 100)
-                    {
-                        HibernationFilePercent = 100;
-                    }
-                    else
-                    {
-                        HibernationFilePercent = hiberFileSizePercent;
-                    }
-                }
-                HibernationFileSize = await Task.Run(() =>
-                {
-                    string hibernationFile = Path.Combine(Path.GetPathRoot(Environment.SystemDirectory), "hiberfil.sys");
-                    string hibernationFileSize = VolumeSizeHelper.ConvertVolumeSizeToString(0);
-
-                    if (File.Exists(hibernationFile))
-                    {
-                        try
-                        {
-                            FileInfo hibernationFileInfo = new(hibernationFile);
-                            hibernationFileSize = VolumeSizeHelper.ConvertVolumeSizeToString(hibernationFileInfo.Length);
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(OnNavigatedTo), 1, e);
-                        }
-                    }
-
-                    return hibernationFileSize;
-                });
-                IsFastStartupEnabled = await Task.Run(() =>
-                {
-                    return RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Power", "HiberbootEnabled");
-                });
-                UacLevel uacLevel = await Task.Run(UACHelper.GetUacLevel);
-                SelectedNotifyMode = NotifyModeList.Find((item) => Equals(item.SelectedValue, uacLevel));
-                IsBackgroundAppsTaskEnabled = await Task.Run(() =>
-                {
-                    return RegistryHelper.ReadRegistryKey<int>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications", "GlobalUserDisabled") is 0;
-                });
-
-                if (!IsSystemReservedStorageLoadingOrUpdating)
-                {
-                    IsSystemReservedStorageLoadingOrUpdating = true;
-                    _ = Task.Run(() =>
-                    {
-                        bool isSystemReservedStorageEnabled = false;
-
-                        try
-                        {
-                            Process powerShellProcess = Process.Start(new ProcessStartInfo()
-                            {
-                                FileName = "powershell.exe",
-                                Arguments = "-NoProfile -ExecutionPolicy Bypass -Command Get-WindowsReservedStorageState",
-                                RedirectStandardOutput = true,
-                                RedirectStandardError = true,
-                                UseShellExecute = false,
-                                CreateNoWindow = true,
-                                WindowStyle = ProcessWindowStyle.Hidden
-                            });
-                            string output = powerShellProcess.StandardOutput.ReadToEnd();
-                            string error = powerShellProcess.StandardError.ReadToEnd();
-                            powerShellProcess.WaitForExit();
-                            powerShellProcess.Dispose();
-                            if (output.Contains("Enabled"))
-                            {
-                                isSystemReservedStorageEnabled = true;
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(OnNavigatedTo), 4, e);
-                        }
-
-                        synchronizationContext.Post((_) =>
-                        {
-                            IsSystemReservedStorageEnabled = isSystemReservedStorageEnabled;
-                            IsSystemReservedStorageLoadingOrUpdating = false;
-                        }, null);
-                    });
-                }
-                _ = Task.Run(() =>
-                {
-                    bool isVirtualizationBasedSecurityEnabled = false;
-
-                    try
-                    {
-                        bool hypervisorEnforcedCodeIntegrityEnabled = RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity", "Enabled");
-                        bool enableVirtualizationBasedSecurity = RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\DeviceGuard", "EnableVirtualizationBasedSecurity");
-                        string hypervisorLaunchType = string.Empty;
-
-                        Process bcdeditProcess = Process.Start(new ProcessStartInfo()
-                        {
-                            FileName = "bcdedit.exe",
-                            Arguments = "/enum",
-                            Verb = "open",
-                            RedirectStandardOutput = true,
-                            RedirectStandardError = true,
-                            UseShellExecute = false,
-                            CreateNoWindow = true,
-                            WindowStyle = ProcessWindowStyle.Hidden
-                        });
-                        string output = bcdeditProcess.StandardOutput.ReadToEnd();
-                        string error = bcdeditProcess.StandardError.ReadToEnd();
-                        bcdeditProcess.WaitForExit();
-                        bcdeditProcess.Dispose();
-
-                        if (string.IsNullOrEmpty(output))
-                        {
-                            string[] lines = output.Split([Environment.NewLine], StringSplitOptions.RemoveEmptyEntries);
-                            string hypervisorLaunchTypeLine = lines.FirstOrDefault(line => line.Trim().StartsWith("hypervisorlaunchtype", StringComparison.OrdinalIgnoreCase));
-
-                            if (hypervisorLaunchTypeLine is not null)
-                            {
-                                string[] hypervisorLaunchTypeState = hypervisorLaunchTypeLine.Split([' '], StringSplitOptions.RemoveEmptyEntries);
-                                if (hypervisorLaunchTypeState.Length >= 2)
-                                {
-                                    hypervisorLaunchType = hypervisorLaunchTypeState[1];
-                                }
-                            }
-                        }
-                        isVirtualizationBasedSecurityEnabled = (hypervisorEnforcedCodeIntegrityEnabled && enableVirtualizationBasedSecurity) || hypervisorLaunchType.Contains("Auto");
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(OnNavigatedTo), 5, e);
-                    }
-
-                    synchronizationContext.Post((_) =>
-                    {
-                        IsVirtualizationBasedSecurityEnabled = isVirtualizationBasedSecurityEnabled;
-                    }, null);
-                });
-
-                IsNICOffloadSettingsEnabled = await Task.Run(() =>
-                {
-                    return RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", "DisableTaskOffload") is 0;
-                });
-                IsClosingWakeUpTask = true;
-                _ = Task.Run(() =>
-                {
-                    List<string> wakeUpTaskList = GetWaskUpTaskList();
-                    synchronizationContext.Post((_) =>
-                    {
-                        WakeUpTaskCollection.Clear();
-                        foreach (string wakeUpTask in wakeUpTaskList)
-                        {
-                            WakeUpTaskCollection.Add(wakeUpTask);
-                        }
-                        IsClosingWakeUpTask = false;
-                    }, null);
-                });
-
-                IsWindowsPhotoViewerEnabled = await Task.Run(() =>
-                {
-                    bool isWindowsPhotoViewerEnabled = true;
-                    foreach (string extension in extensionsArray)
-                    {
-                        isWindowsPhotoViewerEnabled = string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations", extension), "PhotoViewer.FileAssoc.Tiff");
-                        if (!isWindowsPhotoViewerEnabled)
-                        {
-                            break;
-                        }
-                    }
-                    return isWindowsPhotoViewerEnabled;
-                });
-
-                IsApprovalModeForBuiltinAdministratorAccountEnabled = await Task.Run(() =>
-                {
-                    int? FilterAdministratorTokenValue = RegistryHelper.ReadRegistryKey<int?>(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System", "FilterAdministratorToken");
-                    return FilterAdministratorTokenValue.HasValue && FilterAdministratorTokenValue.Value is 1;
-                });
-            }
+            await InitializeDataAsync();
         }
 
         #endregion 第一部分：重载父类事件
@@ -1478,6 +1278,225 @@ namespace PowerToolbox.Views.Pages
         }
 
         #endregion 第二部分：高级系统选项——系统页面——挂载的事件
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private async Task InitializeDataAsync()
+        {
+            if (!isInitialized)
+            {
+                isInitialized = true;
+
+                HibernationFileTypeList.Add(new() { DisplayMember = HibernationFileTypeReducedString, SelectedValue = "HibernationFileTypeReduced" });
+                HibernationFileTypeList.Add(new() { DisplayMember = HibernationFileTypeFullString, SelectedValue = "HibernationFileTypeFull" });
+                NotifyModeList.Add(new() { DisplayMember = AlwaysNotifyString, SelectedValue = UacLevel.AlwaysNotify });
+                NotifyModeList.Add(new() { DisplayMember = NotifyString, SelectedValue = UacLevel.Notify });
+                NotifyModeList.Add(new() { DisplayMember = NotifyWithoutDimmingString, SelectedValue = UacLevel.NotifyWithoutDimming });
+                NotifyModeList.Add(new() { DisplayMember = NeverNotifyString, SelectedValue = UacLevel.NeverNotify });
+            }
+
+            if (RuntimeHelper.IsElevated)
+            {
+                SYSTEM_POWER_CAPABILITIES systemPowerCapabilities = await Task.Run(() =>
+                {
+                    PowrProfLibrary.GetPwrCapabilities(out SYSTEM_POWER_CAPABILITIES systemPowerCapabilities);
+                    return systemPowerCapabilities;
+                });
+                IsHibernationEnabled = systemPowerCapabilities.SystemS4;
+                IsHibernationOpened = systemPowerCapabilities.HiberFilePresent;
+
+                (int hiberFileType, int hiberFileSizePercent) = await Task.Run(() =>
+                {
+                    int hiberFileType = RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Power", "HiberFileType");
+                    int hiberFileSizePercent = RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Power", "HiberFileSizePercent");
+                    return ValueTuple.Create(hiberFileType, hiberFileSizePercent);
+                });
+                if (hiberFileType is 1)
+                {
+                    SelectedHibernationFileType = HibernationFileTypeList[0];
+                    HibernationFilePercent = 20;
+                }
+                else if (hiberFileType is 2)
+                {
+                    SelectedHibernationFileType = HibernationFileTypeList[1];
+                    if (hiberFileSizePercent < 40)
+                    {
+                        HibernationFilePercent = 40;
+                    }
+                    else if (hiberFileSizePercent > 100)
+                    {
+                        HibernationFilePercent = 100;
+                    }
+                    else
+                    {
+                        HibernationFilePercent = hiberFileSizePercent;
+                    }
+                }
+                HibernationFileSize = await Task.Run(() =>
+                {
+                    string hibernationFile = Path.Combine(Path.GetPathRoot(Environment.SystemDirectory), "hiberfil.sys");
+                    string hibernationFileSize = VolumeSizeHelper.ConvertVolumeSizeToString(0);
+
+                    if (File.Exists(hibernationFile))
+                    {
+                        try
+                        {
+                            FileInfo hibernationFileInfo = new(hibernationFile);
+                            hibernationFileSize = VolumeSizeHelper.ConvertVolumeSizeToString(hibernationFileInfo.Length);
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(OnNavigatedTo), 1, e);
+                        }
+                    }
+
+                    return hibernationFileSize;
+                });
+                IsFastStartupEnabled = await Task.Run(() =>
+                {
+                    return RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Session Manager\Power", "HiberbootEnabled");
+                });
+                UacLevel uacLevel = await Task.Run(UACHelper.GetUacLevel);
+                SelectedNotifyMode = NotifyModeList.Find((item) => Equals(item.SelectedValue, uacLevel));
+                IsBackgroundAppsTaskEnabled = await Task.Run(() =>
+                {
+                    return RegistryHelper.ReadRegistryKey<int>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications", "GlobalUserDisabled") is 0;
+                });
+
+                if (!IsSystemReservedStorageLoadingOrUpdating)
+                {
+                    IsSystemReservedStorageLoadingOrUpdating = true;
+                    _ = Task.Run(() =>
+                    {
+                        bool isSystemReservedStorageEnabled = false;
+
+                        try
+                        {
+                            Process powerShellProcess = Process.Start(new ProcessStartInfo()
+                            {
+                                FileName = "powershell.exe",
+                                Arguments = "-NoProfile -ExecutionPolicy Bypass -Command Get-WindowsReservedStorageState",
+                                RedirectStandardOutput = true,
+                                RedirectStandardError = true,
+                                UseShellExecute = false,
+                                CreateNoWindow = true,
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            });
+                            string output = powerShellProcess.StandardOutput.ReadToEnd();
+                            string error = powerShellProcess.StandardError.ReadToEnd();
+                            powerShellProcess.WaitForExit();
+                            powerShellProcess.Dispose();
+                            if (output.Contains("Enabled"))
+                            {
+                                isSystemReservedStorageEnabled = true;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(OnNavigatedTo), 4, e);
+                        }
+
+                        synchronizationContext.Post((_) =>
+                        {
+                            IsSystemReservedStorageEnabled = isSystemReservedStorageEnabled;
+                            IsSystemReservedStorageLoadingOrUpdating = false;
+                        }, null);
+                    });
+                }
+                _ = Task.Run(() =>
+                {
+                    bool isVirtualizationBasedSecurityEnabled = false;
+
+                    try
+                    {
+                        bool hypervisorEnforcedCodeIntegrityEnabled = RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity", "Enabled");
+                        bool enableVirtualizationBasedSecurity = RegistryHelper.ReadRegistryKey<bool>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\DeviceGuard", "EnableVirtualizationBasedSecurity");
+                        string hypervisorLaunchType = string.Empty;
+
+                        Process bcdeditProcess = Process.Start(new ProcessStartInfo()
+                        {
+                            FileName = "bcdedit.exe",
+                            Arguments = "/enum",
+                            Verb = "open",
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true,
+                            WindowStyle = ProcessWindowStyle.Hidden
+                        });
+                        string output = bcdeditProcess.StandardOutput.ReadToEnd();
+                        string error = bcdeditProcess.StandardError.ReadToEnd();
+                        bcdeditProcess.WaitForExit();
+                        bcdeditProcess.Dispose();
+
+                        if (string.IsNullOrEmpty(output))
+                        {
+                            string[] lines = output.Split([Environment.NewLine], StringSplitOptions.RemoveEmptyEntries);
+                            string hypervisorLaunchTypeLine = lines.FirstOrDefault(line => line.Trim().StartsWith("hypervisorlaunchtype", StringComparison.OrdinalIgnoreCase));
+
+                            if (hypervisorLaunchTypeLine is not null)
+                            {
+                                string[] hypervisorLaunchTypeState = hypervisorLaunchTypeLine.Split([' '], StringSplitOptions.RemoveEmptyEntries);
+                                if (hypervisorLaunchTypeState.Length >= 2)
+                                {
+                                    hypervisorLaunchType = hypervisorLaunchTypeState[1];
+                                }
+                            }
+                        }
+                        isVirtualizationBasedSecurityEnabled = (hypervisorEnforcedCodeIntegrityEnabled && enableVirtualizationBasedSecurity) || hypervisorLaunchType.Contains("Auto");
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(OnNavigatedTo), 5, e);
+                    }
+
+                    synchronizationContext.Post((_) =>
+                    {
+                        IsVirtualizationBasedSecurityEnabled = isVirtualizationBasedSecurityEnabled;
+                    }, null);
+                });
+
+                IsNICOffloadSettingsEnabled = await Task.Run(() =>
+                {
+                    return RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Services\Tcpip\Parameters", "DisableTaskOffload") is 0;
+                });
+                IsClosingWakeUpTask = true;
+                _ = Task.Run(() =>
+                {
+                    List<string> wakeUpTaskList = GetWaskUpTaskList();
+                    synchronizationContext.Post((_) =>
+                    {
+                        WakeUpTaskCollection.Clear();
+                        foreach (string wakeUpTask in wakeUpTaskList)
+                        {
+                            WakeUpTaskCollection.Add(wakeUpTask);
+                        }
+                        IsClosingWakeUpTask = false;
+                    }, null);
+                });
+
+                IsWindowsPhotoViewerEnabled = await Task.Run(() =>
+                {
+                    bool isWindowsPhotoViewerEnabled = true;
+                    foreach (string extension in extensionsArray)
+                    {
+                        isWindowsPhotoViewerEnabled = string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations", extension), "PhotoViewer.FileAssoc.Tiff");
+                        if (!isWindowsPhotoViewerEnabled)
+                        {
+                            break;
+                        }
+                    }
+                    return isWindowsPhotoViewerEnabled;
+                });
+
+                IsApprovalModeForBuiltinAdministratorAccountEnabled = await Task.Run(() =>
+                {
+                    int? FilterAdministratorTokenValue = RegistryHelper.ReadRegistryKey<int?>(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System", "FilterAdministratorToken");
+                    return FilterAdministratorTokenValue.HasValue && FilterAdministratorTokenValue.Value is 1;
+                });
+            }
+        }
 
         /// <summary>
         /// 获取持续唤醒任务列表

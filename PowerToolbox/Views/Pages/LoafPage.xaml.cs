@@ -24,6 +24,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class LoafPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string LoafTimeString = ResourceService.LoafResource.GetString("LoafTime");
         private readonly string LockScreenString = ResourceService.LoafResource.GetString("LockScreen");
         private readonly string LogOffString = ResourceService.LoafResource.GetString("LogOff");
@@ -35,6 +37,10 @@ namespace PowerToolbox.Views.Pages
         private readonly string Windows11StyleString = ResourceService.LoafResource.GetString("Windows11Style");
         private bool isInitialized;
         private bool isLoadWallpaperFailed;
+
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
 
         private bool _loadImageCompleted;
 
@@ -154,22 +160,18 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal LoafPage()
         {
             InitializeComponent();
-            SimulateUpdateStyleList.Add(new() { SelectedValue = SimulateUpdateKind.Windows11, DisplayMember = Windows11StyleString });
-            SimulateUpdateStyleList.Add(new() { SelectedValue = SimulateUpdateKind.Windows10, DisplayMember = Windows10StyleString });
-            AfterSimulateOperationList.Add(new() { SelectedValue = "None", DisplayMember = NoneString });
-            AfterSimulateOperationList.Add(new() { SelectedValue = "LockScreen", DisplayMember = LockScreenString });
-            AfterSimulateOperationList.Add(new() { SelectedValue = "LogOff", DisplayMember = LogOffString });
-            AfterSimulateOperationList.Add(new() { SelectedValue = "Sleep", DisplayMember = SleepString });
-            AfterSimulateOperationList.Add(new() { SelectedValue = "Restart", DisplayMember = RestartString });
-            AfterSimulateOperationList.Add(new() { SelectedValue = "Shutdown", DisplayMember = ShutdownString });
-            SelectedSimulateUpdateStyle = SimulateUpdateStyleList[0];
-            SelectedAfterSimulateOperation = AfterSimulateOperationList[0];
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面触发的事件
@@ -181,43 +183,25 @@ namespace PowerToolbox.Views.Pages
             if (!isInitialized)
             {
                 isInitialized = true;
-                MemoryStream memoryStream = new();
-
-                await Task.Run(async () =>
-                {
-                    try
-                    {
-                        HttpClient httpClient = new()
-                        {
-                            Timeout = TimeSpan.FromSeconds(5)
-                        };
-
-                        HttpResponseMessage responseMessage = await httpClient.GetAsync("https://bing.biturl.top/?resolution=1920&format=image");
-
-                        if (responseMessage.IsSuccessStatusCode)
-                        {
-                            Stream stream = await responseMessage.Content.ReadAsStreamAsync();
-                            await stream.CopyToAsync(memoryStream);
-                            memoryStream.Seek(0, SeekOrigin.Begin);
-                        }
-
-                        responseMessage.Dispose();
-                        httpClient.Dispose();
-                    }
-                    catch (Exception e)
-                    {
-                        isLoadWallpaperFailed = true;
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoafPage), nameof(OnNavigatedTo), 1, e);
-                    }
-                });
+                InitializeData();
+                MemoryStream memoryStream = await GetBingWallpaperAsync();
 
                 try
                 {
-                    BitmapImage bitmapImage = new();
-                    await bitmapImage.SetSourceAsync(memoryStream.AsRandomAccessStream());
-                    LoafImage = bitmapImage;
-                    LoadImageCompleted = true;
-                    memoryStream.Dispose();
+                    if (memoryStream is not null)
+                    {
+                        BitmapImage bitmapImage = new();
+                        await bitmapImage.SetSourceAsync(memoryStream.AsRandomAccessStream());
+                        LoafImage = bitmapImage;
+                        LoadImageCompleted = true;
+                        memoryStream.Dispose();
+                    }
+                    else
+                    {
+                        isLoadWallpaperFailed = true;
+                        LoafImage = ActualTheme is ElementTheme.Light ? new(new("ms-appx:///Assets/Images/LoafLightWallpaper.jpg")) : new(new("ms-appx:///Assets/Images/LoafDarkWallpaper.jpg"));
+                        LoadImageCompleted = true;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -248,9 +232,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第一部分：重写父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第二部分：摸鱼页面——挂载的事件
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 当前应用主题发生变化时对应的事件
@@ -326,6 +310,63 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第二部分：摸鱼页面——挂载的事件
+        #endregion 第五部分：挂载事件处理
+
+        #region 第六部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
+            SimulateUpdateStyleList.Add(new() { SelectedValue = SimulateUpdateKind.Windows11, DisplayMember = Windows11StyleString });
+            SimulateUpdateStyleList.Add(new() { SelectedValue = SimulateUpdateKind.Windows10, DisplayMember = Windows10StyleString });
+            AfterSimulateOperationList.Add(new() { SelectedValue = "None", DisplayMember = NoneString });
+            AfterSimulateOperationList.Add(new() { SelectedValue = "LockScreen", DisplayMember = LockScreenString });
+            AfterSimulateOperationList.Add(new() { SelectedValue = "LogOff", DisplayMember = LogOffString });
+            AfterSimulateOperationList.Add(new() { SelectedValue = "Sleep", DisplayMember = SleepString });
+            AfterSimulateOperationList.Add(new() { SelectedValue = "Restart", DisplayMember = RestartString });
+            AfterSimulateOperationList.Add(new() { SelectedValue = "Shutdown", DisplayMember = ShutdownString });
+            SelectedSimulateUpdateStyle = SimulateUpdateStyleList[0];
+            SelectedAfterSimulateOperation = AfterSimulateOperationList[0];
+        }
+
+        /// <summary>
+        /// 获取每日必应壁纸
+        /// </summary>
+        private async Task<MemoryStream> GetBingWallpaperAsync()
+        {
+            return await Task.Run(async () =>
+            {
+                MemoryStream memoryStream = new();
+                try
+                {
+                    HttpClient httpClient = new()
+                    {
+                        Timeout = TimeSpan.FromSeconds(5)
+                    };
+
+                    HttpResponseMessage responseMessage = await httpClient.GetAsync("https://bing.biturl.top/?resolution=1920&format=image");
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        Stream stream = await responseMessage.Content.ReadAsStreamAsync();
+                        await stream.CopyToAsync(memoryStream);
+                        memoryStream.Seek(0, SeekOrigin.Begin);
+                    }
+
+                    responseMessage.Dispose();
+                    httpClient.Dispose();
+                }
+                catch (Exception e)
+                {
+                    isLoadWallpaperFailed = true;
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoafPage), nameof(GetBingWallpaperAsync), 1, e);
+                }
+                return memoryStream;
+            });
+        }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }

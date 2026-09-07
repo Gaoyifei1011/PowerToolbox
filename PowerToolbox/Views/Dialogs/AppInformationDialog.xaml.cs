@@ -74,9 +74,7 @@ namespace PowerToolbox.Views.Dialogs
         /// </summary>
         private async void OnLoaded(object sender, RoutedEventArgs args)
         {
-            List<KeyValuePair<string, Version>> dependencyInformationList = await GetDependencyInformationListAsync();
-
-            if (dependencyInformationList is not null && dependencyInformationList.Count > 0)
+            if (await GetDependencyInformationListAsync() is List<KeyValuePair<string, Version>> dependencyInformationList && dependencyInformationList.Count > 0)
             {
                 foreach (KeyValuePair<string, Version> dependencyInformation in dependencyInformationList)
                 {
