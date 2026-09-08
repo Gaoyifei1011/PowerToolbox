@@ -179,7 +179,7 @@
                         <NumberBox
                             Grid.Column="2"
                             VerticalAlignment="Center"
-                            IsEnabled="{x:Bind x:Object.Equals(SelectedHibernationFileType, HibernationFileTypeList[1]), Mode=OneWay}"
+                            IsEnabled="{x:Bind x:Object.Equals(SelectedHibernationFileType, HibernationFileTypeList[2]), Mode=OneWay}"
                             LargeChange="1"
                             SmallChange="1"
                             SpinButtonPlacementMode="Inline"
@@ -193,7 +193,7 @@
                             Padding="0"
                             Click="{x:Bind OnSaveHibernationFilePercentClicked}"
                             CornerRadius="{StaticResource ControlCornerRadius}"
-                            IsEnabled="{x:Bind x:Object.Equals(SelectedHibernationFileType, HibernationFileTypeList[1]), Mode=OneWay}"
+                            IsEnabled="{x:Bind x:Object.Equals(SelectedHibernationFileType, HibernationFileTypeList[2]), Mode=OneWay}"
                             ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('Save')}">
 
                             <FontIcon FontSize="14" Glyph="&#xE74E;" />

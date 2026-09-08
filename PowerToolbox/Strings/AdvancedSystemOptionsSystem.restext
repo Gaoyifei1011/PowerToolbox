@@ -34,6 +34,7 @@ HibernationFileSizeDescription=Set the percentage of the hibernation file size (
 HibernationFileType=Hibernation file type
 HibernationFileTypeFull=Full
 HibernationFileTypeReduced=Simplified
+HibernationFileTypeUnknown=Unknown
 HighPerformance=High performance
 LearnNICOffload=Learn NIC offload
 LearnPowerSettings=Learn power settings

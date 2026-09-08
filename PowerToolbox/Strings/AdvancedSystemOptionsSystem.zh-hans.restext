@@ -34,6 +34,7 @@ HibernationFileSizeDescription=设置休眠文件大小的百分比（范围 40 
 HibernationFileType=休眠文件类型
 HibernationFileTypeFull=完整
 HibernationFileTypeReduced=精简
+HibernationFileTypeUnknown=未知
 HighPerformance=高性能
 LearnNICOffload=了解网卡负载
 LearnPowerSettings=了解电源设置
