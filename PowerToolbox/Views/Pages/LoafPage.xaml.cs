@@ -44,7 +44,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _loadImageCompleted;
 
-        internal bool LoadImageCompleted
+        private bool LoadImageCompleted
         {
             get { return _loadImageCompleted; }
 
@@ -60,7 +60,7 @@ namespace PowerToolbox.Views.Pages
 
         private BitmapImage _loafImage;
 
-        internal BitmapImage LoafImage
+        private BitmapImage LoafImage
         {
             get { return _loafImage; }
 
@@ -76,7 +76,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isLoafing;
 
-        internal bool IsLoafing
+        private bool IsLoafing
         {
             get { return _isLoafing; }
 
@@ -92,7 +92,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _blockAllKeys = true;
 
-        internal bool BlockAllKeys
+        private bool BlockAllKeys
         {
             get { return _blockAllKeys; }
 
@@ -108,7 +108,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedSimulateUpdateStyle;
 
-        internal ComboBoxItemModel SelectedSimulateUpdateStyle
+        private ComboBoxItemModel SelectedSimulateUpdateStyle
         {
             get { return _selectedSimulateUpdateStyle; }
 
@@ -124,7 +124,7 @@ namespace PowerToolbox.Views.Pages
 
         private TimeSpan _durationTime = new(0, 30, 0);
 
-        internal TimeSpan DurationTime
+        private TimeSpan DurationTime
         {
             get { return _durationTime; }
 
@@ -140,7 +140,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedAfterSimulatedOperation;
 
-        internal ComboBoxItemModel SelectedAfterSimulateOperation
+        private ComboBoxItemModel SelectedAfterSimulateOperation
         {
             get { return _selectedAfterSimulatedOperation; }
 

@@ -17,19 +17,31 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class ShellMenuPage : Page
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string ShellMenuString = ResourceService.ShellMenuResource.GetString("ShellMenu");
         private readonly string ShellMenuEditString = ResourceService.ShellMenuResource.GetString("ShellMenuEdit");
+
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
 
         internal List<Type> PageList { get; } = [typeof(ShellMenuListPage), typeof(ShellMenuEditPage)];
 
         internal WinRTObservableCollection<DictionaryEntry> BreadCollection { get; } = [];
+
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
 
         internal ShellMenuPage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面触发的事件
@@ -46,9 +58,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第一部分：重写父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第二部分：自定义扩展菜单页面——挂载的事件
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 单击痕迹栏条目时发生的事件
@@ -96,7 +108,9 @@ namespace PowerToolbox.Views.Pages
             args.Handled = true;
         }
 
-        #endregion 第二部分：自定义扩展菜单页面——挂载的事件
+        #endregion 第五部分：挂载事件处理
+
+        #region 第六部分：数据操作与业务逻辑
 
         /// <summary>
         /// 页面向前导航
@@ -119,9 +133,11 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取当前导航到的页
         /// </summary>
-        internal Type GetCurrentPageType()
+        private Type GetCurrentPageType()
         {
             return ShellMenuFrame.CurrentSourcePageType;
         }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }
