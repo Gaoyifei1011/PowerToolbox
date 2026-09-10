@@ -22,6 +22,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class WinSATPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string ErrorMessageString = ResourceService.WinSATResource.GetString("ErrorMessage");
         private readonly string SuccessMessageString = ResourceService.WinSATResource.GetString("SuccessMessage");
         private readonly string WEIContentString = ResourceService.WinSATResource.GetString("WEITipContent");
@@ -34,9 +36,13 @@ namespace PowerToolbox.Views.Pages
         private CWinSATCallbacks cWinSATCallbacks;
         private IProgressDialog progressDialog;
 
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
+
         private string _processorSubScore;
 
-        internal string ProcessorSubScore
+        private string ProcessorSubScore
         {
             get { return _processorSubScore; }
 
@@ -52,7 +58,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _memorySubScore;
 
-        internal string MemorySubScore
+        private string MemorySubScore
         {
             get { return _memorySubScore; }
 
@@ -68,7 +74,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _graphicsSubScore;
 
-        internal string GraphicsSubScore
+        private string GraphicsSubScore
         {
             get { return _graphicsSubScore; }
 
@@ -84,7 +90,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _gamingGraphicsSubScore;
 
-        internal string GamingGraphicsSubScore
+        private string GamingGraphicsSubScore
         {
             get { return _gamingGraphicsSubScore; }
 
@@ -100,7 +106,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _primaryDiskSubScore;
 
-        internal string PrimaryDiskSubScore
+        private string PrimaryDiskSubScore
         {
             get { return _primaryDiskSubScore; }
 
@@ -116,7 +122,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _basicScore;
 
-        internal string BasicScore
+        private string BasicScore
         {
             get { return _basicScore; }
 
@@ -132,7 +138,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _basicScoreExisted;
 
-        internal bool BasicScoreExisted
+        private bool BasicScoreExisted
         {
             get { return _basicScoreExisted; }
 
@@ -148,7 +154,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isNotRunningAssessment = true;
 
-        internal bool IsNotRunningAssessment
+        private bool IsNotRunningAssessment
         {
             get { return _isNotRunningAssessment; }
 
@@ -180,7 +186,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _resultMessage;
 
-        internal string ResultMessage
+        private string ResultMessage
         {
             get { return _resultMessage; }
 
@@ -196,12 +202,18 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal WinSATPage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：重载父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面触发的事件
@@ -217,9 +229,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第一部分：重载父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第二部分：系统评估页面——挂载的事件
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 运行评估
@@ -227,32 +239,7 @@ namespace PowerToolbox.Views.Pages
         private void OnRunAssessmentClicked(object sender, RoutedEventArgs args)
         {
             IsNotRunningAssessment = false;
-            try
-            {
-                cWinSATCallbacks = new();
-
-                if (cWinSATCallbacks is not null)
-                {
-                    cWinSATCallbacks.StatusUpdated += OnStatusUpdated;
-                    cWinSATCallbacks.StatusCompleted += OnStatusCompleted;
-                }
-
-                cInitiateWinSAT.InitiateFormalAssessment(cWinSATCallbacks, ref _RemotableHandle);
-                progressDialog = (IProgressDialog)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_ProgressDialog));
-
-                if (progressDialog is not null)
-                {
-                    progressDialog.SetTitle(WEIString);
-                    progressDialog.SetLine(2, WEIContentString, false, 0);
-                    progressDialog.StartProgressDialog((nint)MainWindow.Current.AppWindow.Id.Value, null, PROGDLG.PROGDLG_MODAL | PROGDLG.PROGDLG_NOMINIMIZE, 0);
-                }
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnRunAssessmentClicked), 1, e);
-                cWinSATCallbacks = null;
-                progressDialog = null;
-            }
+            RunAssessment();
         }
 
         /// <summary>
@@ -260,17 +247,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnOpenAssessmentLogFolderClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), @"performance\winsat\datastore"));
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnOpenAssessmentLogFolderClicked), 1, e);
-                }
-            });
+            OpenAssessmentLogFolder();
         }
 
         /// <summary>
@@ -278,22 +255,8 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnLearnSystemAssessmentClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("https://learn.microsoft.com/zh-cn/windows-hardware/manufacture/desktop/configure-windows-system-assessment-test-scores");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnLearnSystemAssessmentClicked), 1, e);
-                }
-            });
+            LearnSystemAssessment();
         }
-
-        #endregion 第二部分：系统评估页面——挂载的事件
-
-        #region 第二部分：系统评估页面——自定义事件
 
         /// <summary>
         /// 评估取得进展时触发的事件
@@ -369,7 +332,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第二部分：系统评估页面——自定义事件
+        #endregion 第五部分：挂载事件处理
+
+        #region 第六部分：数据操作与业务逻辑
 
         /// <summary>
         /// 加载系统评估信息
@@ -414,5 +379,76 @@ namespace PowerToolbox.Views.Pages
             ResultMessage = basicScore is 0.0 ? ErrorMessageString : string.Format(SuccessMessageString, assessmentDate is null ? string.Empty : assessmentDate);
             ResultSeverity = basicScore is 0.0 ? InfoBarSeverity.Warning : InfoBarSeverity.Success;
         }
+
+        /// <summary>
+        /// 运行评估
+        /// </summary>
+        private void RunAssessment()
+        {
+            try
+            {
+                cWinSATCallbacks = new();
+
+                if (cWinSATCallbacks is not null)
+                {
+                    cWinSATCallbacks.StatusUpdated += OnStatusUpdated;
+                    cWinSATCallbacks.StatusCompleted += OnStatusCompleted;
+                }
+
+                cInitiateWinSAT.InitiateFormalAssessment(cWinSATCallbacks, ref _RemotableHandle);
+                progressDialog = (IProgressDialog)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_ProgressDialog));
+
+                if (progressDialog is not null)
+                {
+                    progressDialog.SetTitle(WEIString);
+                    progressDialog.SetLine(2, WEIContentString, false, 0);
+                    progressDialog.StartProgressDialog((nint)MainWindow.Current.AppWindow.Id.Value, null, PROGDLG.PROGDLG_MODAL | PROGDLG.PROGDLG_NOMINIMIZE, 0);
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(RunAssessment), 1, e);
+                cWinSATCallbacks = null;
+                progressDialog = null;
+            }
+        }
+
+        /// <summary>
+        /// 打开评估日志目录
+        /// </summary>
+        private void OpenAssessmentLogFolder()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), @"performance\winsat\datastore"));
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OpenAssessmentLogFolder), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 了解系统评估
+        /// </summary>
+        private void LearnSystemAssessment()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("https://learn.microsoft.com/zh-cn/windows-hardware/manufacture/desktop/configure-windows-system-assessment-test-scores");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(LearnSystemAssessment), 1, e);
+                }
+            });
+        }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }
