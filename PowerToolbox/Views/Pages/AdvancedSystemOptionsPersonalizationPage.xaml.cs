@@ -13,6 +13,7 @@ using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using PowerToolbox.WindowsAPI.PInvoke.Shlwapi;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -76,7 +77,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string Windows10ClassicFileExplorerString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows10ClassicFileExplorer");
         private readonly string Windows11ModernFileExplorerString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("Windows11ModernFileExplorer");
         private readonly string WindowsChooseBestSettingsString = ResourceService.AdvancedSystemOptionsPersonalizationResource.GetString("WindowsChooseBestSettings");
-        private bool isInitialized;
         private AdvancedSystemOptionsPage advancedSystemOptionsPage;
 
         private readonly byte[] layout =
@@ -310,15 +310,15 @@ namespace PowerToolbox.Views.Pages
 
         private WinRTObservableCollection<NavigationPaneIconDisplayModel> NavigationPaneIconDisplayCollection { get; } = [];
 
-        private WinRTObservableCollection<ComboBoxItemModel> RightClickMenuStyleCollection { get; } = [];
+        private List<ComboBoxItemModel> RightClickMenuStyleList { get; } = [];
 
-        private WinRTObservableCollection<ComboBoxItemModel> FileExplorerStyleCollection { get; } = [];
+        private List<ComboBoxItemModel> FileExplorerStyleList { get; } = [];
 
-        private WinRTObservableCollection<ComboBoxItemModel> FileExplorerHomePositionCollection { get; } = [];
+        private List<ComboBoxItemModel> FileExplorerHomePositionList { get; } = [];
 
-        private WinRTObservableCollection<ComboBoxItemModel> VisualEffectsPlanCollection { get; } = [];
+        private List<ComboBoxItemModel> VisualEffectsPlanList { get; } = [];
 
-        private WinRTObservableCollection<VisualEffectsModel> VisualEffectsCollection { get; } = [];
+        private List<VisualEffectsModel> VisualEffectsList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -329,6 +329,7 @@ namespace PowerToolbox.Views.Pages
         internal AdvancedSystemOptionsPersonalizationPage()
         {
             InitializeComponent();
+            InitializeData();
         }
 
         #endregion 第三部分：构造函数
@@ -344,7 +345,7 @@ namespace PowerToolbox.Views.Pages
                 advancedSystemOptionsPage = targetPage;
             }
 
-            await InitializeDataAsync();
+            await InitializeSettingsOptionsAsync();
         }
 
         #endregion 第四部分：父类虚方法重写
@@ -386,7 +387,7 @@ namespace PowerToolbox.Views.Pages
             if (args.Parameter is VisualEffectsModel visualEffects)
             {
                 visualEffects.IsVisualEnabled = !visualEffects.IsVisualEnabled;
-                VisualEffectsPlan = VisualEffectsPlanCollection[3];
+                VisualEffectsPlan = VisualEffectsPlanList[3];
             }
         }
 
@@ -561,24 +562,24 @@ namespace PowerToolbox.Views.Pages
                 IsUpdatingVisualEffects = true;
                 await SetVisualEffectsAsync(new VisualEffects()
                 {
-                    VisualEffectsPlan = VisualEffectsPlanCollection.IndexOf(VisualEffectsPlan),
-                    SaveTaskbarThumbnailPreview = VisualEffectsCollection[0].IsVisualEnabled,
-                    AnimationControlsAndElementsInsideWindow = VisualEffectsCollection[1].IsVisualEnabled,
-                    FadeinAndOutOrSlideMenuToView = VisualEffectsCollection[2].IsVisualEnabled,
-                    SlideToOpenCombobox = VisualEffectsCollection[3].IsVisualEnabled,
-                    SmoothScrollListbox = VisualEffectsCollection[4].IsVisualEnabled,
-                    SmoothScreenFontEdges = VisualEffectsCollection[5].IsVisualEnabled,
-                    EnablePeek = VisualEffectsCollection[6].IsVisualEnabled,
-                    TaskbarAnimations = VisualEffectsCollection[7].IsVisualEnabled,
-                    ShowWindowContentsWhileDragging = VisualEffectsCollection[8].IsVisualEnabled,
-                    ShowThumbnail = VisualEffectsCollection[9].IsVisualEnabled,
-                    ShowSemitransparentSelectedRectangle = VisualEffectsCollection[10].IsVisualEnabled,
-                    ShowShadowUnderWindow = VisualEffectsCollection[11].IsVisualEnabled,
-                    FadeoutMenuAfterClicking = VisualEffectsCollection[12].IsVisualEnabled,
-                    FadeinFadeoutOrSlideToolTipInView = VisualEffectsCollection[13].IsVisualEnabled,
-                    ShowShadowUnderMousePointer = VisualEffectsCollection[14].IsVisualEnabled,
-                    UseShadowForIconLabelsOnDesktop = VisualEffectsCollection[15].IsVisualEnabled,
-                    ShowAnimationWhenMaximizingOrMinimizing = VisualEffectsCollection[16].IsVisualEnabled
+                    VisualEffectsPlan = VisualEffectsPlanList.IndexOf(VisualEffectsPlan),
+                    SaveTaskbarThumbnailPreview = VisualEffectsList[0].IsVisualEnabled,
+                    AnimationControlsAndElementsInsideWindow = VisualEffectsList[1].IsVisualEnabled,
+                    FadeinAndOutOrSlideMenuToView = VisualEffectsList[2].IsVisualEnabled,
+                    SlideToOpenCombobox = VisualEffectsList[3].IsVisualEnabled,
+                    SmoothScrollListbox = VisualEffectsList[4].IsVisualEnabled,
+                    SmoothScreenFontEdges = VisualEffectsList[5].IsVisualEnabled,
+                    EnablePeek = VisualEffectsList[6].IsVisualEnabled,
+                    TaskbarAnimations = VisualEffectsList[7].IsVisualEnabled,
+                    ShowWindowContentsWhileDragging = VisualEffectsList[8].IsVisualEnabled,
+                    ShowThumbnail = VisualEffectsList[9].IsVisualEnabled,
+                    ShowSemitransparentSelectedRectangle = VisualEffectsList[10].IsVisualEnabled,
+                    ShowShadowUnderWindow = VisualEffectsList[11].IsVisualEnabled,
+                    FadeoutMenuAfterClicking = VisualEffectsList[12].IsVisualEnabled,
+                    FadeinFadeoutOrSlideToolTipInView = VisualEffectsList[13].IsVisualEnabled,
+                    ShowShadowUnderMousePointer = VisualEffectsList[14].IsVisualEnabled,
+                    UseShadowForIconLabelsOnDesktop = VisualEffectsList[15].IsVisualEnabled,
+                    ShowAnimationWhenMaximizingOrMinimizing = VisualEffectsList[16].IsVisualEnabled
                 });
                 if (await GetVisualEffectsAsync() is VisualEffects visualEffects)
                 {
@@ -603,7 +604,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         case "WindowsChooseBestSettings":
                             {
-                                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsCollection)
+                                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsList)
                                 {
                                     visualEffectsItem.IsVisualEnabled = visualEffectsItem.VisualTag is not "SaveTaskbarThumbnailPreview" && visualEffectsItem.VisualTag is not "ShowShadowUnderMousePointer";
                                 }
@@ -611,7 +612,7 @@ namespace PowerToolbox.Views.Pages
                             }
                         case "BestAppearance":
                             {
-                                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsCollection)
+                                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsList)
                                 {
                                     visualEffectsItem.IsVisualEnabled = true;
                                 }
@@ -619,7 +620,7 @@ namespace PowerToolbox.Views.Pages
                             }
                         case "BestPerformance":
                             {
-                                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsCollection)
+                                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsList)
                                 {
                                     visualEffectsItem.IsVisualEnabled = false;
                                 }
@@ -637,41 +638,43 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 初始化数据
         /// </summary>
-        private async Task InitializeDataAsync()
+        private void InitializeData()
         {
-            if (!isInitialized)
-            {
-                isInitialized = true;
-                RightClickMenuStyleCollection.Add(new() { DisplayMember = Windows11ModernMenuString, SelectedValue = "Windows11ModernMenu" });
-                RightClickMenuStyleCollection.Add(new() { DisplayMember = Windows10ClassicMenuString, SelectedValue = "Windows10ClassicMenu" });
-                FileExplorerStyleCollection.Add(new() { DisplayMember = Windows11ModernFileExplorerString, SelectedValue = "Windows11ModernFileExplorer" });
-                FileExplorerStyleCollection.Add(new() { DisplayMember = Windows10ClassicFileExplorerString, SelectedValue = "Windows10ClassicFileExplorer" });
-                FileExplorerHomePositionCollection.Add(new() { DisplayMember = ThisPCString, SelectedValue = "ThisPC" });
-                FileExplorerHomePositionCollection.Add(new() { DisplayMember = HomeString, SelectedValue = "Home" });
-                FileExplorerHomePositionCollection.Add(new() { DisplayMember = DownloadsString, SelectedValue = "Downloads" });
-                VisualEffectsPlanCollection.Add(new() { DisplayMember = WindowsChooseBestSettingsString, SelectedValue = "WindowsChooseBestSettings" });
-                VisualEffectsPlanCollection.Add(new() { DisplayMember = BestAppearanceString, SelectedValue = "BestAppearance" });
-                VisualEffectsPlanCollection.Add(new() { DisplayMember = BestPerformanceString, SelectedValue = "BestPerformance" });
-                VisualEffectsPlanCollection.Add(new() { DisplayMember = CustomString, SelectedValue = "Custom" });
-                VisualEffectsCollection.Add(new() { Name = SaveTaskbarThumbnailPreviewString, IsVisualEnabled = false, VisualTag = "SaveTaskbarThumbnailPreview" });
-                VisualEffectsCollection.Add(new() { Name = AnimationControlsAndElementsInsideWindowString, IsVisualEnabled = false, VisualTag = "AnimationControlsAndElementsInsideWindow" });
-                VisualEffectsCollection.Add(new() { Name = FadeinAndOutOrSlideMenuToViewString, IsVisualEnabled = false, VisualTag = "FadeinAndOutOrSlideMenuToView" });
-                VisualEffectsCollection.Add(new() { Name = SlideToOpenComboboxString, IsVisualEnabled = false, VisualTag = "SlideToOpenCombobox" });
-                VisualEffectsCollection.Add(new() { Name = SmoothScrollListboxString, IsVisualEnabled = false, VisualTag = "SmoothScrollListbox" });
-                VisualEffectsCollection.Add(new() { Name = SmoothScreenFontEdgesString, IsVisualEnabled = false, VisualTag = "SmoothScreenFontEdges" });
-                VisualEffectsCollection.Add(new() { Name = EnablePeekString, IsVisualEnabled = false, VisualTag = "EnablePeek" });
-                VisualEffectsCollection.Add(new() { Name = TaskbarAnimationsString, IsVisualEnabled = false, VisualTag = "TaskbarAnimations" });
-                VisualEffectsCollection.Add(new() { Name = ShowWindowContentsWhileDraggingString, IsVisualEnabled = false, VisualTag = "ShowWindowContentsWhileDragging" });
-                VisualEffectsCollection.Add(new() { Name = ShowThumbnailString, IsVisualEnabled = false, VisualTag = "ShowThumbnail" });
-                VisualEffectsCollection.Add(new() { Name = ShowSemitransparentSelectedRectangleString, IsVisualEnabled = false, VisualTag = "ShowSemitransparentSelectedRectangle" });
-                VisualEffectsCollection.Add(new() { Name = ShowShadowUnderWindowString, IsVisualEnabled = false, VisualTag = "ShowShadowUnderWindow" });
-                VisualEffectsCollection.Add(new() { Name = FadeoutMenuAfterClickingString, IsVisualEnabled = false, VisualTag = "FadeoutMenuAfterClicking" });
-                VisualEffectsCollection.Add(new() { Name = FadeinFadeoutOrSlideToolTipInViewString, IsVisualEnabled = false, VisualTag = "FadeinFadeoutOrSlideToolTipInView" });
-                VisualEffectsCollection.Add(new() { Name = ShowShadowUnderMousePointerString, IsVisualEnabled = false, VisualTag = "ShowShadowUnderMousePointer" });
-                VisualEffectsCollection.Add(new() { Name = UseShadowForIconLabelsOnDesktopString, IsVisualEnabled = false, VisualTag = "UseShadowForIconLabelsOnDesktop" });
-                VisualEffectsCollection.Add(new() { Name = ShowAnimationWhenMaximizingOrMinimizingString, IsVisualEnabled = false, VisualTag = "ShowAnimationWhenMaximizingOrMinimizing" });
-            }
+            RightClickMenuStyleList.Add(new() { DisplayMember = Windows11ModernMenuString, SelectedValue = "Windows11ModernMenu" });
+            RightClickMenuStyleList.Add(new() { DisplayMember = Windows10ClassicMenuString, SelectedValue = "Windows10ClassicMenu" });
+            FileExplorerStyleList.Add(new() { DisplayMember = Windows11ModernFileExplorerString, SelectedValue = "Windows11ModernFileExplorer" });
+            FileExplorerStyleList.Add(new() { DisplayMember = Windows10ClassicFileExplorerString, SelectedValue = "Windows10ClassicFileExplorer" });
+            FileExplorerHomePositionList.Add(new() { DisplayMember = ThisPCString, SelectedValue = "ThisPC" });
+            FileExplorerHomePositionList.Add(new() { DisplayMember = HomeString, SelectedValue = "Home" });
+            FileExplorerHomePositionList.Add(new() { DisplayMember = DownloadsString, SelectedValue = "Downloads" });
+            VisualEffectsPlanList.Add(new() { DisplayMember = WindowsChooseBestSettingsString, SelectedValue = "WindowsChooseBestSettings" });
+            VisualEffectsPlanList.Add(new() { DisplayMember = BestAppearanceString, SelectedValue = "BestAppearance" });
+            VisualEffectsPlanList.Add(new() { DisplayMember = BestPerformanceString, SelectedValue = "BestPerformance" });
+            VisualEffectsPlanList.Add(new() { DisplayMember = CustomString, SelectedValue = "Custom" });
+            VisualEffectsList.Add(new() { Name = SaveTaskbarThumbnailPreviewString, IsVisualEnabled = false, VisualTag = "SaveTaskbarThumbnailPreview" });
+            VisualEffectsList.Add(new() { Name = AnimationControlsAndElementsInsideWindowString, IsVisualEnabled = false, VisualTag = "AnimationControlsAndElementsInsideWindow" });
+            VisualEffectsList.Add(new() { Name = FadeinAndOutOrSlideMenuToViewString, IsVisualEnabled = false, VisualTag = "FadeinAndOutOrSlideMenuToView" });
+            VisualEffectsList.Add(new() { Name = SlideToOpenComboboxString, IsVisualEnabled = false, VisualTag = "SlideToOpenCombobox" });
+            VisualEffectsList.Add(new() { Name = SmoothScrollListboxString, IsVisualEnabled = false, VisualTag = "SmoothScrollListbox" });
+            VisualEffectsList.Add(new() { Name = SmoothScreenFontEdgesString, IsVisualEnabled = false, VisualTag = "SmoothScreenFontEdges" });
+            VisualEffectsList.Add(new() { Name = EnablePeekString, IsVisualEnabled = false, VisualTag = "EnablePeek" });
+            VisualEffectsList.Add(new() { Name = TaskbarAnimationsString, IsVisualEnabled = false, VisualTag = "TaskbarAnimations" });
+            VisualEffectsList.Add(new() { Name = ShowWindowContentsWhileDraggingString, IsVisualEnabled = false, VisualTag = "ShowWindowContentsWhileDragging" });
+            VisualEffectsList.Add(new() { Name = ShowThumbnailString, IsVisualEnabled = false, VisualTag = "ShowThumbnail" });
+            VisualEffectsList.Add(new() { Name = ShowSemitransparentSelectedRectangleString, IsVisualEnabled = false, VisualTag = "ShowSemitransparentSelectedRectangle" });
+            VisualEffectsList.Add(new() { Name = ShowShadowUnderWindowString, IsVisualEnabled = false, VisualTag = "ShowShadowUnderWindow" });
+            VisualEffectsList.Add(new() { Name = FadeoutMenuAfterClickingString, IsVisualEnabled = false, VisualTag = "FadeoutMenuAfterClicking" });
+            VisualEffectsList.Add(new() { Name = FadeinFadeoutOrSlideToolTipInViewString, IsVisualEnabled = false, VisualTag = "FadeinFadeoutOrSlideToolTipInView" });
+            VisualEffectsList.Add(new() { Name = ShowShadowUnderMousePointerString, IsVisualEnabled = false, VisualTag = "ShowShadowUnderMousePointer" });
+            VisualEffectsList.Add(new() { Name = UseShadowForIconLabelsOnDesktopString, IsVisualEnabled = false, VisualTag = "UseShadowForIconLabelsOnDesktop" });
+            VisualEffectsList.Add(new() { Name = ShowAnimationWhenMaximizingOrMinimizingString, IsVisualEnabled = false, VisualTag = "ShowAnimationWhenMaximizingOrMinimizing" });
+        }
 
+        /// <summary>
+        /// 初始化选项设置
+        /// </summary>
+        private async Task InitializeSettingsOptionsAsync()
+        {
             if (RuntimeHelper.IsElevated)
             {
                 string controlPanelIconPath = string.Format("::{0}", controlPanelPath);
@@ -1377,28 +1380,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void UpdateRightClickMenuStyle(bool isClassicRightClickMenuExisted)
         {
-            if (isClassicRightClickMenuExisted)
-            {
-                foreach (ComboBoxItemModel rightClickMenuStyleItem in RightClickMenuStyleCollection)
-                {
-                    if (Equals(rightClickMenuStyleItem.SelectedValue, "Windows10ClassicMenu"))
-                    {
-                        RightClickMenuStyle = rightClickMenuStyleItem;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                foreach (ComboBoxItemModel rightClickMenuStyleItem in RightClickMenuStyleCollection)
-                {
-                    if (Equals(rightClickMenuStyleItem.SelectedValue, "Windows11ModernMenu"))
-                    {
-                        RightClickMenuStyle = rightClickMenuStyleItem;
-                        break;
-                    }
-                }
-            }
+            RightClickMenuStyle = isClassicRightClickMenuExisted ? RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows10ClassicMenu")) : RightClickMenuStyleList.Find(item => Equals(item.SelectedValue, "Windows11ModernMenu"));
         }
 
         /// <summary>
@@ -1440,28 +1422,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void UpdateFileExplorerStyle(bool isClassicFileExplorerExisted)
         {
-            if (isClassicFileExplorerExisted)
-            {
-                foreach (ComboBoxItemModel fileExplorerStyleItem in FileExplorerStyleCollection)
-                {
-                    if (Equals(fileExplorerStyleItem.SelectedValue, "Windows10ClassicFileExplorer"))
-                    {
-                        FileExplorerStyle = fileExplorerStyleItem;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                foreach (ComboBoxItemModel fileExplorerStyleItem in FileExplorerStyleCollection)
-                {
-                    if (Equals(fileExplorerStyleItem.SelectedValue, "Windows11ModernFileExplorer"))
-                    {
-                        FileExplorerStyle = fileExplorerStyleItem;
-                        break;
-                    }
-                }
-            }
+            FileExplorerStyle = isClassicFileExplorerExisted ? FileExplorerStyleList.Find(item => Equals(item.SelectedValue, "Windows10ClassicFileExplorer")) : FileExplorerStyleList.Find(item => Equals(item.SelectedValue, "Windows11ModernFileExplorer"));
         }
 
         /// <summary>
@@ -1537,28 +1498,28 @@ namespace PowerToolbox.Views.Pages
         {
             return await Task.Run(() =>
             {
-                ComboBoxItemModel fileExplorerTo = FileExplorerHomePositionCollection[1];
+                ComboBoxItemModel fileExplorerTo = FileExplorerHomePositionList[1];
                 int launchTo = RegistryHelper.ReadRegistryKey<int>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo");
                 switch (launchTo)
                 {
                     case 1:
                         {
-                            fileExplorerTo = FileExplorerHomePositionCollection[0];
+                            fileExplorerTo = FileExplorerHomePositionList[0];
                             break;
                         }
                     case 2:
                         {
-                            fileExplorerTo = FileExplorerHomePositionCollection[1];
+                            fileExplorerTo = FileExplorerHomePositionList[1];
                             break;
                         }
                     case 3:
                         {
-                            fileExplorerTo = FileExplorerHomePositionCollection[2];
+                            fileExplorerTo = FileExplorerHomePositionList[2];
                             break;
                         }
                     default:
                         {
-                            fileExplorerTo = FileExplorerHomePositionCollection[1];
+                            fileExplorerTo = FileExplorerHomePositionList[1];
                             break;
                         }
                 }
@@ -1720,31 +1681,31 @@ namespace PowerToolbox.Views.Pages
                 return;
             }
 
-            VisualEffectsPlan = visualEffects.VisualEffectsPlan >= 0 && visualEffects.VisualEffectsPlan <= 3 ? VisualEffectsPlanCollection[visualEffects.VisualEffectsPlan] : null;
+            VisualEffectsPlan = visualEffects.VisualEffectsPlan >= 0 && visualEffects.VisualEffectsPlan <= 3 ? VisualEffectsPlanList[visualEffects.VisualEffectsPlan] : null;
 
             if (VisualEffectsPlan is not null)
             {
-                VisualEffectsCollection[0].IsVisualEnabled = visualEffects.SaveTaskbarThumbnailPreview;
-                VisualEffectsCollection[1].IsVisualEnabled = visualEffects.AnimationControlsAndElementsInsideWindow;
-                VisualEffectsCollection[2].IsVisualEnabled = visualEffects.FadeinAndOutOrSlideMenuToView;
-                VisualEffectsCollection[3].IsVisualEnabled = visualEffects.SlideToOpenCombobox;
-                VisualEffectsCollection[4].IsVisualEnabled = visualEffects.SmoothScrollListbox;
-                VisualEffectsCollection[5].IsVisualEnabled = visualEffects.SmoothScreenFontEdges;
-                VisualEffectsCollection[6].IsVisualEnabled = visualEffects.EnablePeek;
-                VisualEffectsCollection[7].IsVisualEnabled = visualEffects.TaskbarAnimations;
-                VisualEffectsCollection[8].IsVisualEnabled = visualEffects.ShowWindowContentsWhileDragging;
-                VisualEffectsCollection[9].IsVisualEnabled = visualEffects.ShowThumbnail;
-                VisualEffectsCollection[10].IsVisualEnabled = visualEffects.ShowSemitransparentSelectedRectangle;
-                VisualEffectsCollection[11].IsVisualEnabled = visualEffects.ShowShadowUnderWindow;
-                VisualEffectsCollection[12].IsVisualEnabled = visualEffects.FadeoutMenuAfterClicking;
-                VisualEffectsCollection[13].IsVisualEnabled = visualEffects.FadeinFadeoutOrSlideToolTipInView;
-                VisualEffectsCollection[14].IsVisualEnabled = visualEffects.ShowShadowUnderMousePointer;
-                VisualEffectsCollection[15].IsVisualEnabled = visualEffects.UseShadowForIconLabelsOnDesktop;
-                VisualEffectsCollection[16].IsVisualEnabled = visualEffects.ShowAnimationWhenMaximizingOrMinimizing;
+                VisualEffectsList[0].IsVisualEnabled = visualEffects.SaveTaskbarThumbnailPreview;
+                VisualEffectsList[1].IsVisualEnabled = visualEffects.AnimationControlsAndElementsInsideWindow;
+                VisualEffectsList[2].IsVisualEnabled = visualEffects.FadeinAndOutOrSlideMenuToView;
+                VisualEffectsList[3].IsVisualEnabled = visualEffects.SlideToOpenCombobox;
+                VisualEffectsList[4].IsVisualEnabled = visualEffects.SmoothScrollListbox;
+                VisualEffectsList[5].IsVisualEnabled = visualEffects.SmoothScreenFontEdges;
+                VisualEffectsList[6].IsVisualEnabled = visualEffects.EnablePeek;
+                VisualEffectsList[7].IsVisualEnabled = visualEffects.TaskbarAnimations;
+                VisualEffectsList[8].IsVisualEnabled = visualEffects.ShowWindowContentsWhileDragging;
+                VisualEffectsList[9].IsVisualEnabled = visualEffects.ShowThumbnail;
+                VisualEffectsList[10].IsVisualEnabled = visualEffects.ShowSemitransparentSelectedRectangle;
+                VisualEffectsList[11].IsVisualEnabled = visualEffects.ShowShadowUnderWindow;
+                VisualEffectsList[12].IsVisualEnabled = visualEffects.FadeoutMenuAfterClicking;
+                VisualEffectsList[13].IsVisualEnabled = visualEffects.FadeinFadeoutOrSlideToolTipInView;
+                VisualEffectsList[14].IsVisualEnabled = visualEffects.ShowShadowUnderMousePointer;
+                VisualEffectsList[15].IsVisualEnabled = visualEffects.UseShadowForIconLabelsOnDesktop;
+                VisualEffectsList[16].IsVisualEnabled = visualEffects.ShowAnimationWhenMaximizingOrMinimizing;
             }
             else
             {
-                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsCollection)
+                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsList)
                 {
                     visualEffectsItem.IsVisualEnabled = false;
                 }

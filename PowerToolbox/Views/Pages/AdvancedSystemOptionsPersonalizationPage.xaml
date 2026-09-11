@@ -389,7 +389,7 @@
                             Grid.Column="1"
                             VerticalAlignment="Center"
                             DisplayMemberPath="DisplayMember"
-                            ItemsSource="{x:Bind RightClickMenuStyleCollection}"
+                            ItemsSource="{x:Bind RightClickMenuStyleList}"
                             SelectedItem="{x:Bind RightClickMenuStyle, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnRightClickMenuStyleSelectionChanged}"
                             Style="{StaticResource ComboBoxStyle}" />
@@ -419,7 +419,7 @@
                             Grid.Column="1"
                             VerticalAlignment="Center"
                             DisplayMemberPath="DisplayMember"
-                            ItemsSource="{x:Bind FileExplorerStyleCollection}"
+                            ItemsSource="{x:Bind FileExplorerStyleList}"
                             SelectedItem="{x:Bind FileExplorerStyle, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnFileExplorerStyleSelectionChanged}"
                             Style="{StaticResource ComboBoxStyle}" />
@@ -527,7 +527,7 @@
                             Grid.Column="1"
                             VerticalAlignment="Center"
                             DisplayMemberPath="DisplayMember"
-                            ItemsSource="{x:Bind FileExplorerHomePositionCollection}"
+                            ItemsSource="{x:Bind FileExplorerHomePositionList}"
                             SelectedItem="{x:Bind FileExplorerHomePosition, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnFileExplorerHomePositionSelectionChanged}"
                             Style="{StaticResource ComboBoxStyle}" />
@@ -647,7 +647,7 @@
                             VerticalAlignment="Center"
                             DisplayMemberPath="DisplayMember"
                             IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsUpdatingVisualEffects), Mode=OneWay}"
-                            ItemsSource="{x:Bind VisualEffectsPlanCollection}"
+                            ItemsSource="{x:Bind VisualEffectsPlanList}"
                             SelectedItem="{x:Bind VisualEffectsPlan, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnVisualEffectsPlanSelectionChanged}"
                             Style="{StaticResource ComboBoxStyle}" />
@@ -658,7 +658,7 @@
                     <ListView
                         Padding="44,0,0,0"
                         IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsUpdatingVisualEffects), Mode=OneWay}"
-                        ItemsSource="{x:Bind VisualEffectsCollection}"
+                        ItemsSource="{x:Bind VisualEffectsList}"
                         SelectionMode="None">
 
                         <ListView.ItemContainerStyle>

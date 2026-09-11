@@ -441,7 +441,7 @@
                                     TextWrapping="NoWrap"
                                     Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(LogSaveFolder), Mode=OneWay}">
 
-                                    <Hyperlink Click="{x:Bind OnOpenSaveFolderClicked}" UnderlineStyle="None">
+                                    <Hyperlink Click="{x:Bind OnOpenLogSaveFolderClicked}" UnderlineStyle="None">
                                         <Run Text="{x:Bind LogSaveFolder, Mode=OneWay}" />
                                     </Hyperlink>
 
