@@ -375,7 +375,7 @@ namespace PowerToolbox.Views.Pages
                 navigationPaneIconDisplay.IsIconVisible = !navigationPaneIconDisplay.IsIconVisible;
                 await SetNavigationPaneIconVisibilityAsync(navigationPaneIconDisplay.IconTag, navigationPaneIconDisplay.IsIconVisible);
                 navigationPaneIconDisplay.IsIconVisible = await GetNavigationPaneIconVisibilityAsync(navigationPaneIconDisplay.IconTag);
-                ShowNotification(true, false);
+                advancedSystemOptionsPage?.ShowNotification(true, false);
             }
         }
 
@@ -456,7 +456,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnShowDesktopShortcutArrowClicked(object sender, RoutedEventArgs args)
         {
             await ShowOrHideShowDesktopShortcutArrowAsync(true);
-            ShowNotification(true, false);
+            advancedSystemOptionsPage?.ShowNotification(true, false);
         }
 
         /// <summary>
@@ -465,7 +465,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnHideDesktopShortcutArrowClicked(object sender, RoutedEventArgs args)
         {
             await ShowOrHideShowDesktopShortcutArrowAsync(false);
-            ShowNotification(true, false);
+            advancedSystemOptionsPage?.ShowNotification(true, false);
         }
 
         /// <summary>
@@ -484,7 +484,7 @@ namespace PowerToolbox.Views.Pages
 
                 bool isClassicRightClickMenuExisted = await GetIsClassicRightClickMenuExistedAsync();
                 UpdateRightClickMenuStyle(isClassicRightClickMenuExisted);
-                ShowNotification(true, false);
+                advancedSystemOptionsPage?.ShowNotification(true, false);
             }
         }
 
@@ -504,7 +504,7 @@ namespace PowerToolbox.Views.Pages
 
                 bool isClassicFileExplorerExisted = await GetIsClassicFileExplorerExistedAsync();
                 UpdateFileExplorerStyle(isClassicFileExplorerExisted);
-                ShowNotification(true, false);
+                advancedSystemOptionsPage?.ShowNotification(true, false);
             }
         }
 
@@ -548,7 +548,7 @@ namespace PowerToolbox.Views.Pages
                 IsShortcutWithoutShortcutTextEnabled = toggleSwitch.IsOn;
                 await SetIsShortcutWithoutShortcutTextEnabledAsync(IsShortcutWithoutShortcutTextEnabled);
                 IsShortcutWithoutShortcutTextEnabled = await GetIsShortcutWithoutShortcutTextEnabledAsync();
-                ShowNotification(true, false);
+                advancedSystemOptionsPage?.ShowNotification(true, false);
             }
         }
 
@@ -1876,27 +1876,6 @@ namespace PowerToolbox.Views.Pages
             finally
             {
                 Marshal.FreeHGlobal(pAI);
-            }
-        }
-
-        /// <summary>
-        /// 显示通知
-        /// </summary>
-        private void ShowNotification(bool isRestartExplorer, bool isRestartPC)
-        {
-            if (advancedSystemOptionsPage is not null)
-            {
-                if (isRestartExplorer)
-                {
-                    advancedSystemOptionsPage.IsRestartExplorerVisible = true;
-                }
-
-                if (isRestartPC)
-                {
-                    advancedSystemOptionsPage.IsRestartPCVisible = true;
-                }
-
-                advancedSystemOptionsPage.IsAdvancedSettingsInfoWarning = true;
             }
         }
 

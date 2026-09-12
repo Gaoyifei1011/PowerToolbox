@@ -10,8 +10,18 @@
     xmlns:model="using:PowerToolbox.Models"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
     AllowDrop="True"
+    KeyboardAcceleratorPlacementMode="Hidden"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
+
+    <Page.KeyboardAccelerators>
+        <KeyboardAccelerator Key="Enter" Invoked="{x:Bind OnKeyBoardAcceleratorInvoked}" />
+
+        <KeyboardAccelerator
+            Key="Enter"
+            Invoked="{x:Bind OnKeyBoardAcceleratorInvoked}"
+            Modifiers="Control" />
+    </Page.KeyboardAccelerators>
 
     <Page.Resources>
         <ResourceDictionary>
@@ -76,7 +86,7 @@
                 Grid.Column="0"
                 Checked="{x:Bind OnChecked}"
                 Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('AllUppercase')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedType, enum:UpperAndLowerSelectedKind.AllUppercase), Mode=OneWay}"
+                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.AllUppercase), Mode=OneWay}"
                 Tag="{x:Bind enum:UpperAndLowerSelectedKind.AllUppercase}"
                 Unchecked="{x:Bind OnUnchecked}" />
 
@@ -85,7 +95,7 @@
                 Grid.Column="1"
                 Checked="{x:Bind OnChecked}"
                 Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('FileNameUppercase')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedType, enum:UpperAndLowerSelectedKind.FileNameUppercase), Mode=OneWay}"
+                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.FileNameUppercase), Mode=OneWay}"
                 Tag="{x:Bind enum:UpperAndLowerSelectedKind.FileNameUppercase}"
                 Unchecked="{x:Bind OnUnchecked}" />
 
@@ -94,7 +104,7 @@
                 Grid.Column="2"
                 Checked="{x:Bind OnChecked}"
                 Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('ExtensionNameUppercase')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedType, enum:UpperAndLowerSelectedKind.ExtensionNameUppercase), Mode=OneWay}"
+                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.ExtensionNameUppercase), Mode=OneWay}"
                 Tag="{x:Bind enum:UpperAndLowerSelectedKind.ExtensionNameUppercase}"
                 Unchecked="{x:Bind OnUnchecked}" />
 
@@ -103,7 +113,7 @@
                 Grid.Column="3"
                 Checked="{x:Bind OnChecked}"
                 Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('DeleteSpace')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedType, enum:UpperAndLowerSelectedKind.DeleteSpace), Mode=OneWay}"
+                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.DeleteSpace), Mode=OneWay}"
                 Tag="{x:Bind enum:UpperAndLowerSelectedKind.DeleteSpace}"
                 Unchecked="{x:Bind OnUnchecked}" />
 
@@ -112,7 +122,7 @@
                 Grid.Column="0"
                 Checked="{x:Bind OnChecked}"
                 Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('AllLowercase')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedType, enum:UpperAndLowerSelectedKind.AllLowercase), Mode=OneWay}"
+                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.AllLowercase), Mode=OneWay}"
                 Tag="{x:Bind enum:UpperAndLowerSelectedKind.AllLowercase}"
                 Unchecked="{x:Bind OnUnchecked}" />
 
@@ -121,7 +131,7 @@
                 Grid.Column="1"
                 Checked="{x:Bind OnChecked}"
                 Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('FileNameLowercase')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedType, enum:UpperAndLowerSelectedKind.FileNameLowercase), Mode=OneWay}"
+                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.FileNameLowercase), Mode=OneWay}"
                 Tag="{x:Bind enum:UpperAndLowerSelectedKind.FileNameLowercase}"
                 Unchecked="{x:Bind OnUnchecked}" />
 
@@ -130,7 +140,7 @@
                 Grid.Column="2"
                 Checked="{x:Bind OnChecked}"
                 Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('ExtensionNameLowercase')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedType, enum:UpperAndLowerSelectedKind.ExtensionNameLowercase), Mode=OneWay}"
+                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.ExtensionNameLowercase), Mode=OneWay}"
                 Tag="{x:Bind enum:UpperAndLowerSelectedKind.ExtensionNameLowercase}"
                 Unchecked="{x:Bind OnUnchecked}" />
 
@@ -139,7 +149,7 @@
                 Grid.Column="3"
                 Checked="{x:Bind OnChecked}"
                 Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('ReplaceSpace')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedType, enum:UpperAndLowerSelectedKind.ReplaceSpace), Mode=OneWay}"
+                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.ReplaceSpace), Mode=OneWay}"
                 Tag="{x:Bind enum:UpperAndLowerSelectedKind.ReplaceSpace}"
                 Unchecked="{x:Bind OnUnchecked}" />
         </Grid>

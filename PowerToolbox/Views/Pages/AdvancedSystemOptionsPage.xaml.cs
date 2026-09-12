@@ -35,7 +35,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isAdvancedSettingsInfoWarning;
 
-        internal bool IsAdvancedSettingsInfoWarning
+        private bool IsAdvancedSettingsInfoWarning
         {
             get { return _isAdvancedSettingsInfoWarning; }
 
@@ -51,7 +51,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isRestartExplorerVisible;
 
-        internal bool IsRestartExplorerVisible
+        private bool IsRestartExplorerVisible
         {
             get { return _isRestartExplorerVisible; }
 
@@ -67,7 +67,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isRestartPCVisible;
 
-        internal bool IsRestartPCVisible
+        private bool IsRestartPCVisible
         {
             get { return _isRestartPCVisible; }
 
@@ -262,6 +262,24 @@ namespace PowerToolbox.Views.Pages
         }
 
         #endregion 第六部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 显示通知
+        /// </summary>
+        internal void ShowNotification(bool isRestartExplorer, bool isRestartPC)
+        {
+            if (isRestartExplorer)
+            {
+                IsRestartExplorerVisible = true;
+            }
+
+            if (isRestartPC)
+            {
+                IsRestartPCVisible = true;
+            }
+
+            IsAdvancedSettingsInfoWarning = true;
+        }
 
         /// <summary>
         /// 重启资源管理器

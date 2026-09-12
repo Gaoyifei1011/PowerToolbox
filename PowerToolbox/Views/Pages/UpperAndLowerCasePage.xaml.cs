@@ -30,6 +30,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class UpperAndLowerCasePage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string DragOverContentString = ResourceService.UpperAndLowerCaseResource.GetString("DragOverContent");
         private readonly string ModifyingNowString = ResourceService.UpperAndLowerCaseResource.GetString("ModifyingNow");
         private readonly string SelectFileString = ResourceService.UpperAndLowerCaseResource.GetString("SelectFile");
@@ -37,13 +39,17 @@ namespace PowerToolbox.Views.Pages
         private readonly string TotalString = ResourceService.UpperAndLowerCaseResource.GetString("Total");
         private readonly object upperAndLowerCaseLock = new();
 
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
+
         private bool _isModifyingNow;
 
         internal bool IsModifyingNow
         {
             get { return _isModifyingNow; }
 
-            set
+            private set
             {
                 if (!Equals(_isModifyingNow, value))
                 {
@@ -53,25 +59,25 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private UpperAndLowerSelectedKind _selectedType = UpperAndLowerSelectedKind.None;
+        private UpperAndLowerSelectedKind _selectedKind = UpperAndLowerSelectedKind.None;
 
-        internal UpperAndLowerSelectedKind SelectedType
+        private UpperAndLowerSelectedKind SelectedKind
         {
-            get { return _selectedType; }
+            get { return _selectedKind; }
 
             set
             {
-                if (!Equals(_selectedType, value))
+                if (!Equals(_selectedKind, value))
                 {
-                    _selectedType = value;
-                    PropertyChanged?.Invoke(this, new(nameof(SelectedType)));
+                    _selectedKind = value;
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedKind)));
                 }
             }
         }
 
         private bool _isOperationFailed;
 
-        internal bool IsOperationFailed
+        private bool IsOperationFailed
         {
             get { return _isOperationFailed; }
 
@@ -91,12 +97,18 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal UpperAndLowerCasePage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 设置拖动的数据的可视表示形式
@@ -104,6 +116,7 @@ namespace PowerToolbox.Views.Pages
         protected override void OnDragOver(Microsoft.UI.Xaml.DragEventArgs args)
         {
             base.OnDragOver(args);
+
             if (IsModifyingNow)
             {
                 args.AcceptedOperation = DataPackageOperation.None;
@@ -130,16 +143,19 @@ namespace PowerToolbox.Views.Pages
         {
             base.OnDrop(args);
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
-            List<IStorageItem> storageItemList = [];
             try
             {
-                DataPackageView dataPackageView = args.DataView;
-                if (dataPackageView.Contains(StandardDataFormats.StorageItems))
+                List<string> fileList = await GetDragDropSelectedFilesAsync(args.DataView);
+
+                if (fileList is not null && fileList.Count > 0)
                 {
-                    storageItemList.AddRange(await Task.Run(async () =>
+                    List<OldAndNewNameModel> upperAndLowerCaseList = await GetNeedConvertFileListAsync(fileList);
+                    if (upperAndLowerCaseList is not null && upperAndLowerCaseList.Count > 0)
                     {
-                        return await dataPackageView.GetStorageItemsAsync();
-                    }));
+                        AddToUpperAndLowerCasePage(upperAndLowerCaseList);
+                        IsOperationFailed = false;
+                        OperationFailedList.Clear();
+                    }
                 }
             }
             catch (Exception e)
@@ -148,115 +164,14 @@ namespace PowerToolbox.Views.Pages
             }
             finally
             {
+                args.Handled = true;
                 dragOperationDeferral.Complete();
             }
-
-            List<OldAndNewNameModel> upperAndLowerCaseList = await Task.Run(() =>
-            {
-                List<OldAndNewNameModel> upperAndLowerCaseList = [];
-
-                foreach (IStorageItem storageItem in storageItemList)
-                {
-                    try
-                    {
-                        FileInfo fileInfo = new(storageItem.Path);
-                        if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                        {
-                            continue;
-                        }
-
-                        upperAndLowerCaseList.Add(new()
-                        {
-                            OriginalFileName = storageItem.Name,
-                            OriginalFilePath = storageItem.Path,
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnDrop), 2, e);
-                        continue;
-                    }
-                }
-
-                return upperAndLowerCaseList;
-            });
-
-            AddToUpperAndLowerCasePage(upperAndLowerCaseList);
-            IsOperationFailed = false;
-            OperationFailedList.Clear();
         }
 
-        /// <summary>
-        /// 按下 Enter 键发生的事件（预览修改内容）
-        /// 按下 Ctrl + Enter 键发生的事件（修改内容）
-        /// </summary>
-        protected override async void OnKeyDown(KeyRoutedEventArgs args)
-        {
-            base.OnKeyDown(args);
-            if (args.Key is VirtualKey.Enter)
-            {
-                args.Handled = true;
-                bool checkResult = CheckOperationState();
-                if (checkResult)
-                {
-                    IsOperationFailed = false;
-                    OperationFailedList.Clear();
-                    int count = 0;
+        #endregion 第四部分：父类虚方法重写
 
-                    lock (upperAndLowerCaseLock)
-                    {
-                        count = UpperAndLowerCaseCollection.Count;
-                    }
-
-                    if (count is 0)
-                    {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-                    }
-                    else
-                    {
-                        PreviewChangedFileName();
-                    }
-                }
-                else
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
-                }
-            }
-            else if (args.Key is VirtualKey.Control && args.Key is VirtualKey.Enter)
-            {
-                args.Handled = true;
-                bool checkResult = CheckOperationState();
-                if (checkResult)
-                {
-                    IsOperationFailed = false;
-                    OperationFailedList.Clear();
-                    int count = 0;
-
-                    lock (upperAndLowerCaseLock)
-                    {
-                        count = UpperAndLowerCaseCollection.Count;
-                    }
-
-                    if (count is 0)
-                    {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-                    }
-                    else
-                    {
-                        PreviewChangedFileName();
-                        await ChangeFileNameAsync();
-                    }
-                }
-                else
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
-                }
-            }
-        }
-
-        #endregion 第一部分：重写父类事件
-
-        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #region 第五部分：命令调用处理
 
         /// <summary>
         /// 删除当前项
@@ -265,7 +180,10 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is OldAndNewNameModel oldAndNewName)
             {
-                UpperAndLowerCaseCollection.Remove(oldAndNewName);
+                lock (upperAndLowerCaseLock)
+                {
+                    UpperAndLowerCaseCollection.Remove(oldAndNewName);
+                }
             }
         }
 
@@ -276,14 +194,17 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is OldAndNewNameModel oldAndNewName)
             {
-                int index = UpperAndLowerCaseCollection.IndexOf(oldAndNewName);
-
-                if (index >= 0 && index < UpperAndLowerCaseCollection.Count - 1)
+                lock (upperAndLowerCaseLock)
                 {
-                    OldAndNewNameModel upOldAndNewName = UpperAndLowerCaseCollection[index];
-                    OldAndNewNameModel downOldAndNewName = UpperAndLowerCaseCollection[index + 1];
-                    UpperAndLowerCaseCollection[index] = downOldAndNewName;
-                    UpperAndLowerCaseCollection[index + 1] = upOldAndNewName;
+                    int index = UpperAndLowerCaseCollection.IndexOf(oldAndNewName);
+
+                    if (index >= 0 && index < UpperAndLowerCaseCollection.Count - 1)
+                    {
+                        OldAndNewNameModel upOldAndNewName = UpperAndLowerCaseCollection[index];
+                        OldAndNewNameModel downOldAndNewName = UpperAndLowerCaseCollection[index + 1];
+                        UpperAndLowerCaseCollection[index] = downOldAndNewName;
+                        UpperAndLowerCaseCollection[index + 1] = upOldAndNewName;
+                    }
                 }
             }
         }
@@ -295,21 +216,44 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is OldAndNewNameModel oldAndNewName)
             {
-                int index = UpperAndLowerCaseCollection.IndexOf(oldAndNewName);
-
-                if (index > 0)
+                lock (upperAndLowerCaseLock)
                 {
-                    OldAndNewNameModel upOldAndNewName = UpperAndLowerCaseCollection[index - 1];
-                    OldAndNewNameModel downOldAndNewName = UpperAndLowerCaseCollection[index];
-                    UpperAndLowerCaseCollection[index - 1] = downOldAndNewName;
-                    UpperAndLowerCaseCollection[index] = upOldAndNewName;
+                    int index = UpperAndLowerCaseCollection.IndexOf(oldAndNewName);
+
+                    if (index > 0)
+                    {
+                        OldAndNewNameModel upOldAndNewName = UpperAndLowerCaseCollection[index - 1];
+                        OldAndNewNameModel downOldAndNewName = UpperAndLowerCaseCollection[index];
+                        UpperAndLowerCaseCollection[index - 1] = downOldAndNewName;
+                        UpperAndLowerCaseCollection[index] = upOldAndNewName;
+                    }
                 }
             }
         }
 
-        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #endregion 第五部分：命令调用处理
 
-        #region 第三部分：大写小写页面——挂载的事件
+        #region 第六部分：挂载事件处理
+
+        /// <summary>
+        /// 按下 Enter 键发生的事件（预览修改内容）
+        /// 按下 Ctrl + Enter 键发生的事件（修改内容）
+        /// </summary>
+        private async void OnKeyBoardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            if (sender.Key is VirtualKey.Enter)
+            {
+                if (sender.Modifiers is VirtualKeyModifiers.None)
+                {
+                    await PrepareChangeFileNameAsync(SelectedKind, false);
+                }
+                else if (sender.Modifiers is VirtualKeyModifiers.Control)
+                {
+                    await PrepareChangeFileNameAsync(SelectedKind, true);
+                }
+                args.Handled = true;
+            }
+        }
 
         /// <summary>
         /// 选中时触发的事件
@@ -318,7 +262,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (sender is Microsoft.UI.Xaml.Controls.CheckBox checkBox && checkBox.Tag is UpperAndLowerSelectedKind upperAndLowerSelectedKind)
             {
-                SelectedType = upperAndLowerSelectedKind;
+                SelectedKind = upperAndLowerSelectedKind;
             }
         }
 
@@ -340,31 +284,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnPreviewClicked(object sender, RoutedEventArgs args)
         {
-            bool checkResult = CheckOperationState();
-            if (checkResult)
-            {
-                IsOperationFailed = false;
-                OperationFailedList.Clear();
-                int count = 0;
-
-                lock (upperAndLowerCaseLock)
-                {
-                    count = UpperAndLowerCaseCollection.Count;
-                }
-
-                if (count is 0)
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-                }
-                else
-                {
-                    PreviewChangedFileName();
-                }
-            }
-            else
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
-            }
+            await PrepareChangeFileNameAsync(SelectedKind, false);
         }
 
         /// <summary>
@@ -372,32 +292,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnModifyClicked(object sender, RoutedEventArgs args)
         {
-            bool checkResult = CheckOperationState();
-            if (checkResult)
-            {
-                IsOperationFailed = false;
-                OperationFailedList.Clear();
-                int count = 0;
-
-                lock (upperAndLowerCaseLock)
-                {
-                    count = UpperAndLowerCaseCollection.Count;
-                }
-
-                if (count is 0)
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-                }
-                else
-                {
-                    PreviewChangedFileName();
-                    await ChangeFileNameAsync();
-                }
-            }
-            else
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
-            }
+            await PrepareChangeFileNameAsync(SelectedKind, true);
         }
 
         /// <summary>
@@ -414,38 +309,12 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
-                List<OldAndNewNameModel> upperAndLowerCaseList = await Task.Run(() =>
+                List<OldAndNewNameModel> upperAndLowerCaseList = await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]);
+                if (upperAndLowerCaseList is not null && upperAndLowerCaseList.Count > 0)
                 {
-                    List<OldAndNewNameModel> upperAndLowerCaseList = [];
-
-                    foreach (string fileName in openFileDialog.FileNames)
-                    {
-                        try
-                        {
-                            FileInfo fileInfo = new(fileName);
-                            if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                            {
-                                continue;
-                            }
-
-                            upperAndLowerCaseList.Add(new()
-                            {
-                                OriginalFileName = fileInfo.Name,
-                                OriginalFilePath = fileInfo.FullName
-                            });
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnSelectFileClicked), 1, e);
-                            continue;
-                        }
-                    }
-
-                    return upperAndLowerCaseList;
-                });
-
-                openFileDialog.Dispose();
-                AddToUpperAndLowerCasePage(upperAndLowerCaseList);
+                    openFileDialog.Dispose();
+                    AddToUpperAndLowerCasePage(upperAndLowerCaseList);
+                }
             }
             else
             {
@@ -470,60 +339,18 @@ namespace PowerToolbox.Views.Pages
                 OperationFailedList.Clear();
                 if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath))
                 {
-                    List<OldAndNewNameModel> directoryNameList = [];
-                    List<OldAndNewNameModel> fileNameList = [];
+                    (List<OldAndNewNameModel> directoryNameList, List<OldAndNewNameModel> fileNameList) = await GetFileAndDirectoryAsync(openFolderDialog.SelectedPath);
 
-                    await Task.Run(() =>
+                    if (directoryNameList is not null && directoryNameList.Count > 0)
                     {
-                        DirectoryInfo currentFolder = new(openFolderDialog.SelectedPath);
+                        AddToUpperAndLowerCasePage(directoryNameList);
+                    }
 
-                        try
-                        {
-                            foreach (DirectoryInfo directoryInfo in currentFolder.GetDirectories())
-                            {
-                                if ((directoryInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                                {
-                                    continue;
-                                }
-
-                                directoryNameList.Add(new()
-                                {
-                                    OriginalFileName = directoryInfo.Name,
-                                    OriginalFilePath = directoryInfo.FullName
-                                });
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnSelectFolderClicked), 1, e);
-                        }
-
-                        try
-                        {
-                            foreach (FileInfo fileInfo in currentFolder.GetFiles())
-                            {
-                                if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                                {
-                                    continue;
-                                }
-
-                                fileNameList.Add(new()
-                                {
-                                    OriginalFileName = fileInfo.Name,
-                                    OriginalFilePath = fileInfo.FullName
-                                });
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnSelectFolderClicked), 2, e);
-                        }
-                    });
-
-                    AddToUpperAndLowerCasePage(directoryNameList);
-                    AddToUpperAndLowerCasePage(fileNameList);
+                    if (fileNameList is not null && fileNameList.Count > 0)
+                    {
+                        AddToUpperAndLowerCasePage(fileNameList);
+                    }
                 }
-
                 openFolderDialog.Dispose();
             }
             else
@@ -539,9 +366,9 @@ namespace PowerToolbox.Views.Pages
         {
             if (sender is Microsoft.UI.Xaml.Controls.CheckBox checkBox && checkBox.Tag is UpperAndLowerSelectedKind upperAndLowerSelectedKind)
             {
-                if (Equals(SelectedType, upperAndLowerSelectedKind))
+                if (Equals(SelectedKind, upperAndLowerSelectedKind))
                 {
-                    SelectedType = UpperAndLowerSelectedKind.None;
+                    SelectedKind = UpperAndLowerSelectedKind.None;
                 }
             }
         }
@@ -554,7 +381,9 @@ namespace PowerToolbox.Views.Pages
             await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList));
         }
 
-        #endregion 第三部分：大写小写页面——挂载的事件
+        #endregion 第六部分：挂载事件处理
+
+        #region 第七部分：数据操作与业务逻辑
 
         /// <summary>
         /// 添加到大写小写页面
@@ -571,19 +400,46 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 检查用户是否指定了操作过程
+        /// 准备修改文件名称
         /// </summary>
-        private bool CheckOperationState()
+        private async Task PrepareChangeFileNameAsync(UpperAndLowerSelectedKind selectedKind, bool needChange)
         {
-            return SelectedType is not UpperAndLowerSelectedKind.None;
+            if (selectedKind is not UpperAndLowerSelectedKind.None)
+            {
+                IsOperationFailed = false;
+                OperationFailedList.Clear();
+                int count = 0;
+
+                lock (upperAndLowerCaseLock)
+                {
+                    count = UpperAndLowerCaseCollection.Count;
+                }
+
+                if (count is 0)
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
+                }
+                else
+                {
+                    PreviewChangedFileName(SelectedKind);
+                    if (needChange)
+                    {
+                        await ChangeFileNameAsync();
+                    }
+                }
+            }
+            else
+            {
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
+            }
         }
 
         /// <summary>
         /// 预览修改后的文件名称
         /// </summary>
-        private void PreviewChangedFileName()
+        private void PreviewChangedFileName(UpperAndLowerSelectedKind selectedKind)
         {
-            switch (SelectedType)
+            switch (selectedKind)
             {
                 case UpperAndLowerSelectedKind.AllUppercase:
                     {
@@ -722,12 +578,183 @@ namespace PowerToolbox.Views.Pages
         private async Task ChangeFileNameAsync()
         {
             IsModifyingNow = true;
-            foreach (OldAndNewNameModel oldAndNewName in UpperAndLowerCaseCollection)
+            lock (upperAndLowerCaseLock)
             {
-                oldAndNewName.IsModifyingNow = true;
+                foreach (OldAndNewNameModel oldAndNewName in UpperAndLowerCaseCollection)
+                {
+                    oldAndNewName.IsModifyingNow = true;
+                }
+            }
+            List<OperationFailedModel> operationFailedList = await GetOperationFailedListAsync();
+
+            IsModifyingNow = false;
+            lock (upperAndLowerCaseLock)
+            {
+                foreach (OldAndNewNameModel oldAndNewName in UpperAndLowerCaseCollection)
+                {
+                    oldAndNewName.IsModifyingNow = false;
+                }
+            }
+            if (operationFailedList is not null && operationFailedList.Count > 0)
+            {
+                foreach (OperationFailedModel operationFailedItem in operationFailedList)
+                {
+                    OperationFailedList.Add(operationFailedItem);
+                }
             }
 
-            List<OperationFailedModel> operationFailedList = await Task.Run(() =>
+            int count = UpperAndLowerCaseCollection.Count;
+            IsOperationFailed = OperationFailedList.Count is not 0;
+
+            lock (upperAndLowerCaseLock)
+            {
+                UpperAndLowerCaseCollection.Clear();
+            }
+
+            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.File, count - OperationFailedList.Count, OperationFailedList.Count));
+        }
+
+        /// <summary>
+        /// 获取拖拽支持选中的文件
+        /// </summary>
+        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        {
+            if (dataPackageView is null)
+            {
+                return default;
+            }
+
+            return await Task.Run(async () =>
+            {
+                List<string> fileList = [];
+
+                try
+                {
+                    if (dataPackageView.Contains(StandardDataFormats.StorageItems))
+                    {
+                        foreach (IStorageItem storageItem in await dataPackageView.GetStorageItemsAsync())
+                        {
+                            fileList.Add(storageItem.Path);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetDragDropSelectedFilesAsync), 1, e);
+                }
+
+                return fileList;
+            });
+        }
+
+        /// <summary>
+        /// 获取要待转换的文件列表
+        /// </summary>
+        private async Task<List<OldAndNewNameModel>> GetNeedConvertFileListAsync(List<string> fileList)
+        {
+            if (fileList is null || fileList.Count is 0)
+            {
+                return default;
+            }
+
+            return await Task.Run(() =>
+             {
+                 List<OldAndNewNameModel> upperAndLowerCaseList = [];
+
+                 foreach (string file in fileList)
+                 {
+                     try
+                     {
+                         FileInfo fileInfo = new(file);
+                         if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
+                         {
+                             continue;
+                         }
+
+                         upperAndLowerCaseList.Add(new()
+                         {
+                             OriginalFileName = Path.GetFileName(file),
+                             OriginalFilePath = file,
+                         });
+                     }
+                     catch (Exception e)
+                     {
+                         LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetNeedConvertFileListAsync), 1, e);
+                         continue;
+                     }
+                 }
+
+                 return upperAndLowerCaseList;
+             });
+        }
+
+        /// <summary>
+        /// 获取文件夹的所有子文件夹和所有文件
+        /// </summary>
+        private async Task<(List<OldAndNewNameModel>, List<OldAndNewNameModel>)> GetFileAndDirectoryAsync(string folderPath)
+        {
+            if (string.IsNullOrEmpty(folderPath))
+            {
+                return ValueTuple.Create<List<OldAndNewNameModel>, List<OldAndNewNameModel>>([], []);
+            }
+
+            return await Task.Run(() =>
+            {
+                List<OldAndNewNameModel> directoryNameList = [];
+                List<OldAndNewNameModel> fileNameList = [];
+                DirectoryInfo currentFolder = new(folderPath);
+
+                try
+                {
+                    foreach (DirectoryInfo directoryInfo in currentFolder.GetDirectories())
+                    {
+                        if ((directoryInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
+                        {
+                            continue;
+                        }
+
+                        directoryNameList.Add(new()
+                        {
+                            OriginalFileName = directoryInfo.Name,
+                            OriginalFilePath = directoryInfo.FullName
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetFileAndDirectoryAsync), 1, e);
+                }
+
+                try
+                {
+                    foreach (FileInfo fileInfo in currentFolder.GetFiles())
+                    {
+                        if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
+                        {
+                            continue;
+                        }
+
+                        fileNameList.Add(new()
+                        {
+                            OriginalFileName = fileInfo.Name,
+                            OriginalFilePath = fileInfo.FullName
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetFileAndDirectoryAsync), 2, e);
+                }
+                return ValueTuple.Create(directoryNameList, fileNameList);
+            });
+        }
+
+        /// <summary>
+        /// 获取失败操作列表
+        /// </summary>
+        private async Task<List<OperationFailedModel>> GetOperationFailedListAsync()
+        {
+            return await Task.Run(() =>
             {
                 List<OperationFailedModel> operationFailedList = [];
 
@@ -772,29 +799,10 @@ namespace PowerToolbox.Views.Pages
                         }
                     }
                 }
-
                 return operationFailedList;
             });
-
-            IsModifyingNow = false;
-            foreach (OldAndNewNameModel oldAndNewName in UpperAndLowerCaseCollection)
-            {
-                oldAndNewName.IsModifyingNow = false;
-            }
-            foreach (OperationFailedModel operationFailedItem in operationFailedList)
-            {
-                OperationFailedList.Add(operationFailedItem);
-            }
-
-            int count = UpperAndLowerCaseCollection.Count;
-            IsOperationFailed = OperationFailedList.Count is not 0;
-
-            lock (upperAndLowerCaseLock)
-            {
-                UpperAndLowerCaseCollection.Clear();
-            }
-
-            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.File, count - OperationFailedList.Count, OperationFailedList.Count));
         }
+
+        #endregion 第七部分：数据操作与业务逻辑
     }
 }

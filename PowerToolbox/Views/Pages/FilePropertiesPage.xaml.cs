@@ -31,6 +31,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class FilePropertiesPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string ArchiveString = ResourceService.FilePropertiesResource.GetString("Archive");
         private readonly string CreateDateString = ResourceService.FilePropertiesResource.GetString("CreateDate");
         private readonly string DragOverContentString = ResourceService.FilePropertiesResource.GetString("DragOverContent");
@@ -44,9 +46,13 @@ namespace PowerToolbox.Views.Pages
         private readonly string TotalString = ResourceService.FilePropertiesResource.GetString("Total");
         private readonly object filePropertiesLock = new();
 
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
+
         private bool _isReadOnlyChecked;
 
-        internal bool IsReadOnlyChecked
+        private bool IsReadOnlyChecked
         {
             get { return _isReadOnlyChecked; }
 
@@ -62,7 +68,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isArchiveChecked;
 
-        internal bool IsArchiveChecked
+        private bool IsArchiveChecked
         {
             get { return _isArchiveChecked; }
 
@@ -78,7 +84,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isCreateDateChecked;
 
-        internal bool IsCreateDateChecked
+        private bool IsCreateDateChecked
         {
             get { return _isCreateDateChecked; }
 
@@ -94,7 +100,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isHideChecked;
 
-        internal bool IsHideChecked
+        private bool IsHideChecked
         {
             get { return _isHideChecked; }
 
@@ -110,7 +116,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isSystemChecked;
 
-        internal bool IsSystemChecked
+        private bool IsSystemChecked
         {
             get { return _isSystemChecked; }
 
@@ -126,7 +132,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isModifyDateChecked;
 
-        internal bool IsModifyDateChecked
+        private bool IsModifyDateChecked
         {
             get { return _isModifyDateChecked; }
 
@@ -146,7 +152,7 @@ namespace PowerToolbox.Views.Pages
         {
             get { return _isModifyingNow; }
 
-            set
+            private set
             {
                 if (!Equals(_isModifyingNow, value))
                 {
@@ -158,7 +164,7 @@ namespace PowerToolbox.Views.Pages
 
         private DateTimeOffset _createDate = DateTimeOffset.Now;
 
-        internal DateTimeOffset CreateDate
+        private DateTimeOffset CreateDate
         {
             get { return _createDate; }
 
@@ -174,7 +180,7 @@ namespace PowerToolbox.Views.Pages
 
         private TimeSpan _createTime = DateTimeOffset.Now.TimeOfDay;
 
-        internal TimeSpan CreateTime
+        private TimeSpan CreateTime
         {
             get { return _createTime; }
 
@@ -190,7 +196,7 @@ namespace PowerToolbox.Views.Pages
 
         private DateTimeOffset _modifyDate = DateTimeOffset.Now;
 
-        internal DateTimeOffset ModifyDate
+        private DateTimeOffset ModifyDate
         {
             get { return _modifyDate; }
 
@@ -206,7 +212,7 @@ namespace PowerToolbox.Views.Pages
 
         private TimeSpan _modifyTime = DateTimeOffset.Now.TimeOfDay;
 
-        internal TimeSpan ModifyTime
+        private TimeSpan ModifyTime
         {
             get { return _modifyTime; }
 
@@ -222,7 +228,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isOperationFailed;
 
-        internal bool IsOperationFailed
+        private bool IsOperationFailed
         {
             get { return _isOperationFailed; }
 
@@ -242,12 +248,18 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal FilePropertiesPage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 设置拖动的数据的可视表示形式
@@ -255,6 +267,7 @@ namespace PowerToolbox.Views.Pages
         protected override void OnDragOver(Microsoft.UI.Xaml.DragEventArgs args)
         {
             base.OnDragOver(args);
+
             if (IsModifyingNow)
             {
                 args.AcceptedOperation = DataPackageOperation.None;
@@ -281,133 +294,35 @@ namespace PowerToolbox.Views.Pages
         {
             base.OnDrop(args);
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
-            List<IStorageItem> storageItemList = [];
             try
             {
-                DataPackageView dataPackageView = args.DataView;
-                if (dataPackageView.Contains(StandardDataFormats.StorageItems))
+                List<string> fileList = await GetDragDropSelectedFilesAsync(args.DataView);
+
+                if (fileList is not null && fileList.Count > 0)
                 {
-                    storageItemList.AddRange(await Task.Run(async () =>
+                    List<OldAndNewPropertiesModel> filePropertiesList = await GetNeedConvertFileListAsync(fileList);
+                    if (filePropertiesList is not null && filePropertiesList.Count > 0)
                     {
-                        return await dataPackageView.GetStorageItemsAsync();
-                    }));
+                        AddToFilePropertiesPage(filePropertiesList);
+                        IsOperationFailed = false;
+                        OperationFailedList.Clear();
+                    }
                 }
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnDrop), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnDrop), 1, e);
             }
             finally
             {
+                args.Handled = true;
                 dragOperationDeferral.Complete();
             }
-
-            List<OldAndNewPropertiesModel> filePropertiesList = await Task.Run(() =>
-            {
-                List<OldAndNewPropertiesModel> filePropertiesList = [];
-
-                foreach (IStorageItem storageItem in storageItemList)
-                {
-                    try
-                    {
-                        FileInfo fileInfo = new(storageItem.Path);
-                        if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                        {
-                            continue;
-                        }
-
-                        filePropertiesList.Add(new()
-                        {
-                            FileName = storageItem.Name,
-                            FilePath = storageItem.Path,
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnDrop), 2, e);
-                        continue;
-                    }
-                }
-
-                return filePropertiesList;
-            });
-
-            AddToFilePropertiesPage(filePropertiesList);
-            IsOperationFailed = false;
-            OperationFailedList.Clear();
         }
 
-        /// <summary>
-        /// 按下 Enter 键发生的事件（预览修改内容）
-        /// 按下 Ctrl + Enter 键发生的事件（修改内容）
-        /// </summary>
-        protected override async void OnKeyDown(KeyRoutedEventArgs args)
-        {
-            base.OnKeyDown(args);
-            if (args.Key is VirtualKey.Enter)
-            {
-                args.Handled = true;
-                bool checkResult = CheckOperationState();
-                if (checkResult)
-                {
-                    IsOperationFailed = false;
-                    OperationFailedList.Clear();
-                    int count = 0;
+        #endregion 第四部分：父类虚方法重写
 
-                    lock (filePropertiesLock)
-                    {
-                        count = FilePropertiesCollection.Count;
-                    }
-
-                    if (count is 0)
-                    {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-                    }
-                    else
-                    {
-                        PreviewChangedFileAttributes();
-                    }
-                }
-                else
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
-                }
-            }
-            else if (args.Key is VirtualKey.Control && args.Key is VirtualKey.Enter)
-            {
-                args.Handled = true;
-                bool checkResult = CheckOperationState();
-                if (checkResult)
-                {
-                    IsOperationFailed = false;
-                    OperationFailedList.Clear();
-                    int count = 0;
-
-                    lock (filePropertiesLock)
-                    {
-                        count = FilePropertiesCollection.Count;
-                    }
-
-                    if (count is 0)
-                    {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-                    }
-                    else
-                    {
-                        PreviewChangedFileAttributes();
-                        await ChangeFileAttributesAsync();
-                    }
-                }
-                else
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
-                }
-            }
-        }
-
-        #endregion 第一部分：重写父类事件
-
-        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 删除当前项
@@ -416,7 +331,10 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is OldAndNewPropertiesModel oldAndNewProperties)
             {
-                FilePropertiesCollection.Remove(oldAndNewProperties);
+                lock (filePropertiesLock)
+                {
+                    FilePropertiesCollection.Remove(oldAndNewProperties);
+                }
             }
         }
 
@@ -427,14 +345,17 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is OldAndNewPropertiesModel oldAndNewProperties)
             {
-                int index = FilePropertiesCollection.IndexOf(oldAndNewProperties);
-
-                if (index >= 0 && index < FilePropertiesCollection.Count - 1)
+                lock (filePropertiesLock)
                 {
-                    OldAndNewPropertiesModel upOldAndNewProperties = FilePropertiesCollection[index];
-                    OldAndNewPropertiesModel downOldAndNewProperties = FilePropertiesCollection[index + 1];
-                    FilePropertiesCollection[index] = downOldAndNewProperties;
-                    FilePropertiesCollection[index + 1] = upOldAndNewProperties;
+                    int index = FilePropertiesCollection.IndexOf(oldAndNewProperties);
+
+                    if (index >= 0 && index < FilePropertiesCollection.Count - 1)
+                    {
+                        OldAndNewPropertiesModel upOldAndNewProperties = FilePropertiesCollection[index];
+                        OldAndNewPropertiesModel downOldAndNewProperties = FilePropertiesCollection[index + 1];
+                        FilePropertiesCollection[index] = downOldAndNewProperties;
+                        FilePropertiesCollection[index + 1] = upOldAndNewProperties;
+                    }
                 }
             }
         }
@@ -446,21 +367,44 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is OldAndNewPropertiesModel oldAndNewProperties)
             {
-                int index = FilePropertiesCollection.IndexOf(oldAndNewProperties);
-
-                if (index > 0)
+                lock (filePropertiesLock)
                 {
-                    OldAndNewPropertiesModel upOldAndNewProperties = FilePropertiesCollection[index - 1];
-                    OldAndNewPropertiesModel downOldAndNewProperties = FilePropertiesCollection[index];
-                    FilePropertiesCollection[index - 1] = downOldAndNewProperties;
-                    FilePropertiesCollection[index] = upOldAndNewProperties;
+                    int index = FilePropertiesCollection.IndexOf(oldAndNewProperties);
+
+                    if (index > 0)
+                    {
+                        OldAndNewPropertiesModel upOldAndNewProperties = FilePropertiesCollection[index - 1];
+                        OldAndNewPropertiesModel downOldAndNewProperties = FilePropertiesCollection[index];
+                        FilePropertiesCollection[index - 1] = downOldAndNewProperties;
+                        FilePropertiesCollection[index] = upOldAndNewProperties;
+                    }
                 }
             }
         }
 
-        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #endregion 第五部分：挂载事件处理
 
-        #region 第三部分：文件属性页面——挂载的事件
+        #region 第六部分：挂载事件处理
+
+        /// <summary>
+        /// 按下 Enter 键发生的事件（预览修改内容）
+        /// 按下 Ctrl + Enter 键发生的事件（修改内容）
+        /// </summary>
+        private async void OnKeyBoardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            if (sender.Key is VirtualKey.Enter)
+            {
+                if (sender.Modifiers is VirtualKeyModifiers.None)
+                {
+                    await PrepareChangeFilePropertiesAsync(IsReadOnlyChecked, IsArchiveChecked, IsCreateDateChecked, IsHideChecked, IsSystemChecked, IsModifyDateChecked, CreateDate, CreateTime, ModifyDate, ModifyTime, false);
+                }
+                else if (sender.Modifiers is VirtualKeyModifiers.Control)
+                {
+                    await PrepareChangeFilePropertiesAsync(IsReadOnlyChecked, IsArchiveChecked, IsCreateDateChecked, IsHideChecked, IsSystemChecked, IsModifyDateChecked, CreateDate, CreateTime, ModifyDate, ModifyTime, true);
+                }
+                args.Handled = true;
+            }
+        }
 
         /// <summary>
         /// 清空列表
@@ -496,31 +440,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnPreviewClicked(object sender, RoutedEventArgs args)
         {
-            bool checkResult = CheckOperationState();
-            if (checkResult)
-            {
-                IsOperationFailed = false;
-                OperationFailedList.Clear();
-                int count = 0;
-
-                lock (filePropertiesLock)
-                {
-                    count = FilePropertiesCollection.Count;
-                }
-
-                if (count is 0)
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-                }
-                else
-                {
-                    PreviewChangedFileAttributes();
-                }
-            }
-            else
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
-            }
+            await PrepareChangeFilePropertiesAsync(IsReadOnlyChecked, IsArchiveChecked, IsCreateDateChecked, IsHideChecked, IsSystemChecked, IsModifyDateChecked, CreateDate, CreateTime, ModifyDate, ModifyTime, false);
         }
 
         /// <summary>
@@ -528,32 +448,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnModifyClicked(object sender, RoutedEventArgs args)
         {
-            bool checkResult = CheckOperationState();
-            if (checkResult)
-            {
-                IsOperationFailed = false;
-                OperationFailedList.Clear();
-                int count = 0;
-
-                lock (filePropertiesLock)
-                {
-                    count = FilePropertiesCollection.Count;
-                }
-
-                if (count is 0)
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-                }
-                else
-                {
-                    PreviewChangedFileAttributes();
-                    await ChangeFileAttributesAsync();
-                }
-            }
-            else
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
-            }
+            await PrepareChangeFilePropertiesAsync(IsReadOnlyChecked, IsArchiveChecked, IsCreateDateChecked, IsHideChecked, IsSystemChecked, IsModifyDateChecked, CreateDate, CreateTime, ModifyDate, ModifyTime, true);
         }
 
         /// <summary>
@@ -570,38 +465,12 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
-                List<OldAndNewPropertiesModel> filePropertiesList = await Task.Run(() =>
+                List<OldAndNewPropertiesModel> filePropertiesList = await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]);
+                if (filePropertiesList is not null && filePropertiesList.Count > 0)
                 {
-                    List<OldAndNewPropertiesModel> filePropertiesList = [];
-
-                    foreach (string fileName in openFileDialog.FileNames)
-                    {
-                        try
-                        {
-                            FileInfo fileInfo = new(fileName);
-                            if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                            {
-                                continue;
-                            }
-
-                            filePropertiesList.Add(new()
-                            {
-                                FileName = fileInfo.Name,
-                                FilePath = fileInfo.FullName,
-                            });
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnSelectFileClicked), 1, e);
-                            continue;
-                        }
-                    }
-
-                    return filePropertiesList;
-                });
-
-                openFileDialog.Dispose();
-                AddToFilePropertiesPage(filePropertiesList);
+                    openFileDialog.Dispose();
+                    AddToFilePropertiesPage(filePropertiesList);
+                }
             }
             else
             {
@@ -626,58 +495,17 @@ namespace PowerToolbox.Views.Pages
                 OperationFailedList.Clear();
                 if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath))
                 {
-                    List<OldAndNewPropertiesModel> directoryNameList = [];
-                    List<OldAndNewPropertiesModel> fileNameList = [];
+                    (List<OldAndNewPropertiesModel> directoryNameList, List<OldAndNewPropertiesModel> fileNameList) = await GetFileAndDirectoryAsync(openFolderDialog.SelectedPath);
 
-                    await Task.Run(() =>
+                    if (directoryNameList is not null && directoryNameList.Count > 0)
                     {
-                        DirectoryInfo currentFolder = new(openFolderDialog.SelectedPath);
+                        AddToFilePropertiesPage(directoryNameList);
+                    }
 
-                        try
-                        {
-                            foreach (DirectoryInfo directoryInfo in currentFolder.GetDirectories())
-                            {
-                                if ((directoryInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                                {
-                                    continue;
-                                }
-
-                                directoryNameList.Add(new()
-                                {
-                                    FileName = directoryInfo.Name,
-                                    FilePath = directoryInfo.FullName
-                                });
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnSelectFolderClicked), 1, e);
-                        }
-
-                        try
-                        {
-                            foreach (FileInfo fileInfo in currentFolder.GetFiles())
-                            {
-                                if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                                {
-                                    continue;
-                                }
-
-                                fileNameList.Add(new()
-                                {
-                                    FileName = fileInfo.Name,
-                                    FilePath = fileInfo.FullName
-                                });
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnSelectFolderClicked), 2, e);
-                        }
-                    });
-
-                    AddToFilePropertiesPage(directoryNameList);
-                    AddToFilePropertiesPage(fileNameList);
+                    if (fileNameList is not null && fileNameList.Count > 0)
+                    {
+                        AddToFilePropertiesPage(fileNameList);
+                    }
                 }
 
                 openFolderDialog.Dispose();
@@ -732,7 +560,9 @@ namespace PowerToolbox.Views.Pages
             await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList));
         }
 
-        #endregion 第三部分：文件属性页面——挂载的事件
+        #endregion 第六部分：挂载事件处理
+
+        #region 第七部分：数据操作与业务逻辑
 
         /// <summary>
         /// 添加到文件属性页面
@@ -749,45 +579,72 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 检查用户是否指定了操作过程
+        /// 准备修改文件属性
         /// </summary>
-        private bool CheckOperationState()
+        private async Task PrepareChangeFilePropertiesAsync(bool isReadOnlyChecked, bool isArchiveChecked, bool isCreateDateChecked, bool isHideChecked, bool isSystemChecked, bool isModifyDateChecked, DateTimeOffset createDate, TimeSpan createTime, DateTimeOffset modifyDate, TimeSpan modifyTime, bool needChange)
         {
-            return IsReadOnlyChecked || IsArchiveChecked || IsCreateDateChecked || IsHideChecked || IsSystemChecked || IsModifyDateChecked;
+            if (isReadOnlyChecked || isArchiveChecked || isCreateDateChecked || isHideChecked || isSystemChecked || isModifyDateChecked)
+            {
+                IsOperationFailed = false;
+                OperationFailedList.Clear();
+                int count = 0;
+
+                lock (filePropertiesLock)
+                {
+                    count = FilePropertiesCollection.Count;
+                }
+
+                if (count is 0)
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
+                }
+                else
+                {
+                    PreviewChangedFileAttributes(isReadOnlyChecked, isArchiveChecked, isCreateDateChecked, isHideChecked, isSystemChecked, isModifyDateChecked);
+                    if (needChange)
+                    {
+                        await ChangeFileAttributesAsync(isReadOnlyChecked, isArchiveChecked, isCreateDateChecked, isHideChecked, isSystemChecked, isModifyDateChecked, createDate, createTime, modifyDate, modifyTime);
+                    }
+                }
+            }
+            else
+            {
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
+            }
         }
 
         /// <summary>
         /// 修改文件属性
         /// </summary>
-        private void PreviewChangedFileAttributes()
+        private void PreviewChangedFileAttributes(bool isReadOnlyChecked, bool isArchiveChecked, bool isCreateDateChecked, bool isHideChecked, bool isSystemChecked, bool isModifyDateChecked)
         {
             StringBuilder stringBuilder = new();
-            if (IsReadOnlyChecked)
+            if (isReadOnlyChecked)
             {
                 stringBuilder.Append(ReadOnlyString);
                 stringBuilder.Append(' ');
             }
-            if (IsArchiveChecked)
+            if (isArchiveChecked)
             {
                 stringBuilder.Append(ArchiveString);
                 stringBuilder.Append(' ');
             }
-            if (IsHideChecked)
+            if (isHideChecked)
             {
                 stringBuilder.Append(HideString);
                 stringBuilder.Append(' ');
             }
-            if (IsSystemChecked)
+            if (isSystemChecked)
             {
                 stringBuilder.Append(SystemString);
                 stringBuilder.Append(' ');
             }
-            if (IsCreateDateChecked)
+            if (isCreateDateChecked)
             {
                 stringBuilder.Append(CreateDateString);
                 stringBuilder.Append(' ');
             }
-            if (IsModifyDateChecked)
+            if (isModifyDateChecked)
             {
                 stringBuilder.Append(ModifyDateString);
                 stringBuilder.Append(' ');
@@ -805,62 +662,25 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 更改文件属性
         /// </summary>
-        private async Task ChangeFileAttributesAsync()
+        private async Task ChangeFileAttributesAsync(bool isReadOnlyChecked, bool isArchiveChecked, bool isCreateDateChecked, bool isHideChecked, bool isSystemChecked, bool isModifyDateChecked, DateTimeOffset createDate, TimeSpan createTime, DateTimeOffset modifyDate, TimeSpan modifyTime)
         {
             IsModifyingNow = true;
-            foreach (OldAndNewPropertiesModel oldAndNewProperties in FilePropertiesCollection)
+            lock (filePropertiesLock)
             {
-                oldAndNewProperties.IsModifyingNow = true;
-            }
-
-            List<OperationFailedModel> operationFailedList = await Task.Run(() =>
-            {
-                List<OperationFailedModel> operationFailedList = [];
-
-                lock (filePropertiesLock)
+                foreach (OldAndNewPropertiesModel oldAndNewProperties in FilePropertiesCollection)
                 {
-                    foreach (OldAndNewPropertiesModel oldAndNewPropertiesItem in FilePropertiesCollection)
-                    {
-                        if (!string.IsNullOrEmpty(oldAndNewPropertiesItem.FileName) && !string.IsNullOrEmpty(oldAndNewPropertiesItem.FilePath))
-                        {
-                            try
-                            {
-                                System.IO.FileAttributes fileAttributes = File.GetAttributes(oldAndNewPropertiesItem.FilePath);
-                                if (IsReadOnlyChecked) fileAttributes |= System.IO.FileAttributes.ReadOnly;
-                                if (IsArchiveChecked) fileAttributes |= System.IO.FileAttributes.Archive;
-                                if (IsHideChecked) fileAttributes |= System.IO.FileAttributes.Hidden;
-                                if (IsSystemChecked) fileAttributes |= System.IO.FileAttributes.System;
-                                File.SetAttributes(oldAndNewPropertiesItem.FilePath, fileAttributes);
-
-                                if (IsCreateDateChecked)
-                                {
-                                    File.SetCreationTime(oldAndNewPropertiesItem.FilePath, CreateDate.Date + CreateTime);
-                                }
-                                if (IsModifyDateChecked)
-                                {
-                                    File.SetLastWriteTime(oldAndNewPropertiesItem.FilePath, ModifyDate.Date + ModifyTime);
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                operationFailedList.Add(new()
-                                {
-                                    FileName = oldAndNewPropertiesItem.FileName,
-                                    FilePath = oldAndNewPropertiesItem.FilePath,
-                                    Exception = e
-                                });
-                            }
-                        }
-                    }
+                    oldAndNewProperties.IsModifyingNow = true;
                 }
-
-                return operationFailedList;
-            });
+            }
+            List<OperationFailedModel> operationFailedList = await GetOperationFailedListAsync(isReadOnlyChecked, isArchiveChecked, isCreateDateChecked, isHideChecked, isSystemChecked, isModifyDateChecked, createDate, createTime, modifyDate, modifyTime);
 
             IsModifyingNow = false;
-            foreach (OldAndNewPropertiesModel oldAndNewProperties in FilePropertiesCollection)
+            lock (filePropertiesLock)
             {
-                oldAndNewProperties.IsModifyingNow = false;
+                foreach (OldAndNewPropertiesModel oldAndNewProperties in FilePropertiesCollection)
+                {
+                    oldAndNewProperties.IsModifyingNow = false;
+                }
             }
             foreach (OperationFailedModel operationFailedItem in operationFailedList)
             {
@@ -877,5 +697,191 @@ namespace PowerToolbox.Views.Pages
 
             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.File, count - OperationFailedList.Count, OperationFailedList.Count));
         }
+
+        /// <summary>
+        /// 获取拖拽支持选中的文件
+        /// </summary>
+        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        {
+            if (dataPackageView is null)
+            {
+                return default;
+            }
+
+            return await Task.Run(async () =>
+            {
+                List<string> fileList = [];
+
+                try
+                {
+                    if (dataPackageView.Contains(StandardDataFormats.StorageItems))
+                    {
+                        foreach (IStorageItem storageItem in await dataPackageView.GetStorageItemsAsync())
+                        {
+                            fileList.Add(storageItem.Path);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(GetDragDropSelectedFilesAsync), 1, e);
+                }
+
+                return fileList;
+            });
+        }
+
+        /// <summary>
+        /// 获取要待转换的文件列表
+        /// </summary>
+        private async Task<List<OldAndNewPropertiesModel>> GetNeedConvertFileListAsync(List<string> fileList)
+        {
+            if (fileList is null || fileList.Count is 0)
+            {
+                return default;
+            }
+
+            return await Task.Run(() =>
+            {
+                List<OldAndNewPropertiesModel> upperAndLowerCaseList = [];
+
+                foreach (string file in fileList)
+                {
+                    try
+                    {
+                        FileInfo fileInfo = new(file);
+                        if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
+                        {
+                            continue;
+                        }
+
+                        upperAndLowerCaseList.Add(new()
+                        {
+                            FileName = Path.GetFileName(file),
+                            FilePath = file,
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(GetNeedConvertFileListAsync), 1, e);
+                        continue;
+                    }
+                }
+
+                return upperAndLowerCaseList;
+            });
+        }
+
+        /// <summary>
+        /// 获取文件夹的所有子文件夹和所有文件
+        /// </summary>
+        private async Task<(List<OldAndNewPropertiesModel>, List<OldAndNewPropertiesModel>)> GetFileAndDirectoryAsync(string folderPath)
+        {
+            if (string.IsNullOrEmpty(folderPath))
+            {
+                return ValueTuple.Create<List<OldAndNewPropertiesModel>, List<OldAndNewPropertiesModel>>([], []);
+            }
+
+            return await Task.Run(() =>
+            {
+                List<OldAndNewPropertiesModel> directoryNameList = [];
+                List<OldAndNewPropertiesModel> fileNameList = [];
+                DirectoryInfo currentFolder = new(folderPath);
+
+                try
+                {
+                    foreach (DirectoryInfo directoryInfo in currentFolder.GetDirectories())
+                    {
+                        if ((directoryInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
+                        {
+                            continue;
+                        }
+
+                        directoryNameList.Add(new()
+                        {
+                            FileName = directoryInfo.Name,
+                            FilePath = directoryInfo.FullName
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(GetFileAndDirectoryAsync), 1, e);
+                }
+
+                try
+                {
+                    foreach (FileInfo fileInfo in currentFolder.GetFiles())
+                    {
+                        if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
+                        {
+                            continue;
+                        }
+
+                        fileNameList.Add(new()
+                        {
+                            FileName = fileInfo.Name,
+                            FilePath = fileInfo.FullName
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(GetFileAndDirectoryAsync), 2, e);
+                }
+                return ValueTuple.Create(directoryNameList, fileNameList);
+            });
+        }
+
+        /// <summary>
+        /// 获取失败操作列表
+        /// </summary>
+        private async Task<List<OperationFailedModel>> GetOperationFailedListAsync(bool isReadOnlyChecked, bool isArchiveChecked, bool isCreateDateChecked, bool isHideChecked, bool isSystemChecked, bool isModifyDateChecked, DateTimeOffset createDate, TimeSpan createTime, DateTimeOffset modifyDate, TimeSpan modifyTime)
+        {
+            return await Task.Run(() =>
+            {
+                List<OperationFailedModel> operationFailedList = [];
+
+                lock (filePropertiesLock)
+                {
+                    foreach (OldAndNewPropertiesModel oldAndNewPropertiesItem in FilePropertiesCollection)
+                    {
+                        if (!string.IsNullOrEmpty(oldAndNewPropertiesItem.FileName) && !string.IsNullOrEmpty(oldAndNewPropertiesItem.FilePath))
+                        {
+                            try
+                            {
+                                System.IO.FileAttributes fileAttributes = File.GetAttributes(oldAndNewPropertiesItem.FilePath);
+                                if (isReadOnlyChecked) fileAttributes |= System.IO.FileAttributes.ReadOnly;
+                                if (isArchiveChecked) fileAttributes |= System.IO.FileAttributes.Archive;
+                                if (isHideChecked) fileAttributes |= System.IO.FileAttributes.Hidden;
+                                if (isSystemChecked) fileAttributes |= System.IO.FileAttributes.System;
+                                File.SetAttributes(oldAndNewPropertiesItem.FilePath, fileAttributes);
+
+                                if (isCreateDateChecked)
+                                {
+                                    File.SetCreationTime(oldAndNewPropertiesItem.FilePath, createDate.Date + createTime);
+                                }
+                                if (isModifyDateChecked)
+                                {
+                                    File.SetLastWriteTime(oldAndNewPropertiesItem.FilePath, modifyDate.Date + modifyTime);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                operationFailedList.Add(new()
+                                {
+                                    FileName = oldAndNewPropertiesItem.FileName,
+                                    FilePath = oldAndNewPropertiesItem.FilePath,
+                                    Exception = e
+                                });
+                            }
+                        }
+                    }
+                }
+                return operationFailedList;
+            });
+        }
+
+        #endregion 第七部分：数据操作与业务逻辑
     }
 }
