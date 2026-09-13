@@ -30,6 +30,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class FileNamePage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string AutoString = ResourceService.FileNameResource.GetString("Auto");
         private readonly string DragOverContentString = ResourceService.FileNameResource.GetString("DragOverContent");
         private readonly string ModifyingNowString = ResourceService.FileNameResource.GetString("ModifyingNow");
@@ -38,9 +40,13 @@ namespace PowerToolbox.Views.Pages
         private readonly string TotalString = ResourceService.FileNameResource.GetString("Total");
         private readonly object fileNameLock = new();
 
-        private bool _isChecked = false;
+        #endregion 第一部分：常量、资源与状态字段
 
-        internal bool IsChecked
+        #region 第二部分：属性、列表与事件
+
+        private bool _isChecked;
+
+        private bool IsChecked
         {
             get { return _isChecked; }
 
@@ -70,9 +76,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _renameRule = "<#>";
+        private string _renameRule;
 
-        internal string RenameRule
+        private string RenameRule
         {
             get { return _renameRule; }
 
@@ -86,9 +92,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _startNumber = "1";
+        private string _startNumber;
 
-        internal string StartNumber
+        private string StartNumber
         {
             get { return _startNumber; }
 
@@ -104,7 +110,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _extensionName;
 
-        internal string ExtensionName
+        private string ExtensionName
         {
             get { return _extensionName; }
 
@@ -118,9 +124,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _lookUpText = string.Empty;
+        private string _lookUpText;
 
-        internal string LookUpText
+        private string LookUpText
         {
             get { return _lookUpText; }
 
@@ -134,9 +140,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _replaceText = string.Empty;
+        private string _replaceText;
 
-        internal string ReplaceText
+        private string ReplaceText
         {
             get { return _replaceText; }
 
@@ -152,7 +158,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedNumberFormat;
 
-        internal ComboBoxItemModel SelectedNumberFormat
+        private ComboBoxItemModel SelectedNumberFormat
         {
             get { return _selectedNumberFormat; }
 
@@ -168,7 +174,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isOperationFailed;
 
-        internal bool IsOperationFailed
+        private bool IsOperationFailed
         {
             get { return _isOperationFailed; }
 
@@ -190,21 +196,19 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal FileNamePage()
         {
             InitializeComponent();
-            NumberFormatList.Add(new() { SelectedValue = "Auto", DisplayMember = AutoString });
-            NumberFormatList.Add(new() { SelectedValue = "0", DisplayMember = "0" });
-            NumberFormatList.Add(new() { SelectedValue = "00", DisplayMember = "00" });
-            NumberFormatList.Add(new() { SelectedValue = "000", DisplayMember = "000" });
-            NumberFormatList.Add(new() { SelectedValue = "0000", DisplayMember = "0000" });
-            NumberFormatList.Add(new() { SelectedValue = "00000", DisplayMember = "00000" });
-            NumberFormatList.Add(new() { SelectedValue = "000000", DisplayMember = "000000" });
-            NumberFormatList.Add(new() { SelectedValue = "0000000", DisplayMember = "0000000" });
-            SelectedNumberFormat = NumberFormatList[0];
+            InitializeData();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 设置拖动的数据的可视表示形式
@@ -212,6 +216,7 @@ namespace PowerToolbox.Views.Pages
         protected override void OnDragOver(Microsoft.UI.Xaml.DragEventArgs args)
         {
             base.OnDragOver(args);
+
             if (IsModifyingNow)
             {
                 args.AcceptedOperation = DataPackageOperation.None;
@@ -238,16 +243,19 @@ namespace PowerToolbox.Views.Pages
         {
             base.OnDrop(args);
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
-            List<IStorageItem> storageItemList = [];
             try
             {
-                DataPackageView dataPackageView = args.DataView;
-                if (dataPackageView.Contains(StandardDataFormats.StorageItems))
+                List<string> fileList = await GetDragDropSelectedFilesAsync(args.DataView);
+
+                if (fileList is not null && fileList.Count > 0)
                 {
-                    storageItemList.AddRange(await Task.Run(async () =>
+                    List<OldAndNewNameModel> fileNameList = await GetNeedConvertFileListAsync(fileList);
+                    if (fileNameList is not null && fileNameList.Count > 0)
                     {
-                        return await dataPackageView.GetStorageItemsAsync();
-                    }));
+                        AddToFileNamePage(fileNameList);
+                        IsOperationFailed = false;
+                        OperationFailedList.Clear();
+                    }
                 }
             }
             catch (Exception e)
@@ -256,115 +264,14 @@ namespace PowerToolbox.Views.Pages
             }
             finally
             {
+                args.Handled = true;
                 dragOperationDeferral.Complete();
             }
-
-            List<OldAndNewNameModel> fileNameList = await Task.Run(() =>
-            {
-                List<OldAndNewNameModel> fileNameList = [];
-
-                foreach (IStorageItem storageItem in storageItemList)
-                {
-                    try
-                    {
-                        FileInfo fileInfo = new(storageItem.Path);
-                        if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                        {
-                            continue;
-                        }
-
-                        fileNameList.Add(new()
-                        {
-                            OriginalFileName = storageItem.Name,
-                            OriginalFilePath = storageItem.Path,
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileNamePage), nameof(OnDrop), 2, e);
-                        continue;
-                    }
-                }
-
-                return fileNameList;
-            });
-
-            AddToFileNamePage(fileNameList);
-            IsOperationFailed = false;
-            OperationFailedList.Clear();
         }
 
-        /// <summary>
-        /// 按下 Enter 键发生的事件（预览修改内容）
-        /// 按下 Ctrl + Enter 键发生的事件（修改内容）
-        /// </summary>
-        protected override async void OnKeyDown(KeyRoutedEventArgs args)
-        {
-            base.OnKeyDown(args);
-            if (args.Key is VirtualKey.Enter)
-            {
-                args.Handled = true;
-                bool checkResult = CheckOperationState();
-                if (checkResult)
-                {
-                    IsOperationFailed = false;
-                    OperationFailedList.Clear();
-                    int count = 0;
+        #endregion 第四部分：父类虚方法重写
 
-                    lock (fileNameLock)
-                    {
-                        count = FileNameCollection.Count;
-                    }
-
-                    if (count is 0)
-                    {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-                    }
-                    else
-                    {
-                        PreviewChangedFileName();
-                    }
-                }
-                else
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
-                }
-            }
-            else if (args.Key is VirtualKey.Control && args.Key is VirtualKey.Enter)
-            {
-                args.Handled = true;
-                bool checkResult = CheckOperationState();
-                if (checkResult)
-                {
-                    IsOperationFailed = false;
-                    OperationFailedList.Clear();
-                    int count = 0;
-
-                    lock (fileNameLock)
-                    {
-                        count = FileNameCollection.Count;
-                    }
-
-                    if (count is 0)
-                    {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-                    }
-                    else
-                    {
-                        PreviewChangedFileName();
-                        await ChangeFileNameAsync();
-                    }
-                }
-                else
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
-                }
-            }
-        }
-
-        #endregion 第一部分：重写父类事件
-
-        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #region 第五部分：命令调用处理
 
         /// <summary>
         /// 删除当前项
@@ -373,7 +280,10 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is OldAndNewNameModel oldAndNewName)
             {
-                FileNameCollection.Remove(oldAndNewName);
+                lock (fileNameLock)
+                {
+                    FileNameCollection.Remove(oldAndNewName);
+                }
             }
         }
 
@@ -384,14 +294,17 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is OldAndNewNameModel oldAndNewName)
             {
-                int index = FileNameCollection.IndexOf(oldAndNewName);
-
-                if (index >= 0 && index < FileNameCollection.Count - 1)
+                lock (fileNameLock)
                 {
-                    OldAndNewNameModel upOldAndNewName = FileNameCollection[index];
-                    OldAndNewNameModel downOldAndNewName = FileNameCollection[index + 1];
-                    FileNameCollection[index] = downOldAndNewName;
-                    FileNameCollection[index + 1] = upOldAndNewName;
+                    int index = FileNameCollection.IndexOf(oldAndNewName);
+
+                    if (index >= 0 && index < FileNameCollection.Count - 1)
+                    {
+                        OldAndNewNameModel upOldAndNewName = FileNameCollection[index];
+                        OldAndNewNameModel downOldAndNewName = FileNameCollection[index + 1];
+                        FileNameCollection[index] = downOldAndNewName;
+                        FileNameCollection[index + 1] = upOldAndNewName;
+                    }
                 }
             }
         }
@@ -403,21 +316,44 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is OldAndNewNameModel oldAndNewName)
             {
-                int index = FileNameCollection.IndexOf(oldAndNewName);
-
-                if (index > 0)
+                lock (fileNameLock)
                 {
-                    OldAndNewNameModel upOldAndNewName = FileNameCollection[index - 1];
-                    OldAndNewNameModel downOldAndNewName = FileNameCollection[index];
-                    FileNameCollection[index - 1] = downOldAndNewName;
-                    FileNameCollection[index] = upOldAndNewName;
+                    int index = FileNameCollection.IndexOf(oldAndNewName);
+
+                    if (index > 0)
+                    {
+                        OldAndNewNameModel upOldAndNewName = FileNameCollection[index - 1];
+                        OldAndNewNameModel downOldAndNewName = FileNameCollection[index];
+                        FileNameCollection[index - 1] = downOldAndNewName;
+                        FileNameCollection[index] = upOldAndNewName;
+                    }
                 }
             }
         }
 
-        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #endregion 第五部分：命令调用处理
 
-        #region 第三部分：文件名称页面——挂载的事件
+        #region 第六部分：挂载事件处理
+
+        /// <summary>
+        /// 按下 Enter 键发生的事件（预览修改内容）
+        /// 按下 Ctrl + Enter 键发生的事件（修改内容）
+        /// </summary>
+        private async void OnKeyBoardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            if (sender.Key is VirtualKey.Enter)
+            {
+                if (sender.Modifiers is VirtualKeyModifiers.None)
+                {
+                    await PrepareChangeFileNameAsync(RenameRule, StartNumber, IsChecked, LookUpText, ReplaceText, ExtensionName, false);
+                }
+                else if (sender.Modifiers is VirtualKeyModifiers.Control)
+                {
+                    await PrepareChangeFileNameAsync(RenameRule, StartNumber, IsChecked, LookUpText, ReplaceText, ExtensionName, true);
+                }
+                args.Handled = true;
+            }
+        }
 
         /// <summary>
         /// 改名规则文本框中的内容发生更改时发生的事件
@@ -514,31 +450,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnPreviewClicked(object sender, RoutedEventArgs args)
         {
-            bool checkResult = CheckOperationState();
-            if (checkResult)
-            {
-                IsOperationFailed = false;
-                OperationFailedList.Clear();
-                int count = 0;
-
-                lock (fileNameLock)
-                {
-                    count = FileNameCollection.Count;
-                }
-
-                if (count is 0)
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-                }
-                else
-                {
-                    PreviewChangedFileName();
-                }
-            }
-            else
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
-            }
+            await PrepareChangeFileNameAsync(RenameRule, StartNumber, IsChecked, LookUpText, ReplaceText, ExtensionName, false);
         }
 
         /// <summary>
@@ -546,32 +458,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnModifyClicked(object sender, RoutedEventArgs args)
         {
-            bool checkResult = CheckOperationState();
-            if (checkResult)
-            {
-                IsOperationFailed = false;
-                OperationFailedList.Clear();
-                int count = 0;
-
-                lock (fileNameLock)
-                {
-                    count = FileNameCollection.Count;
-                }
-
-                if (count is 0)
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-                }
-                else
-                {
-                    PreviewChangedFileName();
-                    await ChangeFileNameAsync();
-                }
-            }
-            else
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
-            }
+            await PrepareChangeFileNameAsync(RenameRule, StartNumber, IsChecked, LookUpText, ReplaceText, ExtensionName, true);
         }
 
         /// <summary>
@@ -588,43 +475,13 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
-                List<OldAndNewNameModel> fileNameList = await Task.Run(() =>
+                List<OldAndNewNameModel> fileNameList = await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]);
+                if (fileNameList is not null && fileNameList.Count > 0)
                 {
-                    List<OldAndNewNameModel> fileNameList = [];
-
-                    foreach (string fileName in openFileDialog.FileNames)
-                    {
-                        try
-                        {
-                            FileInfo fileInfo = new(fileName);
-                            if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                            {
-                                continue;
-                            }
-
-                            fileNameList.Add(new()
-                            {
-                                OriginalFileName = fileInfo.Name,
-                                OriginalFilePath = fileInfo.FullName
-                            });
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileNamePage), nameof(OnSelectFileClicked), 1, e);
-                            continue;
-                        }
-                    }
-
-                    return fileNameList;
-                });
-
-                openFileDialog.Dispose();
-                AddToFileNamePage(fileNameList);
+                    AddToFileNamePage(fileNameList);
+                }
             }
-            else
-            {
-                openFileDialog.Dispose();
-            }
+            openFileDialog.Dispose();
         }
 
         /// <summary>
@@ -643,66 +500,20 @@ namespace PowerToolbox.Views.Pages
                 OperationFailedList.Clear();
                 if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath))
                 {
-                    List<OldAndNewNameModel> directoryNameList = [];
-                    List<OldAndNewNameModel> fileNameList = [];
+                    (List<OldAndNewNameModel> directoryNameList, List<OldAndNewNameModel> fileNameList) = await GetFileAndDirectoryAsync(openFolderDialog.SelectedPath);
 
-                    await Task.Run(() =>
+                    if (directoryNameList is not null && directoryNameList.Count > 0)
                     {
-                        DirectoryInfo currentFolder = new(openFolderDialog.SelectedPath);
+                        AddToFileNamePage(directoryNameList);
+                    }
 
-                        try
-                        {
-                            foreach (DirectoryInfo directoryInfo in currentFolder.GetDirectories())
-                            {
-                                if ((directoryInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                                {
-                                    continue;
-                                }
-
-                                directoryNameList.Add(new()
-                                {
-                                    OriginalFileName = directoryInfo.Name,
-                                    OriginalFilePath = directoryInfo.FullName
-                                });
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileNamePage), nameof(OnSelectFolderClicked), 1, e);
-                        }
-
-                        try
-                        {
-                            foreach (FileInfo fileInfo in currentFolder.GetFiles())
-                            {
-                                if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                                {
-                                    continue;
-                                }
-
-                                fileNameList.Add(new()
-                                {
-                                    OriginalFileName = fileInfo.Name,
-                                    OriginalFilePath = fileInfo.FullName
-                                });
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileNamePage), nameof(OnSelectFolderClicked), 2, e);
-                        }
-                    });
-
-                    AddToFileNamePage(directoryNameList);
-                    AddToFileNamePage(fileNameList);
+                    if (fileNameList is not null && fileNameList.Count > 0)
+                    {
+                        AddToFileNamePage(fileNameList);
+                    }
                 }
-
-                openFolderDialog.Dispose();
             }
-            else
-            {
-                openFolderDialog.Dispose();
-            }
+            openFolderDialog.Dispose();
         }
 
         /// <summary>
@@ -721,7 +532,28 @@ namespace PowerToolbox.Views.Pages
             await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList));
         }
 
-        #endregion 第三部分：文件名称页面——挂载的事件
+        #endregion 第六部分：挂载事件处理
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
+            RenameRule = "<#>";
+            StartNumber = "1";
+            LookUpText = string.Empty;
+            ReplaceText = string.Empty;
+
+            NumberFormatList.Add(new() { SelectedValue = "Auto", DisplayMember = AutoString });
+            NumberFormatList.Add(new() { SelectedValue = "0", DisplayMember = "0" });
+            NumberFormatList.Add(new() { SelectedValue = "00", DisplayMember = "00" });
+            NumberFormatList.Add(new() { SelectedValue = "000", DisplayMember = "000" });
+            NumberFormatList.Add(new() { SelectedValue = "0000", DisplayMember = "0000" });
+            NumberFormatList.Add(new() { SelectedValue = "00000", DisplayMember = "00000" });
+            NumberFormatList.Add(new() { SelectedValue = "000000", DisplayMember = "000000" });
+            NumberFormatList.Add(new() { SelectedValue = "0000000", DisplayMember = "0000000" });
+            SelectedNumberFormat = NumberFormatList[0];
+        }
 
         /// <summary>
         /// 添加到文件名称页面
@@ -738,22 +570,49 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 检查用户是否指定了操作过程
+        /// 准备修改文件名称
         /// </summary>
-        private bool CheckOperationState()
+        private async Task PrepareChangeFileNameAsync(string renameRule, string startNumber, bool isChecked, string lookUpText, string replaceText, string extensionName, bool needChange)
         {
-            return !string.IsNullOrEmpty(RenameRule) || !string.IsNullOrEmpty(StartNumber) || IsChecked || !string.IsNullOrEmpty(LookUpText) || !string.IsNullOrEmpty(ReplaceText);
+            if (!string.IsNullOrEmpty(renameRule) || !string.IsNullOrEmpty(startNumber) || isChecked || !string.IsNullOrEmpty(lookUpText) || !string.IsNullOrEmpty(replaceText))
+            {
+                IsOperationFailed = false;
+                OperationFailedList.Clear();
+                int count = 0;
+
+                lock (fileNameLock)
+                {
+                    count = FileNameCollection.Count;
+                }
+
+                if (count is 0)
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
+                }
+                else
+                {
+                    PreviewChangedFileName(startNumber, renameRule, isChecked, lookUpText, replaceText, extensionName);
+                    if (needChange)
+                    {
+                        await ChangeFileNameAsync();
+                    }
+                }
+            }
+            else
+            {
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
+            }
         }
 
         /// <summary>
         /// 预览修改后的文件名称
         /// </summary>
-        private void PreviewChangedFileName()
+        private void PreviewChangedFileName(string startNumber, string renameRule, bool isChecked, string lookUpText, string replaceText, string extensionName)
         {
             int startIndex = 0;
-            if (!string.IsNullOrEmpty(StartNumber))
+            if (!string.IsNullOrEmpty(startNumber))
             {
-                int.TryParse(StartNumber, out startIndex);
+                int.TryParse(startNumber, out startIndex);
             }
 
             lock (fileNameLock)
@@ -765,11 +624,11 @@ namespace PowerToolbox.Views.Pages
                 {
                     string tempNewFileName = oldAndNewNameItem.OriginalFileName;
                     // 根据改名规则替换
-                    if (!string.IsNullOrEmpty(RenameRule))
+                    if (!string.IsNullOrEmpty(renameRule))
                     {
                         try
                         {
-                            string tempFileName = RenameRule;
+                            string tempFileName = renameRule;
                             if (tempFileName.Contains("<#>"))
                             {
                                 string formattedIndex = string.Empty;
@@ -853,16 +712,19 @@ namespace PowerToolbox.Views.Pages
                     }
 
                     // 修改文件扩展名
-                    if (IsChecked)
+                    if (isChecked)
                     {
                         string fileName = Path.GetFileNameWithoutExtension(tempNewFileName);
-                        tempNewFileName = fileName + ExtensionName;
+                        if (!string.IsNullOrEmpty(extensionName))
+                        {
+                            tempNewFileName = fileName + extensionName;
+                        }
                     }
 
                     // 查找并替换字符串
-                    if (!string.IsNullOrEmpty(LookUpText) && tempNewFileName.Contains(LookUpText))
+                    if (!string.IsNullOrEmpty(lookUpText) && tempNewFileName.Contains(lookUpText) && !string.IsNullOrEmpty(replaceText))
                     {
-                        tempNewFileName = tempNewFileName.Replace(LookUpText, ReplaceText);
+                        tempNewFileName = tempNewFileName.Replace(lookUpText, replaceText);
                     }
 
                     oldAndNewNameItem.NewFileName = tempNewFileName;
@@ -877,12 +739,183 @@ namespace PowerToolbox.Views.Pages
         private async Task ChangeFileNameAsync()
         {
             IsModifyingNow = true;
-            foreach (OldAndNewNameModel oldAndNewName in FileNameCollection)
+            lock (fileNameLock)
             {
-                oldAndNewName.IsModifyingNow = true;
+                foreach (OldAndNewNameModel oldAndNewName in FileNameCollection)
+                {
+                    oldAndNewName.IsModifyingNow = true;
+                }
+            }
+            List<OperationFailedModel> operationFailedList = await GetOperationFailedListAsync();
+
+            IsModifyingNow = false;
+            lock (fileNameLock)
+            {
+                foreach (OldAndNewNameModel oldAndNewName in FileNameCollection)
+                {
+                    oldAndNewName.IsModifyingNow = false;
+                }
+            }
+            if (operationFailedList is not null && operationFailedList.Count > 0)
+            {
+                foreach (OperationFailedModel operationFailedItem in operationFailedList)
+                {
+                    OperationFailedList.Add(operationFailedItem);
+                }
             }
 
-            List<OperationFailedModel> operationFailedList = await Task.Run(() =>
+            int count = FileNameCollection.Count;
+            IsOperationFailed = OperationFailedList.Count is not 0;
+
+            lock (fileNameLock)
+            {
+                FileNameCollection.Clear();
+            }
+
+            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.File, count - OperationFailedList.Count, OperationFailedList.Count));
+        }
+
+        /// <summary>
+        /// 获取拖拽支持选中的文件
+        /// </summary>
+        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        {
+            if (dataPackageView is null)
+            {
+                return default;
+            }
+
+            return await Task.Run(async () =>
+            {
+                List<string> fileList = [];
+
+                try
+                {
+                    if (dataPackageView.Contains(StandardDataFormats.StorageItems))
+                    {
+                        foreach (IStorageItem storageItem in await dataPackageView.GetStorageItemsAsync())
+                        {
+                            fileList.Add(storageItem.Path);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetDragDropSelectedFilesAsync), 1, e);
+                }
+
+                return fileList;
+            });
+        }
+
+        /// <summary>
+        /// 获取要待转换的文件列表
+        /// </summary>
+        private async Task<List<OldAndNewNameModel>> GetNeedConvertFileListAsync(List<string> fileList)
+        {
+            if (fileList is null || fileList.Count is 0)
+            {
+                return default;
+            }
+
+            return await Task.Run(() =>
+            {
+                List<OldAndNewNameModel> upperAndLowerCaseList = [];
+
+                foreach (string file in fileList)
+                {
+                    try
+                    {
+                        FileInfo fileInfo = new(file);
+                        if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
+                        {
+                            continue;
+                        }
+
+                        upperAndLowerCaseList.Add(new()
+                        {
+                            OriginalFileName = Path.GetFileName(file),
+                            OriginalFilePath = file,
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetNeedConvertFileListAsync), 1, e);
+                        continue;
+                    }
+                }
+
+                return upperAndLowerCaseList;
+            });
+        }
+
+        /// <summary>
+        /// 获取文件夹的所有子文件夹和所有文件
+        /// </summary>
+        private async Task<(List<OldAndNewNameModel>, List<OldAndNewNameModel>)> GetFileAndDirectoryAsync(string folderPath)
+        {
+            if (string.IsNullOrEmpty(folderPath))
+            {
+                return ValueTuple.Create<List<OldAndNewNameModel>, List<OldAndNewNameModel>>([], []);
+            }
+
+            return await Task.Run(() =>
+            {
+                List<OldAndNewNameModel> directoryNameList = [];
+                List<OldAndNewNameModel> fileNameList = [];
+                DirectoryInfo currentFolder = new(folderPath);
+
+                try
+                {
+                    foreach (DirectoryInfo directoryInfo in currentFolder.GetDirectories())
+                    {
+                        if ((directoryInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
+                        {
+                            continue;
+                        }
+
+                        directoryNameList.Add(new()
+                        {
+                            OriginalFileName = directoryInfo.Name,
+                            OriginalFilePath = directoryInfo.FullName
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetFileAndDirectoryAsync), 1, e);
+                }
+
+                try
+                {
+                    foreach (FileInfo fileInfo in currentFolder.GetFiles())
+                    {
+                        if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
+                        {
+                            continue;
+                        }
+
+                        fileNameList.Add(new()
+                        {
+                            OriginalFileName = fileInfo.Name,
+                            OriginalFilePath = fileInfo.FullName
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetFileAndDirectoryAsync), 2, e);
+                }
+                return ValueTuple.Create(directoryNameList, fileNameList);
+            });
+        }
+
+        /// <summary>
+        /// 获取失败操作列表
+        /// </summary>
+        private async Task<List<OperationFailedModel>> GetOperationFailedListAsync()
+        {
+            return await Task.Run(() =>
             {
                 List<OperationFailedModel> operationFailedList = [];
 
@@ -927,29 +960,8 @@ namespace PowerToolbox.Views.Pages
                         }
                     }
                 }
-
                 return operationFailedList;
             });
-
-            IsModifyingNow = false;
-            foreach (OldAndNewNameModel oldAndNewName in FileNameCollection)
-            {
-                oldAndNewName.IsModifyingNow = false;
-            }
-            foreach (OperationFailedModel operationFailedItem in operationFailedList)
-            {
-                OperationFailedList.Add(operationFailedItem);
-            }
-
-            IsOperationFailed = OperationFailedList.Count is not 0;
-            int count = FileNameCollection.Count;
-
-            lock (fileNameLock)
-            {
-                FileNameCollection.Clear();
-            }
-
-            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.File, count - OperationFailedList.Count, OperationFailedList.Count));
         }
     }
 }

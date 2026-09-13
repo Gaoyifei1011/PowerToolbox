@@ -59,7 +59,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private UpperAndLowerSelectedKind _selectedKind = UpperAndLowerSelectedKind.None;
+        private UpperAndLowerSelectedKind _selectedKind;
 
         private UpperAndLowerSelectedKind SelectedKind
         {
@@ -104,6 +104,7 @@ namespace PowerToolbox.Views.Pages
         internal UpperAndLowerCasePage()
         {
             InitializeComponent();
+            InitializeData();
         }
 
         #endregion 第三部分：构造函数
@@ -312,14 +313,10 @@ namespace PowerToolbox.Views.Pages
                 List<OldAndNewNameModel> upperAndLowerCaseList = await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]);
                 if (upperAndLowerCaseList is not null && upperAndLowerCaseList.Count > 0)
                 {
-                    openFileDialog.Dispose();
                     AddToUpperAndLowerCasePage(upperAndLowerCaseList);
                 }
             }
-            else
-            {
-                openFileDialog.Dispose();
-            }
+            openFileDialog.Dispose();
         }
 
         /// <summary>
@@ -351,12 +348,8 @@ namespace PowerToolbox.Views.Pages
                         AddToUpperAndLowerCasePage(fileNameList);
                     }
                 }
-                openFolderDialog.Dispose();
             }
-            else
-            {
-                openFolderDialog.Dispose();
-            }
+            openFolderDialog.Dispose();
         }
 
         /// <summary>
@@ -384,6 +377,14 @@ namespace PowerToolbox.Views.Pages
         #endregion 第六部分：挂载事件处理
 
         #region 第七部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
+            SelectedKind = UpperAndLowerSelectedKind.None;
+        }
 
         /// <summary>
         /// 添加到大写小写页面

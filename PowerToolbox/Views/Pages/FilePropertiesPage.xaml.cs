@@ -162,7 +162,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private DateTimeOffset _createDate = DateTimeOffset.Now;
+        private DateTimeOffset _createDate;
 
         private DateTimeOffset CreateDate
         {
@@ -178,7 +178,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private TimeSpan _createTime = DateTimeOffset.Now.TimeOfDay;
+        private TimeSpan _createTime;
 
         private TimeSpan CreateTime
         {
@@ -194,7 +194,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private DateTimeOffset _modifyDate = DateTimeOffset.Now;
+        private DateTimeOffset _modifyDate;
 
         private DateTimeOffset ModifyDate
         {
@@ -210,7 +210,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private TimeSpan _modifyTime = DateTimeOffset.Now.TimeOfDay;
+        private TimeSpan _modifyTime;
 
         private TimeSpan ModifyTime
         {
@@ -255,6 +255,7 @@ namespace PowerToolbox.Views.Pages
         internal FilePropertiesPage()
         {
             InitializeComponent();
+            InitializeData();
         }
 
         #endregion 第三部分：构造函数
@@ -311,7 +312,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(OnDrop), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(OnDrop), 1, e);
             }
             finally
             {
@@ -468,14 +469,10 @@ namespace PowerToolbox.Views.Pages
                 List<OldAndNewPropertiesModel> filePropertiesList = await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]);
                 if (filePropertiesList is not null && filePropertiesList.Count > 0)
                 {
-                    openFileDialog.Dispose();
                     AddToFilePropertiesPage(filePropertiesList);
                 }
             }
-            else
-            {
-                openFileDialog.Dispose();
-            }
+            openFileDialog.Dispose();
         }
 
         /// <summary>
@@ -507,13 +504,8 @@ namespace PowerToolbox.Views.Pages
                         AddToFilePropertiesPage(fileNameList);
                     }
                 }
-
-                openFolderDialog.Dispose();
             }
-            else
-            {
-                openFolderDialog.Dispose();
-            }
+            openFolderDialog.Dispose();
         }
 
         /// <summary>
@@ -563,6 +555,17 @@ namespace PowerToolbox.Views.Pages
         #endregion 第六部分：挂载事件处理
 
         #region 第七部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
+            CreateDate = DateTimeOffset.Now;
+            CreateTime = DateTimeOffset.Now.TimeOfDay;
+            ModifyDate = DateTimeOffset.Now;
+            ModifyTime = DateTimeOffset.Now.TimeOfDay;
+        }
 
         /// <summary>
         /// 添加到文件属性页面
@@ -743,7 +746,7 @@ namespace PowerToolbox.Views.Pages
 
             return await Task.Run(() =>
             {
-                List<OldAndNewPropertiesModel> upperAndLowerCaseList = [];
+                List<OldAndNewPropertiesModel> filePropertiesList = [];
 
                 foreach (string file in fileList)
                 {
@@ -755,7 +758,7 @@ namespace PowerToolbox.Views.Pages
                             continue;
                         }
 
-                        upperAndLowerCaseList.Add(new()
+                        filePropertiesList.Add(new()
                         {
                             FileName = Path.GetFileName(file),
                             FilePath = file,
@@ -768,7 +771,7 @@ namespace PowerToolbox.Views.Pages
                     }
                 }
 
-                return upperAndLowerCaseList;
+                return filePropertiesList;
             });
         }
 
