@@ -25,11 +25,17 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class SettingsAboutPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
+
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
 
         private bool _isChecking;
 
-        internal bool IsChecking
+        private bool IsChecking
         {
             get { return _isChecking; }
 
@@ -43,7 +49,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        //项目引用信息
+        // 项目引用信息
         private ListDictionary ReferenceList { get; } = new()
         {
             { "Microsoft.Windows.SDK.BuildTools", new Uri("https://aka.ms/WinSDKProjectURL") },
@@ -55,7 +61,7 @@ namespace PowerToolbox.Views.Pages
             { "System.Runtime.WindowsRuntime", new Uri("https://github.com/dotnet/corefx") }
         };
 
-        //项目感谢者信息
+        // 项目感谢者信息
         private ListDictionary ThanksList { get; } = new()
         {
             { "AndromedaMelody", new Uri("https://github.com/AndromedaMelody") },
@@ -67,29 +73,25 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal SettingsAboutPage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：关于页面——挂载的事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：挂载事件处理
 
         /// <summary>
         /// 查看更新日志
         /// </summary>
         private void OnShowReleaseNotesClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("https://apps.microsoft.com/detail/9MV67V21H386");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnShowReleaseNotesClicked), 1, e);
-                }
-            });
+            ShowReleaseNotes();
         }
 
         /// <summary>
@@ -105,17 +107,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSystemInformationClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("ms-settings:about");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnSystemInformationClicked), 1, e);
-                }
-            });
+            OpenSystemInformation();
         }
 
         /// <summary>
@@ -131,17 +123,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnHelpTranslateClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("https://github.com/Gaoyifei1011/PowerToolbox/issues");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnHelpTranslateClicked), 1, e);
-                }
-            });
+            HelpTranslate();
         }
 
         /// <summary>
@@ -149,17 +131,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnProjectDescriptionClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("https://github.com/Gaoyifei1011/PowerToolbox");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnProjectDescriptionClicked), 1, e);
-                }
-            });
+            OpenProjectDescription();
         }
 
         /// <summary>
@@ -167,17 +139,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSendFeedbackClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("https://github.com/Gaoyifei1011/PowerToolbox/issues");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OnSendFeedbackClicked), 1, e);
-                }
-            });
+            SendFeedback();
         }
 
         /// <summary>
@@ -195,9 +157,7 @@ namespace PowerToolbox.Views.Pages
 
                     try
                     {
-                        StoreContext storeContext = StoreContext.GetDefault();
-                        IReadOnlyList<StorePackageUpdate> packageUpdateList = await storeContext.GetAppAndOptionalStorePackageUpdatesAsync();
-                        isNewest = packageUpdateList.Count is 0;
+                        isNewest = await GetIsNewestAsync();
                         IsChecking = false;
                         synchronizationContext.Post(async (_) =>
                         {
@@ -227,7 +187,109 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第一部分：关于页面——挂载的事件
+        #endregion 第四部分：挂载事件处理
+
+        #region 第五部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 查看更新日志
+        /// </summary>
+        private void ShowReleaseNotes()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("https://apps.microsoft.com/detail/9MV67V21H386");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(ShowReleaseNotes), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 查看系统信息
+        /// </summary>
+        private void OpenSystemInformation()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("ms-settings:about");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OpenSystemInformation), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 帮助翻译
+        /// </summary>
+        private void HelpTranslate()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("https://github.com/Gaoyifei1011/PowerToolbox/issues");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(HelpTranslate), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 打开项目主页
+        /// </summary>
+        private void OpenProjectDescription()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("https://github.com/Gaoyifei1011/PowerToolbox");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(OpenProjectDescription), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 发送反馈
+        /// </summary>
+        private void SendFeedback()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("https://github.com/Gaoyifei1011/PowerToolbox/issues");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAboutPage), nameof(SendFeedback), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 检查应用是否是最新版本
+        /// </summary>
+        private async Task<bool> GetIsNewestAsync()
+        {
+            StoreContext storeContext = StoreContext.GetDefault();
+            IReadOnlyList<StorePackageUpdate> packageUpdateList = await storeContext.GetAppAndOptionalStorePackageUpdatesAsync();
+            return packageUpdateList.Count is 0;
+        }
 
         /// <summary>
         /// 检测网络是否已经连接
@@ -246,5 +308,7 @@ namespace PowerToolbox.Views.Pages
                 return false;
             }
         }
+
+        #endregion 第五部分：数据操作与业务逻辑
     }
 }

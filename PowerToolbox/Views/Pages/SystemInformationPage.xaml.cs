@@ -10,6 +10,7 @@ using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.PInvoke.Kernel32;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -30,7 +31,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class SystemInformationPage : Page, INotifyPropertyChanged
     {
-        private bool isInitialized;
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string AvailablePhysicalMemoryString = ResourceService.SystemInformationResource.GetString("AvailablePhysicalMemory");
         private readonly string AvailableVirtualMemoryString = ResourceService.SystemInformationResource.GetString("AvailableVirtualMemory");
         private readonly string BIOSModeString = ResourceService.SystemInformationResource.GetString("BIOSMode");
@@ -64,11 +66,16 @@ namespace PowerToolbox.Views.Pages
         private readonly string TotalVirtualMemoryString = ResourceService.SystemInformationResource.GetString("TotalVirtualMemory");
         private readonly string WindowsDirectoryString = ResourceService.SystemInformationResource.GetString("WindowsDirectory");
         private readonly string UnknownString = ResourceService.SystemInformationResource.GetString("Unknown");
+        private bool isInitialized;
         private SystemInformation systemInformation;
+
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
 
         private SystemInformationResultKind _systemInformationResultKind;
 
-        internal SystemInformationResultKind SystemInformationResultKind
+        private SystemInformationResultKind SystemInformationResultKind
         {
             get { return _systemInformationResultKind; }
 
@@ -84,7 +91,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _systemInformationFailedContent;
 
-        internal string SystemInformationFailedContent
+        private string SystemInformationFailedContent
         {
             get { return _systemInformationFailedContent; }
 
@@ -102,12 +109,18 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal SystemInformationPage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：重载父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面触发的事件
@@ -119,61 +132,13 @@ namespace PowerToolbox.Views.Pages
             if (!isInitialized)
             {
                 isInitialized = true;
-                if (SystemInformationResultKind is not SystemInformationResultKind.Loading)
-                {
-                    SystemInformationResultKind = SystemInformationResultKind.Loading;
-                    (bool result, SystemInformation gettedSystemInformation, Exception exception) = await GetSystemInformationAsync();
-
-                    if (result)
-                    {
-                        systemInformation = gettedSystemInformation;
-                        SystemInformationCollection.Clear();
-                        SystemInformationCollection.Add(new() { Item = HostNameString, Content = systemInformation.HostName });
-                        SystemInformationCollection.Add(new() { Item = OperatingSystemNameString, Content = systemInformation.OperatingSystemName });
-                        SystemInformationCollection.Add(new() { Item = OperatingSystemVersionString, Content = systemInformation.OperatingSystemVersion });
-                        SystemInformationCollection.Add(new() { Item = OperatingSystemManufacturerString, Content = systemInformation.OperatingSystemManufacturer });
-                        SystemInformationCollection.Add(new() { Item = ProductIDString, Content = systemInformation.ProductID });
-                        SystemInformationCollection.Add(new() { Item = FirstInstalledDateString, Content = systemInformation.FirstInstalledDate });
-                        SystemInformationCollection.Add(new() { Item = SystemBootTimeString, Content = systemInformation.SystemBootTime });
-                        SystemInformationCollection.Add(new() { Item = SystemManufacturerString, Content = systemInformation.SystemManufacturer });
-                        SystemInformationCollection.Add(new() { Item = SystemModelString, Content = systemInformation.SystemModel });
-                        SystemInformationCollection.Add(new() { Item = SystemArchitectureString, Content = systemInformation.SystemArchitecture });
-                        SystemInformationCollection.Add(new() { Item = SystemSKUString, Content = systemInformation.SystemSKU });
-                        SystemInformationCollection.Add(new() { Item = ProcessorString, Content = systemInformation.Processor });
-                        SystemInformationCollection.Add(new() { Item = BIOSVersionString, Content = systemInformation.BIOSVersion });
-                        SystemInformationCollection.Add(new() { Item = SMBIOSVersionString, Content = systemInformation.SMBIOSVersion });
-                        SystemInformationCollection.Add(new() { Item = EmbeddedControllerVersionString, Content = systemInformation.EmbeddedControllerVersion });
-                        SystemInformationCollection.Add(new() { Item = BIOSModeString, Content = systemInformation.BIOSMode });
-                        SystemInformationCollection.Add(new() { Item = MainboardManufacturerString, Content = systemInformation.MainboardManufacturer });
-                        SystemInformationCollection.Add(new() { Item = MainboardProductString, Content = systemInformation.MainboardProduct });
-                        SystemInformationCollection.Add(new() { Item = MainboardVersionString, Content = systemInformation.MainboardVersion });
-                        SystemInformationCollection.Add(new() { Item = WindowsDirectoryString, Content = systemInformation.WindowsDirectory });
-                        SystemInformationCollection.Add(new() { Item = SystemDirectoryString, Content = systemInformation.SystemDirectory });
-                        SystemInformationCollection.Add(new() { Item = BootDeviceString, Content = systemInformation.BootDevice });
-                        SystemInformationCollection.Add(new() { Item = RegionSettingsString, Content = systemInformation.RegionSettings });
-                        SystemInformationCollection.Add(new() { Item = TimeZoneString, Content = systemInformation.TimeZone });
-                        SystemInformationCollection.Add(new() { Item = InstalledPhysicalMemoryString, Content = systemInformation.InstalledPhysicalMemory });
-                        SystemInformationCollection.Add(new() { Item = TotalPhysicalMemoryString, Content = systemInformation.TotalPhysicalMemory });
-                        SystemInformationCollection.Add(new() { Item = AvailablePhysicalMemoryString, Content = systemInformation.AvailablePhysicalMemory });
-                        SystemInformationCollection.Add(new() { Item = TotalVirtualMemoryString, Content = systemInformation.TotalVirtualMemory });
-                        SystemInformationCollection.Add(new() { Item = AvailableVirtualMemoryString, Content = systemInformation.AvailableVirtualMemory });
-                        SystemInformationCollection.Add(new() { Item = PageFilePositionString, Content = systemInformation.PageFilePosition });
-                        SystemInformationCollection.Add(new() { Item = PageFileSizeString, Content = systemInformation.PageFileSize });
-                        SystemInformationResultKind = SystemInformationResultKind.Successfully;
-                    }
-                    else
-                    {
-                        systemInformation = null;
-                        SystemInformationFailedContent = string.Format(ErrorInformationString, string.Format("0x{0:X8}", exception.HResult), exception.Message);
-                        SystemInformationResultKind = SystemInformationResultKind.Failed;
-                    }
-                }
+                await InitializeSystemInformationAsync();
             }
         }
 
-        #endregion 第一部分：重载父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第二部分：系统信息页面——挂载的事件
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 复制系统信息
@@ -182,20 +147,12 @@ namespace PowerToolbox.Views.Pages
         {
             if (SystemInformationResultKind is SystemInformationResultKind.Successfully)
             {
-                string copySystemInformationContent = await Task.Run(() =>
+                string copySystemInformationContent = await GetSystemInformationContentAsync([.. SystemInformationCollection]);
+                if (!string.IsNullOrEmpty(copySystemInformationContent))
                 {
-                    StringBuilder systemInformationBuilder = new();
-
-                    foreach (SystemInformationModel systemInformationItem in SystemInformationCollection)
-                    {
-                        systemInformationBuilder.AppendLine(string.Format("{0}\t{1}", systemInformationItem.Item, systemInformationItem.Content));
-                    }
-
-                    return systemInformationBuilder.ToString();
-                });
-
-                bool copyResult = CopyPasteHelper.CopyToClipboard(copySystemInformationContent);
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                    bool copyResult = CopyPasteHelper.CopyToClipboard(copySystemInformationContent);
+                    await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                }
             }
         }
 
@@ -203,6 +160,34 @@ namespace PowerToolbox.Views.Pages
         /// 刷新系统信息
         /// </summary>
         private async void OnRefreshClicked(object sender, RoutedEventArgs args)
+        {
+            await InitializeSystemInformationAsync();
+        }
+
+        /// <summary>
+        /// 打开 Windows 信息
+        /// </summary>
+        private void OnWindowsInformationClicked(object sender, RoutedEventArgs args)
+        {
+            OpenWindowsInformation();
+        }
+
+        /// <summary>
+        /// 打开 Windows 版本
+        /// </summary>
+        private void OnWindowsVersionClicked(object sender, RoutedEventArgs args)
+        {
+            OpenWindowsVersion();
+        }
+
+        #endregion 第五部分：挂载事件处理
+
+        #region 第六部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化系统信息
+        /// </summary>
+        private async Task InitializeSystemInformationAsync()
         {
             if (SystemInformationResultKind is not SystemInformationResultKind.Loading)
             {
@@ -256,47 +241,8 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 打开 Windows 信息
-        /// </summary>
-        private void OnWindowsInformationClicked(object sender, RoutedEventArgs args)
-        {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("ms-settings:about");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SystemInformationPage), nameof(OnWindowsInformationClicked), 2, e);
-                }
-            });
-        }
-
-        /// <summary>
-        /// 打开 Windows 版本
-        /// </summary>
-        private void OnWindowsVersionClicked(object sender, RoutedEventArgs args)
-        {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("winver.exe");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SystemInformationPage), nameof(OnWindowsVersionClicked), 2, e);
-                }
-            });
-        }
-
-        #endregion 第二部分：系统信息页面——挂载的事件
-
-        /// <summary>
         /// 获取系统信息
         /// </summary>
-        /// <returns></returns>
         private async Task<(bool, SystemInformation, Exception)> GetSystemInformationAsync()
         {
             return await Task.Run(() =>
@@ -523,6 +469,65 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 获取系统信息文本内容
+        /// </summary>
+        private async Task<string> GetSystemInformationContentAsync(List<SystemInformationModel> systemInformationList)
+        {
+            if (systemInformationList is null || systemInformationList.Count is 0)
+            {
+                return default;
+            }
+
+            return await Task.Run(() =>
+            {
+                StringBuilder systemInformationBuilder = new();
+
+                foreach (SystemInformationModel systemInformationItem in systemInformationList)
+                {
+                    systemInformationBuilder.AppendLine(string.Format("{0}\t{1}", systemInformationItem.Item, systemInformationItem.Content));
+                }
+
+                return systemInformationBuilder.ToString();
+            });
+        }
+
+        /// <summary>
+        /// 打开 Windows 信息
+        /// </summary>
+        private void OpenWindowsInformation()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("ms-settings:about");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SystemInformationPage), nameof(OpenWindowsInformation), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 打开 Windows 版本
+        /// </summary>
+        private void OpenWindowsVersion()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("winver.exe");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SystemInformationPage), nameof(OpenWindowsVersion), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
         /// 获取加载系统信息是否成功
         /// </summary>
         private Visibility GetSystemInformationSuccessfullyVisibility(SystemInformationResultKind systemInformationResultKind, bool isSuccessfully)
@@ -537,5 +542,7 @@ namespace PowerToolbox.Views.Pages
         {
             return Equals(systemInformationResultKind, comparedSystemInformationResultKind) ? Visibility.Visible : Visibility.Collapsed;
         }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }

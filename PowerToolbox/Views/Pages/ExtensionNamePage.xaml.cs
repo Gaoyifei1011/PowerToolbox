@@ -679,11 +679,14 @@ namespace PowerToolbox.Views.Pages
                             continue;
                         }
 
-                        extensionNameList.Add(new()
+                        if ((fileInfo.Attributes & System.IO.FileAttributes.Directory) is 0)
                         {
-                            OriginalFileName = Path.GetFileName(file),
-                            OriginalFilePath = file,
-                        });
+                            extensionNameList.Add(new()
+                            {
+                                OriginalFileName = Path.GetFileName(file),
+                                OriginalFilePath = file,
+                            });
+                        }
                     }
                     catch (Exception e)
                     {

@@ -801,7 +801,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetDragDropSelectedFilesAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileNamePage), nameof(GetDragDropSelectedFilesAsync), 1, e);
                 }
 
                 return fileList;
@@ -820,7 +820,7 @@ namespace PowerToolbox.Views.Pages
 
             return await Task.Run(() =>
             {
-                List<OldAndNewNameModel> upperAndLowerCaseList = [];
+                List<OldAndNewNameModel> fileNameList = [];
 
                 foreach (string file in fileList)
                 {
@@ -832,7 +832,7 @@ namespace PowerToolbox.Views.Pages
                             continue;
                         }
 
-                        upperAndLowerCaseList.Add(new()
+                        fileNameList.Add(new()
                         {
                             OriginalFileName = Path.GetFileName(file),
                             OriginalFilePath = file,
@@ -840,12 +840,12 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetNeedConvertFileListAsync), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileNamePage), nameof(GetNeedConvertFileListAsync), 1, e);
                         continue;
                     }
                 }
 
-                return upperAndLowerCaseList;
+                return fileNameList;
             });
         }
 
@@ -883,7 +883,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetFileAndDirectoryAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileNamePage), nameof(GetFileAndDirectoryAsync), 1, e);
                 }
 
                 try
@@ -904,7 +904,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetFileAndDirectoryAsync), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileNamePage), nameof(GetFileAndDirectoryAsync), 2, e);
                 }
                 return ValueTuple.Create(directoryNameList, fileNameList);
             });

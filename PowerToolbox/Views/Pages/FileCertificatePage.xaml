@@ -9,8 +9,13 @@
     xmlns:model="using:PowerToolbox.Models"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
     AllowDrop="True"
+    KeyboardAcceleratorPlacementMode="Hidden"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
+
+    <Page.KeyboardAccelerators>
+        <KeyboardAccelerator Key="Enter" Invoked="{x:Bind OnKeyBoardAcceleratorInvoked}" />
+    </Page.KeyboardAccelerators>
 
     <Page.Resources>
         <ResourceDictionary>

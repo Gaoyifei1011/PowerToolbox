@@ -50,7 +50,6 @@ namespace PowerToolbox.Views.Pages
         private readonly Guid OutstandingPerformance = new("E9A42B02-D5DF-448D-AA00-03F14749EB61");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly string[] extensionsArray = [".avif", ".bmp", ".dib", ".gif", ".heic", ".heif", ".hif", ".ico", ".jfif", ".jpe", ".jpeg", ".jpg", ".jxl", ".jxr", ".png", ".tga", ".thumb", ".tif", ".tiff", ".webp"];
-        private bool isInitialized;
         private AdvancedSystemOptionsPage advancedSystemOptionsPage;
 
         #endregion 第一部分：常量、资源与状态字段
@@ -344,6 +343,7 @@ namespace PowerToolbox.Views.Pages
         internal AdvancedSystemOptionsSystemPage()
         {
             InitializeComponent();
+            InitializeData();
         }
 
         #endregion 第三部分：构造函数
@@ -362,7 +362,7 @@ namespace PowerToolbox.Views.Pages
                 advancedSystemOptionsPage = targetPage;
             }
 
-            await InitializeDataAsync();
+            await InitializeSettingsOptionsAsync();
         }
 
         #endregion 第四部分：父类虚方法重写
@@ -591,7 +591,7 @@ namespace PowerToolbox.Views.Pages
                 IsVirtualizationBasedSecurityEnabled = toggleSwitch.IsOn;
                 await SetIsVirtualizationBasedSecurityEnabledAsync(IsVirtualizationBasedSecurityEnabled);
                 IsVirtualizationBasedSecurityEnabled = await GetIsVirtualizationBasedSecurityEnabledAsync();
-                ShowNotification(false, true);
+                advancedSystemOptionsPage?.ShowNotification(false, true);
             }
         }
 
@@ -613,7 +613,7 @@ namespace PowerToolbox.Views.Pages
                 IsNICOffloadSettingsEnabled = toggleSwitch.IsOn;
                 await SetNICOffloadSettingsEnabledAsync(IsNICOffloadSettingsEnabled);
                 IsNICOffloadSettingsEnabled = await GetNICOffloadSettingsEnabledAsync();
-                ShowNotification(false, true);
+                advancedSystemOptionsPage?.ShowNotification(false, true);
             }
         }
 
@@ -693,20 +693,22 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 初始化数据
         /// </summary>
-        private async Task InitializeDataAsync()
+        private void InitializeData()
         {
-            if (!isInitialized)
-            {
-                isInitialized = true;
-                HibernationFileTypeList.Add(new() { DisplayMember = HibernationFileTypeUnknownString, SelectedValue = "HibernationFileTypeUnknown" });
-                HibernationFileTypeList.Add(new() { DisplayMember = HibernationFileTypeReducedString, SelectedValue = "HibernationFileTypeReduced" });
-                HibernationFileTypeList.Add(new() { DisplayMember = HibernationFileTypeFullString, SelectedValue = "HibernationFileTypeFull" });
-                NotifyModeList.Add(new() { DisplayMember = AlwaysNotifyString, SelectedValue = UacLevel.AlwaysNotify });
-                NotifyModeList.Add(new() { DisplayMember = NotifyString, SelectedValue = UacLevel.Notify });
-                NotifyModeList.Add(new() { DisplayMember = NotifyWithoutDimmingString, SelectedValue = UacLevel.NotifyWithoutDimming });
-                NotifyModeList.Add(new() { DisplayMember = NeverNotifyString, SelectedValue = UacLevel.NeverNotify });
-            }
+            HibernationFileTypeList.Add(new() { DisplayMember = HibernationFileTypeUnknownString, SelectedValue = "HibernationFileTypeUnknown" });
+            HibernationFileTypeList.Add(new() { DisplayMember = HibernationFileTypeReducedString, SelectedValue = "HibernationFileTypeReduced" });
+            HibernationFileTypeList.Add(new() { DisplayMember = HibernationFileTypeFullString, SelectedValue = "HibernationFileTypeFull" });
+            NotifyModeList.Add(new() { DisplayMember = AlwaysNotifyString, SelectedValue = UacLevel.AlwaysNotify });
+            NotifyModeList.Add(new() { DisplayMember = NotifyString, SelectedValue = UacLevel.Notify });
+            NotifyModeList.Add(new() { DisplayMember = NotifyWithoutDimmingString, SelectedValue = UacLevel.NotifyWithoutDimming });
+            NotifyModeList.Add(new() { DisplayMember = NeverNotifyString, SelectedValue = UacLevel.NeverNotify });
+        }
 
+        /// <summary>
+        /// 初始化选项设置
+        /// </summary>
+        private async Task InitializeSettingsOptionsAsync()
+        {
             if (RuntimeHelper.IsElevated)
             {
                 await UpdateHibernationAsync();
@@ -1741,27 +1743,6 @@ namespace PowerToolbox.Views.Pages
         private Visibility GetNotifyModeVisibility(object selectedValue, object comparedValue)
         {
             return Equals(selectedValue, comparedValue) ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        /// <summary>
-        /// 显示通知
-        /// </summary>
-        private void ShowNotification(bool isRestartExplorer, bool isRestartPC)
-        {
-            if (advancedSystemOptionsPage is not null)
-            {
-                if (isRestartExplorer)
-                {
-                    advancedSystemOptionsPage.IsRestartExplorerVisible = true;
-                }
-
-                if (isRestartPC)
-                {
-                    advancedSystemOptionsPage.IsRestartPCVisible = true;
-                }
-
-                advancedSystemOptionsPage.IsAdvancedSettingsInfoWarning = true;
-            }
         }
 
         #endregion 第六部分：数据操作与业务逻辑

@@ -32,6 +32,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class FileCertificatePage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string DragOverContentString = ResourceService.FileCertificateResource.GetString("DragOverContent");
         private readonly string ModifyingNowString = ResourceService.FileCertificateResource.GetString("ModifyingNow");
         private readonly string SelectFileString = ResourceService.FileCertificateResource.GetString("SelectFile");
@@ -39,13 +41,17 @@ namespace PowerToolbox.Views.Pages
         private readonly string TotalString = ResourceService.FileCertificateResource.GetString("Total");
         private readonly object fileCertificateLock = new();
 
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
+
         private bool _isModifyingNow = false;
 
         internal bool IsModifyingNow
         {
             get { return _isModifyingNow; }
 
-            set
+            private set
             {
                 if (!Equals(_isModifyingNow, value))
                 {
@@ -57,7 +63,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isOperationFailed;
 
-        internal bool IsOperationFailed
+        private bool IsOperationFailed
         {
             get { return _isOperationFailed; }
 
@@ -77,12 +83,18 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal FileCertificatePage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 设置拖动的数据的可视表示形式
@@ -90,6 +102,7 @@ namespace PowerToolbox.Views.Pages
         protected override void OnDragOver(Microsoft.UI.Xaml.DragEventArgs args)
         {
             base.OnDragOver(args);
+
             if (IsModifyingNow)
             {
                 args.AcceptedOperation = DataPackageOperation.None;
@@ -119,90 +132,33 @@ namespace PowerToolbox.Views.Pages
             List<IStorageItem> storageItemList = [];
             try
             {
-                DataPackageView dataPackageView = args.DataView;
-                if (dataPackageView.Contains(StandardDataFormats.StorageItems))
+                List<string> fileList = await GetDragDropSelectedFilesAsync(args.DataView);
+
+                if (fileList is not null && fileList.Count > 0)
                 {
-                    storageItemList.AddRange(await Task.Run(async () =>
+                    List<CertificateResultModel> fileCertificateList = await GetNeedConvertFileListAsync(fileList);
+                    if (fileCertificateList is not null && fileCertificateList.Count > 0)
                     {
-                        return await dataPackageView.GetStorageItemsAsync();
-                    }));
+                        AddToFileCertificatePage(fileCertificateList);
+                        IsOperationFailed = false;
+                        OperationFailedList.Clear();
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileNamePage), nameof(OnDrop), 1, e);
             }
             finally
             {
+                args.Handled = true;
                 dragOperationDeferral.Complete();
             }
-
-            List<CertificateResultModel> fileCertificateList = await Task.Run(() =>
-            {
-                List<CertificateResultModel> fileCertificateList = [];
-
-                foreach (IStorageItem storageItem in storageItemList)
-                {
-                    try
-                    {
-                        FileInfo fileInfo = new(storageItem.Path);
-                        if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                        {
-                            continue;
-                        }
-
-                        if ((fileInfo.Attributes & System.IO.FileAttributes.Directory) is 0)
-                        {
-                            fileCertificateList.Add(new()
-                            {
-                                FileName = storageItem.Name,
-                                FilePath = storageItem.Path
-                            });
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(OnDrop), 1, e);
-                        continue;
-                    }
-                }
-
-                return fileCertificateList;
-            });
-
-            AddToFileCertificatePage(fileCertificateList);
-            IsOperationFailed = false;
-            OperationFailedList.Clear();
         }
 
-        /// <summary>
-        /// 按下 Enter 键发生的事件（预览修改内容）
-        /// </summary>
-        protected override async void OnKeyDown(KeyRoutedEventArgs args)
-        {
-            base.OnKeyDown(args);
-            if (args.Key is VirtualKey.Enter)
-            {
-                args.Handled = true;
-                IsOperationFailed = false;
-                OperationFailedList.Clear();
-                int count = 0;
+        #endregion 第四部分：父类虚方法重写
 
-                lock (fileCertificateLock)
-                {
-                    count = FileCertificateCollection.Count;
-                }
-
-                if (count is 0)
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-                }
-                else
-                {
-                    await RemoveFileCertificatesAsync();
-                }
-            }
-        }
-
-        #endregion 第一部分：重写父类事件
-
-        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #region 第五部分：命令调用处理
 
         /// <summary>
         /// 删除当前项
@@ -211,13 +167,29 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is CertificateResultModel certificateResult)
             {
-                FileCertificateCollection.Remove(certificateResult);
+                lock (fileCertificateLock)
+                {
+                    FileCertificateCollection.Remove(certificateResult);
+                }
             }
         }
 
-        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #endregion 第五部分：命令调用处理
 
-        #region 第三部分：文件证书页面——挂载的事件
+        #region 第六部分：挂载事件处理
+
+        /// <summary>
+        /// 按下 Enter 键发生的事件（预览修改内容）
+        /// 按下 Ctrl + Enter 键发生的事件（修改内容）
+        /// </summary>
+        private async void OnKeyBoardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            if (sender.Key is VirtualKey.Enter)
+            {
+                await ChangeFileAsync();
+                args.Handled = true;
+            }
+        }
 
         /// <summary>
         /// 清空列表
@@ -237,23 +209,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnModifyClicked(object sender, RoutedEventArgs args)
         {
-            IsOperationFailed = false;
-            OperationFailedList.Clear();
-            int count = 0;
-
-            lock (fileCertificateLock)
-            {
-                count = FileCertificateCollection.Count;
-            }
-
-            if (count is 0)
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
-            }
-            else
-            {
-                await RemoveFileCertificatesAsync();
-            }
+            await ChangeFileAsync();
         }
 
         /// <summary>
@@ -270,46 +226,13 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
-                List<CertificateResultModel> fileCertificateList = await Task.Run(() =>
+                List<CertificateResultModel> fileCertificateList = await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]);
+                if (fileCertificateList is not null && fileCertificateList.Count > 0)
                 {
-                    List<CertificateResultModel> fileCertificateList = [];
-
-                    foreach (string fileName in openFileDialog.FileNames)
-                    {
-                        try
-                        {
-                            FileInfo fileInfo = new(fileName);
-                            if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                            {
-                                continue;
-                            }
-
-                            if ((fileInfo.Attributes & System.IO.FileAttributes.Directory) is 0)
-                            {
-                                fileCertificateList.Add(new()
-                                {
-                                    FileName = fileInfo.Name,
-                                    FilePath = fileInfo.FullName
-                                });
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(OnSelectFileClicked), 1, e);
-                            continue;
-                        }
-                    }
-
-                    return fileCertificateList;
-                });
-
-                openFileDialog.Dispose();
-                AddToFileCertificatePage(fileCertificateList);
+                    AddToFileCertificatePage(fileCertificateList);
+                }
             }
-            else
-            {
-                openFileDialog.Dispose();
-            }
+            openFileDialog.Dispose();
         }
 
         /// <summary>
@@ -329,44 +252,15 @@ namespace PowerToolbox.Views.Pages
                 OperationFailedList.Clear();
                 if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath))
                 {
-                    List<CertificateResultModel> fileNameList = await Task.Run(() =>
+                    List<CertificateResultModel> fileNameList = await GetFileAsync(openFolderDialog.SelectedPath);
+
+                    if (fileNameList is not null && fileNameList.Count > 0)
                     {
-                        List<CertificateResultModel> fileNameList = [];
-                        DirectoryInfo currentFolder = new(openFolderDialog.SelectedPath);
-
-                        try
-                        {
-                            foreach (FileInfo fileInfo in currentFolder.GetFiles())
-                            {
-                                if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
-                                {
-                                    continue;
-                                }
-
-                                fileNameList.Add(new()
-                                {
-                                    FileName = fileInfo.Name,
-                                    FilePath = fileInfo.FullName
-                                });
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(OnSelectFolderClicked), 1, e);
-                        }
-
-                        return fileNameList;
-                    });
-
-                    AddToFileCertificatePage(fileNameList);
+                        AddToFileCertificatePage(fileNameList);
+                    }
                 }
-
-                openFolderDialog.Dispose();
             }
-            else
-            {
-                openFolderDialog.Dispose();
-            }
+            openFolderDialog.Dispose();
         }
 
         /// <summary>
@@ -377,7 +271,9 @@ namespace PowerToolbox.Views.Pages
             await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList));
         }
 
-        #endregion 第三部分：文件证书页面——挂载的事件
+        #endregion 第六部分：挂载事件处理
+
+        #region 第七部分：数据操作与业务逻辑
 
         /// <summary>
         /// 添加到数字签名页面
@@ -394,17 +290,194 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 移除文件证书
+        /// 修改文件
         /// </summary>
-        private async Task RemoveFileCertificatesAsync()
+        private async Task ChangeFileAsync()
         {
-            IsModifyingNow = true;
-            foreach (CertificateResultModel certificateResult in FileCertificateCollection)
+            IsOperationFailed = false;
+            OperationFailedList.Clear();
+            int count = 0;
+
+            lock (fileCertificateLock)
             {
-                certificateResult.IsModifyingNow = true;
+                count = FileCertificateCollection.Count;
             }
 
-            List<OperationFailedModel> operationFailedList = await Task.Run(() =>
+            if (count is 0)
+            {
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
+            }
+            else
+            {
+                await RemoveFileCertificateAsync();
+            }
+        }
+
+        /// <summary>
+        /// 移除文件证书
+        /// </summary>
+        private async Task RemoveFileCertificateAsync()
+        {
+            IsModifyingNow = true;
+            lock (fileCertificateLock)
+            {
+                foreach (CertificateResultModel certificateResult in FileCertificateCollection)
+                {
+                    certificateResult.IsModifyingNow = true;
+                }
+            }
+
+            List<OperationFailedModel> operationFailedList = await GetOperationFailedListAsync();
+
+            IsModifyingNow = false;
+            lock (fileCertificateLock)
+            {
+                foreach (CertificateResultModel certificateResult in FileCertificateCollection)
+                {
+                    certificateResult.IsModifyingNow = false;
+                }
+            }
+            if (operationFailedList is not null && operationFailedList.Count > 0)
+            {
+                foreach (OperationFailedModel operationFailedItem in operationFailedList)
+                {
+                    OperationFailedList.Add(operationFailedItem);
+                }
+            }
+
+            IsOperationFailed = OperationFailedList.Count is not 0;
+            int count = FileCertificateCollection.Count;
+
+            lock (fileCertificateLock)
+            {
+                FileCertificateCollection.Clear();
+            }
+
+            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.File, count - OperationFailedList.Count, OperationFailedList.Count));
+        }
+
+        /// <summary>
+        /// 获取拖拽支持选中的文件
+        /// </summary>
+        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        {
+            if (dataPackageView is null)
+            {
+                return default;
+            }
+
+            return await Task.Run(async () =>
+            {
+                List<string> fileList = [];
+
+                try
+                {
+                    if (dataPackageView.Contains(StandardDataFormats.StorageItems))
+                    {
+                        foreach (IStorageItem storageItem in await dataPackageView.GetStorageItemsAsync())
+                        {
+                            fileList.Add(storageItem.Path);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(GetDragDropSelectedFilesAsync), 1, e);
+                }
+
+                return fileList;
+            });
+        }
+
+        /// <summary>
+        /// 获取要待转换的文件列表
+        /// </summary>
+        private async Task<List<CertificateResultModel>> GetNeedConvertFileListAsync(List<string> fileList)
+        {
+            if (fileList is null || fileList.Count is 0)
+            {
+                return default;
+            }
+
+            return await Task.Run(() =>
+            {
+                List<CertificateResultModel> fileCertificateList = [];
+
+                foreach (string file in fileList)
+                {
+                    try
+                    {
+                        FileInfo fileInfo = new(file);
+                        if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
+                        {
+                            continue;
+                        }
+
+                        if ((fileInfo.Attributes & System.IO.FileAttributes.Directory) is 0)
+                        {
+                            fileCertificateList.Add(new()
+                            {
+                                FileName = Path.GetFileName(file),
+                                FilePath = file
+                            });
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(GetNeedConvertFileListAsync), 1, e);
+                        continue;
+                    }
+                }
+
+                return fileCertificateList;
+            });
+        }
+
+        /// <summary>
+        /// 获取文件夹的所有文件
+        /// </summary>
+        private async Task<List<CertificateResultModel>> GetFileAsync(string folderPath)
+        {
+            if (string.IsNullOrEmpty(folderPath))
+            {
+                return [];
+            }
+
+            return await Task.Run(() =>
+            {
+                List<CertificateResultModel> fileCertificateList = [];
+                DirectoryInfo currentFolder = new(folderPath);
+
+                try
+                {
+                    foreach (FileInfo fileInfo in currentFolder.GetFiles())
+                    {
+                        if ((fileInfo.Attributes & System.IO.FileAttributes.Hidden) is System.IO.FileAttributes.Hidden)
+                        {
+                            continue;
+                        }
+
+                        fileCertificateList.Add(new()
+                        {
+                            FileName = fileInfo.Name,
+                            FilePath = fileInfo.FullName
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(GetFileAsync), 1, e);
+                }
+                return fileCertificateList;
+            });
+        }
+
+        /// <summary>
+        /// 获取失败操作列表
+        /// </summary>
+        private async Task<List<OperationFailedModel>> GetOperationFailedListAsync()
+        {
+            return await Task.Run(() =>
             {
                 List<OperationFailedModel> operationFailedList = [];
 
@@ -441,29 +514,10 @@ namespace PowerToolbox.Views.Pages
                         }
                     }
                 }
-
                 return operationFailedList;
             });
-
-            IsModifyingNow = false;
-            foreach (CertificateResultModel certificateResult in FileCertificateCollection)
-            {
-                certificateResult.IsModifyingNow = false;
-            }
-            foreach (OperationFailedModel operationFailedItem in operationFailedList)
-            {
-                OperationFailedList.Add(operationFailedItem);
-            }
-
-            IsOperationFailed = OperationFailedList.Count is not 0;
-            int count = FileCertificateCollection.Count;
-
-            lock (fileCertificateLock)
-            {
-                FileCertificateCollection.Clear();
-            }
-
-            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.File, count - OperationFailedList.Count, OperationFailedList.Count));
         }
+
+        #endregion 第七部分：数据操作与业务逻辑
     }
 }

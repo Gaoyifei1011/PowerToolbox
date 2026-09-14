@@ -34,12 +34,18 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class SettingsPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string AppNameString = ResourceService.SettingsResource.GetString("AppName");
         private Guid IID_ITaskbarManagerDesktopAppSupportStatics = new("CDFEFD63-E879-4134-B9A7-8283F05F9480");
 
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
+
         private SelectorBarItem _selectedItem;
 
-        internal SelectorBarItem SelectedItem
+        private SelectorBarItem SelectedItem
         {
             get { return _selectedItem; }
 
@@ -57,12 +63,18 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal SettingsPage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面触发的事件
@@ -79,9 +91,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第一部分：重写父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第二部分：设置页面——挂载的事件
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 点击选择器栏选中项发生变化时发生的事件
@@ -122,7 +134,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 导航失败时发生
+        /// 导航失败后发生的事件
         /// </summary>
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs args)
         {
@@ -169,25 +181,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnRunAsAdministratorClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    ProcessStartInfo startInfo = new()
-                    {
-                        UseShellExecute = true,
-                        WorkingDirectory = Environment.CurrentDirectory,
-                        Arguments = "--elevated",
-                        FileName = System.Windows.Forms.Application.ExecutablePath,
-                        Verb = "runas"
-                    };
-                    Process.Start(startInfo);
-                }
-                catch
-                {
-                    return;
-                }
-            });
+            RunAsAdministrator();
         }
 
         /// <summary>
@@ -195,26 +189,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnPinToDesktopClicked(object sender, RoutedEventArgs args)
         {
-            bool isCreatedSuccessfully = await Task.Run(() =>
-            {
-                try
-                {
-                    WshShell wshShell = new();
-                    WshShortcut wshShortcut = (WshShortcut)wshShell.CreateShortcut(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), string.Format(@"{0}.lnk", AppNameString)));
-                    uint aumidLength = 260;
-                    StringBuilder aumidBuilder = new((int)aumidLength);
-                    Kernel32Library.GetCurrentApplicationUserModelId(ref aumidLength, aumidBuilder);
-                    wshShortcut.TargetPath = string.Format(@"shell:AppsFolder\{0}", Convert.ToString(aumidBuilder));
-                    wshShortcut.Save();
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(OnPinToDesktopClicked), 1, e);
-                    return false;
-                }
-            });
-
+            bool isCreatedSuccessfully = await PinToDesktopAsync();
             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.Desktop, isCreatedSuccessfully));
         }
 
@@ -223,34 +198,8 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnPinToStartScreenClicked(object sender, RoutedEventArgs args)
         {
-            bool isPinnedSuccessfully = false;
-
-            try
-            {
-                IReadOnlyList<AppListEntry> appEntriesList = await Package.Current.GetAppListEntriesAsync();
-
-                if (appEntriesList[0] is AppListEntry defaultEntry)
-                {
-                    StartScreenManager startScreenManager = StartScreenManager.GetDefault();
-
-                    bool containsEntry = await startScreenManager.ContainsAppListEntryAsync(defaultEntry);
-
-                    if (!containsEntry)
-                    {
-                        await startScreenManager.RequestAddAppListEntryAsync(defaultEntry);
-                    }
-
-                    isPinnedSuccessfully = true;
-                }
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(OnPinToStartScreenClicked), 1, e);
-            }
-            finally
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.StartScreen, isPinnedSuccessfully));
-            }
+            bool isPinnedSuccessfully = await PinToStartScreenAsync();
+            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.StartScreen, isPinnedSuccessfully));
         }
 
         /// <summary>
@@ -258,39 +207,8 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnPinToTaskbarClicked(object sender, RoutedEventArgs args)
         {
-            bool isPinnedSuccessfully = false;
-
-            try
-            {
-                if (Marshal.QueryInterface(Marshal.GetIUnknownForObject(WindowsRuntimeMarshal.GetActivationFactory(typeof(TaskbarManager))), ref IID_ITaskbarManagerDesktopAppSupportStatics, out _) is 0)
-                {
-                    string feature = "com.microsoft.windows.taskbar.pin";
-                    string featureId = FeatureAccessHelper.GetFeatureId(feature);
-                    if (!string.IsNullOrEmpty(featureId))
-                    {
-                        string token = FeatureAccessHelper.GenerateTokenFromFeatureId(feature, featureId);
-                        string attestation = FeatureAccessHelper.GenerateAttestation(featureId);
-                        LimitedAccessFeatureRequestResult accessResult = LimitedAccessFeatures.TryUnlockFeature(featureId, token, attestation);
-
-                        if (accessResult.Status is LimitedAccessFeatureStatus.Available || accessResult.Status is LimitedAccessFeatureStatus.AvailableWithoutToken)
-                        {
-                            isPinnedSuccessfully = await TaskbarManager.GetDefault().RequestPinCurrentAppAsync();
-                        }
-                    }
-                    else
-                    {
-                        isPinnedSuccessfully = await TaskbarManager.GetDefault().RequestPinCurrentAppAsync();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(OnPinToTaskbarClicked), 1, e);
-            }
-            finally
-            {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.Taskbar, isPinnedSuccessfully));
-            }
+            bool isPinnedSuccessfully = await PinToTaskbarAsync();
+            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.Taskbar, isPinnedSuccessfully));
         }
 
         /// <summary>
@@ -298,39 +216,12 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAppSettingsClicked(Hyperlink sender, HyperlinkClickEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("ms-settings:appsfeatures-app");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(OnAppSettingsClicked), 1, e);
-                }
-            });
+            OpenAppSettings();
         }
 
-        /// <summary>
-        /// 疑难解答
-        /// </summary>
-        private void OnTroubleShootClicked(Hyperlink sender, HyperlinkClickEventArgs args)
-        {
-            SettingsSplitView.IsPaneOpen = false;
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("ms-settings:troubleshoot");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(OnTroubleShootClicked), 1, e);
-                }
-            });
-        }
+        #endregion 第五部分：挂载事件处理
 
-        #endregion 第二部分：设置页面——挂载的事件
+        #region 第六部分：数据操作与业务逻辑
 
         /// <summary>
         /// 页面向前导航
@@ -368,5 +259,146 @@ namespace PowerToolbox.Views.Pages
                 SettingsSplitView.IsPaneOpen = true;
             }
         }
+
+        /// <summary>
+        /// 以管理员身份运行
+        /// </summary>
+        private void RunAsAdministrator()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    ProcessStartInfo startInfo = new()
+                    {
+                        UseShellExecute = true,
+                        WorkingDirectory = Environment.CurrentDirectory,
+                        Arguments = "--elevated",
+                        FileName = System.Windows.Forms.Application.ExecutablePath,
+                        Verb = "runas"
+                    };
+                    Process.Start(startInfo);
+                }
+                catch
+                {
+                    return;
+                }
+            });
+        }
+
+        /// <summary>
+        /// 固定应用到桌面
+        /// </summary>
+        private async Task<bool> PinToDesktopAsync()
+        {
+            return await Task.Run(() =>
+            {
+                try
+                {
+                    WshShell wshShell = new();
+                    WshShortcut wshShortcut = (WshShortcut)wshShell.CreateShortcut(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), string.Format(@"{0}.lnk", AppNameString)));
+                    uint aumidLength = 260;
+                    StringBuilder aumidBuilder = new((int)aumidLength);
+                    Kernel32Library.GetCurrentApplicationUserModelId(ref aumidLength, aumidBuilder);
+                    wshShortcut.TargetPath = string.Format(@"shell:AppsFolder\{0}", Convert.ToString(aumidBuilder));
+                    wshShortcut.Save();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(PinToDesktopAsync), 1, e);
+                    return false;
+                }
+            });
+        }
+
+        /// <summary>
+        /// 将应用固定到“开始”屏幕
+        /// </summary>
+        private async Task<bool> PinToStartScreenAsync()
+        {
+            bool isPinnedSuccessfully = false;
+
+            try
+            {
+                IReadOnlyList<AppListEntry> appEntriesList = await Package.Current.GetAppListEntriesAsync();
+
+                if (appEntriesList[0] is AppListEntry defaultEntry)
+                {
+                    StartScreenManager startScreenManager = StartScreenManager.GetDefault();
+
+                    bool containsEntry = await startScreenManager.ContainsAppListEntryAsync(defaultEntry);
+
+                    if (!containsEntry)
+                    {
+                        await startScreenManager.RequestAddAppListEntryAsync(defaultEntry);
+                    }
+
+                    isPinnedSuccessfully = true;
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(PinToStartScreenAsync), 1, e);
+            }
+            return isPinnedSuccessfully;
+        }
+
+        /// <summary>
+        /// 将应用固定到任务栏
+        /// </summary>
+        private async Task<bool> PinToTaskbarAsync()
+        {
+            bool isPinnedSuccessfully = false;
+
+            try
+            {
+                if (Marshal.QueryInterface(Marshal.GetIUnknownForObject(WindowsRuntimeMarshal.GetActivationFactory(typeof(TaskbarManager))), ref IID_ITaskbarManagerDesktopAppSupportStatics, out _) is 0)
+                {
+                    string feature = "com.microsoft.windows.taskbar.pin";
+                    string featureId = FeatureAccessHelper.GetFeatureId(feature);
+                    if (!string.IsNullOrEmpty(featureId))
+                    {
+                        string token = FeatureAccessHelper.GenerateTokenFromFeatureId(feature, featureId);
+                        string attestation = FeatureAccessHelper.GenerateAttestation(featureId);
+                        LimitedAccessFeatureRequestResult accessResult = LimitedAccessFeatures.TryUnlockFeature(featureId, token, attestation);
+
+                        if (accessResult.Status is LimitedAccessFeatureStatus.Available || accessResult.Status is LimitedAccessFeatureStatus.AvailableWithoutToken)
+                        {
+                            isPinnedSuccessfully = await TaskbarManager.GetDefault().RequestPinCurrentAppAsync();
+                        }
+                    }
+                    else
+                    {
+                        isPinnedSuccessfully = await TaskbarManager.GetDefault().RequestPinCurrentAppAsync();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(PinToTaskbarAsync), 1, e);
+            }
+            return isPinnedSuccessfully;
+        }
+
+        /// <summary>
+        /// 打开应用设置
+        /// </summary>
+        private void OpenAppSettings()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("ms-settings:appsfeatures-app");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(OpenAppSettings), 1, e);
+                }
+            });
+        }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }
