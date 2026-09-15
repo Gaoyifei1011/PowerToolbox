@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Win32;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
@@ -27,6 +28,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class SettingsGeneralPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string BackdropAcrylicString = ResourceService.SettingsGeneralResource.GetString("BackdropAcrylic");
         private readonly string BackdropAcrylicBaseString = ResourceService.SettingsGeneralResource.GetString("BackdropAcrylicBase");
         private readonly string BackdropAcrylicThinString = ResourceService.SettingsGeneralResource.GetString("BackdropAcrylicThin");
@@ -39,10 +42,15 @@ namespace PowerToolbox.Views.Pages
         private readonly string ThemeDefaultString = ResourceService.SettingsGeneralResource.GetString("ThemeDefault");
         private readonly string ThemeLightAltString = ResourceService.SettingsGeneralResource.GetString("ThemeLight");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
+        private bool isInitialized;
+
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
 
         private ComboBoxItemModel _theme;
 
-        internal ComboBoxItemModel Theme
+        private ComboBoxItemModel Theme
         {
             get { return _theme; }
 
@@ -56,9 +64,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private ComboBoxItemModel _backdrop = default;
+        private ComboBoxItemModel _backdrop;
 
-        internal ComboBoxItemModel Backdrop
+        private ComboBoxItemModel Backdrop
         {
             get { return _backdrop; }
 
@@ -72,9 +80,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _alwaysShowBackdrop = AlwaysShowBackdropService.AlwaysShowBackdrop;
+        private bool _alwaysShowBackdrop;
 
-        internal bool AlwaysShowBackdrop
+        private bool AlwaysShowBackdrop
         {
             get { return _alwaysShowBackdrop; }
 
@@ -90,7 +98,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _alwaysShowBackdropEnabled;
 
-        internal bool AlwaysShowBackdropEnabled
+        private bool AlwaysShowBackdropEnabled
         {
             get { return _alwaysShowBackdropEnabled; }
 
@@ -106,7 +114,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _advancedEffectsEnabled;
 
-        internal bool AdvancedEffectsEnabled
+        private bool AdvancedEffectsEnabled
         {
             get { return _advancedEffectsEnabled; }
 
@@ -122,7 +130,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _appLanguage;
 
-        internal ComboBoxItemModel AppLanguage
+        private ComboBoxItemModel AppLanguage
         {
             get { return _appLanguage; }
 
@@ -136,9 +144,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _topMost = TopMostService.TopMost;
+        private bool _topMost;
 
-        internal bool TopMost
+        private bool TopMost
         {
             get { return _topMost; }
 
@@ -160,34 +168,37 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal SettingsGeneralPage()
         {
             InitializeComponent();
+            InitializeData();
+        }
+
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
+
+        /// <summary>
+        /// 导航到该页面后触发的事件
+        /// </summary>
+        protected override void OnNavigatedTo(NavigationEventArgs args)
+        {
+            base.OnNavigatedTo(args);
+            if (!isInitialized)
+            {
+                isInitialized = true;
+                MountSettingsEvent();
+            }
 
             AdvancedEffectsEnabled = IsAdvancedEffectsEnabled();
-            ThemeList.Add(new() { SelectedValue = ThemeService.ThemeList[0], DisplayMember = ThemeDefaultString });
-            ThemeList.Add(new() { SelectedValue = ThemeService.ThemeList[1], DisplayMember = ThemeLightAltString });
-            ThemeList.Add(new() { SelectedValue = ThemeService.ThemeList[2], DisplayMember = ThemeDarkString });
+            AlwaysShowBackdrop = AlwaysShowBackdropService.AlwaysShowBackdrop;
+            TopMost = TopMostService.TopMost;
             Theme = ThemeList.Find(item => Equals(Convert.ToString(item.SelectedValue), ThemeService.AppTheme));
-
-            BackdropList.Add(new() { SelectedValue = BackdropService.BackdropList[0], DisplayMember = BackdropDefaultString });
-            if (MicaController.IsSupported())
-            {
-                BackdropList.Add(new() { SelectedValue = BackdropService.BackdropList[1], DisplayMember = string.Format("{0} {1}", MicaString, BackdropMicaString) });
-                BackdropList.Add(new() { SelectedValue = BackdropService.BackdropList[2], DisplayMember = string.Format("{0} {1}", MicaString, BackdropMicaAltString) });
-            }
-            if (DesktopAcrylicController.IsSupported())
-            {
-                BackdropList.Add(new() { SelectedValue = BackdropService.BackdropList[3], DisplayMember = string.Format("{0} {1}", DesktopAcrylicString, BackdropAcrylicString) });
-                BackdropList.Add(new() { SelectedValue = BackdropService.BackdropList[4], DisplayMember = string.Format("{0} {1}", DesktopAcrylicString, BackdropAcrylicBaseString) });
-                BackdropList.Add(new() { SelectedValue = BackdropService.BackdropList[5], DisplayMember = string.Format("{0} {1}", DesktopAcrylicString, BackdropAcrylicThinString) });
-            }
             Backdrop = BackdropList.Find(item => Equals(Convert.ToString(item.SelectedValue), BackdropService.AppBackdrop));
-
-            foreach (KeyValuePair<string, string> languageItem in LanguageService.LanguageList)
-            {
-                LanguageCollection.Add(new() { SelectedValue = languageItem.Key, DisplayMember = languageItem.Value });
-            }
 
             foreach (ComboBoxItemModel languageItem in LanguageCollection)
             {
@@ -197,30 +208,19 @@ namespace PowerToolbox.Views.Pages
                     break;
                 }
             }
-
             AlwaysShowBackdropEnabled = IsAdvancedEffectsEnabled() && !string.Equals(Convert.ToString(Backdrop.SelectedValue), Convert.ToString(BackdropList[0].SelectedValue));
-            SystemEvents.UserPreferenceChanged += OnUserPreferenceChanged;
-            GlobalNotificationService.ApplicationExit += OnApplicationExit;
         }
 
-        #region 第一部分：设置通用选项页面——挂载的事件
+        #endregion 第四部分：父类虚方法重写
+
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 打开系统主题设置
         /// </summary>
         private void OnSystemThemeSettingsClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("ms-settings:colors");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnSystemThemeSettingsClicked), 1, e);
-                }
-            });
+            OpenSystemThemeSettings();
         }
 
         /// <summary>
@@ -256,12 +256,16 @@ namespace PowerToolbox.Views.Pages
                 }
 
                 Backdrop = BackdropList.Find(item => Equals(Convert.ToString(item.SelectedValue), BackdropService.AppBackdrop));
-                AlwaysShowBackdropEnabled = IsAdvancedEffectsEnabled() && !string.Equals(Convert.ToString(Backdrop.SelectedValue), Convert.ToString(BackdropList[0].SelectedValue));
 
-                if (Equals(Backdrop, BackdropList[0]))
+                if (Backdrop is not null)
                 {
-                    AlwaysShowBackdropService.SetAlwaysShowBackdrop(false);
-                    AlwaysShowBackdrop = false;
+                    AlwaysShowBackdropEnabled = IsAdvancedEffectsEnabled() && !string.Equals(Convert.ToString(Backdrop.SelectedValue), Convert.ToString(BackdropList[0].SelectedValue));
+
+                    if (Equals(Backdrop, BackdropList[0]))
+                    {
+                        AlwaysShowBackdropService.SetAlwaysShowBackdrop(false);
+                        AlwaysShowBackdrop = false;
+                    }
                 }
             }
         }
@@ -271,17 +275,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSystemBackdropSettingsClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("ms-settings:easeofaccess-visualeffects");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnSystemBackdropSettingsClicked), 1, e);
-                }
-            });
+            OpenSystemBackdropSettings();
         }
 
         /// <summary>
@@ -289,17 +283,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSystemLanguageSettingsClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("ms-settings:regionlanguage-languageoptions");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnSystemLanguageSettingsClicked), 1, e);
-                }
-            });
+            OpenSystemLanguageSettings();
         }
 
         /// <summary>
@@ -354,10 +338,6 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第一部分：设置通用选项页面——挂载的事件
-
-        #region 第三部分：自定义事件
-
         /// <summary>
         /// 在用户首选项发生更改时触发的事件
         /// </summary>
@@ -376,6 +356,55 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnApplicationExit()
         {
+            DismountSettingsEvent();
+        }
+
+        #endregion 第五部分：挂载事件处理
+
+        #region 第六部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
+            ThemeList.Add(new() { SelectedValue = ThemeService.ThemeList[0], DisplayMember = ThemeDefaultString });
+            ThemeList.Add(new() { SelectedValue = ThemeService.ThemeList[1], DisplayMember = ThemeLightAltString });
+            ThemeList.Add(new() { SelectedValue = ThemeService.ThemeList[2], DisplayMember = ThemeDarkString });
+
+            BackdropList.Add(new() { SelectedValue = BackdropService.BackdropList[0], DisplayMember = BackdropDefaultString });
+            if (MicaController.IsSupported())
+            {
+                BackdropList.Add(new() { SelectedValue = BackdropService.BackdropList[1], DisplayMember = string.Format("{0} {1}", MicaString, BackdropMicaString) });
+                BackdropList.Add(new() { SelectedValue = BackdropService.BackdropList[2], DisplayMember = string.Format("{0} {1}", MicaString, BackdropMicaAltString) });
+            }
+            if (DesktopAcrylicController.IsSupported())
+            {
+                BackdropList.Add(new() { SelectedValue = BackdropService.BackdropList[3], DisplayMember = string.Format("{0} {1}", DesktopAcrylicString, BackdropAcrylicString) });
+                BackdropList.Add(new() { SelectedValue = BackdropService.BackdropList[4], DisplayMember = string.Format("{0} {1}", DesktopAcrylicString, BackdropAcrylicBaseString) });
+                BackdropList.Add(new() { SelectedValue = BackdropService.BackdropList[5], DisplayMember = string.Format("{0} {1}", DesktopAcrylicString, BackdropAcrylicThinString) });
+            }
+
+            foreach (KeyValuePair<string, string> languageItem in LanguageService.LanguageList)
+            {
+                LanguageCollection.Add(new() { SelectedValue = languageItem.Key, DisplayMember = languageItem.Value });
+            }
+        }
+
+        /// <summary>
+        /// 挂载设置事件
+        /// </summary>
+        private void MountSettingsEvent()
+        {
+            SystemEvents.UserPreferenceChanged += OnUserPreferenceChanged;
+            GlobalNotificationService.ApplicationExit += OnApplicationExit;
+        }
+
+        /// <summary>
+        /// 卸载设置事件
+        /// </summary>
+        private void DismountSettingsEvent()
+        {
             try
             {
                 GlobalNotificationService.ApplicationExit -= OnApplicationExit;
@@ -383,11 +412,9 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OnApplicationExit), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(DismountSettingsEvent), 1, e);
             }
         }
-
-        #endregion 第三部分：自定义事件
 
         /// <summary>
         /// 检查是否启用系统透明度效果设置
@@ -396,5 +423,61 @@ namespace PowerToolbox.Views.Pages
         {
             return RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "EnableTransparency");
         }
+
+        /// <summary>
+        /// 打开系统主题设置
+        /// </summary>
+        private void OpenSystemThemeSettings()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("ms-settings:colors");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OpenSystemThemeSettings), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 打开系统主题色设置
+        /// </summary>
+        private void OpenSystemBackdropSettings()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("ms-settings:easeofaccess-visualeffects");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OpenSystemBackdropSettings), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 打开系统语言设置
+        /// </summary>
+        private void OpenSystemLanguageSettings()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("ms-settings:regionlanguage-languageoptions");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsGeneralPage), nameof(OpenSystemLanguageSettings), 1, e);
+                }
+            });
+        }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }

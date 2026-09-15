@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
@@ -22,9 +23,11 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class SettingsAdvancedPage : Page, INotifyPropertyChanged
     {
-        private bool _isRestarting = false;
+        #region 第一部分：属性、列表与事件
 
-        internal bool IsRestarting
+        private bool _isRestarting;
+
+        private bool IsRestarting
         {
             get { return _isRestarting; }
 
@@ -38,9 +41,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _fileShellMenu = FileShellMenuService.FileShellMenu;
+        private bool _fileShellMenu;
 
-        internal bool FileShellMenu
+        private bool FileShellMenu
         {
             get { return _fileShellMenu; }
 
@@ -56,12 +59,31 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第一部分：属性、列表与事件
+
+        #region 第二部分：构造函数
+
         internal SettingsAdvancedPage()
         {
             InitializeComponent();
         }
 
-        #region 设置高级选项页面——挂载的事件
+        #endregion 第二部分：构造函数
+
+        #region 第三部分：父类虚方法重写
+
+        /// <summary>
+        /// 导航到该页面后触发的事件
+        /// </summary>
+        protected override void OnNavigatedTo(NavigationEventArgs args)
+        {
+            base.OnNavigatedTo(args);
+            FileShellMenu = FileShellMenuService.FileShellMenu;
+        }
+
+        #endregion 第三部分：父类虚方法重写
+
+        #region 第四部分：挂载事件处理
 
         /// <summary>
         /// 重新启动资源管理器
@@ -69,7 +91,49 @@ namespace PowerToolbox.Views.Pages
         private async void OnRestartExplorerClicked(object sender, RoutedEventArgs args)
         {
             IsRestarting = true;
+            await RestartExplorerAsync();
+            IsRestarting = false;
+        }
 
+        /// <summary>
+        /// 是否开启显示文件右键菜单
+        /// </summary>
+        private void OnFileShellMenuToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch && !Equals(FileShellMenu, toggleSwitch.IsOn))
+            {
+                FileShellMenu = toggleSwitch.IsOn;
+                FileShellMenuService.SetFileShellMenu(toggleSwitch.IsOn);
+                FileShellMenu = FileShellMenuService.FileShellMenu;
+            }
+        }
+
+        /// <summary>
+        /// 打开日志文件夹
+        /// </summary>
+        private void OnOpenLogFolderClicked(object sender, RoutedEventArgs args)
+        {
+            LogService.OpenLogFolder();
+        }
+
+        /// <summary>
+        /// 清除所有日志记录
+        /// </summary>
+        private async void OnClearClicked(object sender, RoutedEventArgs args)
+        {
+            bool result = await LogService.ClearLogAsync();
+            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.LogClean, result));
+        }
+
+        #endregion 第四部分：挂载事件处理
+
+        #region 第五部分：挂载事件处理
+
+        /// <summary>
+        /// 重启资源管理器
+        /// </summary>
+        private async Task RestartExplorerAsync()
+        {
             await Task.Run(() =>
             {
                 try
@@ -111,43 +175,11 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAdvancedPage), nameof(OnRestartExplorerClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsAdvancedPage), nameof(RestartExplorerAsync), 1, e);
                 }
             });
-
-            IsRestarting = false;
         }
 
-        /// <summary>
-        /// 是否开启显示文件右键菜单
-        /// </summary>
-        private void OnFileShellMenuToggled(object sender, RoutedEventArgs args)
-        {
-            if (sender is ToggleSwitch toggleSwitch && !Equals(FileShellMenu, toggleSwitch.IsOn))
-            {
-                FileShellMenu = toggleSwitch.IsOn;
-                FileShellMenuService.SetFileShellMenu(toggleSwitch.IsOn);
-                FileShellMenu = FileShellMenuService.FileShellMenu;
-            }
-        }
-
-        /// <summary>
-        /// 打开日志文件夹
-        /// </summary>
-        private void OnOpenLogFolderClicked(object sender, RoutedEventArgs args)
-        {
-            LogService.OpenLogFolder();
-        }
-
-        /// <summary>
-        /// 清除所有日志记录
-        /// </summary>
-        private async void OnClearClicked(object sender, RoutedEventArgs args)
-        {
-            bool result = await LogService.ClearLogAsync();
-            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.LogClean, result));
-        }
-
-        #endregion 设置高级选项页面——挂载的事件
+        #endregion 第五部分：挂载事件处理
     }
 }
