@@ -39,39 +39,50 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class DownloadManagerPage : Page
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string DownloadingCountInfoString = ResourceService.DownloadManagerResource.GetString("DownloadingCountInfo");
         private readonly string FileShareString = ResourceService.DownloadManagerResource.GetString("FileShare");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly IDataTransferManagerInterop dataTransferManagerInterop = (IDataTransferManagerInterop)WindowsRuntimeMarshal.GetActivationFactory(typeof(DataTransferManager));
-        private bool isInitialized = false;
+        private bool isInitialized;
+
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
 
         private WinRTObservableCollection<DownloadModel> DownloadCollection { get; } = [];
+
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
 
         internal DownloadManagerPage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：重载父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面触发的事件
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs args)
+        protected override async void OnNavigatedTo(NavigationEventArgs args)
         {
             base.OnNavigatedTo(args);
 
             if (!isInitialized)
             {
                 isInitialized = true;
-                DownloadSchedulerService.DownloadProgress += OnDownloadProgress;
-                GlobalNotificationService.ApplicationExit += OnApplicationExit;
+                await MountDownloadEventAsync();
             }
         }
 
-        #endregion 第一部分：重载父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第一部分：ExecuteCommand 命令调用时挂载的事件
+        #region 第五部分：命令调用处理
 
         /// <summary>
         /// 继续下载当前任务
@@ -81,7 +92,7 @@ namespace PowerToolbox.Views.Pages
             if (args.Parameter is DownloadModel download && !string.IsNullOrEmpty(download.DownloadID))
             {
                 download.IsOperating = true;
-                DownloadSchedulerService.ContinueDownload(download.DownloadID);
+                ContinueDownload(download);
             }
         }
 
@@ -93,7 +104,7 @@ namespace PowerToolbox.Views.Pages
             if (args.Parameter is DownloadModel download && !string.IsNullOrEmpty(download.DownloadID))
             {
                 download.IsOperating = true;
-                DownloadSchedulerService.PauseDownload(download.DownloadID);
+                PauseDownload(download);
             }
         }
 
@@ -104,66 +115,14 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is string filePath)
             {
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        if (!string.IsNullOrEmpty(filePath))
-                        {
-                            if (File.Exists(filePath))
-                            {
-                                nint pidlList = Shell32Library.ILCreateFromPath(filePath);
-                                if (pidlList is not 0)
-                                {
-                                    Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
-                                    Shell32Library.ILFree(pidlList);
-                                }
-                            }
-                            else
-                            {
-                                string directoryPath = Path.GetDirectoryName(filePath);
-
-                                if (Directory.Exists(directoryPath))
-                                {
-                                    Process.Start(directoryPath);
-                                }
-                                else
-                                {
-                                    Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnOpenFolderExecuteRequested), 1, e);
-                    }
-                });
+                OpenFolder(filePath);
             }
         }
 
         /// <summary>
         /// 删除当前任务
         /// </summary>
-        private void OnDeleteExecuteRequested(object sender, ExecuteRequestedEventArgs args)
-        {
-            if (args.Parameter is DownloadModel download && !string.IsNullOrEmpty(download.DownloadID))
-            {
-                if (download.DownloadProgressState is DownloadProgressState.Queued || download.DownloadProgressState is DownloadProgressState.Downloading || download.DownloadProgressState is DownloadProgressState.Paused)
-                {
-                    DownloadSchedulerService.DeleteDownload(download.DownloadID);
-                }
-                else
-                {
-                    DownloadCollection.Remove(download);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 删除下载（包括文件）
-        /// </summary>
-        private async void OnDeleteWithFileExecuteRequested(object sender, ExecuteRequestedEventArgs args)
+        private async void OnDeleteExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
             if (args.Parameter is DownloadModel download && !string.IsNullOrEmpty(download.DownloadID))
             {
@@ -173,39 +132,36 @@ namespace PowerToolbox.Views.Pages
                 }
                 else if (download.DownloadProgressState is DownloadProgressState.Finished)
                 {
-                    download.IsOperating = true;
-                    (bool result, Exception exception) = await Task.Run(() =>
+                    DeleteFileDialog deleteFileDialog = new();
+                    ContentDialogResult contentDialogResult = await MainWindow.Current.ShowDialogAsync(deleteFileDialog);
+
+                    if (contentDialogResult is ContentDialogResult.Primary)
                     {
-                        // 删除文件
-                        try
+                        download.IsOperating = true;
+
+                        if (deleteFileDialog.DeleteFileSameTime)
                         {
-                            if (File.Exists(download.FilePath))
+                            bool result = await DeleteFileAsync(download.FilePath);
+
+                            if (result)
                             {
-                                FileSystem.DeleteFile(download.FilePath, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
+                                DeleteDownload(download);
                             }
-
-                            return ValueTuple.Create<bool, Exception>(true, null);
+                            else
+                            {
+                                download.IsOperating = false;
+                                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DeleteFileFailed));
+                            }
                         }
-                        catch (Exception e)
+                        else
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnDeleteWithFileExecuteRequested), 1, e);
-                            return ValueTuple.Create(false, e);
+                            DeleteDownload(download);
                         }
-                    });
-
-                    if (result)
-                    {
-                        DownloadCollection.Remove(download);
-                    }
-                    else
-                    {
-                        download.IsOperating = false;
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DeleteFileFailed));
                     }
                 }
                 else
                 {
-                    DownloadCollection.Remove(download);
+                    DeleteDownload(download);
                 }
             }
         }
@@ -222,9 +178,10 @@ namespace PowerToolbox.Views.Pages
                     try
                     {
                         List<StorageFile> fileList = [await StorageFile.GetFileFromPathAsync(filePath)];
-                        dataTransferManagerInterop.GetForWindow((nint)MainWindow.Current.AppWindow.Id.Value, new("A5CAEE9B-8708-49D1-8D36-67D25A8DA00C"), out DataTransferManager dataTransferManager);
-                        dataTransferManager.DataRequested += (sender, args) => OnDataRequested(sender, args, fileList);
-                        dataTransferManagerInterop.ShowShareUIForWindow((nint)MainWindow.Current.AppWindow.Id.Value);
+                        if (fileList is not null && fileList.Count > 0)
+                        {
+                            ShowShareUI(fileList);
+                        }
                     }
                     catch (Exception e)
                     {
@@ -245,28 +202,13 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is string filePath && File.Exists(filePath))
             {
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        StringCollection stringCollection = [filePath];
-                        DataObject data = new();
-                        data.SetData("Preferred DropEffect", true, new MemoryStream([5, 0, 0, 0]));
-                        data.SetData("Shell IDList Array", true, CreateShellIDList(stringCollection));
-                        data.SetFileDropList(stringCollection);
-                        Shell32Library.SHMultiFileProperties(data, 0);
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnFileInformationExecuteRequested), 1, e);
-                    }
-                });
+                ViewFileInformation(filePath);
             }
         }
 
-        #endregion 第一部分：ExecuteCommand 命令调用时挂载的事件
+        #endregion 第五部分：命令调用处理
 
-        #region 第二部分：下载管理页面——挂载的事件
+        #region 第六部分：挂载事件处理
 
         /// <summary>
         /// 添加任务
@@ -286,7 +228,7 @@ namespace PowerToolbox.Views.Pages
                 if (downloadItem.DownloadProgressState is DownloadProgressState.Paused)
                 {
                     downloadItem.IsOperating = true;
-                    DownloadSchedulerService.ContinueDownload(downloadItem.DownloadID);
+                    ContinueDownload(downloadItem);
                 }
             }
         }
@@ -301,7 +243,7 @@ namespace PowerToolbox.Views.Pages
                 if (downloadItem.DownloadProgressState is DownloadProgressState.Queued || downloadItem.DownloadProgressState is DownloadProgressState.Downloading)
                 {
                     downloadItem.IsOperating = true;
-                    DownloadSchedulerService.PauseDownload(downloadItem.DownloadID);
+                    PauseDownload(downloadItem);
                 }
             }
         }
@@ -315,15 +257,7 @@ namespace PowerToolbox.Views.Pages
             {
                 DownloadModel downloadItem = DownloadCollection[index];
                 downloadItem.IsOperating = true;
-
-                if (downloadItem.DownloadProgressState is DownloadProgressState.Queued || downloadItem.DownloadProgressState is DownloadProgressState.Downloading || downloadItem.DownloadProgressState is DownloadProgressState.Paused)
-                {
-                    DownloadSchedulerService.DeleteDownload(downloadItem.DownloadID);
-                }
-                else
-                {
-                    DownloadCollection.RemoveAt(index);
-                }
+                DeleteDownload(downloadItem);
             }
         }
 
@@ -332,18 +266,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnOpenFolderClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Shell32Library.SHGetKnownFolderPath(new("374DE290-123F-4565-9164-39C4925E467B"), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, 0, out string downloadFolder);
-                    Process.Start(downloadFolder);
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnOpenFolderClicked), 1, e);
-                }
-            });
+            OpenDownloadFolder();
         }
 
         /// <summary>
@@ -394,17 +317,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNetworkInternetClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("ms-settings:network-status");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnNetworkInternetClicked), 1, e);
-                }
-            });
+            OpenNetworkInternetSettings();
         }
 
         /// <summary>
@@ -415,10 +328,6 @@ namespace PowerToolbox.Views.Pages
             DownloadSplitView.IsPaneOpen = false;
             await Task.Delay(300);
         }
-
-        #endregion 第二部分：下载管理页面——挂载的事件
-
-        #region 第三部分：下载管理页面——自定义事件
 
         /// <summary>
         /// 下载状态发生改变时触发的事件
@@ -565,22 +474,6 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 应用程序即将关闭时发生的事件
-        /// </summary>
-        private void OnApplicationExit()
-        {
-            try
-            {
-                GlobalNotificationService.ApplicationExit -= OnApplicationExit;
-                DownloadSchedulerService.DownloadProgress -= OnDownloadProgress;
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnApplicationExit), 1, e);
-            }
-        }
-
-        /// <summary>
         /// 在共享操作启动时发生的事件
         /// </summary>
         private void OnDataRequested(DataTransferManager sender, DataRequestedEventArgs args, List<StorageFile> fileList)
@@ -602,7 +495,246 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第三部分：下载管理页面——自定义事件
+        /// <summary>
+        /// 应用程序即将关闭时发生的事件
+        /// </summary>
+        private void OnApplicationExit()
+        {
+            DismountDownloadEvent();
+        }
+
+        #endregion 第六部分：挂载事件处理
+
+        #region 第七部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 挂载与下载相关的事件
+        /// </summary>
+        private async Task MountDownloadEventAsync()
+        {
+            await Task.Run(() =>
+            {
+                GlobalNotificationService.ApplicationExit += OnApplicationExit;
+                DownloadSchedulerService.DownloadProgress += OnDownloadProgress;
+            });
+        }
+
+        /// <summary>
+        /// 卸载与下载相关的事件
+        /// </summary>
+        private void DismountDownloadEvent()
+        {
+            try
+            {
+                GlobalNotificationService.ApplicationExit -= OnApplicationExit;
+                DownloadSchedulerService.DownloadProgress -= OnDownloadProgress;
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(DismountDownloadEvent), 1, e);
+            }
+        }
+
+        /// <summary>
+        /// 继续下载
+        /// </summary>
+        private void ContinueDownload(DownloadModel download)
+        {
+            if (download is null)
+            {
+                return;
+            }
+
+            DownloadSchedulerService.ContinueDownload(download.DownloadID);
+        }
+
+        /// <summary>
+        /// 删除下载
+        /// </summary>
+        private void DeleteDownload(DownloadModel download)
+        {
+            if (download is null)
+            {
+                return;
+            }
+
+            if (download.DownloadProgressState is DownloadProgressState.Queued || download.DownloadProgressState is DownloadProgressState.Downloading || download.DownloadProgressState is DownloadProgressState.Paused)
+            {
+                DownloadSchedulerService.DeleteDownload(download.DownloadID);
+            }
+            else
+            {
+                DownloadCollection.Remove(download);
+            }
+        }
+
+        /// <summary>
+        /// 暂停下载
+        /// </summary>
+        private void PauseDownload(DownloadModel download)
+        {
+            if (download is null)
+            {
+                return;
+            }
+
+            DownloadSchedulerService.PauseDownload(download.DownloadID);
+        }
+
+        /// <summary>
+        /// 打开默认保存的文件夹
+        /// </summary>
+        private void OpenDownloadFolder()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Shell32Library.SHGetKnownFolderPath(new("374DE290-123F-4565-9164-39C4925E467B"), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, 0, out string downloadFolder);
+                    Process.Start(downloadFolder);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OpenDownloadFolder), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 打开网络和 Internet 设置
+        /// </summary>
+        private void OpenNetworkInternetSettings()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("ms-settings:network-status");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OpenNetworkInternetSettings), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 打开文件所在的文件夹
+        /// </summary>
+        private void OpenFolder(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return;
+            }
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(filePath))
+                    {
+                        if (File.Exists(filePath))
+                        {
+                            nint pidlList = Shell32Library.ILCreateFromPath(filePath);
+                            if (pidlList is not 0)
+                            {
+                                Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
+                                Shell32Library.ILFree(pidlList);
+                            }
+                        }
+                        else
+                        {
+                            string directoryPath = Path.GetDirectoryName(filePath);
+
+                            if (Directory.Exists(directoryPath))
+                            {
+                                Process.Start(directoryPath);
+                            }
+                            else
+                            {
+                                Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OpenFolder), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 查看文件信息
+        /// </summary>
+        private void ViewFileInformation(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return;
+            }
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    StringCollection stringCollection = [filePath];
+                    DataObject data = new();
+                    data.SetData("Preferred DropEffect", true, new MemoryStream([5, 0, 0, 0]));
+                    data.SetData("Shell IDList Array", true, CreateShellIDList(stringCollection));
+                    data.SetFileDropList(stringCollection);
+                    Shell32Library.SHMultiFileProperties(data, 0);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(ViewFileInformation), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        private async Task<bool> DeleteFileAsync(string filePath)
+        {
+            return await Task.Run(() =>
+            {
+                // 删除文件
+                try
+                {
+                    if (File.Exists(filePath))
+                    {
+                        FileSystem.DeleteFile(filePath, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
+                    }
+
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(DeleteFileAsync), 1, e);
+                    return false;
+                }
+            });
+        }
+
+        /// <summary>
+        /// 显示分享面板
+        /// </summary>
+        private void ShowShareUI(List<StorageFile> fileList)
+        {
+            if (fileList is null || fileList.Count is 0)
+            {
+                return;
+            }
+
+            if (dataTransferManagerInterop is not null)
+            {
+                dataTransferManagerInterop.GetForWindow((nint)MainWindow.Current.AppWindow.Id.Value, new("A5CAEE9B-8708-49D1-8D36-67D25A8DA00C"), out DataTransferManager dataTransferManager);
+                dataTransferManager.DataRequested += (sender, args) => OnDataRequested(sender, args, fileList);
+                dataTransferManagerInterop.ShowShareUIForWindow((nint)MainWindow.Current.AppWindow.Id.Value);
+            }
+        }
 
         private static MemoryStream CreateShellIDList(StringCollection fileNameCollection)
         {
@@ -637,5 +769,7 @@ namespace PowerToolbox.Views.Pages
 
             return memoryStream;
         }
+
+        #endregion 第七部分：数据操作与业务逻辑
     }
 }

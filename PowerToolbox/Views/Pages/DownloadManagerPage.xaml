@@ -19,7 +19,6 @@
         <class:ExecuteCommand x:Name="PauseCommand" ExecuteRequested="{x:Bind OnPauseExecuteRequested}" />
         <class:ExecuteCommand x:Name="OpenFolderCommand" ExecuteRequested="{x:Bind OnOpenFolderExecuteRequested}" />
         <class:ExecuteCommand x:Name="DeleteCommand" ExecuteRequested="{x:Bind OnDeleteExecuteRequested}" />
-        <class:ExecuteCommand x:Name="DeleteWithFileCommand" ExecuteRequested="{x:Bind OnDeleteWithFileExecuteRequested}" />
         <class:ExecuteCommand x:Name="ShareFileCommand" ExecuteRequested="{x:Bind OnShareFileExecuteRequested}" />
         <class:ExecuteCommand x:Name="FileInformationCommand" ExecuteRequested="{x:Bind OnFileInformationExecuteRequested}" />
     </Page.Resources>
@@ -527,17 +526,6 @@
                                                 CommandParameter="{x:Bind}"
                                                 Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('Delete')}"
                                                 ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DeleteToolTip')}">
-
-                                                <MenuFlyoutItem.Icon>
-                                                    <FontIcon Glyph="&#xE74D;" />
-                                                </MenuFlyoutItem.Icon>
-                                            </MenuFlyoutItem>
-
-                                            <MenuFlyoutItem
-                                                Command="{StaticResource DeleteWithFileCommand}"
-                                                CommandParameter="{x:Bind}"
-                                                Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DeleteWithFile')}"
-                                                ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('DeleteWithFileToolTip')}">
 
                                                 <MenuFlyoutItem.Icon>
                                                     <FontIcon Glyph="&#xE74D;" />

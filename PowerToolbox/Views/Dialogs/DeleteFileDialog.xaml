@@ -1,0 +1,34 @@
+﻿<ContentDialog
+    x:Class="PowerToolbox.Views.Dialogs.DeleteFileDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:enum="using:PowerToolbox.Extensions.DataType.Enums"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rootservice="using:PowerToolbox.Services.Root"
+    xmlns:window="using:PowerToolbox.Views.Windows"
+    Title="{x:Bind rootservice:ResourceService.DialogResource.GetString('DeleteFileTitle')}"
+    CloseButtonText="{x:Bind rootservice:ResourceService.DialogResource.GetString('Cancel')}"
+    DefaultButton="Primary"
+    FlowDirection="{x:Bind ((FrameworkElement)window:MainWindow.Current.Content).FlowDirection, Mode=OneWay}"
+    PrimaryButtonStyle="{ThemeResource AccentButtonStyle}"
+    PrimaryButtonText="{x:Bind rootservice:ResourceService.DialogResource.GetString('Delete')}"
+    RequestedTheme="{x:Bind ((FrameworkElement)window:MainWindow.Current.Content).RequestedTheme, Mode=OneWay}"
+    Style="{StaticResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+
+    <Grid RowSpacing="2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{x:Bind rootservice:ResourceService.DialogResource.GetString('DeleteFileContent')}" />
+
+        <CheckBox
+            Grid.Row="1"
+            MinWidth="0"
+            Content="{x:Bind rootservice:ResourceService.DialogResource.GetString('DeleteFileSameTime')}"
+            IsChecked="{x:Bind DeleteFileSameTime, Mode=TwoWay}" />
+    </Grid>
+</ContentDialog>
