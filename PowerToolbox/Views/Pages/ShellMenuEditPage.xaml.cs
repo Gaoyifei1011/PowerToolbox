@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows.Storage.Streams;
 
@@ -30,6 +31,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class ShellMenuEditPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string AllString = ResourceService.ShellMenuEditResource.GetString("All");
         private readonly string ExtensionString = ResourceService.ShellMenuEditResource.GetString("Extension");
         private readonly string IconFilterConditionString = ResourceService.ShellMenuEditResource.GetString("IconFilterCondition");
@@ -51,9 +54,13 @@ namespace PowerToolbox.Views.Pages
         private string editMenuKey;
         private int editMenuIndex;
 
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
+
         private string _menuTitleText;
 
-        internal string MenuTitleText
+        private string MenuTitleText
         {
             get { return _menuTitleText; }
 
@@ -69,7 +76,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _useIcon;
 
-        internal bool UseIcon
+        private bool UseIcon
         {
             get { return _useIcon; }
 
@@ -85,7 +92,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _useProgramIcon;
 
-        internal bool UseProgramIcon
+        private bool UseProgramIcon
         {
             get { return _useProgramIcon; }
 
@@ -101,7 +108,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _useThemeIcon;
 
-        internal bool UseThemeIcon
+        private bool UseThemeIcon
         {
             get { return _useThemeIcon; }
 
@@ -117,7 +124,7 @@ namespace PowerToolbox.Views.Pages
 
         private ImageSource _defaultIconImage;
 
-        internal ImageSource DefaultIconImage
+        private ImageSource DefaultIconImage
         {
             get { return _defaultIconImage; }
 
@@ -133,7 +140,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _defaultIconPath;
 
-        internal string DefaultIconPath
+        private string DefaultIconPath
         {
             get { return _defaultIconPath; }
 
@@ -149,7 +156,7 @@ namespace PowerToolbox.Views.Pages
 
         private ImageSource _lightThemeIconImage;
 
-        internal ImageSource LightThemeIconImage
+        private ImageSource LightThemeIconImage
         {
             get { return _lightThemeIconImage; }
 
@@ -165,7 +172,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _lightThemeIconPath;
 
-        internal string LightThemeIconPath
+        private string LightThemeIconPath
         {
             get { return _lightThemeIconPath; }
 
@@ -181,7 +188,7 @@ namespace PowerToolbox.Views.Pages
 
         private ImageSource _darkThemeIconImage;
 
-        internal ImageSource DarkThemeIconImage
+        private ImageSource DarkThemeIconImage
         {
             get { return _darkThemeIconImage; }
 
@@ -197,7 +204,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _darkThemeIconPath;
 
-        internal string DarkThemeIconPath
+        private string DarkThemeIconPath
         {
             get { return _darkThemeIconPath; }
 
@@ -213,7 +220,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _menuProgramPathText;
 
-        internal string MenuProgramPathText
+        private string MenuProgramPathText
         {
             get { return _menuProgramPathText; }
 
@@ -229,7 +236,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _menuParameterText;
 
-        internal string MenuParameterText
+        private string MenuParameterText
         {
             get { return _menuParameterText; }
 
@@ -245,7 +252,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isAlwaysRunAsAdministrator;
 
-        internal bool IsAlwaysRunAsAdministrator
+        private bool IsAlwaysRunAsAdministrator
         {
             get { return _isAlwaysRunAsAdministrator; }
 
@@ -261,7 +268,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _folderBackgroundMatch;
 
-        internal bool FolderBackgroundMatch
+        private bool FolderBackgroundMatch
         {
             get { return _folderBackgroundMatch; }
 
@@ -277,7 +284,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _folderDesktopMatch;
 
-        internal bool FolderDesktopMatch
+        private bool FolderDesktopMatch
         {
             get { return _folderDesktopMatch; }
 
@@ -293,7 +300,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _folderDirectoryMatch;
 
-        internal bool FolderDirectoryMatch
+        private bool FolderDirectoryMatch
         {
             get { return _folderDirectoryMatch; }
 
@@ -309,7 +316,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _folderDriveMatch;
 
-        internal bool FolderDriveMatch
+        private bool FolderDriveMatch
         {
             get { return _folderDriveMatch; }
 
@@ -325,7 +332,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedFileMatchRule;
 
-        internal ComboBoxItemModel SelectedFileMatchRule
+        private ComboBoxItemModel SelectedFileMatchRule
         {
             get { return _selectedFileMatchRule; }
 
@@ -341,7 +348,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _needInputMatchFormat;
 
-        internal bool NeedInputMatchFormat
+        private bool NeedInputMatchFormat
         {
             get { return _needInputMatchFormat; }
 
@@ -357,7 +364,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _menuFileMatchFormatPHText;
 
-        internal string MenuFileMatchFormatPHText
+        private string MenuFileMatchFormatPHText
         {
             get { return _menuFileMatchFormatPHText; }
 
@@ -373,7 +380,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _menuFileMatchFormatText;
 
-        internal string MenuFileMatchFormatText
+        private string MenuFileMatchFormatText
         {
             get { return _menuFileMatchFormatText; }
 
@@ -391,10 +398,249 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal ShellMenuEditPage()
         {
             InitializeComponent();
+            InitializeData();
+        }
 
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
+
+        /// <summary>
+        /// 导航到该页面触发的事件
+        /// </summary>
+        protected override void OnNavigatedTo(NavigationEventArgs args)
+        {
+            base.OnNavigatedTo(args);
+            UpdateParameter(args);
+        }
+
+        #endregion 第四部分：父类虚方法重写
+
+        #region 第五部分：挂载事件处理
+
+        /// <summary>
+        /// 保存更改
+        /// </summary>
+        private async void OnSaveClicked(object sender, RoutedEventArgs args)
+        {
+            if (await SaveCheckAsync())
+            {
+                SaveMenuInformation();
+
+                // 复制选中的图标文件到指定目录
+                MoveFileToSpecificFolder(selectedDefaultIconPath, DefaultIconPath);
+                MoveFileToSpecificFolder(selectedLightThemeIconPath, LightThemeIconPath);
+                MoveFileToSpecificFolder(selectedDarkThemeIconPath, DarkThemeIconPath);
+
+                // 更新操作时间
+                ShellMenuService.UpdateLastUpdateTime();
+                lastUpdateTime = ShellMenuService.GetLastUpdateTime();
+
+                if (MainWindow.Current.GetFrameContent() is ShellMenuPage shellMenuPage)
+                {
+                    shellMenuPage.NavigateTo(shellMenuPage.PageList[0], null, false);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 菜单标题内容发生更改时的事件
+        /// </summary>
+        private void OnTitleTextChanged(object sender, TextChangedEventArgs args)
+        {
+            MenuTitleText = (sender as Microsoft.UI.Xaml.Controls.TextBox).Text;
+        }
+
+        /// <summary>
+        /// 使用图标修改时触发的事件
+        /// </summary>
+        private void OnUseIconToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch && !Equals(UseIcon, toggleSwitch.IsOn))
+            {
+                UseIcon = toggleSwitch.IsOn;
+            }
+        }
+
+        /// <summary>
+        /// 使用应用程序图标修改时触发的事件
+        /// </summary>
+        private void OnUseProgramIconToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch && !Equals(UseProgramIcon, toggleSwitch.IsOn))
+            {
+                UseProgramIcon = toggleSwitch.IsOn;
+            }
+        }
+
+        /// <summary>
+        /// 启用主题图标按钮修改时触发的事件
+        /// </summary>
+        private void OnUseThemeIconToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch && !Equals(UseThemeIcon, toggleSwitch.IsOn))
+            {
+                UseThemeIcon = toggleSwitch.IsOn;
+            }
+        }
+
+        /// <summary>
+        /// 默认图标修改
+        /// </summary>
+        private void OnDefaultIconBrowserClicked(object sender, RoutedEventArgs args)
+        {
+            OpenFileDialog openFileDialog = new()
+            {
+                Multiselect = false,
+                Filter = IconFilterConditionString,
+                Title = SelectIconString
+            };
+            if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
+            {
+                selectedDefaultIconPath = openFileDialog.FileName;
+                DefaultIconPath = Path.Combine(ShellMenuService.ShellMenuConfigDirectory.FullName, Convert.ToString(editMenuGuid), "DefaultIcon.ico");
+                DefaultIconImage = GetIconImage(openFileDialog.FileName);
+            }
+            openFileDialog.Dispose();
+        }
+
+        /// <summary>
+        /// 浅色主题图标修改
+        /// </summary>
+        private void OnLightThemeIconBrowserClicked(object sender, RoutedEventArgs args)
+        {
+            OpenFileDialog openFileDialog = new()
+            {
+                Multiselect = false,
+                Filter = IconFilterConditionString,
+                Title = SelectIconString
+            };
+            if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
+            {
+                selectedLightThemeIconPath = openFileDialog.FileName;
+                LightThemeIconPath = Path.Combine(ShellMenuService.ShellMenuConfigDirectory.FullName, Convert.ToString(editMenuGuid), "LightThemeIcon.ico");
+                LightThemeIconImage = GetIconImage(openFileDialog.FileName);
+            }
+            openFileDialog.Dispose();
+        }
+
+        /// <summary>
+        /// 深色主题图标修改
+        /// </summary>
+        private void OnDarkThemeIconBrowserClicked(object sender, RoutedEventArgs args)
+        {
+            OpenFileDialog openFileDialog = new()
+            {
+                Multiselect = false,
+                Filter = IconFilterConditionString,
+                Title = SelectIconString
+            };
+            if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
+            {
+                selectedDarkThemeIconPath = openFileDialog.FileName;
+                DarkThemeIconPath = Path.Combine(ShellMenuService.ShellMenuConfigDirectory.FullName, Convert.ToString(editMenuGuid), "DarkThemeIcon.ico");
+                DarkThemeIconImage = GetIconImage(openFileDialog.FileName);
+            }
+            openFileDialog.Dispose();
+        }
+
+        /// <summary>
+        /// 修改菜单程序文件路径
+        /// </summary>
+        private void OnMenuProgramPathBrowserClicked(object sender, RoutedEventArgs args)
+        {
+            OpenFileDialog openFileDialog = new()
+            {
+                Multiselect = false,
+                Filter = ProgramFilterConditionString,
+                Title = SelectProgramString
+            };
+            if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
+            {
+                MenuProgramPathText = openFileDialog.FileName;
+            }
+            openFileDialog.Dispose();
+        }
+
+        /// <summary>
+        /// 菜单参数内容发生更改时的事件
+        /// </summary>
+        private void OnMenuParameterTextChanged(object sender, TextChangedEventArgs args)
+        {
+            MenuParameterText = (sender as Microsoft.UI.Xaml.Controls.TextBox).Text;
+        }
+
+        /// <summary>
+        /// 总是需要提权运行修改时触发的事件
+        /// </summary>
+        private void OnIsAlwaysRunAsAdministratorToggled(object sender, RoutedEventArgs args)
+        {
+            if (sender is ToggleSwitch toggleSwitch)
+            {
+                IsAlwaysRunAsAdministrator = toggleSwitch.IsOn;
+            }
+        }
+
+        /// <summary>
+        /// 修改菜单文件匹配规则
+        /// </summary>
+        private void OnFileMatchRuleSelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedFileMatchRule, comboBox.SelectedItem))
+            {
+                SelectedFileMatchRule = comboBox.SelectedItem is ComboBoxItemModel fileMatchRule ? fileMatchRule : null;
+                MenuFileMatchFormatText = string.Empty;
+
+                if (SelectedFileMatchRule is not null)
+                {
+                    if (Equals(SelectedFileMatchRule, FileMatchRuleList[0]) || Equals(SelectedFileMatchRule, FileMatchRuleList[4]))
+                    {
+                        NeedInputMatchFormat = false;
+                        MenuFileMatchFormatPHText = string.Empty;
+                    }
+                    else if (Equals(SelectedFileMatchRule, FileMatchRuleList[1]))
+                    {
+                        NeedInputMatchFormat = true;
+                        MenuFileMatchFormatPHText = MenuFileNameFormatString;
+                    }
+                    else if (Equals(SelectedFileMatchRule, FileMatchRuleList[2]))
+                    {
+                        NeedInputMatchFormat = true;
+                        MenuFileMatchFormatPHText = string.Format(MenuFileNameRegexFormatString, @"[\s\S]+.jpg | [\w\W]*.jpg");
+                    }
+                    else if (Equals(SelectedFileMatchRule, FileMatchRuleList[3]))
+                    {
+                        NeedInputMatchFormat = true;
+                        MenuFileMatchFormatPHText = MenuFileExtensionFormatString;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 菜单文件匹配格式内容发生更改时的事件
+        /// </summary>
+        private void OnMenuFileMatchFormatTextChanged(object sender, TextChangedEventArgs args)
+        {
+            MenuFileMatchFormatText = (sender as Microsoft.UI.Xaml.Controls.TextBox).Text;
+        }
+
+        #endregion 第五部分：挂载事件处理
+
+        #region 第六部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
             FileMatchRuleList.Add(new() { SelectedValue = "None", DisplayMember = NoneString });
             FileMatchRuleList.Add(new() { SelectedValue = "Name", DisplayMember = NameString });
             FileMatchRuleList.Add(new() { SelectedValue = "NameRegex", DisplayMember = NameRegexString });
@@ -403,14 +649,16 @@ namespace PowerToolbox.Views.Pages
             SelectedFileMatchRule = FileMatchRuleList[4];
         }
 
-        #region 第一部分：重写父类事件
-
         /// <summary>
-        /// 导航到该页面触发的事件
+        /// 更新参数
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs args)
+        private void UpdateParameter(NavigationEventArgs args)
         {
-            base.OnNavigatedTo(args);
+            if (args is null)
+            {
+                return;
+            }
+
             lastUpdateTime = ShellMenuService.GetLastUpdateTime();
 
             if (args.Parameter is List<object> argsList && argsList.Count is 2 && argsList[1] is ShellMenuItem shellMenuItem)
@@ -498,82 +746,64 @@ namespace PowerToolbox.Views.Pages
                     LightThemeIconImage = lightThemeIconImage;
                     BitmapImage darkThemeIconImage = new();
                     darkThemeIconImage.SetSource(emptyStream);
-                    DarkThemeIconImage = lightThemeIconImage;
+                    DarkThemeIconImage = darkThemeIconImage;
 
                     if (File.Exists(DefaultIconPath))
                     {
-                        try
-                        {
-                            Icon defaultIcon = Icon.ExtractAssociatedIcon(DefaultIconPath);
-                            MemoryStream memoryStream = new();
-                            defaultIcon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                            memoryStream.Seek(0, SeekOrigin.Begin);
-                            defaultIconImage = new();
-                            defaultIconImage.SetSource(memoryStream.AsRandomAccessStream());
-                            DefaultIconImage = defaultIconImage;
-                            memoryStream.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnNavigatedTo), 1, e);
-                        }
+                        DefaultIconImage = GetIconImage(DefaultIconPath);
                     }
 
                     if (File.Exists(LightThemeIconPath))
                     {
-                        try
-                        {
-                            Icon lightThemeIcon = Icon.ExtractAssociatedIcon(LightThemeIconPath);
-                            MemoryStream memoryStream = new();
-                            lightThemeIcon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                            memoryStream.Seek(0, SeekOrigin.Begin);
-                            lightThemeIconImage = new();
-                            lightThemeIconImage.SetSource(memoryStream.AsRandomAccessStream());
-                            LightThemeIconImage = lightThemeIconImage;
-                            memoryStream.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnNavigatedTo), 2, e);
-                        }
+                        LightThemeIconImage = GetIconImage(LightThemeIconPath);
+                        UpdateIcon(LightThemeIconPath, LightThemeIconImage);
                     }
 
                     if (File.Exists(DarkThemeIconPath))
                     {
-                        try
-                        {
-                            Icon darkThemeIcon = Icon.ExtractAssociatedIcon(DarkThemeIconPath);
-                            MemoryStream memoryStream = new();
-                            darkThemeIcon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                            memoryStream.Seek(0, SeekOrigin.Begin);
-                            darkThemeIconImage = new();
-                            darkThemeIconImage.SetSource(memoryStream.AsRandomAccessStream());
-                            DarkThemeIconImage = darkThemeIconImage;
-                            memoryStream.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnNavigatedTo), 3, e);
-                        }
+                        DarkThemeIconImage = GetIconImage(DarkThemeIconPath);
                     }
                 }
             }
         }
 
-        #endregion 第一部分：重写父类事件
+        /// <summary>
+        /// 更新图标
+        /// </summary>
+        private void UpdateIcon(string iconPath, ImageSource imageSource)
+        {
+            if (string.IsNullOrEmpty(iconPath) || imageSource is null)
+            {
+                return;
+            }
 
-        #region 第二部分：自定义扩展菜单编辑页面——挂载的事件
+            try
+            {
+                Icon defaultIcon = Icon.ExtractAssociatedIcon(iconPath);
+                MemoryStream memoryStream = new();
+                defaultIcon.ToBitmap().Save(memoryStream, ImageFormat.Png);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                BitmapImage bitmapImage = new();
+                bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
+                imageSource = bitmapImage;
+                memoryStream.Dispose();
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(UpdateIcon), 1, e);
+            }
+        }
 
         /// <summary>
-        /// 保存更改
+        /// 保存检查
         /// </summary>
-        private async void OnSaveClicked(object sender, RoutedEventArgs args)
+        private async Task<bool> SaveCheckAsync()
         {
             // 菜单数据已发生更改，通知用户手动刷新
             if (lastUpdateTime < ShellMenuService.GetLastUpdateTime())
             {
                 await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ShellMenuNeedToRefreshData));
-                return;
+                return false;
             }
 
             // 有部分内容是必填项，没填的内容进行提示
@@ -581,7 +811,7 @@ namespace PowerToolbox.Views.Pages
             {
                 MenuTitleTextBox.Focus(FocusState.Programmatic);
                 await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.MenuTitleEmpty));
-                return;
+                return false;
             }
 
             if (UseIcon && !UseProgramIcon)
@@ -592,14 +822,14 @@ namespace PowerToolbox.Views.Pages
                     {
                         MenuLigthThemeIconBrowserButton.Focus(FocusState.Programmatic);
                         await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.MenuLightThemeIconPathEmpty));
-                        return;
+                        return false;
                     }
 
                     if (string.IsNullOrEmpty(DarkThemeIconPath))
                     {
                         MenuDarkThemeIconBrowserButton.Focus(FocusState.Programmatic);
                         await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.MenuDarkThemeIconPathEmpty));
-                        return;
+                        return false;
                     }
                 }
                 else
@@ -608,7 +838,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         MenuDefaultIconBrowserButton.Focus(FocusState.Programmatic);
                         await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.MenuDefaultIconPathEmpty));
-                        return;
+                        return false;
                     }
                 }
             }
@@ -617,17 +847,23 @@ namespace PowerToolbox.Views.Pages
             {
                 MenuProgramBrowserButton.Focus(FocusState.Programmatic);
                 await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.MenuProgramPathEmpty));
-                return;
+                return false;
             }
 
             if ((Equals(SelectedFileMatchRule, FileMatchRuleList[1]) || Equals(SelectedFileMatchRule, FileMatchRuleList[2]) || Equals(SelectedFileMatchRule, FileMatchRuleList[3])) && string.IsNullOrEmpty(MenuFileMatchFormatText))
             {
                 MenuFileMatchFormatTextBox.Focus(FocusState.Programmatic);
                 await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.MenuMatchRuleEmpty));
-                return;
+                return false;
             }
+            return true;
+        }
 
-            // 保存指定菜单项信息
+        /// <summary>
+        /// 保存指定菜单项信息
+        /// </summary>
+        private void SaveMenuInformation()
+        {
             ShellMenuItem shellMenuItem = new()
             {
                 MenuGuid = editMenuGuid,
@@ -651,298 +887,68 @@ namespace PowerToolbox.Views.Pages
             };
 
             ShellMenuService.SaveShellMenuItem(editMenuKey, shellMenuItem);
+        }
 
-            // 复制选中的图标文件到指定目录
-            if (File.Exists(selectedDefaultIconPath))
+        /// <summary>
+        /// 复制选中的图标文件到指定目录
+        /// </summary>
+        private void MoveFileToSpecificFolder(string iconPath, string defaultIconPath)
+        {
+            if (File.Exists(iconPath))
             {
                 try
                 {
-                    string defaultIconDirectoryPath = Path.GetDirectoryName(DefaultIconPath);
+                    string defaultIconDirectoryPath = Path.GetDirectoryName(defaultIconPath);
                     if (!Directory.Exists(defaultIconDirectoryPath))
                     {
                         Directory.CreateDirectory(defaultIconDirectoryPath);
                     }
 
-                    File.Copy(selectedDefaultIconPath, DefaultIconPath, true);
+                    File.Copy(iconPath, defaultIconPath, true);
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnSaveClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(MoveFileToSpecificFolder), 1, e);
                 }
-            }
-
-            if (File.Exists(selectedLightThemeIconPath))
-            {
-                try
-                {
-                    string lightThemeIconDirectoryPath = Path.GetDirectoryName(LightThemeIconPath);
-                    if (!Directory.Exists(lightThemeIconDirectoryPath))
-                    {
-                        Directory.CreateDirectory(lightThemeIconDirectoryPath);
-                    }
-
-                    File.Copy(selectedLightThemeIconPath, LightThemeIconPath, true);
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnSaveClicked), 2, e);
-                }
-            }
-
-            if (File.Exists(selectedDarkThemeIconPath))
-            {
-                try
-                {
-                    string darkThemeIconDirectoryPath = Path.GetDirectoryName(DarkThemeIconPath);
-                    if (!Directory.Exists(darkThemeIconDirectoryPath))
-                    {
-                        Directory.CreateDirectory(darkThemeIconDirectoryPath);
-                    }
-
-                    File.Copy(selectedDarkThemeIconPath, DarkThemeIconPath, true);
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnSaveClicked), 3, e);
-                }
-            }
-
-            if (MainWindow.Current.GetFrameContent() is ShellMenuPage shellMenuPage)
-            {
-                shellMenuPage.NavigateTo(shellMenuPage.PageList[0], null, false);
-            }
-
-            ShellMenuService.UpdateLastUpdateTime();
-            lastUpdateTime = ShellMenuService.GetLastUpdateTime();
-        }
-
-        /// <summary>
-        /// 菜单标题内容发生更改时的事件
-        /// </summary>
-        private void OnTitleTextChanged(object sender, TextChangedEventArgs args)
-        {
-            MenuTitleText = (sender as Microsoft.UI.Xaml.Controls.TextBox).Text;
-        }
-
-        /// <summary>
-        /// 使用图标修改时触发的事件
-        /// </summary>
-        private void OnUseIconToggled(object sender, RoutedEventArgs args)
-        {
-            if (sender is ToggleSwitch toggleSwitch && !Equals(UseIcon, toggleSwitch.IsOn))
-            {
-                UseIcon = toggleSwitch.IsOn;
             }
         }
 
         /// <summary>
-        /// 使用应用程序图标修改时触发的事件
+        /// 更新浅色主题图标
         /// </summary>
-        private void OnUseProgramIconToggled(object sender, RoutedEventArgs args)
+        private BitmapImage GetIconImage(string fileName)
         {
-            if (sender is ToggleSwitch toggleSwitch && !Equals(UseProgramIcon, toggleSwitch.IsOn))
+            if (string.IsNullOrEmpty(fileName))
             {
-                UseProgramIcon = toggleSwitch.IsOn;
+                return null;
             }
-        }
 
-        /// <summary>
-        /// 启用主题图标按钮修改时触发的事件
-        /// </summary>
-        private void OnUseThemeIconToggled(object sender, RoutedEventArgs args)
-        {
-            if (sender is ToggleSwitch toggleSwitch && !Equals(UseThemeIcon, toggleSwitch.IsOn))
+            try
             {
-                UseThemeIcon = toggleSwitch.IsOn;
-            }
-        }
-
-        /// <summary>
-        /// 默认图标修改
-        /// </summary>
-        private void OnDefaultIconBrowserClicked(object sender, RoutedEventArgs args)
-        {
-            OpenFileDialog openFileDialog = new()
-            {
-                Multiselect = false,
-                Filter = IconFilterConditionString,
-                Title = SelectIconString
-            };
-            if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
-            {
-                try
+                if (File.Exists(fileName))
                 {
-                    BitmapImage bitmapImage = new();
-                    bitmapImage.SetSource(emptyStream);
-                    selectedDefaultIconPath = openFileDialog.FileName;
-                    DefaultIconPath = Path.Combine(ShellMenuService.ShellMenuConfigDirectory.FullName, Convert.ToString(editMenuGuid), "DefaultIcon.ico");
-                    Icon defaultIcon = Icon.ExtractAssociatedIcon(openFileDialog.FileName);
-                    MemoryStream memoryStream = new();
-                    defaultIcon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-                    bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
-                    memoryStream.Dispose();
-                    DefaultIconImage = bitmapImage;
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnDefaultIconBrowserClicked), 1, e);
-                }
-            }
-            openFileDialog.Dispose();
-        }
-
-        /// <summary>
-        /// 浅色主题图标修改
-        /// </summary>
-        private void OnLightThemeIconBrowserClicked(object sender, RoutedEventArgs args)
-        {
-            OpenFileDialog openFileDialog = new()
-            {
-                Multiselect = false,
-                Filter = IconFilterConditionString,
-                Title = SelectIconString
-            };
-            if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
-            {
-                try
-                {
-                    BitmapImage bitmapImage = new();
-                    bitmapImage.SetSource(emptyStream);
-                    selectedLightThemeIconPath = openFileDialog.FileName;
-                    LightThemeIconPath = Path.Combine(ShellMenuService.ShellMenuConfigDirectory.FullName, Convert.ToString(editMenuGuid), "LightThemeIcon.ico");
-                    Icon lightThemeIcon = Icon.ExtractAssociatedIcon(openFileDialog.FileName);
-                    MemoryStream memoryStream = new();
-                    lightThemeIcon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-                    bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
-                    memoryStream.Dispose();
-                    LightThemeIconImage = bitmapImage;
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnLightThemeIconBrowserClicked), 1, e);
-                }
-            }
-            openFileDialog.Dispose();
-        }
-
-        /// <summary>
-        /// 深色主题图标修改
-        /// </summary>
-        private void OnDarkThemeIconBrowserClicked(object sender, RoutedEventArgs args)
-        {
-            OpenFileDialog openFileDialog = new()
-            {
-                Multiselect = false,
-                Filter = IconFilterConditionString,
-                Title = SelectIconString
-            };
-            if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
-            {
-                try
-                {
-                    BitmapImage bitmapImage = new();
-                    bitmapImage.SetSource(emptyStream);
-                    selectedDarkThemeIconPath = openFileDialog.FileName;
-                    DarkThemeIconPath = Path.Combine(ShellMenuService.ShellMenuConfigDirectory.FullName, Convert.ToString(editMenuGuid), "DarkThemeIcon.ico");
-                    Icon icon = Icon.ExtractAssociatedIcon(openFileDialog.FileName);
+                    Icon icon = Icon.ExtractAssociatedIcon(fileName);
                     MemoryStream memoryStream = new();
                     icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
                     memoryStream.Seek(0, SeekOrigin.Begin);
+                    BitmapImage bitmapImage = new();
+                    bitmapImage.SetSource(emptyStream);
                     bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
                     memoryStream.Dispose();
-                    DarkThemeIconImage = bitmapImage;
+                    return bitmapImage;
                 }
-                catch (Exception e)
+                else
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(OnDarkThemeIconBrowserClicked), 1, e);
+                    return null;
                 }
             }
-            openFileDialog.Dispose();
-        }
-
-        /// <summary>
-        /// 修改菜单程序文件路径
-        /// </summary>
-        private void OnMenuProgramPathBrowserClicked(object sender, RoutedEventArgs args)
-        {
-            OpenFileDialog openFileDialog = new()
+            catch (Exception e)
             {
-                Multiselect = false,
-                Filter = ProgramFilterConditionString,
-                Title = SelectProgramString
-            };
-            if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
-            {
-                MenuProgramPathText = openFileDialog.FileName;
-            }
-            openFileDialog.Dispose();
-        }
-
-        /// <summary>
-        /// 菜单参数内容发生更改时的事件
-        /// </summary>
-        private void OnMenuParameterTextChanged(object sender, TextChangedEventArgs args)
-        {
-            MenuParameterText = (sender as Microsoft.UI.Xaml.Controls.TextBox).Text;
-        }
-
-        /// <summary>
-        /// 总是需要提权运行修改时触发的事件
-        /// </summary>
-        private void OnIsAlwaysRunAsAdministratorToggled(object sender, RoutedEventArgs args)
-        {
-            if (sender is ToggleSwitch toggleSwitch)
-            {
-                IsAlwaysRunAsAdministrator = toggleSwitch.IsOn;
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuEditPage), nameof(GetIconImage), 1, e);
+                return null;
             }
         }
 
-        /// <summary>
-        /// 修改菜单文件匹配规则
-        /// </summary>
-        private void OnFileMatchRuleSelectionChanged(object sender, SelectionChangedEventArgs args)
-        {
-            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedFileMatchRule, comboBox.SelectedItem))
-            {
-                SelectedFileMatchRule = comboBox.SelectedItem is ComboBoxItemModel fileMatchRule ? fileMatchRule : null;
-                MenuFileMatchFormatText = string.Empty;
-
-                if (SelectedFileMatchRule is not null)
-                {
-                    if (Equals(SelectedFileMatchRule, FileMatchRuleList[0]) || Equals(SelectedFileMatchRule, FileMatchRuleList[4]))
-                    {
-                        NeedInputMatchFormat = false;
-                        MenuFileMatchFormatPHText = string.Empty;
-                    }
-                    else if (Equals(SelectedFileMatchRule, FileMatchRuleList[1]))
-                    {
-                        NeedInputMatchFormat = true;
-                        MenuFileMatchFormatPHText = MenuFileNameFormatString;
-                    }
-                    else if (Equals(SelectedFileMatchRule, FileMatchRuleList[2]))
-                    {
-                        NeedInputMatchFormat = true;
-                        MenuFileMatchFormatPHText = string.Format(MenuFileNameRegexFormatString, @"[\s\S]+.jpg | [\w\W]*.jpg");
-                    }
-                    else if (Equals(SelectedFileMatchRule, FileMatchRuleList[3]))
-                    {
-                        NeedInputMatchFormat = true;
-                        MenuFileMatchFormatPHText = MenuFileExtensionFormatString;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 菜单文件匹配格式内容发生更改时的事件
-        /// </summary>
-        private void OnMenuFileMatchFormatTextChanged(object sender, TextChangedEventArgs args)
-        {
-            MenuFileMatchFormatText = (sender as Microsoft.UI.Xaml.Controls.TextBox).Text;
-        }
-
-        #endregion 第二部分：自定义扩展菜单编辑页面——挂载的事件
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }

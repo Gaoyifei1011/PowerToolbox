@@ -29,12 +29,33 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class ShellMenuListPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private DateTimeOffset lastUpdateTime;
-        private ShellMenuItemModel selectedItem;
+
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
+
+        private ShellMenuItemModel _selectedItem;
+
+        private ShellMenuItemModel SelectedItem
+        {
+            get { return _selectedItem; }
+
+            set
+            {
+                if (!Equals(_selectedItem, value))
+                {
+                    _selectedItem = value;
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
+                }
+            }
+        }
 
         private bool _isLoading;
 
-        internal bool IsLoading
+        private bool IsLoading
         {
             get { return _isLoading; }
 
@@ -50,7 +71,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isAddMenuEnabled;
 
-        internal bool IsAddMenuEnabled
+        private bool IsAddMenuEnabled
         {
             get { return _isAddMenuEnabled; }
 
@@ -66,7 +87,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isRemoveMenuEnabled;
 
-        internal bool IsRemoveMenuEnabled
+        private bool IsRemoveMenuEnabled
         {
             get { return _isRemoveMenuEnabled; }
 
@@ -82,7 +103,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isEditMenuEnabled;
 
-        internal bool IsEditMenuEnabled
+        private bool IsEditMenuEnabled
         {
             get { return _isEditMenuEnabled; }
 
@@ -98,7 +119,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isMoveUpEnabled;
 
-        internal bool IsMoveUpEnabled
+        private bool IsMoveUpEnabled
         {
             get { return _isMoveUpEnabled; }
 
@@ -114,7 +135,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isMoveDownEnabled;
 
-        internal bool IsMoveDownEnabled
+        private bool IsMoveDownEnabled
         {
             get { return _isMoveDownEnabled; }
 
@@ -132,12 +153,18 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal ShellMenuListPage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面触发的事件
@@ -165,9 +192,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第一部分：重写父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第二部分：自定义扩展菜单页面——挂载的事件
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 当前应用主题发生变化时对应的事件
@@ -185,31 +212,13 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnAddMenuItemClicked(object sender, RoutedEventArgs args)
         {
-            Guid menuGuid = Guid.NewGuid();
-            string menuKey = string.Empty;
-            int menuIndex = -1;
-
             // 数据已经过时，需要更新
-            if (lastUpdateTime < ShellMenuService.GetLastUpdateTime())
+            if (!await UpdateCheckAsync())
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ShellMenuNeedToRefreshData));
                 return;
             }
 
-            await Task.Run(() =>
-            {
-                // 检查添加项是否为根菜单项
-                if (selectedItem is null)
-                {
-                    menuKey = Path.Combine(@"Software\PowerToolbox\ShellMenu", Convert.ToString(menuGuid));
-                    menuIndex = 0;
-                }
-                else if (selectedItem.MenuType is MenuType.FirstLevelMenu)
-                {
-                    menuKey = Path.Combine(selectedItem.MenuKey, Convert.ToString(menuGuid));
-                    menuIndex = selectedItem.SubMenuItemCollection.Count;
-                }
-            });
+            (Guid menuGuid, string menuKey, int menuIndex) = await CreateShellMenuInformationAsync();
 
             if (MainWindow.Current.GetFrameContent() is ShellMenuPage shellMenuPage)
             {
@@ -232,26 +241,21 @@ namespace PowerToolbox.Views.Pages
         private async void OnRemoveMenuItemClicked(object sender, RoutedEventArgs args)
         {
             // 数据已经过时，需要更新
-            if (lastUpdateTime < ShellMenuService.GetLastUpdateTime())
+            if (!await UpdateCheckAsync())
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ShellMenuNeedToRefreshData));
                 return;
             }
 
-            if (selectedItem is not null)
+            if (SelectedItem is not null)
             {
                 // 移除指定的菜单项
-                await Task.Run(() =>
-                {
-                    ShellMenuService.RemoveShellMenuItem(selectedItem.MenuKey);
-                });
-
-                ShellMenuItemModel parentItem = await EnumRemoveItemAsync(selectedItem, null, ShellMenuItemCollection);
+                await RemoveShellMenuItemAsync(SelectedItem.MenuKey);
+                ShellMenuItemModel parentItem = await EnumRemoveItemAsync(SelectedItem, null, ShellMenuItemCollection);
 
                 // 删除的父项为空，说明被删除项为根菜单项
                 if (parentItem is null)
                 {
-                    selectedItem = null;
+                    SelectedItem = null;
                     IsAddMenuEnabled = true;
                     IsRemoveMenuEnabled = false;
                     IsEditMenuEnabled = false;
@@ -261,11 +265,11 @@ namespace PowerToolbox.Views.Pages
                 else
                 {
                     parentItem.IsSelected = true;
-                    selectedItem = parentItem;
+                    SelectedItem = parentItem;
                     IsAddMenuEnabled = true;
                     IsRemoveMenuEnabled = true;
                     IsEditMenuEnabled = true;
-                    EnumModifySelectedItem(selectedItem, ShellMenuItemCollection);
+                    EnumModifySelectedItem(SelectedItem, ShellMenuItemCollection);
                 }
 
                 ShellMenuService.UpdateLastUpdateTime();
@@ -279,9 +283,8 @@ namespace PowerToolbox.Views.Pages
         private async void OnClearMenuClicked(object sender, RoutedEventArgs args)
         {
             // 数据已经过时，需要更新
-            if (lastUpdateTime < ShellMenuService.GetLastUpdateTime())
+            if (!await UpdateCheckAsync())
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ShellMenuNeedToRefreshData));
                 return;
             }
 
@@ -290,22 +293,19 @@ namespace PowerToolbox.Views.Pages
                 string rootMenuKey = ShellMenuItemCollection[0].MenuKey;
 
                 // 清空所有菜单项信息
-                await Task.Run(() =>
-                {
-                    ShellMenuService.RemoveShellMenuItem(rootMenuKey);
-                });
-
+                await RemoveShellMenuItemAsync(rootMenuKey);
                 ShellMenuItemCollection.Clear();
-                selectedItem = null;
+                SelectedItem = null;
+
                 IsAddMenuEnabled = true;
                 IsRemoveMenuEnabled = false;
                 IsEditMenuEnabled = false;
                 IsMoveUpEnabled = false;
                 IsMoveDownEnabled = false;
-            }
 
-            ShellMenuService.UpdateLastUpdateTime();
-            lastUpdateTime = ShellMenuService.GetLastUpdateTime();
+                ShellMenuService.UpdateLastUpdateTime();
+                lastUpdateTime = ShellMenuService.GetLastUpdateTime();
+            }
         }
 
         /// <summary>
@@ -322,9 +322,8 @@ namespace PowerToolbox.Views.Pages
         private async void OnEditMenuClicked(object sender, RoutedEventArgs args)
         {
             // 数据已经过时，需要更新
-            if (lastUpdateTime < ShellMenuService.GetLastUpdateTime())
+            if (!await UpdateCheckAsync())
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ShellMenuNeedToRefreshData));
                 return;
             }
 
@@ -333,7 +332,28 @@ namespace PowerToolbox.Views.Pages
                 shellMenuPage.NavigateTo(shellMenuPage.PageList[1], new List<object>
                 {
                     ShellEditKind.EditMenu,
-                    selectedItem
+                    new ShellMenuItem()
+                    {
+                        MenuKey = SelectedItem.MenuKey,
+                        MenuGuid = SelectedItem.MenuGuid,
+                        MenuTitleText= SelectedItem.MenuTitleText,
+                        UseIcon = SelectedItem.UseIcon,
+                        UseProgramIcon = SelectedItem.UseProgramIcon,
+                        UseThemeIcon = SelectedItem.UseThemeIcon,
+                        DefaultIconPath = SelectedItem.DefaultIconPath,
+                        LightThemeIconPath = SelectedItem.LightThemeIconPath,
+                        DarkThemeIconPath = SelectedItem.DarkThemeIconPath,
+                        MenuProgramPath = SelectedItem.MenuProgramPathText,
+                        MenuParameter = SelectedItem.MenuParameter,
+                        IsAlwaysRunAsAdministrator = SelectedItem.IsAlwaysRunAsAdministrator,
+                        FolderBackground = SelectedItem.FolderBackground,
+                        FolderDesktop = SelectedItem.FolderDesktop,
+                        FolderDirectory = SelectedItem.FolderDirectory,
+                        FolderDrive = SelectedItem.FolderDrive,
+                        MenuFileMatchRule = SelectedItem.MenuFileMatchRule,
+                        MenuFileMatchFormatText = SelectedItem.MenuFileMatchFormatText,
+                        MenuIndex = SelectedItem.MenuIndex,
+                    }
                 }, true);
             }
         }
@@ -344,13 +364,12 @@ namespace PowerToolbox.Views.Pages
         private async void OnMoveUpClicked(object sender, RoutedEventArgs args)
         {
             // 数据已经过时，需要更新
-            if (lastUpdateTime < ShellMenuService.GetLastUpdateTime())
+            if (!await UpdateCheckAsync())
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ShellMenuNeedToRefreshData));
                 return;
             }
 
-            await EnumMoveUpShellMenuItemAsync(selectedItem, ShellMenuItemCollection);
+            await EnumMoveUpShellMenuItemAsync(SelectedItem, ShellMenuItemCollection);
             ShellMenuService.UpdateLastUpdateTime();
             lastUpdateTime = ShellMenuService.GetLastUpdateTime();
         }
@@ -361,13 +380,12 @@ namespace PowerToolbox.Views.Pages
         private async void OnMoveDownClicked(object sender, RoutedEventArgs args)
         {
             // 数据已经过时，需要更新
-            if (lastUpdateTime < ShellMenuService.GetLastUpdateTime())
+            if (!await UpdateCheckAsync())
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ShellMenuNeedToRefreshData));
                 return;
             }
 
-            await EnumMoveDownShellMenuItemAsync(selectedItem, ShellMenuItemCollection);
+            await EnumMoveDownShellMenuItemAsync(SelectedItem, ShellMenuItemCollection);
             ShellMenuService.UpdateLastUpdateTime();
             lastUpdateTime = ShellMenuService.GetLastUpdateTime();
         }
@@ -387,11 +405,12 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.InvokedItem is ShellMenuItemModel shellMenuItem)
             {
+                SelectedItem = shellMenuItem;
                 EnumModifySelectedItem(shellMenuItem, ShellMenuItemCollection);
             }
         }
 
-        #endregion 第二部分：自定义扩展菜单页面——挂载的事件
+        #endregion 第五部分：挂载事件处理
 
         #region 第四部分：递归遍历
 
@@ -426,29 +445,13 @@ namespace PowerToolbox.Views.Pages
                 UseProgramIcon = menuItem.UseProgramIcon,
                 MenuIcon = new BitmapImage()
             };
+
             if (shellMenuItem.UseIcon)
             {
                 // 使用应用程序图标
                 if (shellMenuItem.UseProgramIcon)
                 {
-                    try
-                    {
-                        if (File.Exists(shellMenuItem.MenuProgramPathText) && string.Equals(Path.GetExtension(shellMenuItem.MenuProgramPathText), ".exe"))
-                        {
-                            Icon icon = Icon.ExtractAssociatedIcon(shellMenuItem.MenuProgramPathText);
-                            MemoryStream memoryStream = new();
-                            icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                            memoryStream.Seek(0, SeekOrigin.Begin);
-                            BitmapImage bitmapImage = new();
-                            bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
-                            shellMenuItem.MenuIcon = bitmapImage;
-                            memoryStream.Dispose();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumShellMenuItem), 1, e);
-                    }
+                    shellMenuItem.MenuIcon = GetIconImage(shellMenuItem.MenuProgramPathText);
                 }
                 else
                 {
@@ -458,40 +461,12 @@ namespace PowerToolbox.Views.Pages
                         // 浅色主题图标
                         if (ActualTheme is ElementTheme.Light && File.Exists(shellMenuItem.LightThemeIconPath))
                         {
-                            try
-                            {
-                                Icon icon = Icon.ExtractAssociatedIcon(shellMenuItem.LightThemeIconPath);
-                                MemoryStream memoryStream = new();
-                                icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                                memoryStream.Seek(0, SeekOrigin.Begin);
-                                BitmapImage bitmapImage = new();
-                                bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
-                                shellMenuItem.MenuIcon = bitmapImage;
-                                memoryStream.Dispose();
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumShellMenuItem), 2, e);
-                            }
+                            shellMenuItem.MenuIcon = GetIconImage(shellMenuItem.LightThemeIconPath);
                         }
                         // 深色主题图标
                         else if (ActualTheme is ElementTheme.Dark && File.Exists(shellMenuItem.DarkThemeIconPath))
                         {
-                            try
-                            {
-                                Icon icon = Icon.ExtractAssociatedIcon(shellMenuItem.DarkThemeIconPath);
-                                MemoryStream memoryStream = new();
-                                icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                                memoryStream.Seek(0, SeekOrigin.Begin);
-                                BitmapImage bitmapImage = new();
-                                bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
-                                shellMenuItem.MenuIcon = bitmapImage;
-                                memoryStream.Dispose();
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumShellMenuItem), 3, e);
-                            }
+                            shellMenuItem.MenuIcon = GetIconImage(shellMenuItem.DarkThemeIconPath);
                         }
                     }
                     else
@@ -499,21 +474,7 @@ namespace PowerToolbox.Views.Pages
                         // 默认图标
                         if (File.Exists(shellMenuItem.DefaultIconPath))
                         {
-                            try
-                            {
-                                Icon icon = Icon.ExtractAssociatedIcon(shellMenuItem.DefaultIconPath);
-                                MemoryStream memoryStream = new();
-                                icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                                memoryStream.Seek(0, SeekOrigin.Begin);
-                                BitmapImage bitmapImage = new();
-                                bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
-                                shellMenuItem.MenuIcon = bitmapImage;
-                                memoryStream.Dispose();
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumShellMenuItem), 4, e);
-                            }
+                            shellMenuItem.MenuIcon = GetIconImage(shellMenuItem.DefaultIconPath);
                         }
                     }
                 }
@@ -673,42 +634,14 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (File.Exists(shellMenuItem.LightThemeIconPath))
                     {
-                        try
-                        {
-                            Icon icon = Icon.ExtractAssociatedIcon(shellMenuItem.LightThemeIconPath);
-                            MemoryStream memoryStream = new();
-                            icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                            memoryStream.Seek(0, SeekOrigin.Begin);
-                            BitmapImage bitmapImage = new();
-                            bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
-                            shellMenuItem.MenuIcon = bitmapImage;
-                            memoryStream.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumModifyShellMenuItemTheme), 1, e);
-                        }
+                        shellMenuItem.MenuIcon = GetIconImage(shellMenuItem.LightThemeIconPath);
                     }
                 }
                 else if (ActualTheme is ElementTheme.Dark)
                 {
                     if (File.Exists(shellMenuItem.DarkThemeIconPath))
                     {
-                        try
-                        {
-                            Icon icon = Icon.ExtractAssociatedIcon(shellMenuItem.DarkThemeIconPath);
-                            MemoryStream memoryStream = new();
-                            icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
-                            memoryStream.Seek(0, SeekOrigin.Begin);
-                            BitmapImage bitmapImage = new();
-                            bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
-                            shellMenuItem.MenuIcon = bitmapImage;
-                            memoryStream.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(EnumModifyShellMenuItemTheme), 2, e);
-                        }
+                        shellMenuItem.MenuIcon = GetIconImage(shellMenuItem.DarkThemeIconPath);
                     }
                 }
             }
@@ -916,21 +849,21 @@ namespace PowerToolbox.Views.Pages
 
                     if (ShellMenuItemCollection.Count is 0)
                     {
-                        selectedItem = null;
+                        SelectedItem = null;
                         IsRemoveMenuEnabled = false;
                         IsEditMenuEnabled = false;
                     }
                     else
                     {
                         ShellMenuItemCollection[0].IsSelected = true;
-                        selectedItem = ShellMenuItemCollection[0];
+                        SelectedItem = ShellMenuItemCollection[0];
                         IsRemoveMenuEnabled = true;
                         IsEditMenuEnabled = true;
                     }
                 }
                 else
                 {
-                    selectedItem = null;
+                    SelectedItem = null;
                     IsRemoveMenuEnabled = false;
                     IsEditMenuEnabled = false;
                 }
@@ -940,6 +873,97 @@ namespace PowerToolbox.Views.Pages
                 {
                     EnumModifyShellMenuItemTheme(shellMenuItem);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 创建菜单信息
+        /// </summary>
+        private async Task<(Guid, string, int)> CreateShellMenuInformationAsync()
+        {
+            return await Task.Run(() =>
+            {
+                Guid menuGuid = Guid.NewGuid();
+                string menuKey = string.Empty;
+                int menuIndex = 0;
+
+                // 检查添加项是否为根菜单项
+                if (SelectedItem is null)
+                {
+                    menuKey = Path.Combine(@"Software\PowerToolbox\ShellMenu", Convert.ToString(menuGuid));
+                    menuIndex = 0;
+                }
+                else if (SelectedItem.MenuType is MenuType.FirstLevelMenu)
+                {
+                    menuKey = Path.Combine(SelectedItem.MenuKey, Convert.ToString(menuGuid));
+                    menuIndex = SelectedItem.SubMenuItemCollection.Count;
+                }
+                return ValueTuple.Create(menuGuid, menuKey, menuIndex);
+            });
+        }
+
+        /// <summary>
+        /// 菜单数据需要更新操作安全性检查
+        /// </summary>
+        private async Task<bool> UpdateCheckAsync()
+        {
+            if (lastUpdateTime < ShellMenuService.GetLastUpdateTime())
+            {
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ShellMenuNeedToRefreshData));
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 移除菜单项
+        /// </summary>
+        private async Task RemoveShellMenuItemAsync(string menuKey)
+        {
+            if (string.IsNullOrEmpty(menuKey))
+            {
+                return;
+            }
+
+            // 移除指定的菜单项
+            await Task.Run(() =>
+            {
+                ShellMenuService.RemoveShellMenuItem(menuKey);
+            });
+        }
+
+        /// <summary>
+        /// 获取程序对应的图标
+        /// </summary>
+        private BitmapImage GetIconImage(string menuProgramPath)
+        {
+            if (string.IsNullOrEmpty(menuProgramPath))
+            {
+                return null;
+            }
+
+            try
+            {
+                if (File.Exists(menuProgramPath) && string.Equals(Path.GetExtension(menuProgramPath), ".exe"))
+                {
+                    Icon icon = Icon.ExtractAssociatedIcon(menuProgramPath);
+                    MemoryStream memoryStream = new();
+                    icon.ToBitmap().Save(memoryStream, ImageFormat.Png);
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    BitmapImage bitmapImage = new();
+                    bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
+                    memoryStream.Dispose();
+                    return bitmapImage;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(GetIconImage), 1, e);
+                return null;
             }
         }
     }
