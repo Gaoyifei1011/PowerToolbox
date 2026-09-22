@@ -132,17 +132,11 @@ namespace PowerToolbox.Views.Pages
             List<IStorageItem> storageItemList = [];
             try
             {
-                List<string> fileList = await GetDragDropSelectedFilesAsync(args.DataView);
-
-                if (fileList is not null && fileList.Count > 0)
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count > 0 && await GetNeedConvertFileListAsync(fileList) is List<CertificateResultModel> fileCertificateList && fileCertificateList.Count > 0)
                 {
-                    List<CertificateResultModel> fileCertificateList = await GetNeedConvertFileListAsync(fileList);
-                    if (fileCertificateList is not null && fileCertificateList.Count > 0)
-                    {
-                        AddToFileCertificatePage(fileCertificateList);
-                        IsOperationFailed = false;
-                        OperationFailedList.Clear();
-                    }
+                    AddToFileCertificatePage(fileCertificateList);
+                    IsOperationFailed = false;
+                    OperationFailedList.Clear();
                 }
             }
             catch (Exception e)
@@ -226,8 +220,7 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
-                List<CertificateResultModel> fileCertificateList = await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]);
-                if (fileCertificateList is not null && fileCertificateList.Count > 0)
+                if (await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]) is List<CertificateResultModel> fileCertificateList && fileCertificateList.Count > 0)
                 {
                     AddToFileCertificatePage(fileCertificateList);
                 }
@@ -250,14 +243,9 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
-                if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath))
+                if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath) && await GetFileAsync(openFolderDialog.SelectedPath) is List<CertificateResultModel> fileNameList && fileNameList.Count > 0)
                 {
-                    List<CertificateResultModel> fileNameList = await GetFileAsync(openFolderDialog.SelectedPath);
-
-                    if (fileNameList is not null && fileNameList.Count > 0)
-                    {
-                        AddToFileCertificatePage(fileNameList);
-                    }
+                    AddToFileCertificatePage(fileNameList);
                 }
             }
             openFolderDialog.Dispose();

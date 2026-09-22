@@ -194,17 +194,11 @@ namespace PowerToolbox.Views.Pages
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
             try
             {
-                List<string> fileList = await GetDragDropSelectedFilesAsync(args.DataView);
-
-                if (fileList is not null && fileList.Count > 0)
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count > 0 && await GetNeedConvertFileListAsync(fileList) is List<OldAndNewNameModel> extensionNameList && extensionNameList.Count > 0)
                 {
-                    List<OldAndNewNameModel> extensionNameList = await GetNeedConvertFileListAsync(fileList);
-                    if (extensionNameList is not null && extensionNameList.Count > 0)
-                    {
-                        AddToExtensionNamePage(extensionNameList);
-                        IsOperationFailed = false;
-                        OperationFailedList.Clear();
-                    }
+                    AddToExtensionNamePage(extensionNameList);
+                    IsOperationFailed = false;
+                    OperationFailedList.Clear();
                 }
             }
             catch (Exception e)
@@ -391,8 +385,7 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
-                List<OldAndNewNameModel> extensionNameList = await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]);
-                if (extensionNameList is not null && extensionNameList.Count > 0)
+                if (await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]) is List<OldAndNewNameModel> extensionNameList && extensionNameList.Count > 0)
                 {
                     openFileDialog.Dispose();
                     AddToExtensionNamePage(extensionNameList);
@@ -419,14 +412,9 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
-                if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath))
+                if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath) && await GetFileAsync(openFolderDialog.SelectedPath) is List<OldAndNewNameModel> fileNameList && fileNameList.Count > 0)
                 {
-                    List<OldAndNewNameModel> fileNameList = await GetFileAsync(openFolderDialog.SelectedPath);
-
-                    if (fileNameList is not null && fileNameList.Count > 0)
-                    {
-                        AddToExtensionNamePage(fileNameList);
-                    }
+                    AddToExtensionNamePage(fileNameList);
                 }
                 openFolderDialog.Dispose();
             }

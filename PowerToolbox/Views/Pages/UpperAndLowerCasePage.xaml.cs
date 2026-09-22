@@ -146,17 +146,11 @@ namespace PowerToolbox.Views.Pages
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
             try
             {
-                List<string> fileList = await GetDragDropSelectedFilesAsync(args.DataView);
-
-                if (fileList is not null && fileList.Count > 0)
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count > 0 && await GetNeedConvertFileListAsync(fileList) is List<OldAndNewNameModel> upperAndLowerCaseList && upperAndLowerCaseList.Count > 0)
                 {
-                    List<OldAndNewNameModel> upperAndLowerCaseList = await GetNeedConvertFileListAsync(fileList);
-                    if (upperAndLowerCaseList is not null && upperAndLowerCaseList.Count > 0)
-                    {
-                        AddToUpperAndLowerCasePage(upperAndLowerCaseList);
-                        IsOperationFailed = false;
-                        OperationFailedList.Clear();
-                    }
+                    AddToUpperAndLowerCasePage(upperAndLowerCaseList);
+                    IsOperationFailed = false;
+                    OperationFailedList.Clear();
                 }
             }
             catch (Exception e)

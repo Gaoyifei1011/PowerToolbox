@@ -42,6 +42,8 @@ namespace PowerToolbox.Views.Windows
     /// </summary>
     internal partial class MainWindow : Window, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string AdvancedSystemOptionsString = ResourceService.WindowResource.GetString("AdvancedSystemOptions");
         private readonly string AllToolsString = ResourceService.WindowResource.GetString("AllTools");
         private readonly string ContextMenuManagerString = ResourceService.WindowResource.GetString("ContextMenuManager");
@@ -71,15 +73,19 @@ namespace PowerToolbox.Views.Windows
         private readonly string WinFRString = ResourceService.WindowResource.GetString("WinFR");
         private readonly string WinSATString = ResourceService.WindowResource.GetString("WinSAT");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
-        private readonly OverlappedPresenter overlappedPresenter;
-        private readonly SUBCLASSPROC mainWindowSubClassProc;
+        private OverlappedPresenter overlappedPresenter;
+        private SUBCLASSPROC mainWindowSubClassProc;
         private bool isProgrammaticExpand;
+
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、集合与事件
 
         internal new static MainWindow Current { get; private set; }
 
         private string _windowTitle;
 
-        internal string WindowTitle
+        private string WindowTitle
         {
             get { return _windowTitle; }
 
@@ -95,7 +101,7 @@ namespace PowerToolbox.Views.Windows
 
         private SystemBackdrop _windowSystemBackdrop;
 
-        internal SystemBackdrop WindowSystemBackdrop
+        private SystemBackdrop WindowSystemBackdrop
         {
             get { return _windowSystemBackdrop; }
 
@@ -111,7 +117,7 @@ namespace PowerToolbox.Views.Windows
 
         private ElementTheme _windowTheme;
 
-        internal ElementTheme WindowTheme
+        private ElementTheme WindowTheme
         {
             get { return _windowTheme; }
 
@@ -127,7 +133,7 @@ namespace PowerToolbox.Views.Windows
 
         private bool _isWindowMaximized;
 
-        internal bool IsWindowMaximized
+        private bool IsWindowMaximized
         {
             get { return _isWindowMaximized; }
 
@@ -143,7 +149,7 @@ namespace PowerToolbox.Views.Windows
 
         private bool _isBackEnabled;
 
-        internal bool IsBackEnabled
+        private bool IsBackEnabled
         {
             get { return _isBackEnabled; }
 
@@ -159,7 +165,7 @@ namespace PowerToolbox.Views.Windows
 
         private NavigationViewItemModel _selectedItem;
 
-        internal NavigationViewItemModel SelectedItem
+        private NavigationViewItemModel SelectedItem
         {
             get { return _selectedItem; }
 
@@ -173,56 +179,1223 @@ namespace PowerToolbox.Views.Windows
             }
         }
 
-        internal WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemMenuItemsCollection { get; } = [];
+        private WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemMenuItemsCollection { get; } = [];
 
-        internal WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemFooterMenuItemsCollection { get; } = [];
+        private WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemFooterMenuItemsCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion 第二部分：属性、集合与事件
+
+        #region 第三部分：构造函数
 
         internal MainWindow()
         {
             Current = this;
             InitializeComponent();
+            InitializeWindowData(AppWindow);
+            MountWindowEvent();
+            MountWindowWndProc(AppWindow.Id);
+            SetWindowTheme();
+            SetSystemBackdrop();
+            SetWindowPosition(AppWindow);
+            SetClassicMenuTheme(AppWindow.TitleBar, (Content as FrameworkElement).ActualTheme);
+            EnableElevatedDragDrop(AppWindow.Id);
+            SetTopMost();
+            InitializeNavigationViewItemCollection();
+        }
 
-            // 窗口部分初始化
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：挂载事件处理
+
+        /// <summary>
+        /// 窗口还原
+        /// </summary>
+        private void OnRestoreClicked(object sender, RoutedEventArgs args)
+        {
+            SendWindowMessage(AppWindow.Id, WindowMessageKind.Restore);
+        }
+
+        /// <summary>
+        /// 窗口移动
+        /// </summary>
+        private void OnMoveClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is MenuFlyoutItem menuFlyoutItem && menuFlyoutItem.Tag is MenuFlyout menuFlyout)
+            {
+                menuFlyout.Hide();
+                SendWindowMessage(AppWindow.Id, WindowMessageKind.Move);
+            }
+        }
+
+        /// <summary>
+        /// 窗口大小
+        /// </summary>
+        private void OnSizeClicked(object sender, RoutedEventArgs args)
+        {
+            if (sender is MenuFlyoutItem menuFlyoutItem && menuFlyoutItem.Tag is MenuFlyout menuFlyout)
+            {
+                menuFlyout.Hide();
+                SendWindowMessage(AppWindow.Id, WindowMessageKind.Size);
+            }
+        }
+
+        /// <summary>
+        /// 窗口最小化
+        /// </summary>
+        private void OnMinimizeClicked(object sender, RoutedEventArgs args)
+        {
+            SendWindowMessage(AppWindow.Id, WindowMessageKind.Minimize);
+        }
+
+        /// <summary>
+        /// 窗口最大化
+        /// </summary>
+        private void OnMaximizeClicked(object sender, RoutedEventArgs args)
+        {
+            SendWindowMessage(AppWindow.Id, WindowMessageKind.Maximize);
+        }
+
+        /// <summary>
+        /// 窗口关闭
+        /// </summary>
+        private void OnCloseClicked(object sender, RoutedEventArgs args)
+        {
+            SendWindowMessage(AppWindow.Id, WindowMessageKind.Close);
+        }
+
+        /// <summary>
+        /// 应用主题变化时设置标题栏按钮的颜色
+        /// </summary>
+        private void OnActualThemeChanged(FrameworkElement sender, object args)
+        {
+            SetTitleBarTheme(AppWindow.TitleBar, sender.ActualTheme);
+            SetClassicMenuTheme(AppWindow.TitleBar, sender.ActualTheme);
+        }
+
+        /// <summary>
+        /// 按下 Alt + BackSpace 键时，导航控件返回到上一页
+        /// </summary>
+        private void OnKeyBoardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            if (sender.Key is VirtualKey.Back && sender.Modifiers is VirtualKeyModifiers.Menu)
+            {
+                NavigationFrom();
+            }
+        }
+
+        /// <summary>
+        /// 当后退按钮收到交互（如单击或点击）时发生
+        /// </summary>
+        private void OnBackClicked(object sender, RoutedEventArgs args)
+        {
+            NavigationFrom();
+        }
+
+        /// <summary>
+        /// 导航控件加载完成后初始化内容，初始化导航控件属性、屏幕缩放比例值和应用的背景色
+        /// </summary>
+        private async void OnLoaded(object sender, RoutedEventArgs args)
+        {
+            // 设置标题栏主题
+            SetTitleBarTheme(AppWindow.TitleBar, (Content as FrameworkElement).ActualTheme);
+            SelectedItem = NavigationViewItemMenuItemsCollection[0];
+            NavigateTo(typeof(AllToolsPage));
+            IsBackEnabled = CanGoBack();
+        }
+
+        /// <summary>
+        /// 当导航栏菜单中的选中项发生改变时触发的事件
+        /// </summary>
+        private void OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            if (args.SelectedItem is not null && !Equals(SelectedItem, args.SelectedItem))
+            {
+                SelectedItem = args.SelectedItem as NavigationViewItemModel;
+
+                if (SelectedItem is null)
+                {
+                    return;
+                }
+                // 对应的页面为空，选中项修改为已经选择的页面
+                if (SelectedItem.NavigationPage is null)
+                {
+                    Type currentPageType = GetCurrentPageType();
+                    NavigationViewItemModel selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemMenuItemsCollection);
+                    if (selectedNavigationViewItem is not null)
+                    {
+                        SelectedItem = selectedNavigationViewItem;
+                    }
+                    else
+                    {
+                        selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemFooterMenuItemsCollection);
+                        SelectedItem = selectedNavigationViewItem is not null ? selectedNavigationViewItem : null;
+                    }
+                }
+                // 切换到选中项对应的页面
+                else
+                {
+                    if (Equals(SelectedItem.NavigationPage, typeof(ShellMenuPage)))
+                    {
+                        NavigateTo(SelectedItem.NavigationPage, "ShellMenu");
+                    }
+                    else
+                    {
+                        NavigateTo(SelectedItem.NavigationPage);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 当树中的节点开始展开时发生时的事件
+        /// </summary>
+        private async void OnExpanding(NavigationView sender, NavigationViewItemExpandingEventArgs args)
+        {
+            Type currentPageType = GetCurrentPageType();
+            if (isProgrammaticExpand)
+            {
+                isProgrammaticExpand = false;
+                await Task.Delay(5);
+            }
+
+            // 切换到选中页面对应的项
+            SelectedItem = null;
+            NavigationViewItemModel selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemMenuItemsCollection);
+            if (selectedNavigationViewItem is not null)
+            {
+                SelectedItem = selectedNavigationViewItem;
+            }
+            else
+            {
+                selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemFooterMenuItemsCollection);
+                SelectedItem = selectedNavigationViewItem is not null ? selectedNavigationViewItem : null;
+            }
+        }
+
+        /// <summary>
+        /// 当树中的节点开始折叠时发生时的事件
+        /// </summary>
+        private void OnCollapsed(NavigationView sender, NavigationViewItemCollapsedEventArgs args)
+        {
+            Type currentPageType = GetCurrentPageType();
+
+            // 切换到选中页面对应的项
+            SelectedItem = null;
+            NavigationViewItemModel selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemMenuItemsCollection);
+            if (selectedNavigationViewItem is not null)
+            {
+                SelectedItem = selectedNavigationViewItem;
+            }
+            else
+            {
+                selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemFooterMenuItemsCollection);
+                SelectedItem = selectedNavigationViewItem is not null ? selectedNavigationViewItem : null;
+            }
+        }
+
+        /// <summary>
+        /// 导航完成后发生
+        /// </summary>
+        private async void OnNavigated(object sender, NavigationEventArgs args)
+        {
+            try
+            {
+                Type currentPageType = GetCurrentPageType();
+
+                // 切换到选中页面对应的项
+                NavigationViewItemModel selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemMenuItemsCollection);
+                // 显示未打开的父项
+                if (ShowParentNavigationViewItem(selectedNavigationViewItem))
+                {
+                    await Task.Delay(5);
+                }
+
+                SelectedItem = null;
+                if (selectedNavigationViewItem is not null)
+                {
+                    SelectedItem = selectedNavigationViewItem;
+                }
+                else
+                {
+                    selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemFooterMenuItemsCollection);
+                    SelectedItem = selectedNavigationViewItem is not null ? selectedNavigationViewItem : null;
+                }
+
+                IsBackEnabled = CanGoBack();
+
+                // 如果导航到高级选项设置页面、更新页面、文件恢复页面，而且是非管理员模式，显示提示对话框
+                if ((Equals(currentPageType, typeof(AdvancedSystemOptionsPage)) || Equals(currentPageType, typeof(UpdateManagerPage)) || Equals(currentPageType, typeof(WinFRPage))) && !RuntimeHelper.IsElevated)
+                {
+                    await ShowDialogAsync(new NeedElevatedDialog());
+                    NavigationFrom();
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(OnNavigated), 1, e);
+            }
+        }
+
+        /// <summary>
+        /// 导航失败时发生
+        /// </summary>
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs args)
+        {
+            args.Handled = true;
+            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(OnNavigationFailed), 1, args.Exception);
+            (Application.Current as MainApp).Dispose();
+        }
+
+        /// <summary>
+        /// 设置选项发生变化时触发的事件
+        /// </summary>
+        private void OnServicePropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            synchronizationContext.Post((_) =>
+            {
+                if (string.Equals(args.PropertyName, nameof(ThemeService.AppTheme)))
+                {
+                    SetWindowTheme();
+                }
+                if (string.Equals(args.PropertyName, nameof(BackdropService.AppBackdrop)))
+                {
+                    SetSystemBackdrop();
+                }
+                if (string.Equals(args.PropertyName, nameof(TopMostService.TopMost)))
+                {
+                    SetTopMost();
+                }
+            }, null);
+        }
+
+        #endregion 第四部分：挂载事件处理
+
+        #region 第五部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化窗口数据
+        /// </summary>
+        private void InitializeWindowData(AppWindow appWindow)
+        {
+            if (appWindow is null)
+            {
+                return;
+            }
+
             WindowTitle = RuntimeHelper.IsElevated ? TitleString + RunningAdministratorString : TitleString;
-            overlappedPresenter = AppWindow.Presenter as OverlappedPresenter;
+            overlappedPresenter = appWindow.Presenter as OverlappedPresenter;
             ExtendsContentIntoTitleBar = true;
-            AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-            AppWindow.TitleBar.InactiveBackgroundColor = Colors.Transparent;
-            AppWindow.TitleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
+            appWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
+            appWindow.TitleBar.InactiveBackgroundColor = Colors.Transparent;
+            appWindow.TitleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
             IsWindowMaximized = overlappedPresenter.State is OverlappedPresenterState.Maximized;
+        }
 
-            // 挂载相应的事件
+        /// <summary>
+        /// 发送窗口消息类型
+        /// </summary>
+        private void SendWindowMessage(Microsoft.UI.WindowId windowId, WindowMessageKind windowMessageKind)
+        {
+            switch (windowMessageKind)
+            {
+                case WindowMessageKind.Move:
+                    {
+                        User32Library.SendMessage((nint)windowId.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_MOVE, 0);
+                        break;
+                    }
+                case WindowMessageKind.Size:
+                    {
+                        User32Library.SendMessage((nint)windowId.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_SIZE, 0);
+                        break;
+                    }
+                case WindowMessageKind.Minimize:
+                    {
+                        User32Library.SendMessage((nint)windowId.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_MINIMIZE, 0);
+                        break;
+                    }
+                case WindowMessageKind.Maximize:
+                    {
+                        User32Library.SendMessage((nint)windowId.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_MAXIMIZE, 0);
+                        break;
+                    }
+                case WindowMessageKind.Restore:
+                    {
+                        User32Library.SendMessage((nint)windowId.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_RESTORE, 0);
+                        break;
+                    }
+                case WindowMessageKind.Close:
+                    {
+                        User32Library.SendMessage((nint)windowId.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_CLOSE, 0);
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 挂载窗口事件
+        /// </summary>
+        private void MountWindowEvent()
+        {
             AlwaysShowBackdropService.PropertyChanged += OnServicePropertyChanged;
             ThemeService.PropertyChanged += OnServicePropertyChanged;
             BackdropService.PropertyChanged += OnServicePropertyChanged;
             TopMostService.PropertyChanged += OnServicePropertyChanged;
+        }
 
-            // 标题栏和右键菜单设置
-            SetClassicMenuTheme((Content as FrameworkElement).ActualTheme);
+        /// <summary>
+        /// 卸载窗口事件
+        /// </summary>
+        private void DismountWindowEvent()
+        {
+            try
+            {
+                AlwaysShowBackdropService.PropertyChanged -= OnServicePropertyChanged;
+                ThemeService.PropertyChanged -= OnServicePropertyChanged;
+                BackdropService.PropertyChanged -= OnServicePropertyChanged;
+                TopMostService.PropertyChanged -= OnServicePropertyChanged;
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(DismountWindowEvent), 1, e);
+            }
+        }
 
-            // 为应用主窗口添加窗口过程
+        /// <summary>
+        /// 挂载窗口进程
+        /// </summary>
+        private void MountWindowWndProc(Microsoft.UI.WindowId windowId)
+        {
             mainWindowSubClassProc = new(MainWindowSubClassProc);
-            Comctl32Library.SetWindowSubclass((nint)AppWindow.Id.Value, mainWindowSubClassProc, 0, 0);
+            Comctl32Library.SetWindowSubclass((nint)windowId.Value, mainWindowSubClassProc, 0, 0);
+        }
 
-            SetWindowTheme();
-            SetSystemBackdrop();
-            SetTopMost();
+        /// <summary>
+        /// 卸载窗口进程
+        /// </summary>
+        private void DismountWindowWndProc(Microsoft.UI.WindowId windowId)
+        {
+            Comctl32Library.RemoveWindowSubclass((nint)windowId.Value, mainWindowSubClassProc, 0);
+        }
+
+        /// <summary>
+        /// 设置应用显示的主题
+        /// </summary>
+        private void SetWindowTheme()
+        {
+            WindowTheme = string.Equals(ThemeService.AppTheme, ThemeService.ThemeList[0]) ? Application.Current.RequestedTheme is ApplicationTheme.Light ? ElementTheme.Light : ElementTheme.Dark : Enum.TryParse(ThemeService.AppTheme, out ElementTheme elementTheme) ? elementTheme : ElementTheme.Default;
+        }
+
+        /// <summary>
+        /// 设置应用的背景色
+        /// </summary>
+        private void SetSystemBackdrop()
+        {
+            if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[1]))
+            {
+                WindowSystemBackdrop = new MaterialBackdrop(MicaKind.Base);
+                VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
+            }
+            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[2]))
+            {
+                WindowSystemBackdrop = new MaterialBackdrop(MicaKind.BaseAlt);
+                VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
+            }
+            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[3]))
+            {
+                WindowSystemBackdrop = new MaterialBackdrop(DesktopAcrylicKind.Default);
+                VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
+            }
+            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[4]))
+            {
+                WindowSystemBackdrop = new MaterialBackdrop(DesktopAcrylicKind.Base);
+                VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
+            }
+            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[5]))
+            {
+                WindowSystemBackdrop = new MaterialBackdrop(DesktopAcrylicKind.Thin);
+                VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
+            }
+            else
+            {
+                WindowSystemBackdrop = null;
+                VisualStateManager.GoToState(MainPage, "BackgroundDefault", false);
+            }
+        }
+
+        /// <summary>
+        /// 设置窗口大小和位置
+        /// </summary>
+        private void SetWindowPosition(AppWindow appWindow)
+        {
+            if (appWindow is null)
+            {
+                return;
+            }
 
             // 默认直接显示到窗口中间
-            User32Library.GetWindowRect((nint)AppWindow.Id.Value, out RECT rect);
+            User32Library.GetWindowRect((nint)appWindow.Id.Value, out RECT rect);
             int width = rect.right - rect.left;
             int height = rect.bottom - rect.top;
-            User32Library.SetWindowPos((nint)AppWindow.Id.Value, 0, (System.Windows.Forms.SystemInformation.WorkingArea.Width - width) / 2, (System.Windows.Forms.SystemInformation.WorkingArea.Height - height) / 2, 0, 0, SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_NOZORDER);
+            User32Library.SetWindowPos((nint)appWindow.Id.Value, 0, (System.Windows.Forms.SystemInformation.WorkingArea.Width - width) / 2, (System.Windows.Forms.SystemInformation.WorkingArea.Height - height) / 2, 0, 0, SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_NOZORDER);
+        }
 
+        /// <summary>
+        /// 设置标题栏按钮的主题色
+        /// </summary>
+        private void SetTitleBarTheme(AppWindowTitleBar appWindowTitleBar, ElementTheme theme)
+        {
+            if (appWindowTitleBar is null)
+            {
+                return;
+            }
+
+            appWindowTitleBar.BackgroundColor = Colors.Transparent;
+            appWindowTitleBar.ForegroundColor = Colors.Transparent;
+            appWindowTitleBar.InactiveBackgroundColor = Colors.Transparent;
+            appWindowTitleBar.InactiveForegroundColor = Colors.Transparent;
+            appWindowTitleBar.ButtonBackgroundColor = Colors.Transparent;
+            appWindowTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+
+            if (theme is ElementTheme.Light)
+            {
+                appWindowTitleBar.ButtonForegroundColor = Color.FromArgb(255, 23, 23, 23);
+                appWindowTitleBar.ButtonHoverBackgroundColor = Color.FromArgb(25, 0, 0, 0);
+                appWindowTitleBar.ButtonHoverForegroundColor = Colors.Black;
+                appWindowTitleBar.ButtonPressedBackgroundColor = Color.FromArgb(51, 0, 0, 0);
+                appWindowTitleBar.ButtonPressedForegroundColor = Colors.Black;
+                appWindowTitleBar.ButtonInactiveForegroundColor = Color.FromArgb(255, 153, 153, 153);
+            }
+            else
+            {
+                appWindowTitleBar.ButtonForegroundColor = Color.FromArgb(255, 242, 242, 242);
+                appWindowTitleBar.ButtonHoverBackgroundColor = Color.FromArgb(25, 255, 255, 255);
+                appWindowTitleBar.ButtonHoverForegroundColor = Colors.White;
+                appWindowTitleBar.ButtonPressedBackgroundColor = Color.FromArgb(51, 255, 255, 255);
+                appWindowTitleBar.ButtonPressedForegroundColor = Colors.White;
+                appWindowTitleBar.ButtonInactiveForegroundColor = Color.FromArgb(255, 102, 102, 102);
+            }
+        }
+
+        /// <summary>
+        /// 设置传统菜单标题栏按钮的主题色
+        /// </summary>
+        private void SetClassicMenuTheme(AppWindowTitleBar appWindowTitleBar, ElementTheme theme)
+        {
+            if (appWindowTitleBar is null)
+            {
+                return;
+            }
+
+            if (theme is ElementTheme.Light)
+            {
+                appWindowTitleBar.PreferredTheme = TitleBarTheme.Light;
+                UxthemeLibrary.SetPreferredAppMode(PreferredAppMode.ForceLight);
+            }
+            else
+            {
+                appWindowTitleBar.PreferredTheme = TitleBarTheme.Dark;
+                UxthemeLibrary.SetPreferredAppMode(PreferredAppMode.ForceDark);
+            }
+
+            UxthemeLibrary.FlushMenuThemes();
+        }
+
+        /// <summary>
+        /// 启用提升权限下的拖放支持
+        /// </summary>
+        private void EnableElevatedDragDrop(Microsoft.UI.WindowId windowId)
+        {
             if (RuntimeHelper.IsElevated)
             {
                 User32Library.ChangeWindowMessageFilter(WindowMessage.WM_DROPFILES, ChangeFilterFlags.MSGFLT_ADD);
                 User32Library.ChangeWindowMessageFilter(WindowMessage.WM_COPYGLOBALDATA, ChangeFilterFlags.MSGFLT_ADD);
-                Shell32Library.DragAcceptFiles((nint)AppWindow.Id.Value, true);
+                Shell32Library.DragAcceptFiles((nint)windowId.Value, true);
+            }
+        }
+
+        /// <summary>
+        /// 禁用提升权限下的拖放支持
+        /// </summary>
+        private void DisableElevatedDragDrop()
+        {
+            if (RuntimeHelper.IsElevated)
+            {
+                User32Library.ChangeWindowMessageFilter(WindowMessage.WM_DROPFILES, ChangeFilterFlags.MSGFLT_REMOVE);
+                User32Library.ChangeWindowMessageFilter(WindowMessage.WM_COPYGLOBALDATA, ChangeFilterFlags.MSGFLT_REMOVE);
+            }
+        }
+
+        /// <summary>
+        /// 设置窗口的置顶状态
+        /// </summary>
+        private void SetTopMost()
+        {
+            overlappedPresenter.IsAlwaysOnTop = TopMostService.TopMost;
+        }
+
+        /// <summary>
+        /// 应用主窗口消息处理
+        /// </summary>
+        private nint MainWindowSubClassProc(nint hWnd, WindowMessage Msg, nuint wParam, nint lParam, uint uIdSubclass, nint dwRefData)
+        {
+            switch (Msg)
+            {
+                // 窗口位置发生变化时触发的消息
+                case WindowMessage.WM_MOVE:
+                    {
+                        if (TitlebarMenuFlyout.IsOpen)
+                        {
+                            TitlebarMenuFlyout.Hide();
+                        }
+
+                        if (overlappedPresenter is not null)
+                        {
+                            IsWindowMaximized = overlappedPresenter.State is OverlappedPresenterState.Maximized;
+                        }
+                        break;
+                    }
+                // 窗口大小发生变化时触发的消息
+                case WindowMessage.WM_SIZE:
+                    {
+                        if (TitlebarMenuFlyout.IsOpen)
+                        {
+                            TitlebarMenuFlyout.Hide();
+                        }
+
+                        if (overlappedPresenter is not null)
+                        {
+                            IsWindowMaximized = overlappedPresenter.State is OverlappedPresenterState.Maximized;
+                        }
+
+                        if (MainPage.IsLoaded)
+                        {
+                            double dpi = Convert.ToDouble(User32Library.GetDpiForWindow((nint)AppWindow.Id.Value)) / 96;
+                            overlappedPresenter.PreferredMinimumWidth = Convert.ToInt32(1000 * dpi);
+                            overlappedPresenter.PreferredMinimumHeight = Convert.ToInt32(600 * dpi);
+                        }
+                        break;
+                    }
+                // 窗口激活状态发生变化时触发的消息
+                case WindowMessage.WM_ACTIVATE:
+                    {
+                        try
+                        {
+                            if (WindowSystemBackdrop is MaterialBackdrop materialBackdrop && materialBackdrop.BackdropConfiguration is not null)
+                            {
+                                materialBackdrop.BackdropConfiguration.IsInputActive = AlwaysShowBackdropService.AlwaysShowBackdrop || wParam is not 0;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(MainWindowSubClassProc), 1, e);
+                        }
+                        break;
+                    }
+                // 窗口关闭时触发的消息
+                case WindowMessage.WM_CLOSE:
+                    {
+                        synchronizationContext.Post(async (_) =>
+                        {
+                            int count = 0;
+                            DownloadSchedulerService.DownloadSchedulerSemaphoreSlim?.Wait();
+                            try
+                            {
+                                count = DownloadSchedulerService.DownloadSchedulerList.Count;
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(MainWindowSubClassProc), 2, e);
+                            }
+                            finally
+                            {
+                                DownloadSchedulerService.DownloadSchedulerSemaphoreSlim?.Release();
+                            }
+
+                            // 下载队列存在任务时，弹出对话窗口确认是否要关闭窗口
+                            if (count > 0)
+                            {
+                                Activate();
+
+                                // 关闭窗口提示对话框是否已经处于打开状态，如果是，不再弹出
+                                ContentDialogResult contentDialogResult = await ShowDialogAsync(new ClosingWindowDialog());
+
+                                if (contentDialogResult is ContentDialogResult.Primary)
+                                {
+                                    DismountWindowEvent();
+                                    DownloadSchedulerService.TerminateDownload();
+                                    DismountWindowWndProc(AppWindow.Id);
+                                    DisableElevatedDragDrop();
+                                    (Application.Current as MainApp).Dispose();
+                                }
+                                else if (contentDialogResult is ContentDialogResult.Secondary)
+                                {
+                                    if (GetFrameContent() is not DownloadManagerPage)
+                                    {
+                                        NavigateTo(typeof(DownloadManagerPage));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                DismountWindowEvent();
+                                DismountWindowWndProc(AppWindow.Id);
+                                DisableElevatedDragDrop();
+                                (Application.Current as MainApp).Dispose();
+                            }
+                        }, null);
+                        return 0;
+                    }
+                // 当用户按下鼠标左键时，光标位于窗口的非工作区内的消息
+                case WindowMessage.WM_NCLBUTTONDOWN:
+                    {
+                        if (TitlebarMenuFlyout.IsOpen)
+                        {
+                            TitlebarMenuFlyout.Hide();
+                        }
+                        break;
+                    }
+                // 当用户按下鼠标右键并释放时，光标位于窗口的非工作区内的消息
+                case WindowMessage.WM_NCRBUTTONUP:
+                    {
+                        if (wParam is 2 && Content is not null && Content.XamlRoot is not null)
+                        {
+                            System.Drawing.Point cursorPos = new((int)LOWORD((uint)lParam), (int)HIWORD((uint)lParam));
+                            User32Library.MapWindowPoints(0, hWnd, ref cursorPos, 2); ;
+                            double dpi = Convert.ToDouble(User32Library.GetDpiForWindow((nint)AppWindow.Id.Value)) / 96;
+
+                            FlyoutShowOptions options = new()
+                            {
+                                ShowMode = FlyoutShowMode.Standard,
+                                Position = Environment.OSVersion.Version.Build > 22000 ? new(cursorPos.X / dpi, cursorPos.Y / dpi) : new(cursorPos.X, cursorPos.Y)
+                            };
+
+                            TitlebarMenuFlyout.ShowAt(Content, options);
+                        }
+                        return 0;
+                    }
+                // 应用主题设置跟随系统发生变化时，当系统主题设置发生变化时修改修改应用背景色
+                case WindowMessage.WM_SETTINGCHANGE:
+                    {
+                        SetWindowTheme();
+                        SetClassicMenuTheme(AppWindow.TitleBar, WindowTheme);
+
+                        if (GetFrameContent() is ThemeSwitchPage themeSwitchPage)
+                        {
+                            synchronizationContext.Post(async (_) =>
+                            {
+                                await themeSwitchPage.InitializeSystemThemeSettingsAsync();
+                            }, null);
+                        }
+                        break;
+                    }
+                // 窗口 DPI 发生变化后触发的消息
+                case WindowMessage.WM_DPICHANGED:
+                    {
+                        overlappedPresenter.PreferredMinimumWidth = Convert.ToInt32(1000 * Convert.ToDouble(wParam) / 96);
+                        overlappedPresenter.PreferredMinimumHeight = Convert.ToInt32(600 * Convert.ToDouble(wParam) / 96);
+                        break;
+                    }
+                // 选择窗口右键菜单的条目时接收到的消息
+                case WindowMessage.WM_SYSCOMMAND:
+                    {
+                        SYSTEMCOMMAND sysCommand = (SYSTEMCOMMAND)(wParam & 0xFFF0);
+
+                        if (sysCommand is SYSTEMCOMMAND.SC_MOUSEMENU)
+                        {
+                            FlyoutShowOptions options = new()
+                            {
+                                Position = new(0, 15),
+                                ShowMode = FlyoutShowMode.Standard
+                            };
+                            TitlebarMenuFlyout.ShowAt(null, options);
+                            return 0;
+                        }
+                        else if (sysCommand is SYSTEMCOMMAND.SC_KEYMENU)
+                        {
+                            if (lParam is (int)System.Windows.Forms.Keys.Space)
+                            {
+                                FlyoutShowOptions options = new()
+                                {
+                                    Position = new(0, 45),
+                                    ShowMode = FlyoutShowMode.Standard
+                                };
+                                TitlebarMenuFlyout.ShowAt(null, options);
+                                return 0;
+                            }
+                        }
+                        break;
+                    }
+                // 提升权限时允许应用接收拖放消息
+                case WindowMessage.WM_DROPFILES:
+                    {
+                        Task.Run(() =>
+                        {
+                            List<string> filesList = [];
+                            char[] dragFileCharArray = new char[260];
+                            uint filesCount = Shell32Library.DragQueryFile(wParam, 0xffffffffu, null, 0);
+
+                            for (uint index = 0; index < filesCount; index++)
+                            {
+                                Array.Clear(dragFileCharArray, 0, dragFileCharArray.Length);
+                                if (Shell32Library.DragQueryFile(wParam, index, dragFileCharArray, (uint)dragFileCharArray.Length) > 0)
+                                {
+                                    filesList.Add(new string(dragFileCharArray).Replace("\0", string.Empty));
+                                }
+                            }
+
+                            Shell32Library.DragQueryPoint(wParam, out System.Drawing.Point point);
+                            Shell32Library.DragFinish(wParam);
+
+                            synchronizationContext.Post(async (_) =>
+                            {
+                                await SendReceivedFilesListAsync(filesList);
+                            }, null);
+                        });
+
+                        break;
+                    }
+            }
+            return Comctl32Library.DefSubclassProc(hWnd, Msg, wParam, lParam);
+        }
+
+        /// <summary>
+        /// 页面向前导航
+        /// </summary>
+        internal void NavigateTo(Type navigationPageType, object parameter = null)
+        {
+            try
+            {
+                // 导航到该项目对应的页面
+                if (!Equals(GetCurrentPageType(), navigationPageType))
+                {
+                    (MainNavigationView.Content as Frame).Navigate(navigationPageType, parameter);
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(NavigateTo), 1, e);
+            }
+        }
+
+        /// <summary>
+        /// 页面向后导航
+        /// </summary>
+        private void NavigationFrom()
+        {
+            if (GetFrameContent() is ShellMenuPage shellMenuPage && shellMenuPage.BreadCollection.Count is 2)
+            {
+                shellMenuPage.NavigateTo(shellMenuPage.PageList[0], null, false);
+                return;
             }
 
+            if (GetFrameContent() is AdvancedSystemOptionsPage advancedSystemOptionsPage && advancedSystemOptionsPage.BreadCollection.Count is 2)
+            {
+                advancedSystemOptionsPage.NavigateTo(advancedSystemOptionsPage.PageList[0], null, false);
+                return;
+            }
+
+            if ((MainNavigationView.Content as Frame).CanGoBack)
+            {
+                (MainNavigationView.Content as Frame).GoBack();
+            }
+        }
+
+        /// <summary>
+        /// 获取当前导航到的页
+        /// </summary>
+        private Type GetCurrentPageType()
+        {
+            return (MainNavigationView.Content as Frame).CurrentSourcePageType;
+        }
+
+        /// <summary>
+        /// 获取当前导航控件内容对应的页面
+        /// </summary>
+        internal object GetFrameContent()
+        {
+            return (MainNavigationView.Content as Frame).Content;
+        }
+
+        /// <summary>
+        /// 检查当前页面是否能向后导航
+        /// </summary>
+        private bool CanGoBack()
+        {
+            return (MainNavigationView.Content as Frame).CanGoBack;
+        }
+
+        /// <summary>
+        /// 获取选中项
+        /// </summary>
+        internal NavigationViewItemModel GetSelectedItem(Type currentPageType, WinRTObservableCollection<NavigationViewItemModel> navigationViewItemMenuItemCollection)
+        {
+            foreach (NavigationViewItemModel navigationViewItem in navigationViewItemMenuItemCollection)
+            {
+                if (Equals(navigationViewItem.NavigationPage, currentPageType))
+                {
+                    return navigationViewItem;
+                }
+
+                // 递归遍历
+                if (GetSelectedItem(currentPageType, navigationViewItem.NavigationViewItemMenuItemsCollection) is NavigationViewItemModel searchedNavigationViewItem)
+                {
+                    return searchedNavigationViewItem;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 获取选中的父项
+        /// </summary>
+        private NavigationViewItemModel GetParentNavigationViewItem(NavigationViewItemModel searchNavigationViewItem)
+        {
+            foreach (NavigationViewItemModel naviationViewItem in NavigationViewItemMenuItemsCollection)
+            {
+                if (string.Equals(naviationViewItem.NavigationTag, searchNavigationViewItem.ParentTag))
+                {
+                    return naviationViewItem;
+                }
+            }
+
+            foreach (NavigationViewItemModel naviationViewItem in NavigationViewItemFooterMenuItemsCollection)
+            {
+                if (string.Equals(naviationViewItem.NavigationTag, searchNavigationViewItem.ParentTag))
+                {
+                    return naviationViewItem;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 显示未打开的父项
+        /// </summary>
+        private bool ShowParentNavigationViewItem(NavigationViewItemModel selectedNavigationViewItem)
+        {
+            // 如果选中的是子项，而父项没有展开，则自动展开父项中所有的子项
+            if (selectedNavigationViewItem is not null && !string.IsNullOrEmpty(selectedNavigationViewItem.ParentTag))
+            {
+                NavigationViewItemModel parentNavigationViewModelItem = GetParentNavigationViewItem(selectedNavigationViewItem);
+                if (MainNavigationView.ContainerFromMenuItem(parentNavigationViewModelItem) is NavigationViewItem parentNavigationViewItem)
+                {
+                    MainNavigationView.Expand(parentNavigationViewItem);
+                    isProgrammaticExpand = true;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 显示内容对话框
+        /// </summary>
+        internal async Task<ContentDialogResult> ShowDialogAsync(ContentDialog contentDialog)
+        {
+            ContentDialogResult dialogResult = ContentDialogResult.None;
+            bool isDialogOpening = false;
+            if (contentDialog is not null && Content is not null)
+            {
+                foreach (Popup popup in VisualTreeHelper.GetOpenPopupsForXamlRoot(Content.XamlRoot))
+                {
+                    if (popup.Child is ContentDialog)
+                    {
+                        isDialogOpening = true;
+                        break;
+                    }
+                }
+
+                if (!isDialogOpening)
+                {
+                    try
+                    {
+                        contentDialog.XamlRoot = Content.XamlRoot;
+                        dialogResult = await contentDialog.ShowAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(ShowDialogAsync), 1, e);
+                    }
+                }
+            }
+
+            return dialogResult;
+        }
+
+        /// <summary>
+        /// 使用教学提示显示应用内通知
+        /// </summary>
+        internal async Task ShowNotificationAsync(TeachingTip teachingTip, int duration = 2000)
+        {
+            if (teachingTip is not null && Content is Page page && page.Content is Grid grid)
+            {
+                try
+                {
+                    grid.Children.Add(teachingTip);
+
+                    teachingTip.IsOpen = true;
+                    await Task.Delay(duration);
+                    teachingTip.IsOpen = false;
+
+                    // 应用内通知关闭动画显示耗费 300 ms
+                    await Task.Delay(300);
+                    grid.Children.Remove(teachingTip);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(ShowNotificationAsync), 1, e);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 将提权模式下拖放获得到的文件列表发送到各个页面
+        /// </summary>
+        private async Task SendReceivedFilesListAsync(List<string> filesList)
+        {
+            object currentFrameContent = GetFrameContent();
+            if (currentFrameContent is DataVerifyEncryptPage dataVerifyEncryptPage)
+            {
+                object currentDataVerifyEncryptContent = dataVerifyEncryptPage.GetFrameContent();
+                if (currentDataVerifyEncryptContent is DataEncryptPage dataEncryptPage)
+                {
+                    if (!dataEncryptPage.IsEncrypting && filesList.Count is 1)
+                    {
+                        dataEncryptPage.EncryptFile = filesList[0];
+                    }
+                }
+                else if (currentDataVerifyEncryptContent is DataVerifyPage dataVerifyPage)
+                {
+                    if (!dataVerifyPage.IsVerifying && filesList.Count is 1)
+                    {
+                        dataVerifyPage.VerifyFile = filesList[0];
+                    }
+                }
+            }
+            else if (currentFrameContent is FileManagerPage fileManagerPage)
+            {
+                object currentFileManagerContent = fileManagerPage.GetFrameContent();
+                if (currentFileManagerContent is FileNamePage fileNamePage)
+                {
+                    if (!fileNamePage.IsModifyingNow)
+                    {
+                        List<OldAndNewNameModel> fileNameList = await Task.Run(() =>
+                        {
+                            List<OldAndNewNameModel> fileNameList = [];
+
+                            foreach (string file in filesList)
+                            {
+                                FileInfo fileInfo = new(file);
+                                if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
+                                {
+                                    continue;
+                                }
+
+                                fileNameList.Add(new()
+                                {
+                                    OriginalFileName = Path.GetFileName(file),
+                                    OriginalFilePath = file,
+                                });
+                            }
+
+                            return fileNameList;
+                        });
+
+                        fileNamePage.AddToFileNamePage(fileNameList);
+                    }
+                }
+                else if (currentFileManagerContent is ExtensionNamePage extensionNamePage)
+                {
+                    if (!extensionNamePage.IsModifyingNow)
+                    {
+                        List<OldAndNewNameModel> extensionNameList = await Task.Run(() =>
+                        {
+                            List<OldAndNewNameModel> extensionNameList = [];
+
+                            foreach (string file in filesList)
+                            {
+                                FileInfo fileInfo = new(file);
+                                if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
+                                {
+                                    continue;
+                                }
+
+                                if ((new FileInfo(fileInfo.FullName).Attributes & FileAttributes.Directory) is 0)
+                                {
+                                    extensionNameList.Add(new()
+                                    {
+                                        OriginalFileName = fileInfo.Name,
+                                        OriginalFilePath = fileInfo.FullName
+                                    });
+                                }
+                            }
+
+                            return extensionNameList;
+                        });
+
+                        extensionNamePage.AddToExtensionNamePage(extensionNameList);
+                    }
+                }
+                else if (currentFileManagerContent is UpperAndLowerCasePage upperAndLowerCasePage)
+                {
+                    if (!upperAndLowerCasePage.IsModifyingNow)
+                    {
+                        List<OldAndNewNameModel> upperAndLowerCaseList = await Task.Run(() =>
+                        {
+                            List<OldAndNewNameModel> upperAndLowerCaseList = [];
+
+                            foreach (string file in filesList)
+                            {
+                                FileInfo fileInfo = new(file);
+                                if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
+                                {
+                                    continue;
+                                }
+
+                                upperAndLowerCaseList.Add(new()
+                                {
+                                    OriginalFileName = Path.GetFileName(file),
+                                    OriginalFilePath = file,
+                                });
+                            }
+
+                            return upperAndLowerCaseList;
+                        });
+
+                        upperAndLowerCasePage.AddToUpperAndLowerCasePage(upperAndLowerCaseList);
+                    }
+                }
+                else if (currentFileManagerContent is FilePropertiesPage filePropertiesPage)
+                {
+                    if (!filePropertiesPage.IsModifyingNow)
+                    {
+                        List<OldAndNewPropertiesModel> filePropertiesList = await Task.Run(() =>
+                        {
+                            List<OldAndNewPropertiesModel> filePropertiesList = [];
+
+                            foreach (string file in filesList)
+                            {
+                                FileInfo fileInfo = new(file);
+                                if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
+                                {
+                                    continue;
+                                }
+
+                                filePropertiesList.Add(new()
+                                {
+                                    FileName = Path.GetFileName(file),
+                                    FilePath = file,
+                                });
+                            }
+
+                            return filePropertiesList;
+                        });
+
+                        filePropertiesPage.AddToFilePropertiesPage(filePropertiesList);
+                    }
+                }
+            }
+            else if (currentFrameContent is FileCertificatePage fileCertificatePage)
+            {
+                if (!fileCertificatePage.IsModifyingNow)
+                {
+                    List<CertificateResultModel> fileCertificateList = await Task.Run(() =>
+                    {
+                        List<CertificateResultModel> fileCertificateList = [];
+
+                        foreach (string file in filesList)
+                        {
+                            FileInfo fileInfo = new(file);
+                            if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
+                            {
+                                continue;
+                            }
+
+                            if ((new FileInfo(fileInfo.FullName).Attributes & FileAttributes.Directory) is 0)
+                            {
+                                fileCertificateList.Add(new()
+                                {
+                                    FileName = fileInfo.Name,
+                                    FilePath = fileInfo.FullName
+                                });
+                            }
+                        }
+
+                        return fileCertificateList;
+                    });
+
+                    fileCertificatePage.AddToFileCertificatePage(fileCertificateList);
+                }
+            }
+            else if (currentFrameContent is IconExtractPage iconExtractPage)
+            {
+                if (iconExtractPage.GetIsNotParsingOrSaving(iconExtractPage.IconExtractResultKind, iconExtractPage.IsSaving) && filesList.Count is 1 && (string.Equals(Path.GetExtension(filesList[0]), ".exe") || string.Equals(Path.GetExtension(filesList[0]), ".dll")))
+                {
+                    if (Equals(iconExtractPage.SelectedGetIconType, iconExtractPage.GetIconTypeList[0]))
+                    {
+                        await iconExtractPage.ParseIconFileAsync(filesList[0]);
+                    }
+                    else if (Equals(iconExtractPage.SelectedGetIconType, iconExtractPage.GetIconTypeList[1]))
+                    {
+                        await iconExtractPage.ParseIconFileAsync(filesList[1]);
+                    }
+                }
+            }
+            else if (currentFrameContent is PriExtractPage priExtractPage)
+            {
+                if (!priExtractPage.IsProcessing && filesList.Count is 1 && string.Equals(Path.GetExtension(filesList[0]), ".pri"))
+                {
+                    await priExtractPage.ParseResourceFileAsync(filesList[0]);
+                }
+            }
+            else if (currentFrameContent is FileUnlockPage fileUnlockPage)
+            {
+                if (!fileUnlockPage.IsModifyingNow)
+                {
+                    List<FileUnlockModel> fileUnlockList = await Task.Run(() =>
+                    {
+                        List<FileUnlockModel> fileUnlockList = [];
+
+                        foreach (string file in filesList)
+                        {
+                            try
+                            {
+                                FileInfo fileInfo = new(file);
+                                FileUnlockModel fileUnlock = new()
+                                {
+                                    FileFolderName = fileInfo.Name,
+                                    FileFolderPath = fileInfo.FullName,
+                                    IsDirectory = (fileInfo.Attributes & FileAttributes.Directory) is FileAttributes.Directory
+                                };
+
+                                fileUnlockList.Add(fileUnlock);
+                            }
+                            catch (Exception e)
+                            {
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(SendReceivedFilesListAsync), 1, e);
+                            }
+                        }
+
+                        return fileUnlockList;
+                    });
+
+                    await fileUnlockPage.AddToFileUnlockPageAsync(fileUnlockList);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 初始化导航信息列表
+        /// </summary>
+        private void InitializeNavigationViewItemCollection()
+        {
             NavigationViewItemMenuItemsCollection.Add(new()
             {
                 NavigationViewItemKind = NavigationViewItemKind.Item,
@@ -500,1076 +1673,6 @@ namespace PowerToolbox.Views.Windows
             });
         }
 
-        #region 第一部分：窗口右键菜单事件
-
-        /// <summary>
-        /// 窗口还原
-        /// </summary>
-        private void OnRestoreClicked(object sender, RoutedEventArgs args)
-        {
-            User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_RESTORE, 0);
-        }
-
-        /// <summary>
-        /// 窗口移动
-        /// </summary>
-        private void OnMoveClicked(object sender, RoutedEventArgs args)
-        {
-            if (sender is MenuFlyoutItem menuFlyoutItem && menuFlyoutItem.Tag is MenuFlyout menuFlyout)
-            {
-                menuFlyout.Hide();
-                User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_MOVE, 0);
-            }
-        }
-
-        /// <summary>
-        /// 窗口大小
-        /// </summary>
-        private void OnSizeClicked(object sender, RoutedEventArgs args)
-        {
-            if (sender is MenuFlyoutItem menuFlyoutItem && menuFlyoutItem.Tag is MenuFlyout menuFlyout)
-            {
-                menuFlyout.Hide();
-                User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_SIZE, 0);
-            }
-        }
-
-        /// <summary>
-        /// 窗口最小化
-        /// </summary>
-        private void OnMinimizeClicked(object sender, RoutedEventArgs args)
-        {
-            User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_MINIMIZE, 0);
-        }
-
-        /// <summary>
-        /// 窗口最大化
-        /// </summary>
-        private void OnMaximizeClicked(object sender, RoutedEventArgs args)
-        {
-            User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_MAXIMIZE, 0);
-        }
-
-        /// <summary>
-        /// 窗口关闭
-        /// </summary>
-        private void OnCloseClicked(object sender, RoutedEventArgs args)
-        {
-            User32Library.SendMessage((nint)AppWindow.Id.Value, WindowMessage.WM_SYSCOMMAND, (nuint)SYSTEMCOMMAND.SC_CLOSE, 0);
-        }
-
-        #endregion 第一部分：窗口右键菜单事件
-
-        #region 第二部分：窗口内容挂载的事件
-
-        /// <summary>
-        /// 应用主题变化时设置标题栏按钮的颜色
-        /// </summary>
-        private void OnActualThemeChanged(FrameworkElement sender, object args)
-        {
-            SetTitleBarTheme(sender.ActualTheme);
-            SetClassicMenuTheme(sender.ActualTheme);
-        }
-
-        /// <summary>
-        /// 按下 Alt + BackSpace 键时，导航控件返回到上一页
-        /// </summary>
-        private void OnKeyDown(object sender, KeyRoutedEventArgs args)
-        {
-            if (args.Key is VirtualKey.Back && args.KeyStatus.IsMenuKeyDown)
-            {
-                NavigationFrom();
-            }
-        }
-
-        #endregion 第二部分：窗口内容挂载的事件
-
-        #region 第三部分：导航控件及其内容挂载的事件
-
-        /// <summary>
-        /// 当后退按钮收到交互（如单击或点击）时发生
-        /// </summary>
-        private void OnBackClicked(object sender, RoutedEventArgs args)
-        {
-            NavigationFrom();
-        }
-
-        /// <summary>
-        /// 导航控件加载完成后初始化内容，初始化导航控件属性、屏幕缩放比例值和应用的背景色
-        /// </summary>
-        private async void OnLoaded(object sender, RoutedEventArgs args)
-        {
-            // 设置标题栏主题
-            SetTitleBarTheme((Content as FrameworkElement).ActualTheme);
-            SelectedItem = NavigationViewItemMenuItemsCollection[0];
-            NavigateTo(typeof(AllToolsPage));
-            IsBackEnabled = CanGoBack();
-        }
-
-        /// <summary>
-        /// 当导航栏菜单中的选中项发生改变时触发的事件
-        /// </summary>
-        private void OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-        {
-            if (args.SelectedItem is not null && !Equals(SelectedItem, args.SelectedItem))
-            {
-                SelectedItem = args.SelectedItem as NavigationViewItemModel;
-
-                if (SelectedItem is not null)
-                {
-                    // 对应的页面为空，选中项修改为已经选择的页面
-                    if (SelectedItem.NavigationPage is null)
-                    {
-                        Type currentPageType = GetCurrentPageType();
-                        NavigationViewItemModel selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemMenuItemsCollection);
-                        if (selectedNavigationViewItem is not null)
-                        {
-                            SelectedItem = selectedNavigationViewItem;
-                        }
-                        else
-                        {
-                            selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemFooterMenuItemsCollection);
-                            SelectedItem = selectedNavigationViewItem is not null ? selectedNavigationViewItem : null;
-                        }
-                    }
-                    // 切换到选中项对应的页面
-                    else
-                    {
-                        if (Equals(SelectedItem.NavigationPage, typeof(ShellMenuPage)))
-                        {
-                            NavigateTo(SelectedItem.NavigationPage, "ShellMenu");
-                        }
-                        else
-                        {
-                            NavigateTo(SelectedItem.NavigationPage);
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 当树中的节点开始展开时发生时的事件
-        /// </summary>
-        private async void OnExpanding(NavigationView sender, NavigationViewItemExpandingEventArgs args)
-        {
-            Type currentPageType = GetCurrentPageType();
-            if (isProgrammaticExpand)
-            {
-                isProgrammaticExpand = false;
-                await Task.Delay(5);
-            }
-
-            // 切换到选中页面对应的项
-            SelectedItem = null;
-            NavigationViewItemModel selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemMenuItemsCollection);
-            if (selectedNavigationViewItem is not null)
-            {
-                SelectedItem = selectedNavigationViewItem;
-            }
-            else
-            {
-                selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemFooterMenuItemsCollection);
-                SelectedItem = selectedNavigationViewItem is not null ? selectedNavigationViewItem : null;
-            }
-        }
-
-        /// <summary>
-        /// 当树中的节点开始折叠时发生时的事件
-        /// </summary>
-        private void OnCollapsed(NavigationView sender, NavigationViewItemCollapsedEventArgs args)
-        {
-            Type currentPageType = GetCurrentPageType();
-
-            // 切换到选中页面对应的项
-            SelectedItem = null;
-            NavigationViewItemModel selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemMenuItemsCollection);
-            if (selectedNavigationViewItem is not null)
-            {
-                SelectedItem = selectedNavigationViewItem;
-            }
-            else
-            {
-                selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemFooterMenuItemsCollection);
-                SelectedItem = selectedNavigationViewItem is not null ? selectedNavigationViewItem : null;
-            }
-        }
-
-        /// <summary>
-        /// 导航完成后发生
-        /// </summary>
-        private async void OnNavigated(object sender, NavigationEventArgs args)
-        {
-            try
-            {
-                Type currentPageType = GetCurrentPageType();
-
-                // 切换到选中页面对应的项
-                NavigationViewItemModel selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemMenuItemsCollection);
-                // 显示未打开的父项
-                if (ShowParentNavigationViewItem(selectedNavigationViewItem))
-                {
-                    await Task.Delay(5);
-                }
-
-                SelectedItem = null;
-                if (selectedNavigationViewItem is not null)
-                {
-                    SelectedItem = selectedNavigationViewItem;
-                }
-                else
-                {
-                    selectedNavigationViewItem = GetSelectedItem(currentPageType, NavigationViewItemFooterMenuItemsCollection);
-                    SelectedItem = selectedNavigationViewItem is not null ? selectedNavigationViewItem : null;
-                }
-
-                IsBackEnabled = CanGoBack();
-
-                // 如果导航到高级选项设置页面、更新页面、文件恢复页面，而且是非管理员模式，显示提示对话框
-                if ((Equals(currentPageType, typeof(AdvancedSystemOptionsPage)) || Equals(currentPageType, typeof(UpdateManagerPage)) || Equals(currentPageType, typeof(WinFRPage))) && !RuntimeHelper.IsElevated)
-                {
-                    await ShowDialogAsync(new NeedElevatedDialog());
-                    NavigationFrom();
-                }
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(OnNavigated), 1, e);
-            }
-        }
-
-        /// <summary>
-        /// 导航失败时发生
-        /// </summary>
-        private void OnNavigationFailed(object sender, NavigationFailedEventArgs args)
-        {
-            args.Handled = true;
-            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(OnNavigationFailed), 1, args.Exception);
-            (Application.Current as MainApp).Dispose();
-        }
-
-        #endregion 第三部分：导航控件及其内容挂载的事件
-
-        #region 第四部分：自定义事件
-
-        /// <summary>
-        /// 设置选项发生变化时触发的事件
-        /// </summary>
-        private void OnServicePropertyChanged(object sender, PropertyChangedEventArgs args)
-        {
-            synchronizationContext.Post((_) =>
-            {
-                if (string.Equals(args.PropertyName, nameof(ThemeService.AppTheme)))
-                {
-                    SetWindowTheme();
-                }
-                if (string.Equals(args.PropertyName, nameof(BackdropService.AppBackdrop)))
-                {
-                    SetSystemBackdrop();
-                }
-                if (string.Equals(args.PropertyName, nameof(TopMostService.TopMost)))
-                {
-                    SetTopMost();
-                }
-            }, null);
-        }
-
-        #endregion 第四部分：自定义事件
-
-        #region 第五部分：窗口及内容属性设置
-
-        /// <summary>
-        /// 设置应用显示的主题
-        /// </summary>
-        internal void SetWindowTheme()
-        {
-            WindowTheme = string.Equals(ThemeService.AppTheme, ThemeService.ThemeList[0]) ? Application.Current.RequestedTheme is ApplicationTheme.Light ? ElementTheme.Light : ElementTheme.Dark : Enum.TryParse(ThemeService.AppTheme, out ElementTheme elementTheme) ? elementTheme : ElementTheme.Default;
-        }
-
-        /// <summary>
-        /// 设置应用的背景色
-        /// </summary>
-        private void SetSystemBackdrop()
-        {
-            if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[1]))
-            {
-                WindowSystemBackdrop = new MaterialBackdrop(MicaKind.Base);
-                VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
-            }
-            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[2]))
-            {
-                WindowSystemBackdrop = new MaterialBackdrop(MicaKind.BaseAlt);
-                VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
-            }
-            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[3]))
-            {
-                WindowSystemBackdrop = new MaterialBackdrop(DesktopAcrylicKind.Default);
-                VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
-            }
-            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[4]))
-            {
-                WindowSystemBackdrop = new MaterialBackdrop(DesktopAcrylicKind.Base);
-                VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
-            }
-            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[5]))
-            {
-                WindowSystemBackdrop = new MaterialBackdrop(DesktopAcrylicKind.Thin);
-                VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
-            }
-            else
-            {
-                WindowSystemBackdrop = null;
-                VisualStateManager.GoToState(MainPage, "BackgroundDefault", false);
-            }
-        }
-
-        /// <summary>
-        /// 设置标题栏按钮的主题色
-        /// </summary>
-        private void SetTitleBarTheme(ElementTheme theme)
-        {
-            AppWindowTitleBar titleBar = AppWindow.TitleBar;
-
-            titleBar.BackgroundColor = Colors.Transparent;
-            titleBar.ForegroundColor = Colors.Transparent;
-            titleBar.InactiveBackgroundColor = Colors.Transparent;
-            titleBar.InactiveForegroundColor = Colors.Transparent;
-            titleBar.ButtonBackgroundColor = Colors.Transparent;
-            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-
-            if (theme is ElementTheme.Light)
-            {
-                titleBar.ButtonForegroundColor = Color.FromArgb(255, 23, 23, 23);
-                titleBar.ButtonHoverBackgroundColor = Color.FromArgb(25, 0, 0, 0);
-                titleBar.ButtonHoverForegroundColor = Colors.Black;
-                titleBar.ButtonPressedBackgroundColor = Color.FromArgb(51, 0, 0, 0);
-                titleBar.ButtonPressedForegroundColor = Colors.Black;
-                titleBar.ButtonInactiveForegroundColor = Color.FromArgb(255, 153, 153, 153);
-            }
-            else
-            {
-                titleBar.ButtonForegroundColor = Color.FromArgb(255, 242, 242, 242);
-                titleBar.ButtonHoverBackgroundColor = Color.FromArgb(25, 255, 255, 255);
-                titleBar.ButtonHoverForegroundColor = Colors.White;
-                titleBar.ButtonPressedBackgroundColor = Color.FromArgb(51, 255, 255, 255);
-                titleBar.ButtonPressedForegroundColor = Colors.White;
-                titleBar.ButtonInactiveForegroundColor = Color.FromArgb(255, 102, 102, 102);
-            }
-        }
-
-        /// <summary>
-        /// 设置传统菜单标题栏按钮的主题色
-        /// </summary>
-        private void SetClassicMenuTheme(ElementTheme theme)
-        {
-            AppWindowTitleBar titleBar = AppWindow.TitleBar;
-
-            if (theme is ElementTheme.Light)
-            {
-                titleBar.PreferredTheme = TitleBarTheme.Light;
-                UxthemeLibrary.SetPreferredAppMode(PreferredAppMode.ForceLight);
-            }
-            else
-            {
-                titleBar.PreferredTheme = TitleBarTheme.Dark;
-                UxthemeLibrary.SetPreferredAppMode(PreferredAppMode.ForceDark);
-            }
-
-            UxthemeLibrary.FlushMenuThemes();
-        }
-
-        /// <summary>
-        /// 设置窗口的置顶状态
-        /// </summary>
-        private void SetTopMost()
-        {
-            overlappedPresenter.IsAlwaysOnTop = TopMostService.TopMost;
-        }
-
-        #endregion 第五部分：窗口及内容属性设置
-
-        #region 第六部分：窗口过程
-
-        /// <summary>
-        /// 应用主窗口消息处理
-        /// </summary>
-        private nint MainWindowSubClassProc(nint hWnd, WindowMessage Msg, nuint wParam, nint lParam, uint uIdSubclass, nint dwRefData)
-        {
-            switch (Msg)
-            {
-                // 窗口位置发生变化时触发的消息
-                case WindowMessage.WM_MOVE:
-                    {
-                        if (TitlebarMenuFlyout.IsOpen)
-                        {
-                            TitlebarMenuFlyout.Hide();
-                        }
-
-                        if (overlappedPresenter is not null)
-                        {
-                            IsWindowMaximized = overlappedPresenter.State is OverlappedPresenterState.Maximized;
-                        }
-                        break;
-                    }
-                // 窗口大小发生变化时触发的消息
-                case WindowMessage.WM_SIZE:
-                    {
-                        if (TitlebarMenuFlyout.IsOpen)
-                        {
-                            TitlebarMenuFlyout.Hide();
-                        }
-
-                        if (overlappedPresenter is not null)
-                        {
-                            IsWindowMaximized = overlappedPresenter.State is OverlappedPresenterState.Maximized;
-                        }
-
-                        if (MainPage.IsLoaded)
-                        {
-                            double dpi = Convert.ToDouble(User32Library.GetDpiForWindow((nint)AppWindow.Id.Value)) / 96;
-                            overlappedPresenter.PreferredMinimumWidth = Convert.ToInt32(1000 * dpi);
-                            overlappedPresenter.PreferredMinimumHeight = Convert.ToInt32(600 * dpi);
-                        }
-                        break;
-                    }
-                // 窗口激活状态发生变化时触发的消息
-                case WindowMessage.WM_ACTIVATE:
-                    {
-                        try
-                        {
-                            if (WindowSystemBackdrop is MaterialBackdrop materialBackdrop && materialBackdrop.BackdropConfiguration is not null)
-                            {
-                                materialBackdrop.BackdropConfiguration.IsInputActive = AlwaysShowBackdropService.AlwaysShowBackdrop || wParam is not 0;
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(MainWindowSubClassProc), 1, e);
-                        }
-                        break;
-                    }
-                // 窗口关闭时触发的消息
-                case WindowMessage.WM_CLOSE:
-                    {
-                        synchronizationContext.Post(async (_) =>
-                        {
-                            int count = 0;
-                            DownloadSchedulerService.DownloadSchedulerSemaphoreSlim?.Wait();
-                            try
-                            {
-                                count = DownloadSchedulerService.DownloadSchedulerList.Count;
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(MainWindowSubClassProc), 2, e);
-                            }
-                            finally
-                            {
-                                DownloadSchedulerService.DownloadSchedulerSemaphoreSlim?.Release();
-                            }
-
-                            // 下载队列存在任务时，弹出对话窗口确认是否要关闭窗口
-                            if (count > 0)
-                            {
-                                Activate();
-
-                                // 关闭窗口提示对话框是否已经处于打开状态，如果是，不再弹出
-                                ContentDialogResult contentDialogResult = await ShowDialogAsync(new ClosingWindowDialog());
-
-                                if (contentDialogResult is ContentDialogResult.Primary)
-                                {
-                                    if (RuntimeHelper.IsElevated)
-                                    {
-                                        User32Library.ChangeWindowMessageFilter(WindowMessage.WM_DROPFILES, ChangeFilterFlags.MSGFLT_REMOVE);
-                                        User32Library.ChangeWindowMessageFilter(WindowMessage.WM_COPYGLOBALDATA, ChangeFilterFlags.MSGFLT_REMOVE);
-                                    }
-
-                                    AlwaysShowBackdropService.PropertyChanged -= OnServicePropertyChanged;
-                                    ThemeService.PropertyChanged -= OnServicePropertyChanged;
-                                    BackdropService.PropertyChanged -= OnServicePropertyChanged;
-                                    TopMostService.PropertyChanged -= OnServicePropertyChanged;
-                                    DownloadSchedulerService.TerminateDownload();
-                                    Comctl32Library.RemoveWindowSubclass((nint)AppWindow.Id.Value, mainWindowSubClassProc, 0);
-                                    (Application.Current as MainApp).Dispose();
-                                }
-                                else if (contentDialogResult is ContentDialogResult.Secondary)
-                                {
-                                    if (GetFrameContent() is not DownloadManagerPage)
-                                    {
-                                        NavigateTo(typeof(DownloadManagerPage));
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (RuntimeHelper.IsElevated)
-                                {
-                                    User32Library.ChangeWindowMessageFilter(WindowMessage.WM_DROPFILES, ChangeFilterFlags.MSGFLT_REMOVE);
-                                    User32Library.ChangeWindowMessageFilter(WindowMessage.WM_COPYGLOBALDATA, ChangeFilterFlags.MSGFLT_REMOVE);
-                                }
-
-                                AlwaysShowBackdropService.PropertyChanged -= OnServicePropertyChanged;
-                                ThemeService.PropertyChanged -= OnServicePropertyChanged;
-                                BackdropService.PropertyChanged -= OnServicePropertyChanged;
-                                TopMostService.PropertyChanged -= OnServicePropertyChanged;
-                                Comctl32Library.RemoveWindowSubclass((nint)AppWindow.Id.Value, mainWindowSubClassProc, 0);
-                                (Application.Current as MainApp).Dispose();
-                            }
-                        }, null);
-                        return 0;
-                    }
-                // 当用户按下鼠标左键时，光标位于窗口的非工作区内的消息
-                case WindowMessage.WM_NCLBUTTONDOWN:
-                    {
-                        if (TitlebarMenuFlyout.IsOpen)
-                        {
-                            TitlebarMenuFlyout.Hide();
-                        }
-                        break;
-                    }
-                // 当用户按下鼠标右键并释放时，光标位于窗口的非工作区内的消息
-                case WindowMessage.WM_NCRBUTTONUP:
-                    {
-                        if (wParam is 2 && Content is not null && Content.XamlRoot is not null)
-                        {
-                            System.Drawing.Point cursorPos = new((int)LOWORD((uint)lParam), (int)HIWORD((uint)lParam));
-                            User32Library.MapWindowPoints(0, hWnd, ref cursorPos, 2); ;
-                            double dpi = Convert.ToDouble(User32Library.GetDpiForWindow((nint)AppWindow.Id.Value)) / 96;
-
-                            FlyoutShowOptions options = new()
-                            {
-                                ShowMode = FlyoutShowMode.Standard,
-                                Position = Environment.OSVersion.Version.Build > 22000 ? new(cursorPos.X / dpi, cursorPos.Y / dpi) : new(cursorPos.X, cursorPos.Y)
-                            };
-
-                            TitlebarMenuFlyout.ShowAt(Content, options);
-                        }
-                        return 0;
-                    }
-                // 应用主题设置跟随系统发生变化时，当系统主题设置发生变化时修改修改应用背景色
-                case WindowMessage.WM_SETTINGCHANGE:
-                    {
-                        SetWindowTheme();
-                        SetClassicMenuTheme(WindowTheme);
-
-                        if (GetFrameContent() is ThemeSwitchPage themeSwitchPage)
-                        {
-                            synchronizationContext.Post(async (_) =>
-                            {
-                                await themeSwitchPage.InitializeSystemThemeSettingsAsync();
-                            }, null);
-                        }
-                        break;
-                    }
-                // 窗口 DPI 发生变化后触发的消息
-                case WindowMessage.WM_DPICHANGED:
-                    {
-                        overlappedPresenter.PreferredMinimumWidth = Convert.ToInt32(1000 * Convert.ToDouble(wParam) / 96);
-                        overlappedPresenter.PreferredMinimumHeight = Convert.ToInt32(600 * Convert.ToDouble(wParam) / 96);
-                        break;
-                    }
-                // 选择窗口右键菜单的条目时接收到的消息
-                case WindowMessage.WM_SYSCOMMAND:
-                    {
-                        SYSTEMCOMMAND sysCommand = (SYSTEMCOMMAND)(wParam & 0xFFF0);
-
-                        if (sysCommand is SYSTEMCOMMAND.SC_MOUSEMENU)
-                        {
-                            FlyoutShowOptions options = new()
-                            {
-                                Position = new(0, 15),
-                                ShowMode = FlyoutShowMode.Standard
-                            };
-                            TitlebarMenuFlyout.ShowAt(null, options);
-                            return 0;
-                        }
-                        else if (sysCommand is SYSTEMCOMMAND.SC_KEYMENU)
-                        {
-                            if (lParam is (int)System.Windows.Forms.Keys.Space)
-                            {
-                                FlyoutShowOptions options = new()
-                                {
-                                    Position = new(0, 45),
-                                    ShowMode = FlyoutShowMode.Standard
-                                };
-                                TitlebarMenuFlyout.ShowAt(null, options);
-                                return 0;
-                            }
-                        }
-                        break;
-                    }
-                // 提升权限时允许应用接收拖放消息
-                case WindowMessage.WM_DROPFILES:
-                    {
-                        Task.Run(() =>
-                        {
-                            List<string> filesList = [];
-                            char[] dragFileCharArray = new char[260];
-                            uint filesCount = Shell32Library.DragQueryFile(wParam, 0xffffffffu, null, 0);
-
-                            for (uint index = 0; index < filesCount; index++)
-                            {
-                                Array.Clear(dragFileCharArray, 0, dragFileCharArray.Length);
-                                if (Shell32Library.DragQueryFile(wParam, index, dragFileCharArray, (uint)dragFileCharArray.Length) > 0)
-                                {
-                                    filesList.Add(new string(dragFileCharArray).Replace("\0", string.Empty));
-                                }
-                            }
-
-                            Shell32Library.DragQueryPoint(wParam, out System.Drawing.Point point);
-                            Shell32Library.DragFinish(wParam);
-
-                            synchronizationContext.Post(async (_) =>
-                            {
-                                await SendReceivedFilesListAsync(filesList);
-                            }, null);
-                        });
-
-                        break;
-                    }
-            }
-            return Comctl32Library.DefSubclassProc(hWnd, Msg, wParam, lParam);
-        }
-
-        #endregion 第六部分：窗口过程
-
-        #region 第七部分：窗口导航方法
-
-        /// <summary>
-        /// 页面向前导航
-        /// </summary>
-        internal void NavigateTo(Type navigationPageType, object parameter = null)
-        {
-            try
-            {
-                // 导航到该项目对应的页面
-                if (!Equals(GetCurrentPageType(), navigationPageType))
-                {
-                    (MainNavigationView.Content as Frame).Navigate(navigationPageType, parameter);
-                }
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(NavigateTo), 1, e);
-            }
-        }
-
-        /// <summary>
-        /// 页面向后导航
-        /// </summary>
-        internal void NavigationFrom()
-        {
-            if (GetFrameContent() is ShellMenuPage shellMenuPage && shellMenuPage.BreadCollection.Count is 2)
-            {
-                shellMenuPage.NavigateTo(shellMenuPage.PageList[0], null, false);
-                return;
-            }
-
-            if (GetFrameContent() is AdvancedSystemOptionsPage advancedSystemOptionsPage && advancedSystemOptionsPage.BreadCollection.Count is 2)
-            {
-                advancedSystemOptionsPage.NavigateTo(advancedSystemOptionsPage.PageList[0], null, false);
-                return;
-            }
-
-            if ((MainNavigationView.Content as Frame).CanGoBack)
-            {
-                (MainNavigationView.Content as Frame).GoBack();
-            }
-        }
-
-        /// <summary>
-        /// 获取当前导航到的页
-        /// </summary>
-        internal Type GetCurrentPageType()
-        {
-            return (MainNavigationView.Content as Frame).CurrentSourcePageType;
-        }
-
-        /// <summary>
-        /// 获取当前导航控件内容对应的页面
-        /// </summary>
-        internal object GetFrameContent()
-        {
-            return (MainNavigationView.Content as Frame).Content;
-        }
-
-        /// <summary>
-        /// 检查当前页面是否能向后导航
-        /// </summary>
-        internal bool CanGoBack()
-        {
-            return (MainNavigationView.Content as Frame).CanGoBack;
-        }
-
-        /// <summary>
-        /// 获取选中项
-        /// </summary>
-        internal NavigationViewItemModel GetSelectedItem(Type currentPageType, WinRTObservableCollection<NavigationViewItemModel> navigationViewItemMenuItemCollection)
-        {
-            foreach (NavigationViewItemModel navigationViewItem in navigationViewItemMenuItemCollection)
-            {
-                if (Equals(navigationViewItem.NavigationPage, currentPageType))
-                {
-                    return navigationViewItem;
-                }
-
-                // 递归遍历
-                if (GetSelectedItem(currentPageType, navigationViewItem.NavigationViewItemMenuItemsCollection) is NavigationViewItemModel searchedNavigationViewItem)
-                {
-                    return searchedNavigationViewItem;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// 获取选中的父项
-        /// </summary>
-        private NavigationViewItemModel GetParentNavigationViewItem(NavigationViewItemModel searchNavigationViewItem)
-        {
-            foreach (NavigationViewItemModel naviationViewItem in NavigationViewItemMenuItemsCollection)
-            {
-                if (string.Equals(naviationViewItem.NavigationTag, searchNavigationViewItem.ParentTag))
-                {
-                    return naviationViewItem;
-                }
-            }
-
-            foreach (NavigationViewItemModel naviationViewItem in NavigationViewItemFooterMenuItemsCollection)
-            {
-                if (string.Equals(naviationViewItem.NavigationTag, searchNavigationViewItem.ParentTag))
-                {
-                    return naviationViewItem;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// 显示未打开的父项
-        /// </summary>
-        private bool ShowParentNavigationViewItem(NavigationViewItemModel selectedNavigationViewItem)
-        {
-            // 如果选中的是子项，而父项没有展开，则自动展开父项中所有的子项
-            if (selectedNavigationViewItem is not null && !string.IsNullOrEmpty(selectedNavigationViewItem.ParentTag))
-            {
-                NavigationViewItemModel parentNavigationViewModelItem = GetParentNavigationViewItem(selectedNavigationViewItem);
-                if (MainNavigationView.ContainerFromMenuItem(parentNavigationViewModelItem) is NavigationViewItem parentNavigationViewItem)
-                {
-                    MainNavigationView.Expand(parentNavigationViewItem);
-                    isProgrammaticExpand = true;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        #endregion 第七部分：窗口导航方法
-
-        #region 第八部分：显示对话框和应用通知
-
-        /// <summary>
-        /// 显示内容对话框
-        /// </summary>
-        internal async Task<ContentDialogResult> ShowDialogAsync(ContentDialog contentDialog)
-        {
-            ContentDialogResult dialogResult = ContentDialogResult.None;
-            bool isDialogOpening = false;
-            if (contentDialog is not null && Content is not null)
-            {
-                foreach (Popup popup in VisualTreeHelper.GetOpenPopupsForXamlRoot(Content.XamlRoot))
-                {
-                    if (popup.Child is ContentDialog)
-                    {
-                        isDialogOpening = true;
-                        break;
-                    }
-                }
-
-                if (!isDialogOpening)
-                {
-                    try
-                    {
-                        contentDialog.XamlRoot = Content.XamlRoot;
-                        dialogResult = await contentDialog.ShowAsync();
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(ShowDialogAsync), 1, e);
-                    }
-                }
-            }
-
-            return dialogResult;
-        }
-
-        /// <summary>
-        /// 使用教学提示显示应用内通知
-        /// </summary>
-        internal async Task ShowNotificationAsync(TeachingTip teachingTip, int duration = 2000)
-        {
-            if (teachingTip is not null && Content is Page page && page.Content is Grid grid)
-            {
-                try
-                {
-                    grid.Children.Add(teachingTip);
-
-                    teachingTip.IsOpen = true;
-                    await Task.Delay(duration);
-                    teachingTip.IsOpen = false;
-
-                    // 应用内通知关闭动画显示耗费 300 ms
-                    await Task.Delay(300);
-                    grid.Children.Remove(teachingTip);
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(ShowNotificationAsync), 1, e);
-                }
-            }
-        }
-
-        #endregion 第八部分：显示对话框和应用通知
-
-        /// <summary>
-        /// 将提权模式下拖放获得到的文件列表发送到各个页面
-        /// </summary>
-        internal async Task SendReceivedFilesListAsync(List<string> filesList)
-        {
-            object currentFrameContent = GetFrameContent();
-            if (currentFrameContent is DataVerifyEncryptPage dataVerifyEncryptPage)
-            {
-                object currentDataVerifyEncryptContent = dataVerifyEncryptPage.GetFrameContent();
-                if (currentDataVerifyEncryptContent is DataEncryptPage dataEncryptPage)
-                {
-                    if (!dataEncryptPage.IsEncrypting && filesList.Count is 1)
-                    {
-                        dataEncryptPage.EncryptFile = filesList[0];
-                    }
-                }
-                else if (currentDataVerifyEncryptContent is DataVerifyPage dataVerifyPage)
-                {
-                    if (!dataVerifyPage.IsVerifying && filesList.Count is 1)
-                    {
-                        dataVerifyPage.VerifyFile = filesList[0];
-                    }
-                }
-            }
-            else if (currentFrameContent is FileManagerPage fileManagerPage)
-            {
-                object currentFileManagerContent = fileManagerPage.GetFrameContent();
-                if (currentFileManagerContent is FileNamePage fileNamePage)
-                {
-                    if (!fileNamePage.IsModifyingNow)
-                    {
-                        List<OldAndNewNameModel> fileNameList = await Task.Run(() =>
-                        {
-                            List<OldAndNewNameModel> fileNameList = [];
-
-                            foreach (string file in filesList)
-                            {
-                                FileInfo fileInfo = new(file);
-                                if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
-                                {
-                                    continue;
-                                }
-
-                                fileNameList.Add(new()
-                                {
-                                    OriginalFileName = Path.GetFileName(file),
-                                    OriginalFilePath = file,
-                                });
-                            }
-
-                            return fileNameList;
-                        });
-
-                        fileNamePage.AddToFileNamePage(fileNameList);
-                    }
-                }
-                else if (currentFileManagerContent is ExtensionNamePage extensionNamePage)
-                {
-                    if (!extensionNamePage.IsModifyingNow)
-                    {
-                        List<OldAndNewNameModel> extensionNameList = await Task.Run(() =>
-                        {
-                            List<OldAndNewNameModel> extensionNameList = [];
-
-                            foreach (string file in filesList)
-                            {
-                                FileInfo fileInfo = new(file);
-                                if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
-                                {
-                                    continue;
-                                }
-
-                                if ((new FileInfo(fileInfo.FullName).Attributes & FileAttributes.Directory) is 0)
-                                {
-                                    extensionNameList.Add(new()
-                                    {
-                                        OriginalFileName = fileInfo.Name,
-                                        OriginalFilePath = fileInfo.FullName
-                                    });
-                                }
-                            }
-
-                            return extensionNameList;
-                        });
-
-                        extensionNamePage.AddToExtensionNamePage(extensionNameList);
-                    }
-                }
-                else if (currentFileManagerContent is UpperAndLowerCasePage upperAndLowerCasePage)
-                {
-                    if (!upperAndLowerCasePage.IsModifyingNow)
-                    {
-                        List<OldAndNewNameModel> upperAndLowerCaseList = await Task.Run(() =>
-                        {
-                            List<OldAndNewNameModel> upperAndLowerCaseList = [];
-
-                            foreach (string file in filesList)
-                            {
-                                FileInfo fileInfo = new(file);
-                                if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
-                                {
-                                    continue;
-                                }
-
-                                upperAndLowerCaseList.Add(new()
-                                {
-                                    OriginalFileName = Path.GetFileName(file),
-                                    OriginalFilePath = file,
-                                });
-                            }
-
-                            return upperAndLowerCaseList;
-                        });
-
-                        upperAndLowerCasePage.AddToUpperAndLowerCasePage(upperAndLowerCaseList);
-                    }
-                }
-                else if (currentFileManagerContent is FilePropertiesPage filePropertiesPage)
-                {
-                    if (!filePropertiesPage.IsModifyingNow)
-                    {
-                        List<OldAndNewPropertiesModel> filePropertiesList = await Task.Run(() =>
-                        {
-                            List<OldAndNewPropertiesModel> filePropertiesList = [];
-
-                            foreach (string file in filesList)
-                            {
-                                FileInfo fileInfo = new(file);
-                                if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
-                                {
-                                    continue;
-                                }
-
-                                filePropertiesList.Add(new()
-                                {
-                                    FileName = Path.GetFileName(file),
-                                    FilePath = file,
-                                });
-                            }
-
-                            return filePropertiesList;
-                        });
-
-                        filePropertiesPage.AddToFilePropertiesPage(filePropertiesList);
-                    }
-                }
-            }
-            else if (currentFrameContent is FileCertificatePage fileCertificatePage)
-            {
-                if (!fileCertificatePage.IsModifyingNow)
-                {
-                    List<CertificateResultModel> fileCertificateList = await Task.Run(() =>
-                    {
-                        List<CertificateResultModel> fileCertificateList = [];
-
-                        foreach (string file in filesList)
-                        {
-                            FileInfo fileInfo = new(file);
-                            if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
-                            {
-                                continue;
-                            }
-
-                            if ((new FileInfo(fileInfo.FullName).Attributes & FileAttributes.Directory) is 0)
-                            {
-                                fileCertificateList.Add(new()
-                                {
-                                    FileName = fileInfo.Name,
-                                    FilePath = fileInfo.FullName
-                                });
-                            }
-                        }
-
-                        return fileCertificateList;
-                    });
-
-                    fileCertificatePage.AddToFileCertificatePage(fileCertificateList);
-                }
-            }
-            else if (currentFrameContent is IconExtractPage iconExtractPage)
-            {
-                if (iconExtractPage.GetIsNotParsingOrSaving(iconExtractPage.IconExtractResultKind, iconExtractPage.IsSaving) && filesList.Count is 1 && (string.Equals(Path.GetExtension(filesList[0]), ".exe") || string.Equals(Path.GetExtension(filesList[0]), ".dll")))
-                {
-                    if (Equals(iconExtractPage.SelectedGetIconType, iconExtractPage.GetIconTypeList[0]))
-                    {
-                        await iconExtractPage.ParseIconFileAsync(filesList[0]);
-                    }
-                    else if (Equals(iconExtractPage.SelectedGetIconType, iconExtractPage.GetIconTypeList[1]))
-                    {
-                        await iconExtractPage.ParseIconFileAsync(filesList[1]);
-                    }
-                }
-            }
-            else if (currentFrameContent is PriExtractPage priExtractPage)
-            {
-                if (!priExtractPage.IsProcessing && filesList.Count is 1 && string.Equals(Path.GetExtension(filesList[0]), ".pri"))
-                {
-                    await priExtractPage.ParseResourceFileAsync(filesList[0]);
-                }
-            }
-            else if (currentFrameContent is FileUnlockPage fileUnlockPage)
-            {
-                if (!fileUnlockPage.IsModifyingNow)
-                {
-                    List<FileUnlockModel> fileUnlockList = await Task.Run(() =>
-                    {
-                        List<FileUnlockModel> fileUnlockList = [];
-
-                        foreach (string file in filesList)
-                        {
-                            try
-                            {
-                                FileInfo fileInfo = new(file);
-                                FileUnlockModel fileUnlock = new()
-                                {
-                                    FileFolderName = fileInfo.Name,
-                                    FileFolderPath = fileInfo.FullName,
-                                    IsDirectory = (fileInfo.Attributes & FileAttributes.Directory) is FileAttributes.Directory
-                                };
-
-                                fileUnlockList.Add(fileUnlock);
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(SendReceivedFilesListAsync), 1, e);
-                            }
-                        }
-
-                        return fileUnlockList;
-                    });
-
-                    await fileUnlockPage.AddToFileUnlockPageAsync(fileUnlockList);
-                }
-            }
-        }
-
         private uint HIWORD(uint dword)
         {
             return (dword >> 16) & 0xffff;
@@ -1579,5 +1682,7 @@ namespace PowerToolbox.Views.Windows
         {
             return dword & 0xffff;
         }
+
+        #endregion 第五部分：数据操作与业务逻辑
     }
 }

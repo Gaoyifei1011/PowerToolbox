@@ -17,8 +17,8 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 
-// 抑制 CA1806，IDE0060 警告
-#pragma warning disable CA1806,IDE0060
+// 抑制 CA1806，CA1822，IDE0060 警告
+#pragma warning disable CA1806,CA1822,IDE0060
 
 namespace PowerToolbox.Views.Windows
 {
@@ -27,22 +27,28 @@ namespace PowerToolbox.Views.Windows
     /// </summary>
     internal sealed partial class SimulateUpdateWindow : Window, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string Windows10UpdateText1String = ResourceService.SimulateUpdateResource.GetString("Windows10UpdateText1");
         private readonly string Windows11UpdateText1String = ResourceService.SimulateUpdateResource.GetString("Windows11UpdateText1");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private System.Timers.Timer simulateUpdateTimer = new();
-        private readonly int simulateTotalTime = 0;
+        private int simulateTotalTime = 0;
         private int simulatePassedTime = 0;
-        private readonly bool _blockAllKeys = false;
-        private readonly string _afterSimulateOperation;
+        private bool _blockAllKeys = false;
+        private string _afterSimulateOperation;
         private nint hHook = 0;
         private HOOKPROC keyBoardHookProc;
+
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
 
         internal new static SimulateUpdateWindow Current { get; private set; }
 
         private SimulateUpdateKind _simulateUpdateKind;
 
-        internal SimulateUpdateKind SimulateUpdateKind
+        private SimulateUpdateKind SimulateUpdateKind
         {
             get { return _simulateUpdateKind; }
 
@@ -58,7 +64,7 @@ namespace PowerToolbox.Views.Windows
 
         private string _windows11UpdateText;
 
-        internal string Windows11UpdateText
+        private string Windows11UpdateText
         {
             get { return _windows11UpdateText; }
 
@@ -74,7 +80,7 @@ namespace PowerToolbox.Views.Windows
 
         private string _windows10UpdateText;
 
-        internal string Windows10UpdateText
+        private string Windows10UpdateText
         {
             get { return _windows10UpdateText; }
 
@@ -92,31 +98,21 @@ namespace PowerToolbox.Views.Windows
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal SimulateUpdateWindow(SimulateUpdateKind simulateUpdateKind, TimeSpan duration, bool blockAllKeys, string afterSimulateOperation)
         {
             Current = this;
             InitializeComponent();
-
-            AppWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
-            SimulateUpdateKind = simulateUpdateKind;
-            simulateTotalTime = duration.TotalSeconds is not 0 ? Convert.ToInt32(duration.TotalSeconds) : 1;
-            string percentage = ((double)simulatePassedTime / simulateTotalTime).ToString("0%");
-            Windows11UpdateText = string.Format(Windows11UpdateText1String, percentage);
-            Windows10UpdateText = string.Format(Windows10UpdateText1String, percentage);
-            simulateUpdateTimer.Interval = 1000;
-            simulateUpdateTimer.Elapsed += OnElapsed;
-            simulateUpdateTimer.Start();
-            _blockAllKeys = blockAllKeys;
-            _afterSimulateOperation = AfterSimulateOperationList.Find(item => string.Equals(item, afterSimulateOperation));
-            (Content as WindowsAPI.ComTypes.IUIElementProtected).ProtectedCursor = InputDesktopResourceCursor.CreateFromModule("PowerToolbox.exe", 101);
-            int exStyle = GetWindowLongAuto((nint)AppWindow.Id.Value, WindowLongIndexFlags.GWL_EXSTYLE);
-            SetWindowLongAuto((nint)AppWindow.Id.Value, WindowLongIndexFlags.GWL_EXSTYLE, exStyle & ~0x00040000 | 0x00000080);
-            SystemSleepHelper.PreventForCurrentThread();
-            StartHook();
-            Activate();
+            InitializeWindowData(AppWindow);
+            InitializeSimulateUpdate(AppWindow, simulateUpdateKind, duration, blockAllKeys, afterSimulateOperation);
         }
 
-        #region 第一部分：模拟更新窗口——挂载的事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：挂载事件处理
 
         /// <summary>
         /// 窗口关闭后触发的事件
@@ -126,10 +122,6 @@ namespace PowerToolbox.Views.Windows
             await Task.Delay(1000);
             Current = null;
         }
-
-        #endregion 第一部分：模拟更新窗口——挂载的事件
-
-        #region 第二部分：模拟更新窗口——自定义事件
 
         /// <summary>
         /// 当指定的计时器间隔已过去而且计时器处于启用状态时发生的事件
@@ -164,7 +156,50 @@ namespace PowerToolbox.Views.Windows
             }
         }
 
-        #endregion 第二部分：模拟更新窗口——自定义事件
+        #endregion 第四部分：挂载事件处理
+
+        #region 第五部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化窗口数据
+        /// </summary>
+        private void InitializeWindowData(AppWindow appWindow)
+        {
+            if (appWindow is null)
+            {
+                return;
+            }
+
+            appWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
+        }
+
+        /// <summary>
+        /// 初始化模拟更新
+        /// </summary>
+        private void InitializeSimulateUpdate(AppWindow appWindow, SimulateUpdateKind simulateUpdateKind, TimeSpan duration, bool blockAllKeys, string afterSimulateOperation)
+        {
+            if (appWindow is null)
+            {
+                return;
+            }
+
+            SimulateUpdateKind = simulateUpdateKind;
+            simulateTotalTime = duration.TotalSeconds is not 0 ? Convert.ToInt32(duration.TotalSeconds) : 1;
+            string percentage = ((double)simulatePassedTime / simulateTotalTime).ToString("0%");
+            Windows11UpdateText = string.Format(Windows11UpdateText1String, percentage);
+            Windows10UpdateText = string.Format(Windows10UpdateText1String, percentage);
+            simulateUpdateTimer.Interval = 1000;
+            simulateUpdateTimer.Elapsed += OnElapsed;
+            simulateUpdateTimer.Start();
+            _blockAllKeys = blockAllKeys;
+            _afterSimulateOperation = AfterSimulateOperationList.Find(item => string.Equals(item, afterSimulateOperation));
+            (Content as WindowsAPI.ComTypes.IUIElementProtected).ProtectedCursor = InputDesktopResourceCursor.CreateFromModule("PowerToolbox.exe", 101);
+            int exStyle = GetWindowLongAuto((nint)appWindow.Id.Value, WindowLongIndexFlags.GWL_EXSTYLE);
+            SetWindowLongAuto((nint)appWindow.Id.Value, WindowLongIndexFlags.GWL_EXSTYLE, exStyle & ~0x00040000 | 0x00000080);
+            SystemSleepHelper.PreventForCurrentThread();
+            StartHook();
+            Activate();
+        }
 
         /// <summary>
         /// 添加钩子
@@ -180,7 +215,7 @@ namespace PowerToolbox.Views.Windows
 
                     hHook = User32Library.SetWindowsHookEx(HOOKTYPE.WH_KEYBOARD_LL, keyBoardHookProc, Process.GetCurrentProcess().MainModule.BaseAddress, 0);
 
-                    //如果设置钩子失败.
+                    //如果设置钩子失败
                     if (hHook is 0)
                     {
                         StopHook();
@@ -220,7 +255,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 自定义钩子消息处理
         /// </summary>
-        internal nint OnKeyboardHookProc(int nCode, nuint wParam, nint lParam)
+        private nint OnKeyboardHookProc(int nCode, nuint wParam, nint lParam)
         {
             // 处理键盘钩子消息
             if (nCode >= 0)
@@ -286,7 +321,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 停止摸鱼
         /// </summary>
-        internal void StopLoaf()
+        private void StopLoaf()
         {
             Cursor.Show();
             StopHook();
@@ -324,7 +359,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 停止模拟自动更新
         /// </summary>
-        internal void StopSimulateUpdate()
+        private void StopSimulateUpdate()
         {
             if (simulateUpdateTimer is not null)
             {
@@ -350,5 +385,7 @@ namespace PowerToolbox.Views.Windows
         {
             return IntPtr.Size is 8 ? User32Library.SetWindowLongPtr(hWnd, nIndex, dwNewLong) : User32Library.SetWindowLong(hWnd, nIndex, dwNewLong);
         }
+
+        #endregion 第五部分：数据操作与业务逻辑
     }
 }

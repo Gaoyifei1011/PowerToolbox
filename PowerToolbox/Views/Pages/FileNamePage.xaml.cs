@@ -245,17 +245,11 @@ namespace PowerToolbox.Views.Pages
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
             try
             {
-                List<string> fileList = await GetDragDropSelectedFilesAsync(args.DataView);
-
-                if (fileList is not null && fileList.Count > 0)
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count > 0 && await GetNeedConvertFileListAsync(fileList) is List<OldAndNewNameModel> fileNameList && fileNameList.Count > 0)
                 {
-                    List<OldAndNewNameModel> fileNameList = await GetNeedConvertFileListAsync(fileList);
-                    if (fileNameList is not null && fileNameList.Count > 0)
-                    {
-                        AddToFileNamePage(fileNameList);
-                        IsOperationFailed = false;
-                        OperationFailedList.Clear();
-                    }
+                    AddToFileNamePage(fileNameList);
+                    IsOperationFailed = false;
+                    OperationFailedList.Clear();
                 }
             }
             catch (Exception e)
@@ -475,8 +469,7 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
-                List<OldAndNewNameModel> fileNameList = await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]);
-                if (fileNameList is not null && fileNameList.Count > 0)
+                if (await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]) is List<OldAndNewNameModel> fileNameList && fileNameList.Count > 0)
                 {
                     AddToFileNamePage(fileNameList);
                 }

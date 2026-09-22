@@ -1326,9 +1326,8 @@ namespace PowerToolbox.Views.Pages
                     if (string.IsNullOrEmpty(output))
                     {
                         string[] lines = output.Split([Environment.NewLine], StringSplitOptions.RemoveEmptyEntries);
-                        string hypervisorLaunchTypeLine = lines.FirstOrDefault(line => line.Trim().StartsWith("hypervisorlaunchtype", StringComparison.OrdinalIgnoreCase));
 
-                        if (hypervisorLaunchTypeLine is not null)
+                        if (lines.FirstOrDefault(line => line.Trim().StartsWith("hypervisorlaunchtype", StringComparison.OrdinalIgnoreCase)) is string hypervisorLaunchTypeLine)
                         {
                             string[] hypervisorLaunchTypeState = hypervisorLaunchTypeLine.Split([' '], StringSplitOptions.RemoveEmptyEntries);
                             if (hypervisorLaunchTypeState.Length >= 2)

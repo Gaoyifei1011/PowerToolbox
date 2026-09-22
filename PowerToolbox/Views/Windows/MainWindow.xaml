@@ -15,8 +15,14 @@
         x:Name="MainPage"
         ActualThemeChanged="{x:Bind OnActualThemeChanged}"
         FlowDirection="{x:Bind settingsservice:LanguageService.FlowDirection}"
-        KeyDown="{x:Bind OnKeyDown}"
         RequestedTheme="{x:Bind WindowTheme, Mode=OneWay}">
+
+        <Page.KeyboardAccelerators>
+            <KeyboardAccelerator
+                Key="Back"
+                Invoked="{x:Bind OnKeyBoardAcceleratorInvoked}"
+                Modifiers="Menu" />
+        </Page.KeyboardAccelerators>
 
         <Page.Resources>
             <ResourceDictionary>

@@ -406,9 +406,7 @@ namespace PowerToolbox.Views.Pages
                 MemoryStream memoryStream = null;
                 try
                 {
-                    Bitmap thumbnailBitmap = ThumbnailHelper.GetThumbnailBitmap(downloadScheduler.FilePath, 256);
-
-                    if (thumbnailBitmap is not null)
+                    if (ThumbnailHelper.GetThumbnailBitmap(downloadScheduler.FilePath, 256) is Bitmap thumbnailBitmap)
                     {
                         memoryStream = new();
                         thumbnailBitmap.Save(memoryStream, ImageFormat.Png);
