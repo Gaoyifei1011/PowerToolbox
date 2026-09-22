@@ -93,8 +93,8 @@
                 <CommandBar
                     Grid.Column="4"
                     VerticalAlignment="Center"
-                    DefaultLabelPosition="Right"
-                    Style="{StaticResource CommandBarStyle}">
+                    CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterStyle}"
+                    DefaultLabelPosition="Right">
 
                     <CommandBar.PrimaryCommands>
                         <AppBarButton Click="{x:Bind OnAddTaskClicked}" Label="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('AddTask')}">

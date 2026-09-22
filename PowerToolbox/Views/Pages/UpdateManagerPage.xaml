@@ -193,8 +193,8 @@
                         <CommandBar
                             Grid.Column="2"
                             VerticalAlignment="Center"
-                            DefaultLabelPosition="Right"
-                            Style="{StaticResource CommandBarStyle}">
+                            CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterStyle}"
+                            DefaultLabelPosition="Right">
 
                             <CommandBar.PrimaryCommands>
                                 <AppBarButton IsEnabled="{x:Bind system:Convert.ToBoolean(AvailableUpdateCollection.Count), Mode=OneWay}" Label="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MultiSelect')}">
@@ -1329,8 +1329,8 @@
                         <CommandBar
                             Grid.Column="2"
                             VerticalAlignment="Center"
-                            DefaultLabelPosition="Right"
-                            Style="{StaticResource CommandBarStyle}">
+                            CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterStyle}"
+                            DefaultLabelPosition="Right">
 
                             <CommandBar.PrimaryCommands>
                                 <AppBarButton IsEnabled="{x:Bind system:Convert.ToBoolean(InstalledUpdateCollection.Count), Mode=OneWay}" Label="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MultiSelect')}">
@@ -2475,9 +2475,9 @@
                         <CommandBar
                             Grid.Column="2"
                             VerticalAlignment="Center"
+                            CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterStyle}"
                             DefaultLabelPosition="Right"
-                            IsEnabled="{x:Bind system:Convert.ToBoolean(HiddenUpdateCollection.Count), Mode=OneWay}"
-                            Style="{StaticResource CommandBarStyle}">
+                            IsEnabled="{x:Bind system:Convert.ToBoolean(HiddenUpdateCollection.Count), Mode=OneWay}">
 
                             <CommandBar.PrimaryCommands>
                                 <AppBarButton IsEnabled="{x:Bind system:Convert.ToBoolean(HiddenUpdateCollection.Count), Mode=OneWay}" Label="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MultiSelect')}">

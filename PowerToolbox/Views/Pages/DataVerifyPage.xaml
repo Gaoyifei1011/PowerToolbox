@@ -178,8 +178,8 @@
 
                         <CommandBar
                             Grid.Column="2"
-                            DefaultLabelPosition="Right"
-                            Style="{StaticResource CommandBarStyle}">
+                            CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterStyle}"
+                            DefaultLabelPosition="Right">
 
                             <CommandBar.PrimaryCommands>
                                 <AppBarButton Label="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('MultiSelect')}">

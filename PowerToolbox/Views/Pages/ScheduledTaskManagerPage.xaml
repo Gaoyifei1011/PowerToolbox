@@ -83,8 +83,8 @@
                 <CommandBar
                     Grid.Column="1"
                     VerticalAlignment="Center"
-                    DefaultLabelPosition="Right"
-                    Style="{StaticResource CommandBarStyle}">
+                    CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterStyle}"
+                    DefaultLabelPosition="Right">
 
                     <CommandBar.PrimaryCommands>
                         <AppBarButton IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}" Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('MultiSelect')}">
