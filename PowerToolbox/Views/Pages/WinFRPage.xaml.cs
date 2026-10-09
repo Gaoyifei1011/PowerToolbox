@@ -1170,6 +1170,8 @@ namespace PowerToolbox.Views.Pages
 
         #endregion 第五部分：挂载事件处理
 
+        #region 第六部分：数据操作与业务逻辑
+
         /// <summary>
         /// 初始化数据
         /// </summary>
@@ -2114,5 +2116,7 @@ namespace PowerToolbox.Views.Pages
         {
             return string.Equals(Convert.ToString(recoveryMode), Convert.ToString(comparedRecoveryMode)) ? Visibility.Visible : Visibility.Collapsed;
         }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }
