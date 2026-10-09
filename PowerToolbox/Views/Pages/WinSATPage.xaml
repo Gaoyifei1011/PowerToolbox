@@ -19,15 +19,31 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock
+        <Grid
             Grid.Row="0"
-            Margin="30,15,30,0"
-            FontSize="22"
-            Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('WinSAT')}" />
+            MinWidth="100"
+            MinHeight="32"
+            Margin="30,15,30,3"
+            HorizontalAlignment="Left">
+
+            <Rectangle
+                Fill="{ThemeResource PillItemBackgroundSelected}"
+                RadiusX="16"
+                RadiusY="16"
+                Stroke="{ThemeResource PillItemBorderBrushSelected}"
+                StrokeThickness="1" />
+
+            <TextBlock
+                Padding="16,4,16,6"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{ThemeResource PillItemForegroundSelected}"
+                Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('WinSAT')}" />
+        </Grid>
 
         <TextBlock
             Grid.Row="1"
-            Margin="32,3,32,3"
+            Margin="32,0,32,3"
             FontSize="14"
             Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Description')}" />
 
