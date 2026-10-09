@@ -10,6 +10,7 @@ using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -32,8 +33,16 @@ namespace PowerToolbox.Views.Pages
     {
         #region 第一部分：常量、资源与状态字段
 
+        private readonly string AllLowercaseString = ResourceService.UpperAndLowerCaseResource.GetString("AllLowercase");
+        private readonly string AllUppercaseString = ResourceService.UpperAndLowerCaseResource.GetString("AllUppercase");
+        private readonly string DeleteSpaceString = ResourceService.UpperAndLowerCaseResource.GetString("DeleteSpace");
         private readonly string DragOverContentString = ResourceService.UpperAndLowerCaseResource.GetString("DragOverContent");
+        private readonly string ExtensionNameLowercaseString = ResourceService.UpperAndLowerCaseResource.GetString("ExtensionNameLowercase");
+        private readonly string ExtensionNameUppercaseString = ResourceService.UpperAndLowerCaseResource.GetString("ExtensionNameUppercase");
+        private readonly string FileNameLowercaseString = ResourceService.UpperAndLowerCaseResource.GetString("FileNameLowercase");
+        private readonly string FileNameUppercaseString = ResourceService.UpperAndLowerCaseResource.GetString("FileNameUppercase");
         private readonly string ModifyingNowString = ResourceService.UpperAndLowerCaseResource.GetString("ModifyingNow");
+        private readonly string ReplaceSpaceString = ResourceService.UpperAndLowerCaseResource.GetString("ReplaceSpace");
         private readonly string SelectFileString = ResourceService.UpperAndLowerCaseResource.GetString("SelectFile");
         private readonly string SelectFolderString = ResourceService.UpperAndLowerCaseResource.GetString("SelectFolder");
         private readonly string TotalString = ResourceService.UpperAndLowerCaseResource.GetString("Total");
@@ -59,18 +68,18 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private UpperAndLowerSelectedKind _selectedKind;
+        private UpperAndLowerCaseRadioItemModel _selectedItem;
 
-        private UpperAndLowerSelectedKind SelectedKind
+        private UpperAndLowerCaseRadioItemModel SelectedItem
         {
-            get { return _selectedKind; }
+            get { return _selectedItem; }
 
             set
             {
-                if (!Equals(_selectedKind, value))
+                if (!Equals(_selectedItem, value))
                 {
-                    _selectedKind = value;
-                    PropertyChanged?.Invoke(this, new(nameof(SelectedKind)));
+                    _selectedItem = value;
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
                 }
             }
         }
@@ -92,6 +101,8 @@ namespace PowerToolbox.Views.Pages
         }
 
         private List<OperationFailedModel> OperationFailedList { get; } = [];
+
+        private List<UpperAndLowerCaseRadioItemModel> UpperAndLowerCaseRadioList { get; } = [];
 
         private WinRTObservableCollection<OldAndNewNameModel> UpperAndLowerCaseCollection { get; } = [];
 
@@ -238,26 +249,29 @@ namespace PowerToolbox.Views.Pages
         {
             if (sender.Key is VirtualKey.Enter)
             {
-                if (sender.Modifiers is VirtualKeyModifiers.None)
+                if (SelectedItem is not null)
                 {
-                    await PrepareChangeFileNameAsync(SelectedKind, false);
-                }
-                else if (sender.Modifiers is VirtualKeyModifiers.Control)
-                {
-                    await PrepareChangeFileNameAsync(SelectedKind, true);
+                    if (sender.Modifiers is VirtualKeyModifiers.None)
+                    {
+                        await PrepareChangeFileNameAsync(SelectedItem.UpperAndLowerKind, false);
+                    }
+                    else if (sender.Modifiers is VirtualKeyModifiers.Control)
+                    {
+                        await PrepareChangeFileNameAsync(SelectedItem.UpperAndLowerKind, true);
+                    }
                 }
                 args.Handled = true;
             }
         }
 
         /// <summary>
-        /// 选中时触发的事件
+        /// 选中项发生变化时触发的事件
         /// </summary>
-        private void OnChecked(object sender, RoutedEventArgs args)
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (sender is Microsoft.UI.Xaml.Controls.CheckBox checkBox && checkBox.Tag is UpperAndLowerSelectedKind upperAndLowerSelectedKind)
+            if (sender is RadioButtons radioButtons && !Equals(SelectedItem, radioButtons.SelectedItem))
             {
-                SelectedKind = upperAndLowerSelectedKind;
+                SelectedItem = radioButtons.SelectedItem is UpperAndLowerCaseRadioItemModel upperAndLowerCaseRadioItem ? upperAndLowerCaseRadioItem : null;
             }
         }
 
@@ -279,7 +293,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnPreviewClicked(object sender, RoutedEventArgs args)
         {
-            await PrepareChangeFileNameAsync(SelectedKind, false);
+            await PrepareChangeFileNameAsync(SelectedItem.UpperAndLowerKind, false);
         }
 
         /// <summary>
@@ -287,7 +301,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnModifyClicked(object sender, RoutedEventArgs args)
         {
-            await PrepareChangeFileNameAsync(SelectedKind, true);
+            await PrepareChangeFileNameAsync(SelectedItem.UpperAndLowerKind, true);
         }
 
         /// <summary>
@@ -347,20 +361,6 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 取消选中时触发的事件
-        /// </summary>
-        private void OnUnchecked(object sender, RoutedEventArgs args)
-        {
-            if (sender is Microsoft.UI.Xaml.Controls.CheckBox checkBox && checkBox.Tag is UpperAndLowerSelectedKind upperAndLowerSelectedKind)
-            {
-                if (Equals(SelectedKind, upperAndLowerSelectedKind))
-                {
-                    SelectedKind = UpperAndLowerSelectedKind.None;
-                }
-            }
-        }
-
-        /// <summary>
         /// 查看修改失败的文件错误信息
         /// </summary>
         private async void OnViewErrorInformationClicked(object sender, RoutedEventArgs args)
@@ -377,7 +377,15 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            SelectedKind = UpperAndLowerSelectedKind.None;
+            UpperAndLowerCaseRadioList.Add(new() { UpperAndLowerKind = UpperAndLowerKind.AllUppercase, DisplayName = AllUppercaseString });
+            UpperAndLowerCaseRadioList.Add(new() { UpperAndLowerKind = UpperAndLowerKind.FileNameUppercase, DisplayName = FileNameUppercaseString });
+            UpperAndLowerCaseRadioList.Add(new() { UpperAndLowerKind = UpperAndLowerKind.ExtensionNameUppercase, DisplayName = ExtensionNameUppercaseString });
+            UpperAndLowerCaseRadioList.Add(new() { UpperAndLowerKind = UpperAndLowerKind.DeleteSpace, DisplayName = DeleteSpaceString });
+            UpperAndLowerCaseRadioList.Add(new() { UpperAndLowerKind = UpperAndLowerKind.AllLowercase, DisplayName = AllLowercaseString });
+            UpperAndLowerCaseRadioList.Add(new() { UpperAndLowerKind = UpperAndLowerKind.FileNameLowercase, DisplayName = FileNameLowercaseString });
+            UpperAndLowerCaseRadioList.Add(new() { UpperAndLowerKind = UpperAndLowerKind.ExtensionNameLowercase, DisplayName = ExtensionNameLowercaseString });
+            UpperAndLowerCaseRadioList.Add(new() { UpperAndLowerKind = UpperAndLowerKind.ReplaceSpace, DisplayName = ReplaceSpaceString });
+            SelectedItem = UpperAndLowerCaseRadioList[0];
         }
 
         /// <summary>
@@ -397,9 +405,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 准备修改文件名称
         /// </summary>
-        private async Task PrepareChangeFileNameAsync(UpperAndLowerSelectedKind selectedKind, bool needChange)
+        private async Task PrepareChangeFileNameAsync(UpperAndLowerKind selectedKind, bool needChange)
         {
-            if (selectedKind is not UpperAndLowerSelectedKind.None)
+            if (selectedKind is not UpperAndLowerKind.None)
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
@@ -416,7 +424,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 else
                 {
-                    PreviewChangedFileName(SelectedKind);
+                    PreviewChangedFileName(selectedKind);
                     if (needChange)
                     {
                         await ChangeFileNameAsync();
@@ -432,11 +440,11 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 预览修改后的文件名称
         /// </summary>
-        private void PreviewChangedFileName(UpperAndLowerSelectedKind selectedKind)
+        private void PreviewChangedFileName(UpperAndLowerKind selectedKind)
         {
             switch (selectedKind)
             {
-                case UpperAndLowerSelectedKind.AllUppercase:
+                case UpperAndLowerKind.AllUppercase:
                     {
                         lock (upperAndLowerCaseLock)
                         {
@@ -451,7 +459,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         break;
                     }
-                case UpperAndLowerSelectedKind.FileNameUppercase:
+                case UpperAndLowerKind.FileNameUppercase:
                     {
                         lock (upperAndLowerCaseLock)
                         {
@@ -468,7 +476,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         break;
                     }
-                case UpperAndLowerSelectedKind.ExtensionNameUppercase:
+                case UpperAndLowerKind.ExtensionNameUppercase:
                     {
                         lock (upperAndLowerCaseLock)
                         {
@@ -485,7 +493,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         break;
                     }
-                case UpperAndLowerSelectedKind.DeleteSpace:
+                case UpperAndLowerKind.DeleteSpace:
                     {
                         lock (upperAndLowerCaseLock)
                         {
@@ -500,7 +508,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         break;
                     }
-                case UpperAndLowerSelectedKind.AllLowercase:
+                case UpperAndLowerKind.AllLowercase:
                     {
                         lock (upperAndLowerCaseLock)
                         {
@@ -515,7 +523,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         break;
                     }
-                case UpperAndLowerSelectedKind.FileNameLowercase:
+                case UpperAndLowerKind.FileNameLowercase:
                     {
                         lock (upperAndLowerCaseLock)
                         {
@@ -532,7 +540,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         break;
                     }
-                case UpperAndLowerSelectedKind.ExtensionNameLowercase:
+                case UpperAndLowerKind.ExtensionNameLowercase:
                     {
                         lock (upperAndLowerCaseLock)
                         {
@@ -549,7 +557,7 @@ namespace PowerToolbox.Views.Pages
                         }
                         break;
                     }
-                case UpperAndLowerSelectedKind.ReplaceSpace:
+                case UpperAndLowerKind.ReplaceSpace:
                     {
                         lock (upperAndLowerCaseLock)
                         {

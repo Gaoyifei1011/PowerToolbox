@@ -5,7 +5,6 @@
     xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:enum="using:PowerToolbox.Extensions.DataType.Enums"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:PowerToolbox.Models"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
@@ -62,97 +61,27 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <Grid.Resources>
+            <x:Double x:Key="RadioButtonsColumnSpacing">5</x:Double>
+            <x:Double x:Key="RadioButtonsRowSpacing">5</x:Double>
+            <Thickness x:Key="RadioButtonsTopHeaderMargin">0</Thickness>
+        </Grid.Resources>
+
         <!--  文件大小写顶部控制栏  -->
-        <Grid
+        <RadioButtons
             Grid.Row="0"
             Margin="0,0,0,3"
-            ColumnSpacing="5"
-            RowSpacing="3">
+            ItemsSource="{x:Bind UpperAndLowerCaseRadioList}"
+            MaxColumns="4"
+            SelectedItem="{x:Bind SelectedItem, Mode=OneWay}"
+            SelectionChanged="{x:Bind OnSelectionChanged}">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="1.5*" />
-            </Grid.ColumnDefinitions>
-
-            <CheckBox
-                Grid.Row="0"
-                Grid.Column="0"
-                Checked="{x:Bind OnChecked}"
-                Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('AllUppercase')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.AllUppercase), Mode=OneWay}"
-                Tag="{x:Bind enum:UpperAndLowerSelectedKind.AllUppercase}"
-                Unchecked="{x:Bind OnUnchecked}" />
-
-            <CheckBox
-                Grid.Row="0"
-                Grid.Column="1"
-                Checked="{x:Bind OnChecked}"
-                Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('FileNameUppercase')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.FileNameUppercase), Mode=OneWay}"
-                Tag="{x:Bind enum:UpperAndLowerSelectedKind.FileNameUppercase}"
-                Unchecked="{x:Bind OnUnchecked}" />
-
-            <CheckBox
-                Grid.Row="0"
-                Grid.Column="2"
-                Checked="{x:Bind OnChecked}"
-                Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('ExtensionNameUppercase')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.ExtensionNameUppercase), Mode=OneWay}"
-                Tag="{x:Bind enum:UpperAndLowerSelectedKind.ExtensionNameUppercase}"
-                Unchecked="{x:Bind OnUnchecked}" />
-
-            <CheckBox
-                Grid.Row="0"
-                Grid.Column="3"
-                Checked="{x:Bind OnChecked}"
-                Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('DeleteSpace')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.DeleteSpace), Mode=OneWay}"
-                Tag="{x:Bind enum:UpperAndLowerSelectedKind.DeleteSpace}"
-                Unchecked="{x:Bind OnUnchecked}" />
-
-            <CheckBox
-                Grid.Row="1"
-                Grid.Column="0"
-                Checked="{x:Bind OnChecked}"
-                Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('AllLowercase')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.AllLowercase), Mode=OneWay}"
-                Tag="{x:Bind enum:UpperAndLowerSelectedKind.AllLowercase}"
-                Unchecked="{x:Bind OnUnchecked}" />
-
-            <CheckBox
-                Grid.Row="1"
-                Grid.Column="1"
-                Checked="{x:Bind OnChecked}"
-                Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('FileNameLowercase')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.FileNameLowercase), Mode=OneWay}"
-                Tag="{x:Bind enum:UpperAndLowerSelectedKind.FileNameLowercase}"
-                Unchecked="{x:Bind OnUnchecked}" />
-
-            <CheckBox
-                Grid.Row="1"
-                Grid.Column="2"
-                Checked="{x:Bind OnChecked}"
-                Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('ExtensionNameLowercase')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.ExtensionNameLowercase), Mode=OneWay}"
-                Tag="{x:Bind enum:UpperAndLowerSelectedKind.ExtensionNameLowercase}"
-                Unchecked="{x:Bind OnUnchecked}" />
-
-            <CheckBox
-                Grid.Row="1"
-                Grid.Column="3"
-                Checked="{x:Bind OnChecked}"
-                Content="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('ReplaceSpace')}"
-                IsChecked="{x:Bind x:Object.Equals(SelectedKind, enum:UpperAndLowerSelectedKind.ReplaceSpace), Mode=OneWay}"
-                Tag="{x:Bind enum:UpperAndLowerSelectedKind.ReplaceSpace}"
-                Unchecked="{x:Bind OnUnchecked}" />
-        </Grid>
+            <RadioButtons.ItemTemplate>
+                <DataTemplate x:DataType="model:UpperAndLowerCaseRadioItemModel">
+                    <RadioButton Content="{x:Bind DisplayName}" />
+                </DataTemplate>
+            </RadioButtons.ItemTemplate>
+        </RadioButtons>
 
         <!--  文件大小写列表控件  -->
         <Grid

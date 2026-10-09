@@ -3,7 +3,7 @@
     /// <summary>
     /// 大写小写页面中单选框选中要操作的类型
     /// </summary>
-    internal enum UpperAndLowerSelectedKind
+    internal enum UpperAndLowerKind
     {
         None = 0,
         AllUppercase = 1,
