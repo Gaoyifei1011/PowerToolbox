@@ -312,6 +312,7 @@
     <EmbeddedResource Include="Strings\WinSAT.zh-hans.restext" />
 
     <None Remove="Assets\PowerToolbox.ico" CopyToOutputDirectory="Never" />
+    <None Remove="Styles\BreadcrumbBar.xaml" />
     <None Remove="Styles\ComboBox.xaml" />
     <None Remove="Styles\CommandBar.xaml" />
     <None Remove="Styles\DatePicker.xaml" />
@@ -319,8 +320,10 @@
     <None Remove="Styles\InfoBar.xaml" />
     <None Remove="Styles\NavigationView.xaml" />
     <None Remove="Styles\ProgressRing.xaml" />
+    <None Remove="Styles\RadioButton.xaml" />
     <None Remove="Styles\RadioButtons.xaml" />
     <None Remove="Styles\RepeatButton.xaml" />
+    <None Remove="Styles\SelectorBar.xaml" />
     <None Remove="Styles\TimePicker.xaml" />
     <None Remove="Styles\ToggleSwitch.xaml" />
     <None Remove="MainApp.xaml" />
@@ -391,6 +394,7 @@
     <PackageReference Include="System.Numerics.Vectors" Version="4.6.1" />
     <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
 
+    <Page Include="Styles\BreadcrumbBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\ComboBox.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\CommandBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\DatePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
@@ -398,8 +402,10 @@
     <Page Include="Styles\InfoBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\NavigationView.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\ProgressRing.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Styles\RadioButton.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\RadioButtons.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\RepeatButton.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Styles\SelectorBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\TimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\ToggleSwitch.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\AddDownloadTaskDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
