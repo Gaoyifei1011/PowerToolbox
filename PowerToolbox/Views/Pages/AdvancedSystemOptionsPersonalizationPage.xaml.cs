@@ -479,7 +479,7 @@ namespace PowerToolbox.Views.Pages
 
                 if (RightClickMenuStyle is not null)
                 {
-                    await SetRightClickMenuStyleAsync(RightClickMenuStyle.SelectedValue);
+                    await SetRightClickMenuStyleAsync(RightClickMenuStyle.SelectedValue, [.. RightClickMenuStyleList.Select(x => x.SelectedValue)]);
                 }
 
                 bool isClassicRightClickMenuExisted = await GetIsClassicRightClickMenuExistedAsync();
@@ -499,7 +499,7 @@ namespace PowerToolbox.Views.Pages
 
                 if (FileExplorerStyle is not null)
                 {
-                    await SetFileExplorerStyleAsync(FileExplorerStyle.SelectedValue);
+                    await SetFileExplorerStyleAsync(FileExplorerStyle.SelectedValue, [.. FileExplorerStyleList.Select(x => x.SelectedValue)]);
                 }
 
                 bool isClassicFileExplorerExisted = await GetIsClassicFileExplorerExistedAsync();
@@ -531,7 +531,7 @@ namespace PowerToolbox.Views.Pages
 
                 if (FileExplorerHomePosition is not null)
                 {
-                    await SetFileExplorerHomePositionAsync(FileExplorerHomePosition.SelectedValue);
+                    await SetFileExplorerHomePositionAsync(FileExplorerHomePosition.SelectedValue, [.. FileExplorerHomePositionList.Select(x => x.SelectedValue)]);
                 }
 
                 FileExplorerHomePosition = await GetFileExplorerHomePositionAsync();
@@ -1386,20 +1386,20 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 设置右键菜单样式
         /// </summary>
-        private async Task SetRightClickMenuStyleAsync(object rightClickMenuStyle)
+        private async Task SetRightClickMenuStyleAsync(object rightClickMenuStyle, IReadOnlyList<object> rightClickMenuStyleList)
         {
-            if (rightClickMenuStyle is null)
+            if (rightClickMenuStyle is null || rightClickMenuStyleList is null || rightClickMenuStyleList.Count is 0)
             {
                 return;
             }
 
             await Task.Run(() =>
             {
-                if (rightClickMenuStyle is "Windows11ModernMenu")
+                if (Equals(rightClickMenuStyle, rightClickMenuStyleList[0]))
                 {
                     RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}", true);
                 }
-                else if (rightClickMenuStyle is "Windows10ClassicMenu")
+                else if (Equals(rightClickMenuStyle, rightClickMenuStyleList[1]))
                 {
                     RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32", null, string.Empty);
                 }
@@ -1428,22 +1428,22 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 设置资源管理器样式
         /// </summary>
-        private async Task SetFileExplorerStyleAsync(object fileExplorerStyle)
+        private async Task SetFileExplorerStyleAsync(object fileExplorerStyle, IReadOnlyList<object> fileExplorerStyleList)
         {
-            if (fileExplorerStyle is null)
+            if (fileExplorerStyle is null || fileExplorerStyleList is null || fileExplorerStyleList.Count is 0)
             {
                 return;
             }
 
             await Task.Run(() =>
             {
-                if (fileExplorerStyle is "Windows11ModernFileExplorer")
+                if (Equals(fileExplorerStyle, fileExplorerStyleList[0]))
                 {
                     RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", true);
                     RegistryHelper.DeleteRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{6480100b-5a83-4d1e-9f69-8ae5a88e9a33}", true);
                     RegistryHelper.RemoveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Internet Explorer\Toolbar\ShellBrowser", "ITBar7Layout");
                 }
-                else if (fileExplorerStyle is "Windows10ClassicFileExplorer")
+                else if (Equals(fileExplorerStyle, fileExplorerStyleList[0]))
                 {
                     RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}", string.Empty, "CLSID_ItemsViewAdapter");
                     RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Classes\CLSID\{2aa9162e-c906-4dd9-ad0b-3d24a8eef5a0}\InProcServer32", string.Empty, @"C:\Windows\System32\Windows.UI.FileExplorer.dll_");
@@ -1530,24 +1530,24 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 设置资源管理器首页位置
         /// </summary>
-        private async Task SetFileExplorerHomePositionAsync(object fileExplorerHomePosition)
+        private async Task SetFileExplorerHomePositionAsync(object fileExplorerHomePosition, IReadOnlyList<object> fileExplorerHomePositionList)
         {
-            if (fileExplorerHomePosition is null)
+            if (fileExplorerHomePosition is null || fileExplorerHomePositionList is null || fileExplorerHomePositionList.Count is 0)
             {
                 return;
             }
 
             await Task.Run(() =>
             {
-                if (fileExplorerHomePosition is "ThisPC")
+                if (Equals(fileExplorerHomePosition, fileExplorerHomePositionList[0]))
                 {
                     RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo", 1);
                 }
-                else if (fileExplorerHomePosition is "Home")
+                else if (Equals(fileExplorerHomePosition, fileExplorerHomePositionList[0]))
                 {
                     RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo", 2);
                 }
-                else if (fileExplorerHomePosition is "Downloads")
+                else if (Equals(fileExplorerHomePosition, fileExplorerHomePositionList[0]))
                 {
                     RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "LaunchTo", 3);
                 }

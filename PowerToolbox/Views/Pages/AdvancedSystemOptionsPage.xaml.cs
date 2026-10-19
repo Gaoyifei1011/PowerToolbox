@@ -115,7 +115,7 @@ namespace PowerToolbox.Views.Pages
 
         internal List<Type> PageList { get; } = [typeof(AdvancedSystemOptionsListPage), typeof(AdvancedSystemOptionsPersonalizationPage), typeof(AdvancedSystemOptionsSystemPage)];
 
-        internal WinRTObservableCollection<DictionaryEntry> BreadCollection { get; } = [];
+        internal WinRTObservableCollection<DictionaryEntry> BreadcrumbBarCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -157,7 +157,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
         {
-            if (args.Item is DictionaryEntry bread && BreadCollection.Count is 2 && Equals(bread.Key, BreadCollection[0].Key))
+            if (args.Item is DictionaryEntry bread && BreadcrumbBarCollection.Count is 2 && Equals(bread.Key, BreadcrumbBarCollection[0].Key))
             {
                 NavigateTo(PageList[0], this, false);
             }
@@ -168,33 +168,33 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNavigated(object sender, NavigationEventArgs args)
         {
-            if (BreadCollection.Count is 0 && Equals(GetCurrentPageType(), PageList[0]))
+            if (BreadcrumbBarCollection.Count is 0 && Equals(GetCurrentPageType(), PageList[0]))
             {
-                BreadCollection.Add(new()
+                BreadcrumbBarCollection.Add(new()
                 {
                     Key = "AdvancedSystemOptions",
                     Value = AdvancedSystemOptionsString
                 });
             }
-            else if (BreadCollection.Count is 1 && Equals(GetCurrentPageType(), PageList[1]))
+            else if (BreadcrumbBarCollection.Count is 1 && Equals(GetCurrentPageType(), PageList[1]))
             {
-                BreadCollection.Add(new()
+                BreadcrumbBarCollection.Add(new()
                 {
                     Key = "Personalization",
                     Value = PersonalizationString
                 });
             }
-            else if (BreadCollection.Count is 1 && Equals(GetCurrentPageType(), PageList[2]))
+            else if (BreadcrumbBarCollection.Count is 1 && Equals(GetCurrentPageType(), PageList[2]))
             {
-                BreadCollection.Add(new()
+                BreadcrumbBarCollection.Add(new()
                 {
                     Key = "System",
                     Value = SystemString
                 });
             }
-            else if (BreadCollection.Count is 2 && Equals(GetCurrentPageType(), PageList[0]))
+            else if (BreadcrumbBarCollection.Count is 2 && Equals(GetCurrentPageType(), PageList[0]))
             {
-                BreadCollection.RemoveAt(1);
+                BreadcrumbBarCollection.RemoveAt(1);
             }
         }
 

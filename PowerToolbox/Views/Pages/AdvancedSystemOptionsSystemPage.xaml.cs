@@ -401,7 +401,7 @@ namespace PowerToolbox.Views.Pages
 
                 if (SelectedHibernationFileType is not null)
                 {
-                    await SetHibernationFileTypeAsync(SelectedHibernationFileType.SelectedValue);
+                    await SetHibernationFileTypeAsync(SelectedHibernationFileType.SelectedValue, [.. HibernationFileTypeList.Select(x => x.SelectedValue)]);
                 }
                 await UpdateHibernationAsync();
             }
@@ -852,9 +852,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 修改休眠文件类型
         /// </summary>
-        private async Task SetHibernationFileTypeAsync(object hibernationFileType)
+        private async Task SetHibernationFileTypeAsync(object hibernationFileType, IReadOnlyList<object> hibernationFileTypeList)
         {
-            if (hibernationFileType is null)
+            if (hibernationFileType is null || hibernationFileTypeList is null || hibernationFileTypeList.Count is 0)
             {
                 return;
             }
@@ -863,11 +863,11 @@ namespace PowerToolbox.Views.Pages
             {
                 if (RuntimeHelper.IsElevated)
                 {
-                    if (hibernationFileType is "HibernationFileTypeUnknown")
+                    if (Equals(hibernationFileType, hibernationFileTypeList[0]))
                     {
                         RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Power", "HiberFileType", 0);
                     }
-                    else if (hibernationFileType is "HibernationFileTypeReduced")
+                    else if (Equals(hibernationFileType, hibernationFileTypeList[1]))
                     {
                         try
                         {
@@ -897,7 +897,7 @@ namespace PowerToolbox.Views.Pages
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(SetHibernationFileTypeAsync), 1, e);
                         }
                     }
-                    else if (hibernationFileType is "HibernationFileTypeFull")
+                    else if (Equals(hibernationFileType, hibernationFileTypeList[2]))
                     {
                         try
                         {

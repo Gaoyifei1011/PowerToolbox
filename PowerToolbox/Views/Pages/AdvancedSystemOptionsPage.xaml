@@ -40,13 +40,13 @@
         </TransitionCollection>
     </Page.Resources>
 
-    <Grid Margin="0,15,0,0">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="30,0,30,0">
+        <Grid Grid.Row="0" Margin="30,15,30,3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -56,11 +56,17 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 ItemClicked="{x:Bind OnItemClicked}"
-                ItemsSource="{x:Bind BreadCollection}">
+                ItemsSource="{x:Bind BreadcrumbBarCollection}">
 
                 <BreadcrumbBar.ItemTemplate>
                     <DataTemplate x:DataType="collection:DictionaryEntry">
-                        <TextBlock FontSize="22" Text="{x:Bind system:Convert.ToString(Value)}" />
+                        <BreadcrumbBarItem Content="{Binding}" Style="{StaticResource PillBreadcrumbBarItemStyle}">
+                            <BreadcrumbBarItem.ContentTemplate>
+                                <DataTemplate x:DataType="collection:DictionaryEntry">
+                                    <TextBlock Text="{x:Bind system:Convert.ToString(Value)}" />
+                                </DataTemplate>
+                            </BreadcrumbBarItem.ContentTemplate>
+                        </BreadcrumbBarItem>
                     </DataTemplate>
                 </BreadcrumbBar.ItemTemplate>
             </BreadcrumbBar>
