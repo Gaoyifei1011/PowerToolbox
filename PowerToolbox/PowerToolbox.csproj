@@ -320,7 +320,6 @@
     <None Remove="Styles\InfoBar.xaml" />
     <None Remove="Styles\NavigationView.xaml" />
     <None Remove="Styles\ProgressRing.xaml" />
-    <None Remove="Styles\RadioButton.xaml" />
     <None Remove="Styles\RadioButtons.xaml" />
     <None Remove="Styles\RepeatButton.xaml" />
     <None Remove="Styles\SelectorBar.xaml" />
@@ -402,7 +401,6 @@
     <Page Include="Styles\InfoBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\NavigationView.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\ProgressRing.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
-    <Page Include="Styles\RadioButton.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\RadioButtons.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\RepeatButton.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\SelectorBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />

@@ -101,7 +101,6 @@
                         <ResourceDictionary Source="ms-appx:///Styles/InfoBar.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/NavigationView.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/ProgressRing.xaml" />
-                        <ResourceDictionary Source="ms-appx:///Styles/RadioButton.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/RadioButtons.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/RepeatButton.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/SelectorBar.xaml" />
