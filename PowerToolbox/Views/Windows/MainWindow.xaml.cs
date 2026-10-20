@@ -179,7 +179,7 @@ namespace PowerToolbox.Views.Windows
             }
         }
 
-        private WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemMenuItemsCollection { get; } = [];
+        internal WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemMenuItemsCollection { get; } = [];
 
         private WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemFooterMenuItemsCollection { get; } = [];
 
@@ -198,7 +198,7 @@ namespace PowerToolbox.Views.Windows
             MountWindowWndProc(AppWindow.Id);
             SetWindowTheme();
             SetSystemBackdrop();
-            SetWindowPosition(AppWindow);
+            SetWindowInformation(AppWindow);
             SetClassicMenuTheme(AppWindow.TitleBar, (Content as FrameworkElement).ActualTheme);
             EnableElevatedDragDrop(AppWindow.Id);
             SetTopMost();
@@ -627,20 +627,54 @@ namespace PowerToolbox.Views.Windows
         }
 
         /// <summary>
-        /// 设置窗口大小和位置
+        /// 设置窗口信息
         /// </summary>
-        private void SetWindowPosition(AppWindow appWindow)
+        private void SetWindowInformation(AppWindow appWindow)
         {
             if (appWindow is null)
             {
                 return;
             }
 
-            // 默认直接显示到窗口中间
-            User32Library.GetWindowRect((nint)appWindow.Id.Value, out RECT rect);
-            int width = rect.right - rect.left;
-            int height = rect.bottom - rect.top;
-            User32Library.SetWindowPos((nint)appWindow.Id.Value, 0, (System.Windows.Forms.SystemInformation.WorkingArea.Width - width) / 2, (System.Windows.Forms.SystemInformation.WorkingArea.Height - height) / 2, 0, 0, SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_NOZORDER);
+            System.Drawing.Rectangle workArea = System.Windows.Forms.SystemInformation.WorkingArea;
+            if (WindowInfoService.IsWindowInformationExisted())
+            {
+                (bool isWindowMaximized, System.Drawing.Point position, System.Drawing.Size size) = WindowInfoService.GetWindowInfo();
+
+                if (isWindowMaximized)
+                {
+                    overlappedPresenter.Maximize();
+                    appWindow.Show();
+                }
+                else
+                {
+                    int left = position.X;
+                    int top = position.Y;
+                    int right = position.X + size.Width;
+                    int bottom = position.Y + size.Height;
+
+                    if (left > 0 && top > 0 && right < workArea.Width && bottom < workArea.Height)
+                    {
+                        User32Library.SetWindowPos((nint)appWindow.Id.Value, 0, position.X, position.Y, size.Width, size.Height, SetWindowPosFlags.SWP_NOZORDER);
+                    }
+                    else
+                    {
+                        // 默认直接显示到窗口中间
+                        User32Library.GetWindowRect((nint)appWindow.Id.Value, out RECT rect);
+                        int width = rect.right - rect.left;
+                        int height = rect.bottom - rect.top;
+                        User32Library.SetWindowPos((nint)appWindow.Id.Value, 0, (workArea.Width - width) / 2, (workArea.Height - height) / 2, 0, 0, SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_NOZORDER);
+                    }
+                }
+            }
+            else
+            {
+                // 默认直接显示到窗口中间
+                User32Library.GetWindowRect((nint)appWindow.Id.Value, out RECT rect);
+                int width = rect.right - rect.left;
+                int height = rect.bottom - rect.top;
+                User32Library.SetWindowPos((nint)appWindow.Id.Value, 0, (workArea.Width - width) / 2, (workArea.Height - height) / 2, 0, 0, SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_NOZORDER);
+            }
         }
 
         /// <summary>
@@ -826,9 +860,10 @@ namespace PowerToolbox.Views.Windows
                                 if (contentDialogResult is ContentDialogResult.Primary)
                                 {
                                     DismountWindowEvent();
-                                    DownloadSchedulerService.TerminateDownload();
                                     DismountWindowWndProc(AppWindow.Id);
                                     DisableElevatedDragDrop();
+                                    WindowInfoService.SaveWindowInfo(hWnd, IsWindowMaximized);
+                                    DownloadSchedulerService.TerminateDownload();
                                     (Application.Current as MainApp).Dispose();
                                 }
                                 else if (contentDialogResult is ContentDialogResult.Secondary)
@@ -844,6 +879,7 @@ namespace PowerToolbox.Views.Windows
                                 DismountWindowEvent();
                                 DismountWindowWndProc(AppWindow.Id);
                                 DisableElevatedDragDrop();
+                                WindowInfoService.SaveWindowInfo(hWnd, IsWindowMaximized);
                                 (Application.Current as MainApp).Dispose();
                             }
                         }, null);
@@ -992,7 +1028,7 @@ namespace PowerToolbox.Views.Windows
                 return;
             }
 
-            if (GetFrameContent() is AdvancedSystemOptionsPage advancedSystemOptionsPage && advancedSystemOptionsPage.BreadCollection.Count is 2)
+            if (GetFrameContent() is AdvancedSystemOptionsPage advancedSystemOptionsPage && advancedSystemOptionsPage.BreadcrumbBarCollection.Count is 2)
             {
                 advancedSystemOptionsPage.NavigateTo(advancedSystemOptionsPage.PageList[0], null, false);
                 return;

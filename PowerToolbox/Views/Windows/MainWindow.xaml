@@ -15,6 +15,7 @@
         x:Name="MainPage"
         ActualThemeChanged="{x:Bind OnActualThemeChanged}"
         FlowDirection="{x:Bind settingsservice:LanguageService.FlowDirection}"
+        KeyboardAcceleratorPlacementMode="Hidden"
         RequestedTheme="{x:Bind WindowTheme, Mode=OneWay}">
 
         <Page.KeyboardAccelerators>

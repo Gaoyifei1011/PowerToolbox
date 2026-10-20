@@ -3,11 +3,11 @@ using PowerToolbox.Services.Download;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
 using PowerToolbox.Services.Shell;
+using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Kernel32;
 using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.Text;
 using System.Threading;
 
@@ -60,7 +60,7 @@ namespace PowerToolbox
         /// <summary>
         /// 处理应用非 UI 线程异常
         /// </summary>
-        private static void OnUnhandledException(object sender, System.UnhandledExceptionEventArgs args)
+        private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs args)
         {
             LogService.WriteLog(TraceEventType.Warning, nameof(PowerToolbox), nameof(Program), nameof(OnUnhandledException), 1, args.ExceptionObject as Exception);
         }
@@ -74,6 +74,7 @@ namespace PowerToolbox
             LanguageService.InitializeLanguage();
             Thread.CurrentThread.CurrentUICulture = new(LanguageService.AppLanguage.Key);
 
+            WindowInfoService.Initialize(nameof(MainWindow));
             AlwaysShowBackdropService.InitializeAlwaysShowBackdrop();
             BackdropService.InitializeBackdrop();
             ThemeService.InitializeTheme();
