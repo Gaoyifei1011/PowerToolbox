@@ -13,10 +13,10 @@ using PowerToolbox.Models;
 using PowerToolbox.Services.Position;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
-using PowerToolbox.Views.Dialogs;
 using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
+using PowerToolbox.WindowsAPI.PInvoke.Kernel32;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
@@ -24,10 +24,11 @@ using System.ComponentModel;
 using System.Device.Location;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.UI;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
@@ -40,6 +41,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class ThemeSwitchPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string AutoThemeSwitchTypeDarkModeString = ResourceService.ThemeSwitchResource.GetString("AutoThemeSwitchTypeDarkMode");
         private readonly string AutoThemeSwitchTypeFixedTimeString = ResourceService.ThemeSwitchResource.GetString("AutoThemeSwitchTypeFixedTime");
         private readonly string AutoThemeSwitchTypeSunriseSunsetString = ResourceService.ThemeSwitchResource.GetString("AutoThemeSwitchTypeSunriseSunset");
@@ -49,13 +52,19 @@ namespace PowerToolbox.Views.Pages
         private readonly string PolarDayString = ResourceService.ThemeSwitchResource.GetString("PolarDay");
         private readonly string PolarNightString = ResourceService.ThemeSwitchResource.GetString("PolarNight");
         private readonly Guid CLSID_DesktopWallpaper = new("C2CF3110-460E-4fC1-B9D0-8A1C0C9CC4BD");
+
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
+        private string packageFamilyName = string.Empty;
         private bool isInitialized;
         private IDesktopWallpaper desktopWallpaper;
 
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
+
         private Brush _systemAppBackground;
 
-        internal Brush SystemAppBackground
+        private Brush SystemAppBackground
         {
             get { return _systemAppBackground; }
 
@@ -71,7 +80,7 @@ namespace PowerToolbox.Views.Pages
 
         private ElementTheme _systemAppTheme;
 
-        internal ElementTheme SystemAppTheme
+        private ElementTheme SystemAppTheme
         {
             get { return _systemAppTheme; }
 
@@ -87,7 +96,7 @@ namespace PowerToolbox.Views.Pages
 
         private ImageSource _systemAppImage;
 
-        internal ImageSource SystemAppImage
+        private ImageSource SystemAppImage
         {
             get { return _systemAppImage; }
 
@@ -103,7 +112,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isManualCloseInfoBar;
 
-        internal bool IsManualCloseInfoBar
+        private bool IsManualCloseInfoBar
         {
             get { return _isManualCloseInfoBar; }
 
@@ -119,7 +128,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isThemeSwitchNotificationEnabled;
 
-        internal bool IsThemeSwitchNotificationEnabled
+        private bool IsThemeSwitchNotificationEnabled
         {
             get { return _isThemeSwitchNotificationEnabled; }
 
@@ -135,7 +144,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedSystemThemeStyle;
 
-        internal ComboBoxItemModel SelectedSystemThemeStyle
+        private ComboBoxItemModel SelectedSystemThemeStyle
         {
             get { return _selectedSystemThemeStyle; }
 
@@ -151,7 +160,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedAppThemeStyle;
 
-        internal ComboBoxItemModel SelectedAppThemeStyle
+        private ComboBoxItemModel SelectedAppThemeStyle
         {
             get { return _selectedAppThemeStyle; }
 
@@ -167,7 +176,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isShowThemeColorInStartAndTaskbar;
 
-        internal bool IsShowThemeColorInStartAndTaskbar
+        private bool IsShowThemeColorInStartAndTaskbar
         {
             get { return _isShowThemeColorInStartAndTaskbar; }
 
@@ -183,7 +192,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isShowThemeColorInStartAndTaskbarEnabled;
 
-        internal bool IsShowThemeColorInStartAndTaskbarEnabled
+        private bool IsShowThemeColorInStartAndTaskbarEnabled
         {
             get { return _isShowThemeColorInStartAndTaskbarEnabled; }
 
@@ -199,7 +208,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isAutoThemeSwitchEnable = AutoThemeSwitchService.AutoThemeSwitchEnable;
 
-        internal bool IsAutoThemeSwitchEnable
+        private bool IsAutoThemeSwitchEnable
         {
             get { return _isAutoThemeSwitchEnable; }
 
@@ -215,7 +224,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedAutoThemeSwitchType;
 
-        internal ComboBoxItemModel SelectedAutoThemeSwitchType
+        private ComboBoxItemModel SelectedAutoThemeSwitchType
         {
             get { return _selectedAutoThemeSwitchType; }
 
@@ -231,7 +240,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isAutoSwitchSystemTheme = AutoThemeSwitchService.AutoSwitchSystemTheme;
 
-        internal bool IsAutoSwitchSystemTheme
+        private bool IsAutoSwitchSystemTheme
         {
             get { return _isAutoSwitchSystemTheme; }
 
@@ -247,7 +256,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isAutoSwitchAppTheme = AutoThemeSwitchService.AutoSwitchAppTheme;
 
-        internal bool IsAutoSwitchAppTheme
+        private bool IsAutoSwitchAppTheme
         {
             get { return _isAutoSwitchAppTheme; }
 
@@ -263,7 +272,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isShowColorInDarkTheme = AutoThemeSwitchService.IsShowColorInDarkTheme;
 
-        internal bool IsShowColorInDarkTheme
+        private bool IsShowColorInDarkTheme
         {
             get { return _isShowColorInDarkTheme; }
 
@@ -279,7 +288,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isGettingPosition;
 
-        internal bool IsGettingPosition
+        private bool IsGettingPosition
         {
             get { return _isGettingPosition; }
 
@@ -295,7 +304,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _sunriseOffset = AutoThemeSwitchService.SunriseOffset;
 
-        internal int SunriseOffset
+        private int SunriseOffset
         {
             get { return _sunriseOffset; }
 
@@ -311,7 +320,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _sunsetOffset = AutoThemeSwitchService.SunsetOffset;
 
-        internal int SunsetOffset
+        private int SunsetOffset
         {
             get { return _sunsetOffset; }
 
@@ -327,7 +336,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _longitude;
 
-        internal string Longitude
+        private string Longitude
         {
             get { return _longitude; }
 
@@ -343,7 +352,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _latitude;
 
-        internal string Latitude
+        private string Latitude
         {
             get { return _latitude; }
 
@@ -359,7 +368,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _sunriseTime;
 
-        internal string SunriseTime
+        private string SunriseTime
         {
             get { return _sunriseTime; }
 
@@ -375,7 +384,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _sunsetTime;
 
-        internal string SunsetTime
+        private string SunsetTime
         {
             get { return _sunsetTime; }
 
@@ -391,7 +400,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isPolarNightRegion;
 
-        internal bool IsPolarNightRegion
+        private bool IsPolarNightRegion
         {
             get { return _isPolarNightRegion; }
 
@@ -407,7 +416,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isPolarDayRegion;
 
-        internal bool IsPolarDayRegion
+        private bool IsPolarDayRegion
         {
             get { return _isPolarDayRegion; }
 
@@ -421,9 +430,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private TimeSpan _systemThemeLightTime = AutoThemeSwitchService.SystemThemeLightTime;
+        private TimeSpan _systemThemeLightTime;
 
-        internal TimeSpan SystemThemeLightTime
+        private TimeSpan SystemThemeLightTime
         {
             get { return _systemThemeLightTime; }
 
@@ -437,9 +446,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private TimeSpan _systemThemeDarkTime = AutoThemeSwitchService.SystemThemeDarkTime;
+        private TimeSpan _systemThemeDarkTime;
 
-        internal TimeSpan SystemThemeDarkTime
+        private TimeSpan SystemThemeDarkTime
         {
             get { return _systemThemeDarkTime; }
 
@@ -453,9 +462,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private TimeSpan _appThemeLightTime = AutoThemeSwitchService.AppThemeLightTime;
+        private TimeSpan _appThemeLightTime;
 
-        internal TimeSpan AppThemeLightTime
+        private TimeSpan AppThemeLightTime
         {
             get { return _appThemeLightTime; }
 
@@ -469,9 +478,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private TimeSpan _appThemeDarkTime = AutoThemeSwitchService.AppThemeDarkTime;
+        private TimeSpan _appThemeDarkTime;
 
-        internal TimeSpan AppThemeDarkTime
+        private TimeSpan AppThemeDarkTime
         {
             get { return _appThemeDarkTime; }
 
@@ -485,36 +494,26 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<ComboBoxItemModel> AutoThemeSwitchTypeList { get; } = [];
+        private WinRTObservableCollection<ComboBoxItemModel> AutoThemeSwitchTypeCollection { get; } = [];
 
-        private List<ComboBoxItemModel> SystemThemeStyleList { get; } = [];
+        private WinRTObservableCollection<ComboBoxItemModel> SystemThemeStyleCollection { get; } = [];
 
-        private List<ComboBoxItemModel> AppThemeStyleList { get; } = [];
+        private WinRTObservableCollection<ComboBoxItemModel> AppThemeStyleCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
 
         internal ThemeSwitchPage()
         {
             InitializeComponent();
-
-            SystemThemeStyleList.Add(new() { SelectedValue = ElementTheme.Light, DisplayMember = LightString });
-            SystemThemeStyleList.Add(new() { SelectedValue = ElementTheme.Dark, DisplayMember = DarkString });
-            AppThemeStyleList.Add(new() { SelectedValue = ElementTheme.Light, DisplayMember = LightString });
-            AppThemeStyleList.Add(new() { SelectedValue = ElementTheme.Dark, DisplayMember = DarkString });
-            AutoThemeSwitchTypeList.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[0], DisplayMember = AutoThemeSwitchTypeFixedTimeString });
-            AutoThemeSwitchTypeList.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[1], DisplayMember = AutoThemeSwitchTypeSunriseSunsetString });
-            AutoThemeSwitchTypeList.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[2], DisplayMember = AutoThemeSwitchTypeDarkModeString });
-            SelectedSystemThemeStyle = SystemThemeStyleList[0];
-            SelectedAppThemeStyle = AppThemeStyleList[0];
-            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList[0];
-            Longitude = NotAvailableString;
-            Latitude = NotAvailableString;
-            SunriseTime = NotAvailableString;
-            SunsetTime = NotAvailableString;
-            RegistryHelper.NotifyKeyValueChanged += OnNotifyKeyValueChanged;
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面触发的事件
@@ -525,62 +524,22 @@ namespace PowerToolbox.Views.Pages
             if (!isInitialized)
             {
                 isInitialized = true;
-                GlobalNotificationService.ApplicationExit += OnApplicationExit;
-                await Task.Run(() =>
-                {
-                    desktopWallpaper = (IDesktopWallpaper)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_DesktopWallpaper));
-                    RegistryHelper.MonitorRegistryValueChange(Registry.CurrentUser, @"Control Panel\Desktop");
-                    RegistryHelper.MonitorRegistryValueChange(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers");
-                    RegistryHelper.MonitorRegistryValueChange(Registry.CurrentUser, @"Control Panel\Colors");
-                });
+                await InitializeDataAsync();
             }
 
             await InitializeSystemThemeSettingsAsync();
         }
 
-        /// <summary>
-        /// 应用程序即将关闭时发生的事件
-        /// </summary>
-        private async void OnApplicationExit()
-        {
-            try
-            {
-                GlobalNotificationService.ApplicationExit -= OnApplicationExit;
-                if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized)
-                {
-                    await UnInitializeDeviceServiceAsync();
-                    Latitude = NotAvailableString;
-                    Longitude = NotAvailableString;
-                    SunriseTime = NotAvailableString;
-                    SunsetTime = NotAvailableString;
-                }
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnApplicationExit), 1, e);
-            }
-        }
+        #endregion 第四部分：父类虚方法重写
 
-        #endregion 第一部分：重写父类事件
-
-        #region 第二部分：修改主题页面——挂载的事件
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 打开系统个性化
         /// </summary>
         private void OnOpenPersonalizeClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("ms-settings:colors");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnOpenPersonalizeClicked), 1, e);
-                }
-            });
+            OpenPersonalize();
         }
 
         /// <summary>
@@ -588,26 +547,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnEnableStartupTaskClicked(object sender, RoutedEventArgs args)
         {
-            bool isStartupTaskEnabled = await Task.Run(async () =>
-            {
-                StartupTask startupTask = await StartupTask.GetAsync("ThemeSwitch");
-                StartupTaskState startupTaskState = await startupTask.RequestEnableAsync();
-                return startupTaskState is StartupTaskState.Enabled || startupTaskState is StartupTaskState.Disabled;
-            });
-
-            if (AutoThemeSwitchService.AutoThemeSwitchEnable)
-            {
-                IsThemeSwitchNotificationEnabled = !isStartupTaskEnabled;
-
-                if (IsThemeSwitchNotificationEnabled)
-                {
-                    await MainWindow.Current.ShowDialogAsync(new OpenStartupTaskFailedDialog());
-                }
-            }
-            else
-            {
-                IsThemeSwitchNotificationEnabled = false;
-            }
+            await SetStartupTaskEnabledAsync(2);
+            bool isStartupTaskEnabled = await GetStartupTaskEnabledAsync();
+            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnable && !isStartupTaskEnabled;
         }
 
         /// <summary>
@@ -639,24 +581,18 @@ namespace PowerToolbox.Views.Pages
                 {
                     int systemTheme = 0;
 
-                    if (Equals(SelectedSystemThemeStyle, SystemThemeStyleList[0]))
+                    if (Equals(SelectedSystemThemeStyle, SystemThemeStyleCollection[0]))
                     {
                         systemTheme = 1;
                         IsShowThemeColorInStartAndTaskbarEnabled = false;
                         IsShowThemeColorInStartAndTaskbar = false;
                     }
-                    else if (Equals(SelectedSystemThemeStyle, SystemThemeStyleList[1]))
+                    else if (Equals(SelectedSystemThemeStyle, SystemThemeStyleCollection[1]))
                     {
                         systemTheme = 0;
                         IsShowThemeColorInStartAndTaskbarEnabled = true;
                     }
-
-                    Task.Run(() =>
-                    {
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "SystemUsesLightTheme", systemTheme);
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence", IsShowThemeColorInStartAndTaskbar);
-                        User32Library.SendMessageTimeout(0xffff, WindowMessage.WM_SETTINGCHANGE, 0, Marshal.StringToHGlobalUni("ImmersiveColorSet"), SMTO.SMTO_ABORTIFHUNG, 50, out _);
-                    });
+                    SetSystemTheme(systemTheme);
                 }
             }
         }
@@ -668,26 +604,21 @@ namespace PowerToolbox.Views.Pages
         {
             if (sender is ComboBox comboBox && !Equals(SelectedAppThemeStyle, comboBox.SelectedItem))
             {
-                SelectedAppThemeStyle = comboBox.SelectedItem is ComboBoxItemModel appTheme ? appTheme : null;
+                SelectedAppThemeStyle = comboBox.SelectedItem is ComboBoxItemModel appThemeStyle ? appThemeStyle : null;
 
                 if (SelectedAppThemeStyle is not null)
                 {
-                    int apptheme = 0;
+                    int appTheme = 0;
 
-                    if (Equals(SelectedAppThemeStyle, AppThemeStyleList[0]))
+                    if (Equals(SelectedAppThemeStyle, AppThemeStyleCollection[0]))
                     {
-                        apptheme = 1;
+                        appTheme = 1;
                     }
-                    else if (Equals(SelectedSystemThemeStyle, SystemThemeStyleList[1]))
+                    else if (Equals(SelectedSystemThemeStyle, SystemThemeStyleCollection[1]))
                     {
-                        apptheme = 0;
+                        appTheme = 0;
                     }
-
-                    Task.Run(() =>
-                    {
-                        RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", apptheme);
-                        User32Library.SendMessageTimeout(0xffff, WindowMessage.WM_SETTINGCHANGE, 0, Marshal.StringToHGlobalUni("ImmersiveColorSet"), SMTO.SMTO_ABORTIFHUNG, 50, out _);
-                    });
+                    SetAppTheme(appTheme);
                 }
             }
         }
@@ -700,12 +631,8 @@ namespace PowerToolbox.Views.Pages
             if (sender is ToggleSwitch toggleSwitch && !Equals(IsShowThemeColorInStartAndTaskbar, toggleSwitch.IsOn))
             {
                 IsShowThemeColorInStartAndTaskbar = toggleSwitch.IsOn;
-                IsShowThemeColorInStartAndTaskbar = await Task.Run(() =>
-                {
-                    RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence", IsShowThemeColorInStartAndTaskbar);
-                    User32Library.SendMessageTimeout(0xffff, WindowMessage.WM_SETTINGCHANGE, 0, Marshal.StringToHGlobalUni("ImmersiveColorSet"), SMTO.SMTO_ABORTIFHUNG, 50, out _);
-                    return GetShowThemeColorInStartAndTaskbar();
-                });
+                await SetShowThemeColorInStartAndTaskbarAsync(IsShowThemeColorInStartAndTaskbar);
+                IsShowThemeColorInStartAndTaskbar = await GetShowThemeColorInStartAndTaskbarAsync();
             }
         }
 
@@ -725,41 +652,13 @@ namespace PowerToolbox.Views.Pages
                 return;
             }
 
-            await Task.Run(() =>
+            await SaveThemeSettingsAsync(IsAutoThemeSwitchEnable, Convert.ToString(SelectedAutoThemeSwitchType.SelectedValue), IsAutoSwitchSystemTheme, IsAutoSwitchAppTheme, IsShowColorInDarkTheme, SystemThemeLightTime, SystemThemeDarkTime, AppThemeLightTime, AppThemeDarkTime, SunriseOffset, SunsetOffset);
+            if (IsAutoThemeSwitchEnable)
             {
-                AutoThemeSwitchService.SetAutoThemeSwitchEnable(IsAutoThemeSwitchEnable);
-                AutoThemeSwitchService.SetAutoThemeSwitchType(Convert.ToString(SelectedAutoThemeSwitchType.SelectedValue));
-                AutoThemeSwitchService.SetAutoSwitchSystemTheme(IsAutoSwitchSystemTheme);
-                AutoThemeSwitchService.SetAutoSwitchAppTheme(IsAutoSwitchAppTheme);
-                AutoThemeSwitchService.SetIsShowColorInDarkTheme(IsShowColorInDarkTheme);
-                AutoThemeSwitchService.SetSystemThemeLightTime(SystemThemeLightTime);
-                AutoThemeSwitchService.SetSystemThemeDarkTime(SystemThemeDarkTime);
-                AutoThemeSwitchService.SetAppThemeLightTime(AppThemeLightTime);
-                AutoThemeSwitchService.SetAppThemeDarkTime(AppThemeDarkTime);
-                AutoThemeSwitchService.SetSunriseOffset(SunriseOffset);
-                AutoThemeSwitchService.SetSunsetOffset(SunsetOffset);
+                OpenAutoSwitchProgram();
+            }
 
-                if (IsAutoThemeSwitchEnable)
-                {
-                    try
-                    {
-                        ProcessStartInfo startInfo = new()
-                        {
-                            UseShellExecute = true,
-                            WorkingDirectory = Environment.CurrentDirectory,
-                            FileName = Path.Combine(Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath), "ThemeSwitch.exe"),
-                            Verb = "open"
-                        };
-                        Process.Start(startInfo);
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSaveClicked), 1, e);
-                    }
-                }
-            });
-
-            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnable && !await Task.Run(GetStartupTaskEnabledAsync);
+            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnable && !await GetStartupTaskEnabledAsync();
             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ThemeSwitchSaveResult));
         }
 
@@ -768,33 +667,19 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnRestoreDefaultClicked(object sender, RoutedEventArgs args)
         {
-            await Task.Run(() =>
-            {
-                AutoThemeSwitchService.SetAutoThemeSwitchEnable(AutoThemeSwitchService.DefaultAutoThemeSwitchEnable);
-                AutoThemeSwitchService.SetAutoThemeSwitchType(AutoThemeSwitchService.DefaultAutoThemeSwitchType);
-                AutoThemeSwitchService.SetAutoSwitchSystemTheme(AutoThemeSwitchService.DefaultAutoSwitchSystemTheme);
-                AutoThemeSwitchService.SetAutoSwitchAppTheme(AutoThemeSwitchService.DefaultAutoSwitchAppTheme);
-                AutoThemeSwitchService.SetIsShowColorInDarkTheme(AutoThemeSwitchService.DefaultIsShowColorInDarkTheme);
-                AutoThemeSwitchService.SetSystemThemeLightTime(AutoThemeSwitchService.DefaultSystemThemeLightTime);
-                AutoThemeSwitchService.SetSystemThemeDarkTime(AutoThemeSwitchService.DefaultSystemThemeDarkTime);
-                AutoThemeSwitchService.SetAppThemeLightTime(AutoThemeSwitchService.DefaultAppThemeLightTime);
-                AutoThemeSwitchService.SetAppThemeDarkTime(AutoThemeSwitchService.DefaultAppThemeDarkTime);
-                AutoThemeSwitchService.SetSunriseOffset(AutoThemeSwitchService.DefaultSunriseOffset);
-                AutoThemeSwitchService.SetSunsetOffset(AutoThemeSwitchService.DefaultSunriseOffset);
-            });
-
-            IsAutoThemeSwitchEnable = AutoThemeSwitchService.DefaultAutoThemeSwitchEnable;
-            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList[AutoThemeSwitchService.AutoThemeSwitchTypeList.FindIndex(item => string.Equals(item, AutoThemeSwitchService.DefaultAutoThemeSwitchType))];
-            IsAutoSwitchSystemTheme = AutoThemeSwitchService.DefaultAutoSwitchSystemTheme;
-            IsAutoSwitchAppTheme = AutoThemeSwitchService.DefaultAutoSwitchAppTheme;
-            IsShowColorInDarkTheme = AutoThemeSwitchService.DefaultIsShowColorInDarkTheme;
-            SystemThemeLightTime = AutoThemeSwitchService.DefaultSystemThemeLightTime;
-            SystemThemeDarkTime = AutoThemeSwitchService.DefaultSystemThemeDarkTime;
-            AppThemeLightTime = AutoThemeSwitchService.DefaultAppThemeLightTime;
-            AppThemeDarkTime = AutoThemeSwitchService.DefaultAppThemeDarkTime;
-            SunriseOffset = AutoThemeSwitchService.DefaultSunriseOffset;
-            SunsetOffset = AutoThemeSwitchService.DefaultSunsetOffset;
-            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnable && !await Task.Run(GetStartupTaskEnabledAsync);
+            await SaveThemeSettingsAsync(AutoThemeSwitchService.DefaultAutoThemeSwitchEnable, AutoThemeSwitchService.DefaultAutoThemeSwitchType, AutoThemeSwitchService.DefaultAutoSwitchSystemTheme, AutoThemeSwitchService.DefaultAutoSwitchAppTheme, AutoThemeSwitchService.DefaultIsShowColorInDarkTheme, AutoThemeSwitchService.DefaultSystemThemeLightTime, AutoThemeSwitchService.DefaultSystemThemeDarkTime, AutoThemeSwitchService.DefaultAppThemeLightTime, AutoThemeSwitchService.DefaultAppThemeDarkTime, AutoThemeSwitchService.DefaultSunriseOffset, AutoThemeSwitchService.DefaultSunsetOffset);
+            IsAutoThemeSwitchEnable = AutoThemeSwitchService.AutoThemeSwitchEnable;
+            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeCollection[AutoThemeSwitchService.AutoThemeSwitchTypeList.FindIndex(item => string.Equals(item, AutoThemeSwitchService.AutoThemeSwitchType))];
+            IsAutoSwitchSystemTheme = AutoThemeSwitchService.AutoSwitchSystemTheme;
+            IsAutoSwitchAppTheme = AutoThemeSwitchService.AutoSwitchAppTheme;
+            IsShowColorInDarkTheme = AutoThemeSwitchService.IsShowColorInDarkTheme;
+            SystemThemeLightTime = AutoThemeSwitchService.SystemThemeLightTime;
+            SystemThemeDarkTime = AutoThemeSwitchService.SystemThemeDarkTime;
+            AppThemeLightTime = AutoThemeSwitchService.AppThemeLightTime;
+            AppThemeDarkTime = AutoThemeSwitchService.AppThemeDarkTime;
+            SunriseOffset = AutoThemeSwitchService.SunriseOffset;
+            SunsetOffset = AutoThemeSwitchService.SunsetOffset;
+            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnable && !await GetStartupTaskEnabledAsync();
             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ThemeSwitchRestoreResult));
         }
 
@@ -803,24 +688,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnOpenAutoSwitchProgramClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    ProcessStartInfo startInfo = new()
-                    {
-                        UseShellExecute = true,
-                        WorkingDirectory = Environment.CurrentDirectory,
-                        FileName = Path.Combine(Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath), "ThemeSwitch.exe"),
-                        Verb = "open"
-                    };
-                    Process.Start(startInfo);
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSaveClicked), 2, e);
-                }
-            });
+            OpenAutoSwitchProgram();
         }
 
         /// <summary>
@@ -833,7 +701,7 @@ namespace PowerToolbox.Views.Pages
                 IsAutoThemeSwitchEnable = toggleSwitch.IsOn;
             }
 
-            if (Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]))
+            if (Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeCollection[1]))
             {
                 if (IsAutoThemeSwitchEnable)
                 {
@@ -870,7 +738,7 @@ namespace PowerToolbox.Views.Pages
             {
                 if (IsAutoThemeSwitchEnable)
                 {
-                    if (Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]))
+                    if (Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeCollection[1]))
                     {
                         if (!DevicePositionService.IsInitialized)
                         {
@@ -998,14 +866,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSystemPositionSettingsClicked(object sender, RoutedEventArgs args)
         {
-            try
-            {
-                Process.Start("ms-settings:privacy-location");
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSystemPositionSettingsClicked), 1, e);
-            }
+            OpenSystemPositionSettings();
         }
 
         /// <summary>
@@ -1014,82 +875,13 @@ namespace PowerToolbox.Views.Pages
         private async void OnLocatePositionClicked(object sender, RoutedEventArgs args)
         {
             IsGettingPosition = true;
-            if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]))
+            if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeCollection[1]))
             {
                 if (DevicePositionService.IsInitialized)
                 {
                     if (DevicePositionService.IsLoaded)
                     {
-                        Latitude = Convert.ToString(DevicePositionService.Latitude);
-                        Longitude = Convert.ToString(DevicePositionService.Longitude);
-                        SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
-
-                        // 正常地区时间
-                        if (!sunTime.IsPolarDay && !sunTime.IsPolarNight)
-                        {
-                            IsPolarDayRegion = false;
-                            IsPolarNightRegion = false;
-                            TimeSpan standardSunriseTime = new(sunTime.SunriseHour, sunTime.SunriseMinute, 0);
-                            TimeSpan standardSunsetTime = new(sunTime.SunsetHour, sunTime.SunsetMinute, 0);
-                            TimeSpan calculatedSunriseTime = standardSunriseTime + TimeSpan.FromMinutes(SunriseOffset);
-                            TimeSpan calculatedSunsetTime = standardSunsetTime + TimeSpan.FromMinutes(SunsetOffset);
-                            TimeSpan sunriseTime = new(calculatedSunriseTime.Hours, calculatedSunriseTime.Minutes, 0);
-                            TimeSpan sunsetTime = new(calculatedSunsetTime.Hours, calculatedSunsetTime.Minutes, 0);
-
-                            if (sunriseTime < sunsetTime)
-                            {
-                                SunriseTime = sunriseTime.ToString(@"hh\:mm");
-                                SunsetTime = sunsetTime.ToString(@"hh\:mm");
-                            }
-                            else
-                            {
-                                SunriseOffset = 0;
-                                SunsetOffset = 0;
-                                SunriseTime = standardSunriseTime.ToString(@"hh\:mm");
-                                SunsetTime = standardSunsetTime.ToString(@"hh\:mm");
-                            }
-                        }
-                        // 极地地区时间
-                        else
-                        {
-                            SunriseOffset = 0;
-                            SunsetOffset = 0;
-
-                            // 北半球极地时间
-                            if (DevicePositionService.Latitude > 0)
-                            {
-                                // 北极极昼
-                                if (sunTime.IsPolarDay)
-                                {
-                                    IsPolarDayRegion = false;
-                                    IsPolarNightRegion = true;
-                                    SunsetTime = PolarDayString;
-                                }
-                                else
-                                {
-                                    IsPolarDayRegion = true;
-                                    IsPolarNightRegion = false;
-                                    SunriseTime = PolarNightString;
-                                }
-                            }
-                            // 南半球极地时间
-                            else
-                            {
-                                // 南极极昼
-                                if (sunTime.IsPolarDay)
-                                {
-                                    IsPolarDayRegion = false;
-                                    IsPolarNightRegion = true;
-                                    SunsetTime = PolarDayString;
-                                }
-                                else
-                                {
-                                    IsPolarDayRegion = true;
-                                    IsPolarNightRegion = false;
-                                    SunriseTime = PolarNightString;
-                                }
-                            }
-                        }
+                        UpdateDevicePositionInformation();
                     }
                     else
                     {
@@ -1122,77 +914,9 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized && DevicePositionService.IsLoaded)
+            if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeCollection[1]) && DevicePositionService.IsInitialized && DevicePositionService.IsLoaded)
             {
-                Latitude = Convert.ToString(DevicePositionService.Latitude);
-                Longitude = Convert.ToString(DevicePositionService.Longitude);
-                SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
-
-                // 正常地区时间
-                if (!sunTime.IsPolarDay && !sunTime.IsPolarNight)
-                {
-                    IsPolarDayRegion = false;
-                    IsPolarNightRegion = false;
-                    TimeSpan standardSunriseTime = new(sunTime.SunriseHour, sunTime.SunriseMinute, 0);
-                    TimeSpan standardSunsetTime = new(sunTime.SunsetHour, sunTime.SunsetMinute, 0);
-                    TimeSpan calculatedSunriseTime = standardSunriseTime + TimeSpan.FromMinutes(sunriseOffset);
-                    TimeSpan calculatedSunsetTime = standardSunsetTime + TimeSpan.FromMinutes(SunsetOffset);
-                    TimeSpan sunriseTime = new(calculatedSunriseTime.Hours, calculatedSunriseTime.Minutes, 0);
-                    TimeSpan sunsetTime = new(calculatedSunsetTime.Hours, calculatedSunsetTime.Minutes, 0);
-
-                    SunriseOffset = int.MaxValue;
-                    if (sunriseTime < sunsetTime)
-                    {
-                        SunriseOffset = sunriseOffset;
-                        SunriseTime = sunriseTime.ToString(@"hh\:mm");
-                    }
-                    else
-                    {
-                        SunriseOffset = 0;
-                        SunriseTime = standardSunriseTime.ToString(@"hh\:mm");
-                    }
-                }
-                // 极地地区时间
-                else
-                {
-                    SunriseOffset = 0;
-                    SunsetOffset = 0;
-
-                    // 北半球极地时间
-                    if (DevicePositionService.Latitude > 0)
-                    {
-                        // 北极极昼
-                        if (sunTime.IsPolarDay)
-                        {
-                            IsPolarDayRegion = false;
-                            IsPolarNightRegion = true;
-                            SunsetTime = PolarDayString;
-                        }
-                        else
-                        {
-                            IsPolarDayRegion = true;
-                            IsPolarNightRegion = false;
-                            SunriseTime = PolarNightString;
-                        }
-                    }
-                    // 南半球极地时间
-                    else
-                    {
-                        // 南极极昼
-                        if (sunTime.IsPolarDay)
-                        {
-                            IsPolarDayRegion = false;
-                            IsPolarNightRegion = true;
-                            SunsetTime = PolarDayString;
-                        }
-                        else
-                        {
-                            IsPolarDayRegion = true;
-                            IsPolarNightRegion = false;
-                            SunriseTime = PolarNightString;
-                        }
-                    }
-                }
+                UpdateDevicePositionInformation();
             }
         }
 
@@ -1219,83 +943,11 @@ namespace PowerToolbox.Views.Pages
                 sunsetOffset = 0;
             }
 
-            if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && DevicePositionService.IsInitialized && DevicePositionService.IsLoaded)
+            if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeCollection[1]) && DevicePositionService.IsInitialized && DevicePositionService.IsLoaded)
             {
-                Latitude = Convert.ToString(DevicePositionService.Latitude);
-                Longitude = Convert.ToString(DevicePositionService.Longitude);
-                SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
-
-                // 正常地区时间
-                if (!sunTime.IsPolarDay && !sunTime.IsPolarNight)
-                {
-                    IsPolarDayRegion = false;
-                    IsPolarNightRegion = false;
-                    TimeSpan standardSunriseTime = new(sunTime.SunriseHour, sunTime.SunriseMinute, 0);
-                    TimeSpan standardSunsetTime = new(sunTime.SunsetHour, sunTime.SunsetMinute, 0);
-                    TimeSpan calculatedSunriseTime = standardSunriseTime + TimeSpan.FromMinutes(SunriseOffset);
-                    TimeSpan calculatedSunsetTime = standardSunsetTime + TimeSpan.FromMinutes(sunsetOffset);
-                    TimeSpan sunriseTime = new(calculatedSunriseTime.Hours, calculatedSunriseTime.Minutes, 0);
-                    TimeSpan sunsetTime = new(calculatedSunsetTime.Hours, calculatedSunsetTime.Minutes, 0);
-
-                    SunsetOffset = int.MaxValue;
-                    if (sunriseTime < sunsetTime)
-                    {
-                        SunsetOffset = sunsetOffset;
-                        SunsetTime = sunsetTime.ToString(@"hh\:mm");
-                    }
-                    else
-                    {
-                        SunsetOffset = 0;
-                        SunsetTime = standardSunsetTime.ToString(@"hh\:mm");
-                    }
-                }
-                // 极地地区时间
-                else
-                {
-                    SunriseOffset = 0;
-                    SunsetOffset = 0;
-
-                    // 北半球极地时间
-                    if (DevicePositionService.Latitude > 0)
-                    {
-                        // 北极极昼
-                        if (sunTime.IsPolarDay)
-                        {
-                            IsPolarDayRegion = false;
-                            IsPolarNightRegion = true;
-                            SunsetTime = PolarDayString;
-                        }
-                        else
-                        {
-                            IsPolarDayRegion = true;
-                            IsPolarNightRegion = false;
-                            SunriseTime = PolarNightString;
-                        }
-                    }
-                    // 南半球极地时间
-                    else
-                    {
-                        // 南极极昼
-                        if (sunTime.IsPolarDay)
-                        {
-                            IsPolarDayRegion = false;
-                            IsPolarNightRegion = true;
-                            SunsetTime = PolarDayString;
-                        }
-                        else
-                        {
-                            IsPolarDayRegion = true;
-                            IsPolarNightRegion = false;
-                            SunriseTime = PolarNightString;
-                        }
-                    }
-                }
+                UpdateDevicePositionInformation();
             }
         }
-
-        #endregion 第二部分：修改主题页面——挂载的事件
-
-        #region 第二部分：自定义事件
 
         /// <summary>
         /// 注册表内容发生变更时触发的事件
@@ -1314,7 +966,80 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第二部分：自定义事件
+        /// <summary>
+        /// 应用程序即将关闭时发生的事件
+        /// </summary>
+        private async void OnApplicationExit()
+        {
+            try
+            {
+                GlobalNotificationService.ApplicationExit -= OnApplicationExit;
+                if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeCollection[1]) && DevicePositionService.IsInitialized)
+                {
+                    await UnInitializeDeviceServiceAsync();
+                    Latitude = NotAvailableString;
+                    Longitude = NotAvailableString;
+                    SunriseTime = NotAvailableString;
+                    SunsetTime = NotAvailableString;
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnApplicationExit), 1, e);
+            }
+        }
+
+        #endregion 第五部分：挂载事件处理
+
+        #region 第六部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private async Task InitializeDataAsync()
+        {
+            SystemThemeStyleCollection.Add(new() { SelectedValue = ElementTheme.Light, DisplayMember = LightString });
+            SystemThemeStyleCollection.Add(new() { SelectedValue = ElementTheme.Dark, DisplayMember = DarkString });
+            AppThemeStyleCollection.Add(new() { SelectedValue = ElementTheme.Light, DisplayMember = LightString });
+            AppThemeStyleCollection.Add(new() { SelectedValue = ElementTheme.Dark, DisplayMember = DarkString });
+            AutoThemeSwitchTypeCollection.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[0], DisplayMember = AutoThemeSwitchTypeFixedTimeString });
+            AutoThemeSwitchTypeCollection.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[1], DisplayMember = AutoThemeSwitchTypeSunriseSunsetString });
+            AutoThemeSwitchTypeCollection.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[2], DisplayMember = AutoThemeSwitchTypeDarkModeString });
+            IsAutoThemeSwitchEnable = AutoThemeSwitchService.AutoThemeSwitchEnable;
+            IsAutoSwitchSystemTheme = AutoThemeSwitchService.AutoSwitchSystemTheme;
+            IsAutoSwitchAppTheme = AutoThemeSwitchService.AutoSwitchAppTheme;
+            IsShowColorInDarkTheme = AutoThemeSwitchService.IsShowColorInDarkTheme;
+            SystemThemeLightTime = AutoThemeSwitchService.SystemThemeLightTime;
+            SystemThemeDarkTime = AutoThemeSwitchService.SystemThemeDarkTime;
+            AppThemeLightTime = AutoThemeSwitchService.AppThemeLightTime;
+            AppThemeDarkTime = AutoThemeSwitchService.AppThemeDarkTime;
+            SunriseOffset = AutoThemeSwitchService.SunriseOffset;
+            SunsetOffset = AutoThemeSwitchService.SunsetOffset;
+            SystemThemeLightTime = AutoThemeSwitchService.SystemThemeLightTime;
+            SelectedSystemThemeStyle = SystemThemeStyleCollection[0];
+            SelectedAppThemeStyle = AppThemeStyleCollection[0];
+            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeCollection[0];
+            Longitude = NotAvailableString;
+            Latitude = NotAvailableString;
+            SunriseTime = NotAvailableString;
+            SunsetTime = NotAvailableString;
+            RegistryHelper.NotifyKeyValueChanged += OnNotifyKeyValueChanged;
+            int length = 0;
+            if (Kernel32Library.GetCurrentPackageFamilyName(ref length, null) is not (int)Kernel32Library.APPMODEL_ERROR_NO_PACKAGE)
+            {
+                StringBuilder packageFamilyNameBuilder = new(length + 1);
+                Kernel32Library.GetCurrentPackageFamilyName(ref length, packageFamilyNameBuilder);
+                packageFamilyName = Convert.ToString(packageFamilyNameBuilder);
+            }
+            GlobalNotificationService.ApplicationExit += OnApplicationExit;
+            await Task.Run(() =>
+            {
+                desktopWallpaper = (IDesktopWallpaper)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_DesktopWallpaper));
+                RegistryHelper.MonitorRegistryValueChange(Registry.CurrentUser, @"Control Panel\Desktop");
+                RegistryHelper.MonitorRegistryValueChange(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers");
+                RegistryHelper.MonitorRegistryValueChange(Registry.CurrentUser, @"Control Panel\Colors");
+            });
+        }
 
         /// <summary>
         /// 初始化系统主题设置内容
@@ -1374,19 +1099,19 @@ namespace PowerToolbox.Views.Pages
             SystemAppBackground = new SolidColorBrush((Color)wallpaperDict["Color"]);
 
             ElementTheme systemTheme = await Task.Run(GetSystemTheme);
-            SelectedSystemThemeStyle = SystemThemeStyleList.Find(item => Equals(item.SelectedValue, systemTheme));
+            SelectedSystemThemeStyle = SystemThemeStyleCollection.FirstOrDefault(item => Equals(item.SelectedValue, systemTheme));
 
             ElementTheme appTheme = await Task.Run(GetAppTheme);
             SystemAppTheme = appTheme;
-            SelectedAppThemeStyle = AppThemeStyleList.Find(item => Equals(item.SelectedValue, appTheme));
+            SelectedAppThemeStyle = AppThemeStyleCollection.FirstOrDefault(item => Equals(item.SelectedValue, appTheme));
 
-            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeList.Find(item => string.Equals(Convert.ToString(item.SelectedValue), AutoThemeSwitchService.AutoThemeSwitchType, StringComparison.OrdinalIgnoreCase));
-            IsShowThemeColorInStartAndTaskbarEnabled = Equals(SelectedSystemThemeStyle, SystemThemeStyleList[1]);
-            bool showThemeColorInStartAndTaskbar = await Task.Run(GetShowThemeColorInStartAndTaskbar);
+            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeCollection.FirstOrDefault(item => string.Equals(Convert.ToString(item.SelectedValue), AutoThemeSwitchService.AutoThemeSwitchType, StringComparison.OrdinalIgnoreCase));
+            IsShowThemeColorInStartAndTaskbarEnabled = Equals(SelectedSystemThemeStyle, SystemThemeStyleCollection[1]);
+            bool showThemeColorInStartAndTaskbar = await GetShowThemeColorInStartAndTaskbarAsync();
             IsShowThemeColorInStartAndTaskbar = showThemeColorInStartAndTaskbar;
-            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnable && !await Task.Run(GetStartupTaskEnabledAsync);
+            IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnable && !await GetStartupTaskEnabledAsync();
 
-            if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeList[1]) && !DevicePositionService.IsInitialized)
+            if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeCollection[1]) && !DevicePositionService.IsInitialized)
             {
                 await InitializeDeviceServiceAsync();
             }
@@ -1447,76 +1172,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         synchronizationContext.Post((_) =>
                         {
-                            Latitude = Convert.ToString(DevicePositionService.Latitude);
-                            Longitude = Convert.ToString(DevicePositionService.Longitude);
-                            SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
-
-                            // 正常地区时间
-                            if (!sunTime.IsPolarDay && !sunTime.IsPolarNight)
-                            {
-                                IsPolarDayRegion = false;
-                                IsPolarNightRegion = false;
-                                TimeSpan standardSunriseTime = new(sunTime.SunriseHour, sunTime.SunriseMinute, 0);
-                                TimeSpan standardSunsetTime = new(sunTime.SunsetHour, sunTime.SunsetMinute, 0);
-                                TimeSpan calculatedSunriseTime = standardSunriseTime + TimeSpan.FromMinutes(SunriseOffset);
-                                TimeSpan calculatedSunsetTime = standardSunsetTime + TimeSpan.FromMinutes(SunsetOffset);
-                                TimeSpan sunriseTime = new(calculatedSunriseTime.Hours, calculatedSunriseTime.Minutes, 0);
-                                TimeSpan sunsetTime = new(calculatedSunsetTime.Hours, calculatedSunsetTime.Minutes, 0);
-
-                                if (sunriseTime < sunsetTime)
-                                {
-                                    SunriseTime = sunriseTime.ToString(@"hh\:mm");
-                                    SunsetTime = sunsetTime.ToString(@"hh\:mm");
-                                }
-                                else
-                                {
-                                    SunriseOffset = 0;
-                                    SunsetOffset = 0;
-                                    SunriseTime = standardSunriseTime.ToString(@"hh\:mm");
-                                    SunsetTime = standardSunsetTime.ToString(@"hh\:mm");
-                                }
-                            }
-                            // 极地地区时间
-                            else
-                            {
-                                SunriseOffset = 0;
-                                SunsetOffset = 0;
-
-                                // 北半球极地时间
-                                if (DevicePositionService.Latitude > 0)
-                                {
-                                    // 北极极昼
-                                    if (sunTime.IsPolarDay)
-                                    {
-                                        IsPolarDayRegion = false;
-                                        IsPolarNightRegion = true;
-                                        SunsetTime = PolarDayString;
-                                    }
-                                    else
-                                    {
-                                        IsPolarDayRegion = true;
-                                        IsPolarNightRegion = false;
-                                        SunriseTime = PolarNightString;
-                                    }
-                                }
-                                // 南半球极地时间
-                                else
-                                {
-                                    // 南极极昼
-                                    if (sunTime.IsPolarDay)
-                                    {
-                                        IsPolarDayRegion = false;
-                                        IsPolarNightRegion = true;
-                                        SunsetTime = PolarDayString;
-                                    }
-                                    else
-                                    {
-                                        IsPolarDayRegion = true;
-                                        IsPolarNightRegion = false;
-                                        SunriseTime = PolarNightString;
-                                    }
-                                }
-                            }
+                            UpdateDevicePositionInformation();
                         }, null);
                         break;
                     }
@@ -1593,6 +1249,19 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 设置系统主题样式
+        /// </summary>
+        private void SetSystemTheme(int systemTheme)
+        {
+            Task.Run(() =>
+            {
+                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "SystemUsesLightTheme", systemTheme);
+                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence", IsShowThemeColorInStartAndTaskbar);
+                SendThemeChangeNotification();
+            });
+        }
+
+        /// <summary>
         /// 获取应用主题样式
         /// </summary>
         private ElementTheme GetAppTheme()
@@ -1601,11 +1270,46 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 设置应用主题样式
+        /// </summary>
+        private void SetAppTheme(int appTheme)
+        {
+            Task.Run(() =>
+            {
+                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", appTheme);
+                SendThemeChangeNotification();
+            });
+        }
+
+        /// <summary>
         /// 获取在“开始菜单”和任务栏中显示主题色设置值
         /// </summary>
-        private bool GetShowThemeColorInStartAndTaskbar()
+        private async Task<bool> GetShowThemeColorInStartAndTaskbarAsync()
         {
-            return RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence");
+            return await Task.Run(() =>
+            {
+                return RegistryHelper.ReadRegistryKey<bool>(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence");
+            });
+        }
+
+        /// <summary>
+        /// 设置在“开始菜单”和任务栏中显示主题色设置值
+        /// </summary>
+        private async Task SetShowThemeColorInStartAndTaskbarAsync(bool isShowThemeColorInStartAndTaskbar)
+        {
+            await Task.Run(() =>
+            {
+                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence", isShowThemeColorInStartAndTaskbar);
+                SendThemeChangeNotification();
+            });
+        }
+
+        /// <summary>
+        /// 发送主题切换通知消息
+        /// </summary>
+        private void SendThemeChangeNotification()
+        {
+            User32Library.SendMessageTimeout(0xffff, WindowMessage.WM_SETTINGCHANGE, 0, Marshal.StringToHGlobalUni("ImmersiveColorSet"), SMTO.SMTO_ABORTIFHUNG, 50, out _);
         }
 
         /// <summary>
@@ -1621,8 +1325,148 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async Task<bool> GetStartupTaskEnabledAsync()
         {
-            StartupTask startupTask = await StartupTask.GetAsync("ThemeSwitch");
-            return startupTask is not null ? startupTask.State is StartupTaskState.Enabled || startupTask.State is StartupTaskState.EnabledByPolicy : await Task.FromResult(true);
+            return await Task.Run(() =>
+            {
+                int state = RegistryHelper.ReadRegistryKey<int>(Registry.CurrentUser, string.Format(@"Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\{0}\ThemeSwitch", packageFamilyName), "State");
+                return state is 2 || state is 4;
+            });
+        }
+
+        /// <summary>
+        /// 设置启动任务状态
+        /// </summary>
+        private async Task SetStartupTaskEnabledAsync(int state)
+        {
+            await Task.Run(() =>
+            {
+                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, string.Format(@"Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData\{0}\ThemeSwitch", packageFamilyName), "State", state);
+            });
+        }
+
+        /// <summary>
+        /// 保存主题设置
+        /// </summary>
+        private async Task SaveThemeSettingsAsync(bool autoThemeSwitchEnable, string autoThemeSwitchType, bool autoSwitchSystemTheme, bool autoSwitchAppTheme, bool isShowColorInDarkTheme, TimeSpan systemThemeLightTime, TimeSpan systemThemeDarkTime, TimeSpan appThemeLightTime, TimeSpan appThemeDarkTime, int suriseOffset, int sunsetOffset)
+        {
+            await Task.Run(() =>
+            {
+                AutoThemeSwitchService.SetAutoThemeSwitchEnable(autoThemeSwitchEnable);
+                if (!string.IsNullOrEmpty(autoThemeSwitchType))
+                {
+                    AutoThemeSwitchService.SetAutoThemeSwitchType(autoThemeSwitchType);
+                }
+                AutoThemeSwitchService.SetAutoSwitchSystemTheme(autoSwitchSystemTheme);
+                AutoThemeSwitchService.SetAutoSwitchAppTheme(autoSwitchAppTheme);
+                AutoThemeSwitchService.SetIsShowColorInDarkTheme(isShowColorInDarkTheme);
+                AutoThemeSwitchService.SetSystemThemeLightTime(systemThemeLightTime);
+                AutoThemeSwitchService.SetSystemThemeDarkTime(systemThemeDarkTime);
+                AutoThemeSwitchService.SetAppThemeLightTime(appThemeLightTime);
+                AutoThemeSwitchService.SetAppThemeDarkTime(appThemeDarkTime);
+                AutoThemeSwitchService.SetSunriseOffset(suriseOffset);
+                AutoThemeSwitchService.SetSunsetOffset(sunsetOffset);
+            });
+        }
+
+        /// <summary>
+        /// 更新设备地理位置信息
+        /// </summary>
+        private void UpdateDevicePositionInformation()
+        {
+            Latitude = Convert.ToString(DevicePositionService.Latitude);
+            Longitude = Convert.ToString(DevicePositionService.Longitude);
+            SunTimes sunTime = SunRiseSetHelper.CalculateSunriseSunset(DevicePositionService.Latitude, DevicePositionService.Longitude, DateTimeOffset.Now.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day);
+
+            // 正常地区时间
+            if (!sunTime.IsPolarDay && !sunTime.IsPolarNight)
+            {
+                IsPolarDayRegion = false;
+                IsPolarNightRegion = false;
+                TimeSpan standardSunriseTime = new(sunTime.SunriseHour, sunTime.SunriseMinute, 0);
+                TimeSpan standardSunsetTime = new(sunTime.SunsetHour, sunTime.SunsetMinute, 0);
+                TimeSpan calculatedSunriseTime = standardSunriseTime + TimeSpan.FromMinutes(SunriseOffset);
+                TimeSpan calculatedSunsetTime = standardSunsetTime + TimeSpan.FromMinutes(SunsetOffset);
+                TimeSpan sunriseTime = new(calculatedSunriseTime.Hours, calculatedSunriseTime.Minutes, 0);
+                TimeSpan sunsetTime = new(calculatedSunsetTime.Hours, calculatedSunsetTime.Minutes, 0);
+
+                if (sunriseTime < sunsetTime)
+                {
+                    SunriseTime = sunriseTime.ToString(@"hh\:mm");
+                    SunsetTime = sunsetTime.ToString(@"hh\:mm");
+                }
+                else
+                {
+                    SunriseOffset = 0;
+                    SunsetOffset = 0;
+                    SunriseTime = standardSunriseTime.ToString(@"hh\:mm");
+                    SunsetTime = standardSunsetTime.ToString(@"hh\:mm");
+                }
+            }
+            // 极地地区时间
+            else
+            {
+                SunriseOffset = 0;
+                SunsetOffset = 0;
+
+                // 北半球极地时间
+                if (DevicePositionService.Latitude > 0)
+                {
+                    // 北极极昼
+                    if (sunTime.IsPolarDay)
+                    {
+                        IsPolarDayRegion = false;
+                        IsPolarNightRegion = true;
+                        SunsetTime = PolarDayString;
+                    }
+                    else
+                    {
+                        IsPolarDayRegion = true;
+                        IsPolarNightRegion = false;
+                        SunriseTime = PolarNightString;
+                    }
+                }
+                // 南半球极地时间
+                else
+                {
+                    // 南极极昼
+                    if (sunTime.IsPolarDay)
+                    {
+                        IsPolarDayRegion = false;
+                        IsPolarNightRegion = true;
+                        SunsetTime = PolarDayString;
+                    }
+                    else
+                    {
+                        IsPolarDayRegion = true;
+                        IsPolarNightRegion = false;
+                        SunriseTime = PolarNightString;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 打开自动切换主题程序
+        /// </summary>
+        private void OpenAutoSwitchProgram()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    ProcessStartInfo startInfo = new()
+                    {
+                        UseShellExecute = true,
+                        WorkingDirectory = Environment.CurrentDirectory,
+                        FileName = Path.Combine(Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath), "ThemeSwitch.exe"),
+                        Verb = "open"
+                    };
+                    Process.Start(startInfo);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OpenAutoSwitchProgram), 1, e);
+                }
+            });
         }
 
         /// <summary>
@@ -1630,7 +1474,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private Visibility GetAutoSwitchSystemThemeTimeVisibility(object selectedAutoThemeSwitchType, bool isAutoSwitchSystemTheme)
         {
-            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].SelectedValue) && isAutoSwitchSystemTheme ? Visibility.Visible : Visibility.Collapsed;
+            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeCollection[0].SelectedValue) && isAutoSwitchSystemTheme ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
@@ -1638,7 +1482,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private Visibility GetAutoSwitchAppThemeTimeVisibility(object selectedAutoThemeSwitchType, bool isAutoSwitchAppTheme)
         {
-            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeList[0].SelectedValue) && isAutoSwitchAppTheme ? Visibility.Visible : Visibility.Collapsed;
+            return Equals(selectedAutoThemeSwitchType, AutoThemeSwitchTypeCollection[0].SelectedValue) && isAutoSwitchAppTheme ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
@@ -1649,9 +1493,47 @@ namespace PowerToolbox.Views.Pages
             return string.Equals(Convert.ToString(selectedAutoThemeSwitchType), Convert.ToString(comparedAutoThemeSwitchType)) ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// 打开系统个性化
+        /// </summary>
+        private void OpenPersonalize()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("ms-settings:colors");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OpenPersonalize), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 打开系统位置设置
+        /// </summary>
+        private void OpenSystemPositionSettings()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("ms-settings:privacy-location");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OpenSystemPositionSettings), 1, e);
+                }
+            });
+        }
+
         private bool GetIsNotPolarRegion(bool isPolarDayRegion, bool isPolarNightRegion)
         {
             return !(isPolarDayRegion || isPolarNightRegion);
         }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }

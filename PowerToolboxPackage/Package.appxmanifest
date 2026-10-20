@@ -29,6 +29,7 @@
         <virtualization:ExcludedKey>HKEY_CURRENT_USER\Control Panel\Colors</virtualization:ExcludedKey>
         <virtualization:ExcludedKey>HKEY_CURRENT_USER\Control Panel\Desktop</virtualization:ExcludedKey>
         <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Classes\CLSID</virtualization:ExcludedKey>
+        <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData</virtualization:ExcludedKey>
         <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications</virtualization:ExcludedKey>
         <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer</virtualization:ExcludedKey>
         <virtualization:ExcludedKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Shell Extensions</virtualization:ExcludedKey>
