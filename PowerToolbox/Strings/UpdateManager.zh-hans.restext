@@ -122,7 +122,6 @@ UpdatePrepareUninstalling=准备卸载更新
 UpdateSettings=更新设置
 UpdateSource=更新源
 UpdateSucceed=于 {0} 成功安装
-UpdateSucceedWithErrors=于 {0} 成功安装，但发生了错误。错误代码：0x{1:X8}
 UpdateType=更新类型：
 UpdateTypeDriver=驱动更新
 UpdateTypeSoftware=软件更新

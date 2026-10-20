@@ -122,7 +122,6 @@ UpdatePrepareUninstalling=Prepare to uninstall the update
 UpdateSettings=Update settings
 UpdateSource=Update source
 UpdateSucceed=Successfully installed at {0}
-UpdateSucceedWithErrors=Installed successfully at {0}, but an error occurred. Error code: 0x{1:X8}
 UpdateType=Update type: 
 UpdateTypeDriver=Driver update
 UpdateTypeSoftware=Software update
