@@ -96,7 +96,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         /// </param>
         /// <returns>如果函数成功，则返回值是请求的值。如果函数失败，则返回值为零。</returns>
         [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "GetWindowLongW", PreserveSig = true, SetLastError = false)]
-        internal static extern int GetWindowLong(nint hWnd, WindowLongIndexFlags nIndex);
+        internal static extern int GetWindowLong(nint hWnd, WINDOW_LONG_PTR_INDEX nIndex);
 
         /// <summary>
         /// 检索有关指定窗口的信息。 该函数还会检索 64 位 (DWORD) 值，该值位于指定偏移量处，并进入额外的窗口内存。
@@ -106,7 +106,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         /// </param>
         /// <returns>如果函数成功，则返回值是请求的值。如果函数失败，则返回值为零。</returns>
         [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "GetWindowLongPtrW", PreserveSig = true, SetLastError = false)]
-        internal static extern int GetWindowLongPtr(nint hWnd, WindowLongIndexFlags nIndex);
+        internal static extern int GetWindowLongPtr(nint hWnd, WINDOW_LONG_PTR_INDEX nIndex);
 
         /// <summary>
         /// 检索指定窗口的显示状态以及还原、最小化和最大化的位置。
@@ -227,7 +227,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         /// <param name="newProc">新事件处理函数（回调函数）</param>
         /// <returns>如果函数成功，则返回值是指定 32 位整数的上一个值。如果函数失败，则返回值为零。 </returns>
         [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "SetWindowLongW", PreserveSig = true, SetLastError = false)]
-        internal static extern nint SetWindowLong(nint hWnd, WindowLongIndexFlags nIndex, nint dwNewLong);
+        internal static extern nint SetWindowLong(nint hWnd, WINDOW_LONG_PTR_INDEX nIndex, nint dwNewLong);
 
         /// <summary>
         /// 更改指定窗口的属性。 该函数还将指定偏移量处的64位（long类型）值设置到额外的窗口内存中。
@@ -237,7 +237,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         /// <param name="newProc">新事件处理函数（回调函数）</param>
         /// <returns>如果函数成功，则返回值是指定偏移量的上一个值。如果函数失败，则返回值为零。 </returns>
         [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "SetWindowLongPtrW", PreserveSig = true, SetLastError = false)]
-        internal static extern nint SetWindowLongPtr(nint hWnd, WindowLongIndexFlags nIndex, nint dwNewLong);
+        internal static extern nint SetWindowLongPtr(nint hWnd, WINDOW_LONG_PTR_INDEX nIndex, nint dwNewLong);
 
         /// <summary>
         /// 设置指定窗口的显示状态和还原、最小化和最大化的位置。
@@ -262,7 +262,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
         /// <returns>如果该函数成功，则返回值为非零值。如果函数失败，则返回值为零。 </returns>
         [DllImport(User32, CharSet = CharSet.Unicode, EntryPoint = "SetWindowPos", PreserveSig = true, SetLastError = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool SetWindowPos(nint hWnd, nint hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
+        internal static extern bool SetWindowPos(nint hWnd, nint hWndInsertAfter, int X, int Y, int cx, int cy, SET_WINDOW_POS_FLAGS uFlags);
 
         /// <summary>
         /// 将应用程序定义的挂钩过程安装到挂钩链中。 你将安装挂钩过程来监视系统的某些类型的事件。 这些事件与特定线程或与调用线程位于同一桌面中的所有线程相关联。

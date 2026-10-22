@@ -648,7 +648,7 @@ namespace PowerToolbox.Views.Windows
                 User32Library.GetWindowRect((nint)appWindow.Id.Value, out RECT rect);
                 int width = rect.right - rect.left;
                 int height = rect.bottom - rect.top;
-                User32Library.SetWindowPos((nint)appWindow.Id.Value, 0, (workArea.Width - width) / 2, (workArea.Height - height) / 2, 0, 0, SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_NOZORDER);
+                User32Library.SetWindowPos((nint)appWindow.Id.Value, 0, (workArea.Width - width) / 2, (workArea.Height - height) / 2, 0, 0, SET_WINDOW_POS_FLAGS.SWP_NOSIZE | SET_WINDOW_POS_FLAGS.SWP_NOZORDER);
             }
         }
 

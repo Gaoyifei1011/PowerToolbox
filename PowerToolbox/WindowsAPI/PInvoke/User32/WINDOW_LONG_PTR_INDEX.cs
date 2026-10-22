@@ -6,7 +6,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
     /// 对应的窗口属性
     /// </summary>
     [Flags]
-    internal enum WindowLongIndexFlags : int
+    internal enum WINDOW_LONG_PTR_INDEX : int
     {
         /// <summary>
         /// 检索扩展窗口样式。

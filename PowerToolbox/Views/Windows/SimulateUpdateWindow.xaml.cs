@@ -194,8 +194,8 @@ namespace PowerToolbox.Views.Windows
             _blockAllKeys = blockAllKeys;
             _afterSimulateOperation = AfterSimulateOperationList.Find(item => string.Equals(item, afterSimulateOperation));
             (Content as WindowsAPI.ComTypes.IUIElementProtected).ProtectedCursor = InputDesktopResourceCursor.CreateFromModule("PowerToolbox.exe", 101);
-            int exStyle = GetWindowLongAuto((nint)appWindow.Id.Value, WindowLongIndexFlags.GWL_EXSTYLE);
-            SetWindowLongAuto((nint)appWindow.Id.Value, WindowLongIndexFlags.GWL_EXSTYLE, exStyle & ~0x00040000 | 0x00000080);
+            int exStyle = GetWindowLongAuto((nint)appWindow.Id.Value, WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE);
+            SetWindowLongAuto((nint)appWindow.Id.Value, WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE, exStyle & ~0x00040000 | 0x00000080);
             SystemSleepHelper.PreventForCurrentThread();
             StartHook();
             Activate();
@@ -373,7 +373,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 获取窗口属性
         /// </summary>
-        private static int GetWindowLongAuto(nint hWnd, WindowLongIndexFlags nIndex)
+        private static int GetWindowLongAuto(nint hWnd, WINDOW_LONG_PTR_INDEX nIndex)
         {
             return IntPtr.Size is 8 ? User32Library.GetWindowLongPtr(hWnd, nIndex) : User32Library.GetWindowLong(hWnd, nIndex);
         }
@@ -381,7 +381,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 更改窗口属性
         /// </summary>
-        private static nint SetWindowLongAuto(nint hWnd, WindowLongIndexFlags nIndex, nint dwNewLong)
+        private static nint SetWindowLongAuto(nint hWnd, WINDOW_LONG_PTR_INDEX nIndex, nint dwNewLong)
         {
             return IntPtr.Size is 8 ? User32Library.SetWindowLongPtr(hWnd, nIndex, dwNewLong) : User32Library.SetWindowLong(hWnd, nIndex, dwNewLong);
         }

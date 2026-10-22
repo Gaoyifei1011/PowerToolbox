@@ -49,7 +49,7 @@ namespace PowerToolboxShellExtension.WindowsAPI.PInvoke.Advapi32
         /// <param name="phkResult">一个变量的指针，此变量指向已打开键的句柄。</param>
         /// <returns>如果函数成功，则返回值为 ERROR_SUCCESS。如果函数失败，则返回值为 Winerror.h 中定义的非零错误代码。</returns>
         [LibraryImport(Advapi32, EntryPoint = "RegOpenKeyExW", SetLastError = false, StringMarshalling = StringMarshalling.Utf16), PreserveSig]
-        internal static partial int RegOpenKeyEx(nuint hKey, [MarshalAs(UnmanagedType.LPWStr)] string lpSubKey, int ulOptions, RegistryAccessRights samDesired, out nuint phkResult);
+        internal static partial int RegOpenKeyEx(nuint hKey, [MarshalAs(UnmanagedType.LPWStr)] string lpSubKey, int ulOptions, REGSAM samDesired, out nuint phkResult);
 
         /// <summary>
         /// 检索与打开的注册表项关联的指定值名称的类型和数据。
@@ -65,6 +65,6 @@ namespace PowerToolboxShellExtension.WindowsAPI.PInvoke.Advapi32
         /// 如果 lpData 缓冲区太小，无法接收数据，函数将返回ERROR_MORE_DATA。如果 lpValueName 注册表值不存在，该函数将返回ERROR_FILE_NOT_FOUND。
         /// </returns>
         [LibraryImport(Advapi32, EntryPoint = "RegQueryValueExW", SetLastError = false, StringMarshalling = StringMarshalling.Utf16), PreserveSig]
-        internal static partial int RegQueryValueEx(nuint hKey, [MarshalAs(UnmanagedType.LPWStr)] string lpValueName, int lpReserved, out RegistryValueKind lpType, [Out, MarshalAs(UnmanagedType.LPArray)] byte[] lpData, ref int lpcbData);
+        internal static partial int RegQueryValueEx(nuint hKey, [MarshalAs(UnmanagedType.LPWStr)] string lpValueName, int lpReserved, out REG_VALUE_TYPE lpType, [Out, MarshalAs(UnmanagedType.LPArray)] byte[] lpData, ref int lpcbData);
     }
 }

@@ -24,7 +24,7 @@ namespace PowerToolboxShellExtension.Helpers.Root
             T value = default;
             try
             {
-                if (Advapi32Library.RegOpenKeyEx(ReservedKeyHandles.HKEY_CURRENT_USER, rootKey, 0, RegistryAccessRights.KEY_READ, out nuint hKey) is 0)
+                if (Advapi32Library.RegOpenKeyEx(ReservedKeyHandles.HKEY_CURRENT_USER, rootKey, 0, REGSAM.KEY_READ, out nuint hKey) is 0)
                 {
                     int length = 0;
 
@@ -34,40 +34,40 @@ namespace PowerToolboxShellExtension.Helpers.Root
                         byte[] data = new byte[length];
 
                         // 根据数据大小读取数据内容
-                        if (Advapi32Library.RegQueryValueEx(hKey, key, 0, out RegistryValueKind kind, data, ref length) is 0)
+                        if (Advapi32Library.RegQueryValueEx(hKey, key, 0, out REG_VALUE_TYPE kind, data, ref length) is 0)
                         {
                             // 字符串类型
-                            if (kind is RegistryValueKind.REG_SZ)
+                            if (kind is REG_VALUE_TYPE.REG_SZ)
                             {
                                 string regValue = Encoding.Unicode.GetString(data, 0, length);
                                 value = (T)(object)regValue[..^1];
                             }
                             // 字符串类型
-                            else if (kind is RegistryValueKind.REG_EXPAND_SZ)
+                            else if (kind is REG_VALUE_TYPE.REG_EXPAND_SZ)
                             {
                                 value = (T)(object)Environment.ExpandEnvironmentVariables(Encoding.Unicode.GetString(data, 0, length));
                             }
                             // 二进制数据类型
-                            else if (kind is RegistryValueKind.REG_BINARY)
+                            else if (kind is REG_VALUE_TYPE.REG_BINARY)
                             {
                                 value = (T)(object)data;
                             }
                             // 32 位数字
-                            else if (kind is RegistryValueKind.REG_DWORD)
+                            else if (kind is REG_VALUE_TYPE.REG_DWORD)
                             {
                                 int regValue = data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);
 
                                 value = Equals(typeof(T), typeof(bool)) || Equals(typeof(T), typeof(bool?)) ? (T)(object)Convert.ToBoolean(regValue) : (T)(object)regValue;
                             }
                             // 采用 big-endian 格式的 32 位数字
-                            else if (kind is RegistryValueKind.REG_DWORD_BIG_ENDIAN)
+                            else if (kind is REG_VALUE_TYPE.REG_DWORD_BIG_ENDIAN)
                             {
                                 int regValue = data[3] | (data[2] << 8) | (data[1] << 16) | (data[0] << 24);
 
                                 value = Equals(typeof(T), typeof(bool)) || Equals(typeof(T), typeof(bool?)) ? (T)(object)Convert.ToBoolean(regValue) : (T)(object)value;
                             }
                             // 字符串序列
-                            else if (kind is RegistryValueKind.REG_MULTI_SZ)
+                            else if (kind is REG_VALUE_TYPE.REG_MULTI_SZ)
                             {
                                 List<string> stringList = [];
                                 string packed = Encoding.Unicode.GetString(data, 0, length);
@@ -82,7 +82,7 @@ namespace PowerToolboxShellExtension.Helpers.Root
                                 value = (T)(object)stringList.ToArray();
                             }
                             // 64 位数字
-                            else if (kind is RegistryValueKind.REG_QWORD)
+                            else if (kind is REG_VALUE_TYPE.REG_QWORD)
                             {
                                 uint numLow = (uint)(data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24));
                                 uint numHigh = (uint)(data[4] | (data[5] << 8) | (data[6] << 16) | (data[7] << 24));
@@ -110,7 +110,7 @@ namespace PowerToolboxShellExtension.Helpers.Root
 
             try
             {
-                if (Advapi32Library.RegOpenKeyEx(ReservedKeyHandles.HKEY_CURRENT_USER, rootKey, 0, RegistryAccessRights.KEY_READ, out nuint hKey) is 0)
+                if (Advapi32Library.RegOpenKeyEx(ReservedKeyHandles.HKEY_CURRENT_USER, rootKey, 0, REGSAM.KEY_READ, out nuint hKey) is 0)
                 {
                     // 添加当前项信息
                     registryEnumKeyItem.RootKey = rootKey;

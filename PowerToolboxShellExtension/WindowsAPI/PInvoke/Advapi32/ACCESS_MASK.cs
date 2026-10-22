@@ -6,7 +6,7 @@ namespace PowerToolboxShellExtension.WindowsAPI.PInvoke.Advapi32
     /// 包含对象的标准访问权限
     /// </summary>
     [Flags]
-    internal enum StandardRight : uint
+    internal enum ACCESS_MASK : uint
     {
         /// <summary>
         /// 删除对象的权限。
