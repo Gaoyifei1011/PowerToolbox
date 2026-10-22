@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.System;
@@ -636,40 +637,14 @@ namespace PowerToolbox.Views.Windows
                 return;
             }
 
-            System.Drawing.Rectangle workArea = System.Windows.Forms.SystemInformation.WorkingArea;
-            if (WindowInfoService.IsWindowInformationExisted())
+            WINDOWPLACEMENT? windowPlacement = WindowPlacementService.GetWindowPlacement(nameof(MainWindow));
+            if (windowPlacement.HasValue)
             {
-                (bool isWindowMaximized, System.Drawing.Point position, System.Drawing.Size size) = WindowInfoService.GetWindowInfo();
-
-                if (isWindowMaximized)
-                {
-                    overlappedPresenter.Maximize();
-                    appWindow.Show();
-                }
-                else
-                {
-                    int left = position.X;
-                    int top = position.Y;
-                    int right = position.X + size.Width;
-                    int bottom = position.Y + size.Height;
-
-                    if (left > 0 && top > 0 && right < workArea.Width && bottom < workArea.Height)
-                    {
-                        User32Library.SetWindowPos((nint)appWindow.Id.Value, 0, position.X, position.Y, size.Width, size.Height, SetWindowPosFlags.SWP_NOZORDER);
-                    }
-                    else
-                    {
-                        // 默认直接显示到窗口中间
-                        User32Library.GetWindowRect((nint)appWindow.Id.Value, out RECT rect);
-                        int width = rect.right - rect.left;
-                        int height = rect.bottom - rect.top;
-                        User32Library.SetWindowPos((nint)appWindow.Id.Value, 0, (workArea.Width - width) / 2, (workArea.Height - height) / 2, 0, 0, SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_NOZORDER);
-                    }
-                }
+                User32Library.SetWindowPlacement((nint)appWindow.Id.Value, windowPlacement.Value);
             }
             else
             {
-                // 默认直接显示到窗口中间
+                System.Drawing.Rectangle workArea = System.Windows.Forms.SystemInformation.WorkingArea;
                 User32Library.GetWindowRect((nint)appWindow.Id.Value, out RECT rect);
                 int width = rect.right - rect.left;
                 int height = rect.bottom - rect.top;
@@ -862,7 +837,12 @@ namespace PowerToolbox.Views.Windows
                                     DismountWindowEvent();
                                     DismountWindowWndProc(AppWindow.Id);
                                     DisableElevatedDragDrop();
-                                    WindowInfoService.SaveWindowInfo(hWnd, IsWindowMaximized);
+                                    WINDOWPLACEMENT windowPlacement = new()
+                                    {
+                                        length = Marshal.SizeOf<WINDOWPLACEMENT>()
+                                    };
+                                    User32Library.GetWindowPlacement(hWnd, ref windowPlacement);
+                                    WindowPlacementService.SaveWindowPlacement(nameof(MainWindow), windowPlacement);
                                     DownloadSchedulerService.TerminateDownload();
                                     (Application.Current as MainApp).Dispose();
                                 }
@@ -879,7 +859,12 @@ namespace PowerToolbox.Views.Windows
                                 DismountWindowEvent();
                                 DismountWindowWndProc(AppWindow.Id);
                                 DisableElevatedDragDrop();
-                                WindowInfoService.SaveWindowInfo(hWnd, IsWindowMaximized);
+                                WINDOWPLACEMENT windowPlacement = new()
+                                {
+                                    length = Marshal.SizeOf<WINDOWPLACEMENT>()
+                                };
+                                User32Library.GetWindowPlacement(hWnd, ref windowPlacement);
+                                WindowPlacementService.SaveWindowPlacement(nameof(MainWindow), windowPlacement);
                                 (Application.Current as MainApp).Dispose();
                             }
                         }, null);

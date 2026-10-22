@@ -74,7 +74,6 @@ namespace PowerToolbox
             LanguageService.InitializeLanguage();
             Thread.CurrentThread.CurrentUICulture = new(LanguageService.AppLanguage.Key);
 
-            WindowInfoService.Initialize(nameof(MainWindow));
             AlwaysShowBackdropService.InitializeAlwaysShowBackdrop();
             BackdropService.InitializeBackdrop();
             ThemeService.InitializeTheme();
