@@ -199,14 +199,14 @@ namespace PowerToolbox.Views.Pages
                     else
                     {
                         isLoadWallpaperFailed = true;
-                        LoafImage = ActualTheme is ElementTheme.Light ? new(new("ms-appx:///Assets/Images/LoafLightWallpaper.jpg")) : new(new("ms-appx:///Assets/Images/LoafDarkWallpaper.jpg"));
+                        LoafImage = ActualTheme is ElementTheme.Light ? new(new("ms-appx:///Assets/Image/LoafLightWallpaper.png")) : new(new("ms-appx:///Assets/Images/LoafDarkWallpaper.jpg"));
                         LoadImageCompleted = true;
                     }
                 }
                 catch (Exception e)
                 {
                     isLoadWallpaperFailed = true;
-                    LoafImage = ActualTheme is ElementTheme.Light ? new(new("ms-appx:///Assets/Images/LoafLightWallpaper.jpg")) : new(new("ms-appx:///Assets/Images/LoafDarkWallpaper.jpg"));
+                    LoafImage = ActualTheme is ElementTheme.Light ? new(new("ms-appx:///Assets/Image/LoafLightWallpaper.png")) : new(new("ms-appx:///Assets/Images/LoafDarkWallpaper.jpg"));
                     LoadImageCompleted = true;
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoafPage), nameof(OnNavigatedTo), 2, e);
                 }
