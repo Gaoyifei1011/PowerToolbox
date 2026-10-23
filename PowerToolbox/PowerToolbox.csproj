@@ -136,8 +136,10 @@
     <Content Include="Assets\ControlIcon\WinFR.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\ControlIcon\WinSAT.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\Cover.png" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Images\LoafDarkWallpaper.jpg" CopyToOutputDirectory="Always" />
-    <Content Include="Assets\Images\LoafLightWallpaper.jpg" CopyToOutputDirectory="Always" />
+    <Content Include="Assets\Image\Failed.png" CopyToOutputDirectory="Always" />
+    <Content Include="Assets\Image\LoafLightWallpaper.png" CopyToOutputDirectory="Always" />
+    <Content Include="Assets\Image\LoafDarkWallpaper.png" CopyToOutputDirectory="Always" />
+    <Content Include="Assets\Image\Search.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\LargeTile.scale-100.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\LargeTile.scale-125.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\LargeTile.scale-150.png" CopyToOutputDirectory="Always" />
