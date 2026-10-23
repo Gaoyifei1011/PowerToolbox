@@ -21,7 +21,7 @@
             Grid.Row="0"
             MinWidth="100"
             MinHeight="32"
-            Margin="30,15,30,3"
+            Margin="30,17,30,3"
             HorizontalAlignment="Left">
 
             <Rectangle

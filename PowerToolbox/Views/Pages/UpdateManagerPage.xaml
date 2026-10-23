@@ -41,7 +41,7 @@
         <Grid Grid.Row="0" Margin="0,0,0,3">
             <!--  更新管理控制栏  -->
             <RadioButtons
-                Margin="30,15,0,0"
+                Margin="30,17,0,0"
                 Padding="0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
