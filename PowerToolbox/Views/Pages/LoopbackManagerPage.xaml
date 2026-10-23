@@ -69,7 +69,7 @@
             <CommandBar
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterStyle}"
+                CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
                 DefaultLabelPosition="Right">
 
                 <CommandBar.PrimaryCommands>

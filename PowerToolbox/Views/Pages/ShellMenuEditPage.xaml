@@ -46,7 +46,7 @@
             <CommandBar
                 Grid.Column="2"
                 VerticalAlignment="Center"
-                CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterStyle}"
+                CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
                 DefaultLabelPosition="Right">
 
                 <CommandBar.PrimaryCommands>

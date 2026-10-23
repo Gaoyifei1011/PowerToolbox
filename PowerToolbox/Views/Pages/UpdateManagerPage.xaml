@@ -201,7 +201,7 @@
                     <CommandBar
                         Grid.Column="2"
                         VerticalAlignment="Center"
-                        CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterStyle}"
+                        CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
                         DefaultLabelPosition="Right">
 
                         <CommandBar.PrimaryCommands>
@@ -1337,7 +1337,7 @@
                     <CommandBar
                         Grid.Column="2"
                         VerticalAlignment="Center"
-                        CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterStyle}"
+                        CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
                         DefaultLabelPosition="Right">
 
                         <CommandBar.PrimaryCommands>
@@ -2483,7 +2483,7 @@
                     <CommandBar
                         Grid.Column="2"
                         VerticalAlignment="Center"
-                        CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterStyle}"
+                        CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
                         DefaultLabelPosition="Right"
                         IsEnabled="{x:Bind system:Convert.ToBoolean(HiddenUpdateCollection.Count), Mode=OneWay}">
 
