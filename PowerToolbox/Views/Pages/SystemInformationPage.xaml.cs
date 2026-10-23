@@ -530,9 +530,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取加载系统信息是否成功
         /// </summary>
-        private Visibility GetSystemInformationSuccessfullyVisibility(SystemInformationResultKind systemInformationResultKind, bool isSuccessfully)
+        private Visibility GetSystemInformationSuccessfullyVisibility(SystemInformationResultKind systemInformationResultKind, bool isReverse)
         {
-            return isSuccessfully ? systemInformationResultKind is SystemInformationResultKind.Successfully ? Visibility.Visible : Visibility.Collapsed : systemInformationResultKind is SystemInformationResultKind.Successfully ? Visibility.Collapsed : Visibility.Visible;
+            return isReverse ? systemInformationResultKind is SystemInformationResultKind.Successfully ? Visibility.Collapsed : Visibility.Visible : systemInformationResultKind is SystemInformationResultKind.Successfully ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

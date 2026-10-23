@@ -13,265 +13,278 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock
-            Grid.Row="0"
-            Margin="30,15,30,0"
-            FontSize="22"
-            Text="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('SystemInformation')}" />
-
         <!--  系统信息控制栏  -->
-        <Grid
-            Grid.Row="1"
-            Height="60"
-            Margin="30,5,30,3"
-            Padding="12,0,0,0"
-            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="{StaticResource ControlCornerRadius}">
+        <CommandBar
+            Grid.Row="0"
+            Margin="24,7,22,-2"
+            VerticalAlignment="Center"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Background="Transparent"
+            CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
+            DefaultLabelPosition="Collapsed"
+            IsDynamicOverflowEnabled="False">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+            <CommandBar.Content>
+                <Grid
+                    MinWidth="100"
+                    MinHeight="32"
+                    Margin="2,5,12,0"
+                    HorizontalAlignment="Left">
 
-            <FontIcon
-                Grid.Column="0"
-                Margin="0,0,12,0"
-                FontSize="16"
-                Glyph="&#xE74C;" />
+                    <Rectangle
+                        Fill="{ThemeResource PillItemBackgroundSelected}"
+                        RadiusX="16"
+                        RadiusY="16"
+                        Stroke="{ThemeResource PillItemBorderBrushSelected}"
+                        StrokeThickness="1" />
 
-            <TextBlock
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                Text="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Operation')}" />
+                    <TextBlock
+                        Padding="16,4,16,6"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource PillItemForegroundSelected}"
+                        Text="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('SystemInformation')}" />
+                </Grid>
+            </CommandBar.Content>
 
-            <CommandBar
-                Grid.Column="2"
-                VerticalAlignment="Center"
-                CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterStyle}"
-                DefaultLabelPosition="Right">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton
+                    Width="48"
+                    Click="{x:Bind OnCopyClicked}"
+                    IsEnabled="{x:Bind x:Object.Equals(SystemInformationResultKind, enum:SystemInformationResultKind.Successfully), Mode=OneWay}"
+                    Label="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Copy')}">
 
-                <CommandBar.PrimaryCommands>
-                    <AppBarButton
-                        Click="{x:Bind OnCopyClicked}"
-                        IsEnabled="{x:Bind x:Object.Equals(SystemInformationResultKind, enum:SystemInformationResultKind.Successfully), Mode=OneWay}"
-                        Label="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Copy')}">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE8C8;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
 
-                        <AppBarButton.Icon>
-                            <FontIcon Glyph="&#xE8C8;" />
-                        </AppBarButton.Icon>
-                    </AppBarButton>
+                <AppBarButton
+                    Width="48"
+                    Click="{x:Bind OnRefreshClicked}"
+                    IsEnabled="{x:Bind x:Object.Equals(SystemInformationResultKind, enum:SystemInformationResultKind.Successfully), Mode=OneWay}"
+                    Label="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Refresh')}">
 
-                    <AppBarButton
-                        Click="{x:Bind OnRefreshClicked}"
-                        IsEnabled="{x:Bind x:Object.Equals(SystemInformationResultKind, enum:SystemInformationResultKind.Successfully), Mode=OneWay}"
-                        Label="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Refresh')}">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE72C;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar.PrimaryCommands>
 
-                        <AppBarButton.Icon>
-                            <FontIcon Glyph="&#xE72C;" />
-                        </AppBarButton.Icon>
-                    </AppBarButton>
-                </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Click="{x:Bind OnWindowsInformationClicked}" Label="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('WindowsInformation')}">
 
-                <CommandBar.SecondaryCommands>
-                    <AppBarButton Click="{x:Bind OnWindowsInformationClicked}" Label="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('WindowsInformation')}">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE946;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
 
-                        <AppBarButton.Icon>
-                            <FontIcon Glyph="&#xE946;" />
-                        </AppBarButton.Icon>
-                    </AppBarButton>
+                <AppBarButton Click="{x:Bind OnWindowsVersionClicked}" Label="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('WindowsVersion')}">
 
-                    <AppBarButton Click="{x:Bind OnWindowsVersionClicked}" Label="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('WindowsVersion')}">
-
-                        <AppBarButton.Icon>
-                            <FontIcon Glyph="&#xE770;" />
-                        </AppBarButton.Icon>
-                    </AppBarButton>
-                </CommandBar.SecondaryCommands>
-            </CommandBar>
-        </Grid>
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE770;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
 
         <!--  系统信息状态显示栏  -->
-        <Grid
-            Grid.Row="2"
-            Height="60"
-            Margin="30,0,30,0"
-            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="{StaticResource ControlCornerRadius}"
-            Visibility="{x:Bind GetSystemInformationSuccessfullyVisibility(SystemInformationResultKind, x:False), Mode=OneWay}">
-
-            <!--  正在加载中  -->
-            <StackPanel
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Orientation="Horizontal"
-                Spacing="10"
-                Visibility="{x:Bind CheckSystemInformationResultKindVisibility(SystemInformationResultKind, enum:SystemInformationResultKind.Loading), Mode=OneWay}">
-
-                <ProgressRing IsActive="True" IsEnabled="True" />
-
-                <TextBlock
-                    VerticalAlignment="Center"
-                    Text="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('LoadingSystemInformation')}"
-                    TextAlignment="Center" />
-            </StackPanel>
-
-            <!--  加载失败  -->
-            <TextBlock
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Text="{x:Bind SystemInformationFailedContent, Mode=OneWay}"
-                TextAlignment="Center"
-                Visibility="{x:Bind CheckSystemInformationResultKindVisibility(SystemInformationResultKind, enum:SystemInformationResultKind.Failed), Mode=OneWay}" />
-        </Grid>
-
-        <!--  系统信息结果列表控件  -->
-        <Grid
-            Grid.Row="3"
-            Margin="30,0,30,0"
-            Background="{ThemeResource LayerFillColorDefaultBrush}"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="{ThemeResource ControlCornerRadius}"
-            Visibility="{x:Bind GetSystemInformationSuccessfullyVisibility(SystemInformationResultKind, x:True), Mode=OneWay}">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
+        <Grid Grid.Row="1">
             <Grid
-                Grid.Row="0"
-                Height="35"
-                Padding="6,0,0,0"
-                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                BorderThickness="0,0,0,1">
+                Margin="30,0,30,60"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Visibility="{x:Bind GetSystemInformationSuccessfullyVisibility(SystemInformationResultKind, x:True), Mode=OneWay}">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+                <!--  正在加载中  -->
+                <StackPanel Spacing="20" Visibility="{x:Bind CheckSystemInformationResultKindVisibility(SystemInformationResultKind, enum:SystemInformationResultKind.Loading), Mode=OneWay}">
+                    <Image
+                        Width="150"
+                        Height="150"
+                        Source="ms-appx:///Assets/Image/Search.png" />
 
-                <TextBlock
-                    x:Name="ItemHeaderTextBlock"
-                    Grid.Column="0"
-                    Margin="10,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Text="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Item')}"
-                    TextTrimming="CharacterEllipsis"
-                    TextWrapping="NoWrap">
+                    <Grid ColumnSpacing="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                    <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Item')}" Visibility="{x:Bind ItemHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
-                    </ToolTipService.ToolTip>
-                </TextBlock>
+                        <ProgressRing
+                            Grid.Column="0"
+                            Width="30"
+                            Height="30"
+                            IsActive="True" />
 
-                <TextBlock
-                    x:Name="ContentHeaderTextBlock"
-                    Grid.Column="1"
-                    Margin="10,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Text="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Content')}"
-                    TextTrimming="CharacterEllipsis"
-                    TextWrapping="NoWrap">
+                        <TextBlock
+                            Grid.Column="1"
+                            MaxWidth="800"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="18"
+                            FontWeight="Medium"
+                            Text="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('LoadingSystemInformation')}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </Grid>
+                </StackPanel>
 
-                    <ToolTipService.ToolTip>
-                        <ToolTip Content="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Content')}" Visibility="{x:Bind ContentHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
-                    </ToolTipService.ToolTip>
-                </TextBlock>
+                <!--  加载失败  -->
+                <StackPanel Spacing="20" Visibility="{x:Bind CheckSystemInformationResultKindVisibility(SystemInformationResultKind, enum:SystemInformationResultKind.Failed), Mode=OneWay}">
+                    <Image
+                        Width="150"
+                        Height="150"
+                        Source="ms-appx:///Assets/Image/Failed.png" />
+
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind SystemInformationFailedContent, Mode=OneWay}"
+                        TextAlignment="Center" />
+                </StackPanel>
             </Grid>
 
-            <ListView
-                Grid.Row="1"
-                ItemsSource="{x:Bind SystemInformationCollection}"
-                SelectionMode="None">
+            <!--  系统信息结果列表控件  -->
+            <Grid
+                Margin="30,0,30,0"
+                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="{ThemeResource ControlCornerRadius}"
+                Visibility="{x:Bind GetSystemInformationSuccessfullyVisibility(SystemInformationResultKind, x:False), Mode=OneWay}">
 
-                <ListView.ItemContainerStyle>
-                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="Margin" Value="0" />
-                        <Setter Property="MinHeight" Value="0" />
-                        <Setter Property="Padding" Value="0" />
-                    </Style>
-                </ListView.ItemContainerStyle>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                <ItemsControl.ItemContainerTransitions>
-                    <TransitionCollection />
-                </ItemsControl.ItemContainerTransitions>
+                <Grid
+                    Grid.Row="0"
+                    Height="35"
+                    Padding="6,0,0,0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="0,0,0,1">
 
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="model:SystemInformationModel">
-                        <Grid
-                            Height="35"
-                            Padding="6,0,0,0"
-                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                            BorderThickness="0,0,0,1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                    <TextBlock
+                        x:Name="ItemHeaderTextBlock"
+                        Grid.Column="0"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Item')}"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="NoWrap">
 
-                            <TextBlock
-                                x:Name="ItemTextBlock"
-                                Grid.Column="0"
-                                MinWidth="50"
-                                Margin="10,0,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                FontSize="14"
-                                IsTextSelectionEnabled="True"
-                                Text="{x:Bind Item}"
-                                TextAlignment="Left"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap">
+                        <ToolTipService.ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Item')}" Visibility="{x:Bind ItemHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
+                        </ToolTipService.ToolTip>
+                    </TextBlock>
 
-                                <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        Content="{x:Bind Item}"
-                                        Placement="Mouse"
-                                        Visibility="{Binding ElementName=ItemTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
-                                </ToolTipService.ToolTip>
-                            </TextBlock>
+                    <TextBlock
+                        x:Name="ContentHeaderTextBlock"
+                        Grid.Column="1"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Content')}"
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="NoWrap">
 
-                            <TextBlock
-                                x:Name="ContentTextBlock"
-                                Grid.Column="1"
-                                MinWidth="50"
-                                Margin="10,0,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                FontSize="14"
-                                IsTextSelectionEnabled="True"
-                                Text="{x:Bind Content}"
-                                TextAlignment="Left"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="NoWrap">
+                        <ToolTipService.ToolTip>
+                            <ToolTip Content="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Content')}" Visibility="{x:Bind ContentHeaderTextBlock.IsTextTrimmed, Mode=OneWay}" />
+                        </ToolTipService.ToolTip>
+                    </TextBlock>
+                </Grid>
 
-                                <ToolTipService.ToolTip>
-                                    <ToolTip
-                                        Content="{x:Bind Content}"
-                                        Placement="Mouse"
-                                        Visibility="{Binding ElementName=ContentTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
-                                </ToolTipService.ToolTip>
-                            </TextBlock>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                <ListView
+                    Grid.Row="1"
+                    ItemsSource="{x:Bind SystemInformationCollection}"
+                    SelectionMode="None">
+
+                    <ListView.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="MinHeight" Value="0" />
+                            <Setter Property="Padding" Value="0" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ItemsControl.ItemContainerTransitions>
+                        <TransitionCollection />
+                    </ItemsControl.ItemContainerTransitions>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:SystemInformationModel">
+                            <Grid
+                                Height="35"
+                                Padding="6,0,0,0"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="0,0,0,1">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock
+                                    x:Name="ItemTextBlock"
+                                    Grid.Column="0"
+                                    MinWidth="50"
+                                    Margin="10,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind Item}"
+                                    TextAlignment="Left"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap">
+
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip
+                                            Content="{x:Bind Item}"
+                                            Placement="Mouse"
+                                            Visibility="{Binding ElementName=ItemTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
+                                    </ToolTipService.ToolTip>
+                                </TextBlock>
+
+                                <TextBlock
+                                    x:Name="ContentTextBlock"
+                                    Grid.Column="1"
+                                    MinWidth="50"
+                                    Margin="10,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    IsTextSelectionEnabled="True"
+                                    Text="{x:Bind Content}"
+                                    TextAlignment="Left"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap">
+
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip
+                                            Content="{x:Bind Content}"
+                                            Placement="Mouse"
+                                            Visibility="{Binding ElementName=ContentTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
+                                    </ToolTipService.ToolTip>
+                                </TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
         </Grid>
     </Grid>
 </Page>
