@@ -104,6 +104,7 @@
                         <ResourceDictionary Source="ms-appx:///Styles/RadioButtons.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/RepeatButton.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/SelectorBar.xaml" />
+                        <ResourceDictionary Source="ms-appx:///Styles/TabView.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/TimePicker.xaml" />
                         <ResourceDictionary Source="ms-appx:///Styles/ToggleSwitch.xaml" />
 

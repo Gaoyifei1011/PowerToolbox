@@ -325,6 +325,7 @@
     <None Remove="Styles\RadioButtons.xaml" />
     <None Remove="Styles\RepeatButton.xaml" />
     <None Remove="Styles\SelectorBar.xaml" />
+    <None Remove="Styles\TabView.xaml" />
     <None Remove="Styles\TimePicker.xaml" />
     <None Remove="Styles\ToggleSwitch.xaml" />
     <None Remove="MainApp.xaml" />
@@ -405,6 +406,7 @@
     <Page Include="Styles\RadioButtons.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\RepeatButton.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\SelectorBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Styles\TabView.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\TimePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\ToggleSwitch.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Views\Dialogs\AddDownloadTaskDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
