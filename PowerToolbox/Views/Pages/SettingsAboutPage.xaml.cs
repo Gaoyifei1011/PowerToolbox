@@ -23,7 +23,7 @@ namespace PowerToolbox.Views.Pages
     /// <summary>
     /// 关于页面
     /// </summary>
-    internal sealed partial class SettingsAboutPage : Page, INotifyPropertyChanged
+    internal sealed partial class SettingsAboutPage : Page
     {
         #region 第一部分：常量、资源与状态字段
 
@@ -64,8 +64,6 @@ namespace PowerToolbox.Views.Pages
             { "MouriNaruto" , new Uri("https://github.com/MouriNaruto") },
             { "Osirisoo0O" , new Uri("https://github.com/Osirisoo0O") }
         };
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion 第二部分：属性、列表与事件
 
