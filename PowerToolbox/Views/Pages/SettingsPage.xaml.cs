@@ -36,30 +36,36 @@ namespace PowerToolbox.Views.Pages
     {
         #region 第一部分：常量、资源与状态字段
 
+        private readonly string AboutString = ResourceService.SettingsResource.GetString("About");
+        private readonly string AdvancedString = ResourceService.SettingsResource.GetString("Advanced");
         private readonly string AppNameString = ResourceService.SettingsResource.GetString("AppName");
+        private readonly string GeneralString = ResourceService.SettingsResource.GetString("General");
+
         private Guid IID_ITaskbarManagerDesktopAppSupportStatics = new("CDFEFD63-E879-4134-B9A7-8283F05F9480");
 
         #endregion 第一部分：常量、资源与状态字段
 
         #region 第二部分：属性、列表与事件
 
-        private SelectorBarItem _selectedItem;
+        private int _selectedIndex;
 
-        private SelectorBarItem SelectedItem
+        private int SelectedIndex
         {
-            get { return _selectedItem; }
+            get { return _selectedIndex; }
 
             set
             {
-                if (!Equals(_selectedItem, value))
+                if (!Equals(_selectedIndex, value))
                 {
-                    _selectedItem = value;
-                    PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
+                    _selectedIndex = value;
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedIndex)));
                 }
             }
         }
 
         private List<Type> PageList { get; } = [typeof(SettingsGeneralPage), typeof(SettingsAdvancedPage), typeof(SettingsAboutPage)];
+
+        private List<string> SettingsItemTabList { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -70,6 +76,7 @@ namespace PowerToolbox.Views.Pages
         internal SettingsPage()
         {
             InitializeComponent();
+            InitializeData();
         }
 
         #endregion 第三部分：构造函数
@@ -87,7 +94,7 @@ namespace PowerToolbox.Views.Pages
             // 第一次导航
             if (GetCurrentPageType() is null)
             {
-                SelectedItem = SettingsSelctorBar.Items[0];
+                NavigateTo(PageList[0]);
             }
         }
 
@@ -98,16 +105,16 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 点击选择器栏选中项发生变化时发生的事件
         /// </summary>
-        private void OnSelectorBarSelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (!Equals(SelectedItem, sender.SelectedItem))
+            if (sender is TabView tabView && !Equals(SelectedIndex, tabView.SelectedIndex))
             {
-                SelectedItem = sender.SelectedItem;
+                SelectedIndex = tabView.SelectedIndex;
             }
 
-            if (SelectedItem is not null)
+            if (SelectedIndex >= 0 && SelectedIndex < SettingsItemTabList.Count)
             {
-                int index = sender.Items.IndexOf(SelectedItem);
+                int index = SelectedIndex;
                 Type currentPage = GetCurrentPageType();
                 int currentIndex = PageList.FindIndex(item => Equals(item, currentPage));
 
@@ -141,9 +148,9 @@ namespace PowerToolbox.Views.Pages
             args.Handled = true;
             int index = PageList.FindIndex(item => Equals(item, GetCurrentPageType()));
 
-            if (index >= 0 && index < SettingsSelctorBar.Items.Count)
+            if (index >= 0 && index < SettingsItemTabList.Count)
             {
-                SelectedItem = SettingsSelctorBar.Items[index];
+                SelectedIndex = index;
             }
 
             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(SettingsPage), nameof(OnNavigationFailed), 1, args.Exception);
@@ -222,6 +229,16 @@ namespace PowerToolbox.Views.Pages
         #endregion 第五部分：挂载事件处理
 
         #region 第六部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
+            SettingsItemTabList.Add(GeneralString);
+            SettingsItemTabList.Add(AdvancedString);
+            SettingsItemTabList.Add(AboutString);
+        }
 
         /// <summary>
         /// 页面向前导航

@@ -47,119 +47,146 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TextBlock
+            <Grid
                 Grid.Row="0"
-                Margin="30,15,30,0"
-                FontSize="22"
-                Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('Settings')}" />
+                MinWidth="100"
+                MinHeight="32"
+                Margin="30,18,30,3"
+                HorizontalAlignment="Left">
 
-            <SelectorBar
-                x:Name="SettingsSelctorBar"
-                Grid.Row="1"
-                Margin="20,1,30,3"
-                Padding="0"
-                HorizontalAlignment="Left"
-                SelectedItem="{x:Bind SelectedItem, Mode=OneWay}"
-                SelectionChanged="{x:Bind OnSelectorBarSelectionChanged}">
+                <Rectangle
+                    Fill="{ThemeResource PillItemBackgroundSelected}"
+                    RadiusX="16"
+                    RadiusY="16"
+                    Stroke="{ThemeResource PillItemBorderBrushSelected}"
+                    StrokeThickness="1" />
 
-                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('General')}" />
-                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('Advanced')}" />
-                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('About')}" />
-            </SelectorBar>
-
-            <Grid Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <MenuFlyoutSeparator Grid.Row="0" Margin="34,0,35,3" />
-
-                <!--  设置内容  -->
-                <Frame
-                    x:Name="SettingsFrame"
-                    Grid.Row="1"
-                    NavigationFailed="{x:Bind OnNavigationFailed}" />
+                <TextBlock
+                    Padding="16,4,16,6"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Foreground="{ThemeResource PillItemForegroundSelected}"
+                    Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('Settings')}" />
             </Grid>
 
-            <Button
+            <!--  设置项控制栏  -->
+            <TabView
                 Grid.Row="1"
-                Width="34"
-                Height="34"
-                Margin="0,5,30,0"
+                Margin="14,2,30,0"
                 Padding="0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.SettingsResource.GetString('ViewMore')}">
+                AllowDropTabs="False"
+                CanDrag="False"
+                CanDragTabs="False"
+                CanReorderTabs="False"
+                IsAddTabButtonVisible="False"
+                SelectedIndex="{x:Bind SelectedIndex, Mode=OneWay}"
+                SelectionChanged="{x:Bind OnSelectionChanged}"
+                Style="{StaticResource TabViewSelectorBarStyle}"
+                TabItemsSource="{x:Bind SettingsItemTabList}"
+                TabWidthMode="SizeToContent">
 
-                <FontIcon FontSize="16" Glyph="&#xE712;" />
+                <TabView.Resources>
+                    <SolidColorBrush x:Key="TabViewBorderBrush" Color="Transparent" />
+                </TabView.Resources>
 
-                <Button.Flyout>
-                    <MenuFlyout Placement="Bottom">
-                        <MenuFlyoutItem
-                            Click="{x:Bind OnRestartAppsClicked}"
-                            Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('RestartApp')}"
-                            ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.SettingsResource.GetString('RestartAppToolTip')}">
+                <TabView.TabItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <TabViewItem
+                            Header="{x:Bind}"
+                            IsClosable="False"
+                            Style="{StaticResource TabViewSelectorBarItemStyle}" />
+                    </DataTemplate>
+                </TabView.TabItemTemplate>
 
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE895;" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
+                <TabView.TabStripFooter>
+                    <Button
+                        Width="34"
+                        Height="34"
+                        Margin="0,0,0,2"
+                        Padding="0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.SettingsResource.GetString('ViewMore')}">
 
-                        <MenuFlyoutItem Click="{x:Bind OnSettingsInstructionClicked}" Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('SettingsInstruction')}">
+                        <FontIcon FontSize="16" Glyph="&#xE712;" />
 
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE946;" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
+                        <Button.Flyout>
+                            <MenuFlyout Placement="Bottom">
+                                <MenuFlyoutItem
+                                    Click="{x:Bind OnRestartAppsClicked}"
+                                    Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('RestartApp')}"
+                                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.SettingsResource.GetString('RestartAppToolTip')}">
 
-                        <MenuFlyoutItem
-                            Click="{x:Bind OnRunAsAdministratorClicked}"
-                            Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('RunAsAdministrator')}"
-                            Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(roothelper:RuntimeHelper.IsElevated)}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE895;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
 
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE7EF;" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
+                                <MenuFlyoutItem Click="{x:Bind OnSettingsInstructionClicked}" Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('SettingsInstruction')}">
 
-                        <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE946;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
 
-                        <MenuFlyoutItem
-                            Click="{x:Bind OnPinToDesktopClicked}"
-                            Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('PinToDesktop')}"
-                            ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.SettingsResource.GetString('PinToDesktopToolTip')}">
+                                <MenuFlyoutItem
+                                    Click="{x:Bind OnRunAsAdministratorClicked}"
+                                    Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('RunAsAdministrator')}"
+                                    Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(roothelper:RuntimeHelper.IsElevated)}">
 
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE70A;" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE7EF;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
 
-                        <MenuFlyoutItem
-                            Click="{x:Bind OnPinToStartScreenClicked}"
-                            Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('PinToStartScreen')}"
-                            ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.SettingsResource.GetString('PinToStartScreenToolTip')}">
+                                <MenuFlyoutSeparator />
 
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE8FC;" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    Click="{x:Bind OnPinToDesktopClicked}"
+                                    Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('PinToDesktop')}"
+                                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.SettingsResource.GetString('PinToDesktopToolTip')}">
 
-                        <MenuFlyoutItem
-                            Click="{x:Bind OnPinToTaskbarClicked}"
-                            Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('PinToTaskbar')}"
-                            ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.SettingsResource.GetString('PinToTaskbarToolTip')}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE70A;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
 
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Glyph="&#xE75B;" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                    </MenuFlyout>
-                </Button.Flyout>
-            </Button>
+                                <MenuFlyoutItem
+                                    Click="{x:Bind OnPinToStartScreenClicked}"
+                                    Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('PinToStartScreen')}"
+                                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.SettingsResource.GetString('PinToStartScreenToolTip')}">
+
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE8FC;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+
+                                <MenuFlyoutItem
+                                    Click="{x:Bind OnPinToTaskbarClicked}"
+                                    Text="{x:Bind rootservice:ResourceService.SettingsResource.GetString('PinToTaskbar')}"
+                                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.SettingsResource.GetString('PinToTaskbarToolTip')}">
+
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE75B;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                </TabView.TabStripFooter>
+            </TabView>
+
+            <MenuFlyoutSeparator Grid.Row="2" Margin="34,0,35,3" />
+
+            <!--  设置内容  -->
+            <Frame
+                x:Name="SettingsFrame"
+                Grid.Row="3"
+                NavigationFailed="{x:Bind OnNavigationFailed}" />
         </Grid>
 
         <SplitView.Pane>
