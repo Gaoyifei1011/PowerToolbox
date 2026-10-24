@@ -18,7 +18,12 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class FileManagerPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string ChangeRuleString = ResourceService.FileManagerResource.GetString("ChangeRule");
+        private readonly string ExtensionNameString = ResourceService.FileManagerResource.GetString("ExtensionName");
+        private readonly string FileNameString = ResourceService.FileManagerResource.GetString("FileName");
+        private readonly string FilePropertiesString = ResourceService.FileManagerResource.GetString("FileProperties");
         private readonly string NameChangeRule1String = ResourceService.FileManagerResource.GetString("NameChangeRule1");
         private readonly string NameChangeRule2String = ResourceService.FileManagerResource.GetString("NameChangeRule2");
         private readonly string NameChangeRule3String = ResourceService.FileManagerResource.GetString("NameChangeRule3");
@@ -43,26 +48,31 @@ namespace PowerToolbox.Views.Pages
         private readonly string NameChangeList4ChangedName2String = ResourceService.FileManagerResource.GetString("NameChangeList4ChangedName2");
         private readonly string NameChangeList4ChangedName3String = ResourceService.FileManagerResource.GetString("NameChangeList4ChangedName3");
         private readonly string NameChangeList4ChangedName4String = ResourceService.FileManagerResource.GetString("NameChangeList4ChangedName4");
+        private readonly string UpperAndLowerCaseString = ResourceService.FileManagerResource.GetString("UpperAndLowerCase");
 
-        private SelectorBarItem _selectedItem;
+        #endregion 第一部分：常量、资源与状态字段
 
-        internal SelectorBarItem SelectedItem
+        #region 第二部分：属性、集合与事件
+
+        private int _selectedIndex;
+
+        private int SelectedIndex
         {
-            get { return _selectedItem; }
+            get { return _selectedIndex; }
 
             set
             {
-                if (!Equals(_selectedItem, value))
+                if (!Equals(_selectedIndex, value))
                 {
-                    _selectedItem = value;
-                    PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
+                    _selectedIndex = value;
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedIndex)));
                 }
             }
         }
 
-        private int _currentIndex = 0;
+        private int _currentIndex;
 
-        internal int CurrentIndex
+        private int CurrentIndex
         {
             get { return _currentIndex; }
 
@@ -75,6 +85,8 @@ namespace PowerToolbox.Views.Pages
                 }
             }
         }
+
+        private List<RadioButtonItemModel> FileManagerSelectorRadioList { get; } = [];
 
         private List<Type> PageList { get; } = [typeof(FileNamePage), typeof(ExtensionNamePage), typeof(UpperAndLowerCasePage), typeof(FilePropertiesPage)];
 
@@ -92,53 +104,19 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、集合与事件
+
+        #region 第三部分：构造函数
+
         internal FileManagerPage()
         {
             InitializeComponent();
-            NameChangeRuleList.Add(NameChangeRule1String);
-            NameChangeRuleList.Add(NameChangeRule2String);
-            NameChangeRuleList.Add(NameChangeRule3String);
-            NameChangeRuleList.Add(NameChangeRule4String);
-
-            NameChangeDict.Add(0,
-            [
-                new(){ OriginalFileName = NameChangeOriginalName1String, NewFileName = NameChangeList1ChangedName1String },
-                new(){ OriginalFileName = NameChangeOriginalName2String, NewFileName = NameChangeList1ChangedName2String },
-                new(){ OriginalFileName = NameChangeOriginalName3String, NewFileName = NameChangeList1ChangedName3String },
-                new(){ OriginalFileName = NameChangeOriginalName4String, NewFileName = NameChangeList1ChangedName4String },
-            ]);
-            NameChangeDict.Add(1,
-            [
-                new(){ OriginalFileName = NameChangeOriginalName1String, NewFileName = NameChangeList2ChangedName1String },
-                new(){ OriginalFileName = NameChangeOriginalName2String, NewFileName = NameChangeList2ChangedName2String },
-                new(){ OriginalFileName = NameChangeOriginalName3String, NewFileName = NameChangeList2ChangedName3String },
-                new(){ OriginalFileName = NameChangeOriginalName4String, NewFileName = NameChangeList2ChangedName4String },
-            ]);
-            NameChangeDict.Add(2,
-            [
-                new(){ OriginalFileName = NameChangeOriginalName1String, NewFileName = NameChangeList3ChangedName1String },
-                new(){ OriginalFileName = NameChangeOriginalName2String, NewFileName = NameChangeList3ChangedName2String },
-                new(){ OriginalFileName = NameChangeOriginalName3String, NewFileName = NameChangeList3ChangedName3String },
-                new(){ OriginalFileName = NameChangeOriginalName4String, NewFileName = NameChangeList3ChangedName4String },
-            ]);
-            NameChangeDict.Add(3,
-            [
-                new(){ OriginalFileName = NameChangeOriginalName1String, NewFileName = NameChangeList4ChangedName1String },
-                new(){ OriginalFileName = NameChangeOriginalName2String, NewFileName = NameChangeList4ChangedName2String },
-                new(){ OriginalFileName = NameChangeOriginalName3String, NewFileName = NameChangeList4ChangedName3String },
-                new(){ OriginalFileName = NameChangeOriginalName4String, NewFileName = NameChangeList4ChangedName4String },
-            ]);
-
-            CurrentIndex = 0;
-
-            for (int index = 0; index < NameChangeList.Count; index++)
-            {
-                NameChangeList[index].OriginalFileName = NameChangeDict[CurrentIndex][index].OriginalFileName;
-                NameChangeList[index].NewFileName = NameChangeDict[CurrentIndex][index].NewFileName;
-            }
+            InitializeData();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面时发生的事件
@@ -151,27 +129,27 @@ namespace PowerToolbox.Views.Pages
             // 第一次导航
             if (GetCurrentPageType() is null)
             {
-                SelectedItem = FileManagerSelctorBar.Items[0];
+                NavigateTo(PageList[0], this);
             }
         }
 
-        #endregion 第一部分：重写父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第二部分：文件管理页面——挂载的事件
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 点击选择器栏选中项发生变化时发生的事件
         /// </summary>
-        private void OnSelectorBarSelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (!Equals(SelectedItem, sender.SelectedItem))
+            if (sender is RadioButtons radioButtons && !Equals(SelectedIndex, radioButtons.SelectedIndex))
             {
-                SelectedItem = sender.SelectedItem;
+                SelectedIndex = radioButtons.SelectedIndex;
             }
 
-            if (SelectedItem is not null)
+            if (SelectedIndex >= 0 && SelectedIndex < FileManagerSelectorRadioList.Count)
             {
-                int index = sender.Items.IndexOf(SelectedItem);
+                int index = SelectedIndex;
                 Type currentPage = GetCurrentPageType();
                 int currentIndex = PageList.FindIndex(item => Equals(item, currentPage));
 
@@ -202,16 +180,16 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 导航失败时发生
+        /// 导航失败后发生的事件
         /// </summary>
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs args)
         {
             args.Handled = true;
             int index = PageList.FindIndex(item => Equals(item, GetCurrentPageType()));
 
-            if (index >= 0 && index < FileManagerSelctorBar.Items.Count)
+            if (index >= 0 && index < FileManagerSelectorRadioList.Count)
             {
-                SelectedItem = FileManagerSelctorBar.Items[index];
+                SelectedIndex = index;
             }
 
             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileManagerPage), nameof(OnNavigationFailed), 1, args.Exception);
@@ -256,7 +234,62 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第二部分：文件管理页面——挂载的事件
+        #endregion 第五部分：挂载事件处理
+
+        #region 第六部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
+            FileManagerSelectorRadioList.Add(new() { SelectorName = FileNameString });
+            FileManagerSelectorRadioList.Add(new() { SelectorName = ExtensionNameString });
+            FileManagerSelectorRadioList.Add(new() { SelectorName = UpperAndLowerCaseString });
+            FileManagerSelectorRadioList.Add(new() { SelectorName = FilePropertiesString });
+
+            NameChangeRuleList.Add(NameChangeRule1String);
+            NameChangeRuleList.Add(NameChangeRule2String);
+            NameChangeRuleList.Add(NameChangeRule3String);
+            NameChangeRuleList.Add(NameChangeRule4String);
+
+            NameChangeDict.Add(0,
+            [
+                new() { OriginalFileName = NameChangeOriginalName1String, NewFileName = NameChangeList1ChangedName1String },
+                new() { OriginalFileName = NameChangeOriginalName2String, NewFileName = NameChangeList1ChangedName2String },
+                new() { OriginalFileName = NameChangeOriginalName3String, NewFileName = NameChangeList1ChangedName3String },
+                new() { OriginalFileName = NameChangeOriginalName4String, NewFileName = NameChangeList1ChangedName4String },
+            ]);
+            NameChangeDict.Add(1,
+            [
+                new(){ OriginalFileName = NameChangeOriginalName1String, NewFileName = NameChangeList2ChangedName1String },
+                new() { OriginalFileName = NameChangeOriginalName2String, NewFileName = NameChangeList2ChangedName2String },
+                new() { OriginalFileName = NameChangeOriginalName3String, NewFileName = NameChangeList2ChangedName3String },
+                new() { OriginalFileName = NameChangeOriginalName4String, NewFileName = NameChangeList2ChangedName4String },
+            ]);
+            NameChangeDict.Add(2,
+            [
+                new() { OriginalFileName = NameChangeOriginalName1String, NewFileName = NameChangeList3ChangedName1String },
+                new() { OriginalFileName = NameChangeOriginalName2String, NewFileName = NameChangeList3ChangedName2String },
+                new() { OriginalFileName = NameChangeOriginalName3String, NewFileName = NameChangeList3ChangedName3String },
+                new() { OriginalFileName = NameChangeOriginalName4String, NewFileName = NameChangeList3ChangedName4String },
+            ]);
+            NameChangeDict.Add(3,
+            [
+                new() { OriginalFileName = NameChangeOriginalName1String, NewFileName = NameChangeList4ChangedName1String },
+                new() { OriginalFileName = NameChangeOriginalName2String, NewFileName = NameChangeList4ChangedName2String },
+                new() { OriginalFileName = NameChangeOriginalName3String, NewFileName = NameChangeList4ChangedName3String },
+                new() { OriginalFileName = NameChangeOriginalName4String, NewFileName = NameChangeList4ChangedName4String },
+            ]);
+
+            CurrentIndex = 0;
+
+            for (int index = 0; index < NameChangeList.Count; index++)
+            {
+                NameChangeList[index].OriginalFileName = NameChangeDict[CurrentIndex][index].OriginalFileName;
+                NameChangeList[index].NewFileName = NameChangeDict[CurrentIndex][index].NewFileName;
+            }
+        }
 
         /// <summary>
         /// 页面向前导航
@@ -279,7 +312,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取当前导航到的页
         /// </summary>
-        internal Type GetCurrentPageType()
+        private Type GetCurrentPageType()
         {
             return FileManagerFrame.CurrentSourcePageType;
         }
@@ -307,5 +340,7 @@ namespace PowerToolbox.Views.Pages
         {
             return string.Format(ChangeRuleString, NameChangeRuleList[index]);
         }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }

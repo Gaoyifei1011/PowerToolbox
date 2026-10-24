@@ -51,20 +51,27 @@
             </Grid.RowDefinitions>
 
             <!--  文件管理控制栏  -->
-            <SelectorBar
-                x:Name="FileManagerSelctorBar"
-                Grid.Row="0"
-                Margin="18,5,30,3"
+            <RadioButtons
+                Margin="30,17,0,3"
                 Padding="0"
                 HorizontalAlignment="Left"
-                SelectedItem="{x:Bind SelectedItem, Mode=OneWay}"
-                SelectionChanged="{x:Bind OnSelectorBarSelectionChanged}">
+                VerticalAlignment="Top"
+                Canvas.ZIndex="1"
+                ItemsSource="{x:Bind FileManagerSelectorRadioList}"
+                SelectedIndex="{x:Bind SelectedIndex, Mode=OneWay}"
+                SelectionChanged="{x:Bind OnSelectionChanged}"
+                Style="{StaticResource HorizontalRadioButtonsStyle}">
 
-                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('FileName')}" />
-                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('ExtensionName')}" />
-                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('UpperAndLowerCase')}" />
-                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('FileProperties')}" />
-            </SelectorBar>
+                <RadioButtons.Resources>
+                    <Thickness x:Key="RadioButtonsTopHeaderMargin">0</Thickness>
+                </RadioButtons.Resources>
+
+                <RadioButtons.ItemTemplate>
+                    <DataTemplate x:DataType="model:RadioButtonItemModel">
+                        <RadioButton Content="{x:Bind SelectorName}" Style="{StaticResource PillRadioButtonStyle}" />
+                    </DataTemplate>
+                </RadioButtons.ItemTemplate>
+            </RadioButtons>
 
             <!--  文件管理内容  -->
             <Frame
@@ -330,9 +337,11 @@
                                 </ListView.ItemTemplate>
                             </ListView>
 
+                            <!--  TODO：未来可以迁移到 PagerControl  -->
                             <StackPanel
                                 Grid.Row="9"
                                 Margin="16,0,16,0"
+                                HorizontalAlignment="Right"
                                 Orientation="Horizontal"
                                 Spacing="5">
 
