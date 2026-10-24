@@ -40,7 +40,7 @@
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <ProjectGuid>5AC5F60D-FD5E-4630-B7F2-951A41BE392A</ProjectGuid>
     <TargetFrameworkMoniker>.NETFramework,Version=v4.8.1</TargetFrameworkMoniker>
-    <TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.28000.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <VisualStudioVersion>18.0</VisualStudioVersion>
     <WapProjPath Condition="'$(WapProjPath)'==''">$(MSBuildExtensionsPath)\Microsoft\DesktopBridge\</WapProjPath>
