@@ -5,7 +5,9 @@
     xmlns:collection="using:System.Collections"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:datatemplate="using:PowerToolbox.Views.DataTemplates"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:PowerToolbox.Models"
     xmlns:roothelper="using:PowerToolbox.Helpers.Root"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
     xmlns:system="using:System"
@@ -74,260 +76,196 @@
             <GridView
                 Grid.Row="1"
                 Padding="0"
+                IsItemClickEnabled="True"
+                ItemClick="{x:Bind OnItemClicked}"
+                ItemsSource="{x:Bind OperationBarItemList}"
                 SelectionMode="None">
-                <GridViewItem>
-                    <Button
-                        Width="240"
-                        Height="60"
-                        HorizontalContentAlignment="Stretch"
-                        Click="{x:Bind OnProjectDescriptionClicked}">
 
-                        <Grid Margin="0,-2,0,0" VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}" />
+                        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                        <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+                        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
+                        <Setter Property="Background" Value="{ThemeResource ButtonBackground}" />
+                        <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderBrush}" />
+                        <Setter Property="FontWeight" Value="Normal" />
+                        <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />
+                        <Setter Property="BorderThickness" Value="{ThemeResource ButtonBorderThemeThickness}" />
+                        <Setter Property="TabNavigation" Value="Local" />
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="Margin" Value="0,0,2,2" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="Padding" Value="{StaticResource ButtonPadding}" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="MinWidth" Value="{ThemeResource GridViewItemMinWidth}" />
+                        <Setter Property="MinHeight" Value="{ThemeResource GridViewItemMinHeight}" />
+                        <Setter Property="AllowDrop" Value="False" />
+                        <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
+                        <Setter Property="FocusVisualMargin" Value="-3" />
+                        <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource GridViewItemFocusVisualPrimaryBrush}" />
+                        <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+                        <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource GridViewItemFocusVisualSecondaryBrush}" />
+                        <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="GridViewItem">
+                                    <ContentPresenter
+                                        x:Name="ContentPresenter"
+                                        Padding="{TemplateBinding Padding}"
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        AnimatedIcon.State="Normal"
+                                        AutomationProperties.AccessibilityView="Raw"
+                                        Background="{TemplateBinding Background}"
+                                        BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Content="{TemplateBinding Content}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        ContentTransitions="{TemplateBinding ContentTransitions}"
+                                        CornerRadius="{TemplateBinding CornerRadius}"
+                                        Foreground="{TemplateBinding Foreground}">
+                                        <ContentPresenter.BackgroundTransition>
+                                            <BrushTransition Duration="0:0:0.083" />
+                                        </ContentPresenter.BackgroundTransition>
 
-                            <FontIcon
-                                Grid.Column="0"
-                                Margin="0,2,12,0"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                FontWeight="Medium"
-                                Glyph="&#xE80F;" />
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal" />
 
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Style="{StaticResource BodyTextBlockStyle}"
-                                Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ProjectHomePage')}" />
-                        </Grid>
-                    </Button>
-                </GridViewItem>
+                                                <VisualState x:Name="PointerOver">
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBackgroundPointerOver}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushPointerOver}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonForegroundPointerOver}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
 
-                <GridViewItem>
-                    <Button
-                        Width="240"
-                        Height="60"
-                        HorizontalContentAlignment="Stretch"
-                        Click="{x:Bind OnSendFeedbackClicked}">
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBackgroundPressed}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushPressed}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonForegroundPressed}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
 
-                        <Grid Margin="0,-2,0,0" VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                                                <VisualState x:Name="Disabled">
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBackgroundDisabled}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonBorderBrushDisabled}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonForegroundDisabled}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </ContentPresenter>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </GridView.ItemContainerStyle>
 
-                            <FontIcon
-                                Grid.Column="0"
-                                Margin="0,2,12,0"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                FontWeight="Medium"
-                                Glyph="&#xED15;" />
+                <GridView.ItemTemplateSelector>
+                    <datatemplate:OperationBarItemTemplateSelector>
+                        <!--  操作栏普通项数据模板  -->
+                        <datatemplate:OperationBarItemTemplateSelector.OrdinaryItemTemplate>
+                            <DataTemplate x:DataType="model:OperationBarItemModel">
+                                <Grid Width="220" Height="50">
+                                    <Grid Margin="10,0,0,0" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
 
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Style="{StaticResource BodyTextBlockStyle}"
-                                Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('SendFeedback')}" />
-                        </Grid>
-                    </Button>
-                </GridViewItem>
+                                        <FontIcon
+                                            Grid.Column="0"
+                                            Margin="0,2,12,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="Medium"
+                                            Glyph="{x:Bind IconGlyph}" />
 
-                <GridViewItem>
-                    <Button
-                        Width="240"
-                        Height="60"
-                        HorizontalContentAlignment="Stretch"
-                        Click="{x:Bind OnCheckUpdateClicked}"
-                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsChecking), Mode=OneWay}">
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            Text="{x:Bind Title}" />
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </datatemplate:OperationBarItemTemplateSelector.OrdinaryItemTemplate>
 
-                        <Grid Margin="0,-2,0,0" VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                        <!--  操作栏检查更新项数据模板  -->
+                        <datatemplate:OperationBarItemTemplateSelector.CheckUpdateItemTemplate>
+                            <DataTemplate x:DataType="model:OperationBarItemModel">
+                                <Grid Width="220" Height="50">
+                                    <Grid VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
 
-                            <FontIcon
-                                Grid.Column="0"
-                                Margin="0,2,12,0"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                FontWeight="Medium"
-                                Glyph="&#xE895;" />
+                                        <FontIcon
+                                            Grid.Column="0"
+                                            Margin="10,2,12,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            FontWeight="Medium"
+                                            Glyph="{x:Bind IconGlyph}" />
 
-                            <TextBlock
-                                Grid.Column="1"
-                                FontSize="16"
-                                Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('CheckUpdate')}"
-                                Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsChecking), Mode=OneWay}" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('CheckUpdate')}"
+                                            Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsCheckingUpdate), Mode=OneWay}" />
 
-                            <TextBlock
-                                Grid.Column="1"
-                                FontSize="16"
-                                Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('Checking')}"
-                                Visibility="{x:Bind IsChecking, Mode=OneWay}" />
-                        </Grid>
-                    </Button>
-                </GridViewItem>
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('CheckingUpdate')}"
+                                            Visibility="{x:Bind IsCheckingUpdate, Mode=OneWay}" />
 
-                <GridViewItem>
-                    <Button
-                        Width="240"
-                        Height="60"
-                        HorizontalContentAlignment="Stretch"
-                        Click="{x:Bind OnHelpTranslateClicked}">
+                                        <ProgressRing
+                                            Grid.Column="2"
+                                            Width="20"
+                                            Height="20"
+                                            Margin="0,2,10,0"
+                                            VerticalAlignment="Center"
+                                            IsActive="{x:Bind IsCheckingUpdate, Mode=OneWay}"
+                                            Visibility="{x:Bind IsCheckingUpdate, Mode=OneWay}" />
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </datatemplate:OperationBarItemTemplateSelector.CheckUpdateItemTemplate>
+                    </datatemplate:OperationBarItemTemplateSelector>
+                </GridView.ItemTemplateSelector>
 
-                        <Grid Margin="0,-2,0,0" VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <FontIcon
-                                Grid.Column="0"
-                                Margin="0,2,12,0"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                FontWeight="Medium"
-                                Glyph="&#xF2B7;" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Style="{StaticResource BodyTextBlockStyle}"
-                                Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('HelpTranslate')}" />
-                        </Grid>
-                    </Button>
-                </GridViewItem>
-
-                <GridViewItem>
-                    <Button
-                        Width="240"
-                        Height="60"
-                        HorizontalContentAlignment="Stretch"
-                        Click="{x:Bind OnShowLicenseClicked}">
-
-                        <Grid Margin="0,-2,0,0" VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <FontIcon
-                                Grid.Column="0"
-                                Margin="0,2,12,0"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                FontWeight="Medium"
-                                Glyph="&#xE779;" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Style="{StaticResource BodyTextBlockStyle}"
-                                Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ShowLicense')}" />
-                        </Grid>
-                    </Button>
-                </GridViewItem>
-
-                <GridViewItem>
-                    <Button
-                        Width="240"
-                        Height="60"
-                        HorizontalContentAlignment="Stretch"
-                        Click="{x:Bind OnShowReleaseNotesClicked}">
-
-                        <Grid Margin="0,-2,0,0" VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <FontIcon
-                                Grid.Column="0"
-                                Margin="0,2,12,0"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                FontWeight="Medium"
-                                Glyph="&#xE70B;" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Style="{StaticResource BodyTextBlockStyle}"
-                                Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ShowReleaseNotes')}" />
-                        </Grid>
-                    </Button>
-                </GridViewItem>
-
-                <GridViewItem>
-                    <Button
-                        Width="240"
-                        Height="60"
-                        HorizontalContentAlignment="Stretch"
-                        Click="{x:Bind OnAppInformationClicked}">
-
-                        <Grid Margin="0,-2,0,0" VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <FontIcon
-                                Grid.Column="0"
-                                Margin="0,2,12,0"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                FontWeight="Medium"
-                                Glyph="&#xECAA;" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Style="{StaticResource BodyTextBlockStyle}"
-                                Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('AppInformation')}" />
-                        </Grid>
-                    </Button>
-                </GridViewItem>
-
-                <GridViewItem>
-                    <Button
-                        Width="240"
-                        Height="60"
-                        HorizontalContentAlignment="Stretch"
-                        Click="{x:Bind OnSystemInformationClicked}">
-
-                        <Grid Margin="0,-2,0,0" VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <FontIcon
-                                Grid.Column="0"
-                                Margin="0,2,12,0"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                FontWeight="Medium"
-                                Glyph="&#xE770;" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Style="{StaticResource BodyTextBlockStyle}"
-                                Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('SystemInformation')}" />
-                        </Grid>
-                    </Button>
-                </GridViewItem>
+                <GridView.ItemContainerTransitions>
+                    <TransitionCollection />
+                </GridView.ItemContainerTransitions>
             </GridView>
 
             <!--  项目引用信息  -->
