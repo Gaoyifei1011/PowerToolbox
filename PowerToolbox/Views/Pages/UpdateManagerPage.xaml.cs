@@ -395,7 +395,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<RadioButtonItemModel> UpdateManagerRadioList { get; } = [];
+        private List<RadioButtonItemModel> UpdateManagerSelectorRadioList { get; } = [];
 
         private List<ComboBoxItemModel> UpdateSourceList { get; } = [];
 
@@ -1325,10 +1325,10 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            UpdateManagerRadioList.Add(new() { SelectorName = AvailableUpdateString });
-            UpdateManagerRadioList.Add(new() { SelectorName = InstalledUpdateString });
-            UpdateManagerRadioList.Add(new() { SelectorName = HiddenUpdateString });
-            UpdateManagerRadioList.Add(new() { SelectorName = UpdateHistoryString });
+            UpdateManagerSelectorRadioList.Add(new() { SelectorName = AvailableUpdateString });
+            UpdateManagerSelectorRadioList.Add(new() { SelectorName = InstalledUpdateString });
+            UpdateManagerSelectorRadioList.Add(new() { SelectorName = HiddenUpdateString });
+            UpdateManagerSelectorRadioList.Add(new() { SelectorName = UpdateHistoryString });
             UpdateSourceList.Add(new() { SelectedValue = "Microsoft Update", DisplayMember = MicrosoftUpdateString });
             UpdateSourceList.Add(new() { SelectedValue = "DCat Flighting Prod", DisplayMember = DCatFlightingProdString });
             UpdateSourceList.Add(new() { SelectedValue = "Windows Store(DCat Prod)", DisplayMember = WindowsStoreString });
