@@ -167,6 +167,7 @@ namespace PowerToolbox.Views.Pages
         internal LoafPage()
         {
             InitializeComponent();
+            InitializeData();
         }
 
         #endregion 第三部分：构造函数
@@ -183,7 +184,6 @@ namespace PowerToolbox.Views.Pages
             if (!isInitialized)
             {
                 isInitialized = true;
-                InitializeData();
                 MemoryStream memoryStream = await GetBingWallpaperAsync();
 
                 try

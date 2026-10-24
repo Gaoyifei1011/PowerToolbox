@@ -16,15 +16,30 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock
+        <Grid
             Grid.Row="0"
-            Margin="30,15,30,0"
-            FontSize="22"
-            Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('Loaf')}" />
+            MinWidth="100"
+            MinHeight="32"
+            Margin="30,18,30,3"
+            HorizontalAlignment="Left">
+
+            <Rectangle
+                Fill="{ThemeResource PillItemBackgroundSelected}"
+                RadiusX="16"
+                RadiusY="16"
+                Stroke="{ThemeResource PillItemBorderBrushSelected}"
+                StrokeThickness="1" />
+
+            <TextBlock
+                Padding="16,4,16,6"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{ThemeResource PillItemForegroundSelected}"
+                Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('Loaf')}" />
+        </Grid>
 
         <ScrollViewer
             Grid.Row="1"
-            Margin="0,5,0,0"
             HorizontalScrollBarVisibility="Disabled"
             HorizontalScrollMode="Disabled"
             VerticalScrollBarVisibility="Auto"
