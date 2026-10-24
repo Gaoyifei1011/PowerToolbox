@@ -56,7 +56,7 @@
                     Width="48"
                     Click="{x:Bind OnCopyClicked}"
                     IsEnabled="{x:Bind x:Object.Equals(SystemInformationResultKind, enum:SystemInformationResultKind.Successfully), Mode=OneWay}"
-                    Label="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Copy')}">
+                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Copy')}">
 
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xE8C8;" />
@@ -67,7 +67,7 @@
                     Width="48"
                     Click="{x:Bind OnRefreshClicked}"
                     IsEnabled="{x:Bind x:Object.Equals(SystemInformationResultKind, enum:SystemInformationResultKind.Successfully), Mode=OneWay}"
-                    Label="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Refresh')}">
+                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.SystemInformationResource.GetString('Refresh')}">
 
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xE72C;" />
