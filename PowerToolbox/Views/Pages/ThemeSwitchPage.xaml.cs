@@ -592,7 +592,7 @@ namespace PowerToolbox.Views.Pages
                         systemTheme = 0;
                         IsShowThemeColorInStartAndTaskbarEnabled = true;
                     }
-                    SetSystemTheme(systemTheme);
+                    SetSystemTheme(systemTheme, IsShowThemeColorInStartAndTaskbar);
                 }
             }
         }
@@ -1046,34 +1046,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         internal async Task InitializeSystemThemeSettingsAsync()
         {
-            Dictionary<string, object> wallpaperDict = await Task.Run(() =>
-            {
-                Dictionary<string, object> wallpaperDict = [];
-                if (desktopWallpaper.GetWallpaper(System.Windows.Forms.Screen.PrimaryScreen.DeviceName, out string wallpaper) is 0 && File.Exists(wallpaper))
-                {
-                    wallpaperDict.Add("Wallpaper", wallpaper);
-                    wallpaperDict.Add("Color", Colors.Black);
-                }
-                else
-                {
-                    wallpaperDict.Add("Wallpaper", string.Empty);
-                }
-
-                if (!wallpaperDict.ContainsKey("Color"))
-                {
-                    if (desktopWallpaper.GetBackgroundColor(out uint color) is 0)
-                    {
-                        System.Drawing.Color classicColor = System.Drawing.ColorTranslator.FromWin32((int)color);
-                        wallpaperDict.Add("Color", Color.FromArgb(classicColor.A, classicColor.R, classicColor.G, classicColor.B));
-                    }
-                    else
-                    {
-                        wallpaperDict.Add("Color", Colors.Black);
-                    }
-                }
-
-                return wallpaperDict;
-            });
+            Dictionary<string, object> wallpaperDict = await GetWallpaperInfoAsync();
 
             string wallpaper = Convert.ToString(wallpaperDict["Wallpaper"]);
 
@@ -1241,6 +1214,41 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 获取桌面壁纸信息
+        /// </summary>
+        private async Task<Dictionary<string, object>> GetWallpaperInfoAsync()
+        {
+            return await Task.Run(() =>
+            {
+                Dictionary<string, object> wallpaperDict = [];
+                if (desktopWallpaper.GetWallpaper(System.Windows.Forms.Screen.PrimaryScreen.DeviceName, out string wallpaper) is 0 && File.Exists(wallpaper))
+                {
+                    wallpaperDict.Add("Wallpaper", wallpaper);
+                    wallpaperDict.Add("Color", Colors.Black);
+                }
+                else
+                {
+                    wallpaperDict.Add("Wallpaper", string.Empty);
+                }
+
+                if (!wallpaperDict.ContainsKey("Color"))
+                {
+                    if (desktopWallpaper.GetBackgroundColor(out uint color) is 0)
+                    {
+                        System.Drawing.Color classicColor = System.Drawing.ColorTranslator.FromWin32((int)color);
+                        wallpaperDict.Add("Color", Color.FromArgb(classicColor.A, classicColor.R, classicColor.G, classicColor.B));
+                    }
+                    else
+                    {
+                        wallpaperDict.Add("Color", Colors.Black);
+                    }
+                }
+
+                return wallpaperDict;
+            });
+        }
+
+        /// <summary>
         /// 获取系统主题样式
         /// </summary>
         private ElementTheme GetSystemTheme()
@@ -1251,12 +1259,12 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 设置系统主题样式
         /// </summary>
-        private void SetSystemTheme(int systemTheme)
+        private void SetSystemTheme(int systemTheme, bool isShowThemeColorInStartAndTaskbar)
         {
             Task.Run(() =>
             {
                 RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "SystemUsesLightTheme", systemTheme);
-                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence", IsShowThemeColorInStartAndTaskbar);
+                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "ColorPrevalence", isShowThemeColorInStartAndTaskbar);
                 SendThemeChangeNotification();
             });
         }

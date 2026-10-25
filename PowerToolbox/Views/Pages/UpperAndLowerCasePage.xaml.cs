@@ -393,6 +393,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         internal void AddToUpperAndLowerCasePage(List<OldAndNewNameModel> upperAndLowerCaseList)
         {
+            if (upperAndLowerCaseList is null || upperAndLowerCaseList.Count is 0)
+            {
+                return;
+            }
+
             lock (upperAndLowerCaseLock)
             {
                 foreach (OldAndNewNameModel oldAndNewNameItem in upperAndLowerCaseList)

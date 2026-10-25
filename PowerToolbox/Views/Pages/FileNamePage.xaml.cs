@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows.ApplicationModel.DataTransfer;
@@ -339,11 +340,11 @@ namespace PowerToolbox.Views.Pages
             {
                 if (sender.Modifiers is VirtualKeyModifiers.None)
                 {
-                    await PrepareChangeFileNameAsync(RenameRule, StartNumber, IsChecked, LookUpText, ReplaceText, ExtensionName, false);
+                    await PrepareChangeFileNameAsync(RenameRule, StartNumber, IsChecked, LookUpText, ReplaceText, ExtensionName, false, SelectedNumberFormat.SelectedValue, [.. NumberFormatList.Select(x => x.SelectedValue)]);
                 }
                 else if (sender.Modifiers is VirtualKeyModifiers.Control)
                 {
-                    await PrepareChangeFileNameAsync(RenameRule, StartNumber, IsChecked, LookUpText, ReplaceText, ExtensionName, true);
+                    await PrepareChangeFileNameAsync(RenameRule, StartNumber, IsChecked, LookUpText, ReplaceText, ExtensionName, true, SelectedNumberFormat.SelectedValue, [.. NumberFormatList.Select(x => x.SelectedValue)]);
                 }
                 args.Handled = true;
             }
@@ -444,7 +445,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnPreviewClicked(object sender, RoutedEventArgs args)
         {
-            await PrepareChangeFileNameAsync(RenameRule, StartNumber, IsChecked, LookUpText, ReplaceText, ExtensionName, false);
+            await PrepareChangeFileNameAsync(RenameRule, StartNumber, IsChecked, LookUpText, ReplaceText, ExtensionName, false, SelectedNumberFormat.SelectedValue, [.. NumberFormatList.Select(x => x.SelectedValue)]);
         }
 
         /// <summary>
@@ -452,7 +453,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnModifyClicked(object sender, RoutedEventArgs args)
         {
-            await PrepareChangeFileNameAsync(RenameRule, StartNumber, IsChecked, LookUpText, ReplaceText, ExtensionName, true);
+            await PrepareChangeFileNameAsync(RenameRule, StartNumber, IsChecked, LookUpText, ReplaceText, ExtensionName, true, SelectedNumberFormat.SelectedValue, [.. NumberFormatList.Select(x => x.SelectedValue)]);
         }
 
         /// <summary>
@@ -532,11 +533,6 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            RenameRule = "<#>";
-            StartNumber = "1";
-            LookUpText = string.Empty;
-            ReplaceText = string.Empty;
-
             NumberFormatList.Add(new() { SelectedValue = "Auto", DisplayMember = AutoString });
             NumberFormatList.Add(new() { SelectedValue = "0", DisplayMember = "0" });
             NumberFormatList.Add(new() { SelectedValue = "00", DisplayMember = "00" });
@@ -545,6 +541,10 @@ namespace PowerToolbox.Views.Pages
             NumberFormatList.Add(new() { SelectedValue = "00000", DisplayMember = "00000" });
             NumberFormatList.Add(new() { SelectedValue = "000000", DisplayMember = "000000" });
             NumberFormatList.Add(new() { SelectedValue = "0000000", DisplayMember = "0000000" });
+            RenameRule = "<#>";
+            StartNumber = "1";
+            LookUpText = string.Empty;
+            ReplaceText = string.Empty;
             SelectedNumberFormat = NumberFormatList[0];
         }
 
@@ -565,9 +565,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 准备修改文件名称
         /// </summary>
-        private async Task PrepareChangeFileNameAsync(string renameRule, string startNumber, bool isChecked, string lookUpText, string replaceText, string extensionName, bool needChange)
+        private async Task PrepareChangeFileNameAsync(string renameRule, string startNumber, bool isChecked, string lookUpText, string replaceText, string extensionName, bool needChange, object numberFormat, IReadOnlyList<object> numberFormatList)
         {
-            if (!string.IsNullOrEmpty(renameRule) || !string.IsNullOrEmpty(startNumber) || isChecked || !string.IsNullOrEmpty(lookUpText) || !string.IsNullOrEmpty(replaceText))
+            if (!string.IsNullOrEmpty(renameRule) || !string.IsNullOrEmpty(startNumber) || isChecked || !string.IsNullOrEmpty(lookUpText) || !string.IsNullOrEmpty(replaceText) || numberFormat is null || numberFormatList is null || numberFormatList.Count is 0)
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
@@ -584,7 +584,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 else
                 {
-                    PreviewChangedFileName(startNumber, renameRule, isChecked, lookUpText, replaceText, extensionName);
+                    PreviewChangedFileName(startNumber, renameRule, isChecked, lookUpText, replaceText, extensionName, numberFormat, numberFormatList);
                     if (needChange)
                     {
                         await ChangeFileNameAsync();
@@ -600,7 +600,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 预览修改后的文件名称
         /// </summary>
-        private void PreviewChangedFileName(string startNumber, string renameRule, bool isChecked, string lookUpText, string replaceText, string extensionName)
+        private void PreviewChangedFileName(string startNumber, string renameRule, bool isChecked, string lookUpText, string replaceText, string extensionName, object numberFormat, IReadOnlyList<object> numberFormatList)
         {
             int startIndex = 0;
             if (!string.IsNullOrEmpty(startNumber))
@@ -625,35 +625,35 @@ namespace PowerToolbox.Views.Pages
                             if (tempFileName.Contains("<#>"))
                             {
                                 string formattedIndex = string.Empty;
-                                if (Equals(SelectedNumberFormat, NumberFormatList[0]))
+                                if (Equals(numberFormat, numberFormatList[0]))
                                 {
                                     formattedIndex = Convert.ToString(startIndex).PadLeft(numberLength, '0');
                                 }
-                                else if (Equals(SelectedNumberFormat, NumberFormatList[1]))
+                                else if (Equals(numberFormat, numberFormatList[1]))
                                 {
                                     formattedIndex = Convert.ToString(startIndex).PadLeft(1, '0');
                                 }
-                                else if (Equals(SelectedNumberFormat, NumberFormatList[2]))
+                                else if (Equals(numberFormat, numberFormatList[2]))
                                 {
                                     formattedIndex = Convert.ToString(startIndex).PadLeft(2, '0');
                                 }
-                                else if (Equals(SelectedNumberFormat, NumberFormatList[3]))
+                                else if (Equals(numberFormat, numberFormatList[3]))
                                 {
                                     formattedIndex = Convert.ToString(startIndex).PadLeft(3, '0');
                                 }
-                                else if (Equals(SelectedNumberFormat, NumberFormatList[4]))
+                                else if (Equals(numberFormat, numberFormatList[4]))
                                 {
                                     formattedIndex = Convert.ToString(startIndex).PadLeft(4, '0');
                                 }
-                                else if (Equals(SelectedNumberFormat, NumberFormatList[5]))
+                                else if (Equals(numberFormat, numberFormatList[5]))
                                 {
                                     formattedIndex = Convert.ToString(startIndex).PadLeft(5, '0');
                                 }
-                                else if (Equals(SelectedNumberFormat, NumberFormatList[6]))
+                                else if (Equals(numberFormat, numberFormatList[6]))
                                 {
                                     formattedIndex = Convert.ToString(startIndex).PadLeft(6, '0');
                                 }
-                                else if (Equals(SelectedNumberFormat, NumberFormatList[7]))
+                                else if (Equals(numberFormat, numberFormatList[7]))
                                 {
                                     formattedIndex = Convert.ToString(startIndex).PadLeft(7, '0');
                                 }

@@ -387,14 +387,10 @@ namespace PowerToolbox.Views.Pages
                 OperationFailedList.Clear();
                 if (await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]) is List<OldAndNewNameModel> extensionNameList && extensionNameList.Count > 0)
                 {
-                    openFileDialog.Dispose();
                     AddToExtensionNamePage(extensionNameList);
                 }
             }
-            else
-            {
-                openFileDialog.Dispose();
-            }
+            openFileDialog.Dispose();
         }
 
         /// <summary>
@@ -416,12 +412,8 @@ namespace PowerToolbox.Views.Pages
                 {
                     AddToExtensionNamePage(fileNameList);
                 }
-                openFolderDialog.Dispose();
             }
-            else
-            {
-                openFolderDialog.Dispose();
-            }
+            openFolderDialog.Dispose();
         }
 
         /// <summary>

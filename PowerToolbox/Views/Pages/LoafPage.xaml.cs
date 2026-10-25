@@ -90,7 +90,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _blockAllKeys = true;
+        private bool _blockAllKeys;
 
         private bool BlockAllKeys
         {
@@ -122,7 +122,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private TimeSpan _durationTime = new(0, 30, 0);
+        private TimeSpan _durationTime;
 
         private TimeSpan DurationTime
         {
@@ -329,6 +329,8 @@ namespace PowerToolbox.Views.Pages
             AfterSimulateOperationList.Add(new() { SelectedValue = "Shutdown", DisplayMember = ShutdownString });
             SelectedSimulateUpdateStyle = SimulateUpdateStyleList[0];
             SelectedAfterSimulateOperation = AfterSimulateOperationList[0];
+            BlockAllKeys = true;
+            DurationTime = new(0, 30, 0);
         }
 
         /// <summary>

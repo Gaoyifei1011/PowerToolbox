@@ -2332,6 +2332,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private bool EnterCustomPreviewChannel(string previewChannel)
         {
+            if (string.IsNullOrEmpty(previewChannel))
+            {
+                return default;
+            }
+
             Task.Run(() =>
             {
                 // 注册表存储的内容
@@ -2464,31 +2469,15 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 暂停服务
-        /// </summary>
-        private void StopService(string serviceName)
-        {
-            try
-            {
-                ServiceController serviceController = new(serviceName);
-                if (serviceController.Status is not ServiceControllerStatus.Stopped && serviceController.Status is not ServiceControllerStatus.StopPending)
-                {
-                    serviceController.Stop();
-                    serviceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
-                }
-                serviceController.Dispose();
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(StopService), 1, e);
-            }
-        }
-
-        /// <summary>
         /// 开启服务
         /// </summary>
         private void StartService(string serviceName)
         {
+            if (string.IsNullOrEmpty(serviceName))
+            {
+                return;
+            }
+
             try
             {
                 ServiceController serviceController = new(serviceName);
@@ -2502,6 +2491,32 @@ namespace PowerToolbox.Views.Pages
             catch (Exception e)
             {
                 LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(StartService), 1, e);
+            }
+        }
+
+        /// <summary>
+        /// 暂停服务
+        /// </summary>
+        private void StopService(string serviceName)
+        {
+            if (string.IsNullOrEmpty(serviceName))
+            {
+                return;
+            }
+
+            try
+            {
+                ServiceController serviceController = new(serviceName);
+                if (serviceController.Status is not ServiceControllerStatus.Stopped && serviceController.Status is not ServiceControllerStatus.StopPending)
+                {
+                    serviceController.Stop();
+                    serviceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
+                }
+                serviceController.Dispose();
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(StopService), 1, e);
             }
         }
 
