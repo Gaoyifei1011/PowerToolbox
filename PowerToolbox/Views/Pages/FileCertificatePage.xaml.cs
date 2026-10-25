@@ -45,7 +45,7 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private bool _isModifyingNow = false;
+        private bool _isModifyingNow;
 
         internal bool IsModifyingNow
         {
@@ -102,7 +102,6 @@ namespace PowerToolbox.Views.Pages
         protected override void OnDragOver(Microsoft.UI.Xaml.DragEventArgs args)
         {
             base.OnDragOver(args);
-
             if (IsModifyingNow)
             {
                 args.AcceptedOperation = DataPackageOperation.None;
@@ -129,7 +128,6 @@ namespace PowerToolbox.Views.Pages
         {
             base.OnDrop(args);
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
-            List<IStorageItem> storageItemList = [];
             try
             {
                 if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count > 0 && await GetNeedConvertFileListAsync(fileList) is List<CertificateResultModel> fileCertificateList && fileCertificateList.Count > 0)
@@ -173,13 +171,13 @@ namespace PowerToolbox.Views.Pages
         #region 第六部分：挂载事件处理
 
         /// <summary>
-        /// 按下 Enter 键发生的事件（预览修改内容）
-        /// 按下 Ctrl + Enter 键发生的事件（修改内容）
+        /// 按下 Enter 键发生的事件（删除文件签名）
         /// </summary>
         private async void OnKeyBoardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
             if (sender.Key is VirtualKey.Enter)
             {
+                IsOperationFailed = false;
                 await ChangeFileAsync();
                 args.Handled = true;
             }
