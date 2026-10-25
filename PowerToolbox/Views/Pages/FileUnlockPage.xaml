@@ -11,8 +11,13 @@
     xmlns:rootservice="using:PowerToolbox.Services.Root"
     xmlns:sys="using:System"
     AllowDrop="True"
+    KeyboardAcceleratorPlacementMode="Hidden"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
+
+    <Page.KeyboardAccelerators>
+        <KeyboardAccelerator Key="Enter" Invoked="{x:Bind OnKeyBoardAcceleratorInvoked}" />
+    </Page.KeyboardAccelerators>
 
     <Page.Resources>
         <ResourceDictionary>
@@ -33,15 +38,31 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock
+        <Grid
             Grid.Row="0"
-            Margin="30,15,30,0"
-            FontSize="22"
-            Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileUnlock')}" />
+            MinWidth="100"
+            MinHeight="32"
+            Margin="30,17,30,3"
+            HorizontalAlignment="Left">
+
+            <Rectangle
+                Fill="{ThemeResource PillItemBackgroundSelected}"
+                RadiusX="16"
+                RadiusY="16"
+                Stroke="{ThemeResource PillItemBorderBrushSelected}"
+                StrokeThickness="1" />
+
+            <TextBlock
+                Padding="16,4,16,6"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{ThemeResource PillItemForegroundSelected}"
+                Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileUnlock')}" />
+        </Grid>
 
         <TextBlock
             Grid.Row="1"
-            Margin="32,3,32,3"
+            Margin="32,0,32,3"
             FontSize="14"
             Text="{x:Bind rootservice:ResourceService.FileUnlockResource.GetString('FileUnlockDescription')}" />
 
@@ -175,7 +196,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="65" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
@@ -375,7 +396,7 @@
 
                             <StackPanel
                                 Grid.Column="4"
-                                Margin="10,0,0,0"
+                                Margin="10,0,3,0"
                                 Orientation="Horizontal">
 
                                 <Button
