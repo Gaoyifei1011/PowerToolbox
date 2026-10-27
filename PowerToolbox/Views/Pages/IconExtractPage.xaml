@@ -20,11 +20,27 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock
+        <Grid
             Grid.Row="0"
-            Margin="30,15,30,0"
-            FontSize="22"
-            Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('IconExtract')}" />
+            MinWidth="100"
+            MinHeight="32"
+            Margin="30,17,30,0"
+            HorizontalAlignment="Left">
+
+            <Rectangle
+                Fill="{ThemeResource PillItemBackgroundSelected}"
+                RadiusX="16"
+                RadiusY="16"
+                Stroke="{ThemeResource PillItemBorderBrushSelected}"
+                StrokeThickness="1" />
+
+            <TextBlock
+                Padding="16,4,16,6"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{ThemeResource PillItemForegroundSelected}"
+                Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('IconExtract')}" />
+        </Grid>
 
         <TextBlock
             x:Name="GetResultsTextBlock"
@@ -114,55 +130,86 @@
                 </GridView>
 
                 <!--  请选择文件提示  -->
-                <TextBlock
-                    Margin="20,0,20,5"
+                <StackPanel
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Canvas.ZIndex="1"
-                    FontSize="20"
-                    Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('PleaseSelectFile')}"
-                    TextAlignment="Center"
-                    TextWrapping="Wrap"
-                    Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Welcome), Mode=OneWay}" />
+                    Spacing="20"
+                    Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Welcome), Mode=OneWay}">
 
-                <!--  正在解析中  -->
-                <Grid
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    ColumnSpacing="10"
-                    Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Parsing), Mode=OneWay}">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <ProgressRing
-                        Grid.Column="0"
-                        Width="26"
-                        Height="26"
-                        IsActive="{x:Bind x:Object.Equals(IconExtractResultKind, enum:IconExtractResultKind.Parsing), Mode=OneWay}" />
+                    <Image
+                        Width="150"
+                        Height="150"
+                        Source="ms-appx:///Assets/Image/IconExtractWelcome.png" />
 
                     <TextBlock
-                        Grid.Column="1"
+                        MaxWidth="800"
+                        HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        FontSize="20"
-                        Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('ParsingIcon')}"
+                        FontSize="18"
+                        FontWeight="Medium"
+                        Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('PleaseSelectFile')}"
                         TextAlignment="Center"
                         TextWrapping="Wrap" />
-                </Grid>
+                </StackPanel>
 
-                <!--  无任何资源提示  -->
-                <TextBlock
-                    Margin="20,0,20,5"
+                <StackPanel
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Canvas.ZIndex="1"
-                    FontSize="20"
-                    Text="{x:Bind NoResources, Mode=OneWay}"
-                    TextAlignment="Center"
-                    TextWrapping="Wrap"
-                    Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Failed), Mode=OneWay}" />
+                    Spacing="20"
+                    Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Parsing), Mode=OneWay}">
+
+                    <Image
+                        Width="150"
+                        Height="150"
+                        Source="ms-appx:///Assets/Image/Search.png" />
+
+                    <Grid ColumnSpacing="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <ProgressRing
+                            Grid.Column="0"
+                            Width="30"
+                            Height="30"
+                            IsActive="True" />
+
+                        <TextBlock
+                            Grid.Column="1"
+                            MaxWidth="800"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="18"
+                            FontWeight="Medium"
+                            Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('ParsingIcon')}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </Grid>
+                </StackPanel>
+
+                <!--  无任何资源提示  -->
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="20"
+                    Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Failed), Mode=OneWay}">
+
+                    <Image
+                        Width="150"
+                        Height="150"
+                        Source="ms-appx:///Assets/Image/Failed.png" />
+
+                    <TextBlock
+                        MaxWidth="800"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="18"
+                        FontWeight="Medium"
+                        Text="{x:Bind NoResources, Mode=OneWay}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+                </StackPanel>
             </Grid>
 
             <AppBarSeparator Grid.Column="1" Margin="10,0" />
@@ -257,127 +304,241 @@
                                     <Grid>
                                         <SystemBackdropElement CornerRadius="{StaticResource OverlayCornerRadius}" SystemBackdrop="{StaticResource AcrylicBackgroundFillColorDefaultBackdrop}" />
 
-                                        <Grid Padding="12" RowSpacing="5">
-                                            <Grid Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto" />
-                                                    <RowDefinition Height="Auto" />
-                                                    <RowDefinition Height="Auto" />
-                                                </Grid.RowDefinitions>
+                                        <Grid Padding="4,8,4,6">
+                                            <GridView
+                                                x:Name="FileContainIconGridView"
+                                                MaxWidth="320"
+                                                Padding="0"
+                                                ItemsSource="{x:Bind FileContainIconSizeList}"
+                                                SelectionMode="Multiple"
+                                                Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}">
 
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
+                                                <GridView.ItemContainerStyle>
+                                                    <Style TargetType="GridViewItem">
+                                                        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                                                        <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+                                                        <Setter Property="Background" Value="Transparent" />
+                                                        <Setter Property="Foreground" Value="{ThemeResource ListViewItemForeground}" />
+                                                        <Setter Property="TabNavigation" Value="Local" />
+                                                        <Setter Property="IsHoldingEnabled" Value="True" />
+                                                        <Setter Property="Padding" Value="16,0,12,0" />
+                                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                                        <Setter Property="MinHeight" Value="30" />
+                                                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                                                        <Setter Property="MinWidth" Value="{ThemeResource ListViewItemMinWidth}" />
+                                                        <Setter Property="HorizontalAlignment" Value="Left" />
+                                                        <Setter Property="AllowDrop" Value="False" />
+                                                        <Setter Property="UseSystemFocusVisuals" Value="True" />
+                                                        <Setter Property="FocusVisualMargin" Value="1" />
+                                                        <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource ListViewItemFocusVisualPrimaryBrush}" />
+                                                        <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+                                                        <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource ListViewItemFocusVisualSecondaryBrush}" />
+                                                        <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="GridViewItem">
+                                                                    <ListViewItemPresenter
+                                                                        x:Name="Root"
+                                                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                                        CheckBoxBorderBrush="{ThemeResource ListViewItemCheckBoxBorderBrush}"
+                                                                        CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}"
+                                                                        CheckBoxCornerRadius="{ThemeResource ListViewItemCheckBoxCornerRadius}"
+                                                                        CheckBoxDisabledBorderBrush="{ThemeResource ListViewItemCheckBoxDisabledBorderBrush}"
+                                                                        CheckBoxDisabledBrush="{ThemeResource ListViewItemCheckBoxDisabledBrush}"
+                                                                        CheckBoxPointerOverBorderBrush="{ThemeResource ListViewItemCheckBoxPointerOverBorderBrush}"
+                                                                        CheckBoxPointerOverBrush="{ThemeResource ControlAltFillColorTertiaryBrush}"
+                                                                        CheckBoxPressedBorderBrush="{ThemeResource ListViewItemCheckBoxPressedBorderBrush}"
+                                                                        CheckBoxPressedBrush="{ThemeResource ListViewItemCheckBoxPressedBrush}"
+                                                                        CheckBoxSelectedBrush="{ThemeResource ListViewItemCheckBoxSelectedBrush}"
+                                                                        CheckBoxSelectedDisabledBrush="{ThemeResource ListViewItemCheckBoxSelectedDisabledBrush}"
+                                                                        CheckBoxSelectedPointerOverBrush="{ThemeResource ListViewItemCheckBoxSelectedPointerOverBrush}"
+                                                                        CheckBoxSelectedPressedBrush="{ThemeResource ListViewItemCheckBoxSelectedPressedBrush}"
+                                                                        CheckBrush="{ThemeResource ListViewItemCheckBrush}"
+                                                                        CheckDisabledBrush="{ThemeResource ListViewItemCheckDisabledBrush}"
+                                                                        CheckMode="{ThemeResource ListViewItemCheckMode}"
+                                                                        CheckPressedBrush="{ThemeResource ListViewItemCheckPressedBrush}"
+                                                                        ContentMargin="{TemplateBinding Padding}"
+                                                                        ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                                        Control.IsTemplateFocusTarget="True"
+                                                                        CornerRadius="{ThemeResource ListViewItemCornerRadius}"
+                                                                        DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                                                        DragBackground="{ThemeResource ListViewItemDragBackground}"
+                                                                        DragForeground="{ThemeResource ListViewItemDragForeground}"
+                                                                        DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                                                        FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}"
+                                                                        FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}"
+                                                                        FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                                                                        FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}"
+                                                                        FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
+                                                                        FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}"
+                                                                        FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
+                                                                        PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackground}"
+                                                                        PointerOverBackground="Transparent"
+                                                                        PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}"
+                                                                        PressedBackground="Transparent"
+                                                                        ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                                                        SelectedBackground="Transparent"
+                                                                        SelectedDisabledBackground="Transparent"
+                                                                        SelectedForeground="{ThemeResource ListViewItemForegroundSelected}"
+                                                                        SelectedPointerOverBackground="Transparent"
+                                                                        SelectedPressedBackground="Transparent"
+                                                                        SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}"
+                                                                        SelectionIndicatorBrush="{ThemeResource ListViewItemSelectionIndicatorBrush}"
+                                                                        SelectionIndicatorCornerRadius="{ThemeResource ListViewItemSelectionIndicatorCornerRadius}"
+                                                                        SelectionIndicatorDisabledBrush="{ThemeResource ListViewItemSelectionIndicatorDisabledBrush}"
+                                                                        SelectionIndicatorPointerOverBrush="{ThemeResource ListViewItemSelectionIndicatorPointerOverBrush}"
+                                                                        SelectionIndicatorPressedBrush="{ThemeResource ListViewItemSelectionIndicatorPressedBrush}"
+                                                                        SelectionIndicatorVisualEnabled="{ThemeResource ListViewItemSelectionIndicatorVisualEnabled}" />
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </GridView.ItemContainerStyle>
 
-                                                <CheckBox
-                                                    Grid.Row="0"
-                                                    Grid.Column="0"
-                                                    Content="{x:Bind IconSizeList[0].DisplayMember}"
-                                                    IsChecked="{x:Bind Is16SizeEnabled, Mode=TwoWay}" />
+                                                <GridView.ItemTemplate>
+                                                    <DataTemplate x:DataType="model:IconSizeModel">
+                                                        <TextBlock Text="{x:Bind ExtractSize}" />
+                                                    </DataTemplate>
+                                                </GridView.ItemTemplate>
 
-                                                <CheckBox
-                                                    Grid.Row="0"
-                                                    Grid.Column="1"
-                                                    Content="{x:Bind IconSizeList[1].DisplayMember}"
-                                                    IsChecked="{x:Bind Is24SizeEnabled, Mode=TwoWay}" />
+                                                <ItemsControl.ItemContainerTransitions>
+                                                    <TransitionCollection />
+                                                </ItemsControl.ItemContainerTransitions>
+                                            </GridView>
 
-                                                <CheckBox
-                                                    Grid.Row="0"
-                                                    Grid.Column="2"
-                                                    Content="{x:Bind IconSizeList[2].DisplayMember}"
-                                                    IsChecked="{x:Bind Is32SizeEnabled, Mode=TwoWay}" />
+                                            <GridView
+                                                x:Name="FileAssociateIconGridView"
+                                                MaxWidth="210"
+                                                Padding="0"
+                                                ItemsSource="{x:Bind FileAssociateIconSizeList}"
+                                                SelectionMode="Multiple"
+                                                Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[1]), Mode=OneWay}">
 
-                                                <CheckBox
-                                                    Grid.Row="1"
-                                                    Grid.Column="0"
-                                                    Content="{x:Bind IconSizeList[3].DisplayMember}"
-                                                    IsChecked="{x:Bind Is48SizeEnabled, Mode=TwoWay}" />
+                                                <GridView.ItemContainerStyle>
+                                                    <Style TargetType="GridViewItem">
+                                                        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                                                        <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+                                                        <Setter Property="Background" Value="Transparent" />
+                                                        <Setter Property="Foreground" Value="{ThemeResource ListViewItemForeground}" />
+                                                        <Setter Property="TabNavigation" Value="Local" />
+                                                        <Setter Property="IsHoldingEnabled" Value="True" />
+                                                        <Setter Property="Padding" Value="16,0,12,0" />
+                                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                                        <Setter Property="MinHeight" Value="30" />
+                                                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                                                        <Setter Property="MinWidth" Value="{ThemeResource ListViewItemMinWidth}" />
+                                                        <Setter Property="HorizontalAlignment" Value="Left" />
+                                                        <Setter Property="AllowDrop" Value="False" />
+                                                        <Setter Property="UseSystemFocusVisuals" Value="True" />
+                                                        <Setter Property="FocusVisualMargin" Value="1" />
+                                                        <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource ListViewItemFocusVisualPrimaryBrush}" />
+                                                        <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+                                                        <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource ListViewItemFocusVisualSecondaryBrush}" />
+                                                        <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="GridViewItem">
+                                                                    <ListViewItemPresenter
+                                                                        x:Name="Root"
+                                                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                                        CheckBoxBorderBrush="{ThemeResource ListViewItemCheckBoxBorderBrush}"
+                                                                        CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}"
+                                                                        CheckBoxCornerRadius="{ThemeResource ListViewItemCheckBoxCornerRadius}"
+                                                                        CheckBoxDisabledBorderBrush="{ThemeResource ListViewItemCheckBoxDisabledBorderBrush}"
+                                                                        CheckBoxDisabledBrush="{ThemeResource ListViewItemCheckBoxDisabledBrush}"
+                                                                        CheckBoxPointerOverBorderBrush="{ThemeResource ListViewItemCheckBoxPointerOverBorderBrush}"
+                                                                        CheckBoxPointerOverBrush="{ThemeResource ControlAltFillColorTertiaryBrush}"
+                                                                        CheckBoxPressedBorderBrush="{ThemeResource ListViewItemCheckBoxPressedBorderBrush}"
+                                                                        CheckBoxPressedBrush="{ThemeResource ListViewItemCheckBoxPressedBrush}"
+                                                                        CheckBoxSelectedBrush="{ThemeResource ListViewItemCheckBoxSelectedBrush}"
+                                                                        CheckBoxSelectedDisabledBrush="{ThemeResource ListViewItemCheckBoxSelectedDisabledBrush}"
+                                                                        CheckBoxSelectedPointerOverBrush="{ThemeResource ListViewItemCheckBoxSelectedPointerOverBrush}"
+                                                                        CheckBoxSelectedPressedBrush="{ThemeResource ListViewItemCheckBoxSelectedPressedBrush}"
+                                                                        CheckBrush="{ThemeResource ListViewItemCheckBrush}"
+                                                                        CheckDisabledBrush="{ThemeResource ListViewItemCheckDisabledBrush}"
+                                                                        CheckMode="{ThemeResource ListViewItemCheckMode}"
+                                                                        CheckPressedBrush="{ThemeResource ListViewItemCheckPressedBrush}"
+                                                                        ContentMargin="{TemplateBinding Padding}"
+                                                                        ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                                        Control.IsTemplateFocusTarget="True"
+                                                                        CornerRadius="{ThemeResource ListViewItemCornerRadius}"
+                                                                        DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                                                        DragBackground="{ThemeResource ListViewItemDragBackground}"
+                                                                        DragForeground="{ThemeResource ListViewItemDragForeground}"
+                                                                        DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                                                        FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}"
+                                                                        FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}"
+                                                                        FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                                                                        FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}"
+                                                                        FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
+                                                                        FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}"
+                                                                        FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
+                                                                        PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackground}"
+                                                                        PointerOverBackground="Transparent"
+                                                                        PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}"
+                                                                        PressedBackground="Transparent"
+                                                                        ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                                                        SelectedBackground="Transparent"
+                                                                        SelectedDisabledBackground="Transparent"
+                                                                        SelectedForeground="{ThemeResource ListViewItemForegroundSelected}"
+                                                                        SelectedPointerOverBackground="Transparent"
+                                                                        SelectedPressedBackground="Transparent"
+                                                                        SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}"
+                                                                        SelectionIndicatorBrush="{ThemeResource ListViewItemSelectionIndicatorBrush}"
+                                                                        SelectionIndicatorCornerRadius="{ThemeResource ListViewItemSelectionIndicatorCornerRadius}"
+                                                                        SelectionIndicatorDisabledBrush="{ThemeResource ListViewItemSelectionIndicatorDisabledBrush}"
+                                                                        SelectionIndicatorPointerOverBrush="{ThemeResource ListViewItemSelectionIndicatorPointerOverBrush}"
+                                                                        SelectionIndicatorPressedBrush="{ThemeResource ListViewItemSelectionIndicatorPressedBrush}"
+                                                                        SelectionIndicatorVisualEnabled="{ThemeResource ListViewItemSelectionIndicatorVisualEnabled}" />
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </GridView.ItemContainerStyle>
 
-                                                <CheckBox
-                                                    Grid.Row="1"
-                                                    Grid.Column="1"
-                                                    Content="{x:Bind IconSizeList[4].DisplayMember}"
-                                                    IsChecked="{x:Bind Is64SizeEnabled, Mode=TwoWay}" />
+                                                <GridView.ItemTemplate>
+                                                    <DataTemplate x:DataType="model:IconSizeModel">
+                                                        <TextBlock Text="{x:Bind ExtractSize}" />
+                                                    </DataTemplate>
+                                                </GridView.ItemTemplate>
 
-                                                <CheckBox
-                                                    Grid.Row="1"
-                                                    Grid.Column="2"
-                                                    Content="{x:Bind IconSizeList[5].DisplayMember}"
-                                                    IsChecked="{x:Bind Is72SizeEnabled, Mode=TwoWay}" />
-
-                                                <CheckBox
-                                                    Grid.Row="2"
-                                                    Grid.Column="0"
-                                                    Content="{x:Bind IconSizeList[6].DisplayMember}"
-                                                    IsChecked="{x:Bind Is96SizeEnabled, Mode=TwoWay}" />
-
-                                                <CheckBox
-                                                    Grid.Row="2"
-                                                    Grid.Column="1"
-                                                    Content="{x:Bind IconSizeList[7].DisplayMember}"
-                                                    IsChecked="{x:Bind Is128SizeEnabled, Mode=TwoWay}" />
-
-                                                <CheckBox
-                                                    Grid.Row="2"
-                                                    Grid.Column="2"
-                                                    Content="{x:Bind IconSizeList[8].DisplayMember}"
-                                                    IsChecked="{x:Bind Is256SizeEnabled, Mode=TwoWay}" />
-                                            </Grid>
-
-                                            <Grid Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[1]), Mode=OneWay}">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto" />
-                                                    <RowDefinition Height="Auto" />
-                                                </Grid.RowDefinitions>
-
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-
-                                                <CheckBox
-                                                    Grid.Row="0"
-                                                    Grid.Column="0"
-                                                    Content="{x:Bind IconSizeList[0].DisplayMember}"
-                                                    IsChecked="{x:Bind Is16SizeEnabled, Mode=TwoWay}" />
-
-                                                <CheckBox
-                                                    Grid.Row="0"
-                                                    Grid.Column="1"
-                                                    Content="{x:Bind IconSizeList[2].DisplayMember}"
-                                                    IsChecked="{x:Bind Is32SizeEnabled, Mode=TwoWay}" />
-
-                                                <CheckBox
-                                                    Grid.Row="1"
-                                                    Grid.Column="0"
-                                                    Content="{x:Bind IconSizeList[3].DisplayMember}"
-                                                    IsChecked="{x:Bind Is48SizeEnabled, Mode=TwoWay}" />
-
-                                                <CheckBox
-                                                    Grid.Row="1"
-                                                    Grid.Column="1"
-                                                    Content="{x:Bind IconSizeList[8].DisplayMember}"
-                                                    IsChecked="{x:Bind Is256SizeEnabled, Mode=TwoWay}" />
-                                            </Grid>
+                                                <ItemsControl.ItemContainerTransitions>
+                                                    <TransitionCollection />
+                                                </ItemsControl.ItemContainerTransitions>
+                                            </GridView>
                                         </Grid>
                                     </Grid>
                                 </Flyout>
                             </DropDownButton.Flyout>
                         </DropDownButton>
 
-                        <ComboBox
+                        <Grid
                             Grid.Row="2"
                             Grid.Column="1"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center"
-                            DisplayMemberPath="DisplayMember"
-                            ItemsSource="{x:Bind IconSizeList}"
-                            SelectedItem="{x:Bind SelectedIconSize, Mode=OneWay}"
-                            SelectionChanged="{x:Bind OnIconSizeSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}"
-                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckIconFormatVisibility(SelectedIconFormat.SelectedValue, IconFormatList[1].SelectedValue), Mode=OneWay}" />
+                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckIconFormatVisibility(SelectedIconFormat.SelectedValue, IconFormatList[1].SelectedValue), Mode=OneWay}">
+
+                            <ComboBox
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                DisplayMemberPath="ExtractSize"
+                                ItemsSource="{x:Bind FileContainIconSizeList}"
+                                SelectedItem="{x:Bind SelectedFileContainSize, Mode=OneWay}"
+                                SelectionChanged="{x:Bind OnFileContainSizeSelectionChanged}"
+                                Style="{StaticResource ComboBoxStyle}"
+                                Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}" />
+
+                            <ComboBox
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                DisplayMemberPath="ExtractSize"
+                                ItemsSource="{x:Bind FileAssociateIconSizeList}"
+                                SelectedItem="{x:Bind SelectedFileAssociateSize, Mode=OneWay}"
+                                SelectionChanged="{x:Bind OnFileAssociateSizeSelectionChanged}"
+                                Style="{StaticResource ComboBoxStyle}"
+                                Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[1]), Mode=OneWay}" />
+                        </Grid>
                     </Grid>
                 </Grid>
 
@@ -465,7 +626,7 @@
                     HorizontalAlignment="Stretch"
                     Click="{x:Bind OnExportSelectedIconsClicked}"
                     Content="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('ExportSelectedIcons')}"
-                    IsEnabled="{x:Bind IsSelected, Mode=OneWay}" />
+                    IsEnabled="{x:Bind IsItemSelected, Mode=OneWay}" />
 
                 <Button
                     Grid.Row="7"

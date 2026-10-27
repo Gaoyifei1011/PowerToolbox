@@ -1361,11 +1361,11 @@ namespace PowerToolbox.Views.Windows
                 {
                     if (Equals(iconExtractPage.SelectedGetIconType, iconExtractPage.GetIconTypeList[0]))
                     {
-                        await iconExtractPage.ParseIconFileAsync(filesList[0]);
+                        await iconExtractPage.ParseFileContainIconAsync(filesList[0]);
                     }
                     else if (Equals(iconExtractPage.SelectedGetIconType, iconExtractPage.GetIconTypeList[1]))
                     {
-                        await iconExtractPage.ParseIconFileAsync(filesList[1]);
+                        await iconExtractPage.ParseFileAssociateIconAsync(filesList[1]);
                     }
                 }
             }
