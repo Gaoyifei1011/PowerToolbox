@@ -147,6 +147,7 @@
                     Text="{x:Bind rootservice:ResourceService.UpperAndLowerCaseResource.GetString('Operation')}" />
             </Grid>
 
+            <!--  TODO：未来迁移到 TableView  -->
             <ListView
                 Grid.Row="1"
                 Margin="0,0,0,3"

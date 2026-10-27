@@ -235,6 +235,10 @@
                                 </Grid>
                             </DataTemplate>
                         </GridView.ItemTemplate>
+
+                        <ItemsControl.ItemContainerTransitions>
+                            <TransitionCollection />
+                        </ItemsControl.ItemContainerTransitions>
                     </GridView>
                 </Grid>
 

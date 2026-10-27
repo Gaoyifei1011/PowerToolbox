@@ -169,7 +169,7 @@
         </Grid>
 
         <ScrollViewer Grid.Row="1">
-            <StackPanel Margin="30,0,30,0">
+            <StackPanel Margin="30,3,30,0">
                 <!--  可用更新控制栏  -->
                 <Grid
                     Height="60"

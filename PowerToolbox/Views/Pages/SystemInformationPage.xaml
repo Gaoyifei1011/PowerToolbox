@@ -205,6 +205,7 @@
                     </TextBlock>
                 </Grid>
 
+                <!--  TODO：未来迁移到 TableView  -->
                 <ListView
                     Grid.Row="1"
                     ItemsSource="{x:Bind SystemInformationCollection}"
