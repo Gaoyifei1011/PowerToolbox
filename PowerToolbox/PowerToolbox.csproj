@@ -137,6 +137,7 @@
     <Content Include="Assets\ControlIcon\WinSAT.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\Cover.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\Image\Failed.png" CopyToOutputDirectory="Always" />
+    <Content Include="Assets\Image\IconExtractWelcome.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\Image\LoafLightWallpaper.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\Image\LoafDarkWallpaper.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\Image\Search.png" CopyToOutputDirectory="Always" />
