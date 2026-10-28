@@ -1,31 +1,10 @@
-﻿using System.ComponentModel;
-
-namespace PowerToolbox.Models
+﻿namespace PowerToolbox.Models
 {
     /// <summary>
     /// 包文件索引嵌入的数据内容数据模型
     /// </summary>
-    internal sealed class EmbeddedDataModel : INotifyPropertyChanged
+    internal sealed class EmbeddedDataModel
     {
-        /// <summary>
-        /// 是否已选择
-        /// </summary>
-        private bool _isSelected;
-
-        internal bool IsSelected
-        {
-            get { return _isSelected; }
-
-            set
-            {
-                if (!Equals(_isSelected, value))
-                {
-                    _isSelected = value;
-                    PropertyChanged?.Invoke(this, new(nameof(IsSelected)));
-                }
-            }
-        }
-
         /// <summary>
         /// 嵌入的数据对应的键
         /// </summary>
@@ -35,7 +14,5 @@ namespace PowerToolbox.Models
         /// 嵌入的数据
         /// </summary>
         internal byte[] EmbeddedData { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Documents;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Extensions.DataType.Methods;
@@ -35,6 +34,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class PriExtractPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string AllLanguageString = ResourceService.PriExtractResource.GetString("AllLanguage");
         private readonly string DragOverContentString = ResourceService.PriExtractResource.GetString("DragOverContent");
         private readonly string EmbeddedDataString = ResourceService.PriExtractResource.GetString("EmbeddedData");
@@ -48,16 +49,17 @@ namespace PowerToolbox.Views.Pages
         private readonly string SelectFileString = ResourceService.PriExtractResource.GetString("SelectFile");
         private readonly string SelectFolderString = ResourceService.PriExtractResource.GetString("SelectFolder");
         private readonly string StringString = ResourceService.PriExtractResource.GetString("String");
-        private bool isStringAllSelect = false;
-        private bool isFilePathAllSelect = false;
-        private bool isEmbeddedDataAllSelect = false;
         private bool isLoadCompleted = false;
         private string stringFileName;
         private string filePathFileName;
 
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
+
         private bool _isExtractSaveSame;
 
-        internal bool IsExtractSaveSame
+        private bool IsExtractSaveSame
         {
             get { return _isExtractSaveSame; }
 
@@ -73,7 +75,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isExtractSaveString;
 
-        internal bool IsExtractSaveString
+        private bool IsExtractSaveString
         {
             get { return _isExtractSaveString; }
 
@@ -89,7 +91,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isExtractSaveFilePath;
 
-        internal bool IsExtractSaveFilePath
+        private bool IsExtractSaveFilePath
         {
             get { return _isExtractSaveFilePath; }
 
@@ -105,7 +107,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isExtractSaveEmbeddedData;
 
-        internal bool IsExtractSaveEmbeddedData
+        private bool IsExtractSaveEmbeddedData
         {
             get { return _isExtractSaveEmbeddedData; }
 
@@ -121,7 +123,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedLanguage;
 
-        internal ComboBoxItemModel SelectedLanguage
+        private ComboBoxItemModel SelectedLanguage
         {
             get { return _selectedLanguage; }
 
@@ -141,7 +143,7 @@ namespace PowerToolbox.Views.Pages
         {
             get { return _isProcessing; }
 
-            set
+            private set
             {
                 if (!Equals(_isProcessing, value))
                 {
@@ -153,7 +155,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _getResults;
 
-        internal string GetResults
+        private string GetResults
         {
             get { return _getResults; }
 
@@ -169,7 +171,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _selectedSaveFolder;
 
-        internal string SelectedSaveFolder
+        private string SelectedSaveFolder
         {
             get { return _selectedSaveFolder; }
 
@@ -185,7 +187,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedResourceCandidateKind;
 
-        internal ComboBoxItemModel SelectedResourceCandidateKind
+        private ComboBoxItemModel SelectedResourceCandidateKind
         {
             get { return _selectedResourceCandidateKind; }
 
@@ -201,7 +203,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasStringResource;
 
-        internal bool HasStringResource
+        private bool HasStringResource
         {
             get { return _hasStringResource; }
 
@@ -217,7 +219,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _stringSearchText;
 
-        internal string StringSearchText
+        private string StringSearchText
         {
             get { return _stringSearchText; }
 
@@ -233,7 +235,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasFilePathResource;
 
-        internal bool HasFilePathResource
+        private bool HasFilePathResource
         {
             get { return _hasFilePathResource; }
 
@@ -249,7 +251,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _filePathSearchText;
 
-        internal string FilePathSearchText
+        private string FilePathSearchText
         {
             get { return _filePathSearchText; }
 
@@ -265,7 +267,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEmbeddedDataResource;
 
-        internal bool HasEmbeddedDataResource
+        private bool HasEmbeddedDataResource
         {
             get { return _hasEmbeddedDataResource; }
 
@@ -281,7 +283,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _embeddedDataSearchText;
 
-        internal string EmbeddedDataSearchText
+        private string EmbeddedDataSearchText
         {
             get { return _embeddedDataSearchText; }
 
@@ -313,19 +315,19 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal PriExtractPage()
         {
             InitializeComponent();
-            GetResults = NoSelectedFileString;
-            ResourceCandidateKindList.Add(new() { SelectedValue = "String", DisplayMember = StringString });
-            ResourceCandidateKindList.Add(new() { SelectedValue = "FilePath", DisplayMember = FilePathString });
-            ResourceCandidateKindList.Add(new() { SelectedValue = "EmbeddedData", DisplayMember = EmbeddedDataString });
-            SelectedResourceCandidateKind = ResourceCandidateKindList[0];
-            Shell32Library.SHGetKnownFolderPath(new("374DE290-123F-4565-9164-39C4925E467B"), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, 0, out string downloadFolder);
-            SelectedSaveFolder = downloadFolder;
+            InitializeData();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 设置拖动的数据的可视表示形式
@@ -347,11 +349,9 @@ namespace PowerToolbox.Views.Pages
                 }
                 else
                 {
-                    IReadOnlyList<IStorageItem> dragItemsList = await args.DataView.GetStorageItemsAsync();
-
-                    if (dragItemsList.Count is 1)
+                    if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count is 1)
                     {
-                        string extensionName = Path.GetExtension(dragItemsList[0].Name);
+                        string extensionName = Path.GetExtension(fileList[0]);
 
                         if (string.Equals(extensionName, ".pri", StringComparison.OrdinalIgnoreCase))
                         {
@@ -400,35 +400,17 @@ namespace PowerToolbox.Views.Pages
             base.OnDrop(args);
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
             string filePath = string.Empty;
+
             try
             {
-                DataPackageView dataPackageView = args.DataView;
-                IReadOnlyList<IStorageItem> filesList = await Task.Run(async () =>
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count is 1)
                 {
-                    try
-                    {
-                        if (dataPackageView.Contains(StandardDataFormats.StorageItems))
-                        {
-                            return await dataPackageView.GetStorageItemsAsync();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnDrop), 1, e);
-                    }
-
-                    return null;
-                });
-
-                if (filesList is not null && filesList.Count is 1)
-                {
-                    filePath = filesList[0].Path;
+                    filePath = fileList[0];
                 }
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnDrop), 2, e);
-                return;
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnDrop), 1, e);
             }
             finally
             {
@@ -439,24 +421,20 @@ namespace PowerToolbox.Views.Pages
             {
                 await ParseResourceFileAsync(filePath);
             }
-            else
-            {
-                IsProcessing = false;
-            }
         }
 
-        #endregion 第一部分：重写父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #region 第五部分：命令调用处理
 
         /// <summary>
         /// 复制字符串到剪贴板
         /// </summary>
         private async void OnStringExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (args.Parameter is StringModel stringItem)
+            if (args.Parameter is StringModel stringItem && await GetStringCopyListAsync([stringItem]) is string copyString)
             {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(string.Format("Key:{0}, Content:{1}", stringItem.Key, stringItem.Content));
+                bool copyResult = CopyPasteHelper.CopyToClipboard(copyString);
                 await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
             }
         }
@@ -466,9 +444,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnFilePathExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (args.Parameter is FilePathModel filePath)
+            if (args.Parameter is FilePathModel filePathItem && await GetFilePathCopyListAsync([filePathItem]) is string copyFilePath)
             {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(string.Format("Key:{0}, FilePath:{1}", filePath.Key, filePath.AbsolutePath));
+                bool copyResult = CopyPasteHelper.CopyToClipboard(copyFilePath);
                 await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
             }
         }
@@ -490,25 +468,8 @@ namespace PowerToolbox.Views.Pages
                 DialogResult dialogResult = openFolderDialog.ShowDialog();
                 if (dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes)
                 {
-                    await Task.Run(() =>
-                    {
-                        try
-                        {
-                            File.WriteAllBytes(Path.Combine(openFolderDialog.SelectedPath, Path.GetFileName(embeddedData.Key)), embeddedData.EmbeddedData);
-
-                            nint pidlList = Shell32Library.ILCreateFromPath(Path.Combine(openFolderDialog.SelectedPath, Path.GetFileName(embeddedData.Key)));
-                            if (pidlList is not 0)
-                            {
-                                Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
-                                Shell32Library.ILFree(pidlList);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnEmbeddedDataExecuteRequested), 1, e);
-                        }
-                    });
-
+                    await SaveEmbeddedDataListAsync(openFolderDialog.SelectedPath, [embeddedData]);
+                    await OpenEmbeddedDataSavedFolderPathAsync(openFolderDialog.SelectedPath, embeddedData.Key);
                     openFolderDialog.Dispose();
                 }
                 else
@@ -520,117 +481,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #endregion 第五部分：命令调用处理
 
-        #region 第三部分：包资源索引提取——挂载的事件
-
-        /// <summary>
-        /// 单击时修改字符串项选中值
-        /// </summary>
-        private void OnStringItemClicked(object sender, ItemClickEventArgs args)
-        {
-            if (args.ClickedItem is StringModel stringItem)
-            {
-                stringItem.IsSelected = !stringItem.IsSelected;
-            }
-        }
-
-        /// <summary>
-        /// 单击时修改文件路径项选中值
-        /// </summary>
-        private void OnFilePathItemClicked(object sender, ItemClickEventArgs args)
-        {
-            if (args.ClickedItem is FilePathModel filePath)
-            {
-                filePath.IsSelected = !filePath.IsSelected;
-            }
-        }
-
-        /// <summary>
-        /// 单击时修改嵌入的数据项选中值
-        /// </summary>
-        private void OnEmbeddedDataItemClicked(object sender, ItemClickEventArgs args)
-        {
-            if (args.ClickedItem is EmbeddedDataModel embeddedData)
-            {
-                embeddedData.IsSelected = !embeddedData.IsSelected;
-            }
-        }
-
-        /// <summary>
-        /// 字符串列表全选和全部不选
-        /// </summary>
-        private void OnStringSelectClicked(Hyperlink sender, HyperlinkClickEventArgs args)
-        {
-            if (!isStringAllSelect)
-            {
-                isStringAllSelect = true;
-
-                foreach (StringModel stringItem in StringCollection)
-                {
-                    stringItem.IsSelected = true;
-                }
-            }
-            else
-            {
-                isStringAllSelect = false;
-
-                foreach (StringModel stringItem in StringCollection)
-                {
-                    stringItem.IsSelected = false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 文件路径列表全选和全部不选
-        /// </summary>
-        private void OnFilePathSelectClicked(Hyperlink sender, HyperlinkClickEventArgs args)
-        {
-            if (!isFilePathAllSelect)
-            {
-                isFilePathAllSelect = true;
-
-                foreach (FilePathModel filePathItem in FilePathCollection)
-                {
-                    filePathItem.IsSelected = true;
-                }
-            }
-            else
-            {
-                isFilePathAllSelect = false;
-
-                foreach (FilePathModel filePathItem in FilePathCollection)
-                {
-                    filePathItem.IsSelected = false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 嵌入数据列表全选和全部不选
-        /// </summary>
-        private void OnEmbeddedDataSelectClicked(Hyperlink sender, HyperlinkClickEventArgs args)
-        {
-            if (!isEmbeddedDataAllSelect)
-            {
-                isEmbeddedDataAllSelect = true;
-
-                foreach (EmbeddedDataModel embeddedDataItem in EmbeddedDataCollection)
-                {
-                    embeddedDataItem.IsSelected = true;
-                }
-            }
-            else
-            {
-                isEmbeddedDataAllSelect = false;
-
-                foreach (EmbeddedDataModel embeddedDataItem in EmbeddedDataCollection)
-                {
-                    embeddedDataItem.IsSelected = false;
-                }
-            }
-        }
+        #region 第六部分：数据操作与业务逻辑
 
         /// <summary>
         /// 提取时同时保存单选框点击时触发的事件
@@ -767,7 +620,11 @@ namespace PowerToolbox.Views.Pages
 
                 if (SelectedLanguage is not null)
                 {
-                    await GetFilteredStringAsync();
+                    PriExtractStringListView.SelectedItems.Clear();
+                    if (await GetFilteredStringAsync(StringSearchText, Convert.ToString(SelectedLanguage.SelectedValue), StringList) is List<StringModel> filteredStringList)
+                    {
+                        UpdateStringResult(filteredStringList);
+                    }
                 }
             }
         }
@@ -807,7 +664,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnStringQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            await GetFilteredStringAsync();
+            PriExtractStringListView.SelectedItems.Clear();
+            if (await GetFilteredStringAsync(StringSearchText, Convert.ToString(SelectedLanguage.SelectedValue), StringList) is List<StringModel> filteredStringList)
+            {
+                UpdateStringResult(filteredStringList);
+            }
         }
 
         /// <summary>
@@ -818,7 +679,11 @@ namespace PowerToolbox.Views.Pages
             StringSearchText = sender.Text;
             if (string.IsNullOrEmpty(StringSearchText))
             {
-                await GetFilteredStringAsync();
+                PriExtractStringListView.SelectedItems.Clear();
+                if (await GetFilteredStringAsync(StringSearchText, Convert.ToString(SelectedLanguage.SelectedValue), StringList) is List<StringModel> filteredStringList)
+                {
+                    UpdateStringResult(filteredStringList);
+                }
             }
         }
 
@@ -827,7 +692,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnFilePathQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            await GetFilteredFilePathAsync();
+            PriExtractFilePathListView.SelectedItems.Clear();
+            if (await GetFilteredFilePathAsync(FilePathSearchText, FilePathList) is List<FilePathModel> filteredFilePathList)
+            {
+                UpdateFilePathResult(filteredFilePathList);
+            }
         }
 
         /// <summary>
@@ -838,7 +707,11 @@ namespace PowerToolbox.Views.Pages
             FilePathSearchText = sender.Text;
             if (string.IsNullOrEmpty(FilePathSearchText))
             {
-                await GetFilteredFilePathAsync();
+                PriExtractFilePathListView.SelectedItems.Clear();
+                if (await GetFilteredFilePathAsync(FilePathSearchText, FilePathList) is List<FilePathModel> filteredFilePathList)
+                {
+                    UpdateFilePathResult(filteredFilePathList);
+                }
             }
         }
 
@@ -847,7 +720,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnEmbeddedDataQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            await GetFilteredEmbeddedDataAsync();
+            PriExtractEmbeddedDataListView.SelectedItems.Clear();
+            if (await GetFilteredEmbeddedDataAsync(EmbeddedDataSearchText, EmbeddedDataList) is List<EmbeddedDataModel> filteredEmbeddedDataList)
+            {
+                UpdateEmbeddedDataResult(filteredEmbeddedDataList);
+            }
         }
 
         /// <summary>
@@ -858,7 +735,11 @@ namespace PowerToolbox.Views.Pages
             EmbeddedDataSearchText = sender.Text;
             if (string.IsNullOrEmpty(EmbeddedDataSearchText))
             {
-                await GetFilteredEmbeddedDataAsync();
+                PriExtractEmbeddedDataListView.SelectedItems.Clear();
+                if (await GetFilteredEmbeddedDataAsync(EmbeddedDataSearchText, EmbeddedDataList) is List<EmbeddedDataModel> filteredEmbeddedDataList)
+                {
+                    UpdateEmbeddedDataResult(filteredEmbeddedDataList);
+                }
             }
         }
 
@@ -868,15 +749,18 @@ namespace PowerToolbox.Views.Pages
         private async void OnCopySelectedStringClicked(object sender, RoutedEventArgs args)
         {
             IsProcessing = true;
-            List<StringModel> selectedStringList = [.. StringCollection.Where(item => item.IsSelected)];
-            if (selectedStringList.Count > 0)
+            List<StringModel> selectedStringList = [];
+            foreach (object selectedItem in PriExtractStringListView.SelectedItems)
             {
-                StringBuilder copyStringBuilder = new();
-                foreach (StringModel stringItem in selectedStringList)
+                if (selectedItem is StringModel stringItem)
                 {
-                    copyStringBuilder.AppendLine(string.Format("Key:{0}, Content:{1}", stringItem.Key, stringItem.Content));
+                    selectedStringList.Add(stringItem);
                 }
-                bool copyResult = CopyPasteHelper.CopyToClipboard(Convert.ToString(copyStringBuilder));
+            }
+
+            if (selectedStringList.Count > 0 && await GetStringCopyListAsync(selectedStringList) is string copyString)
+            {
+                bool copyResult = CopyPasteHelper.CopyToClipboard(copyString);
                 IsProcessing = false;
                 await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
             }
@@ -892,15 +776,18 @@ namespace PowerToolbox.Views.Pages
         private async void OnCopySelectedFilePathClicked(object sender, RoutedEventArgs args)
         {
             IsProcessing = true;
-            List<FilePathModel> selectedFilePathList = [.. FilePathCollection.Where(item => item.IsSelected)];
-            if (selectedFilePathList.Count > 0)
+            List<FilePathModel> selectedFilePathList = [];
+            foreach (object selectedItem in PriExtractFilePathListView.SelectedItems)
             {
-                StringBuilder copyFilePathBuilder = new();
-                foreach (FilePathModel filePathItem in selectedFilePathList)
+                if (selectedItem is FilePathModel filePathItem)
                 {
-                    copyFilePathBuilder.AppendLine(string.Format("Key:{0}, AbsolutePath:{1}", filePathItem.Key, filePathItem.AbsolutePath));
+                    selectedFilePathList.Add(filePathItem);
                 }
-                bool copyResult = CopyPasteHelper.CopyToClipboard(Convert.ToString(copyFilePathBuilder));
+            }
+
+            if (selectedFilePathList.Count > 0 && await GetFilePathCopyListAsync(selectedFilePathList) is string copyFilePath)
+            {
+                bool copyResult = CopyPasteHelper.CopyToClipboard(copyFilePath);
                 IsProcessing = false;
                 await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
             }
@@ -915,10 +802,18 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnExportSelectedEmbeddedDataClicked(object sender, RoutedEventArgs args)
         {
-            List<EmbeddedDataModel> selectedEmbeddedDataList = [.. EmbeddedDataCollection.Where(item => item.IsSelected)];
+            IsProcessing = true;
+            List<EmbeddedDataModel> selectedEmbeddedDataList = [];
+            foreach (object selectedItem in PriExtractEmbeddedDataListView.SelectedItems)
+            {
+                if (selectedItem is EmbeddedDataModel embeddedDataItem)
+                {
+                    selectedEmbeddedDataList.Add(embeddedDataItem);
+                }
+            }
+
             if (selectedEmbeddedDataList.Count > 0)
             {
-                IsProcessing = true;
                 OpenFolderDialog openFolderDialog = new((nint)MainWindow.Current.AppWindow.Id.Value)
                 {
                     Description = SelectFolderString,
@@ -927,32 +822,12 @@ namespace PowerToolbox.Views.Pages
                 DialogResult dialogResult = openFolderDialog.ShowDialog();
                 if (dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes)
                 {
-                    await Task.Run(() =>
-                    {
-                        try
-                        {
-                            foreach (EmbeddedDataModel embeddedDataItem in selectedEmbeddedDataList)
-                            {
-                                File.WriteAllBytes(Path.Combine(openFolderDialog.SelectedPath, Path.GetFileName(embeddedDataItem.Key)), embeddedDataItem.EmbeddedData);
-                            }
-
-                            Process.Start(openFolderDialog.SelectedPath);
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnExportSelectedEmbeddedDataClicked), 1, e);
-                        }
-                    });
-
-                    openFolderDialog.Dispose();
-                    IsProcessing = false;
+                    await SaveEmbeddedDataListAsync(openFolderDialog.SelectedPath, selectedEmbeddedDataList);
+                    await OpenEmbeddedDataSavedFolderPathAsync(openFolderDialog.SelectedPath, null);
                 }
-                else
-                {
-                    IsProcessing = false;
-                    openFolderDialog.Dispose();
-                }
+                openFolderDialog.Dispose();
             }
+            IsProcessing = false;
         }
 
         /// <summary>
@@ -961,15 +836,9 @@ namespace PowerToolbox.Views.Pages
         private async void OnCopyAllStringClicked(object sender, RoutedEventArgs args)
         {
             IsProcessing = true;
-            List<StringModel> copyAllStringList = [.. StringCollection];
-            if (copyAllStringList.Count > 0)
+            if (await GetStringCopyListAsync([.. StringCollection]) is string copyString)
             {
-                StringBuilder copyStringBuilder = new();
-                foreach (StringModel stringItem in copyAllStringList)
-                {
-                    copyStringBuilder.AppendLine(string.Format("Key:{0}, Content:{1}", stringItem.Key, stringItem.Content));
-                }
-                bool copyResult = CopyPasteHelper.CopyToClipboard(Convert.ToString(copyStringBuilder));
+                bool copyResult = CopyPasteHelper.CopyToClipboard(copyString);
                 IsProcessing = false;
                 await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
             }
@@ -985,15 +854,9 @@ namespace PowerToolbox.Views.Pages
         private async void OnCopyAllFilePathClicked(object sender, RoutedEventArgs args)
         {
             IsProcessing = true;
-            List<FilePathModel> copyAllFilePathList = [.. FilePathCollection];
-            if (copyAllFilePathList.Count > 0)
+            if (await GetFilePathCopyListAsync([.. FilePathCollection]) is string copyFilePath)
             {
-                StringBuilder copyFilePathBuilder = new();
-                foreach (FilePathModel filePathItem in copyAllFilePathList)
-                {
-                    copyFilePathBuilder.AppendLine(string.Format("Key:{0}, AbsolutePath:{1}", filePathItem.Key, filePathItem.AbsolutePath));
-                }
-                bool copyResult = CopyPasteHelper.CopyToClipboard(Convert.ToString(copyFilePathBuilder));
+                bool copyResult = CopyPasteHelper.CopyToClipboard(copyFilePath);
                 IsProcessing = false;
                 await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
             }
@@ -1008,6 +871,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnExportAllEmbeddedDataClicked(object sender, RoutedEventArgs args)
         {
+            IsProcessing = true;
             OpenFolderDialog openFolderDialog = new((nint)MainWindow.Current.AppWindow.Id.Value)
             {
                 Description = SelectFolderString,
@@ -1015,40 +879,30 @@ namespace PowerToolbox.Views.Pages
             };
 
             DialogResult dialogResult = openFolderDialog.ShowDialog();
-            if (dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes)
+            if ((dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes) && EmbeddedDataCollection.ToList() is List<EmbeddedDataModel> exportEmbeddedDataList && exportEmbeddedDataList.Count > 0)
             {
-                IsProcessing = true;
-                List<EmbeddedDataModel> exportAllEmbeddedDataList = [.. EmbeddedDataCollection];
-                if (exportAllEmbeddedDataList.Count > 0)
-                {
-                    await Task.Run(() =>
-                    {
-                        try
-                        {
-                            foreach (EmbeddedDataModel embeddedDataItem in exportAllEmbeddedDataList)
-                            {
-                                File.WriteAllBytes(Path.Combine(openFolderDialog.SelectedPath, Path.GetFileName(embeddedDataItem.Key)), embeddedDataItem.EmbeddedData);
-                            }
-
-                            Process.Start(openFolderDialog.SelectedPath);
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnExportAllEmbeddedDataClicked), 1, e);
-                        }
-                    });
-                }
-
-                openFolderDialog.Dispose();
-                IsProcessing = false;
+                await SaveEmbeddedDataListAsync(openFolderDialog.SelectedPath, exportEmbeddedDataList);
+                await OpenEmbeddedDataSavedFolderPathAsync(openFolderDialog.SelectedPath, null);
             }
-            else
-            {
-                openFolderDialog.Dispose();
-            }
+            openFolderDialog.Dispose();
+            IsProcessing = false;
         }
 
-        #endregion 第三部分：包资源索引提取——挂载的事件
+        #endregion 第六部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
+            GetResults = NoSelectedFileString;
+            ResourceCandidateKindList.Add(new() { SelectedValue = "String", DisplayMember = StringString });
+            ResourceCandidateKindList.Add(new() { SelectedValue = "FilePath", DisplayMember = FilePathString });
+            ResourceCandidateKindList.Add(new() { SelectedValue = "EmbeddedData", DisplayMember = EmbeddedDataString });
+            SelectedResourceCandidateKind = ResourceCandidateKindList[0];
+            Shell32Library.SHGetKnownFolderPath(new("374DE290-123F-4565-9164-39C4925E467B"), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, 0, out string downloadFolder);
+            SelectedSaveFolder = downloadFolder;
+        }
 
         /// <summary>
         /// 解析 PRI 资源文件
@@ -1070,10 +924,69 @@ namespace PowerToolbox.Views.Pages
             StringCollection.Clear();
             FilePathCollection.Clear();
             EmbeddedDataCollection.Clear();
-            List<string> languageList = [];
+            (bool result, List<string> languageList, List<StringModel> stringList, List<FilePathModel> filePathList, List<EmbeddedDataModel> embeddedDataList) = await GetResourceFileContentAsync(filePath, IsExtractSaveString, IsExtractSaveFilePath, IsExtractSaveEmbeddedData, SelectedSaveFolder);
 
-            bool result = await Task.Run(() =>
+            if (result)
             {
+                StringList.AddRange(stringList);
+                FilePathList.AddRange(filePathList);
+                EmbeddedDataList.AddRange(embeddedDataList);
+                LanguageCollection.Add(new() { SelectedValue = "AllLanguage", DisplayMember = AllLanguageString });
+
+                // 显示获取到的所有内容
+                foreach (string languageItem in languageList)
+                {
+                    CultureInfo cultureInfo = CultureInfo.GetCultureInfo(languageItem);
+                    LanguageCollection.Add(new() { SelectedValue = cultureInfo.Name, DisplayMember = string.Format("{0}[{1}]", cultureInfo.DisplayName, languageItem) });
+                }
+
+                SelectedLanguage = LanguageCollection[0];
+                HasStringResource = StringList.Count > 0;
+                HasFilePathResource = FilePathList.Count > 0;
+                HasEmbeddedDataResource = EmbeddedDataList.Count > 0;
+                PriExtractStringListView.SelectedItems.Clear();
+                PriExtractFilePathListView.SelectedItems.Clear();
+                PriExtractEmbeddedDataListView.SelectedItems.Clear();
+                if (await GetFilteredStringAsync(StringSearchText, Convert.ToString(SelectedLanguage.SelectedValue), StringList) is List<StringModel> filteredStringList)
+                {
+                    UpdateStringResult(filteredStringList);
+                }
+                if (await GetFilteredFilePathAsync(FilePathSearchText, FilePathList) is List<FilePathModel> filteredFilePathList)
+                {
+                    UpdateFilePathResult(filteredFilePathList);
+                }
+                if (await GetFilteredEmbeddedDataAsync(EmbeddedDataSearchText, EmbeddedDataList) is List<EmbeddedDataModel> filteredEmbeddedDataList)
+                {
+                    UpdateEmbeddedDataResult(filteredEmbeddedDataList);
+                }
+                IsProcessing = false;
+                GetResults = string.Format(GetResultsString, Path.GetFileName(filePath), StringList.Count + FilePathList.Count + EmbeddedDataList.Count);
+                isLoadCompleted = true;
+            }
+            else
+            {
+                IsProcessing = false;
+                GetResults = string.Format(GetResultsString, Path.GetFileName(filePath), 0);
+                isLoadCompleted = true;
+            }
+        }
+
+        /// <summary>
+        /// 获取 PRI 资源文件的所有内容
+        /// </summary>
+        private async Task<(bool, List<string>, List<StringModel>, List<FilePathModel>, List<EmbeddedDataModel>)> GetResourceFileContentAsync(string filePath, bool isExtractSaveString, bool isExtractSaveFilePath, bool isExtractSaveEmbeddedData, string saveFolder)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return default;
+            }
+
+            return await Task.Run(async () =>
+            {
+                List<string> languageList = [];
+                List<StringModel> stringList = [];
+                List<FilePathModel> filePathList = [];
+                List<EmbeddedDataModel> embeddedDataList = [];
                 stringFileName = string.Format("{0} - {1}.txt", Path.GetFileName(filePath), "Strings");
                 filePathFileName = string.Format("{0} - {1}.txt", Path.GetFileName(filePath), "FilePath");
 
@@ -1264,22 +1177,14 @@ namespace PowerToolbox.Views.Pages
                                                                 string absolutePath = Path.Combine(Path.GetDirectoryName(filePath), Encoding.ASCII.GetString(data).TrimEnd('\0'));
 
                                                                 // 自动保存文件路径
-                                                                if (IsExtractSaveFilePath)
+                                                                if (isExtractSaveFilePath && !string.IsNullOrEmpty(saveFolder))
                                                                 {
-                                                                    try
-                                                                    {
-                                                                        File.AppendAllText(Path.Combine(SelectedSaveFolder, filePathFileName), string.Format("Key: {0} - AbsolutePath:{1}{2}", key, absolutePath, Environment.NewLine));
-                                                                    }
-                                                                    catch (Exception e)
-                                                                    {
-                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 1, e);
-                                                                    }
+                                                                    SvaeFilePathData(saveFolder, filePathFileName, key, absolutePath);
                                                                 }
 
-                                                                FilePathList.Add(new()
+                                                                filePathList.Add(new()
                                                                 {
                                                                     Key = key,
-                                                                    IsSelected = false,
                                                                     AbsolutePath = string.IsNullOrEmpty(absolutePath) ? string.Empty : absolutePath,
                                                                 });
                                                                 break;
@@ -1290,24 +1195,16 @@ namespace PowerToolbox.Views.Pages
                                                                 string content = Encoding.ASCII.GetString(data).TrimEnd('\0');
 
                                                                 // 自动保存字符串
-                                                                if (IsExtractSaveString)
+                                                                if (isExtractSaveString && !string.IsNullOrEmpty(saveFolder))
                                                                 {
-                                                                    try
-                                                                    {
-                                                                        File.AppendAllText(Path.Combine(SelectedSaveFolder, stringFileName), string.Format("Key: {0} - Content:{1}{2}", key, content, Environment.NewLine));
-                                                                    }
-                                                                    catch (Exception e)
-                                                                    {
-                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 2, e);
-                                                                    }
+                                                                    SaveStringData(saveFolder, stringFileName, key, content);
                                                                 }
 
-                                                                StringList.Add(new()
+                                                                stringList.Add(new()
                                                                 {
                                                                     Key = key,
                                                                     Content = string.IsNullOrEmpty(content) ? string.Empty : content,
                                                                     Language = decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList.Count > 0 ? decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList[0].Value : string.Empty,
-                                                                    IsSelected = false
                                                                 });
                                                                 break;
                                                             }
@@ -1317,22 +1214,14 @@ namespace PowerToolbox.Views.Pages
                                                                 string absolutePath = Path.Combine(Path.GetDirectoryName(filePath), Encoding.UTF8.GetString(data).TrimEnd('\0'));
 
                                                                 // 自动保存文件路径
-                                                                if (IsExtractSaveFilePath)
+                                                                if (isExtractSaveFilePath && !string.IsNullOrEmpty(saveFolder))
                                                                 {
-                                                                    try
-                                                                    {
-                                                                        File.AppendAllText(Path.Combine(SelectedSaveFolder, filePathFileName), string.Format("Key: {0} - AbsolutePath:{1}{2}", key, absolutePath, Environment.NewLine));
-                                                                    }
-                                                                    catch (Exception e)
-                                                                    {
-                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 3, e);
-                                                                    }
+                                                                    SvaeFilePathData(saveFolder, filePathFileName, key, absolutePath);
                                                                 }
 
-                                                                FilePathList.Add(new()
+                                                                filePathList.Add(new()
                                                                 {
                                                                     Key = key,
-                                                                    IsSelected = false,
                                                                     AbsolutePath = string.IsNullOrEmpty(absolutePath) ? string.Empty : absolutePath,
                                                                 });
                                                                 break;
@@ -1343,24 +1232,16 @@ namespace PowerToolbox.Views.Pages
                                                                 string content = Encoding.UTF8.GetString(data).TrimEnd('\0');
 
                                                                 // 自动保存字符串
-                                                                if (IsExtractSaveString)
+                                                                if (isExtractSaveString && !string.IsNullOrEmpty(saveFolder))
                                                                 {
-                                                                    try
-                                                                    {
-                                                                        File.AppendAllText(Path.Combine(SelectedSaveFolder, stringFileName), string.Format("Key: {0} - Content:{1}{2}", key, content, Environment.NewLine));
-                                                                    }
-                                                                    catch (Exception e)
-                                                                    {
-                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 4, e);
-                                                                    }
+                                                                    SaveStringData(saveFolder, stringFileName, key, content);
                                                                 }
 
-                                                                StringList.Add(new()
+                                                                stringList.Add(new()
                                                                 {
                                                                     Key = key,
                                                                     Content = string.IsNullOrEmpty(content) ? string.Empty : content,
                                                                     Language = decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList.Count > 0 ? decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList[0].Value : string.Empty,
-                                                                    IsSelected = false
                                                                 });
                                                                 break;
                                                             }
@@ -1370,22 +1251,14 @@ namespace PowerToolbox.Views.Pages
                                                                 string absolutePath = Path.Combine(Path.GetDirectoryName(filePath), Encoding.Unicode.GetString(data).TrimEnd('\0'));
 
                                                                 // 自动保存文件路径
-                                                                if (IsExtractSaveFilePath)
+                                                                if (isExtractSaveFilePath && !string.IsNullOrEmpty(saveFolder))
                                                                 {
-                                                                    try
-                                                                    {
-                                                                        File.AppendAllText(Path.Combine(SelectedSaveFolder, filePathFileName), string.Format("Key: {0} - AbsolutePath:{1}{2}", key, absolutePath, Environment.NewLine));
-                                                                    }
-                                                                    catch (Exception e)
-                                                                    {
-                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 5, e);
-                                                                    }
+                                                                    SvaeFilePathData(saveFolder, filePathFileName, key, absolutePath);
                                                                 }
 
-                                                                FilePathList.Add(new()
+                                                                filePathList.Add(new()
                                                                 {
                                                                     Key = key,
-                                                                    IsSelected = false,
                                                                     AbsolutePath = string.IsNullOrEmpty(absolutePath) ? string.Empty : absolutePath,
                                                                 });
                                                                 break;
@@ -1396,47 +1269,31 @@ namespace PowerToolbox.Views.Pages
                                                                 string content = Encoding.Unicode.GetString(data).TrimEnd('\0');
 
                                                                 // 自动保存字符串
-                                                                if (IsExtractSaveString)
+                                                                if (isExtractSaveString && !string.IsNullOrEmpty(saveFolder))
                                                                 {
-                                                                    try
-                                                                    {
-                                                                        File.AppendAllText(Path.Combine(SelectedSaveFolder, stringFileName), string.Format("Key: {0} - Content:{1}{2}", key, content, Environment.NewLine));
-                                                                    }
-                                                                    catch (Exception e)
-                                                                    {
-                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 6, e);
-                                                                    }
+                                                                    SaveStringData(saveFolder, stringFileName, key, content);
                                                                 }
 
-                                                                StringList.Add(new()
+                                                                stringList.Add(new()
                                                                 {
                                                                     Key = key,
                                                                     Content = string.IsNullOrEmpty(content) ? string.Empty : content,
                                                                     Language = decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList.Count > 0 ? decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList[0].Value : string.Empty,
-                                                                    IsSelected = false
                                                                 });
                                                                 break;
                                                             }
                                                         case ResourceValueType.EmbeddedData:
                                                             {
                                                                 // 自动保存资源文件嵌入数据
-                                                                if (IsExtractSaveEmbeddedData)
+                                                                if (isExtractSaveEmbeddedData && !string.IsNullOrEmpty(saveFolder))
                                                                 {
-                                                                    try
-                                                                    {
-                                                                        File.WriteAllBytes(Path.Combine(SelectedSaveFolder, Path.GetFileName(key)), data);
-                                                                    }
-                                                                    catch (Exception e)
-                                                                    {
-                                                                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 7, e);
-                                                                    }
+                                                                    SaveEmbeddedData(saveFolder, Path.GetFileName(key), data);
                                                                 }
 
-                                                                EmbeddedDataList.Add(new()
+                                                                embeddedDataList.Add(new()
                                                                 {
                                                                     Key = key,
                                                                     EmbeddedData = data,
-                                                                    IsSelected = false,
                                                                 });
                                                                 break;
                                                             }
@@ -1451,83 +1308,52 @@ namespace PowerToolbox.Views.Pages
                     }
 
                     // 根据分段列表得到的内容进行归纳分类
-                    languageList.AddRange(StringList.Select(item => item.Language).Distinct());
+                    languageList.AddRange(stringList.Select(item => item.Language).Distinct());
                     languageList.Sort();
-                    StringList.Sort();
-                    FilePathList.Sort((item1, item2) => item1.Key.CompareTo(item2.Key));
-                    EmbeddedDataList.Sort((item1, item2) => item1.Key.CompareTo(item2.Key));
+                    stringList.Sort();
+                    filePathList.Sort((item1, item2) => item1.Key.CompareTo(item2.Key));
+                    embeddedDataList.Sort((item1, item2) => item1.Key.CompareTo(item2.Key));
 
                     priBinaryReader.Dispose();
                     priFileStream.Dispose();
-                    return true;
+                    return ValueTuple.Create(true, languageList, stringList, filePathList, embeddedDataList);
                 }
                 catch (Exception e)
                 {
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 8, e);
-                    return false;
+                    return ValueTuple.Create(false, languageList, stringList, filePathList, embeddedDataList);
                 }
             });
-
-            if (result)
-            {
-                LanguageCollection.Add(new() { SelectedValue = "AllLanguage", DisplayMember = AllLanguageString });
-
-                // 显示获取到的所有内容
-                foreach (string languageItem in languageList)
-                {
-                    CultureInfo cultureInfo = CultureInfo.GetCultureInfo(languageItem);
-                    LanguageCollection.Add(new() { SelectedValue = cultureInfo.Name, DisplayMember = string.Format("{0}[{1}]", cultureInfo.DisplayName, languageItem) });
-                }
-
-                SelectedLanguage = LanguageCollection[0];
-                HasStringResource = StringList.Count > 0;
-                HasFilePathResource = FilePathList.Count > 0;
-                HasEmbeddedDataResource = EmbeddedDataList.Count > 0;
-                await GetFilteredStringAsync();
-                await GetFilteredFilePathAsync();
-                await GetFilteredEmbeddedDataAsync();
-                IsProcessing = false;
-                GetResults = string.Format(GetResultsString, Path.GetFileName(filePath), StringList.Count + FilePathList.Count + EmbeddedDataList.Count);
-                isLoadCompleted = true;
-            }
-            else
-            {
-                IsProcessing = false;
-                GetResults = string.Format(GetResultsString, Path.GetFileName(filePath), 0);
-                isLoadCompleted = true;
-            }
         }
 
         /// <summary>
         /// 获取过滤后符合条件的字符串
         /// </summary>
-        private async Task GetFilteredStringAsync()
+        private async Task<List<StringModel>> GetFilteredStringAsync(string stringSearchText, string selectedLanguage, List<StringModel> stringList)
         {
-            isStringAllSelect = false;
-            foreach (StringModel stringItem in StringList)
+            if (string.IsNullOrEmpty(selectedLanguage) || stringList is null || stringList.Count is 0)
             {
-                stringItem.IsSelected = false;
+                return default;
             }
 
-            // 所有语言
-            List<StringModel> filteredStringList = await Task.Run(() =>
+            return await Task.Run(() =>
             {
                 List<StringModel> filteredStringList = [];
 
-                if (Equals(SelectedLanguage, LanguageCollection[0]))
+                if (string.Equals(selectedLanguage, "AllLanguage"))
                 {
-                    if (string.IsNullOrEmpty(StringSearchText))
+                    if (string.IsNullOrEmpty(stringSearchText))
                     {
-                        foreach (StringModel stringItem in StringList)
+                        foreach (StringModel stringItem in stringList)
                         {
                             filteredStringList.Add(stringItem);
                         }
                     }
                     else
                     {
-                        foreach (StringModel stringItem in StringList)
+                        foreach (StringModel stringItem in stringList)
                         {
-                            if (stringItem.Key.Contains(StringSearchText) || stringItem.Content.Contains(StringSearchText))
+                            if (stringItem.Key.Contains(stringSearchText) || stringItem.Content.Contains(stringSearchText))
                             {
                                 filteredStringList.Add(stringItem);
                             }
@@ -1537,9 +1363,9 @@ namespace PowerToolbox.Views.Pages
                 // 某一语言
                 else
                 {
-                    List<StringModel> coincidentStringList = [.. StringList.Where(item => string.Equals(item.Language, Convert.ToString(SelectedLanguage.SelectedValue), StringComparison.OrdinalIgnoreCase))];
+                    List<StringModel> coincidentStringList = [.. stringList.Where(item => string.Equals(item.Language, Convert.ToString(selectedLanguage), StringComparison.OrdinalIgnoreCase))];
 
-                    if (string.IsNullOrEmpty(StringSearchText))
+                    if (string.IsNullOrEmpty(stringSearchText))
                     {
                         foreach (StringModel stringItem in coincidentStringList)
                         {
@@ -1550,7 +1376,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         foreach (StringModel stringItem in coincidentStringList)
                         {
-                            if (stringItem.Key.Contains(StringSearchText) || stringItem.Content.Contains(StringSearchText))
+                            if (stringItem.Key.Contains(stringSearchText) || stringItem.Content.Contains(stringSearchText))
                             {
                                 filteredStringList.Add(stringItem);
                             }
@@ -1560,41 +1386,34 @@ namespace PowerToolbox.Views.Pages
 
                 return filteredStringList;
             });
-
-            StringCollection.Clear();
-            foreach (StringModel stringItem in filteredStringList)
-            {
-                StringCollection.Add(stringItem);
-            }
         }
 
         /// <summary>
         /// 获取过滤后符合条件的文件路径
         /// </summary>
-        private async Task GetFilteredFilePathAsync()
+        private async Task<List<FilePathModel>> GetFilteredFilePathAsync(string filePathSearchText, List<FilePathModel> filePathList)
         {
-            isFilePathAllSelect = false;
-            foreach (FilePathModel filePathItem in FilePathList)
+            if (filePathList is null || filePathList.Count is 0)
             {
-                filePathItem.IsSelected = false;
+                return default;
             }
 
-            List<FilePathModel> filteredFilePathList = await Task.Run(() =>
+            return await Task.Run(() =>
             {
                 List<FilePathModel> filteredFilePathList = [];
 
-                if (string.IsNullOrEmpty(FilePathSearchText))
+                if (string.IsNullOrEmpty(filePathSearchText))
                 {
-                    foreach (FilePathModel filePathItem in FilePathList)
+                    foreach (FilePathModel filePathItem in filePathList)
                     {
                         filteredFilePathList.Add(filePathItem);
                     }
                 }
                 else
                 {
-                    foreach (FilePathModel filePathItem in FilePathList)
+                    foreach (FilePathModel filePathItem in filePathList)
                     {
-                        if (filePathItem.Key.Contains(FilePathSearchText) || filePathItem.AbsolutePath.Contains(FilePathSearchText))
+                        if (filePathItem.Key.Contains(filePathSearchText) || filePathItem.AbsolutePath.Contains(filePathSearchText))
                         {
                             filteredFilePathList.Add(filePathItem);
                         }
@@ -1603,41 +1422,34 @@ namespace PowerToolbox.Views.Pages
 
                 return filteredFilePathList;
             });
-
-            FilePathCollection.Clear();
-            foreach (FilePathModel filePathItem in filteredFilePathList)
-            {
-                FilePathCollection.Add(filePathItem);
-            }
         }
 
         /// <summary>
         /// 获取过滤后符合条件的嵌入的数据
         /// </summary>
-        private async Task GetFilteredEmbeddedDataAsync()
+        private async Task<List<EmbeddedDataModel>> GetFilteredEmbeddedDataAsync(string embeddedDataSearchText, List<EmbeddedDataModel> embeddedDataList)
         {
-            isEmbeddedDataAllSelect = false;
-            foreach (EmbeddedDataModel embeddedDataItem in EmbeddedDataList)
+            if (embeddedDataList is null || embeddedDataList.Count is 0)
             {
-                embeddedDataItem.IsSelected = false;
+                return default;
             }
 
-            List<EmbeddedDataModel> filteredEmbeddedDataList = await Task.Run(() =>
+            return await Task.Run(() =>
             {
                 List<EmbeddedDataModel> filteredEmbeddedDataList = [];
 
-                if (string.IsNullOrEmpty(EmbeddedDataSearchText))
+                if (string.IsNullOrEmpty(embeddedDataSearchText))
                 {
-                    foreach (EmbeddedDataModel embeddedDataItem in EmbeddedDataList)
+                    foreach (EmbeddedDataModel embeddedDataItem in embeddedDataList)
                     {
                         filteredEmbeddedDataList.Add(embeddedDataItem);
                     }
                 }
                 else
                 {
-                    foreach (EmbeddedDataModel embeddedDataItem in EmbeddedDataList)
+                    foreach (EmbeddedDataModel embeddedDataItem in embeddedDataList)
                     {
-                        if (embeddedDataItem.Key.Contains(EmbeddedDataSearchText))
+                        if (embeddedDataItem.Key.Contains(embeddedDataSearchText))
                         {
                             filteredEmbeddedDataList.Add(embeddedDataItem);
                         }
@@ -1646,12 +1458,263 @@ namespace PowerToolbox.Views.Pages
 
                 return filteredEmbeddedDataList;
             });
+        }
 
-            EmbeddedDataCollection.Clear();
-            foreach (EmbeddedDataModel embeddedDataItem in filteredEmbeddedDataList)
+        /// <summary>
+        /// 更新字符串结果
+        /// </summary>
+        private void UpdateStringResult(List<StringModel> filteredStringList)
+        {
+            StringCollection.Clear();
+            if (filteredStringList is not null && filteredStringList.Count > 0)
             {
-                EmbeddedDataCollection.Add(embeddedDataItem);
+                foreach (StringModel stringItem in filteredStringList)
+                {
+                    StringCollection.Add(stringItem);
+                }
             }
+        }
+
+        /// <summary>
+        /// 更新文件路径结果
+        /// </summary>
+        private void UpdateFilePathResult(List<FilePathModel> filteredFilePathList)
+        {
+            FilePathCollection.Clear();
+            if (filteredFilePathList is not null && filteredFilePathList.Count > 0)
+            {
+                foreach (FilePathModel filePathItem in filteredFilePathList)
+                {
+                    FilePathCollection.Add(filePathItem);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 更新嵌入的数据结果
+        /// </summary>
+        private void UpdateEmbeddedDataResult(List<EmbeddedDataModel> filteredEmbeddedDataList)
+        {
+            EmbeddedDataCollection.Clear();
+            if (filteredEmbeddedDataList is not null && filteredEmbeddedDataList.Count > 0)
+            {
+                foreach (EmbeddedDataModel embeddedDataItem in filteredEmbeddedDataList)
+                {
+                    EmbeddedDataCollection.Add(embeddedDataItem);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取要准备复制的字符串内容
+        /// </summary>
+        private async Task<string> GetStringCopyListAsync(List<StringModel> copyStringList)
+        {
+            if (copyStringList is null || copyStringList.Count is 0)
+            {
+                return default;
+            }
+
+            return await Task.Run(() =>
+            {
+                try
+                {
+                    StringBuilder copyStringBuilder = new();
+                    foreach (StringModel stringItem in copyStringList)
+                    {
+                        copyStringBuilder.AppendLine(string.Format("Key:{0}, Content:{1}", stringItem.Key, stringItem.Content));
+                    }
+                    return Convert.ToString(copyStringBuilder);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(GetStringCopyListAsync), 1, e);
+                    return null;
+                }
+            });
+        }
+
+        /// <summary>
+        /// 获取要准备复制的文件路径内容
+        /// </summary>
+        private async Task<string> GetFilePathCopyListAsync(List<FilePathModel> copyFilePathList)
+        {
+            if (copyFilePathList is null || copyFilePathList.Count is 0)
+            {
+                return default;
+            }
+
+            return await Task.Run(() =>
+            {
+                try
+                {
+                    StringBuilder copyFilePathBuilder = new();
+                    foreach (FilePathModel filePathItem in copyFilePathList)
+                    {
+                        copyFilePathBuilder.AppendLine(string.Format("Key:{0}, AbsolutePath:{1}", filePathItem.Key, filePathItem.AbsolutePath));
+                    }
+                    return Convert.ToString(copyFilePathBuilder);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(GetFilePathCopyListAsync), 1, e);
+                    return null;
+                }
+            });
+        }
+
+        /// <summary>
+        /// 保存字符串数据
+        /// </summary>
+        private void SaveStringData(string saveFolder, string fileName, string key, string content)
+        {
+            if (string.IsNullOrEmpty(saveFolder) || string.IsNullOrEmpty(fileName) || string.IsNullOrEmpty(key) || string.IsNullOrEmpty(content))
+            {
+                return;
+            }
+
+            try
+            {
+                File.AppendAllText(Path.Combine(saveFolder, stringFileName), string.Format("Key: {0} - Content:{1}{2}", key, content, Environment.NewLine));
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(SaveStringData), 1, e);
+            }
+        }
+
+        /// <summary>
+        /// 保存文件路径数据
+        /// </summary>
+        private void SvaeFilePathData(string saveFolder, string fileName, string key, string absolutePath)
+        {
+            if (string.IsNullOrEmpty(saveFolder) || string.IsNullOrEmpty(fileName) || string.IsNullOrEmpty(key) || string.IsNullOrEmpty(absolutePath))
+            {
+                return;
+            }
+
+            try
+            {
+                File.AppendAllText(Path.Combine(saveFolder, fileName), string.Format("Key: {0} - AbsolutePath:{1}{2}", key, absolutePath, Environment.NewLine));
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(SvaeFilePathData), 1, e);
+            }
+        }
+
+        /// <summary>
+        /// 保存嵌入文件数据
+        /// </summary>
+        private void SaveEmbeddedData(string saveFolder, string fileName, byte[] data)
+        {
+            if (string.IsNullOrEmpty(saveFolder) || string.IsNullOrEmpty(fileName) || data is null)
+            {
+                return;
+            }
+
+            try
+            {
+                File.WriteAllBytes(Path.Combine(saveFolder, fileName), data);
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(SaveEmbeddedData), 7, e);
+            }
+        }
+
+        /// <summary>
+        /// 保存嵌入数据列表到本地文件中
+        /// </summary>
+        private async Task SaveEmbeddedDataListAsync(string folderPath, List<EmbeddedDataModel> embeddedDataList)
+        {
+            if (string.IsNullOrEmpty(folderPath) && embeddedDataList is null || embeddedDataList.Count is 0)
+            {
+                return;
+            }
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    foreach (EmbeddedDataModel embeddedDataItem in embeddedDataList)
+                    {
+                        File.WriteAllBytes(Path.Combine(folderPath, Path.GetFileName(embeddedDataItem.Key)), embeddedDataItem.EmbeddedData);
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(SaveEmbeddedDataListAsync), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 打开保存嵌入的数据所对应的文件路径
+        /// </summary>
+        private async Task OpenEmbeddedDataSavedFolderPathAsync(string folderPath, string embeddedDataKey)
+        {
+            if (string.IsNullOrEmpty(folderPath))
+            {
+                return;
+            }
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(embeddedDataKey))
+                    {
+                        Process.Start(folderPath);
+                    }
+                    else
+                    {
+                        nint pidlList = Shell32Library.ILCreateFromPath(Path.Combine(folderPath, Path.GetFileName(embeddedDataKey)));
+                        if (pidlList is not 0)
+                        {
+                            Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
+                            Shell32Library.ILFree(pidlList);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnEmbeddedDataExecuteRequested), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 获取拖拽支持选中的文件
+        /// </summary>
+        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        {
+            if (dataPackageView is null)
+            {
+                return default;
+            }
+
+            return await Task.Run(async () =>
+            {
+                List<string> fileList = [];
+
+                try
+                {
+                    if (dataPackageView.Contains(StandardDataFormats.StorageItems))
+                    {
+                        foreach (IStorageItem storageItem in await dataPackageView.GetStorageItemsAsync())
+                        {
+                            fileList.Add(storageItem.Path);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(GetDragDropSelectedFilesAsync), 1, e);
+                }
+
+                return fileList;
+            });
         }
     }
 }
