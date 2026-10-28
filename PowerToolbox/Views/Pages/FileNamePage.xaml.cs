@@ -67,7 +67,7 @@ namespace PowerToolbox.Views.Pages
         {
             get { return _isModifyingNow; }
 
-            set
+            private set
             {
                 if (!Equals(_isModifyingNow, value))
                 {

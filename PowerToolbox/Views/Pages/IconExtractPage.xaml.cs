@@ -113,7 +113,7 @@ namespace PowerToolbox.Views.Pages
         {
             get { return _isSaving; }
 
-            set
+            private set
             {
                 if (!Equals(_isSaving, value))
                 {
