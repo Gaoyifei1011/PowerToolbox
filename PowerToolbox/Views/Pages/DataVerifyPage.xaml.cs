@@ -27,10 +27,13 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class DataVerifyPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string ASCIIString = ResourceService.DataVerifyResource.GetString("ASCII");
         private readonly string BigEndianUnicodeString = ResourceService.DataVerifyResource.GetString("BigEndianUnicode");
         private readonly string Blake2bString = ResourceService.DataVerifyResource.GetString("Blake2b");
         private readonly string Blake3String = ResourceService.DataVerifyResource.GetString("Blake3");
+        private readonly string ContentString = ResourceService.DataVerifyResource.GetString("Content");
         private readonly string ContentEmptyString = ResourceService.DataVerifyResource.GetString("ContentEmpty");
         private readonly string ContentInitializeString = ResourceService.DataVerifyResource.GetString("ContentInitialize");
         private readonly string ContentVerifyFailedString = ResourceService.DataVerifyResource.GetString("ContentVerifyFailed");
@@ -45,6 +48,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string EdonR256String = ResourceService.DataVerifyResource.GetString("EdonR256");
         private readonly string EdonR384String = ResourceService.DataVerifyResource.GetString("EdonR384");
         private readonly string EdonR512String = ResourceService.DataVerifyResource.GetString("EdonR512");
+        private readonly string FileString = ResourceService.DataVerifyResource.GetString("File");
         private readonly string FileInitializeString = ResourceService.DataVerifyResource.GetString("FileInitialize");
         private readonly string FileNotExistedString = ResourceService.DataVerifyResource.GetString("FileNotExisted");
         private readonly string FileNotSelectedString = ResourceService.DataVerifyResource.GetString("FileNotSelected");
@@ -81,7 +85,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string SM3String = ResourceService.DataVerifyResource.GetString("SM3");
         private readonly string Snefru128String = ResourceService.DataVerifyResource.GetString("Snefru128");
         private readonly string Snefru256String = ResourceService.DataVerifyResource.GetString("Snefru256");
-        private readonly string TextEncodingInvalidString = ResourceService.DataVerifyResource.GetString("TextEncodingInvalid");
         private readonly string TIGERString = ResourceService.DataVerifyResource.GetString("TIGER");
         private readonly string TIGER2String = ResourceService.DataVerifyResource.GetString("TIGER2");
         private readonly string UnicodeString = ResourceService.DataVerifyResource.GetString("Unicode");
@@ -98,14 +101,17 @@ namespace PowerToolbox.Views.Pages
         private readonly string XXH32String = ResourceService.DataVerifyResource.GetString("XXH32");
         private readonly string XXH364String = ResourceService.DataVerifyResource.GetString("XXH364");
         private readonly string XXH64String = ResourceService.DataVerifyResource.GetString("XXH64");
-
         private int selectVerifyIndex = -1;
         private string selectedVerifyFile = string.Empty;
         private string selectedVerifyContent = string.Empty;
 
-        private int _selectedIndex = 0;
+        #endregion 第一部分：常量、资源与状态字段
 
-        internal int SelectedIndex
+        #region 第二部分：属性、列表与事件
+
+        private int _selectedIndex;
+
+        private int SelectedIndex
         {
             get { return _selectedIndex; }
 
@@ -137,7 +143,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _verifyContent;
 
-        internal string VerifyContent
+        private string VerifyContent
         {
             get { return _verifyContent; }
 
@@ -169,7 +175,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _resultMessage;
 
-        internal string ResultMessage
+        private string ResultMessage
         {
             get { return _resultMessage; }
 
@@ -183,41 +189,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private ComboBoxItemModel _selectedTextEncodingType;
-
-        internal ComboBoxItemModel SelectedTextEncodingType
-        {
-            get { return _selectedTextEncodingType; }
-
-            set
-            {
-                if (!Equals(_selectedTextEncodingType, value))
-                {
-                    _selectedTextEncodingType = value;
-                    PropertyChanged?.Invoke(this, new(nameof(SelectedTextEncodingType)));
-                }
-            }
-        }
-
-        private string _textEncodingCustomTypeText;
-
-        internal string TextEncodingCustomTypeText
-        {
-            get { return _textEncodingCustomTypeText; }
-
-            set
-            {
-                if (!Equals(_textEncodingCustomTypeText, value))
-                {
-                    _textEncodingCustomTypeText = value;
-                    PropertyChanged?.Invoke(this, new(nameof(TextEncodingCustomTypeText)));
-                }
-            }
-        }
-
         private ComboBoxItemModel _selectedUpperCaseType;
 
-        internal ComboBoxItemModel SelectedUpperCaseType
+        private ComboBoxItemModel SelectedUpperCaseType
         {
             get { return _selectedUpperCaseType; }
 
@@ -247,7 +221,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<ComboBoxItemModel> TextEncodingTypeList { get; } = [];
+        private List<RadioButtonItemModel> DataVerifySelectorRadioList { get; } = [];
 
         private List<DataVerifyTypeModel> DataVerifyTypeList { get; } = [];
 
@@ -257,21 +231,275 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal DataVerifyPage()
         {
             InitializeComponent();
-            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.ASCII), DisplayMember = ASCIIString });
-            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.BigEndianUnicode), DisplayMember = BigEndianUnicodeString });
-            TextEncodingTypeList.Add(new() { SelectedValue = "ISO-8859-1", DisplayMember = ISO88591String });
-            TextEncodingTypeList.Add(new() { SelectedValue = "GB18030", DisplayMember = GB18030String });
-            TextEncodingTypeList.Add(new() { SelectedValue = "GB2312", DisplayMember = GB2312String });
-            TextEncodingTypeList.Add(new() { SelectedValue = "GBK", DisplayMember = GBKString });
-            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.Unicode), DisplayMember = UnicodeString });
-            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF32), DisplayMember = UTF32String });
-            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF7), DisplayMember = UTF7String });
-            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
-            TextEncodingTypeList.Add(new() { SelectedValue = "Custom", DisplayMember = CustomString });
-            SelectedTextEncodingType = TextEncodingTypeList[9];
+            InitializeData();
+        }
+
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
+
+        /// <summary>
+        /// 设置拖动的数据的可视表示形式
+        /// </summary>
+        private async void OnDataDragOver(object sender, Microsoft.UI.Xaml.DragEventArgs args)
+        {
+            DragOperationDeferral dragOperationDeferral = args.GetDeferral();
+
+            try
+            {
+                if (IsVerifying)
+                {
+                    args.AcceptedOperation = DataPackageOperation.None;
+                    args.DragUIOverride.IsCaptionVisible = true;
+                    args.DragUIOverride.IsContentVisible = false;
+                    args.DragUIOverride.IsGlyphVisible = true;
+                    args.DragUIOverride.Caption = VerifyingString;
+                }
+                else
+                {
+                    if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count is 1)
+                    {
+                        args.AcceptedOperation = DataPackageOperation.Copy;
+                        args.DragUIOverride.IsCaptionVisible = true;
+                        args.DragUIOverride.IsContentVisible = false;
+                        args.DragUIOverride.IsGlyphVisible = true;
+                        args.DragUIOverride.Caption = DragOverContentString;
+                    }
+                    else
+                    {
+                        args.AcceptedOperation = DataPackageOperation.None;
+                        args.DragUIOverride.IsCaptionVisible = true;
+                        args.DragUIOverride.IsContentVisible = false;
+                        args.DragUIOverride.IsGlyphVisible = true;
+                        args.DragUIOverride.Caption = NoMultiFileString;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnDragOver), 1, e);
+            }
+            finally
+            {
+                args.Handled = true;
+                dragOperationDeferral.Complete();
+            }
+        }
+
+        /// <summary>
+        /// 拖动文件完成后获取文件信息
+        /// </summary>
+        private async void OnDataDrop(object sender, Microsoft.UI.Xaml.DragEventArgs args)
+        {
+            DragOperationDeferral dragOperationDeferral = args.GetDeferral();
+            string filePath = string.Empty;
+
+            try
+            {
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count is 1)
+                {
+                    filePath = fileList[0];
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnDrop), 1, e);
+            }
+            finally
+            {
+                dragOperationDeferral.Complete();
+            }
+
+            if (File.Exists(filePath))
+            {
+                VerifyFile = filePath;
+            }
+        }
+
+        #endregion 第四部分：父类虚方法重写
+
+        #region 第五部分：挂载事件处理
+
+        /// <summary>
+        /// 选中项发生改变时触发的事件
+        /// </summary>
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            if (sender is RadioButtons radioButtons && !Equals(SelectedIndex, radioButtons.SelectedIndex))
+            {
+                SelectedIndex = radioButtons.SelectedIndex;
+            }
+
+            if (SelectedIndex >= 0 && SelectedIndex < DataVerifySelectorRadioList.Count)
+            {
+                int index = SelectedIndex;
+                if (index is 0 && ResultSeverity is InfoBarSeverity.Informational)
+                {
+                    ResultMessage = FileInitializeString;
+                }
+                else if (index is 1 && ResultSeverity is InfoBarSeverity.Informational)
+                {
+                    ResultMessage = ContentInitializeString;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 打开本地文件
+        /// </summary>
+        private void OnOpenLocalFileClicked(object sender, RoutedEventArgs args)
+        {
+            OpenFileDialog openFileDialog = new()
+            {
+                Multiselect = false,
+                Title = SelectFileString
+            };
+            if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
+            {
+                VerifyFile = openFileDialog.FileName;
+            }
+            openFileDialog.Dispose();
+        }
+
+        /// <summary>
+        /// 校验内容发生改变时触发的事件
+        /// </summary>
+        private void OnTextChanged(object sender, TextChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                VerifyContent = textBox.Text;
+            }
+        }
+
+        /// <summary>
+        /// 输出格式选项发生变化时触发的事件
+        /// </summary>
+        private void OnUseUpperCaseSelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedUpperCaseType, comboBox.SelectedItem))
+            {
+                SelectedUpperCaseType = comboBox.SelectedItem is ComboBoxItemModel upperCaseType ? upperCaseType : null;
+
+                if (SelectedUpperCaseType is not null)
+                {
+                    if (Equals(SelectedUpperCaseType, UpperCaseTypeList[0]))
+                    {
+                        foreach (DataVerifyResultModel dataVerifyResultItem in DataVerifyResultCollection)
+                        {
+                            dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToLowerInvariant();
+                        }
+                    }
+                    else if (Equals(SelectedUpperCaseType, UpperCaseTypeList[1]))
+                    {
+                        foreach (DataVerifyResultModel dataVerifyResultItem in DataVerifyResultCollection)
+                        {
+                            dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToUpperInvariant();
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 全选
+        /// </summary>
+        private void OnSelectAllClicked(object sender, RoutedEventArgs args)
+        {
+            DataVerifyGridView.SelectAll();
+        }
+
+        /// <summary>
+        /// 全部不选
+        /// </summary>
+        private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
+        {
+            DataVerifyGridView.DeselectRange(new(0, (uint)DataVerifyGridView.Items.Count));
+        }
+
+        /// <summary>
+        /// 全部反选
+        /// </summary>
+        private void OnSelectReverseClicked(object sender, RoutedEventArgs args)
+        {
+            List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. DataVerifyGridView.SelectedRanges];
+            DataVerifyGridView.SelectAll();
+            foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
+            {
+                DataVerifyGridView.DeselectRange(itemIndexRange);
+            }
+        }
+
+        /// <summary>
+        /// 开始数据校验
+        /// </summary>
+        private async void OnStartVerifyClicked(object sender, RoutedEventArgs args)
+        {
+            selectVerifyIndex = SelectedIndex;
+            selectedVerifyFile = VerifyFile;
+            selectedVerifyContent = VerifyContent;
+            if (!VerifyCheck(selectVerifyIndex, selectedVerifyFile))
+            {
+                return;
+            }
+
+            List<DataVerifyTypeModel> selectedDataVerifyTypeList = [];
+            foreach (object dataVerifyTypeItemObj in DataVerifyGridView.SelectedItems)
+            {
+                if (dataVerifyTypeItemObj is DataVerifyTypeModel dataVerifyType)
+                {
+                    selectedDataVerifyTypeList.Add(dataVerifyType);
+                }
+            }
+
+            if (selectedDataVerifyTypeList.Count is 0)
+            {
+                ResultSeverity = InfoBarSeverity.Error;
+                ResultMessage = VerifyTypeNotSelectedString;
+                return;
+            }
+
+            IsVerifying = true;
+            ResultSeverity = InfoBarSeverity.Informational;
+            ResultMessage = VerifyingString;
+            DataVerifyResultCollection.Clear();
+            if (await GetDataVerifyResultListAsync(selectedDataVerifyTypeList) is List<DataVerifyResultModel> dataVerifyResultList)
+            {
+                UpdateDataVerifyResult(selectedDataVerifyTypeList, dataVerifyResultList);
+            }
+            else
+            {
+                ResultSeverity = InfoBarSeverity.Error;
+                if (selectVerifyIndex is 0)
+                {
+                    ResultMessage = FileVerifyFailedString;
+                }
+                else if (selectVerifyIndex is 1)
+                {
+                    ResultMessage = ContentVerifyFailedString;
+                }
+            }
+            IsVerifying = false;
+        }
+
+        #endregion 第五部分：挂载事件处理
+
+        #region 第六部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
+            DataVerifySelectorRadioList.Add(new() { SelectorName = FileString });
+            DataVerifySelectorRadioList.Add(new() { SelectorName = ContentString });
             DataVerifyTypeList.Add(new() { Name = Blake2bString, DataVerifyType = DataVerifyType.Blake2b });
             DataVerifyTypeList.Add(new() { Name = Blake3String, DataVerifyType = DataVerifyType.Blake3 });
             DataVerifyTypeList.Add(new() { Name = CRC32String, DataVerifyType = DataVerifyType.CRC_32 });
@@ -316,260 +544,13 @@ namespace PowerToolbox.Views.Pages
             UpperCaseTypeList.Add(new() { SelectedValue = "SelectedUpperCaseType", DisplayMember = UseUpperCaseString });
             SelectedUpperCaseType = UpperCaseTypeList[0];
             SelectedIndex = 0;
-            ResultSeverity = InfoBarSeverity.Informational;
-            if (SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
-            {
-                ResultMessage = FileInitializeString;
-            }
-            else if (SelectedIndex is 1 && ResultSeverity is InfoBarSeverity.Informational)
-            {
-                ResultMessage = ContentInitializeString;
-            }
-        }
-
-        #region 第一部分：数据校验页面——挂载的事件
-
-        /// <summary>
-        /// 设置拖动的数据的可视表示形式
-        /// </summary>
-        private async void OnDataDragOver(object sender, Microsoft.UI.Xaml.DragEventArgs args)
-        {
-            DragOperationDeferral dragOperationDeferral = args.GetDeferral();
-
-            try
-            {
-                if (IsVerifying)
-                {
-                    args.AcceptedOperation = DataPackageOperation.None;
-                    args.DragUIOverride.IsCaptionVisible = true;
-                    args.DragUIOverride.IsContentVisible = false;
-                    args.DragUIOverride.IsGlyphVisible = true;
-                    args.DragUIOverride.Caption = VerifyingString;
-                }
-                else
-                {
-                    IReadOnlyList<IStorageItem> dragItemsList = await args.DataView.GetStorageItemsAsync();
-
-                    if (dragItemsList.Count is 1)
-                    {
-                        string extensionName = Path.GetExtension(dragItemsList[0].Name);
-
-                        args.AcceptedOperation = DataPackageOperation.Copy;
-                        args.DragUIOverride.IsCaptionVisible = true;
-                        args.DragUIOverride.IsContentVisible = false;
-                        args.DragUIOverride.IsGlyphVisible = true;
-                        args.DragUIOverride.Caption = DragOverContentString;
-                    }
-                    else
-                    {
-                        args.AcceptedOperation = DataPackageOperation.None;
-                        args.DragUIOverride.IsCaptionVisible = true;
-                        args.DragUIOverride.IsContentVisible = false;
-                        args.DragUIOverride.IsGlyphVisible = true;
-                        args.DragUIOverride.Caption = NoMultiFileString;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnDragOver), 1, e);
-            }
-            finally
-            {
-                args.Handled = true;
-                dragOperationDeferral.Complete();
-            }
         }
 
         /// <summary>
-        /// 拖动文件完成后获取文件信息
+        /// 校验检查
         /// </summary>
-        private async void OnDataDrop(object sender, Microsoft.UI.Xaml.DragEventArgs args)
+        private bool VerifyCheck(int selectedIndex, string selectedVerifyFile)
         {
-            DragOperationDeferral dragOperationDeferral = args.GetDeferral();
-            string filePath = string.Empty;
-            try
-            {
-                DataPackageView dataPackageView = args.DataView;
-                IReadOnlyList<IStorageItem> filesList = await Task.Run(async () =>
-                {
-                    try
-                    {
-                        if (dataPackageView.Contains(StandardDataFormats.StorageItems))
-                        {
-                            return await dataPackageView.GetStorageItemsAsync();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnDrop), 1, e);
-                    }
-
-                    return null;
-                });
-
-                if (filesList is not null && filesList.Count is 1)
-                {
-                    filePath = filesList[0].Path;
-                }
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnDrop), 2, e);
-            }
-            finally
-            {
-                dragOperationDeferral.Complete();
-            }
-
-            if (File.Exists(filePath))
-            {
-                VerifyFile = filePath;
-            }
-        }
-
-        /// <summary>
-        /// 选中项发生改变时触发的事件
-        /// </summary>
-        private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
-        {
-            if (sender is RadioButtons radioButtons && !Equals(SelectedIndex, radioButtons.SelectedIndex))
-            {
-                SelectedIndex = radioButtons.SelectedIndex;
-                if (SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
-                {
-                    ResultMessage = FileInitializeString;
-                }
-                else if (SelectedIndex is 1 && ResultSeverity is InfoBarSeverity.Informational)
-                {
-                    ResultMessage = ContentInitializeString;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 打开本地文件
-        /// </summary>
-        private void OnOpenLocalFileClicked(object sender, RoutedEventArgs args)
-        {
-            OpenFileDialog openFileDialog = new()
-            {
-                Multiselect = false,
-                Title = SelectFileString
-            };
-            if (openFileDialog.ShowDialog() is DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
-            {
-                VerifyFile = openFileDialog.FileName;
-            }
-            openFileDialog.Dispose();
-        }
-
-        /// <summary>
-        /// 校验内容发生改变时触发的事件
-        /// </summary>
-        private void OnTextChanged(object sender, TextChangedEventArgs args)
-        {
-            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
-            {
-                VerifyContent = textBox.Text;
-            }
-        }
-
-        /// <summary>
-        /// 全选
-        /// </summary>
-        private void OnSelectAllClicked(object sender, RoutedEventArgs args)
-        {
-            DataVerifyGridView.SelectAll();
-        }
-
-        /// <summary>
-        /// 全部不选
-        /// </summary>
-        private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
-        {
-            DataVerifyGridView.DeselectRange(new(0, (uint)DataVerifyGridView.Items.Count));
-        }
-
-        /// <summary>
-        /// 全部反选
-        /// </summary>
-        private void OnSelectReverseClicked(object sender, RoutedEventArgs args)
-        {
-            List<object> selectedItemList = [.. DataVerifyGridView.SelectedItems];
-
-            foreach (object item in DataVerifyGridView.Items)
-            {
-                if (selectedItemList.Contains(item))
-                {
-                    DataVerifyGridView.SelectedItems.Remove(item);
-                }
-                else
-                {
-                    DataVerifyGridView.SelectedItems.Add(item);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 选择文字编码类型
-        /// </summary>
-        private void OnTextEncodingTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
-        {
-            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedTextEncodingType, comboBox.SelectedItem))
-            {
-                SelectedTextEncodingType = comboBox.SelectedItem is ComboBoxItemModel textEncodingType ? textEncodingType : null;
-            }
-        }
-
-        /// <summary>
-        /// 文字自定义编码类型内容发生变化时触发的事件
-        /// </summary>
-        private void OnTextEncodingCustomTypeTextChanged(object sender, TextChangedEventArgs args)
-        {
-            if (sender is Microsoft.UI.Xaml.Controls.TextBox textBox)
-            {
-                TextEncodingCustomTypeText = textBox.Text;
-            }
-        }
-
-        /// <summary>
-        /// 输出格式选项发生变化时触发的事件
-        /// </summary>
-        private void OnUseUpperCaseSelectionChanged(object sender, SelectionChangedEventArgs args)
-        {
-            if (sender is Microsoft.UI.Xaml.Controls.ComboBox comboBox && !Equals(SelectedUpperCaseType, comboBox.SelectedItem))
-            {
-                SelectedUpperCaseType = comboBox.SelectedItem is ComboBoxItemModel upperCaseType ? upperCaseType : null;
-
-                if (SelectedUpperCaseType is not null)
-                {
-                    if (Equals(SelectedUpperCaseType, UpperCaseTypeList[0]))
-                    {
-                        foreach (DataVerifyResultModel dataVerifyResultItem in DataVerifyResultCollection)
-                        {
-                            dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToLowerInvariant();
-                        }
-                    }
-                    else if (Equals(SelectedUpperCaseType, UpperCaseTypeList[1]))
-                    {
-                        foreach (DataVerifyResultModel dataVerifyResultItem in DataVerifyResultCollection)
-                        {
-                            dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToUpperInvariant();
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 开始数据校验
-        /// </summary>
-        private async void OnStartVerifyClicked(object sender, RoutedEventArgs args)
-        {
-            selectVerifyIndex = SelectedIndex;
-            selectedVerifyFile = VerifyFile;
-            selectedVerifyContent = VerifyContent;
             if (selectVerifyIndex is 0 && string.IsNullOrEmpty(selectedVerifyFile))
             {
                 ResultSeverity = InfoBarSeverity.Error;
@@ -585,90 +566,29 @@ namespace PowerToolbox.Views.Pages
                 {
                     ResultMessage = UnknownErrorString;
                 }
-                return;
+                return false;
             }
             else if (selectVerifyIndex is 1 && string.IsNullOrEmpty(selectedVerifyContent))
             {
                 ResultSeverity = InfoBarSeverity.Error;
                 ResultMessage = ContentEmptyString;
-                return;
+                return false;
             }
 
-            Encoding textEncoding = await Task.Run(() =>
-            {
-                Encoding textEncoding = null;
-                if (Equals(SelectedTextEncodingType, TextEncodingTypeList[0]))
-                {
-                    textEncoding = Encoding.ASCII;
-                }
-                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[1]))
-                {
-                    textEncoding = Encoding.BigEndianUnicode;
-                }
-                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[6]))
-                {
-                    textEncoding = Encoding.Unicode;
-                }
-                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[7]))
-                {
-                    textEncoding = Encoding.UTF32;
-                }
-                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[8]))
-                {
-                    textEncoding = Encoding.UTF7;
-                }
-                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[9]))
-                {
-                    textEncoding = Encoding.UTF8;
-                }
-                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[10]))
-                {
-                    try
-                    {
-                        if (!string.IsNullOrEmpty(TextEncodingCustomTypeText))
-                        {
-                            textEncoding = int.TryParse(TextEncodingCustomTypeText, out int textEncodingCustomType) ? Encoding.GetEncoding(textEncodingCustomType) : Encoding.GetEncoding(TextEncodingCustomTypeText);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnStartVerifyClicked), 1, e);
-                    }
-                }
-                else
-                {
-                    textEncoding = Encoding.GetEncoding(Convert.ToString(SelectedTextEncodingType.SelectedValue));
-                }
-                return textEncoding;
-            });
+            return true;
+        }
 
-            if (textEncoding is null)
+        /// <summary>
+        /// 获取校验后的数据
+        /// </summary>
+        private async Task<List<DataVerifyResultModel>> GetDataVerifyResultListAsync(List<DataVerifyTypeModel> selectedDataVerifyTypeList)
+        {
+            if (selectedDataVerifyTypeList is null || selectedDataVerifyTypeList.Count is 0)
             {
-                ResultSeverity = InfoBarSeverity.Error;
-                ResultMessage = TextEncodingInvalidString;
-                return;
+                return default;
             }
 
-            List<DataVerifyTypeModel> selectedDataVerifyTypeList = [];
-            foreach (object dataVerifyTypeItemObj in DataVerifyGridView.SelectedItems)
-            {
-                if (dataVerifyTypeItemObj is DataVerifyTypeModel dataVerifyType)
-                {
-                    selectedDataVerifyTypeList.Add(dataVerifyType);
-                }
-            }
-
-            if (selectedDataVerifyTypeList.Count is 0)
-            {
-                ResultSeverity = InfoBarSeverity.Error;
-                ResultMessage = VerifyTypeNotSelectedString;
-                return;
-            }
-            IsVerifying = true;
-            ResultSeverity = InfoBarSeverity.Informational;
-            ResultMessage = VerifyingString;
-            DataVerifyResultCollection.Clear();
-            List<DataVerifyResultModel> dataVerifyResultList = await Task.Run(async () =>
+            return await Task.Run(async () =>
             {
                 List<DataVerifyResultModel> dataVerifyResultList = [];
 
@@ -697,72 +617,18 @@ namespace PowerToolbox.Views.Pages
                 dataVerifyResultList.Sort((item1, item2) => item1.Name.CompareTo(item2.Name));
                 return dataVerifyResultList;
             });
-
-            if (Equals(SelectedUpperCaseType, UpperCaseTypeList[0]))
-            {
-                foreach (DataVerifyResultModel dataVerifyResultItem in dataVerifyResultList)
-                {
-                    dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToLowerInvariant();
-                    DataVerifyResultCollection.Add(dataVerifyResultItem);
-                }
-            }
-            else if (Equals(SelectedUpperCaseType, UpperCaseTypeList[1]))
-            {
-                foreach (DataVerifyResultModel dataVerifyResultItem in dataVerifyResultList)
-                {
-                    dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToUpperInvariant();
-                    DataVerifyResultCollection.Add(dataVerifyResultItem);
-                }
-            }
-
-            if (DataVerifyResultCollection.Count > 0)
-            {
-                ResultSeverity = InfoBarSeverity.Success;
-                if (Equals(selectedDataVerifyTypeList.Count, DataVerifyResultCollection.Count))
-                {
-                    if (selectVerifyIndex is 0)
-                    {
-                        ResultMessage = string.Format(FileVerifyWholeSuccessfullyString, DataVerifyResultCollection.Count);
-                    }
-                    else if (selectVerifyIndex is 1)
-                    {
-                        ResultMessage = string.Format(ContentVerifyWholeSuccessfullyString, DataVerifyResultCollection.Count);
-                    }
-                }
-                else
-                {
-                    if (selectVerifyIndex is 0)
-                    {
-                        ResultMessage = string.Format(FileVerifyPartSuccessfullyString, DataVerifyResultCollection.Count, selectedDataVerifyTypeList.Count - DataVerifyResultCollection.Count);
-                    }
-                    else if (selectVerifyIndex is 1)
-                    {
-                        ResultMessage = string.Format(ContentVerifyPartSuccessfullyString, DataVerifyResultCollection.Count, selectedDataVerifyTypeList.Count - DataVerifyResultCollection.Count);
-                    }
-                }
-            }
-            else
-            {
-                ResultSeverity = InfoBarSeverity.Error;
-                if (selectVerifyIndex is 0)
-                {
-                    ResultMessage = FileVerifyFailedString;
-                }
-                else if (selectVerifyIndex is 1)
-                {
-                    ResultMessage = ContentVerifyFailedString;
-                }
-            }
-            IsVerifying = false;
         }
 
-        #endregion 第一部分：数据校验页面——挂载的事件
-
         /// <summary>
-        /// 获取校验后的数据
+        /// 获取校验数据
         /// </summary>
         private string GetVerifiedData(DataVerifyType dataVerifyType, int selectedVerifyIndex, string contentData)
         {
+            if (string.IsNullOrEmpty(contentData))
+            {
+                return default;
+            }
+
             string verifiedData = string.Empty;
 
             switch (dataVerifyType)
@@ -2162,19 +2028,126 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 更新数据校验结果
+        /// </summary>
+        private void UpdateDataVerifyResult(List<DataVerifyTypeModel> selectedDataVerifyTypeList, List<DataVerifyResultModel> dataVerifyResultList)
+        {
+            if (selectedDataVerifyTypeList is null || dataVerifyResultList is null)
+            {
+                ResultSeverity = InfoBarSeverity.Error;
+                if (selectVerifyIndex is 0)
+                {
+                    ResultMessage = FileVerifyFailedString;
+                }
+                else if (selectVerifyIndex is 1)
+                {
+                    ResultMessage = ContentVerifyFailedString;
+                }
+                return;
+            }
+
+            if (Equals(SelectedUpperCaseType, UpperCaseTypeList[0]))
+            {
+                if (dataVerifyResultList.Count > 0)
+                {
+                    foreach (DataVerifyResultModel dataVerifyResultItem in dataVerifyResultList)
+                    {
+                        dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToLowerInvariant();
+                        DataVerifyResultCollection.Add(dataVerifyResultItem);
+                    }
+                }
+            }
+            else if (Equals(SelectedUpperCaseType, UpperCaseTypeList[1]))
+            {
+                if (dataVerifyResultList.Count > 0)
+                {
+                    foreach (DataVerifyResultModel dataVerifyResultItem in dataVerifyResultList)
+                    {
+                        dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToUpperInvariant();
+                        DataVerifyResultCollection.Add(dataVerifyResultItem);
+                    }
+                }
+            }
+
+            if (DataVerifyResultCollection.Count > 0)
+            {
+                ResultSeverity = InfoBarSeverity.Success;
+                if (Equals(selectedDataVerifyTypeList.Count, DataVerifyResultCollection.Count))
+                {
+                    if (selectVerifyIndex is 0)
+                    {
+                        ResultMessage = string.Format(FileVerifyWholeSuccessfullyString, DataVerifyResultCollection.Count);
+                    }
+                    else if (selectVerifyIndex is 1)
+                    {
+                        ResultMessage = string.Format(ContentVerifyWholeSuccessfullyString, DataVerifyResultCollection.Count);
+                    }
+                }
+                else
+                {
+                    if (selectVerifyIndex is 0)
+                    {
+                        ResultMessage = string.Format(FileVerifyPartSuccessfullyString, DataVerifyResultCollection.Count, selectedDataVerifyTypeList.Count - DataVerifyResultCollection.Count);
+                    }
+                    else if (selectVerifyIndex is 1)
+                    {
+                        ResultMessage = string.Format(ContentVerifyPartSuccessfullyString, DataVerifyResultCollection.Count, selectedDataVerifyTypeList.Count - DataVerifyResultCollection.Count);
+                    }
+                }
+            }
+            else
+            {
+                ResultSeverity = InfoBarSeverity.Error;
+                if (selectVerifyIndex is 0)
+                {
+                    ResultMessage = FileVerifyFailedString;
+                }
+                else if (selectVerifyIndex is 1)
+                {
+                    ResultMessage = ContentVerifyFailedString;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取拖拽支持选中的文件
+        /// </summary>
+        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        {
+            if (dataPackageView is null)
+            {
+                return default;
+            }
+
+            return await Task.Run(async () =>
+            {
+                List<string> fileList = [];
+
+                try
+                {
+                    if (dataPackageView.Contains(StandardDataFormats.StorageItems))
+                    {
+                        foreach (IStorageItem storageItem in await dataPackageView.GetStorageItemsAsync())
+                        {
+                            fileList.Add(storageItem.Path);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(GetDragDropSelectedFilesAsync), 1, e);
+                }
+
+                return fileList;
+            });
+        }
+
+        /// <summary>
         /// 获取要校验的类型
         /// </summary>
         private Visibility GetDataVerifyTypeVisibility(int selectedIndex, int comparedSelectedIndex)
         {
             return Equals(selectedIndex, comparedSelectedIndex) ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        /// <summary>
-        /// 获取对应的文字编码类型
-        /// </summary>
-        private Visibility GetTextEncodingTypeVisibility(object textEncodingType, object comparedTextEncodingType)
-        {
-            return string.Equals(Convert.ToString(textEncodingType), Convert.ToString(comparedTextEncodingType)) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
@@ -2184,5 +2157,7 @@ namespace PowerToolbox.Views.Pages
         {
             return isVerifying ? Visibility.Collapsed : verifyCount > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }
