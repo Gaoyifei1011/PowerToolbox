@@ -1,5 +1,4 @@
 ﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using PowerToolbox.Extensions.DataType.Enums;
 using System;
 
@@ -10,11 +9,6 @@ namespace PowerToolbox.Helpers.Converters
     /// </summary>
     internal static class ValueCheckConverterHelper
     {
-        internal static Visibility IsCurrentItem(SelectorBarItem selectedItem, SelectorBarItem comparedItem)
-        {
-            return Equals(selectedItem, comparedItem) ? Visibility.Visible : Visibility.Collapsed;
-        }
-
         /// <summary>
         /// 检查下载任务状态
         /// </summary>
