@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
@@ -16,32 +17,51 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class DataVerifyEncryptPage : Page, INotifyPropertyChanged
     {
-        private SelectorBarItem _selectedItem;
+        #region 第一部分：常量、资源与状态字段
 
-        internal SelectorBarItem SelectedItem
+        private readonly string DataDecryptString = ResourceService.DataVerifyEncryptResource.GetString("DataDecrypt");
+        private readonly string DataEncryptString = ResourceService.DataVerifyEncryptResource.GetString("DataEncrypt");
+        private readonly string DataVerifyString = ResourceService.DataVerifyEncryptResource.GetString("DataVerify");
+
+        #endregion 第一部分：常量、资源与状态字段
+
+        #region 第二部分：属性、列表与事件
+
+        private int _selectedIndex;
+
+        private int SelectedIndex
         {
-            get { return _selectedItem; }
+            get { return _selectedIndex; }
 
             set
             {
-                if (!Equals(_selectedItem, value))
+                if (!Equals(_selectedIndex, value))
                 {
-                    _selectedItem = value;
-                    PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
+                    _selectedIndex = value;
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedIndex)));
                 }
             }
         }
+
+        private List<RadioButtonItemModel> DataVerifyEncryptSelectorRadioList { get; } = [];
 
         private List<Type> PageList { get; } = [typeof(DataVerifyPage), typeof(DataEncryptPage), typeof(DataDecryptPage)];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal DataVerifyEncryptPage()
         {
             InitializeComponent();
+            InitializeData();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面时发生的事件
@@ -54,27 +74,27 @@ namespace PowerToolbox.Views.Pages
             // 第一次导航
             if (GetCurrentPageType() is null)
             {
-                SelectedItem = DataVerifyEncryptSelctorBar.Items[0];
+                NavigateTo(PageList[0], this);
             }
         }
 
-        #endregion 第一部分：重写父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第二部分：数据校验与加密页面——挂载的事件
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 点击选择器栏选中项发生变化时发生的事件
         /// </summary>
-        private void OnSelectorBarSelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            if (!Equals(SelectedItem, sender.SelectedItem))
+            if (sender is RadioButtons radioButtons && !Equals(SelectedIndex, radioButtons.SelectedIndex))
             {
-                SelectedItem = sender.SelectedItem;
+                SelectedIndex = radioButtons.SelectedIndex;
             }
 
-            if (SelectedItem is not null)
+            if (SelectedIndex >= 0 && SelectedIndex < DataVerifyEncryptSelectorRadioList.Count)
             {
-                int index = sender.Items.IndexOf(SelectedItem);
+                int index = SelectedIndex;
                 Type currentPage = GetCurrentPageType();
                 int currentIndex = PageList.FindIndex(item => Equals(item, currentPage));
 
@@ -101,22 +121,34 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 导航失败时发生
+        /// 导航失败后发生的事件
         /// </summary>
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs args)
         {
             args.Handled = true;
             int index = PageList.FindIndex(item => Equals(item, GetCurrentPageType()));
 
-            if (index >= 0 && index < DataVerifyEncryptSelctorBar.Items.Count)
+            if (index >= 0 && index < DataVerifyEncryptSelectorRadioList.Count)
             {
-                SelectedItem = DataVerifyEncryptSelctorBar.Items[index];
+                SelectedIndex = index;
             }
 
             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyEncryptPage), nameof(OnNavigationFailed), 1, args.Exception);
         }
 
-        #endregion 第二部分：数据校验与加密页面——挂载的事件
+        #endregion 第五部分：挂载事件处理
+
+        #region 第六部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
+            DataVerifyEncryptSelectorRadioList.Add(new() { SelectorName = DataVerifyString });
+            DataVerifyEncryptSelectorRadioList.Add(new() { SelectorName = DataEncryptString });
+            DataVerifyEncryptSelectorRadioList.Add(new() { SelectorName = DataDecryptString });
+        }
 
         /// <summary>
         /// 页面向前导航
@@ -151,5 +183,7 @@ namespace PowerToolbox.Views.Pages
         {
             return DataVerifyEncryptFrame.Content;
         }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }

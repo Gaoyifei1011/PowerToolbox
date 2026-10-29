@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:rootservice="using:PowerToolbox.Services.Root"
+    xmlns:model="using:PowerToolbox.Models"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
@@ -50,19 +50,27 @@
             </Grid.RowDefinitions>
 
             <!--  数据校验与加密解密控制栏  -->
-            <SelectorBar
-                x:Name="DataVerifyEncryptSelctorBar"
-                Grid.Row="0"
-                Margin="18,5,30,3"
+            <RadioButtons
+                Margin="30,17,0,3"
                 Padding="0"
                 HorizontalAlignment="Left"
-                SelectedItem="{x:Bind SelectedItem, Mode=OneWay}"
-                SelectionChanged="{x:Bind OnSelectorBarSelectionChanged}">
+                VerticalAlignment="Top"
+                Canvas.ZIndex="1"
+                ItemsSource="{x:Bind DataVerifyEncryptSelectorRadioList}"
+                SelectedIndex="{x:Bind SelectedIndex, Mode=OneWay}"
+                SelectionChanged="{x:Bind OnSelectionChanged}"
+                Style="{StaticResource HorizontalRadioButtonsStyle}">
 
-                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.DataVerifyEncryptResource.GetString('DataVerify')}" />
-                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.DataVerifyEncryptResource.GetString('DataEncrypt')}" />
-                <SelectorBarItem FontSize="16" Text="{x:Bind rootservice:ResourceService.DataVerifyEncryptResource.GetString('DataDecrypt')}" />
-            </SelectorBar>
+                <RadioButtons.Resources>
+                    <Thickness x:Key="RadioButtonsTopHeaderMargin">0</Thickness>
+                </RadioButtons.Resources>
+
+                <RadioButtons.ItemTemplate>
+                    <DataTemplate x:DataType="model:RadioButtonItemModel">
+                        <RadioButton Content="{x:Bind SelectorName}" Style="{StaticResource PillRadioButtonStyle}" />
+                    </DataTemplate>
+                </RadioButtons.ItemTemplate>
+            </RadioButtons>
 
             <Frame
                 x:Name="DataVerifyEncryptFrame"
