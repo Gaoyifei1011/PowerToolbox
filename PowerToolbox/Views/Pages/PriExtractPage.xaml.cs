@@ -483,7 +483,7 @@ namespace PowerToolbox.Views.Pages
 
         #endregion 第五部分：命令调用处理
 
-        #region 第六部分：数据操作与业务逻辑
+        #region 第六部分：挂载事件处理
 
         /// <summary>
         /// 提取时同时保存单选框点击时触发的事件
@@ -543,50 +543,29 @@ namespace PowerToolbox.Views.Pages
         {
             if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[0]))
             {
-                List<object> selectedItemList = [.. PriExtractStringListView.SelectedItems];
-
-                foreach (object item in PriExtractStringListView.Items)
+                List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. PriExtractStringListView.SelectedRanges];
+                PriExtractStringListView.SelectAll();
+                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
                 {
-                    if (selectedItemList.Contains(item))
-                    {
-                        PriExtractStringListView.SelectedItems.Remove(item);
-                    }
-                    else
-                    {
-                        PriExtractStringListView.SelectedItems.Add(item);
-                    }
+                    PriExtractStringListView.DeselectRange(itemIndexRange);
                 }
             }
             else if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[1]))
             {
-                List<object> selectedItemList = [.. PriExtractFilePathListView.SelectedItems];
-
-                foreach (object item in PriExtractFilePathListView.Items)
+                List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. PriExtractFilePathListView.SelectedRanges];
+                PriExtractStringListView.SelectAll();
+                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
                 {
-                    if (selectedItemList.Contains(item))
-                    {
-                        PriExtractFilePathListView.SelectedItems.Remove(item);
-                    }
-                    else
-                    {
-                        PriExtractFilePathListView.SelectedItems.Add(item);
-                    }
+                    PriExtractFilePathListView.DeselectRange(itemIndexRange);
                 }
             }
             else if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[2]))
             {
-                List<object> selectedItemList = [.. PriExtractEmbeddedDataListView.SelectedItems];
-
-                foreach (object item in PriExtractEmbeddedDataListView.Items)
+                List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. PriExtractEmbeddedDataListView.SelectedRanges];
+                PriExtractStringListView.SelectAll();
+                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
                 {
-                    if (selectedItemList.Contains(item))
-                    {
-                        PriExtractEmbeddedDataListView.SelectedItems.Remove(item);
-                    }
-                    else
-                    {
-                        PriExtractEmbeddedDataListView.SelectedItems.Add(item);
-                    }
+                    PriExtractEmbeddedDataListView.DeselectRange(itemIndexRange);
                 }
             }
         }
@@ -888,7 +867,9 @@ namespace PowerToolbox.Views.Pages
             IsProcessing = false;
         }
 
-        #endregion 第六部分：数据操作与业务逻辑
+        #endregion 第六部分：挂载事件处理
+
+        #region 第七部分：数据操作与业务逻辑
 
         /// <summary>
         /// 初始化数据
@@ -1716,5 +1697,7 @@ namespace PowerToolbox.Views.Pages
                 return fileList;
             });
         }
+
+        #endregion 第七部分：数据操作与业务逻辑
     }
 }

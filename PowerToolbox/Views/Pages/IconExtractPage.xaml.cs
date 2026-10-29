@@ -568,18 +568,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectReverseClicked(object sender, RoutedEventArgs args)
         {
-            List<object> selectedItemList = [.. IconExtractGridView.SelectedItems];
-
-            foreach (object item in IconExtractGridView.Items)
+            List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. IconExtractGridView.SelectedRanges];
+            IconExtractGridView.SelectAll();
+            foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
             {
-                if (selectedItemList.Contains(item))
-                {
-                    IconExtractGridView.SelectedItems.Remove(item);
-                }
-                else
-                {
-                    IconExtractGridView.SelectedItems.Add(item);
-                }
+                IconExtractGridView.DeselectRange(itemIndexRange);
             }
         }
 

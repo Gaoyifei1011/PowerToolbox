@@ -800,20 +800,12 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAvailableSelectReverseClicked(object sender, RoutedEventArgs args)
         {
-            List<object> selectedItemList = [.. UpdateManagerAvailableListView.SelectedItems];
-
-            foreach (object item in UpdateManagerAvailableListView.Items)
+            List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. UpdateManagerAvailableListView.SelectedRanges];
+            UpdateManagerAvailableListView.SelectAll();
+            foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
             {
-                if (selectedItemList.Contains(item))
-                {
-                    UpdateManagerAvailableListView.SelectedItems.Remove(item);
-                }
-                else
-                {
-                    UpdateManagerAvailableListView.SelectedItems.Add(item);
-                }
+                UpdateManagerAvailableListView.DeselectRange(itemIndexRange);
             }
-
             UpdateAvailableSelectedItemsState();
         }
 
@@ -970,18 +962,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnInstalledSelectReverseClicked(object sender, RoutedEventArgs args)
         {
-            List<object> selectedItemList = [.. UpdateManagerInstalledListView.SelectedItems];
-
-            foreach (object item in UpdateManagerInstalledListView.Items)
+            List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. UpdateManagerInstalledListView.SelectedRanges];
+            UpdateManagerInstalledListView.SelectAll();
+            foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
             {
-                if (selectedItemList.Contains(item))
-                {
-                    UpdateManagerInstalledListView.SelectedItems.Remove(item);
-                }
-                else
-                {
-                    UpdateManagerInstalledListView.SelectedItems.Add(item);
-                }
+                UpdateManagerInstalledListView.DeselectRange(itemIndexRange);
             }
 
             UpdateInstalledSelectedItemState();
@@ -1091,20 +1076,16 @@ namespace PowerToolbox.Views.Pages
             IsHiddenShowEnabled = false;
         }
 
+        /// <summary>
+        /// 隐藏更新：全部反选
+        /// </summary>
         private void OnHiddenSelectReverseClicked(object sender, RoutedEventArgs args)
         {
-            List<object> selectedItemList = [.. UpdateManagerHiddenListView.SelectedItems];
-
-            foreach (object item in UpdateManagerHiddenListView.Items)
+            List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. UpdateManagerHiddenListView.SelectedRanges];
+            UpdateManagerHiddenListView.SelectAll();
+            foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
             {
-                if (selectedItemList.Contains(item))
-                {
-                    UpdateManagerHiddenListView.SelectedItems.Remove(item);
-                }
-                else
-                {
-                    UpdateManagerHiddenListView.SelectedItems.Add(item);
-                }
+                UpdateManagerHiddenListView.DeselectRange(itemIndexRange);
             }
 
             IsHiddenShowEnabled = UpdateManagerHiddenListView.SelectedItems.Count > 0 && HiddenUpdateCollection.Any(item => item.UpdateInformation.IsHidden);
