@@ -29,8 +29,6 @@ namespace PowerToolbox.Views.Pages
     {
         #region 第一部分：常量、资源与状态字段
 
-        private readonly string ASCIIString = ResourceService.DataVerifyResource.GetString("ASCII");
-        private readonly string BigEndianUnicodeString = ResourceService.DataVerifyResource.GetString("BigEndianUnicode");
         private readonly string Blake2bString = ResourceService.DataVerifyResource.GetString("Blake2b");
         private readonly string Blake3String = ResourceService.DataVerifyResource.GetString("Blake3");
         private readonly string ContentString = ResourceService.DataVerifyResource.GetString("Content");
@@ -41,7 +39,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string ContentVerifyWholeSuccessfullyString = ResourceService.DataVerifyResource.GetString("ContentVerifyWholeSuccessfully");
         private readonly string CRC32String = ResourceService.DataVerifyResource.GetString("CRC32");
         private readonly string CRC64String = ResourceService.DataVerifyResource.GetString("CRC64");
-        private readonly string CustomString = ResourceService.DataVerifyResource.GetString("Custom");
         private readonly string DragOverContentString = ResourceService.DataVerifyResource.GetString("DragOverContent");
         private readonly string ED2KString = ResourceService.DataVerifyResource.GetString("ED2K");
         private readonly string EdonR224String = ResourceService.DataVerifyResource.GetString("EdonR224");
@@ -55,11 +52,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string FileVerifyFailedString = ResourceService.DataVerifyResource.GetString("FileVerifyFailed");
         private readonly string FileVerifyPartSuccessfullyString = ResourceService.DataVerifyResource.GetString("FileVerifyPartSuccessfully");
         private readonly string FileVerifyWholeSuccessfullyString = ResourceService.DataVerifyResource.GetString("FileVerifyWholeSuccessfully");
-        private readonly string GB18030String = ResourceService.DataVerifyResource.GetString("GB18030");
-        private readonly string GB2312String = ResourceService.DataVerifyResource.GetString("GB2312");
-        private readonly string GBKString = ResourceService.DataVerifyResource.GetString("GBK");
         private readonly string Has160String = ResourceService.DataVerifyResource.GetString("Has160");
-        private readonly string ISO88591String = ResourceService.DataVerifyResource.GetString("ISO88591");
         private readonly string Keccak224String = ResourceService.DataVerifyResource.GetString("Keccak224");
         private readonly string Keccak256String = ResourceService.DataVerifyResource.GetString("Keccak256");
         private readonly string Keccak384String = ResourceService.DataVerifyResource.GetString("Keccak384");
@@ -87,13 +80,9 @@ namespace PowerToolbox.Views.Pages
         private readonly string Snefru256String = ResourceService.DataVerifyResource.GetString("Snefru256");
         private readonly string TIGERString = ResourceService.DataVerifyResource.GetString("TIGER");
         private readonly string TIGER2String = ResourceService.DataVerifyResource.GetString("TIGER2");
-        private readonly string UnicodeString = ResourceService.DataVerifyResource.GetString("Unicode");
         private readonly string UnknownErrorString = ResourceService.DataVerifyResource.GetString("UnknownError");
         private readonly string UseLowerCaseString = ResourceService.DataVerifyResource.GetString("UseLowerCase");
         private readonly string UseUpperCaseString = ResourceService.DataVerifyResource.GetString("UseUpperCase");
-        private readonly string UTF32String = ResourceService.DataVerifyResource.GetString("UTF32");
-        private readonly string UTF7String = ResourceService.DataVerifyResource.GetString("UTF7");
-        private readonly string UTF8String = ResourceService.DataVerifyResource.GetString("UTF8");
         private readonly string VerifyingString = ResourceService.DataVerifyResource.GetString("Verifying");
         private readonly string VerifyTypeNotSelectedString = ResourceService.DataVerifyResource.GetString("VerifyTypeNotSelected");
         private readonly string WhirlpoolString = ResourceService.DataVerifyResource.GetString("Whirlpool");
@@ -131,7 +120,7 @@ namespace PowerToolbox.Views.Pages
         {
             get { return _verifyFile; }
 
-            set
+            private set
             {
                 if (!Equals(_verifyFile, value))
                 {
@@ -211,7 +200,7 @@ namespace PowerToolbox.Views.Pages
         {
             get { return _isVerifying; }
 
-            set
+            private set
             {
                 if (!Equals(_isVerifying, value))
                 {

@@ -159,86 +159,91 @@
                 IsExpanded="True">
 
                 <Expander.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                    <CommandBar
+                        Margin="0,0,-15,0"
+                        Padding="0"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
+                        DefaultLabelPosition="Right"
+                        IsDynamicOverflowEnabled="False">
 
-                        <FontIcon
-                            Grid.Column="0"
-                            Margin="0,0,12,0"
-                            FontSize="16"
-                            Glyph="&#xE97C;" />
+                        <CommandBar.Content>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
 
-                        <TextBlock
-                            Grid.Column="1"
-                            VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('DataVerifyType')}" />
+                                <FontIcon
+                                    Grid.Column="0"
+                                    Margin="0,0,12,0"
+                                    FontSize="16"
+                                    Glyph="&#xE946;" />
 
-                        <CommandBar
-                            Grid.Column="2"
-                            Margin="0,0,-15,0"
-                            CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
-                            DefaultLabelPosition="Right">
+                                <TextBlock
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('DataVerifyType')}" />
+                            </Grid>
+                        </CommandBar.Content>
 
-                            <CommandBar.PrimaryCommands>
-                                <AppBarElementContainer Margin="0,0,2,0" VerticalContentAlignment="Center">
-                                    <ComboBox
-                                        VerticalAlignment="Center"
-                                        DisplayMemberPath="DisplayMember"
-                                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}"
-                                        ItemsSource="{x:Bind UpperCaseTypeList}"
-                                        SelectedItem="{x:Bind SelectedUpperCaseType, Mode=OneWay}"
-                                        SelectionChanged="{x:Bind OnUseUpperCaseSelectionChanged}"
-                                        Style="{StaticResource ComboBoxStyle}" />
-                                </AppBarElementContainer>
-
-                                <AppBarButton Label="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('MultiSelect')}">
-
-                                    <AppBarButton.Icon>
-                                        <FontIcon Glyph="&#xE762;" />
-                                    </AppBarButton.Icon>
-
-                                    <AppBarButton.Flyout>
-                                        <MenuFlyout Placement="Bottom">
-                                            <MenuFlyoutItem Click="{x:Bind OnSelectAllClicked}" Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('SelectAll')}">
-
-                                                <MenuFlyoutItem.Icon>
-                                                    <FontIcon Glyph="&#xE8B3;" />
-                                                </MenuFlyoutItem.Icon>
-                                            </MenuFlyoutItem>
-
-                                            <MenuFlyoutItem Click="{x:Bind OnSelectNoneClicked}" Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('SelectNone')}">
-
-                                                <MenuFlyoutItem.Icon>
-                                                    <FontIcon Glyph="&#xE8E6;" />
-                                                </MenuFlyoutItem.Icon>
-                                            </MenuFlyoutItem>
-
-                                            <MenuFlyoutItem Click="{x:Bind OnSelectReverseClicked}" Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('SelectReverse')}">
-
-                                                <MenuFlyoutItem.Icon>
-                                                    <FontIcon Glyph="&#xEA98;" />
-                                                </MenuFlyoutItem.Icon>
-                                            </MenuFlyoutItem>
-                                        </MenuFlyout>
-                                    </AppBarButton.Flyout>
-                                </AppBarButton>
-
-                                <AppBarButton
-                                    Click="{x:Bind OnStartVerifyClicked}"
+                        <CommandBar.PrimaryCommands>
+                            <AppBarElementContainer Margin="0,0,2,0" VerticalContentAlignment="Center">
+                                <ComboBox
+                                    VerticalAlignment="Center"
+                                    DisplayMemberPath="DisplayMember"
                                     IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}"
-                                    Label="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('StartVerify')}">
+                                    ItemsSource="{x:Bind UpperCaseTypeList}"
+                                    SelectedItem="{x:Bind SelectedUpperCaseType, Mode=OneWay}"
+                                    SelectionChanged="{x:Bind OnUseUpperCaseSelectionChanged}"
+                                    Style="{StaticResource ComboBoxStyle}" />
+                            </AppBarElementContainer>
 
-                                    <AppBarButton.Icon>
-                                        <FontIcon Glyph="&#xE768;" />
-                                    </AppBarButton.Icon>
-                                </AppBarButton>
-                            </CommandBar.PrimaryCommands>
-                        </CommandBar>
-                    </Grid>
+                            <AppBarButton Label="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('MultiSelect')}">
+
+                                <AppBarButton.Icon>
+                                    <FontIcon Glyph="&#xE762;" />
+                                </AppBarButton.Icon>
+
+                                <AppBarButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <MenuFlyoutItem Click="{x:Bind OnSelectAllClicked}" Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('SelectAll')}">
+
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE8B3;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+
+                                        <MenuFlyoutItem Click="{x:Bind OnSelectNoneClicked}" Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('SelectNone')}">
+
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE8E6;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+
+                                        <MenuFlyoutItem Click="{x:Bind OnSelectReverseClicked}" Text="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('SelectReverse')}">
+
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xEA98;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </AppBarButton.Flyout>
+                            </AppBarButton>
+
+                            <AppBarButton
+                                Click="{x:Bind OnStartVerifyClicked}"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}"
+                                Label="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('StartVerify')}">
+
+                                <AppBarButton.Icon>
+                                    <FontIcon Glyph="&#xE768;" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                        </CommandBar.PrimaryCommands>
+                    </CommandBar>
                 </Expander.Header>
 
                 <GridView
