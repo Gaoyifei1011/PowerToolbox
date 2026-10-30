@@ -318,6 +318,7 @@
     <None Remove="Styles\BreadcrumbBar.xaml" />
     <None Remove="Styles\ComboBox.xaml" />
     <None Remove="Styles\CommandBar.xaml" />
+    <None Remove="Styles\ContentDialog.xaml" />
     <None Remove="Styles\DatePicker.xaml" />
     <None Remove="Styles\Expander.xaml" />
     <None Remove="Styles\InfoBar.xaml" />
@@ -398,6 +399,7 @@
     <Page Include="Styles\BreadcrumbBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\ComboBox.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\CommandBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Styles\ContentDialog.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\DatePicker.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\Expander.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\InfoBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />

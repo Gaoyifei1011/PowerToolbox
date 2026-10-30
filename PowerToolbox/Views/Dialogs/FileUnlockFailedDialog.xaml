@@ -19,7 +19,7 @@
     RequestedTheme="{x:Bind ((FrameworkElement)window:MainWindow.Current.Content).RequestedTheme, Mode=OneWay}"
     SecondaryButtonClick="{x:Bind OnOpenTaskManagerClicked}"
     SecondaryButtonText="{x:Bind rootservice:ResourceService.DialogResource.GetString('OpenTaskManager')}"
-    Style="{StaticResource DefaultContentDialogStyle}"
+    Style="{StaticResource ContentDialogWithSystemBackdropStyle}"
     mc:Ignorable="d">
 
     <ContentDialog.Resources>
