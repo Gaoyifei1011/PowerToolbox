@@ -162,7 +162,7 @@ namespace PowerToolbox.Extensions.Hashing
             // if (index == 16)
             // where index is measured in UInt64 words.
             // In byte representation that is index == 128.
-            if (index == BlockSize)
+            if (index > 120)
             {
                 ProcessBlock(_buffer, 0);
                 Array.Clear(_buffer, 0, _buffer.Length);

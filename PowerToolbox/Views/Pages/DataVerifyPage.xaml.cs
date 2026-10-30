@@ -120,7 +120,7 @@ namespace PowerToolbox.Views.Pages
         {
             get { return _verifyFile; }
 
-            private set
+            set
             {
                 if (!Equals(_verifyFile, value))
                 {
@@ -1361,12 +1361,23 @@ namespace PowerToolbox.Views.Pages
                     {
                         try
                         {
-                            SHA256 sha256 = SHA256.Create();
+                            Shake256 sha256 = new();
                             byte[] hashBytes = null;
                             if (contentData is not null)
                             {
-                                FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
-                                hashBytes = sha256.ComputeHash(fileStream);
+                                if (selectedVerifyIndex is 0)
+                                {
+                                    if (File.Exists(contentData))
+                                    {
+                                        FileStream fileStream = new(contentData, FileMode.Open, FileAccess.Read, FileShare.Read, 1024 * 1024);
+                                        hashBytes = sha256.ComputeHash(fileStream);
+                                        fileStream.Dispose();
+                                    }
+                                }
+                                else if (selectedVerifyIndex is 1)
+                                {
+                                    hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(contentData));
+                                }
                             }
                             sha256.Dispose();
 
