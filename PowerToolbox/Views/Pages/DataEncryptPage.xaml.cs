@@ -1403,19 +1403,9 @@ namespace PowerToolbox.Views.Pages
             {
                 SelectedEncryptedBlockCipherMode = comboBox.SelectedItem is ComboBoxItemModel encryptedBlockCipherMode ? encryptedBlockCipherMode : null;
 
-                if (SelectedEncryptedBlockCipherMode is not null)
+                if (SelectedEncryptedBlockCipherMode is not null && (SelectedDataEncryptType.DataEncryptType is DataEncryptType.AES || SelectedDataEncryptType.DataEncryptType is DataEncryptType.DES || SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC2 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC5 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC6 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rijndael || SelectedDataEncryptType.DataEncryptType is DataEncryptType.SM4 || SelectedDataEncryptType.DataEncryptType is DataEncryptType.TripleDES))
                 {
-                    if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.AES ||
-                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.DES ||
-                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC2 ||
-                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC5 ||
-                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC6 ||
-                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rijndael ||
-                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.SM4 ||
-                        SelectedDataEncryptType.DataEncryptType is DataEncryptType.TripleDES)
-                    {
-                        HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
-                    }
+                    HasInitializationVector = SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB;
                 }
             }
         }
@@ -1577,128 +1567,122 @@ namespace PowerToolbox.Views.Pages
             selectedEncryptFile = EncryptFile;
             inputtedEncryptContent = EncryptContent;
             string selectedEncryptKeyStringType = SelectedEncryptKeyStringType is not null ? Convert.ToString(SelectedEncryptKeyStringType.SelectedValue) : string.Empty;
-            string selectedSelectedInitializationVectorStringType = SelectedInitializationVectorStringType is not null ? Convert.ToString(SelectedInitializationVectorStringType.SelectedValue) : string.Empty;
+            string selectedInitializationVectorStringType = SelectedInitializationVectorStringType is not null ? Convert.ToString(SelectedInitializationVectorStringType.SelectedValue) : string.Empty;
             CipherMode selectedCipherMode = SelectedEncryptedBlockCipherMode is not null ? (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue : CipherMode.CBC;
-            PaddingMode selectedPaddingode = SelectedPaddingMode is not null ? (PaddingMode)SelectedPaddingMode.SelectedValue : PaddingMode.None;
+            PaddingMode selectedPaddingMode = SelectedPaddingMode is not null ? (PaddingMode)SelectedPaddingMode.SelectedValue : PaddingMode.None;
             RSAEncryptionPaddingMode selectedRSAEncryptionPaddingMode = SelectedRSAEncryptionPaddingMode is not null ? (RSAEncryptionPaddingMode)SelectedRSAEncryptionPaddingMode.SelectedValue : RSAEncryptionPaddingMode.Pkcs1;
+            Encoding selectedTextEncoding = SelectedTextEncodingType is not null ? await GetTextEncodingAsync(Convert.ToString(SelectedTextEncodingType.SelectedValue), TextEncodingCustomTypeText) : null;
             EncryptFailedInformation = string.Empty;
             EncryptResult = string.Empty;
             encryptedLocalFile = string.Empty;
             IsLargeContent = false;
-            if (!EncryptCheck(selectedEncryptIndex, SelectedDataEncryptType, inputtedEncryptContent, selectedCipherMode, EncryptKeyText, EncryptPublicKeyText, InitializationVectorText, selectedEncryptFile))
+            if (!EncryptCheck(selectedEncryptIndex, SelectedDataEncryptType, inputtedEncryptContent, selectedCipherMode, EncryptKeyText, EncryptPublicKeyText, InitializationVectorText, selectedTextEncoding, selectedEncryptFile))
             {
                 return;
             }
 
-            // 获取具体的文字编码选项
-            if (SelectedTextEncodingType is not null)
+            // 加密内容
+            IsEncrypting = true;
+            ResultSeverity = InfoBarSeverity.Informational;
+            ResultMessage = EncryptingString;
+            (string encryptedData, Exception encryptException) = await GetEncryptedDataAsync(SelectedDataEncryptType.DataEncryptType, selectedEncryptIndex, EncryptKeyText, InitializationVectorText, selectedEncryptKeyStringType, selectedInitializationVectorStringType, selectedCipherMode, selectedPaddingMode, Offset, EncryptPublicKeyText, selectedRSAEncryptionPaddingMode, inputtedEncryptContent, selectedTextEncoding, selectedEncryptFile);
+
+            // 加密失败
+            if (encryptException is not null)
             {
-                Encoding textEncoding = await GetTextEncodingAsync(Convert.ToString(SelectedTextEncodingType.SelectedValue), TextEncodingCustomTypeText);
-
-                // 文字编码异常时的提示
-                if (textEncoding is null)
+                ResultSeverity = InfoBarSeverity.Error;
+                if (selectedEncryptIndex is 0)
                 {
-                    ResultSeverity = InfoBarSeverity.Error;
-                    ResultMessage = TextEncodingInvalidString;
-                    return;
+                    ResultMessage = FileEncryptFailedString;
+                }
+                else if (selectedEncryptIndex is 1)
+                {
+                    ResultMessage = ContentEncryptFailedString;
                 }
 
-                // 加密内容
-                IsEncrypting = true;
-                ResultSeverity = InfoBarSeverity.Informational;
-                ResultMessage = EncryptingString;
-                (string encryptedData, Exception encryptException) = await GetEncryptedDataAsync(SelectedDataEncryptType.DataEncryptType, selectedEncryptIndex, EncryptKeyText, InitializationVectorText, selectedEncryptKeyStringType, selectedSelectedInitializationVectorStringType, selectedCipherMode, selectedPaddingode, Offset, EncryptPublicKeyText, selectedRSAEncryptionPaddingMode, inputtedEncryptContent, textEncoding, selectedEncryptFile);
-
-                // 加密失败
-                if (encryptException is not null)
+                EncryptFailedInformation = !string.IsNullOrEmpty(encryptException.Message) ? encryptException.Message : UnknownErrorString;
+            }
+            // 加密成功
+            else
+            {
+                bool isSavedToSelectedFile = false;
+                bool isSavedToTempFile = false;
+                Exception exception = null;
+                if (encryptedData.Length > 1024)
                 {
-                    ResultSeverity = InfoBarSeverity.Error;
-                    if (selectedEncryptIndex is 0)
-                    {
-                        ResultMessage = FileEncryptFailedString;
-                    }
-                    else if (selectedEncryptIndex is 1)
-                    {
-                        ResultMessage = ContentEncryptFailedString;
-                    }
-
-                    EncryptFailedInformation = !string.IsNullOrEmpty(encryptException.Message) ? encryptException.Message : UnknownErrorString;
+                    EncryptResult = LargeContentString;
+                    IsLargeContent = true;
+                    encryptedLocalFile = await GetTempFileNameAsync();
+                    await SaveEncryptedDataAsync(encryptedLocalFile, encryptedData);
                 }
-                // 加密成功
                 else
                 {
-                    bool isSavedToSelectedFile = false;
-                    bool isSavedToTempFile = false;
-                    Exception exception = null;
-                    if (encryptedData.Length > 1024)
+                    EncryptResult = encryptedData;
+                    IsLargeContent = false;
+                    if (SaveEncryptedDataToLocalFile)
                     {
-                        EncryptResult = LargeContentString;
-                        IsLargeContent = true;
-                        await SaveEncryptedDataAsync(encryptedLocalFile, encryptedData);
+                        encryptedLocalFile = SaveEncryptedFilePath;
+                        (isSavedToSelectedFile, exception) = await SaveEncryptedDataAsync(SaveEncryptedFilePath, encryptedData);
+                        if (!isSavedToSelectedFile)
+                        {
+                            encryptedLocalFile = await GetTempFileNameAsync();
+                            (isSavedToTempFile, exception) = await SaveEncryptedDataAsync(encryptedLocalFile, encryptedData);
+                        }
+                    }
+                }
+
+                // 显示加密结果
+                if (selectedEncryptIndex is 0)
+                {
+                    if (SaveEncryptedDataToLocalFile)
+                    {
+                        if (isSavedToSelectedFile)
+                        {
+                            ResultSeverity = InfoBarSeverity.Success;
+                            ResultMessage = FileEncryptedDataSaveSuccessfullyString;
+                            EncryptFailedInformation = string.Empty;
+                        }
+                        else
+                        {
+                            ResultSeverity = isSavedToTempFile ? InfoBarSeverity.Warning : InfoBarSeverity.Error;
+                            ResultMessage = isSavedToTempFile ? FileEncryptedDataSaveFailedToTempFileString : FileEncryptedDataSaveFailedString;
+                            EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
+                        }
                     }
                     else
                     {
-                        EncryptResult = encryptedData;
-                        IsLargeContent = false;
-                        if (SaveEncryptedDataToLocalFile)
-                        {
-                            (isSavedToSelectedFile, isSavedToTempFile, exception) = await SaveEncryptedDataAsync(encryptedLocalFile, encryptedData);
-                        }
-                    }
-
-                    // 显示加密结果
-                    if (selectedEncryptIndex is 0)
-                    {
-                        if (SaveEncryptedDataToLocalFile)
-                        {
-                            if (isSavedToSelectedFile)
-                            {
-                                ResultSeverity = InfoBarSeverity.Success;
-                                ResultMessage = FileEncryptedDataSaveSuccessfullyString;
-                                EncryptFailedInformation = string.Empty;
-                            }
-                            else
-                            {
-                                ResultSeverity = isSavedToTempFile ? InfoBarSeverity.Warning : InfoBarSeverity.Error;
-                                ResultMessage = isSavedToTempFile ? FileEncryptedDataSaveFailedToTempFileString : FileEncryptedDataSaveFailedString;
-                                EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
-                            }
-                        }
-                        else
-                        {
-                            ResultSeverity = InfoBarSeverity.Success;
-                            ResultMessage = FileEncryptSuccessfullyString;
-                            EncryptFailedInformation = string.Empty;
-                        }
-                    }
-                    else if (selectedEncryptIndex is 1)
-                    {
-                        if (SaveEncryptedDataToLocalFile)
-                        {
-                            if (isSavedToSelectedFile)
-                            {
-                                ResultSeverity = InfoBarSeverity.Warning;
-                                ResultMessage = ContentEncryptedDataSaveSuccessfullyString;
-                                EncryptFailedInformation = string.Empty;
-                            }
-                            else
-                            {
-                                ResultSeverity = isSavedToTempFile ? InfoBarSeverity.Warning : InfoBarSeverity.Error;
-                                EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
-                                ResultMessage = isSavedToTempFile ? ContentEncryptedDataSaveFailedToTempFileString : ContentEncryptedDataSaveFailedString;
-                            }
-                        }
-                        else
-                        {
-                            ResultSeverity = InfoBarSeverity.Success;
-                            ResultMessage = ContentEncryptSuccessfullyString;
-                            EncryptFailedInformation = string.Empty;
-                        }
+                        ResultSeverity = InfoBarSeverity.Success;
+                        ResultMessage = FileEncryptSuccessfullyString;
+                        EncryptFailedInformation = string.Empty;
                     }
                 }
-
-                IsEncrypting = false;
+                else if (selectedEncryptIndex is 1)
+                {
+                    if (SaveEncryptedDataToLocalFile)
+                    {
+                        if (isSavedToSelectedFile)
+                        {
+                            ResultSeverity = InfoBarSeverity.Warning;
+                            ResultMessage = ContentEncryptedDataSaveSuccessfullyString;
+                            EncryptFailedInformation = string.Empty;
+                        }
+                        else
+                        {
+                            ResultSeverity = isSavedToTempFile ? InfoBarSeverity.Warning : InfoBarSeverity.Error;
+                            EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
+                            ResultMessage = isSavedToTempFile ? ContentEncryptedDataSaveFailedToTempFileString : ContentEncryptedDataSaveFailedString;
+                        }
+                    }
+                    else
+                    {
+                        ResultSeverity = InfoBarSeverity.Success;
+                        ResultMessage = ContentEncryptSuccessfullyString;
+                        EncryptFailedInformation = string.Empty;
+                    }
+                }
             }
+
+            IsEncrypting = false;
         }
 
         /// <summary>
@@ -1762,9 +1746,9 @@ namespace PowerToolbox.Views.Pages
             TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF7), DisplayMember = UTF7String });
             TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
             TextEncodingTypeList.Add(new() { SelectedValue = "Custom", DisplayMember = CustomString });
+            SelectedDataEncryptType = DataEncryptTypeList[0];
             SelectedTextEncodingType = TextEncodingTypeList[9];
             SelectedIndex = 0;
-            SelectedDataEncryptType = DataEncryptTypeList[0];
             EncryptKeyPHText = string.Empty;
             EncryptKeyText = string.Empty;
             InitializationVectorPHText = string.Empty;
@@ -1782,7 +1766,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 生成随机密钥
+        /// 获取随机密钥
         /// </summary>
         private async Task<string> GetEncryptKeyAsync(DataEncryptType dataEncryptType)
         {
@@ -1944,7 +1928,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 生成初始化向量
+        /// 获取初始化向量
         /// </summary>
         private async Task<string> GetInitializationVectorAsync(DataEncryptType dataEncryptType)
         {
@@ -2045,7 +2029,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 生成 RSA 加密算法密钥对
+        /// 获取 RSA 加密算法密钥对
         /// </summary>
         private async Task<(string, string)> GetRandomRSAKeyPairAsync()
         {
@@ -2865,29 +2849,26 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
-                    if (!string.IsNullOrEmpty(savedEncryptedFilePath))
+                    if (File.Exists(savedEncryptedFilePath))
                     {
-                        if (File.Exists(savedEncryptedFilePath))
+                        nint pidlList = Shell32Library.ILCreateFromPath(savedEncryptedFilePath);
+                        if (pidlList is not 0)
                         {
-                            nint pidlList = Shell32Library.ILCreateFromPath(savedEncryptedFilePath);
-                            if (pidlList is not 0)
-                            {
-                                Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
-                                Shell32Library.ILFree(pidlList);
-                            }
+                            Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
+                            Shell32Library.ILFree(pidlList);
+                        }
+                    }
+                    else
+                    {
+                        string directoryPath = Path.GetDirectoryName(savedEncryptedFilePath);
+
+                        if (Directory.Exists(directoryPath))
+                        {
+                            Process.Start(directoryPath);
                         }
                         else
                         {
-                            string directoryPath = Path.GetDirectoryName(savedEncryptedFilePath);
-
-                            if (Directory.Exists(directoryPath))
-                            {
-                                Process.Start(directoryPath);
-                            }
-                            else
-                            {
-                                Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-                            }
+                            Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
                         }
                     }
                 }
@@ -2901,7 +2882,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 加密检查
         /// </summary>
-        private bool EncryptCheck(int selectedIndex, DataEncryptTypeModel dataEncryptType, string encryptContent, CipherMode cipherMode, string encryptKeyText, string encryptPublicKeyText, string initializationVectorText, string encryptFile)
+        private bool EncryptCheck(int selectedIndex, DataEncryptTypeModel dataEncryptType, string encryptContent, CipherMode cipherMode, string encryptKeyText, string encryptPublicKeyText, string initializationVectorText, Encoding textEncoding, string encryptFile)
         {
             // 检查要加密的文件
             if (selectedIndex is 0)
@@ -2950,6 +2931,13 @@ namespace PowerToolbox.Views.Pages
                 {
                     case DataEncryptType.AES:
                         {
+                            if (textEncoding is null)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = TextEncodingInvalidString;
+                                return false;
+                            }
+
                             if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
@@ -2977,6 +2965,13 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.ChaCha20:
                         {
+                            if (textEncoding is null)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = TextEncodingInvalidString;
+                                return false;
+                            }
+
                             if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
@@ -2994,6 +2989,13 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.DES:
                         {
+                            if (textEncoding is null)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = TextEncodingInvalidString;
+                                return false;
+                            }
+
                             if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
@@ -3021,6 +3023,13 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.Rabbit:
                         {
+                            if (textEncoding is null)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = TextEncodingInvalidString;
+                                return false;
+                            }
+
                             if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
@@ -3038,6 +3047,13 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.RC2:
                         {
+                            if (textEncoding is null)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = TextEncodingInvalidString;
+                                return false;
+                            }
+
                             if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
@@ -3055,6 +3071,13 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.RC4:
                         {
+                            if (textEncoding is null)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = TextEncodingInvalidString;
+                                return false;
+                            }
+
                             if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
@@ -3065,6 +3088,13 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.RC5:
                         {
+                            if (textEncoding is null)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = TextEncodingInvalidString;
+                                return false;
+                            }
+
                             if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
@@ -3082,6 +3112,13 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.RC6:
                         {
+                            if (textEncoding is null)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = TextEncodingInvalidString;
+                                return false;
+                            }
+
                             if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
@@ -3099,6 +3136,13 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.Rijndael:
                         {
+                            if (textEncoding is null)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = TextEncodingInvalidString;
+                                return false;
+                            }
+
                             if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
@@ -3116,6 +3160,13 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.RSA:
                         {
+                            if (textEncoding is null)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = TextEncodingInvalidString;
+                                return false;
+                            }
+
                             if (string.IsNullOrEmpty(encryptPublicKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
@@ -3126,6 +3177,13 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.SM4:
                         {
+                            if (textEncoding is null)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = TextEncodingInvalidString;
+                                return false;
+                            }
+
                             if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
@@ -3143,6 +3201,13 @@ namespace PowerToolbox.Views.Pages
                         }
                     case DataEncryptType.TripleDES:
                         {
+                            if (textEncoding is null)
+                            {
+                                ResultSeverity = InfoBarSeverity.Error;
+                                ResultMessage = TextEncodingInvalidString;
+                                return false;
+                            }
+
                             if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
@@ -3247,24 +3312,26 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 保存加密后的数据到本地文件中
         /// </summary>
-        private async Task<(bool, bool, Exception)> SaveEncryptedDataAsync(string encryptedLocalFile, string encryptedData)
+        private async Task<(bool, Exception)> SaveEncryptedDataAsync(string localFile, string encryptedData)
         {
-            if (string.IsNullOrEmpty(encryptedLocalFile) || string.IsNullOrEmpty(encryptedData))
+            if (string.IsNullOrEmpty(encryptedData))
             {
                 return default;
             }
 
             return await Task.Run(() =>
             {
-                bool isSavedToSelectedFile = false;
-                bool isSavedToTempFile = false;
+                bool isSaved = false;
                 Exception exception = null;
 
                 // 保存到选择的本地文件中
                 try
                 {
-                    File.WriteAllText(encryptedLocalFile, encryptedData);
-                    isSavedToSelectedFile = true;
+                    if (!string.IsNullOrEmpty(localFile))
+                    {
+                        File.WriteAllText(localFile, encryptedData);
+                        isSaved = true;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -3272,23 +3339,7 @@ namespace PowerToolbox.Views.Pages
                     exception = e;
                 }
 
-                // 保存到选定的本地文件失败，自动保存到临时文件目录中
-                if (!isSavedToSelectedFile)
-                {
-                    try
-                    {
-                        encryptedLocalFile = Path.GetTempFileName();
-                        File.WriteAllText(encryptedLocalFile, encryptedData);
-                        isSavedToTempFile = true;
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(SaveEncryptedDataAsync), 2, e);
-                        exception = e;
-                    }
-                }
-
-                return ValueTuple.Create(isSavedToSelectedFile, isSavedToTempFile, exception);
+                return ValueTuple.Create(isSaved, exception);
             });
         }
 
@@ -3316,6 +3367,22 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(ViewLocalFile), 1, e);
                 }
             });
+        }
+
+        /// <summary>
+        /// 获取临时文件名称
+        /// </summary>
+        private async Task<string> GetTempFileNameAsync()
+        {
+            try
+            {
+                return Path.GetTempFileName();
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetTempFileNameAsync), 1, e);
+                return string.Empty;
+            }
         }
 
         /// <summary>
