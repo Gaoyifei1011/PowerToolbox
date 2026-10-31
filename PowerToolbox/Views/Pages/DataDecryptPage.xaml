@@ -32,25 +32,28 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <RadioButtons
                 Grid.Row="0"
+                Padding="0"
                 HorizontalAlignment="Center"
-                MaxColumns="2"
+                VerticalAlignment="Top"
+                Canvas.ZIndex="1"
+                ItemsSource="{x:Bind DataDecryptSelectorRadioList}"
                 SelectedIndex="{x:Bind SelectedIndex, Mode=OneWay}"
-                SelectionChanged="{x:Bind OnSelectionChanged}">
+                SelectionChanged="{x:Bind OnSelectionChanged}"
+                Style="{StaticResource HorizontalRadioButtonsStyle}">
 
-                <RadioButton
-                    MinWidth="0"
-                    Margin="0,0,20,0"
-                    Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('File')}" />
+                <RadioButtons.Resources>
+                    <Thickness x:Key="RadioButtonsTopHeaderMargin">0</Thickness>
+                </RadioButtons.Resources>
 
-                <RadioButton
-                    MinWidth="0"
-                    Margin="20,0,0,0"
-                    Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('Content')}" />
+                <RadioButtons.ItemTemplate>
+                    <DataTemplate x:DataType="model:RadioButtonItemModel">
+                        <RadioButton Content="{x:Bind SelectorName}" Style="{StaticResource TokenViewRadioButtonStyle}" />
+                    </DataTemplate>
+                </RadioButtons.ItemTemplate>
             </RadioButtons>
 
             <!--  从文件读取字符串，并进行解密  -->
@@ -272,23 +275,48 @@
                 IsExpanded="True">
 
                 <Expander.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                    <CommandBar
+                        Margin="0,0,-15,0"
+                        Padding="0"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
+                        DefaultLabelPosition="Right"
+                        IsDynamicOverflowEnabled="False">
 
-                        <FontIcon
-                            Grid.Column="0"
-                            Margin="0,0,12,0"
-                            FontSize="16"
-                            Glyph="&#xE97C;" />
+                        <CommandBar.Content>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
 
-                        <TextBlock
-                            Grid.Column="1"
-                            VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DataDecryptType')}" />
-                    </Grid>
+                                <FontIcon
+                                    Grid.Column="0"
+                                    Margin="0,0,12,0"
+                                    FontSize="16"
+                                    Glyph="&#xE97C;" />
+
+                                <TextBlock
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('DataDecryptType')}" />
+                            </Grid>
+                        </CommandBar.Content>
+
+                        <CommandBar.PrimaryCommands>
+                            <AppBarButton
+                                Click="{x:Bind OnStartDecryptClicked}"
+                                IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
+                                Label="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('StartDecrypt')}">
+
+                                <AppBarButton.Icon>
+                                    <FontIcon Glyph="&#xE768;" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                        </CommandBar.PrimaryCommands>
+                    </CommandBar>
                 </Expander.Header>
 
                 <RadioButtons
@@ -394,7 +422,7 @@
                             ToolTipService.ToolTip="{x:Bind system:String.Format(StringLengthString, DecryptKeyText.Length), Mode=OneWay}" />
                     </Grid>
 
-                    <MenuFlyoutSeparator Visibility="{x:Bind HasDecryptKey, Mode=OneWay}" />
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasInitializationVector, Mode=OneWay}" />
 
                     <!--  初始化向量  -->
                     <Grid
@@ -447,7 +475,7 @@
                             ToolTipService.ToolTip="{x:Bind system:String.Format(StringLengthString, InitializationVectorText.Length), Mode=OneWay}" />
                     </Grid>
 
-                    <MenuFlyoutSeparator Visibility="{x:Bind HasInitializationVector, Mode=OneWay}" />
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasDecryptedBlockCipherMode, Mode=OneWay}" />
 
                     <!--  解密的块密码模式  -->
                     <Grid
@@ -478,7 +506,7 @@
                             Style="{StaticResource ComboBoxStyle}" />
                     </Grid>
 
-                    <MenuFlyoutSeparator Visibility="{x:Bind HasDecryptedBlockCipherMode, Mode=OneWay}" />
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasPaddingMode, Mode=OneWay}" />
 
                     <!--  填充模式  -->
                     <Grid
@@ -509,7 +537,7 @@
                             Style="{StaticResource ComboBoxStyle}" />
                     </Grid>
 
-                    <MenuFlyoutSeparator Visibility="{x:Bind HasPaddingMode, Mode=OneWay}" />
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasOffset, Mode=OneWay}" />
 
                     <!--  偏移量  -->
                     <Grid
@@ -542,7 +570,7 @@
                             Value="{x:Bind Offset, Mode=OneWay}" />
                     </Grid>
 
-                    <MenuFlyoutSeparator Visibility="{x:Bind HasOffset, Mode=OneWay}" />
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasDecryptPrivateKey, Mode=OneWay}" />
 
                     <!--  解密私钥（用于非对称解密）  -->
                     <Grid
@@ -575,7 +603,7 @@
                             ToolTipService.ToolTip="{x:Bind system:String.Format(StringLengthString, DecryptPrivateKeyText.Length), Mode=OneWay}" />
                     </Grid>
 
-                    <MenuFlyoutSeparator Visibility="{x:Bind HasDecryptPrivateKey, Mode=OneWay}" />
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasRSADecryptionPaddingMode, Mode=OneWay}" />
 
                     <!--  RSA 非对称加密填充模式  -->
                     <Grid
@@ -583,7 +611,7 @@
                         Padding="44,0,16,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
-                        Visibility="{x:Bind HasRSAEncryptionPaddingMode, Mode=OneWay}">
+                        Visibility="{x:Bind HasRSADecryptionPaddingMode, Mode=OneWay}">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -593,20 +621,20 @@
                         <TextBlock
                             Grid.Column="0"
                             VerticalAlignment="Center"
-                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('RSAEncryptionPaddingMode')}" />
+                            Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('RSADecryptionPaddingMode')}" />
 
                         <ComboBox
                             Grid.Column="1"
                             VerticalAlignment="Center"
                             DisplayMemberPath="DisplayMember"
                             IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
-                            ItemsSource="{x:Bind RSAEncryptionPaddingModeList}"
-                            SelectedItem="{x:Bind SelectedRSAEncryptionPaddingMode, Mode=OneWay}"
-                            SelectionChanged="{x:Bind OnRSAEncryptionPaddingModeSelectionChanged}"
+                            ItemsSource="{x:Bind RSADecryptionPaddingModeList}"
+                            SelectedItem="{x:Bind SelectedRSADecryptionPaddingMode, Mode=OneWay}"
+                            SelectionChanged="{x:Bind OnRSADecryptionPaddingModeSelectionChanged}"
                             Style="{StaticResource ComboBoxStyle}" />
                     </Grid>
 
-                    <MenuFlyoutSeparator Visibility="{x:Bind HasRSAEncryptionPaddingMode, Mode=OneWay}" />
+                    <MenuFlyoutSeparator Visibility="{x:Bind HasParseAsTextData, Mode=OneWay}" />
 
                     <!--  以文本方式解析解密后的数据  -->
                     <Grid
@@ -635,7 +663,7 @@
                             Toggled="{x:Bind OnParseAsTextDataToggled}" />
                     </Grid>
 
-                    <MenuFlyoutSeparator Visibility="{x:Bind HasParseAsTextData, Mode=OneWay}" />
+                    <MenuFlyoutSeparator Visibility="{x:Bind GetHasParseAsTextDataVisibility(HasParseAsTextData, ParseAsTextData), Mode=OneWay}" />
 
                     <!--  文字解码类型  -->
                     <Grid
@@ -666,7 +694,7 @@
                             Style="{StaticResource ComboBoxStyle}" />
                     </Grid>
 
-                    <MenuFlyoutSeparator Visibility="{x:Bind GetHasParseAsTextDataVisibility(HasParseAsTextData, ParseAsTextData), Mode=OneWay}" />
+                    <MenuFlyoutSeparator Visibility="{x:Bind GetCustomTextEncodingTypeVisibility(HasParseAsTextData, ParseAsTextData, SelectedTextEncodingType.SelectedValue, TextEncodingTypeList[10].SelectedValue), Mode=OneWay}" />
 
                     <!--  文字编码类型为自定义时手动设置编码类型  -->
                     <Grid
@@ -792,7 +820,7 @@
                                 TextWrapping="NoWrap"
                                 Visibility="{x:Bind converter:ValueConverterHelper.StringToVisibilityConvert(SaveDecryptedFilePath), Mode=OneWay}">
 
-                                <Hyperlink Click="{x:Bind OnSaveDecryptedFilePathClicked}" UnderlineStyle="None">
+                                <Hyperlink Click="{x:Bind OnOpenSaveDecryptedFilePathClicked}" UnderlineStyle="None">
                                     <Run Text="{x:Bind SaveDecryptedFilePath, Mode=OneWay}" />
                                 </Hyperlink>
 
@@ -812,54 +840,19 @@
                         <Button
                             Grid.Column="1"
                             Margin="6,0,0,0"
-                            Click="{x:Bind OnChangeFolderClicked}"
-                            Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ChangeFilePath')}" />
+                            Click="{x:Bind OnSetFilePathClicked}"
+                            Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('SetFilePath')}" />
                     </Grid>
                 </StackPanel>
             </Expander>
 
-            <!--  数据解密控制栏  -->
-            <Grid
-                Grid.Row="7"
-                Height="60"
-                Margin="0,0,0,3"
-                Padding="16,0"
-                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                BorderThickness="1"
-                CornerRadius="{StaticResource ControlCornerRadius}">
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <FontIcon
-                    Grid.Column="0"
-                    Margin="0,0,12,0"
-                    FontSize="16"
-                    Glyph="&#xE74C;" />
-
-                <TextBlock
-                    Grid.Column="1"
-                    VerticalAlignment="Center"
-                    Text="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('Operation')}" />
-
-                <Button
-                    Grid.Column="2"
-                    Click="{x:Bind OnStartDecryptClicked}"
-                    Content="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('StartDecrypt')}"
-                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsDecrypting), Mode=OneWay}"
-                    Style="{StaticResource AccentButtonStyle}" />
-            </Grid>
-
             <!--  数据解密结果列表  -->
             <Expander
-                Grid.Row="8"
+                Grid.Row="7"
                 Margin="0,0,0,3"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                 IsExpanded="True"
                 Visibility="{x:Bind GetDecryptResultVisibility(ResultSeverity), Mode=OneWay}">
 
@@ -902,7 +895,7 @@
 
             <!--  小提示  -->
             <Expander
-                Grid.Row="9"
+                Grid.Row="8"
                 Padding="0"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
