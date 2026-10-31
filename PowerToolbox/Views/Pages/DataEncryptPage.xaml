@@ -32,7 +32,6 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <RadioButtons
@@ -961,7 +960,7 @@
 
             <!--  数据加密结果列表  -->
             <Expander
-                Grid.Row="8"
+                Grid.Row="7"
                 Margin="0,0,0,3"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
@@ -1008,7 +1007,7 @@
 
             <!--  小提示  -->
             <Expander
-                Grid.Row="9"
+                Grid.Row="8"
                 Padding="0"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
