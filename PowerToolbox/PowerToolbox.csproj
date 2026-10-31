@@ -192,127 +192,127 @@
     <Content Include="Assets\Wide310x150Logo.scale-200.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" CopyToOutputDirectory="Always" />
 
-    <EmbeddedResource Include="Strings\AdvancedSystemOptions.en-us.restext" />
-    <EmbeddedResource Include="Strings\AdvancedSystemOptions.restext" />
-    <EmbeddedResource Include="Strings\AdvancedSystemOptions.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\AdvancedSystemOptionsList.en-us.restext" />
-    <EmbeddedResource Include="Strings\AdvancedSystemOptionsList.restext" />
-    <EmbeddedResource Include="Strings\AdvancedSystemOptionsList.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\AdvancedSystemOptionsSystem.en-us.restext" />
-    <EmbeddedResource Include="Strings\AdvancedSystemOptionsSystem.restext" />
-    <EmbeddedResource Include="Strings\AdvancedSystemOptionsSystem.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\AdvancedSystemOptionsPersonalization.en-us.restext" />
-    <EmbeddedResource Include="Strings\AdvancedSystemOptionsPersonalization.restext" />
-    <EmbeddedResource Include="Strings\AdvancedSystemOptionsPersonalization.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\AllTools.en-us.restext" />
-    <EmbeddedResource Include="Strings\AllTools.restext" />
-    <EmbeddedResource Include="Strings\AllTools.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\ContextMenuManager.en-us.restext" />
-    <EmbeddedResource Include="Strings\ContextMenuManager.restext" />
-    <EmbeddedResource Include="Strings\ContextMenuManager.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\DataDecrypt.en-us.restext" />
-    <EmbeddedResource Include="Strings\DataDecrypt.restext" />
-    <EmbeddedResource Include="Strings\DataDecrypt.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\DataEncrypt.en-us.restext" />
-    <EmbeddedResource Include="Strings\DataEncrypt.restext" />
-    <EmbeddedResource Include="Strings\DataEncrypt.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\DataVerifyEncrypt.en-us.restext" />
-    <EmbeddedResource Include="Strings\DataVerifyEncrypt.restext" />
-    <EmbeddedResource Include="Strings\DataVerifyEncrypt.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\DataVerify.en-us.restext" />
-    <EmbeddedResource Include="Strings\DataVerify.restext" />
-    <EmbeddedResource Include="Strings\DataVerify.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\Dialog.en-us.restext" />
-    <EmbeddedResource Include="Strings\Dialog.restext" />
-    <EmbeddedResource Include="Strings\Dialog.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\DownloadManager.en-us.restext" />
-    <EmbeddedResource Include="Strings\DownloadManager.restext" />
-    <EmbeddedResource Include="Strings\DownloadManager.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\DriverManager.en-us.restext" />
-    <EmbeddedResource Include="Strings\DriverManager.restext" />
-    <EmbeddedResource Include="Strings\DriverManager.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\ExtensionName.en-us.restext" />
-    <EmbeddedResource Include="Strings\ExtensionName.restext" />
-    <EmbeddedResource Include="Strings\ExtensionName.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\FileCertificate.en-us.restext" />
-    <EmbeddedResource Include="Strings\FileCertificate.restext" />
-    <EmbeddedResource Include="Strings\FileCertificate.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\FileManager.en-us.restext" />
-    <EmbeddedResource Include="Strings\FileManager.restext" />
-    <EmbeddedResource Include="Strings\FileManager.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\FileName.en-us.restext" />
-    <EmbeddedResource Include="Strings\FileName.restext" />
-    <EmbeddedResource Include="Strings\FileName.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\FileProperties.en-us.restext" />
-    <EmbeddedResource Include="Strings\FileProperties.restext" />
-    <EmbeddedResource Include="Strings\FileProperties.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\FileUnlock.en-us.restext" />
-    <EmbeddedResource Include="Strings\FileUnlock.restext" />
-    <EmbeddedResource Include="Strings\FileUnlock.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\IconExtract.en-us.restext" />
-    <EmbeddedResource Include="Strings\IconExtract.restext" />
-    <EmbeddedResource Include="Strings\IconExtract.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\Loaf.en-us.restext" />
-    <EmbeddedResource Include="Strings\Loaf.restext" />
-    <EmbeddedResource Include="Strings\Loaf.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\LoopbackManager.en-us.restext" />
-    <EmbeddedResource Include="Strings\LoopbackManager.restext" />
-    <EmbeddedResource Include="Strings\LoopbackManager.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\NotificationTip.en-us.restext" />
-    <EmbeddedResource Include="Strings\NotificationTip.restext" />
-    <EmbeddedResource Include="Strings\NotificationTip.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\PriExtract.en-us.restext" />
-    <EmbeddedResource Include="Strings\PriExtract.restext" />
-    <EmbeddedResource Include="Strings\PriExtract.zh-hans.restext" />
+    <EmbeddedResource Include="Strings\AdvancedSystemOptions.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AdvancedSystemOptions.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AdvancedSystemOptions.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AdvancedSystemOptionsList.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AdvancedSystemOptionsList.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AdvancedSystemOptionsList.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AdvancedSystemOptionsSystem.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AdvancedSystemOptionsSystem.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AdvancedSystemOptionsSystem.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AdvancedSystemOptionsPersonalization.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AdvancedSystemOptionsPersonalization.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AdvancedSystemOptionsPersonalization.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AllTools.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AllTools.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\AllTools.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ContextMenuManager.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ContextMenuManager.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ContextMenuManager.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DataDecrypt.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DataDecrypt.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DataDecrypt.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DataEncrypt.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DataEncrypt.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DataEncrypt.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DataVerifyEncrypt.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DataVerifyEncrypt.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DataVerifyEncrypt.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DataVerify.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DataVerify.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DataVerify.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\Dialog.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\Dialog.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\Dialog.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DownloadManager.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DownloadManager.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DownloadManager.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DriverManager.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DriverManager.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\DriverManager.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ExtensionName.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ExtensionName.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ExtensionName.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileCertificate.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileCertificate.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileCertificate.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileManager.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileManager.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileManager.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileName.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileName.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileName.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileProperties.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileProperties.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileProperties.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileUnlock.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileUnlock.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\FileUnlock.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\IconExtract.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\IconExtract.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\IconExtract.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\Loaf.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\Loaf.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\Loaf.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\LoopbackManager.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\LoopbackManager.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\LoopbackManager.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\NotificationTip.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\NotificationTip.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\NotificationTip.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\PriExtract.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\PriExtract.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\PriExtract.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
     <EmbeddedResource Include="Strings\Resources.resx" Generator="PublicResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
-    <EmbeddedResource Include="Strings\ScheduledTaskManager.en-us.restext" />
-    <EmbeddedResource Include="Strings\ScheduledTaskManager.restext" />
-    <EmbeddedResource Include="Strings\ScheduledTaskManager.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\Settings.en-us.restext" />
-    <EmbeddedResource Include="Strings\Settings.restext" />
-    <EmbeddedResource Include="Strings\Settings.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\SettingsAbout.en-us.restext" />
-    <EmbeddedResource Include="Strings\SettingsAbout.restext" />
-    <EmbeddedResource Include="Strings\SettingsAbout.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\SettingsAdvanced.en-us.restext" />
-    <EmbeddedResource Include="Strings\SettingsAdvanced.restext" />
-    <EmbeddedResource Include="Strings\SettingsAdvanced.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\SettingsGeneral.en-us.restext" />
-    <EmbeddedResource Include="Strings\SettingsGeneral.restext" />
-    <EmbeddedResource Include="Strings\SettingsGeneral.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\ShellMenu.en-us.restext" />
-    <EmbeddedResource Include="Strings\ShellMenu.restext" />
-    <EmbeddedResource Include="Strings\ShellMenu.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\ShellMenuEdit.en-us.restext" />
-    <EmbeddedResource Include="Strings\ShellMenuEdit.restext" />
-    <EmbeddedResource Include="Strings\ShellMenuEdit.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\ShellMenuList.en-us.restext" />
-    <EmbeddedResource Include="Strings\ShellMenuList.restext" />
-    <EmbeddedResource Include="Strings\ShellMenuList.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\SimulateUpdate.en-us.restext" />
-    <EmbeddedResource Include="Strings\SimulateUpdate.restext" />
-    <EmbeddedResource Include="Strings\SimulateUpdate.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\SystemInformation.en-us.restext" />
-    <EmbeddedResource Include="Strings\SystemInformation.restext" />
-    <EmbeddedResource Include="Strings\SystemInformation.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\ThemeSwitch.en-us.restext" />
-    <EmbeddedResource Include="Strings\ThemeSwitch.restext" />
-    <EmbeddedResource Include="Strings\ThemeSwitch.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\UpdateManager.en-us.restext" />
-    <EmbeddedResource Include="Strings\UpdateManager.restext" />
-    <EmbeddedResource Include="Strings\UpdateManager.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\UpperAndLowerCase.en-us.restext" />
-    <EmbeddedResource Include="Strings\UpperAndLowerCase.restext" />
-    <EmbeddedResource Include="Strings\UpperAndLowerCase.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\Window.en-us.restext" />
-    <EmbeddedResource Include="Strings\Window.restext" />
-    <EmbeddedResource Include="Strings\Window.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\WinFR.en-us.restext" />
-    <EmbeddedResource Include="Strings\WinFR.restext" />
-    <EmbeddedResource Include="Strings\WinFR.zh-hans.restext" />
-    <EmbeddedResource Include="Strings\WinSAT.en-us.restext" />
-    <EmbeddedResource Include="Strings\WinSAT.restext" />
-    <EmbeddedResource Include="Strings\WinSAT.zh-hans.restext" />
+    <EmbeddedResource Include="Strings\ScheduledTaskManager.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ScheduledTaskManager.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ScheduledTaskManager.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\Settings.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\Settings.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\Settings.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SettingsAbout.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SettingsAbout.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SettingsAbout.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SettingsAdvanced.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SettingsAdvanced.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SettingsAdvanced.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SettingsGeneral.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SettingsGeneral.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SettingsGeneral.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ShellMenu.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ShellMenu.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ShellMenu.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ShellMenuEdit.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ShellMenuEdit.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ShellMenuEdit.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ShellMenuList.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ShellMenuList.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ShellMenuList.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SimulateUpdate.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SimulateUpdate.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SimulateUpdate.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SystemInformation.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SystemInformation.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\SystemInformation.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ThemeSwitch.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ThemeSwitch.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\ThemeSwitch.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\UpdateManager.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\UpdateManager.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\UpdateManager.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\UpperAndLowerCase.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\UpperAndLowerCase.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\UpperAndLowerCase.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\Window.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\Window.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\Window.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\WinFR.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\WinFR.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\WinFR.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\WinSAT.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\WinSAT.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
+    <EmbeddedResource Include="Strings\WinSAT.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
 
     <None Remove="Assets\PowerToolbox.ico" CopyToOutputDirectory="Never" />
     <None Remove="Styles\BreadcrumbBar.xaml" />
