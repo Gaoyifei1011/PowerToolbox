@@ -31,8 +31,10 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class DataEncryptPage : Page, INotifyPropertyChanged
     {
-        private readonly string AllFilesString = ResourceService.DataEncryptResource.GetString("AllFiles");
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string AESString = ResourceService.DataEncryptResource.GetString("AES");
+        private readonly string AllFilesString = ResourceService.DataEncryptResource.GetString("AllFiles");
         private readonly string ANSIX923String = ResourceService.DataEncryptResource.GetString("ANSIX923");
         private readonly string ASCIIString = ResourceService.DataEncryptResource.GetString("ASCII");
         private readonly string Base64String = ResourceService.DataEncryptResource.GetString("Base64");
@@ -41,13 +43,14 @@ namespace PowerToolbox.Views.Pages
         private readonly string CBCString = ResourceService.DataEncryptResource.GetString("CBC");
         private readonly string CFBString = ResourceService.DataEncryptResource.GetString("CFB");
         private readonly string ChaCha20String = ResourceService.DataEncryptResource.GetString("ChaCha20");
+        private readonly string ContentEmptyString = ResourceService.DataEncryptResource.GetString("ContentEmpty");
         private readonly string ContentEncryptedDataSaveFailedString = ResourceService.DataEncryptResource.GetString("ContentEncryptedDataSaveFailed");
         private readonly string ContentEncryptedDataSaveSuccessfullyString = ResourceService.DataEncryptResource.GetString("ContentEncryptedDataSaveSuccessfully");
         private readonly string ContentEncryptFailedString = ResourceService.DataEncryptResource.GetString("ContentEncryptFailed");
         private readonly string ContentEncryptedDataSaveFailedToTempFileString = ResourceService.DataEncryptResource.GetString("ContentEncryptedDataSaveFailedToTempFile");
         private readonly string ContentEncryptSuccessfullyString = ResourceService.DataEncryptResource.GetString("ContentEncryptSuccessfully");
-        private readonly string ContentEmptyString = ResourceService.DataEncryptResource.GetString("ContentEmpty");
         private readonly string ContentInitializeString = ResourceService.DataEncryptResource.GetString("ContentInitialize");
+        private readonly string ContentString = ResourceService.DataEncryptResource.GetString("Content");
         private readonly string CTSString = ResourceService.DataEncryptResource.GetString("CTS");
         private readonly string CustomString = ResourceService.DataEncryptResource.GetString("Custom");
         private readonly string DESString = ResourceService.DataEncryptResource.GetString("DES");
@@ -55,8 +58,8 @@ namespace PowerToolbox.Views.Pages
         private readonly string ECBString = ResourceService.DataEncryptResource.GetString("ECB");
         private readonly string EncryptingString = ResourceService.DataEncryptResource.GetString("Encrypting");
         private readonly string EncryptKey162432SizeString = ResourceService.DataEncryptResource.GetString("EncryptKey162432Size");
-        private readonly string EncryptKey1624SizeString = ResourceService.DataEncryptResource.GetString("EncryptKey1624Size");
         private readonly string EncryptKey16SizeString = ResourceService.DataEncryptResource.GetString("EncryptKey16Size");
+        private readonly string EncryptKey24SizeString = ResourceService.DataEncryptResource.GetString("EncryptKey24Size");
         private readonly string EncryptKey32SizeString = ResourceService.DataEncryptResource.GetString("EncryptKey32Size");
         private readonly string EncryptKey8SizeString = ResourceService.DataEncryptResource.GetString("EncryptKey8Size");
         private readonly string EncryptKeyEmptyString = ResourceService.DataEncryptResource.GetString("EncryptKeyEmpty");
@@ -64,6 +67,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string EncryptPublicKeyEmptyString = ResourceService.DataEncryptResource.GetString("EncryptPublicKeyEmpty");
         private readonly string EncryptTypeMustContentString = ResourceService.DataEncryptResource.GetString("EncryptTypeMustContent");
         private readonly string EncryptTypeNotSelectedString = ResourceService.DataEncryptResource.GetString("EncryptTypeNotSelected");
+        private readonly string FileString = ResourceService.DataEncryptResource.GetString("File");
         private readonly string FileEncryptedDataSaveFailedString = ResourceService.DataEncryptResource.GetString("FileEncryptedDataSaveFailed");
         private readonly string FileEncryptedDataSaveFailedToTempFileString = ResourceService.DataEncryptResource.GetString("FileEncryptedDataSaveFailedToTempFile");
         private readonly string FileEncryptedDataSaveSuccessfullyString = ResourceService.DataEncryptResource.GetString("FileEncryptedDataSaveSuccessfully");
@@ -109,14 +113,18 @@ namespace PowerToolbox.Views.Pages
         private readonly string UTF8String = ResourceService.DataEncryptResource.GetString("UTF8");
         private readonly string XORString = ResourceService.DataEncryptResource.GetString("XOR");
         private readonly string ZerosString = ResourceService.DataEncryptResource.GetString("Zeros");
-        private int selectEncryptIndex = -1;
+        private int selectedEncryptIndex = -1;
         private string selectedEncryptFile = string.Empty;
         private string inputtedEncryptContent = string.Empty;
         private string encryptedLocalFile = string.Empty;
 
-        private int _selectedIndex = 0;
+        #endregion 第一部分：常量、资源与状态字段
 
-        internal int SelectedIndex
+        #region 第二部分：属性、列表与事件
+
+        private int _selectedIndex;
+
+        private int SelectedIndex
         {
             get { return _selectedIndex; }
 
@@ -148,7 +156,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _encryptContent;
 
-        internal string EncryptContent
+        private string EncryptContent
         {
             get { return _encryptContent; }
 
@@ -180,7 +188,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _resultMessage;
 
-        internal string ResultMessage
+        private string ResultMessage
         {
             get { return _resultMessage; }
 
@@ -196,7 +204,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _encryptFailedInformation;
 
-        internal string EncryptFailedInformation
+        private string EncryptFailedInformation
         {
             get { return _encryptFailedInformation; }
 
@@ -212,7 +220,7 @@ namespace PowerToolbox.Views.Pages
 
         private DataEncryptTypeModel _selectedDataEncryptType;
 
-        internal DataEncryptTypeModel SelectedDataEncryptType
+        private DataEncryptTypeModel SelectedDataEncryptType
         {
             get { return _selectedDataEncryptType; }
 
@@ -228,7 +236,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEncryptOptions;
 
-        internal bool HasEncryptOptions
+        private bool HasEncryptOptions
         {
             get { return _hasEncryptOptions; }
 
@@ -244,7 +252,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEncryptKey;
 
-        internal bool HasEncryptKey
+        private bool HasEncryptKey
         {
             get { return _hasEncryptKey; }
 
@@ -260,7 +268,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEncryptKeyStringType;
 
-        internal bool HasEncryptKeyStringType
+        private bool HasEncryptKeyStringType
         {
             get { return _hasEncryptKeyStringType; }
 
@@ -276,7 +284,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedEncryptKeyStringType;
 
-        internal ComboBoxItemModel SelectedEncryptKeyStringType
+        private ComboBoxItemModel SelectedEncryptKeyStringType
         {
             get { return _selectedEncryptKeyStringType; }
 
@@ -290,9 +298,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _encryptKeyPHText = string.Empty;
+        private string _encryptKeyPHText;
 
-        internal string EncryptKeyPHText
+        private string EncryptKeyPHText
         {
             get { return _encryptKeyPHText; }
 
@@ -306,9 +314,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _encryptKeyText = string.Empty;
+        private string _encryptKeyText;
 
-        internal string EncryptKeyText
+        private string EncryptKeyText
         {
             get { return _encryptKeyText; }
 
@@ -324,7 +332,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasInitializationVector;
 
-        internal bool HasInitializationVector
+        private bool HasInitializationVector
         {
             get { return _hasInitializationVector; }
 
@@ -338,9 +346,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _initializationVectorPHText = string.Empty;
+        private string _initializationVectorPHText;
 
-        internal string InitializationVectorPHText
+        private string InitializationVectorPHText
         {
             get { return _initializationVectorPHText; }
 
@@ -354,9 +362,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _initializationVectorText = string.Empty;
+        private string _initializationVectorText;
 
-        internal string InitializationVectorText
+        private string InitializationVectorText
         {
             get { return _initializationVectorText; }
 
@@ -372,7 +380,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedInitializationVectorStringType;
 
-        internal ComboBoxItemModel SelectedInitializationVectorStringType
+        private ComboBoxItemModel SelectedInitializationVectorStringType
         {
             get { return _selectedInitializationVectorStringType; }
 
@@ -388,7 +396,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEncryptedBlockCipherMode;
 
-        internal bool HasEncryptedBlockCipherMode
+        private bool HasEncryptedBlockCipherMode
         {
             get { return _hasEncryptedBlockCipherMode; }
 
@@ -404,7 +412,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedEncryptedBlockCipherMode;
 
-        internal ComboBoxItemModel SelectedEncryptedBlockCipherMode
+        private ComboBoxItemModel SelectedEncryptedBlockCipherMode
         {
             get { return _selectedEncryptedBlockCipherMode; }
 
@@ -420,7 +428,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasPaddingMode;
 
-        internal bool HasPaddingMode
+        private bool HasPaddingMode
         {
             get { return _hasPaddingMode; }
 
@@ -436,7 +444,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedPaddingMode;
 
-        internal ComboBoxItemModel SelectedPaddingMode
+        private ComboBoxItemModel SelectedPaddingMode
         {
             get { return _selectedPaddingMode; }
 
@@ -452,7 +460,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasOffset;
 
-        internal bool HasOffset
+        private bool HasOffset
         {
             get { return _hasOffset; }
 
@@ -468,7 +476,7 @@ namespace PowerToolbox.Views.Pages
 
         private int _offset;
 
-        internal int Offset
+        private int Offset
         {
             get { return _offset; }
 
@@ -484,7 +492,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEncryptPublicKey;
 
-        internal bool HasEncryptPublicKey
+        private bool HasEncryptPublicKey
         {
             get { return _hasEncryptPublicKey; }
 
@@ -500,7 +508,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _encryptPublicKeyText;
 
-        internal string EncryptPublicKeyText
+        private string EncryptPublicKeyText
         {
             get { return _encryptPublicKeyText; }
 
@@ -516,7 +524,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasEncryptPrivateKey;
 
-        internal bool HasEncryptPrivateKey
+        private bool HasEncryptPrivateKey
         {
             get { return _hasEncryptPrivateKey; }
 
@@ -532,7 +540,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _encryptPrivateKeyText;
 
-        internal string EncryptPrivateKeyText
+        private string EncryptPrivateKeyText
         {
             get { return _encryptPrivateKeyText; }
 
@@ -548,7 +556,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasRSAEncryptionPaddingMode;
 
-        internal bool HasRSAEncryptionPaddingMode
+        private bool HasRSAEncryptionPaddingMode
         {
             get { return _hasRSAEncryptionPaddingMode; }
 
@@ -564,7 +572,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedRSAEncryptionPaddingMode;
 
-        internal ComboBoxItemModel SelectedRSAEncryptionPaddingMode
+        private ComboBoxItemModel SelectedRSAEncryptionPaddingMode
         {
             get { return _selectedRSAEncryptionPaddingMode; }
 
@@ -580,7 +588,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _hasRSAEncryptionOtherOptions;
 
-        internal bool HasRSAEncryptionOtherOptions
+        private bool HasRSAEncryptionOtherOptions
         {
             get { return _hasRSAEncryptionOtherOptions; }
 
@@ -596,7 +604,7 @@ namespace PowerToolbox.Views.Pages
 
         private ComboBoxItemModel _selectedTextEncodingType;
 
-        internal ComboBoxItemModel SelectedTextEncodingType
+        private ComboBoxItemModel SelectedTextEncodingType
         {
             get { return _selectedTextEncodingType; }
 
@@ -612,7 +620,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _textEncodingCustomTypeText;
 
-        internal string TextEncodingCustomTypeText
+        private string TextEncodingCustomTypeText
         {
             get { return _textEncodingCustomTypeText; }
 
@@ -628,7 +636,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _saveEncryptedDataToLocalFile;
 
-        internal bool SaveEncryptedDataToLocalFile
+        private bool SaveEncryptedDataToLocalFile
         {
             get { return _saveEncryptedDataToLocalFile; }
 
@@ -642,9 +650,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _saveEncryptedFilePath = string.Empty;
+        private string _saveEncryptedFilePath;
 
-        internal string SaveEncryptedFilePath
+        private string SaveEncryptedFilePath
         {
             get { return _saveEncryptedFilePath; }
 
@@ -664,7 +672,7 @@ namespace PowerToolbox.Views.Pages
         {
             get { return _isEncrypting; }
 
-            set
+            private set
             {
                 if (!Equals(_isEncrypting, value))
                 {
@@ -676,7 +684,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _encryptResult;
 
-        internal string EncryptResult
+        private string EncryptResult
         {
             get { return _encryptResult; }
 
@@ -692,7 +700,7 @@ namespace PowerToolbox.Views.Pages
 
         private bool _isLargeContent;
 
-        internal bool IsLargeContent
+        private bool IsLargeContent
         {
             get { return _isLargeContent; }
 
@@ -705,6 +713,8 @@ namespace PowerToolbox.Views.Pages
                 }
             }
         }
+
+        private List<RadioButtonItemModel> DataEncryptSelectorRadioList { get; } = [];
 
         private List<DataEncryptTypeModel> DataEncryptTypeList { get; } = [];
 
@@ -722,127 +732,19 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal DataEncryptPage()
         {
             InitializeComponent();
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.AES,
-                Name = AESString
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.CaesarCipher,
-                Name = CaesarCipherString
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.ChaCha20,
-                Name = ChaCha20String
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.DES,
-                Name = DESString
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.MorseCode,
-                Name = MorseCodeString
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.Rabbit,
-                Name = RabbitString
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.RC2,
-                Name = RC2String
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.RC4,
-                Name = RC4String
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.RC5,
-                Name = RC5String
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.RC6,
-                Name = RC6String
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.Rijndael,
-                Name = RijndaelString
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.RSA,
-                Name = RSAString
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.SM4,
-                Name = SM4String
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.TripleDES,
-                Name = TripleDESString
-            });
-            DataEncryptTypeList.Add(new()
-            {
-                DataEncryptType = DataEncryptType.XOR,
-                Name = XORString
-            });
-            SelectedDataEncryptType = DataEncryptTypeList[0];
-            EncryptKeyStringTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
-            EncryptKeyStringTypeList.Add(new() { SelectedValue = "Base64", DisplayMember = Base64String });
-            InitializationVectorStringTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
-            InitializationVectorStringTypeList.Add(new() { SelectedValue = "Base64", DisplayMember = Base64String });
-            EncryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.CBC, DisplayMember = CBCString });
-            EncryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.ECB, DisplayMember = ECBString });
-            EncryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.OFB, DisplayMember = OFBString });
-            EncryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.CFB, DisplayMember = CFBString });
-            EncryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.CTS, DisplayMember = CTSString });
-            PaddingModeList.Add(new() { SelectedValue = PaddingMode.None, DisplayMember = NonePaddingString });
-            PaddingModeList.Add(new() { SelectedValue = PaddingMode.PKCS7, DisplayMember = Pkcs7String });
-            PaddingModeList.Add(new() { SelectedValue = PaddingMode.Zeros, DisplayMember = ZerosString });
-            PaddingModeList.Add(new() { SelectedValue = PaddingMode.ANSIX923, DisplayMember = ANSIX923String });
-            PaddingModeList.Add(new() { SelectedValue = PaddingMode.ISO10126, DisplayMember = ISO10126String });
-            RSAEncryptionPaddingModeList.Add(new() { SelectedValue = RSAEncryptionPaddingMode.Pkcs1, DisplayMember = Pkcs1String });
-            RSAEncryptionPaddingModeList.Add(new() { SelectedValue = RSAEncryptionPaddingMode.Oaep, DisplayMember = OaepString });
-            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.ASCII), DisplayMember = ASCIIString });
-            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.BigEndianUnicode), DisplayMember = BigEndianUnicodeString });
-            TextEncodingTypeList.Add(new() { SelectedValue = "ISO-8859-1", DisplayMember = ISO88591String });
-            TextEncodingTypeList.Add(new() { SelectedValue = "GB18030", DisplayMember = GB18030String });
-            TextEncodingTypeList.Add(new() { SelectedValue = "GB2312", DisplayMember = GB2312String });
-            TextEncodingTypeList.Add(new() { SelectedValue = "GBK", DisplayMember = GBKString });
-            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.Unicode), DisplayMember = UnicodeString });
-            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF32), DisplayMember = UTF32String });
-            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF7), DisplayMember = UTF7String });
-            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
-            TextEncodingTypeList.Add(new() { SelectedValue = "Custom", DisplayMember = CustomString });
-            SelectedTextEncodingType = TextEncodingTypeList[9];
-
-            SelectedIndex = 0;
-            ResultSeverity = InfoBarSeverity.Informational;
-            if (!IsEncrypting && SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
-            {
-                ResultMessage = FileInitializeString;
-            }
-            else if (!IsEncrypting && SelectedIndex is 1 && ResultSeverity is InfoBarSeverity.Informational)
-            {
-                ResultMessage = ContentInitializeString;
-            }
+            InitializeData();
         }
 
-        #region 第一部分：数据加密页面——挂载的事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：挂载事件处理
 
         /// <summary>
         /// 设置拖动的数据的可视表示形式
@@ -863,12 +765,8 @@ namespace PowerToolbox.Views.Pages
                 }
                 else
                 {
-                    IReadOnlyList<IStorageItem> dragItemsList = await args.DataView.GetStorageItemsAsync();
-
-                    if (dragItemsList.Count is 1)
+                    if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count is 1)
                     {
-                        string extensionName = Path.GetExtension(dragItemsList[0].Name);
-
                         args.AcceptedOperation = DataPackageOperation.Copy;
                         args.DragUIOverride.IsCaptionVisible = true;
                         args.DragUIOverride.IsContentVisible = false;
@@ -903,34 +801,17 @@ namespace PowerToolbox.Views.Pages
         {
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
             string filePath = string.Empty;
+
             try
             {
-                DataPackageView dataPackageView = args.DataView;
-                IReadOnlyList<IStorageItem> filesList = await Task.Run(async () =>
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count is 1)
                 {
-                    try
-                    {
-                        if (dataPackageView.Contains(StandardDataFormats.StorageItems))
-                        {
-                            return await dataPackageView.GetStorageItemsAsync();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnDrop), 1, e);
-                    }
-
-                    return null;
-                });
-
-                if (filesList is not null && filesList.Count is 1)
-                {
-                    filePath = filesList[0].Path;
+                    filePath = fileList[0];
                 }
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnDrop), 2, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(OnDrop), 1, e);
             }
             finally
             {
@@ -1004,7 +885,6 @@ namespace PowerToolbox.Views.Pages
             if (!string.IsNullOrEmpty(EncryptFailedInformation))
             {
                 bool copyResult = CopyPasteHelper.CopyToClipboard(EncryptFailedInformation);
-
                 await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
             }
         }
@@ -1390,10 +1270,10 @@ namespace PowerToolbox.Views.Pages
                             }
                         case DataEncryptType.TripleDES:
                             {
-                                EncryptKeyPHText = EncryptKey1624SizeString;
+                                EncryptKeyPHText = EncryptKey24SizeString;
                                 EncryptKeyText = string.Empty;
                                 SelectedEncryptKeyStringType = EncryptKeyStringTypeList[0];
-                                InitializationVectorPHText = InitializationVector16SizeString;
+                                InitializationVectorPHText = InitializationVector8SizeString;
                                 InitializationVectorText = string.Empty;
                                 SelectedInitializationVectorStringType = InitializationVectorStringTypeList[0];
                                 SelectedEncryptedBlockCipherMode = EncryptedBlockCipherModeList[0];
@@ -1480,108 +1360,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnGenerateRandomKeyClicked(object sender, RoutedEventArgs args)
         {
             SelectedEncryptKeyStringType = EncryptKeyStringTypeList[1];
-            EncryptKeyText = await Task.Run(() =>
-            {
-                string encryptKey = string.Empty;
-
-                try
-                {
-                    if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.AES)
-                    {
-                        // 默认密钥支持 16 字节，24 字节和 32 字节，目前使用 16 字节
-                        byte[] keyBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(keyBytes);
-                        encryptKey = Convert.ToBase64String(keyBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.ChaCha20)
-                    {
-                        // 默认密钥支持 32 字节
-                        byte[] keyBytes = new byte[32];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(keyBytes);
-                        encryptKey = Convert.ToBase64String(keyBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.DES)
-                    {
-                        // 默认密钥支持 8 字节
-                        byte[] keyBytes = new byte[8];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(keyBytes);
-                        encryptKey = Convert.ToBase64String(keyBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rabbit)
-                    {
-                        // 默认密钥支持 16 字节
-                        byte[] keyBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(keyBytes);
-                        encryptKey = Convert.ToBase64String(keyBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC2)
-                    {
-                        // 默认密钥支持 16 字节
-                        byte[] keyBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(keyBytes);
-                        encryptKey = Convert.ToBase64String(keyBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC4)
-                    {
-                        // 默认密钥支持 16 字节
-                        byte[] keyBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(keyBytes);
-                        encryptKey = Convert.ToBase64String(keyBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC5)
-                    {
-                        // 默认密钥支持 16 字节
-                        byte[] keyBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(keyBytes);
-                        encryptKey = Convert.ToBase64String(keyBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC6)
-                    {
-                        // 默认密钥支持 16 字节
-                        byte[] keyBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(keyBytes);
-                        encryptKey = Convert.ToBase64String(keyBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rijndael)
-                    {
-                        // 默认密钥支持 16 字节，24 字节和 32 字节，目前使用 16 字节
-                        byte[] keyBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(keyBytes);
-                        encryptKey = Convert.ToBase64String(keyBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.SM4)
-                    {
-                        // 默认密钥支持 16 字节
-                        byte[] keyBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(keyBytes);
-                        encryptKey = Convert.ToBase64String(keyBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.TripleDES)
-                    {
-                        // 默认密钥支持 16 字节和 24 字节，目前使用 16 字节
-                        byte[] keyBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(keyBytes);
-                        encryptKey = Convert.ToBase64String(keyBytes);
-                    }
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnGenerateRandomKeyClicked), 1, e);
-                }
-
-                return encryptKey;
-            });
+            EncryptKeyText = await GetEncryptKeyAsync(SelectedDataEncryptType.DataEncryptType);
         }
 
         /// <summary>
@@ -1612,100 +1391,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnGenerateInitializationVectorClicked(object sender, RoutedEventArgs args)
         {
             SelectedInitializationVectorStringType = InitializationVectorStringTypeList[1];
-            InitializationVectorText = await Task.Run(() =>
-            {
-                string initializationVector = string.Empty;
-
-                try
-                {
-                    if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.AES)
-                    {
-                        // 初始化向量支持 16 字节
-                        byte[] initializationVectorBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(initializationVectorBytes);
-                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.ChaCha20)
-                    {
-                        // 初始化向量支持 12 字节
-                        byte[] initializationVectorBytes = new byte[12];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(initializationVectorBytes);
-                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.DES)
-                    {
-                        // 初始化向量支持 8 字节
-                        byte[] initializationVectorBytes = new byte[8];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(initializationVectorBytes);
-                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rabbit)
-                    {
-                        // 初始化向量支持 8 字节
-                        byte[] initializationVectorBytes = new byte[8];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(initializationVectorBytes);
-                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC2)
-                    {
-                        // 初始化向量支持 8 字节
-                        byte[] initializationVectorBytes = new byte[8];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(initializationVectorBytes);
-                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC5)
-                    {
-                        // 初始化向量支持 8 字节
-                        byte[] initializationVectorBytes = new byte[8];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(initializationVectorBytes);
-                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.RC6)
-                    {
-                        // 初始化向量支持 16 字节
-                        byte[] initializationVectorBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(initializationVectorBytes);
-                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.Rijndael)
-                    {
-                        // 初始化向量支持 16 字节
-                        byte[] initializationVectorBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(initializationVectorBytes);
-                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.SM4)
-                    {
-                        // 初始化向量支持 16 字节
-                        byte[] initializationVectorBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(initializationVectorBytes);
-                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
-                    }
-                    else if (SelectedDataEncryptType.DataEncryptType is DataEncryptType.TripleDES)
-                    {
-                        // 初始化向量支持 16 字节
-                        byte[] initializationVectorBytes = new byte[16];
-                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
-                        randomNumberGenerator.GetBytes(initializationVectorBytes);
-                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
-                    }
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnGenerateInitializationVectorClicked), 1, e);
-                }
-
-                return initializationVector;
-            });
+            InitializationVectorText = await GetInitializationVectorAsync(SelectedDataEncryptType.DataEncryptType);
         }
 
         /// <summary>
@@ -1795,35 +1481,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnGenerateRandomRSAKeyPairClicked(object sender, RoutedEventArgs args)
         {
-            (string publicKey, string privateKey) = await Task.Run(() =>
-            {
-                string publicKey = string.Empty;
-                string privateKey = string.Empty;
-
-                try
-                {
-                    RSA rsa = RSA.Create();
-                    publicKey = rsa.ToXmlString(false);
-                    privateKey = rsa.ToXmlString(true);
-                    rsa.Dispose();
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnGenerateRandomRSAKeyPairClicked), 1, e);
-                }
-
-                return ValueTuple.Create(publicKey, privateKey);
-            });
-
-            if (!string.IsNullOrEmpty(publicKey))
-            {
-                EncryptPublicKeyText = publicKey;
-            }
-
-            if (!string.IsNullOrEmpty(privateKey))
-            {
-                EncryptPrivateKeyText = privateKey;
-            }
+            (EncryptPublicKeyText, EncryptPrivateKeyText) = await GetRandomRSAKeyPairAsync();
         }
 
         /// <summary>
@@ -1834,7 +1492,6 @@ namespace PowerToolbox.Views.Pages
             if (!string.IsNullOrEmpty(EncryptPublicKeyText))
             {
                 bool copyResult = CopyPasteHelper.CopyToClipboard(EncryptPublicKeyText);
-
                 await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
             }
         }
@@ -1847,7 +1504,6 @@ namespace PowerToolbox.Views.Pages
             if (!string.IsNullOrEmpty(EncryptPrivateKeyText))
             {
                 bool copyResult = CopyPasteHelper.CopyToClipboard(EncryptPrivateKeyText);
-
                 await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
             }
         }
@@ -1888,43 +1544,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 打开文件所对应的文件夹
         /// </summary>
-        private void OnSaveEncryptedFilePathClicked(object sender, RoutedEventArgs args)
+        private void OnOpenSaveEncryptedFilePathClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    if (!string.IsNullOrEmpty(SaveEncryptedFilePath))
-                    {
-                        if (File.Exists(SaveEncryptedFilePath))
-                        {
-                            nint pidlList = Shell32Library.ILCreateFromPath(SaveEncryptedFilePath);
-                            if (pidlList is not 0)
-                            {
-                                Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
-                                Shell32Library.ILFree(pidlList);
-                            }
-                        }
-                        else
-                        {
-                            string directoryPath = Path.GetDirectoryName(SaveEncryptedFilePath);
-
-                            if (Directory.Exists(directoryPath))
-                            {
-                                Process.Start(directoryPath);
-                            }
-                            else
-                            {
-                                Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnSaveEncryptedFilePathClicked), 1, e);
-                }
-            });
+            OpenSaveEncryptedFilePath(SaveEncryptedFilePath);
         }
 
         /// <summary>
@@ -1951,283 +1573,1605 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnStartEncryptClicked(object sender, RoutedEventArgs args)
         {
-            selectEncryptIndex = SelectedIndex;
+            selectedEncryptIndex = SelectedIndex;
             selectedEncryptFile = EncryptFile;
             inputtedEncryptContent = EncryptContent;
+            string selectedEncryptKeyStringType = SelectedEncryptKeyStringType is not null ? Convert.ToString(SelectedEncryptKeyStringType.SelectedValue) : string.Empty;
+            string selectedSelectedInitializationVectorStringType = SelectedInitializationVectorStringType is not null ? Convert.ToString(SelectedInitializationVectorStringType.SelectedValue) : string.Empty;
+            CipherMode selectedCipherMode = SelectedEncryptedBlockCipherMode is not null ? (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue : CipherMode.CBC;
+            PaddingMode selectedPaddingode = SelectedPaddingMode is not null ? (PaddingMode)SelectedPaddingMode.SelectedValue : PaddingMode.None;
+            RSAEncryptionPaddingMode selectedRSAEncryptionPaddingMode = SelectedRSAEncryptionPaddingMode is not null ? (RSAEncryptionPaddingMode)SelectedRSAEncryptionPaddingMode.SelectedValue : RSAEncryptionPaddingMode.Pkcs1;
             EncryptFailedInformation = string.Empty;
             EncryptResult = string.Empty;
             encryptedLocalFile = string.Empty;
             IsLargeContent = false;
-
-            // 检查要加密的文件
-            if (selectEncryptIndex is 0)
+            if (!EncryptCheck(selectedEncryptIndex, SelectedDataEncryptType, inputtedEncryptContent, selectedCipherMode, EncryptKeyText, EncryptPublicKeyText, InitializationVectorText, selectedEncryptFile))
             {
-                if (string.IsNullOrEmpty(selectedEncryptFile))
+                return;
+            }
+
+            // 获取具体的文字编码选项
+            if (SelectedTextEncodingType is not null)
+            {
+                Encoding textEncoding = await GetTextEncodingAsync(Convert.ToString(SelectedTextEncodingType.SelectedValue), TextEncodingCustomTypeText);
+
+                // 文字编码异常时的提示
+                if (textEncoding is null)
+                {
+                    ResultSeverity = InfoBarSeverity.Error;
+                    ResultMessage = TextEncodingInvalidString;
+                    return;
+                }
+
+                // 加密内容
+                IsEncrypting = true;
+                ResultSeverity = InfoBarSeverity.Informational;
+                ResultMessage = EncryptingString;
+                (string encryptedData, Exception encryptException) = await GetEncryptedDataAsync(SelectedDataEncryptType.DataEncryptType, selectedEncryptIndex, EncryptKeyText, InitializationVectorText, selectedEncryptKeyStringType, selectedSelectedInitializationVectorStringType, selectedCipherMode, selectedPaddingode, Offset, EncryptPublicKeyText, selectedRSAEncryptionPaddingMode, inputtedEncryptContent, textEncoding, selectedEncryptFile);
+
+                // 加密失败
+                if (encryptException is not null)
+                {
+                    ResultSeverity = InfoBarSeverity.Error;
+                    if (selectedEncryptIndex is 0)
+                    {
+                        ResultMessage = FileEncryptFailedString;
+                    }
+                    else if (selectedEncryptIndex is 1)
+                    {
+                        ResultMessage = ContentEncryptFailedString;
+                    }
+
+                    EncryptFailedInformation = !string.IsNullOrEmpty(encryptException.Message) ? encryptException.Message : UnknownErrorString;
+                }
+                // 加密成功
+                else
+                {
+                    bool isSavedToSelectedFile = false;
+                    bool isSavedToTempFile = false;
+                    Exception exception = null;
+                    if (encryptedData.Length > 1024)
+                    {
+                        EncryptResult = LargeContentString;
+                        IsLargeContent = true;
+                        await SaveEncryptedDataAsync(encryptedLocalFile, encryptedData);
+                    }
+                    else
+                    {
+                        EncryptResult = encryptedData;
+                        IsLargeContent = false;
+                        if (SaveEncryptedDataToLocalFile)
+                        {
+                            (isSavedToSelectedFile, isSavedToTempFile, exception) = await SaveEncryptedDataAsync(encryptedLocalFile, encryptedData);
+                        }
+                    }
+
+                    // 显示加密结果
+                    if (selectedEncryptIndex is 0)
+                    {
+                        if (SaveEncryptedDataToLocalFile)
+                        {
+                            if (isSavedToSelectedFile)
+                            {
+                                ResultSeverity = InfoBarSeverity.Success;
+                                ResultMessage = FileEncryptedDataSaveSuccessfullyString;
+                                EncryptFailedInformation = string.Empty;
+                            }
+                            else
+                            {
+                                ResultSeverity = isSavedToTempFile ? InfoBarSeverity.Warning : InfoBarSeverity.Error;
+                                ResultMessage = isSavedToTempFile ? FileEncryptedDataSaveFailedToTempFileString : FileEncryptedDataSaveFailedString;
+                                EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
+                            }
+                        }
+                        else
+                        {
+                            ResultSeverity = InfoBarSeverity.Success;
+                            ResultMessage = FileEncryptSuccessfullyString;
+                            EncryptFailedInformation = string.Empty;
+                        }
+                    }
+                    else if (selectedEncryptIndex is 1)
+                    {
+                        if (SaveEncryptedDataToLocalFile)
+                        {
+                            if (isSavedToSelectedFile)
+                            {
+                                ResultSeverity = InfoBarSeverity.Warning;
+                                ResultMessage = ContentEncryptedDataSaveSuccessfullyString;
+                                EncryptFailedInformation = string.Empty;
+                            }
+                            else
+                            {
+                                ResultSeverity = isSavedToTempFile ? InfoBarSeverity.Warning : InfoBarSeverity.Error;
+                                EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
+                                ResultMessage = isSavedToTempFile ? ContentEncryptedDataSaveFailedToTempFileString : ContentEncryptedDataSaveFailedString;
+                            }
+                        }
+                        else
+                        {
+                            ResultSeverity = InfoBarSeverity.Success;
+                            ResultMessage = ContentEncryptSuccessfullyString;
+                            EncryptFailedInformation = string.Empty;
+                        }
+                    }
+                }
+
+                IsEncrypting = false;
+            }
+        }
+
+        /// <summary>
+        /// 查看本地文件
+        /// </summary>
+        private void OnViewLocalFileClicked(Hyperlink sender, HyperlinkClickEventArgs args)
+        {
+            ViewLocalFile(encryptedLocalFile);
+        }
+
+        #endregion 第四部分：挂载事件处理
+
+        #region 第五部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
+            DataEncryptSelectorRadioList.Add(new() { SelectorName = FileString });
+            DataEncryptSelectorRadioList.Add(new() { SelectorName = ContentString });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.AES, Name = AESString });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.CaesarCipher, Name = CaesarCipherString });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.ChaCha20, Name = ChaCha20String });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.DES, Name = DESString });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.MorseCode, Name = MorseCodeString });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.Rabbit, Name = RabbitString });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.RC2, Name = RC2String });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.RC4, Name = RC4String });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.RC5, Name = RC5String });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.RC6, Name = RC6String });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.Rijndael, Name = RijndaelString });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.RSA, Name = RSAString });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.SM4, Name = SM4String });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.TripleDES, Name = TripleDESString });
+            DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.XOR, Name = XORString });
+            EncryptKeyStringTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
+            EncryptKeyStringTypeList.Add(new() { SelectedValue = "Base64", DisplayMember = Base64String });
+            InitializationVectorStringTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
+            InitializationVectorStringTypeList.Add(new() { SelectedValue = "Base64", DisplayMember = Base64String });
+            EncryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.CBC, DisplayMember = CBCString });
+            EncryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.ECB, DisplayMember = ECBString });
+            EncryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.OFB, DisplayMember = OFBString });
+            EncryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.CFB, DisplayMember = CFBString });
+            EncryptedBlockCipherModeList.Add(new() { SelectedValue = CipherMode.CTS, DisplayMember = CTSString });
+            PaddingModeList.Add(new() { SelectedValue = PaddingMode.None, DisplayMember = NonePaddingString });
+            PaddingModeList.Add(new() { SelectedValue = PaddingMode.PKCS7, DisplayMember = Pkcs7String });
+            PaddingModeList.Add(new() { SelectedValue = PaddingMode.Zeros, DisplayMember = ZerosString });
+            PaddingModeList.Add(new() { SelectedValue = PaddingMode.ANSIX923, DisplayMember = ANSIX923String });
+            PaddingModeList.Add(new() { SelectedValue = PaddingMode.ISO10126, DisplayMember = ISO10126String });
+            RSAEncryptionPaddingModeList.Add(new() { SelectedValue = RSAEncryptionPaddingMode.Pkcs1, DisplayMember = Pkcs1String });
+            RSAEncryptionPaddingModeList.Add(new() { SelectedValue = RSAEncryptionPaddingMode.Oaep, DisplayMember = OaepString });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.ASCII), DisplayMember = ASCIIString });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.BigEndianUnicode), DisplayMember = BigEndianUnicodeString });
+            TextEncodingTypeList.Add(new() { SelectedValue = "ISO-8859-1", DisplayMember = ISO88591String });
+            TextEncodingTypeList.Add(new() { SelectedValue = "GB18030", DisplayMember = GB18030String });
+            TextEncodingTypeList.Add(new() { SelectedValue = "GB2312", DisplayMember = GB2312String });
+            TextEncodingTypeList.Add(new() { SelectedValue = "GBK", DisplayMember = GBKString });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.Unicode), DisplayMember = UnicodeString });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF32), DisplayMember = UTF32String });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF7), DisplayMember = UTF7String });
+            TextEncodingTypeList.Add(new() { SelectedValue = nameof(Encoding.UTF8), DisplayMember = UTF8String });
+            TextEncodingTypeList.Add(new() { SelectedValue = "Custom", DisplayMember = CustomString });
+            SelectedTextEncodingType = TextEncodingTypeList[9];
+            SelectedIndex = 0;
+            SelectedDataEncryptType = DataEncryptTypeList[0];
+            EncryptKeyPHText = string.Empty;
+            EncryptKeyText = string.Empty;
+            InitializationVectorPHText = string.Empty;
+            InitializationVectorText = string.Empty;
+            SaveEncryptedFilePath = string.Empty;
+            ResultSeverity = InfoBarSeverity.Informational;
+            if (!IsEncrypting && SelectedIndex is 0 && ResultSeverity is InfoBarSeverity.Informational)
+            {
+                ResultMessage = FileInitializeString;
+            }
+            else if (!IsEncrypting && SelectedIndex is 1 && ResultSeverity is InfoBarSeverity.Informational)
+            {
+                ResultMessage = ContentInitializeString;
+            }
+        }
+
+        /// <summary>
+        /// 生成随机密钥
+        /// </summary>
+        private async Task<string> GetEncryptKeyAsync(DataEncryptType dataEncryptType)
+        {
+            return await Task.Run(() =>
+            {
+                string encryptKey = string.Empty;
+
+                try
+                {
+                    if (dataEncryptType is DataEncryptType.AES)
+                    {
+                        // 默认密钥支持 16 字节，24 字节和 32 字节，目前使用 16 字节
+                        byte[] keyBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(keyBytes);
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.ChaCha20)
+                    {
+                        // 默认密钥支持 32 字节
+                        byte[] keyBytes = new byte[32];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(keyBytes);
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.DES)
+                    {
+                        // 默认密钥支持 8 字节
+                        byte[] keyBytes = new byte[8];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+
+                        while (true)
+                        {
+                            randomNumberGenerator.GetBytes(keyBytes);
+
+                            for (int i = 0; i < keyBytes.Length; i++)
+                            {
+                                byte value = (byte)(keyBytes[i] & 0xFE);
+                                int bitCount = 0;
+
+                                for (int j = 1; j < 8; j++)
+                                {
+                                    bitCount += (value >> j) & 1;
+                                }
+
+                                keyBytes[i] = (byte)(value | ((bitCount & 1) is 0 ? 1 : 0));
+                            }
+
+                            if (DES.IsWeakKey(keyBytes) || DES.IsSemiWeakKey(keyBytes))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        randomNumberGenerator.Dispose();
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.Rabbit)
+                    {
+                        // 默认密钥支持 16 字节
+                        byte[] keyBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(keyBytes);
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.RC2)
+                    {
+                        // 默认密钥支持 16 字节
+                        byte[] keyBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(keyBytes);
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.RC4)
+                    {
+                        // 默认密钥支持 16 字节
+                        byte[] keyBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(keyBytes);
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.RC5)
+                    {
+                        // 默认密钥支持 16 字节
+                        byte[] keyBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(keyBytes);
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.RC6)
+                    {
+                        // 默认密钥支持 16 字节
+                        byte[] keyBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(keyBytes);
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.Rijndael)
+                    {
+                        // 默认密钥支持 16 字节，24 字节和 32 字节，目前使用 16 字节
+                        byte[] keyBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(keyBytes);
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.SM4)
+                    {
+                        // 默认密钥支持 16 字节
+                        byte[] keyBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(keyBytes);
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.TripleDES)
+                    {
+                        // 默认密钥支持 24 字节
+                        byte[] keyBytes = new byte[24];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+
+                        while (true)
+                        {
+                            randomNumberGenerator.GetBytes(keyBytes);
+
+                            for (int i = 0; i < keyBytes.Length; i++)
+                            {
+                                byte value = (byte)(keyBytes[i] & 0xFE);
+                                int bitCount = 0;
+
+                                for (int j = 1; j < 8; j++)
+                                {
+                                    bitCount += (value >> j) & 1;
+                                }
+
+                                keyBytes[i] = (byte)(value | ((bitCount & 1) is 0 ? 1 : 0));
+                            }
+
+                            if (TripleDES.IsWeakKey(keyBytes))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        encryptKey = Convert.ToBase64String(keyBytes);
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptKeyAsync), 1, e);
+                }
+
+                return encryptKey;
+            });
+        }
+
+        /// <summary>
+        /// 生成初始化向量
+        /// </summary>
+        private async Task<string> GetInitializationVectorAsync(DataEncryptType dataEncryptType)
+        {
+            return await Task.Run(() =>
+            {
+                string initializationVector = string.Empty;
+
+                try
+                {
+                    if (dataEncryptType is DataEncryptType.AES)
+                    {
+                        // 初始化向量支持 16 字节
+                        byte[] initializationVectorBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.ChaCha20)
+                    {
+                        // 初始化向量支持 12 字节
+                        byte[] initializationVectorBytes = new byte[12];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.DES)
+                    {
+                        // 初始化向量支持 8 字节
+                        byte[] initializationVectorBytes = new byte[8];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.Rabbit)
+                    {
+                        // 初始化向量支持 8 字节
+                        byte[] initializationVectorBytes = new byte[8];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.RC2)
+                    {
+                        // 初始化向量支持 8 字节
+                        byte[] initializationVectorBytes = new byte[8];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.RC5)
+                    {
+                        // 初始化向量支持 8 字节
+                        byte[] initializationVectorBytes = new byte[8];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.RC6)
+                    {
+                        // 初始化向量支持 16 字节
+                        byte[] initializationVectorBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.Rijndael)
+                    {
+                        // 初始化向量支持 16 字节
+                        byte[] initializationVectorBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.SM4)
+                    {
+                        // 初始化向量支持 16 字节
+                        byte[] initializationVectorBytes = new byte[16];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                    else if (dataEncryptType is DataEncryptType.TripleDES)
+                    {
+                        // 初始化向量支持 8 字节
+                        byte[] initializationVectorBytes = new byte[8];
+                        RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+                        randomNumberGenerator.GetBytes(initializationVectorBytes);
+                        initializationVector = Convert.ToBase64String(initializationVectorBytes);
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetInitializationVectorAsync), 1, e);
+                }
+
+                return initializationVector;
+            });
+        }
+
+        /// <summary>
+        /// 生成 RSA 加密算法密钥对
+        /// </summary>
+        private async Task<(string, string)> GetRandomRSAKeyPairAsync()
+        {
+            return await Task.Run(() =>
+            {
+                string publicKey = string.Empty;
+                string privateKey = string.Empty;
+
+                try
+                {
+                    RSA rsa = RSA.Create();
+                    publicKey = rsa.ToXmlString(false);
+                    privateKey = rsa.ToXmlString(true);
+                    rsa.Dispose();
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetRandomRSAKeyPairAsync), 1, e);
+                }
+
+                return ValueTuple.Create(publicKey, privateKey);
+            });
+        }
+
+        /// <summary>
+        /// 获取加密后的数据
+        /// </summary>
+        private async Task<(string, Exception)> GetEncryptedDataAsync(DataEncryptType dataEncryptType, int selectedEncryptIndex, string encryptKeyText, string initializationVectorText, string encryptKeyStringType, string initializationVectorStringType, CipherMode encryptedBlockCipherMode, PaddingMode paddingMode, int offset, string encryptPublicKeyText, RSAEncryptionPaddingMode rsaEncryptionPaddingMode, string contentData, Encoding textEncoding, string encryptFile)
+        {
+            return await Task.Run(() =>
+            {
+                string encryptedData = string.Empty;
+                Exception encryptException = null;
+
+                switch (dataEncryptType)
+                {
+                    case DataEncryptType.AES:
+                        {
+                            try
+                            {
+                                Aes aes = Aes.Create();
+                                if (!string.IsNullOrEmpty(encryptKeyText) && !string.IsNullOrEmpty(encryptKeyStringType))
+                                {
+                                    if (Equals(encryptKeyStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        aes.Key = Encoding.UTF8.GetBytes(encryptKeyText);
+                                    }
+                                    else if (Equals(encryptKeyStringType, "Base64"))
+                                    {
+                                        aes.Key = Convert.FromBase64String(encryptKeyText);
+                                    }
+                                }
+
+                                if (!string.IsNullOrEmpty(initializationVectorText) && !string.IsNullOrEmpty(initializationVectorStringType))
+                                {
+                                    if (Equals(initializationVectorStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        aes.IV = Encoding.UTF8.GetBytes(initializationVectorText);
+                                    }
+                                    else if (Equals(initializationVectorStringType, "Base64"))
+                                    {
+                                        aes.IV = Convert.FromBase64String(initializationVectorText);
+                                    }
+                                }
+
+                                aes.Mode = encryptedBlockCipherMode;
+                                aes.Padding = paddingMode;
+                                ICryptoTransform cryptoTransform = aes.CreateEncryptor(aes.Key, aes.IV);
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                if (selectedEncryptIndex is 0 && !string.IsNullOrEmpty(encryptFile) && File.Exists(encryptFile))
+                                {
+                                    FileStream fileStream = File.OpenRead(encryptFile);
+                                    fileStream.CopyTo(cryptoStream);
+                                    fileStream.Dispose();
+                                }
+                                else if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData) && textEncoding is not null)
+                                {
+                                    byte[] data = textEncoding.GetBytes(contentData);
+                                    cryptoStream.Write(data, 0, data.Length);
+                                    cryptoStream.FlushFinalBlock();
+                                }
+                                encryptedData = Convert.ToBase64String(memoryStream.ToArray());
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                            catch (Exception e)
+                            {
+                                encryptException = e;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.AES) + 1, e);
+                            }
+                            break;
+                        }
+                    case DataEncryptType.CaesarCipher:
+                        {
+                            if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData))
+                            {
+                                try
+                                {
+                                    encryptedData = CaesarCipher.CaesarEncrypt(contentData, offset);
+                                }
+                                catch (Exception e)
+                                {
+                                    encryptException = e;
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.CaesarCipher) + 1, e);
+                                }
+                            }
+                            break;
+                        }
+                    case DataEncryptType.ChaCha20:
+                        {
+                            try
+                            {
+                                byte[] encryptedKey = null;
+                                byte[] encryptedIV = null;
+                                if (!string.IsNullOrEmpty(encryptKeyText) && !string.IsNullOrEmpty(encryptKeyStringType))
+                                {
+                                    if (Equals(encryptKeyStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        encryptedKey = Encoding.UTF8.GetBytes(encryptKeyText);
+                                    }
+                                    else if (Equals(encryptKeyStringType, "Base64"))
+                                    {
+                                        encryptedKey = Convert.FromBase64String(encryptKeyText);
+                                    }
+                                }
+
+                                if (!string.IsNullOrEmpty(initializationVectorText) && !string.IsNullOrEmpty(initializationVectorStringType))
+                                {
+                                    if (Equals(initializationVectorStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        encryptedIV = Encoding.UTF8.GetBytes(initializationVectorText);
+                                    }
+                                    else if (Equals(initializationVectorStringType, "Base64"))
+                                    {
+                                        encryptedIV = Convert.FromBase64String(initializationVectorText);
+                                    }
+                                }
+
+                                byte[] data = null;
+                                if (selectedEncryptIndex is 0 && !string.IsNullOrEmpty(encryptFile) && File.Exists(encryptFile))
+                                {
+                                    FileStream fileStream = File.OpenRead(encryptFile);
+                                    data = new byte[(int)fileStream.Length];
+                                    fileStream.Read(data, 0, data.Length);
+                                    fileStream.Dispose();
+                                }
+                                else if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData) && textEncoding is not null)
+                                {
+                                    data = textEncoding.GetBytes(contentData);
+                                }
+
+                                if (data is not null)
+                                {
+                                    encryptedData = Convert.ToBase64String(ChaCha20.Encrypt(encryptedKey, encryptedIV, data));
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                encryptException = e;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.ChaCha20) + 1, e);
+                            }
+                            break;
+                        }
+                    case DataEncryptType.DES:
+                        {
+                            try
+                            {
+                                DES des = DES.Create();
+                                if (!string.IsNullOrEmpty(encryptKeyText) && !string.IsNullOrEmpty(encryptKeyStringType))
+                                {
+                                    if (Equals(encryptKeyStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        des.Key = Encoding.UTF8.GetBytes(encryptKeyText);
+                                    }
+                                    else if (Equals(encryptKeyStringType, "Base64"))
+                                    {
+                                        des.Key = Convert.FromBase64String(encryptKeyText);
+                                    }
+                                }
+
+                                if (!string.IsNullOrEmpty(initializationVectorText) && !string.IsNullOrEmpty(initializationVectorStringType))
+                                {
+                                    if (Equals(initializationVectorStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        des.IV = Encoding.UTF8.GetBytes(initializationVectorText);
+                                    }
+                                    else if (Equals(initializationVectorStringType, "Base64"))
+                                    {
+                                        des.IV = Convert.FromBase64String(initializationVectorText);
+                                    }
+                                }
+
+                                des.Mode = encryptedBlockCipherMode;
+                                des.Padding = paddingMode;
+                                ICryptoTransform cryptoTransform = des.CreateEncryptor(des.Key, des.IV);
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                if (selectedEncryptIndex is 0 && !string.IsNullOrEmpty(encryptFile) && File.Exists(encryptFile))
+                                {
+                                    FileStream fileStream = File.OpenRead(encryptFile);
+                                    fileStream.CopyTo(cryptoStream);
+                                    fileStream.Dispose();
+                                }
+                                else if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData) && textEncoding is not null)
+                                {
+                                    byte[] data = textEncoding.GetBytes(contentData);
+                                    cryptoStream.Write(data, 0, data.Length);
+                                    cryptoStream.FlushFinalBlock();
+                                }
+                                encryptedData = Convert.ToBase64String(memoryStream.ToArray());
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                            catch (Exception e)
+                            {
+                                encryptException = e;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.DES) + 1, e);
+                            }
+                            break;
+                        }
+                    case DataEncryptType.MorseCode:
+                        {
+                            if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData))
+                            {
+                                try
+                                {
+                                    encryptedData = MorseCode.MorseEncode(contentData.ToUpperInvariant());
+                                }
+                                catch (Exception e)
+                                {
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.MorseCode) + 1, e);
+                                }
+                            }
+                            break;
+                        }
+                    case DataEncryptType.Rabbit:
+                        {
+                            try
+                            {
+                                Rabbit rabbit = new();
+                                if (!string.IsNullOrEmpty(encryptKeyText) && !string.IsNullOrEmpty(encryptKeyStringType))
+                                {
+                                    if (Equals(encryptKeyStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        rabbit.Key = Encoding.UTF8.GetBytes(encryptKeyText);
+                                    }
+                                    else if (Equals(encryptKeyStringType, "Base64"))
+                                    {
+                                        rabbit.Key = Convert.FromBase64String(encryptKeyText);
+                                    }
+                                }
+
+                                if (!string.IsNullOrEmpty(initializationVectorText) && !string.IsNullOrEmpty(initializationVectorStringType))
+                                {
+                                    if (Equals(initializationVectorStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        rabbit.IV = Encoding.UTF8.GetBytes(initializationVectorText);
+                                    }
+                                    else if (Equals(initializationVectorStringType, "Base64"))
+                                    {
+                                        rabbit.IV = Convert.FromBase64String(initializationVectorText);
+                                    }
+                                }
+
+                                rabbit.Mode = CipherMode.CBC;
+                                rabbit.Padding = paddingMode;
+                                ICryptoTransform cryptoTransform = rabbit.CreateEncryptor(rabbit.Key, rabbit.IV);
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                if (selectedEncryptIndex is 0 && !string.IsNullOrEmpty(encryptFile) && File.Exists(encryptFile))
+                                {
+                                    FileStream fileStream = File.OpenRead(encryptFile);
+                                    fileStream.CopyTo(cryptoStream);
+                                    fileStream.Dispose();
+                                }
+                                else if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData) && textEncoding is not null)
+                                {
+                                    byte[] data = textEncoding.GetBytes(contentData);
+                                    cryptoStream.Write(data, 0, data.Length);
+                                    cryptoStream.FlushFinalBlock();
+                                }
+                                encryptedData = Convert.ToBase64String(memoryStream.ToArray());
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                            catch (Exception e)
+                            {
+                                encryptException = e;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.Rabbit) + 1, e);
+                            }
+                            break;
+                        }
+                    case DataEncryptType.RC2:
+                        {
+                            try
+                            {
+                                RC2 rc2 = RC2.Create();
+                                if (!string.IsNullOrEmpty(encryptKeyText) && !string.IsNullOrEmpty(encryptKeyStringType))
+                                {
+                                    if (Equals(encryptKeyStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        rc2.Key = Encoding.UTF8.GetBytes(encryptKeyText);
+                                    }
+                                    else if (Equals(encryptKeyStringType, "Base64"))
+                                    {
+                                        rc2.Key = Convert.FromBase64String(encryptKeyText);
+                                    }
+                                }
+
+                                if (!string.IsNullOrEmpty(initializationVectorText) && !string.IsNullOrEmpty(initializationVectorStringType))
+                                {
+                                    if (Equals(initializationVectorStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        rc2.IV = Encoding.UTF8.GetBytes(initializationVectorText);
+                                    }
+                                    else if (Equals(initializationVectorStringType, "Base64"))
+                                    {
+                                        rc2.IV = Convert.FromBase64String(initializationVectorText);
+                                    }
+                                }
+
+                                rc2.Mode = encryptedBlockCipherMode;
+                                rc2.Padding = paddingMode;
+                                ICryptoTransform cryptoTransform = rc2.CreateEncryptor(rc2.Key, rc2.IV);
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                if (selectedEncryptIndex is 0 && !string.IsNullOrEmpty(encryptFile) && File.Exists(encryptFile))
+                                {
+                                    FileStream fileStream = File.OpenRead(encryptFile);
+                                    fileStream.CopyTo(cryptoStream);
+                                    fileStream.Dispose();
+                                }
+                                else if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData) && textEncoding is not null)
+                                {
+                                    byte[] data = textEncoding.GetBytes(contentData);
+                                    cryptoStream.Write(data, 0, data.Length);
+                                    cryptoStream.FlushFinalBlock();
+                                }
+                                encryptedData = Convert.ToBase64String(memoryStream.ToArray());
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                            catch (Exception e)
+                            {
+                                encryptException = e;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.RC2) + 1, e);
+                            }
+                            break;
+                        }
+                    case DataEncryptType.RC4:
+                        {
+                            try
+                            {
+                                RC4 rc4 = RC4.Create();
+                                if (!string.IsNullOrEmpty(encryptKeyText) && !string.IsNullOrEmpty(encryptKeyStringType))
+                                {
+                                    if (Equals(encryptKeyStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        rc4.Key = Encoding.UTF8.GetBytes(encryptKeyText);
+                                    }
+                                    else if (Equals(encryptKeyStringType, "Base64"))
+                                    {
+                                        rc4.Key = Convert.FromBase64String(encryptKeyText);
+                                    }
+                                }
+
+                                rc4.Mode = encryptedBlockCipherMode;
+                                rc4.Padding = paddingMode;
+                                ICryptoTransform cryptoTransform = rc4.CreateEncryptor(rc4.Key, rc4.IV);
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                if (selectedEncryptIndex is 0 && !string.IsNullOrEmpty(encryptFile) && File.Exists(encryptFile))
+                                {
+                                    FileStream fileStream = File.OpenRead(encryptFile);
+                                    fileStream.CopyTo(cryptoStream);
+                                    fileStream.Dispose();
+                                }
+                                else if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData) && textEncoding is not null)
+                                {
+                                    byte[] data = textEncoding.GetBytes(contentData);
+                                    cryptoStream.Write(data, 0, data.Length);
+                                    cryptoStream.FlushFinalBlock();
+                                }
+                                encryptedData = Convert.ToBase64String(memoryStream.ToArray());
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                            catch (Exception e)
+                            {
+                                encryptException = e;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.RC4) + 1, e);
+                            }
+                            break;
+                        }
+                    case DataEncryptType.RC5:
+                        {
+                            try
+                            {
+                                RC5 rc5 = new();
+                                if (!string.IsNullOrEmpty(encryptKeyText) && !string.IsNullOrEmpty(encryptKeyStringType))
+                                {
+                                    if (Equals(encryptKeyStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        rc5.Key = Encoding.UTF8.GetBytes(encryptKeyText);
+                                    }
+                                    else if (Equals(encryptKeyStringType, "Base64"))
+                                    {
+                                        rc5.Key = Convert.FromBase64String(encryptKeyText);
+                                    }
+                                }
+
+                                if (!string.IsNullOrEmpty(initializationVectorText) && !string.IsNullOrEmpty(initializationVectorStringType))
+                                {
+                                    if (Equals(initializationVectorStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        rc5.IV = Encoding.UTF8.GetBytes(initializationVectorText);
+                                    }
+                                    else if (Equals(initializationVectorStringType, "Base64"))
+                                    {
+                                        rc5.IV = Convert.FromBase64String(initializationVectorText);
+                                    }
+                                }
+
+                                rc5.Mode = encryptedBlockCipherMode;
+                                rc5.Padding = paddingMode;
+                                ICryptoTransform cryptoTransform = rc5.CreateEncryptor(rc5.Key, rc5.IV);
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                if (selectedEncryptIndex is 0 && !string.IsNullOrEmpty(encryptFile) && File.Exists(encryptFile))
+                                {
+                                    FileStream fileStream = File.OpenRead(encryptFile);
+                                    fileStream.CopyTo(cryptoStream);
+                                    fileStream.Dispose();
+                                }
+                                else if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData) && textEncoding is not null)
+                                {
+                                    byte[] data = textEncoding.GetBytes(contentData);
+                                    cryptoStream.Write(data, 0, data.Length);
+                                    cryptoStream.FlushFinalBlock();
+                                }
+                                encryptedData = Convert.ToBase64String(memoryStream.ToArray());
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                            catch (Exception e)
+                            {
+                                encryptException = e;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.RC5) + 1, e);
+                            }
+                            break;
+                        }
+                    case DataEncryptType.RC6:
+                        {
+                            try
+                            {
+                                RC6 rc6 = new();
+                                if (!string.IsNullOrEmpty(encryptKeyText) && !string.IsNullOrEmpty(encryptKeyStringType))
+                                {
+                                    if (Equals(encryptKeyStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        rc6.Key = Encoding.UTF8.GetBytes(encryptKeyText);
+                                    }
+                                    else if (Equals(encryptKeyStringType, "Base64"))
+                                    {
+                                        rc6.Key = Convert.FromBase64String(encryptKeyText);
+                                    }
+                                }
+
+                                if (!string.IsNullOrEmpty(initializationVectorText) && !string.IsNullOrEmpty(initializationVectorStringType))
+                                {
+                                    if (Equals(initializationVectorStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        rc6.IV = Encoding.UTF8.GetBytes(initializationVectorText);
+                                    }
+                                    else if (Equals(initializationVectorStringType, "Base64"))
+                                    {
+                                        rc6.IV = Convert.FromBase64String(initializationVectorText);
+                                    }
+                                }
+
+                                rc6.Mode = encryptedBlockCipherMode;
+                                rc6.Padding = paddingMode;
+                                ICryptoTransform cryptoTransform = rc6.CreateEncryptor(rc6.Key, rc6.IV);
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                if (selectedEncryptIndex is 0 && !string.IsNullOrEmpty(encryptFile) && File.Exists(encryptFile))
+                                {
+                                    FileStream fileStream = File.OpenRead(encryptFile);
+                                    fileStream.CopyTo(cryptoStream);
+                                    fileStream.Dispose();
+                                }
+                                else if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData) && textEncoding is not null)
+                                {
+                                    byte[] data = textEncoding.GetBytes(contentData);
+                                    cryptoStream.Write(data, 0, data.Length);
+                                    cryptoStream.FlushFinalBlock();
+                                }
+                                encryptedData = Convert.ToBase64String(memoryStream.ToArray());
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                            catch (Exception e)
+                            {
+                                encryptException = e;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.RC6) + 1, e);
+                            }
+                            break;
+                        }
+                    case DataEncryptType.Rijndael:
+                        {
+                            try
+                            {
+                                Rijndael rijndael = Rijndael.Create();
+                                if (!string.IsNullOrEmpty(encryptKeyText) && !string.IsNullOrEmpty(encryptKeyStringType))
+                                {
+                                    if (Equals(encryptKeyStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        rijndael.Key = Encoding.UTF8.GetBytes(encryptKeyText);
+                                    }
+                                    else if (Equals(encryptKeyStringType, "Base64"))
+                                    {
+                                        rijndael.Key = Convert.FromBase64String(encryptKeyText);
+                                    }
+                                }
+
+                                if (!string.IsNullOrEmpty(initializationVectorText) && !string.IsNullOrEmpty(initializationVectorStringType))
+                                {
+                                    if (Equals(initializationVectorStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        rijndael.IV = Encoding.UTF8.GetBytes(initializationVectorText);
+                                    }
+                                    else if (Equals(initializationVectorStringType, "Base64"))
+                                    {
+                                        rijndael.IV = Convert.FromBase64String(initializationVectorText);
+                                    }
+                                }
+
+                                rijndael.Mode = encryptedBlockCipherMode;
+                                rijndael.Padding = paddingMode;
+                                ICryptoTransform cryptoTransform = rijndael.CreateEncryptor(rijndael.Key, rijndael.IV);
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                if (selectedEncryptIndex is 0 && !string.IsNullOrEmpty(encryptFile) && File.Exists(encryptFile))
+                                {
+                                    FileStream fileStream = File.OpenRead(encryptFile);
+                                    fileStream.CopyTo(cryptoStream);
+                                    fileStream.Dispose();
+                                }
+                                else if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData) && textEncoding is not null)
+                                {
+                                    byte[] data = textEncoding.GetBytes(contentData);
+                                    cryptoStream.Write(data, 0, data.Length);
+                                    cryptoStream.FlushFinalBlock();
+                                }
+                                encryptedData = Convert.ToBase64String(memoryStream.ToArray());
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                            catch (Exception e)
+                            {
+                                encryptException = e;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.Rijndael) + 1, e);
+                            }
+                            break;
+                        }
+                    case DataEncryptType.RSA:
+                        {
+                            try
+                            {
+                                if (!string.IsNullOrEmpty(encryptPublicKeyText))
+                                {
+                                    RSA rsa = RSA.Create();
+                                    if (selectedEncryptIndex is 0 && !string.IsNullOrEmpty(encryptFile) && File.Exists(encryptFile))
+                                    {
+                                        FileStream fileStream = File.OpenRead(encryptFile);
+                                        byte[] data = new byte[(int)fileStream.Length];
+                                        fileStream.Read(data, 0, data.Length);
+                                        fileStream.Dispose();
+                                        rsa.FromXmlString(encryptPublicKeyText);
+                                        byte[] encryptedOutput = null;
+                                        if (rsaEncryptionPaddingMode is RSAEncryptionPaddingMode.Pkcs1)
+                                        {
+                                            encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
+                                        }
+                                        else if (rsaEncryptionPaddingMode is RSAEncryptionPaddingMode.Oaep)
+                                        {
+                                            encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.OaepSHA1);
+                                        }
+
+                                        if (encryptedOutput is not null)
+                                        {
+                                            encryptedData = Convert.ToBase64String(encryptedOutput);
+                                        }
+                                    }
+                                    else if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData) && textEncoding is not null)
+                                    {
+                                        byte[] data = textEncoding.GetBytes(contentData);
+                                        rsa.FromXmlString(encryptPublicKeyText);
+                                        byte[] encryptedOutput = null;
+                                        if (rsaEncryptionPaddingMode is RSAEncryptionPaddingMode.Pkcs1)
+                                        {
+                                            encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
+                                        }
+                                        else if (rsaEncryptionPaddingMode is RSAEncryptionPaddingMode.Oaep)
+                                        {
+                                            encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.OaepSHA1);
+                                        }
+
+                                        if (encryptedOutput is not null)
+                                        {
+                                            encryptedData = Convert.ToBase64String(encryptedOutput);
+                                        }
+                                    }
+                                    rsa.Dispose();
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                encryptException = e;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.RSA) + 1, e);
+                            }
+                            break;
+                        }
+                    case DataEncryptType.SM4:
+                        {
+                            try
+                            {
+                                SM4 sm4 = new();
+                                if (!string.IsNullOrEmpty(encryptKeyText) && !string.IsNullOrEmpty(encryptKeyStringType))
+                                {
+                                    if (Equals(encryptKeyStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        sm4.Key = Encoding.UTF8.GetBytes(encryptKeyText);
+                                    }
+                                    else if (Equals(encryptKeyStringType, "Base64"))
+                                    {
+                                        sm4.Key = Convert.FromBase64String(encryptKeyText);
+                                    }
+                                }
+
+                                if (!string.IsNullOrEmpty(initializationVectorText) && !string.IsNullOrEmpty(initializationVectorStringType))
+                                {
+                                    if (Equals(initializationVectorStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        sm4.IV = Encoding.UTF8.GetBytes(initializationVectorText);
+                                    }
+                                    else if (Equals(initializationVectorStringType, "Base64"))
+                                    {
+                                        sm4.IV = Convert.FromBase64String(initializationVectorText);
+                                    }
+                                }
+
+                                sm4.Mode = encryptedBlockCipherMode;
+                                sm4.Padding = paddingMode;
+                                ICryptoTransform cryptoTransform = sm4.CreateEncryptor(sm4.Key, sm4.IV);
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                if (selectedEncryptIndex is 0 && !string.IsNullOrEmpty(encryptFile) && File.Exists(encryptFile))
+                                {
+                                    FileStream fileStream = File.OpenRead(encryptFile);
+                                    fileStream.CopyTo(cryptoStream);
+                                    fileStream.Dispose();
+                                }
+                                else if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData) && textEncoding is not null)
+                                {
+                                    byte[] data = textEncoding.GetBytes(contentData);
+                                    cryptoStream.Write(data, 0, data.Length);
+                                    cryptoStream.FlushFinalBlock();
+                                }
+                                encryptedData = Convert.ToBase64String(memoryStream.ToArray());
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                            catch (Exception e)
+                            {
+                                encryptException = e;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.SM4) + 1, e);
+                            }
+                            break;
+                        }
+                    case DataEncryptType.TripleDES:
+                        {
+                            try
+                            {
+                                TripleDES tripleDes = TripleDES.Create();
+                                if (!string.IsNullOrEmpty(encryptKeyText) && !string.IsNullOrEmpty(encryptKeyStringType))
+                                {
+                                    if (Equals(encryptKeyStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        tripleDes.Key = Encoding.UTF8.GetBytes(encryptKeyText);
+                                    }
+                                    else if (Equals(encryptKeyStringType, "Base64"))
+                                    {
+                                        tripleDes.Key = Convert.FromBase64String(encryptKeyText);
+                                    }
+                                }
+
+                                if (!string.IsNullOrEmpty(initializationVectorText) && !string.IsNullOrEmpty(initializationVectorStringType))
+                                {
+                                    if (Equals(initializationVectorStringType, nameof(Encoding.UTF8)))
+                                    {
+                                        tripleDes.IV = Encoding.UTF8.GetBytes(initializationVectorText);
+                                    }
+                                    else if (Equals(initializationVectorStringType, "Base64"))
+                                    {
+                                        tripleDes.IV = Convert.FromBase64String(initializationVectorText);
+                                    }
+                                }
+
+                                tripleDes.Mode = encryptedBlockCipherMode;
+                                tripleDes.Padding = paddingMode;
+                                ICryptoTransform cryptoTransform = tripleDes.CreateEncryptor(tripleDes.Key, tripleDes.IV);
+                                MemoryStream memoryStream = new();
+                                CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
+                                if (selectedEncryptIndex is 0 && !string.IsNullOrEmpty(encryptFile) && File.Exists(encryptFile))
+                                {
+                                    FileStream fileStream = File.OpenRead(encryptFile);
+                                    fileStream.CopyTo(cryptoStream);
+                                    fileStream.Dispose();
+                                }
+                                else if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData) && textEncoding is not null)
+                                {
+                                    byte[] data = textEncoding.GetBytes(contentData);
+                                    cryptoStream.Write(data, 0, data.Length);
+                                    cryptoStream.FlushFinalBlock();
+                                }
+                                encryptedData = Convert.ToBase64String(memoryStream.ToArray());
+                                cryptoStream.Dispose();
+                                memoryStream.Dispose();
+                                cryptoTransform.Dispose();
+                            }
+                            catch (Exception e)
+                            {
+                                encryptException = e;
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.TripleDES) + 1, e);
+                            }
+                            break;
+                        }
+                    case DataEncryptType.XOR:
+                        {
+                            if (selectedEncryptIndex is 1 && !string.IsNullOrEmpty(contentData))
+                            {
+                                try
+                                {
+                                    if (!string.IsNullOrEmpty(encryptKeyText))
+                                    {
+                                        encryptedData = XOR.XOREncrypt(contentData, encryptKeyText);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    encryptException = e;
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedDataAsync), Convert.ToInt32(DataEncryptType.XOR) + 1, e);
+                                }
+                            }
+                            break;
+                        }
+                }
+                return ValueTuple.Create(encryptedData, encryptException);
+            });
+        }
+
+        /// <summary>
+        /// 获取拖拽支持选中的文件
+        /// </summary>
+        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        {
+            if (dataPackageView is null)
+            {
+                return default;
+            }
+
+            return await Task.Run(async () =>
+            {
+                List<string> fileList = [];
+
+                try
+                {
+                    if (dataPackageView.Contains(StandardDataFormats.StorageItems))
+                    {
+                        foreach (IStorageItem storageItem in await dataPackageView.GetStorageItemsAsync())
+                        {
+                            fileList.Add(storageItem.Path);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetDragDropSelectedFilesAsync), 1, e);
+                }
+
+                return fileList;
+            });
+        }
+
+        /// <summary>
+        /// 打开文件所对应的文件夹
+        /// </summary>
+        private void OpenSaveEncryptedFilePath(string savedEncryptedFilePath)
+        {
+            if (string.IsNullOrEmpty(savedEncryptedFilePath))
+            {
+                return;
+            }
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(savedEncryptedFilePath))
+                    {
+                        if (File.Exists(savedEncryptedFilePath))
+                        {
+                            nint pidlList = Shell32Library.ILCreateFromPath(savedEncryptedFilePath);
+                            if (pidlList is not 0)
+                            {
+                                Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
+                                Shell32Library.ILFree(pidlList);
+                            }
+                        }
+                        else
+                        {
+                            string directoryPath = Path.GetDirectoryName(savedEncryptedFilePath);
+
+                            if (Directory.Exists(directoryPath))
+                            {
+                                Process.Start(directoryPath);
+                            }
+                            else
+                            {
+                                Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OpenSaveEncryptedFilePath), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 加密检查
+        /// </summary>
+        private bool EncryptCheck(int selectedIndex, DataEncryptTypeModel dataEncryptType, string encryptContent, CipherMode cipherMode, string encryptKeyText, string encryptPublicKeyText, string initializationVectorText, string encryptFile)
+        {
+            // 检查要加密的文件
+            if (selectedIndex is 0)
+            {
+                if (string.IsNullOrEmpty(encryptFile))
                 {
                     ResultSeverity = InfoBarSeverity.Error;
                     ResultMessage = FileNotSelectedString;
-                    return;
+                    return false;
                 }
-                else if (!File.Exists(selectedEncryptFile))
+                else if (!File.Exists(encryptFile))
                 {
                     ResultSeverity = InfoBarSeverity.Error;
                     ResultMessage = FileNotExistedString;
-                    return;
+                    return false;
                 }
             }
             // 检查要加密的字符串
-            else if (selectEncryptIndex is 1)
+            else if (selectedIndex is 1)
             {
-                if (string.IsNullOrEmpty(inputtedEncryptContent))
+                if (string.IsNullOrEmpty(encryptContent))
                 {
                     ResultSeverity = InfoBarSeverity.Error;
                     ResultMessage = ContentEmptyString;
-                    return;
+                    return false;
                 }
             }
             else
             {
                 ResultSeverity = InfoBarSeverity.Error;
                 ResultMessage = SelectedDataEncryptInputContentFormatErrorString;
-                return;
+                return false;
             }
 
             // 选择加密的算法为空时的提示
-            if (SelectedDataEncryptType is null)
+            if (dataEncryptType is null)
             {
                 ResultSeverity = InfoBarSeverity.Error;
                 ResultMessage = EncryptTypeNotSelectedString;
-                return;
+                return false;
             }
             else
             {
                 // 检查对应的加密算法所填充的加密密钥或初始化向量是否为空
-                switch (SelectedDataEncryptType.DataEncryptType)
+                switch (dataEncryptType.DataEncryptType)
                 {
                     case DataEncryptType.AES:
                         {
-                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
-                                return;
+                                return false;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (cipherMode is not CipherMode.ECB && string.IsNullOrEmpty(initializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.CaesarCipher:
                         {
-                            if (selectEncryptIndex is not 1)
+                            if (selectedIndex is not 1)
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptTypeMustContentString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.ChaCha20:
                         {
-                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
-                                return;
+                                return false;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (cipherMode is not CipherMode.ECB && string.IsNullOrEmpty(initializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.DES:
                         {
-                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
-                                return;
+                                return false;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (cipherMode is not CipherMode.ECB && string.IsNullOrEmpty(initializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.MorseCode:
                         {
-                            if (selectEncryptIndex is not 1)
+                            if (selectedIndex is not 1)
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptTypeMustContentString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.Rabbit:
                         {
-                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
-                                return;
+                                return false;
                             }
 
-                            if (string.IsNullOrEmpty(InitializationVectorText))
+                            if (string.IsNullOrEmpty(initializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.RC2:
                         {
-                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
-                                return;
+                                return false;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (cipherMode is not CipherMode.ECB && string.IsNullOrEmpty(initializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.RC4:
                         {
-                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.RC5:
                         {
-                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
-                                return;
+                                return false;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (cipherMode is not CipherMode.ECB && string.IsNullOrEmpty(initializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.RC6:
                         {
-                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
-                                return;
+                                return false;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (cipherMode is not CipherMode.ECB && string.IsNullOrEmpty(initializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.Rijndael:
                         {
-                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
-                                return;
+                                return false;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (cipherMode is not CipherMode.ECB && string.IsNullOrEmpty(initializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.RSA:
                         {
-                            if (string.IsNullOrEmpty(EncryptPublicKeyText))
+                            if (string.IsNullOrEmpty(encryptPublicKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptPublicKeyEmptyString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.SM4:
                         {
-                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
-                                return;
+                                return false;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (cipherMode is not CipherMode.ECB && string.IsNullOrEmpty(initializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.TripleDES:
                         {
-                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
-                                return;
+                                return false;
                             }
 
-                            if (SelectedEncryptedBlockCipherMode.SelectedValue is not CipherMode.ECB && string.IsNullOrEmpty(InitializationVectorText))
+                            if (cipherMode is not CipherMode.ECB && string.IsNullOrEmpty(initializationVectorText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = InitializationVectorEmptyString;
-                                return;
+                                return false;
                             }
                             break;
                         }
                     case DataEncryptType.XOR:
                         {
-                            if (selectEncryptIndex is not 1)
+                            if (selectedIndex is not 1)
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptTypeMustContentString;
-                                return;
+                                return false;
                             }
 
-                            if (string.IsNullOrEmpty(EncryptKeyText))
+                            if (string.IsNullOrEmpty(encryptKeyText))
                             {
                                 ResultSeverity = InfoBarSeverity.Error;
                                 ResultMessage = EncryptKeyEmptyString;
-                                return;
+                                return false;
                             }
                             break;
                         }
@@ -2238,970 +3182,140 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            // 获取具体的文字编码选项
-            Encoding textEncoding = await Task.Run(() =>
+            return true;
+        }
+
+        /// <summary>
+        /// 获取具体的文字编码选项
+        /// </summary>
+        private async Task<Encoding> GetTextEncodingAsync(string textEncodingType, string textEncodingCustomTypeText)
+        {
+            if (string.IsNullOrEmpty(textEncodingType))
+            {
+                return default;
+            }
+
+            return await Task.Run(() =>
             {
                 Encoding textEncoding = null;
-                if (Equals(SelectedTextEncodingType, TextEncodingTypeList[0]))
+                if (textEncodingType is nameof(Encoding.ASCII))
                 {
                     textEncoding = Encoding.ASCII;
                 }
-                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[1]))
+                else if (textEncodingType is nameof(Encoding.BigEndianUnicode))
                 {
                     textEncoding = Encoding.BigEndianUnicode;
                 }
-                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[6]))
+                else if (textEncodingType is nameof(Encoding.Unicode))
                 {
                     textEncoding = Encoding.Unicode;
                 }
-                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[7]))
+                else if (textEncodingType is nameof(Encoding.UTF32))
                 {
                     textEncoding = Encoding.UTF32;
                 }
-                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[8]))
+                else if (textEncodingType is nameof(Encoding.UTF7))
                 {
                     textEncoding = Encoding.UTF7;
                 }
-                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[9]))
+                else if (textEncodingType is nameof(Encoding.UTF8))
                 {
                     textEncoding = Encoding.UTF8;
                 }
-                else if (Equals(SelectedTextEncodingType, TextEncodingTypeList[10]))
+                else if (textEncodingType is "Custom")
                 {
                     try
                     {
-                        if (!string.IsNullOrEmpty(TextEncodingCustomTypeText))
+                        if (!string.IsNullOrEmpty(textEncodingCustomTypeText))
                         {
-                            textEncoding = int.TryParse(TextEncodingCustomTypeText, out int textEncodingCustomType) ? Encoding.GetEncoding(textEncodingCustomType) : Encoding.GetEncoding(TextEncodingCustomTypeText);
+                            textEncoding = int.TryParse(textEncodingCustomTypeText, out int textEncodingCustomType) ? Encoding.GetEncoding(textEncodingCustomType) : Encoding.GetEncoding(textEncodingCustomTypeText);
                         }
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetTextEncodingAsync), 1, e);
                     }
                 }
                 else
                 {
-                    textEncoding = Encoding.GetEncoding(Convert.ToString(SelectedTextEncodingType.SelectedValue));
+                    textEncoding = Encoding.GetEncoding(textEncodingType);
                 }
                 return textEncoding;
             });
+        }
 
-            // 文字编码异常时的提示
-            if (textEncoding is null)
+        /// <summary>
+        /// 保存加密后的数据到本地文件中
+        /// </summary>
+        private async Task<(bool, bool, Exception)> SaveEncryptedDataAsync(string encryptedLocalFile, string encryptedData)
+        {
+            if (string.IsNullOrEmpty(encryptedLocalFile) || string.IsNullOrEmpty(encryptedData))
             {
-                ResultSeverity = InfoBarSeverity.Error;
-                ResultMessage = TextEncodingInvalidString;
-                return;
+                return default;
             }
 
-            // 加密内容
-            IsEncrypting = true;
-            ResultSeverity = InfoBarSeverity.Informational;
-            ResultMessage = EncryptingString;
-            (string encryptedData, Exception encryptException) = await Task.Run(() =>
-            {
-                return GetEncryptedData(SelectedDataEncryptType.DataEncryptType, selectEncryptIndex, inputtedEncryptContent, textEncoding, selectedEncryptFile);
-            });
-
-            // 加密失败
-            if (encryptException is not null)
-            {
-                ResultSeverity = InfoBarSeverity.Error;
-                if (selectEncryptIndex is 0)
-                {
-                    ResultMessage = FileEncryptFailedString;
-                }
-                else if (selectEncryptIndex is 1)
-                {
-                    ResultMessage = ContentEncryptFailedString;
-                }
-
-                EncryptFailedInformation = !string.IsNullOrEmpty(encryptException.Message) ? encryptException.Message : UnknownErrorString;
-            }
-            // 加密成功
-            else
+            return await Task.Run(() =>
             {
                 bool isSavedToSelectedFile = false;
                 bool isSavedToTempFile = false;
                 Exception exception = null;
-                if (SaveEncryptedDataToLocalFile)
-                {
-                    await Task.Run(() =>
-                    {
-                        // 保存到选择的本地文件中
-                        try
-                        {
-                            encryptedLocalFile = SaveEncryptedFilePath;
-                            File.WriteAllText(encryptedLocalFile, encryptedData);
-                            isSavedToSelectedFile = true;
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 2, e);
-                            exception = e;
-                        }
 
-                        // 保存到选定的本地文件失败，自动保存到临时文件目录中
-                        if (!isSavedToSelectedFile)
-                        {
-                            try
-                            {
-                                encryptedLocalFile = Path.GetTempFileName();
-                                File.WriteAllText(encryptedLocalFile, encryptedData);
-                                isSavedToTempFile = true;
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 3, e);
-                                exception = e;
-                            }
-                        }
-                    });
+                // 保存到选择的本地文件中
+                try
+                {
+                    File.WriteAllText(encryptedLocalFile, encryptedData);
+                    isSavedToSelectedFile = true;
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(SaveEncryptedDataAsync), 1, e);
+                    exception = e;
                 }
 
-                // 加密后的字符串数据太长
-                if (encryptedData.Length > 1024)
+                // 保存到选定的本地文件失败，自动保存到临时文件目录中
+                if (!isSavedToSelectedFile)
                 {
-                    EncryptResult = LargeContentString;
-                    IsLargeContent = true;
-
-                    if (!SaveEncryptedDataToLocalFile)
+                    try
                     {
-                        await Task.Run(() =>
-                        {
-                            try
-                            {
-                                encryptedLocalFile = Path.GetTempFileName();
-                                File.WriteAllText(encryptedLocalFile, encryptedData);
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnStartEncryptClicked), 4, e);
-                            }
-                        });
+                        encryptedLocalFile = Path.GetTempFileName();
+                        File.WriteAllText(encryptedLocalFile, encryptedData);
+                        isSavedToTempFile = true;
                     }
-                }
-                else
-                {
-                    EncryptResult = encryptedData;
-                    IsLargeContent = false;
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(SaveEncryptedDataAsync), 2, e);
+                        exception = e;
+                    }
                 }
 
-                // 显示加密结果
-                if (selectEncryptIndex is 0)
-                {
-                    if (SaveEncryptedDataToLocalFile)
-                    {
-                        if (isSavedToSelectedFile)
-                        {
-                            ResultSeverity = InfoBarSeverity.Success;
-                            ResultMessage = FileEncryptedDataSaveSuccessfullyString;
-                            EncryptFailedInformation = string.Empty;
-                        }
-                        else
-                        {
-                            ResultSeverity = isSavedToTempFile ? InfoBarSeverity.Warning : InfoBarSeverity.Error;
-                            ResultMessage = isSavedToTempFile ? FileEncryptedDataSaveFailedToTempFileString : FileEncryptedDataSaveFailedString;
-                            EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
-                        }
-                    }
-                    else
-                    {
-                        ResultSeverity = InfoBarSeverity.Success;
-                        ResultMessage = FileEncryptSuccessfullyString;
-                        EncryptFailedInformation = string.Empty;
-                    }
-                }
-                else if (selectEncryptIndex is 1)
-                {
-                    if (SaveEncryptedDataToLocalFile)
-                    {
-                        if (isSavedToSelectedFile)
-                        {
-                            ResultSeverity = InfoBarSeverity.Warning;
-                            ResultMessage = ContentEncryptedDataSaveSuccessfullyString;
-                            EncryptFailedInformation = string.Empty;
-                        }
-                        else
-                        {
-                            ResultSeverity = isSavedToTempFile ? InfoBarSeverity.Warning : InfoBarSeverity.Error;
-                            EncryptFailedInformation = exception is not null && !string.IsNullOrEmpty(exception.Message) ? exception.Message : UnknownErrorString;
-                            ResultMessage = isSavedToTempFile ? ContentEncryptedDataSaveFailedToTempFileString : ContentEncryptedDataSaveFailedString;
-                        }
-                    }
-                    else
-                    {
-                        ResultSeverity = InfoBarSeverity.Success;
-                        ResultMessage = ContentEncryptSuccessfullyString;
-                        EncryptFailedInformation = string.Empty;
-                    }
-                }
-            }
-            IsEncrypting = false;
+                return ValueTuple.Create(isSavedToSelectedFile, isSavedToTempFile, exception);
+            });
         }
 
         /// <summary>
-        /// 查看本地文件
+        /// 查看加密后的本地文件
         /// </summary>
-        private async void OnViewLocalFileClicked(Hyperlink sender, HyperlinkClickEventArgs args)
+        private void ViewLocalFile(string encryptedFile)
         {
-            await Task.Run(() =>
+            if (string.IsNullOrEmpty(encryptedFile))
+            {
+                return;
+            }
+
+            Task.Run(() =>
             {
                 try
                 {
-                    if (File.Exists(encryptedLocalFile))
+                    if (File.Exists(encryptedFile))
                     {
-                        Process.Start(encryptedLocalFile);
+                        Process.Start(encryptedFile);
                     }
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(OnViewLocalFileClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(ViewLocalFile), 1, e);
                 }
             });
-        }
-
-        #endregion 第一部分：数据加密页面——挂载的事件
-
-        /// <summary>
-        /// 获取加密后的数据
-        /// </summary>
-        private (string, Exception) GetEncryptedData(DataEncryptType dataEncryptType, int selectedEncryptIndex, string contentData, Encoding textEncoding, string encryptFile)
-        {
-            string encryptedData = string.Empty;
-            Exception encryptException = null;
-
-            switch (dataEncryptType)
-            {
-                case DataEncryptType.AES:
-                    {
-                        try
-                        {
-                            Aes aes = Aes.Create();
-                            if (!string.IsNullOrEmpty(EncryptKeyText))
-                            {
-                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
-                                {
-                                    aes.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
-                                }
-                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
-                                {
-                                    aes.Key = Convert.FromBase64String(EncryptKeyText);
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(InitializationVectorText))
-                            {
-                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
-                                {
-                                    aes.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
-                                }
-                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
-                                {
-                                    aes.IV = Convert.FromBase64String(InitializationVectorText);
-                                }
-                            }
-
-                            aes.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
-                            aes.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
-                            ICryptoTransform cryptoTransform = aes.CreateEncryptor(aes.Key, aes.IV);
-                            MemoryStream memoryStream = new();
-                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
-                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
-                            {
-                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
-                                fileStream.CopyTo(cryptoStream);
-                                fileStream.Dispose();
-                            }
-                            else if (selectedEncryptIndex is 1)
-                            {
-                                byte[] data = textEncoding.GetBytes(contentData);
-                                cryptoStream.Write(data, 0, data.Length);
-                                cryptoStream.FlushFinalBlock();
-                            }
-                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
-                            cryptoStream.Dispose();
-                            memoryStream.Dispose();
-                            cryptoTransform.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            encryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.AES) + 1, e);
-                        }
-                        break;
-                    }
-                case DataEncryptType.CaesarCipher:
-                    {
-                        if (selectedEncryptIndex is 1)
-                        {
-                            try
-                            {
-                                encryptedData = CaesarCipher.CaesarEncrypt(contentData, Offset);
-                            }
-                            catch (Exception e)
-                            {
-                                encryptException = e;
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.CaesarCipher) + 1, e);
-                            }
-                        }
-                        break;
-                    }
-                case DataEncryptType.ChaCha20:
-                    {
-                        try
-                        {
-                            byte[] encryptedKey = null;
-                            byte[] encryptedIV = null;
-                            if (!string.IsNullOrEmpty(EncryptKeyText))
-                            {
-                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
-                                {
-                                    encryptedKey = Encoding.UTF8.GetBytes(EncryptKeyText);
-                                }
-                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
-                                {
-                                    encryptedKey = Convert.FromBase64String(EncryptKeyText);
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(InitializationVectorText))
-                            {
-                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
-                                {
-                                    encryptedIV = Encoding.UTF8.GetBytes(InitializationVectorText);
-                                }
-                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
-                                {
-                                    encryptedIV = Convert.FromBase64String(InitializationVectorText);
-                                }
-                            }
-
-                            byte[] data = null;
-                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
-                            {
-                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
-                                data = new byte[(int)fileStream.Length];
-                                fileStream.Read(data, 0, data.Length);
-                                fileStream.Dispose();
-                            }
-                            else if (selectedEncryptIndex is 1)
-                            {
-                                data = textEncoding.GetBytes(contentData);
-                            }
-
-                            if (data is not null)
-                            {
-                                encryptedData = Convert.ToBase64String(ChaCha20.Encrypt(encryptedKey, encryptedIV, data));
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            encryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.ChaCha20) + 1, e);
-                        }
-                        break;
-                    }
-                case DataEncryptType.DES:
-                    {
-                        try
-                        {
-                            DES des = DES.Create();
-                            if (!string.IsNullOrEmpty(EncryptKeyText))
-                            {
-                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
-                                {
-                                    des.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
-                                }
-                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
-                                {
-                                    des.Key = Convert.FromBase64String(EncryptKeyText);
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(InitializationVectorText))
-                            {
-                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
-                                {
-                                    des.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
-                                }
-                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
-                                {
-                                    des.IV = Convert.FromBase64String(InitializationVectorText);
-                                }
-                            }
-
-                            des.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
-                            des.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
-                            ICryptoTransform cryptoTransform = des.CreateEncryptor(des.Key, des.IV);
-                            MemoryStream memoryStream = new();
-                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
-                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
-                            {
-                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
-                                fileStream.CopyTo(cryptoStream);
-                                fileStream.Dispose();
-                            }
-                            else if (selectedEncryptIndex is 1)
-                            {
-                                byte[] data = textEncoding.GetBytes(contentData);
-                                cryptoStream.Write(data, 0, data.Length);
-                                cryptoStream.FlushFinalBlock();
-                            }
-                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
-                            cryptoStream.Dispose();
-                            memoryStream.Dispose();
-                            cryptoTransform.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            encryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.DES) + 1, e);
-                        }
-                        break;
-                    }
-                case DataEncryptType.MorseCode:
-                    {
-                        if (selectedEncryptIndex is 1)
-                        {
-                            try
-                            {
-                                // 隐藏选项
-                                encryptedData = MorseCode.MorseEncode(contentData.ToUpperInvariant());
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.MorseCode) + 1, e);
-                            }
-                        }
-                        break;
-                    }
-                case DataEncryptType.Rabbit:
-                    {
-                        try
-                        {
-                            Rabbit rabbit = new();
-                            if (!string.IsNullOrEmpty(EncryptKeyText))
-                            {
-                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
-                                {
-                                    rabbit.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
-                                }
-                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
-                                {
-                                    rabbit.Key = Convert.FromBase64String(EncryptKeyText);
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(InitializationVectorText))
-                            {
-                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
-                                {
-                                    rabbit.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
-                                }
-                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
-                                {
-                                    rabbit.IV = Convert.FromBase64String(InitializationVectorText);
-                                }
-                            }
-
-                            rabbit.Mode = CipherMode.CBC;
-                            rabbit.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
-                            ICryptoTransform cryptoTransform = rabbit.CreateEncryptor(rabbit.Key, rabbit.IV);
-                            MemoryStream memoryStream = new();
-                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
-                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
-                            {
-                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
-                                fileStream.CopyTo(cryptoStream);
-                                fileStream.Dispose();
-                            }
-                            else if (selectedEncryptIndex is 1)
-                            {
-                                byte[] data = textEncoding.GetBytes(contentData);
-                                cryptoStream.Write(data, 0, data.Length);
-                                cryptoStream.FlushFinalBlock();
-                            }
-                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
-                            cryptoStream.Dispose();
-                            memoryStream.Dispose();
-                            cryptoTransform.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            encryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.Rabbit) + 1, e);
-                        }
-                        break;
-                    }
-                case DataEncryptType.RC2:
-                    {
-                        try
-                        {
-                            RC2 rc2 = RC2.Create();
-                            if (!string.IsNullOrEmpty(EncryptKeyText))
-                            {
-                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
-                                {
-                                    rc2.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
-                                }
-                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
-                                {
-                                    rc2.Key = Convert.FromBase64String(EncryptKeyText);
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(InitializationVectorText))
-                            {
-                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
-                                {
-                                    rc2.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
-                                }
-                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
-                                {
-                                    rc2.IV = Convert.FromBase64String(InitializationVectorText);
-                                }
-                            }
-
-                            rc2.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
-                            rc2.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
-                            ICryptoTransform cryptoTransform = rc2.CreateEncryptor(rc2.Key, rc2.IV);
-                            MemoryStream memoryStream = new();
-                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
-                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
-                            {
-                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
-                                fileStream.CopyTo(cryptoStream);
-                                fileStream.Dispose();
-                            }
-                            else if (selectedEncryptIndex is 1)
-                            {
-                                byte[] data = textEncoding.GetBytes(contentData);
-                                cryptoStream.Write(data, 0, data.Length);
-                                cryptoStream.FlushFinalBlock();
-                            }
-                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
-                            cryptoStream.Dispose();
-                            memoryStream.Dispose();
-                            cryptoTransform.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            encryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.RC2) + 1, e);
-                        }
-                        break;
-                    }
-                case DataEncryptType.RC4:
-                    {
-                        try
-                        {
-                            RC4 rc4 = RC4.Create();
-                            if (!string.IsNullOrEmpty(EncryptKeyText))
-                            {
-                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
-                                {
-                                    rc4.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
-                                }
-                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
-                                {
-                                    rc4.Key = Convert.FromBase64String(EncryptKeyText);
-                                }
-                            }
-
-                            rc4.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
-                            rc4.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
-                            ICryptoTransform cryptoTransform = rc4.CreateEncryptor(rc4.Key, rc4.IV);
-                            MemoryStream memoryStream = new();
-                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
-                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
-                            {
-                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
-                                fileStream.CopyTo(cryptoStream);
-                                fileStream.Dispose();
-                            }
-                            else if (selectedEncryptIndex is 1)
-                            {
-                                byte[] data = textEncoding.GetBytes(contentData);
-                                cryptoStream.Write(data, 0, data.Length);
-                                cryptoStream.FlushFinalBlock();
-                            }
-                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
-                            cryptoStream.Dispose();
-                            memoryStream.Dispose();
-                            cryptoTransform.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            encryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.RC4) + 1, e);
-                        }
-                        break;
-                    }
-                case DataEncryptType.RC5:
-                    {
-                        try
-                        {
-                            RC5 rc5 = new();
-                            if (!string.IsNullOrEmpty(EncryptKeyText))
-                            {
-                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
-                                {
-                                    rc5.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
-                                }
-                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
-                                {
-                                    rc5.Key = Convert.FromBase64String(EncryptKeyText);
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(InitializationVectorText))
-                            {
-                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
-                                {
-                                    rc5.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
-                                }
-                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
-                                {
-                                    rc5.IV = Convert.FromBase64String(InitializationVectorText);
-                                }
-                            }
-
-                            rc5.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
-                            rc5.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
-                            ICryptoTransform cryptoTransform = rc5.CreateEncryptor(rc5.Key, rc5.IV);
-                            MemoryStream memoryStream = new();
-                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
-                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
-                            {
-                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
-                                fileStream.CopyTo(cryptoStream);
-                                fileStream.Dispose();
-                            }
-                            else if (selectedEncryptIndex is 1)
-                            {
-                                byte[] data = textEncoding.GetBytes(contentData);
-                                cryptoStream.Write(data, 0, data.Length);
-                                cryptoStream.FlushFinalBlock();
-                            }
-                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
-                            cryptoStream.Dispose();
-                            memoryStream.Dispose();
-                            cryptoTransform.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            encryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.RC5) + 1, e);
-                        }
-                        break;
-                    }
-                case DataEncryptType.RC6:
-                    {
-                        try
-                        {
-                            RC6 rc6 = new();
-                            if (!string.IsNullOrEmpty(EncryptKeyText))
-                            {
-                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
-                                {
-                                    rc6.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
-                                }
-                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
-                                {
-                                    rc6.Key = Convert.FromBase64String(EncryptKeyText);
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(InitializationVectorText))
-                            {
-                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
-                                {
-                                    rc6.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
-                                }
-                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
-                                {
-                                    rc6.IV = Convert.FromBase64String(InitializationVectorText);
-                                }
-                            }
-
-                            rc6.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
-                            rc6.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
-                            ICryptoTransform cryptoTransform = rc6.CreateEncryptor(rc6.Key, rc6.IV);
-                            MemoryStream memoryStream = new();
-                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
-                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
-                            {
-                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
-                                fileStream.CopyTo(cryptoStream);
-                                fileStream.Dispose();
-                            }
-                            else if (selectedEncryptIndex is 1)
-                            {
-                                byte[] data = textEncoding.GetBytes(contentData);
-                                cryptoStream.Write(data, 0, data.Length);
-                                cryptoStream.FlushFinalBlock();
-                            }
-                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
-                            cryptoStream.Dispose();
-                            memoryStream.Dispose();
-                            cryptoTransform.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            encryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.RC6) + 1, e);
-                        }
-                        break;
-                    }
-                case DataEncryptType.Rijndael:
-                    {
-                        try
-                        {
-                            Rijndael rijndael = Rijndael.Create();
-                            if (!string.IsNullOrEmpty(EncryptKeyText))
-                            {
-                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
-                                {
-                                    rijndael.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
-                                }
-                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
-                                {
-                                    rijndael.Key = Convert.FromBase64String(EncryptKeyText);
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(InitializationVectorText))
-                            {
-                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
-                                {
-                                    rijndael.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
-                                }
-                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
-                                {
-                                    rijndael.IV = Convert.FromBase64String(InitializationVectorText);
-                                }
-                            }
-
-                            rijndael.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
-                            rijndael.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
-                            ICryptoTransform cryptoTransform = rijndael.CreateEncryptor(rijndael.Key, rijndael.IV);
-                            MemoryStream memoryStream = new();
-                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
-                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
-                            {
-                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
-                                fileStream.CopyTo(cryptoStream);
-                                fileStream.Dispose();
-                            }
-                            else if (selectedEncryptIndex is 1)
-                            {
-                                byte[] data = textEncoding.GetBytes(contentData);
-                                cryptoStream.Write(data, 0, data.Length);
-                                cryptoStream.FlushFinalBlock();
-                            }
-                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
-                            cryptoStream.Dispose();
-                            memoryStream.Dispose();
-                            cryptoTransform.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            encryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.Rijndael) + 1, e);
-                        }
-                        break;
-                    }
-                case DataEncryptType.RSA:
-                    {
-                        try
-                        {
-                            RSA rsa = RSA.Create();
-                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
-                            {
-                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
-                                byte[] data = new byte[(int)fileStream.Length];
-                                fileStream.Read(data, 0, data.Length);
-                                fileStream.Dispose();
-                                rsa.FromXmlString(EncryptPublicKeyText);
-                                byte[] encryptedOutput = null;
-                                if (SelectedRSAEncryptionPaddingMode.SelectedValue is RSAEncryptionPaddingMode.Pkcs1)
-                                {
-                                    encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
-                                }
-                                else if (SelectedRSAEncryptionPaddingMode.SelectedValue is RSAEncryptionPaddingMode.Oaep)
-                                {
-                                    encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.OaepSHA1);
-                                }
-
-                                if (encryptedOutput is not null)
-                                {
-                                    encryptedData = Convert.ToBase64String(encryptedOutput);
-                                }
-                            }
-                            else if (selectedEncryptIndex is 1)
-                            {
-                                byte[] data = textEncoding.GetBytes(contentData);
-                                rsa.FromXmlString(EncryptPublicKeyText);
-                                byte[] encryptedOutput = null;
-                                if (SelectedRSAEncryptionPaddingMode.SelectedValue is RSAEncryptionPaddingMode.Pkcs1)
-                                {
-                                    encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
-                                }
-                                else if (SelectedRSAEncryptionPaddingMode.SelectedValue is RSAEncryptionPaddingMode.Oaep)
-                                {
-                                    encryptedOutput = rsa.Encrypt(data, RSAEncryptionPadding.OaepSHA1);
-                                }
-
-                                if (encryptedOutput is not null)
-                                {
-                                    encryptedData = Convert.ToBase64String(encryptedOutput);
-                                }
-                            }
-                            rsa.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            encryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.RSA) + 1, e);
-                        }
-                        break;
-                    }
-                case DataEncryptType.SM4:
-                    {
-                        try
-                        {
-                            SM4 sm4 = new();
-                            if (!string.IsNullOrEmpty(EncryptKeyText))
-                            {
-                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
-                                {
-                                    sm4.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
-                                }
-                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
-                                {
-                                    sm4.Key = Convert.FromBase64String(EncryptKeyText);
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(InitializationVectorText))
-                            {
-                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
-                                {
-                                    sm4.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
-                                }
-                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
-                                {
-                                    sm4.IV = Convert.FromBase64String(InitializationVectorText);
-                                }
-                            }
-
-                            sm4.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
-                            sm4.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
-                            ICryptoTransform cryptoTransform = sm4.CreateEncryptor(sm4.Key, sm4.IV);
-                            MemoryStream memoryStream = new();
-                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
-                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
-                            {
-                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
-                                fileStream.CopyTo(cryptoStream);
-                                fileStream.Dispose();
-                            }
-                            else if (selectedEncryptIndex is 1)
-                            {
-                                byte[] data = textEncoding.GetBytes(contentData);
-                                cryptoStream.Write(data, 0, data.Length);
-                                cryptoStream.FlushFinalBlock();
-                            }
-                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
-                            cryptoStream.Dispose();
-                            memoryStream.Dispose();
-                            cryptoTransform.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            encryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.SM4) + 1, e);
-                        }
-                        break;
-                    }
-                case DataEncryptType.TripleDES:
-                    {
-                        try
-                        {
-                            TripleDES tripleDes = TripleDES.Create();
-                            if (!string.IsNullOrEmpty(EncryptKeyText))
-                            {
-                                if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[0]))
-                                {
-                                    tripleDes.Key = Encoding.UTF8.GetBytes(EncryptKeyText);
-                                }
-                                else if (Equals(SelectedEncryptKeyStringType, EncryptKeyStringTypeList[1]))
-                                {
-                                    tripleDes.Key = Convert.FromBase64String(EncryptKeyText);
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(InitializationVectorText))
-                            {
-                                if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[0]))
-                                {
-                                    tripleDes.IV = Encoding.UTF8.GetBytes(InitializationVectorText);
-                                }
-                                else if (Equals(SelectedInitializationVectorStringType, InitializationVectorStringTypeList[1]))
-                                {
-                                    tripleDes.IV = Convert.FromBase64String(InitializationVectorText);
-                                }
-                            }
-
-                            tripleDes.Mode = (CipherMode)SelectedEncryptedBlockCipherMode.SelectedValue;
-                            tripleDes.Padding = (PaddingMode)SelectedPaddingMode.SelectedValue;
-                            ICryptoTransform cryptoTransform = tripleDes.CreateEncryptor(tripleDes.Key, tripleDes.IV);
-                            MemoryStream memoryStream = new();
-                            CryptoStream cryptoStream = new(memoryStream, cryptoTransform, CryptoStreamMode.Write);
-                            if (selectedEncryptIndex is 0 && File.Exists(selectedEncryptFile))
-                            {
-                                FileStream fileStream = File.OpenRead(selectedEncryptFile);
-                                fileStream.CopyTo(cryptoStream);
-                                fileStream.Dispose();
-                            }
-                            else if (selectedEncryptIndex is 1)
-                            {
-                                byte[] data = textEncoding.GetBytes(contentData);
-                                cryptoStream.Write(data, 0, data.Length);
-                                cryptoStream.FlushFinalBlock();
-                            }
-                            encryptedData = Convert.ToBase64String(memoryStream.ToArray());
-                            cryptoStream.Dispose();
-                            memoryStream.Dispose();
-                            cryptoTransform.Dispose();
-                        }
-                        catch (Exception e)
-                        {
-                            encryptException = e;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.TripleDES) + 1, e);
-                        }
-                        break;
-                    }
-                case DataEncryptType.XOR:
-                    {
-                        if (selectedEncryptIndex is 1)
-                        {
-                            try
-                            {
-                                encryptedData = XOR.XOREncrypt(contentData, EncryptKeyText);
-                            }
-                            catch (Exception e)
-                            {
-                                encryptException = e;
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataEncryptPage), nameof(GetEncryptedData), Convert.ToInt32(DataEncryptType.XOR) + 1, e);
-                            }
-                        }
-                        break;
-                    }
-            }
-            return ValueTuple.Create(encryptedData, encryptException);
         }
 
         /// <summary>
@@ -3217,7 +3331,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private Visibility GetTextEncodingVisibility(int selectedIndex, DataEncryptType selectedDataEncryptType)
         {
-            return selectedIndex is 1 ? selectedDataEncryptType.Equals(DataEncryptTypeList[Convert.ToInt32(DataEncryptType.CaesarCipher)].DataEncryptType) || selectedDataEncryptType.Equals(DataEncryptTypeList[Convert.ToInt32(DataEncryptType.MorseCode)].DataEncryptType) || selectedDataEncryptType.Equals(DataEncryptTypeList[Convert.ToInt32(DataEncryptType.XOR)].DataEncryptType) ? Visibility.Collapsed : Visibility.Visible : Visibility.Collapsed;
+            return selectedIndex is 1 ? Equals(selectedDataEncryptType, DataEncryptTypeList[Convert.ToInt32(DataEncryptType.CaesarCipher)].DataEncryptType) || Equals(selectedDataEncryptType, DataEncryptTypeList[Convert.ToInt32(DataEncryptType.MorseCode)].DataEncryptType) || Equals(selectedDataEncryptType, DataEncryptTypeList[Convert.ToInt32(DataEncryptType.XOR)].DataEncryptType) ? Visibility.Collapsed : Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
@@ -3255,5 +3369,7 @@ namespace PowerToolbox.Views.Pages
         {
             return (resultSeverity is InfoBarSeverity.Warning || resultSeverity is InfoBarSeverity.Error) && !isEncrypting && !string.IsNullOrEmpty(encryptFailedInformation) ? Visibility.Visible : Visibility.Collapsed;
         }
+
+        #endregion 第五部分：数据操作与业务逻辑
     }
 }
