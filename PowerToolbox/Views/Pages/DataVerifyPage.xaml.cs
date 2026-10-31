@@ -2,7 +2,6 @@
 using Microsoft.UI.Xaml.Controls;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
-using PowerToolbox.Extensions.Encrypt;
 using PowerToolbox.Extensions.Hashing;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
