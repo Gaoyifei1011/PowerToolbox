@@ -257,7 +257,7 @@
                             ItemsSource="{x:Bind GetIconTypeList}"
                             SelectedItem="{x:Bind SelectedGetIconType, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnGetIconTypeSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
 
                         <TextBlock
                             Grid.Row="1"
@@ -275,7 +275,7 @@
                             ItemsSource="{x:Bind IconFormatList}"
                             SelectedItem="{x:Bind SelectedIconFormat, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnIconFormatSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
 
                         <TextBlock
                             Grid.Row="2"
@@ -526,7 +526,7 @@
                                 ItemsSource="{x:Bind FileContainIconSizeList}"
                                 SelectedItem="{x:Bind SelectedFileContainSize, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnFileContainSizeSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}"
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}"
                                 Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}" />
 
                             <ComboBox
@@ -536,7 +536,7 @@
                                 ItemsSource="{x:Bind FileAssociateIconSizeList}"
                                 SelectedItem="{x:Bind SelectedFileAssociateSize, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnFileAssociateSizeSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}"
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}"
                                 Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[1]), Mode=OneWay}" />
                         </Grid>
                     </Grid>

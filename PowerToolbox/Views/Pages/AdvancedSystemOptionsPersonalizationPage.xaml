@@ -392,7 +392,7 @@
                             ItemsSource="{x:Bind RightClickMenuStyleList}"
                             SelectedItem="{x:Bind RightClickMenuStyle, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnRightClickMenuStyleSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind roothelper:RuntimeHelper.IsWindows11}" />
@@ -422,7 +422,7 @@
                             ItemsSource="{x:Bind FileExplorerStyleList}"
                             SelectedItem="{x:Bind FileExplorerStyle, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnFileExplorerStyleSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind roothelper:RuntimeHelper.IsWindows11}" />
@@ -530,7 +530,7 @@
                             ItemsSource="{x:Bind FileExplorerHomePositionList}"
                             SelectedItem="{x:Bind FileExplorerHomePosition, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnFileExplorerHomePositionSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator />
@@ -650,7 +650,7 @@
                             ItemsSource="{x:Bind VisualEffectsPlanList}"
                             SelectedItem="{x:Bind VisualEffectsPlan, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnVisualEffectsPlanSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator />

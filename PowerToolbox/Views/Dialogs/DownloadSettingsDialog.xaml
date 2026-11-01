@@ -241,7 +241,7 @@
                         ItemsSource="{x:Bind DoEngineModeList}"
                         SelectedItem="{x:Bind DoEngineMode, Mode=OneWay}"
                         SelectionChanged="{x:Bind OnDoEngineModeSelectionChanged}"
-                        Style="{StaticResource ComboBoxStyle}" />
+                        Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                 </Grid>
 
                 <!--  传递优化设置  -->

@@ -112,7 +112,7 @@
                     <NavigationViewItem
                         Icon="{x:Bind NavigationIcon}"
                         MenuItemsSource="{x:Bind NavigationViewItemMenuItemsCollection}"
-                        Style="{StaticResource NavigationViewItemStyle}"
+                        Style="{StaticResource CardNavigationViewItemStyle}"
                         Visibility="{x:Bind VisibleState}">
 
                         <TextBlock

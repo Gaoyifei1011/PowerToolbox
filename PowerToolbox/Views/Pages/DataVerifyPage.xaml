@@ -198,7 +198,7 @@
                                     ItemsSource="{x:Bind UpperCaseTypeList}"
                                     SelectedItem="{x:Bind SelectedUpperCaseType, Mode=OneWay}"
                                     SelectionChanged="{x:Bind OnUseUpperCaseSelectionChanged}"
-                                    Style="{StaticResource ComboBoxStyle}" />
+                                    Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                             </AppBarElementContainer>
 
                             <AppBarButton Label="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('MultiSelect')}">

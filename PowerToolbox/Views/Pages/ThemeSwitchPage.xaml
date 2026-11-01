@@ -217,7 +217,7 @@
                                 ItemsSource="{x:Bind SystemThemeStyleCollection}"
                                 SelectedItem="{x:Bind SelectedSystemThemeStyle, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnSystemThemeStyleSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}" />
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                         </Grid>
 
                         <MenuFlyoutSeparator />
@@ -245,7 +245,7 @@
                                 ItemsSource="{x:Bind AppThemeStyleCollection}"
                                 SelectedItem="{x:Bind SelectedAppThemeStyle, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnAppThemeStyleSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}" />
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                         </Grid>
 
                         <MenuFlyoutSeparator />
@@ -389,7 +389,7 @@
                                     ItemsSource="{x:Bind AutoThemeSwitchTypeCollection}"
                                     SelectedItem="{x:Bind SelectedAutoThemeSwitchType, Mode=OneWay}"
                                     SelectionChanged="{x:Bind OnAutoThemeSwitchTypeSelectionChanged}"
-                                    Style="{StaticResource ComboBoxStyle}" />
+                                    Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                             </Grid>
 
                             <MenuFlyoutSeparator />

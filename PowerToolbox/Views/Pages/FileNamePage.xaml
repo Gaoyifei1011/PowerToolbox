@@ -129,7 +129,7 @@
                         ItemsSource="{x:Bind NumberFormatList}"
                         SelectedItem="{x:Bind SelectedNumberFormat, Mode=OneWay}"
                         SelectionChanged="{x:Bind OnNumberFormatSelectionChanged}"
-                        Style="{StaticResource ComboBoxStyle}" />
+                        Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
 
                     <CheckBox
                         Grid.Column="2"

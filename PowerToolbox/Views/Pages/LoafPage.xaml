@@ -185,7 +185,7 @@
                                 ItemsSource="{x:Bind SimulateUpdateStyleList}"
                                 SelectedItem="{x:Bind SelectedSimulateUpdateStyle, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnUpdateStyleSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}" />
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                         </Grid>
 
                         <MenuFlyoutSeparator />
@@ -267,7 +267,7 @@
                                 ItemsSource="{x:Bind AfterSimulateOperationList}"
                                 SelectedItem="{x:Bind SelectedAfterSimulateOperation, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnAfterSimulateOperationSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}" />
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                         </Grid>
                     </StackPanel>
                 </Expander>

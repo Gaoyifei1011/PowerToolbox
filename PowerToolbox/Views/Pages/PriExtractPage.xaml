@@ -715,7 +715,7 @@
                                 PlaceholderText="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('NoAvailableLanguage')}"
                                 SelectedItem="{x:Bind SelectedLanguage, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnLanguageSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}"
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}"
                                 Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind, ResourceCandidateKindList[0]), Mode=OneWay}" />
 
                             <MenuFlyoutSeparator Margin="5,3,5,3" />
@@ -728,7 +728,7 @@
                                 ItemsSource="{x:Bind ResourceCandidateKindList}"
                                 SelectedItem="{x:Bind SelectedResourceCandidateKind, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnResourceCandidateKindSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}" />
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
 
                             <AutoSuggestBox
                                 Margin="0,0,0,3"

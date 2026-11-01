@@ -129,7 +129,7 @@
                             ItemsSource="{x:Bind HibernationFileTypeList}"
                             SelectedItem="{x:Bind SelectedHibernationFileType, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnHibernationFileTypeSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind IsHibernationOpened, Mode=OneWay}" />
@@ -486,7 +486,7 @@
                             ItemsSource="{x:Bind NotifyModeList}"
                             SelectedItem="{x:Bind SelectedNotifyMode, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnNotifyModeSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator />

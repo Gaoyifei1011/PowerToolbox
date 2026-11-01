@@ -627,7 +627,7 @@
                                 ItemsSource="{x:Bind FileMatchRuleList}"
                                 SelectedItem="{x:Bind SelectedFileMatchRule, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnFileMatchRuleSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}" />
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                         </Grid>
 
                         <StackPanel Visibility="{x:Bind NeedInputMatchFormat, Mode=OneWay}">

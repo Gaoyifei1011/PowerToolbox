@@ -3897,7 +3897,7 @@
                                 ItemsSource="{x:Bind UpdateSourceList}"
                                 SelectedItem="{x:Bind SelectedUpdateSource, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnUpdateSourceSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}" />
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                         </Grid>
                     </StackPanel>
                 </Expander>

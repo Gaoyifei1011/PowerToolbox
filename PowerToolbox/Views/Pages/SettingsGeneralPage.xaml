@@ -86,7 +86,7 @@
                     ItemsSource="{x:Bind ThemeList}"
                     SelectedItem="{x:Bind Theme, Mode=OneWay}"
                     SelectionChanged="{x:Bind OnThemeSelectionChanged}"
-                    Style="{StaticResource ComboBoxStyle}" />
+                    Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
             </Grid>
 
             <!--  窗口背景材质设置  -->
@@ -148,7 +148,7 @@
                     ItemsSource="{x:Bind BackdropList}"
                     SelectedItem="{x:Bind Backdrop, Mode=OneWay}"
                     SelectionChanged="{x:Bind OnBackdropSelectionChanged}"
-                    Style="{StaticResource ComboBoxStyle}" />
+                    Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
             </Grid>
 
             <!--  始终显示背景色设置  -->
@@ -265,7 +265,7 @@
                     ItemsSource="{x:Bind LanguageCollection}"
                     SelectedItem="{x:Bind AppLanguage, Mode=OneWay}"
                     SelectionChanged="{x:Bind OnLanguageSelectionChanged}"
-                    Style="{StaticResource ComboBoxStyle}" />
+                    Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
             </Grid>
 
             <!--  窗口置顶设置  -->

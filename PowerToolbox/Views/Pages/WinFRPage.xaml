@@ -396,7 +396,7 @@
                                 ItemsSource="{x:Bind RecoveryModeList}"
                                 SelectedItem="{x:Bind SelectedRecoveryMode, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnRecoveryModeSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}" />
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                         </Grid>
 
                         <MenuFlyoutSeparator />
@@ -608,7 +608,7 @@
                                 ItemsSource="{x:Bind RegularDuplicatedFileOptionList}"
                                 SelectedItem="{x:Bind SelectedRegularDuplicatedFileOption, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnRegularDuplicatedFileOptionSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}" />
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                         </Grid>
                     </StackPanel>
                 </Expander>
@@ -736,7 +736,7 @@
                                 ItemsSource="{x:Bind ExtensiveDuplicatedFileOptionList}"
                                 SelectedItem="{x:Bind SelectedExtensiveDuplicatedFileOption, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnExtensiveDuplicatedFileOptionSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}" />
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                         </Grid>
                     </StackPanel>
                 </Expander>
@@ -924,7 +924,7 @@
                                 ItemsSource="{x:Bind NTFSDuplicatedFileOptionList}"
                                 SelectedItem="{x:Bind SelectedNTFSDuplicatedFileOption, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnNTFSDuplicatedFileOptionSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}" />
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                         </Grid>
 
                         <MenuFlyoutSeparator />
@@ -1220,7 +1220,7 @@
                                 ItemsSource="{x:Bind SegmentDuplicatedFileOptionList}"
                                 SelectedItem="{x:Bind SelectedSegmentDuplicatedFileOption, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnSegmentDuplicatedFileOptionSelectionChanged}"
-                                Style="{StaticResource ComboBoxStyle}" />
+                                Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                         </Grid>
 
                         <MenuFlyoutSeparator />

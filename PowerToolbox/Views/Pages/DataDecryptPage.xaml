@@ -51,7 +51,10 @@
 
                 <RadioButtons.ItemTemplate>
                     <DataTemplate x:DataType="model:RadioButtonItemModel">
-                        <RadioButton Content="{x:Bind SelectorName}" Style="{StaticResource TokenViewRadioButtonStyle}" />
+                        <RadioButton
+                            MinWidth="100"
+                            Content="{x:Bind SelectorName}"
+                            Style="{StaticResource TokenViewRadioButtonStyle}" />
                     </DataTemplate>
                 </RadioButtons.ItemTemplate>
             </RadioButtons>
@@ -326,7 +329,7 @@
                     ItemsSource="{x:Bind DataDecryptTypeList}"
                     SelectedItem="{x:Bind SelectedDataDecryptType, Mode=OneWay}"
                     SelectionChanged="{x:Bind OnDecryptSelectionChanged}"
-                    Style="{StaticResource RadioButtonsStyle}">
+                    Style="{StaticResource UniformGridRadioButtonsStyle}">
 
                     <RadioButtons.ItemTemplate>
                         <DataTemplate x:DataType="model:DataDecryptTypeModel">
@@ -406,7 +409,7 @@
                             ItemsSource="{x:Bind DecryptKeyStringTypeList}"
                             SelectedItem="{x:Bind SelectedDecryptKeyStringType, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnDecryptKeyStringTypeSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}"
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}"
                             Visibility="{x:Bind HasDecryptKeyStringType, Mode=OneWay}" />
 
                         <TextBox
@@ -459,7 +462,7 @@
                             ItemsSource="{x:Bind InitializationVectorStringTypeList}"
                             SelectedItem="{x:Bind SelectedInitializationVectorStringType, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnInitializationVectorStringTypeSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}"
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}"
                             Visibility="{x:Bind HasDecryptKeyStringType, Mode=OneWay}" />
 
                         <TextBox
@@ -503,7 +506,7 @@
                             ItemsSource="{x:Bind DecryptedBlockCipherModeList}"
                             SelectedItem="{x:Bind SelectedDecryptedBlockCipherMode, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnDecryptedBlockCipherModeSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind HasPaddingMode, Mode=OneWay}" />
@@ -534,7 +537,7 @@
                             ItemsSource="{x:Bind PaddingModeList}"
                             SelectedItem="{x:Bind SelectedPaddingMode, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnPaddingModeSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind HasOffset, Mode=OneWay}" />
@@ -631,7 +634,7 @@
                             ItemsSource="{x:Bind RSADecryptionPaddingModeList}"
                             SelectedItem="{x:Bind SelectedRSADecryptionPaddingMode, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnRSADecryptionPaddingModeSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind HasParseAsTextData, Mode=OneWay}" />
@@ -691,7 +694,7 @@
                             ItemsSource="{x:Bind TextEncodingTypeList}"
                             SelectedItem="{x:Bind SelectedTextEncodingType, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnTextEncodingTypeSelectionChanged}"
-                            Style="{StaticResource ComboBoxStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind GetCustomTextEncodingTypeVisibility(HasParseAsTextData, ParseAsTextData, SelectedTextEncodingType.SelectedValue, TextEncodingTypeList[10].SelectedValue), Mode=OneWay}" />
