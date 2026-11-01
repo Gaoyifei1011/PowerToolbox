@@ -1008,7 +1008,7 @@ namespace PowerToolbox.Views.Windows
         /// </summary>
         private void NavigationFrom()
         {
-            if (GetFrameContent() is ShellMenuPage shellMenuPage && shellMenuPage.BreadCollection.Count is 2)
+            if (GetFrameContent() is ShellMenuPage shellMenuPage && shellMenuPage.BreadcrumbBarCollection.Count is 2)
             {
                 shellMenuPage.NavigateTo(shellMenuPage.PageList[0], null, false);
                 return;

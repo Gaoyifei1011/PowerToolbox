@@ -28,7 +28,7 @@ namespace PowerToolbox.Views.Pages
 
         internal List<Type> PageList { get; } = [typeof(ShellMenuListPage), typeof(ShellMenuEditPage)];
 
-        internal WinRTObservableCollection<DictionaryEntry> BreadCollection { get; } = [];
+        internal WinRTObservableCollection<DictionaryEntry> BreadcrumbBarCollection { get; } = [];
 
         #endregion 第二部分：属性、列表与事件
 
@@ -67,7 +67,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
         {
-            if (args.Item is DictionaryEntry bread && BreadCollection.Count is 2 && Equals(bread.Key, BreadCollection[0].Key))
+            if (args.Item is DictionaryEntry bread && BreadcrumbBarCollection.Count is 2 && Equals(bread.Key, BreadcrumbBarCollection[0].Key))
             {
                 NavigateTo(PageList[0], null, false);
             }
@@ -78,25 +78,25 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNavigated(object sender, NavigationEventArgs args)
         {
-            if (BreadCollection.Count is 0 && Equals(GetCurrentPageType(), PageList[0]))
+            if (BreadcrumbBarCollection.Count is 0 && Equals(GetCurrentPageType(), PageList[0]))
             {
-                BreadCollection.Add(new()
+                BreadcrumbBarCollection.Add(new()
                 {
                     Key = "ShellMenu",
                     Value = ShellMenuString
                 });
             }
-            else if (BreadCollection.Count is 1 && Equals(GetCurrentPageType(), PageList[1]))
+            else if (BreadcrumbBarCollection.Count is 1 && Equals(GetCurrentPageType(), PageList[1]))
             {
-                BreadCollection.Add(new()
+                BreadcrumbBarCollection.Add(new()
                 {
                     Key = "ShellMenuEdit",
                     Value = ShellMenuEditString
                 });
             }
-            else if (BreadCollection.Count is 2 && Equals(GetCurrentPageType(), PageList[0]))
+            else if (BreadcrumbBarCollection.Count is 2 && Equals(GetCurrentPageType(), PageList[0]))
             {
-                BreadCollection.RemoveAt(1);
+                BreadcrumbBarCollection.RemoveAt(1);
             }
         }
 
