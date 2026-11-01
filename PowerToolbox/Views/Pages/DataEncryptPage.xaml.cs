@@ -1662,7 +1662,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         if (isSavedToSelectedFile)
                         {
-                            ResultSeverity = InfoBarSeverity.Warning;
+                            ResultSeverity = InfoBarSeverity.Success;
                             ResultMessage = ContentEncryptedDataSaveSuccessfullyString;
                             EncryptFailedInformation = string.Empty;
                         }
