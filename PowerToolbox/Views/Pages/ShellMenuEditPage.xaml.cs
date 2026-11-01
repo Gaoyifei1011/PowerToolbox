@@ -894,6 +894,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void MoveFileToSpecificFolder(string iconPath, string defaultIconPath)
         {
+            if (string.IsNullOrEmpty(iconPath) || string.IsNullOrEmpty(defaultIconPath))
+            {
+                return;
+            }
+
             if (File.Exists(iconPath))
             {
                 try
