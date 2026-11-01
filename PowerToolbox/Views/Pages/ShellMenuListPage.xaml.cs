@@ -173,7 +173,7 @@ namespace PowerToolbox.Views.Pages
         {
             base.OnNavigatedTo(args);
             await GetShellMenuItemAsync();
-            ActualThemeChanged += OnActualThemeChanged;
+            MountShellMenuListEvent();
         }
 
         /// <summary>
@@ -182,14 +182,7 @@ namespace PowerToolbox.Views.Pages
         protected override void OnNavigatedFrom(NavigationEventArgs args)
         {
             base.OnNavigatedFrom(args);
-            try
-            {
-                ActualThemeChanged -= OnActualThemeChanged;
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(OnNavigatedFrom), 1, e);
-            }
+            DismountShellMenuListEvent();
         }
 
         #endregion 第四部分：父类虚方法重写
@@ -412,7 +405,30 @@ namespace PowerToolbox.Views.Pages
 
         #endregion 第五部分：挂载事件处理
 
-        #region 第四部分：递归遍历
+        #region 第六部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 挂载与自定义扩展菜单列表相关的事件
+        /// </summary>
+        private void MountShellMenuListEvent()
+        {
+            ActualThemeChanged += OnActualThemeChanged;
+        }
+
+        /// <summary>
+        /// 卸载与自定义扩展菜单列表相关的事件
+        /// </summary>
+        private void DismountShellMenuListEvent()
+        {
+            try
+            {
+                ActualThemeChanged -= OnActualThemeChanged;
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ShellMenuListPage), nameof(DismountShellMenuListEvent), 1, e);
+            }
+        }
 
         /// <summary>
         /// 枚举并递归菜单项信息
@@ -824,8 +840,6 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第四部分：递归遍历
-
         /// <summary>
         /// 获取自定义菜单项
         /// </summary>
@@ -966,5 +980,7 @@ namespace PowerToolbox.Views.Pages
                 return null;
             }
         }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }
