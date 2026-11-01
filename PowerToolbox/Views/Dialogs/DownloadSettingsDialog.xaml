@@ -26,7 +26,6 @@
         <Grid
             Grid.Row="0"
             Margin="3,0,3,0"
-            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
             BorderThickness="0,0,0,1">
 
@@ -64,7 +63,6 @@
         <ScrollViewer
             Grid.Row="1"
             Margin="0,5,0,0"
-            Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
             HorizontalScrollBarVisibility="Disabled"
             HorizontalScrollMode="Disabled"
             VerticalScrollBarVisibility="Auto"
