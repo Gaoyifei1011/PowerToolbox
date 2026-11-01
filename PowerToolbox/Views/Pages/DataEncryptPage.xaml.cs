@@ -1426,10 +1426,17 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnOffsetValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
-            if (args.NewValue is not double.NaN)
+            if (double.IsNaN(sender.Value))
             {
-                Offset = int.MaxValue;
-                Offset = Convert.ToInt32(args.NewValue);
+                Offset = 0;
+            }
+            else
+            {
+                int value = Convert.ToInt32(sender.Value);
+                if (!Equals(Offset, value))
+                {
+                    Offset = value;
+                }
             }
         }
 

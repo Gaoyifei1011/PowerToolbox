@@ -412,38 +412,40 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnHibernationFilePercentValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
-            if (args.NewValue is not double.NaN && args.OldValue is not double.NaN)
+            if (!double.IsNaN(sender.Value))
             {
-                int newValue = Convert.ToInt32(args.NewValue);
-                HibernationFilePercent = int.MaxValue;
-                HibernationFilePercent = Convert.ToInt32(args.OldValue);
+                int value = Convert.ToInt32(sender.Value);
+                if (!Equals(HibernationFilePercent, value))
+                {
+                    HibernationFilePercent = value;
 
-                if (Equals(SelectedHibernationFileType, HibernationFileTypeList[0]))
-                {
-                    HibernationFilePercent = 0;
-                }
-                else if (Equals(SelectedHibernationFileType, HibernationFileTypeList[1]))
-                {
-                    HibernationFilePercent = 20;
-                }
-                else if (Equals(SelectedHibernationFileType, HibernationFileTypeList[2]))
-                {
-                    if (newValue < 40)
+                    if (Equals(SelectedHibernationFileType, HibernationFileTypeList[0]))
                     {
-                        HibernationFilePercent = 40;
+                        HibernationFilePercent = 0;
                     }
-                    else if (newValue > 100)
+                    else if (Equals(SelectedHibernationFileType, HibernationFileTypeList[1]))
                     {
-                        HibernationFilePercent = 100;
+                        HibernationFilePercent = 20;
+                    }
+                    else if (Equals(SelectedHibernationFileType, HibernationFileTypeList[2]))
+                    {
+                        if (value < 40)
+                        {
+                            HibernationFilePercent = 40;
+                        }
+                        else if (value > 100)
+                        {
+                            HibernationFilePercent = 100;
+                        }
+                        else
+                        {
+                            HibernationFilePercent = value;
+                        }
                     }
                     else
                     {
-                        HibernationFilePercent = newValue;
+                        HibernationFilePercent = value;
                     }
-                }
-                else
-                {
-                    HibernationFilePercent = newValue;
                 }
             }
         }

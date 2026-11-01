@@ -998,22 +998,17 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSegmentSourceDeviceNumberSectorsValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
-            if (args.NewValue is not double.NaN)
+            if (double.IsNaN(sender.Value))
             {
-                try
-                {
-                    SegmentSourceDeviceNumberSectors = int.MaxValue;
-                    SegmentSourceDeviceNumberSectors = Math.Abs(Convert.ToInt32(args.NewValue));
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnSegmentSourceDeviceNumberSectorsValueChanged), 1, e);
-                    SegmentSourceDeviceNumberSectors = 0;
-                }
+                SegmentSourceDeviceNumberSectors = 0;
             }
             else
             {
-                SegmentSourceDeviceNumberSectors = 0;
+                int value = Convert.ToInt32(sender.Value);
+                if (!Equals(SegmentSourceDeviceNumberSectors, value))
+                {
+                    SegmentSourceDeviceNumberSectors = Math.Abs(Convert.ToInt32(args.NewValue));
+                }
             }
         }
 
@@ -1022,22 +1017,17 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSegmentSourceDeviceClusterSizeValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
-            if (args.NewValue is not double.NaN)
+            if (double.IsNaN(sender.Value))
             {
-                try
-                {
-                    SegmentSourceDeviceClusterSize = int.MaxValue;
-                    SegmentSourceDeviceClusterSize = Math.Abs(Convert.ToInt32(args.NewValue));
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnSegmentSourceDeviceClusterSizeValueChanged), 1, e);
-                    SegmentSourceDeviceClusterSize = 0;
-                }
+                SegmentSourceDeviceClusterSize = 0;
             }
             else
             {
-                SegmentSourceDeviceClusterSize = 0;
+                int value = Convert.ToInt32(sender.Value);
+                if (!Equals(SegmentSourceDeviceClusterSize, value))
+                {
+                    SegmentSourceDeviceClusterSize = Math.Abs(Convert.ToInt32(args.NewValue));
+                }
             }
         }
 
@@ -1068,22 +1058,17 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSignatureSourceDeviceNumberSectorsValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
-            if (args.NewValue is not double.NaN)
+            if (double.IsNaN(sender.Value))
             {
-                try
-                {
-                    SignatureSourceDeviceNumberSectors = int.MaxValue;
-                    SignatureSourceDeviceNumberSectors = Math.Abs(Convert.ToInt32(args.NewValue));
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnSignatureSourceDeviceNumberSectorsValueChanged), 1, e);
-                    SignatureSourceDeviceNumberSectors = 0;
-                }
+                SignatureSourceDeviceNumberSectors = 0;
             }
             else
             {
-                SignatureSourceDeviceNumberSectors = 0;
+                int value = Convert.ToInt32(sender.Value);
+                if (!Equals(SignatureSourceDeviceNumberSectors, value))
+                {
+                    SignatureSourceDeviceNumberSectors = Math.Abs(Convert.ToInt32(args.NewValue));
+                }
             }
         }
 
@@ -1092,22 +1077,17 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSignatureSourceDeviceClusterSizeValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
-            if (args.NewValue is not double.NaN)
+            if (double.IsNaN(sender.Value))
             {
-                try
-                {
-                    SignatureSourceDeviceClusterSize = int.MaxValue;
-                    SignatureSourceDeviceClusterSize = Math.Abs(Convert.ToInt32(args.NewValue));
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinFRPage), nameof(OnSignatureSourceDeviceClusterSizeValueChanged), 1, e);
-                    SignatureSourceDeviceClusterSize = 0;
-                }
+                SignatureSourceDeviceClusterSize = 0;
             }
             else
             {
-                SignatureSourceDeviceClusterSize = 0;
+                int value = Convert.ToInt32(sender.Value);
+                if (!Equals(SignatureSourceDeviceClusterSize, value))
+                {
+                    SignatureSourceDeviceClusterSize = Math.Abs(Convert.ToInt32(args.NewValue));
+                }
             }
         }
 

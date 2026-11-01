@@ -901,16 +901,16 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSunriseOffsetValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
-            int sunriseOffset = 0;
-            if (args.NewValue is not double.NaN)
+            if (double.IsNaN(sender.Value))
             {
-                try
+                SunriseOffset = 0;
+            }
+            else
+            {
+                int value = Convert.ToInt32(sender.Value);
+                if (!Equals(SunriseOffset, value))
                 {
-                    sunriseOffset = Convert.ToInt32(args.NewValue);
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSunriseOffsetValueChanged), 1, e);
+                    SunriseOffset = value;
                 }
             }
 
@@ -925,22 +925,17 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSunsetOffsetValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
-            int sunsetOffset = 0;
-            if (args.NewValue is not double.NaN)
+            if (double.IsNaN(sender.Value))
             {
-                try
-                {
-                    sunsetOffset = Convert.ToInt32(args.NewValue);
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ThemeSwitchPage), nameof(OnSunsetOffsetValueChanged), 1, e);
-                    sunsetOffset = 0;
-                }
+                SunsetOffset = 0;
             }
             else
             {
-                sunsetOffset = 0;
+                int value = Convert.ToInt32(sender.Value);
+                if (!Equals(SunsetOffset, value))
+                {
+                    SunsetOffset = value;
+                }
             }
 
             if (IsAutoThemeSwitchEnable && Equals(SelectedAutoThemeSwitchType, AutoThemeSwitchTypeCollection[1]) && DevicePositionService.IsInitialized && DevicePositionService.IsLoaded)
