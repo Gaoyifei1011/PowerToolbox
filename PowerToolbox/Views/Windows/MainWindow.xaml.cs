@@ -492,6 +492,7 @@ namespace PowerToolbox.Views.Windows
             appWindow.TitleBar.InactiveBackgroundColor = Colors.Transparent;
             appWindow.TitleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
             IsWindowMaximized = overlappedPresenter.State is OverlappedPresenterState.Maximized;
+            SetTitleBar(AppTitlebar);
         }
 
         /// <summary>
