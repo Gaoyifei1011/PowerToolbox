@@ -662,7 +662,7 @@
                             IsOn="{x:Bind ParseAsTextData, Mode=OneWay}"
                             OffContent="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ParseAsTextDataOffContent')}"
                             OnContent="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('ParseAsTextDataOnContent')}"
-                            Style="{StaticResource ToggleSwitchStyle}"
+                            Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                             Toggled="{x:Bind OnParseAsTextDataToggled}" />
                     </Grid>
 
@@ -784,7 +784,7 @@
                             IsOn="{x:Bind SaveDecryptedDataToLocalFile, Mode=OneWay}"
                             OffContent="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('SaveDecryptedDataToLocalFileOffContent')}"
                             OnContent="{x:Bind rootservice:ResourceService.DataDecryptResource.GetString('SaveDecryptedDataToLocalFileOnContent')}"
-                            Style="{StaticResource ToggleSwitchStyle}"
+                            Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                             Toggled="{x:Bind OnSaveDecryptedDataToLocalFileToggled}" />
                     </Grid>
 

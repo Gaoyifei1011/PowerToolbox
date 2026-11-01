@@ -211,7 +211,7 @@
                                 IsOn="{x:Bind BlockAllKeys, Mode=OneWay}"
                                 OffContent="{x:Bind rootservice:ResourceService.LoafResource.GetString('BlockAllKeysOffContent')}"
                                 OnContent="{x:Bind rootservice:ResourceService.LoafResource.GetString('BlockAllKeysOnContent')}"
-                                Style="{StaticResource ToggleSwitchStyle}"
+                                Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                                 Toggled="{x:Bind OnBlockAllKeysToggled}" />
                         </Grid>
 

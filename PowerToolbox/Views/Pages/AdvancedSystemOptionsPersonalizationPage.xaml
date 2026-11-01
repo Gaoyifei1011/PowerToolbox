@@ -500,7 +500,7 @@
                             IsOn="{x:Bind IsSyncProviderNotificationsEnabled, Mode=OneWay}"
                             OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('SyncProviderNotificationsOffContent')}"
                             OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('SyncProviderNotificationsOnContent')}"
-                            Style="{StaticResource ToggleSwitchStyle}"
+                            Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                             Toggled="{x:Bind OnSyncProviderNotificationsToggled}" />
                     </Grid>
 
@@ -557,7 +557,7 @@
                             IsOn="{x:Bind IsShortcutWithoutShortcutTextEnabled, Mode=OneWay}"
                             OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('CreateShortcutWithoutShortcutTextOffContent')}"
                             OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('CreateShortcutWithoutShortcutTextOnContent')}"
-                            Style="{StaticResource ToggleSwitchStyle}"
+                            Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                             Toggled="{x:Bind OnCreateShortcutWithoutShortcutTextToggled}" />
                     </Grid>
                 </StackPanel>

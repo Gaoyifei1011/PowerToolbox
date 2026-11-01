@@ -98,7 +98,7 @@
                             IsOn="{x:Bind IsHibernationOpened, Mode=OneWay}"
                             OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('EnableHibernationOffContent')}"
                             OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('EnableHibernationOnContent')}"
-                            Style="{StaticResource ToggleSwitchStyle}"
+                            Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                             Toggled="{x:Bind OnEnableHibernationToggled}" />
                     </Grid>
 
@@ -225,7 +225,7 @@
                             IsOn="{x:Bind IsFastStartupEnabled, Mode=OneWay}"
                             OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('FastStartupOffContent')}"
                             OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('FastStartupOnContent')}"
-                            Style="{StaticResource ToggleSwitchStyle}"
+                            Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                             Toggled="{x:Bind OnFastStartupToggled}" />
                     </Grid>
                 </StackPanel>
@@ -677,7 +677,7 @@
                     IsOn="{x:Bind IsBackgroundAppsTaskEnabled, Mode=OneWay}"
                     OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('BackgroundAppsSettingsOffContent')}"
                     OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('BackgroundAppsSettingsOnContent')}"
-                    Style="{StaticResource ToggleSwitchStyle}"
+                    Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                     Toggled="{x:Bind OnBackgroundAppsTaskToggled}" />
             </Grid>
 
@@ -776,7 +776,7 @@
                     IsOn="{x:Bind IsSystemReservedStorageEnabled, Mode=OneWay}"
                     OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('SystemReservedStorageOffContent')}"
                     OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('SystemReservedStorageOnContent')}"
-                    Style="{StaticResource ToggleSwitchStyle}"
+                    Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                     Toggled="{x:Bind OnSystemReservedStorageToggled}" />
             </Grid>
 
@@ -852,7 +852,7 @@
                     IsOn="{x:Bind IsVirtualizationBasedSecurityEnabled, Mode=OneWay}"
                     OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('VirtualizationBasedSecurityOffContent')}"
                     OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('VirtualizationBasedSecurityOnContent')}"
-                    Style="{StaticResource ToggleSwitchStyle}"
+                    Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                     Toggled="{x:Bind OnVirtualizationBasedSecurityToggled}" />
             </Grid>
 
@@ -928,7 +928,7 @@
                     IsOn="{x:Bind IsNICOffloadSettingsEnabled, Mode=OneWay}"
                     OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('NICOffloadSettingsOffContent')}"
                     OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('NICOffloadSettingsOnContent')}"
-                    Style="{StaticResource ToggleSwitchStyle}"
+                    Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                     Toggled="{x:Bind OnNICOffloadSettingsToggled}" />
             </Grid>
 
@@ -1196,7 +1196,7 @@
                     IsOn="{x:Bind IsWindowsPhotoViewerEnabled, Mode=OneWay}"
                     OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('WindowsPhotoViewerSettingsOffContent')}"
                     OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('WindowsPhotoViewerSettingsOnContent')}"
-                    Style="{StaticResource ToggleSwitchStyle}"
+                    Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                     Toggled="{x:Bind OnWindowsPhotoViewerSettingsToggled}" />
             </Grid>
 
@@ -1249,7 +1249,7 @@
                     IsOn="{x:Bind IsApprovalModeForBuiltinAdministratorAccountEnabled, Mode=OneWay}"
                     OffContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('ApprovalModeForBuiltinAdministratorAccountOffContent')}"
                     OnContent="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('ApprovalModeForBuiltinAdministratorAccountOnContent')}"
-                    Style="{StaticResource ToggleSwitchStyle}"
+                    Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                     Toggled="{x:Bind OnApprovalModeForBuiltinAdministratorAccountSettingsToggled}" />
             </Grid>
         </StackPanel>

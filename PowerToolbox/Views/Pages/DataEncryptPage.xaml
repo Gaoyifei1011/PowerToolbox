@@ -896,7 +896,7 @@
                             IsOn="{x:Bind SaveEncryptedDataToLocalFile, Mode=OneWay}"
                             OffContent="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('SaveEncryptedDataToLocalFileOffContent')}"
                             OnContent="{x:Bind rootservice:ResourceService.DataEncryptResource.GetString('SaveEncryptedDataToLocalFileOnContent')}"
-                            Style="{StaticResource ToggleSwitchStyle}"
+                            Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                             Toggled="{x:Bind OnSaveEncryptedDataToLocalFileToggled}" />
                     </Grid>
 

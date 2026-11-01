@@ -165,7 +165,7 @@
                                 IsOn="{x:Bind UseIcon, Mode=OneWay}"
                                 OffContent="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseIconOffContent')}"
                                 OnContent="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseIconOnContent')}"
-                                Style="{StaticResource ToggleSwitchStyle}"
+                                Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                                 Toggled="{x:Bind OnUseIconToggled}" />
                         </Grid>
 
@@ -196,7 +196,7 @@
                                     IsOn="{x:Bind UseProgramIcon, Mode=OneWay}"
                                     OffContent="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseProgramIconOffContent')}"
                                     OnContent="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseProgramIconOnContent')}"
-                                    Style="{StaticResource ToggleSwitchStyle}"
+                                    Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                                     Toggled="{x:Bind OnUseProgramIconToggled}" />
                             </Grid>
 
@@ -227,7 +227,7 @@
                                         IsOn="{x:Bind UseThemeIcon, Mode=OneWay}"
                                         OffContent="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseThemeIconOffContent')}"
                                         OnContent="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('UseThemeIconOnContent')}"
-                                        Style="{StaticResource ToggleSwitchStyle}"
+                                        Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                                         Toggled="{x:Bind OnUseThemeIconToggled}" />
                                 </Grid>
 
@@ -509,7 +509,7 @@
                         IsOn="{x:Bind IsAlwaysRunAsAdministrator, Mode=OneWay}"
                         OffContent="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('IsAlwaysRunAsAdministratorOffContent')}"
                         OnContent="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('IsAlwaysRunAsAdministratorOnContent')}"
-                        Style="{StaticResource ToggleSwitchStyle}"
+                        Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                         Toggled="{x:Bind OnIsAlwaysRunAsAdministratorToggled}" />
                 </Grid>
 

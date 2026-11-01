@@ -85,7 +85,7 @@
                     IsOn="{x:Bind FileShellMenu, Mode=OneWay}"
                     OffContent="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('FileShellMenuOffContent')}"
                     OnContent="{x:Bind rootservice:ResourceService.SettingsAdvancedResource.GetString('FileShellMenuOnContent')}"
-                    Style="{StaticResource ToggleSwitchStyle}"
+                    Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                     Toggled="{x:Bind OnFileShellMenuToggled}" />
             </Grid>
 

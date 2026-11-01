@@ -272,7 +272,7 @@
                                 IsOn="{x:Bind IsShowThemeColorInStartAndTaskbar, Mode=OneWay}"
                                 OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowThemeColorInStartAndTaskbarOffContent')}"
                                 OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowThemeColorInStartAndTaskbarOnContent')}"
-                                Style="{StaticResource ToggleSwitchStyle}"
+                                Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                                 Toggled="{x:Bind OnShowThemeColorInStartAndTaskbarToggled}" />
                         </Grid>
                     </StackPanel>
@@ -357,7 +357,7 @@
                                 IsOn="{x:Bind IsAutoThemeSwitchEnable, Mode=OneWay}"
                                 OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoThemeSwitchEnableOffContent')}"
                                 OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoThemeSwitchEnableOnContent')}"
-                                Style="{StaticResource ToggleSwitchStyle}"
+                                Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                                 Toggled="{x:Bind OnAutoThemeSwitchEnableToggled}" />
                         </Grid>
 
@@ -578,7 +578,7 @@
                                     IsOn="{x:Bind IsAutoSwitchSystemTheme, Mode=OneWay}"
                                     OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchSystemThemeOffContent')}"
                                     OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchSystemThemeOnContent')}"
-                                    Style="{StaticResource ToggleSwitchStyle}"
+                                    Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                                     Toggled="{x:Bind OnAutoSwitchSystemThemeToggled}" />
                             </Grid>
 
@@ -768,7 +768,7 @@
                                     IsOn="{x:Bind IsAutoSwitchAppTheme, Mode=OneWay}"
                                     OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchAppThemeOffContent')}"
                                     OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('AutoSwitchAppThemeOnContent')}"
-                                    Style="{StaticResource ToggleSwitchStyle}"
+                                    Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                                     Toggled="{x:Bind OnAutoSwitchAppThemeToggled}" />
                             </Grid>
 
@@ -796,7 +796,7 @@
                                     IsOn="{x:Bind IsShowColorInDarkTheme, Mode=OneWay}"
                                     OffContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowColorInDarkThemeOffContent')}"
                                     OnContent="{x:Bind rootservice:ResourceService.ThemeSwitchResource.GetString('ShowColorInDarkThemeOnContent')}"
-                                    Style="{StaticResource ToggleSwitchStyle}"
+                                    Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"
                                     Toggled="{x:Bind OnShowColorInDarkThemeToggled}" />
                             </Grid>
 
