@@ -1,4 +1,6 @@
 Close=关闭
+ContextMenuCountInfo=共有{0}个右键菜单项
+ContextMenuEmpty=没有任何右键菜单项
 ContextMenuManager=右键菜单管理
 LearnCustomRightClickMenu=了解自定义右键菜单
 LoadingContextMenuInformation=正在加载右键菜单信息中，请稍候...
@@ -16,6 +18,7 @@ OpenSettings=打开设置
 Refresh=刷新
 RestoreDefault=恢复默认
 SearchAppNamePHText=搜索应用名称或包全名
+SearchContextMenu=搜索右键菜单项
 Selected=已选择
 UnSelected=未选择
 UseInstruction=使用说明

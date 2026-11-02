@@ -1,4 +1,6 @@
 Close=Close
+ContextMenuCountInfo=There are {0} right-click menu items
+ContextMenuEmpty=No right-click menu items
 ContextMenuManager=Context menu manager
 LearnCustomRightClickMenu=Learn to custom right-click menu
 LoadingContextMenuInformation=Loading right-click menu information, please wait...
@@ -16,6 +18,7 @@ OpenSettings=Open settings
 Refresh=Refresh
 RestoreDefault=Restore default
 SearchAppNamePHText=Search app name or package full name
+SearchContextMenu=Search right-click menu items
 Selected=Selected
 UnSelected=Unselected
 UseInstruction=Use instruction
