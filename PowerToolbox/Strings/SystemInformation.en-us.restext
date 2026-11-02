@@ -15,6 +15,7 @@ LoadingSystemInformation=Loading system information
 MainboardManufacturer=Mainboard manufacturer
 MainboardProduct=Mainboard product
 MainboardVersion=Mainboard version
+NotAvailable=N/A
 OperatingSystemManufacturer=Operation system manufacturer
 OperatingSystemName=Operation system name
 OperatingSystemVersion=Operation system version
