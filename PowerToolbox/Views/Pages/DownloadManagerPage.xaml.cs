@@ -696,6 +696,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async Task<bool> DeleteFileAsync(string filePath)
         {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
+
             return await Task.Run(() =>
             {
                 // 删除文件
