@@ -87,6 +87,7 @@
             <!--  工具栏  -->
             <GridView
                 Margin="0,10,0,0"
+                Padding="0"
                 IsItemClickEnabled="True"
                 ItemClick="{x:Bind OnItemClicked}"
                 ItemsSource="{x:Bind AllToolsCollectionViewSource.View, Mode=OneWay}"

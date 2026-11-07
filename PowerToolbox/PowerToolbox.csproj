@@ -482,8 +482,4 @@
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\WinUIImportControls\" />
-  </ItemGroup>
 </Project>

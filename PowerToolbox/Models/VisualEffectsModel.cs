@@ -8,25 +8,6 @@ namespace PowerToolbox.Models
     internal sealed class VisualEffectsModel : INotifyPropertyChanged
     {
         /// <summary>
-        /// 开启 / 禁用视觉效果
-        /// </summary>
-        private bool _isVisualEnabled;
-
-        internal bool IsVisualEnabled
-        {
-            get { return _isVisualEnabled; }
-
-            set
-            {
-                if (!Equals(_isVisualEnabled, value))
-                {
-                    _isVisualEnabled = value;
-                    PropertyChanged?.Invoke(this, new(nameof(IsVisualEnabled)));
-                }
-            }
-        }
-
-        /// <summary>
         /// 视觉效果名称
         /// </summary>
         internal string Name { get; set; }

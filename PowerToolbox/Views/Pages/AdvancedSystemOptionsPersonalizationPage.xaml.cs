@@ -20,6 +20,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -350,50 +351,7 @@ namespace PowerToolbox.Views.Pages
 
         #endregion 第四部分：父类虚方法重写
 
-        #region 第五部分：命令调用处理
-
-        /// <summary>
-        /// 修改桌面图标显示状态
-        /// </summary>
-        private async void OnDesktopIconDisplayExecuteRequested(object sender, ExecuteRequestedEventArgs args)
-        {
-            if (args.Parameter is DesktopIconDisplayModel desktopIconDisplay)
-            {
-                desktopIconDisplay.IsIconVisible = !desktopIconDisplay.IsIconVisible;
-                await SetDesktopIconVisibilityAsync(desktopIconDisplay.IconTag, desktopIconDisplay.IsIconVisible);
-                desktopIconDisplay.IsIconVisible = await GetDesktopIconVisibilityAsync(desktopIconDisplay.IconTag);
-            }
-        }
-
-        /// <summary>
-        /// 修改导航窗格图标显示状态
-        /// </summary>
-        private async void OnNavigationPaneIconExecuteRequested(object sender, ExecuteRequestedEventArgs args)
-        {
-            if (args.Parameter is NavigationPaneIconDisplayModel navigationPaneIconDisplay)
-            {
-                navigationPaneIconDisplay.IsIconVisible = !navigationPaneIconDisplay.IsIconVisible;
-                await SetNavigationPaneIconVisibilityAsync(navigationPaneIconDisplay.IconTag, navigationPaneIconDisplay.IsIconVisible);
-                navigationPaneIconDisplay.IsIconVisible = await GetNavigationPaneIconVisibilityAsync(navigationPaneIconDisplay.IconTag);
-                advancedSystemOptionsPage?.ShowNotification(true, false);
-            }
-        }
-
-        /// <summary>
-        /// 修改视觉效果选项启用状态
-        /// </summary>
-        private void OnVisualEffectsExecuteRequested(object sender, ExecuteRequestedEventArgs args)
-        {
-            if (args.Parameter is VisualEffectsModel visualEffects)
-            {
-                visualEffects.IsVisualEnabled = !visualEffects.IsVisualEnabled;
-                VisualEffectsPlan = VisualEffectsPlanList[3];
-            }
-        }
-
-        #endregion 第五部分：命令调用处理
-
-        #region 第六部分：挂载事件处理
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 重建图标缓存
@@ -448,6 +406,29 @@ namespace PowerToolbox.Views.Pages
                 SelectedIconItem = gridView.SelectedItem is DesktopIconSettingsModel desktopIconSettingsItem ? desktopIconSettingsItem : null;
             }
             IsIconSelected = SelectedIconItem is not null;
+        }
+
+        /// <summary>
+        /// 保存桌面图标显示状态
+        /// </summary>
+        private async void OnSaveDesktopIconClicked(object sender, RoutedEventArgs args)
+        {
+            for (int index = 0; index < DesktopIconDisplayCollection.Count; index++)
+            {
+                bool isIconVisible = DesktopIconDisplayGridView.SelectedItems.Contains(DesktopIconDisplayCollection[index]);
+                string iconTag = DesktopIconDisplayCollection[index].IconTag;
+                await SetDesktopIconVisibilityAsync(iconTag, isIconVisible);
+                bool isNewIconVisible = await GetDesktopIconVisibilityAsync(iconTag);
+                if (isNewIconVisible)
+                {
+                    DesktopIconDisplayGridView.SelectRange(new(index, 1));
+                }
+                else
+                {
+                    DesktopIconDisplayGridView.DeselectRange(new(index, 1));
+                }
+            }
+            SendChangeNotify();
         }
 
         /// <summary>
@@ -509,6 +490,28 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 保存导航窗格图标显示状态
+        /// </summary>
+        private async void OnSaveNavigationPaneIconClicked(object sender, RoutedEventArgs args)
+        {
+            for (int index = 0; index < NavigationPaneIconDisplayCollection.Count; index++)
+            {
+                bool isIconVisible = NavigationPaneIconDisplayGridView.SelectedItems.Contains(NavigationPaneIconDisplayCollection[index]);
+                string iconTag = NavigationPaneIconDisplayCollection[index].IconTag;
+                await SetNavigationPaneIconVisibilityAsync(iconTag, isIconVisible);
+                bool isNewIconVisible = await GetNavigationPaneIconVisibilityAsync(iconTag);
+                if (isNewIconVisible)
+                {
+                    NavigationPaneIconDisplayGridView.SelectRange(new(index, 1));
+                }
+                else
+                {
+                    NavigationPaneIconDisplayGridView.DeselectRange(new(index, 1));
+                }
+            }
+        }
+
+        /// <summary>
         /// 显示 / 关闭供应商同步通知
         /// </summary>
         private async void OnSyncProviderNotificationsToggled(object sender, RoutedEventArgs args)
@@ -560,26 +563,26 @@ namespace PowerToolbox.Views.Pages
             if (!IsUpdatingVisualEffects)
             {
                 IsUpdatingVisualEffects = true;
-                await SetVisualEffectsAsync(new VisualEffects()
+                await SetVisualEffectsAsync(new()
                 {
                     VisualEffectsPlan = VisualEffectsPlanList.IndexOf(VisualEffectsPlan),
-                    SaveTaskbarThumbnailPreview = VisualEffectsList[0].IsVisualEnabled,
-                    AnimationControlsAndElementsInsideWindow = VisualEffectsList[1].IsVisualEnabled,
-                    FadeinAndOutOrSlideMenuToView = VisualEffectsList[2].IsVisualEnabled,
-                    SlideToOpenCombobox = VisualEffectsList[3].IsVisualEnabled,
-                    SmoothScrollListbox = VisualEffectsList[4].IsVisualEnabled,
-                    SmoothScreenFontEdges = VisualEffectsList[5].IsVisualEnabled,
-                    EnablePeek = VisualEffectsList[6].IsVisualEnabled,
-                    TaskbarAnimations = VisualEffectsList[7].IsVisualEnabled,
-                    ShowWindowContentsWhileDragging = VisualEffectsList[8].IsVisualEnabled,
-                    ShowThumbnail = VisualEffectsList[9].IsVisualEnabled,
-                    ShowSemitransparentSelectedRectangle = VisualEffectsList[10].IsVisualEnabled,
-                    ShowShadowUnderWindow = VisualEffectsList[11].IsVisualEnabled,
-                    FadeoutMenuAfterClicking = VisualEffectsList[12].IsVisualEnabled,
-                    FadeinFadeoutOrSlideToolTipInView = VisualEffectsList[13].IsVisualEnabled,
-                    ShowShadowUnderMousePointer = VisualEffectsList[14].IsVisualEnabled,
-                    UseShadowForIconLabelsOnDesktop = VisualEffectsList[15].IsVisualEnabled,
-                    ShowAnimationWhenMaximizingOrMinimizing = VisualEffectsList[16].IsVisualEnabled
+                    SaveTaskbarThumbnailPreview = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[0]),
+                    AnimationControlsAndElementsInsideWindow = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[1]),
+                    FadeinAndOutOrSlideMenuToView = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[2]),
+                    SlideToOpenCombobox = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[3]),
+                    SmoothScrollListbox = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[4]),
+                    SmoothScreenFontEdges = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[5]),
+                    EnablePeek = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[6]),
+                    TaskbarAnimations = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[7]),
+                    ShowWindowContentsWhileDragging = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[8]),
+                    ShowThumbnail = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[9]),
+                    ShowSemitransparentSelectedRectangle = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[10]),
+                    ShowShadowUnderWindow = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[11]),
+                    FadeoutMenuAfterClicking = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[12]),
+                    FadeinFadeoutOrSlideToolTipInView = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[13]),
+                    ShowShadowUnderMousePointer = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[14]),
+                    UseShadowForIconLabelsOnDesktop = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[15]),
+                    ShowAnimationWhenMaximizingOrMinimizing = VisualEffectsListView.SelectedItems.Contains(VisualEffectsList[16])
                 });
                 if (await GetVisualEffectsAsync() is VisualEffects visualEffects)
                 {
@@ -604,26 +607,19 @@ namespace PowerToolbox.Views.Pages
                     {
                         case "WindowsChooseBestSettings":
                             {
-                                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsList)
-                                {
-                                    visualEffectsItem.IsVisualEnabled = visualEffectsItem.VisualTag is not "SaveTaskbarThumbnailPreview" && visualEffectsItem.VisualTag is not "ShowShadowUnderMousePointer";
-                                }
+                                VisualEffectsListView.SelectAll();
+                                VisualEffectsListView.DeselectRange(new(0, 1));
+                                VisualEffectsListView.DeselectRange(new(14, 1));
                                 break;
                             }
                         case "BestAppearance":
                             {
-                                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsList)
-                                {
-                                    visualEffectsItem.IsVisualEnabled = true;
-                                }
+                                VisualEffectsListView.SelectAll();
                                 break;
                             }
                         case "BestPerformance":
                             {
-                                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsList)
-                                {
-                                    visualEffectsItem.IsVisualEnabled = false;
-                                }
+                                VisualEffectsListView.DeselectRange(new(0, (uint)VisualEffectsListView.Items.Count));
                                 break;
                             }
                     }
@@ -631,9 +627,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第六部分：挂载事件处理
+        #endregion 第五部分：挂载事件处理
 
-        #region 第七部分：数据操作与业务逻辑
+        #region 第六部分：数据操作与业务逻辑
 
         /// <summary>
         /// 初始化数据
@@ -651,23 +647,23 @@ namespace PowerToolbox.Views.Pages
             VisualEffectsPlanList.Add(new() { DisplayMember = BestAppearanceString, SelectedValue = "BestAppearance" });
             VisualEffectsPlanList.Add(new() { DisplayMember = BestPerformanceString, SelectedValue = "BestPerformance" });
             VisualEffectsPlanList.Add(new() { DisplayMember = CustomString, SelectedValue = "Custom" });
-            VisualEffectsList.Add(new() { Name = SaveTaskbarThumbnailPreviewString, IsVisualEnabled = false, VisualTag = "SaveTaskbarThumbnailPreview" });
-            VisualEffectsList.Add(new() { Name = AnimationControlsAndElementsInsideWindowString, IsVisualEnabled = false, VisualTag = "AnimationControlsAndElementsInsideWindow" });
-            VisualEffectsList.Add(new() { Name = FadeinAndOutOrSlideMenuToViewString, IsVisualEnabled = false, VisualTag = "FadeinAndOutOrSlideMenuToView" });
-            VisualEffectsList.Add(new() { Name = SlideToOpenComboboxString, IsVisualEnabled = false, VisualTag = "SlideToOpenCombobox" });
-            VisualEffectsList.Add(new() { Name = SmoothScrollListboxString, IsVisualEnabled = false, VisualTag = "SmoothScrollListbox" });
-            VisualEffectsList.Add(new() { Name = SmoothScreenFontEdgesString, IsVisualEnabled = false, VisualTag = "SmoothScreenFontEdges" });
-            VisualEffectsList.Add(new() { Name = EnablePeekString, IsVisualEnabled = false, VisualTag = "EnablePeek" });
-            VisualEffectsList.Add(new() { Name = TaskbarAnimationsString, IsVisualEnabled = false, VisualTag = "TaskbarAnimations" });
-            VisualEffectsList.Add(new() { Name = ShowWindowContentsWhileDraggingString, IsVisualEnabled = false, VisualTag = "ShowWindowContentsWhileDragging" });
-            VisualEffectsList.Add(new() { Name = ShowThumbnailString, IsVisualEnabled = false, VisualTag = "ShowThumbnail" });
-            VisualEffectsList.Add(new() { Name = ShowSemitransparentSelectedRectangleString, IsVisualEnabled = false, VisualTag = "ShowSemitransparentSelectedRectangle" });
-            VisualEffectsList.Add(new() { Name = ShowShadowUnderWindowString, IsVisualEnabled = false, VisualTag = "ShowShadowUnderWindow" });
-            VisualEffectsList.Add(new() { Name = FadeoutMenuAfterClickingString, IsVisualEnabled = false, VisualTag = "FadeoutMenuAfterClicking" });
-            VisualEffectsList.Add(new() { Name = FadeinFadeoutOrSlideToolTipInViewString, IsVisualEnabled = false, VisualTag = "FadeinFadeoutOrSlideToolTipInView" });
-            VisualEffectsList.Add(new() { Name = ShowShadowUnderMousePointerString, IsVisualEnabled = false, VisualTag = "ShowShadowUnderMousePointer" });
-            VisualEffectsList.Add(new() { Name = UseShadowForIconLabelsOnDesktopString, IsVisualEnabled = false, VisualTag = "UseShadowForIconLabelsOnDesktop" });
-            VisualEffectsList.Add(new() { Name = ShowAnimationWhenMaximizingOrMinimizingString, IsVisualEnabled = false, VisualTag = "ShowAnimationWhenMaximizingOrMinimizing" });
+            VisualEffectsList.Add(new() { Name = SaveTaskbarThumbnailPreviewString, VisualTag = "SaveTaskbarThumbnailPreview" });
+            VisualEffectsList.Add(new() { Name = AnimationControlsAndElementsInsideWindowString, VisualTag = "AnimationControlsAndElementsInsideWindow" });
+            VisualEffectsList.Add(new() { Name = FadeinAndOutOrSlideMenuToViewString, VisualTag = "FadeinAndOutOrSlideMenuToView" });
+            VisualEffectsList.Add(new() { Name = SlideToOpenComboboxString, VisualTag = "SlideToOpenCombobox" });
+            VisualEffectsList.Add(new() { Name = SmoothScrollListboxString, VisualTag = "SmoothScrollListbox" });
+            VisualEffectsList.Add(new() { Name = SmoothScreenFontEdgesString, VisualTag = "SmoothScreenFontEdges" });
+            VisualEffectsList.Add(new() { Name = EnablePeekString, VisualTag = "EnablePeek" });
+            VisualEffectsList.Add(new() { Name = TaskbarAnimationsString, VisualTag = "TaskbarAnimations" });
+            VisualEffectsList.Add(new() { Name = ShowWindowContentsWhileDraggingString, VisualTag = "ShowWindowContentsWhileDragging" });
+            VisualEffectsList.Add(new() { Name = ShowThumbnailString, VisualTag = "ShowThumbnail" });
+            VisualEffectsList.Add(new() { Name = ShowSemitransparentSelectedRectangleString, VisualTag = "ShowSemitransparentSelectedRectangle" });
+            VisualEffectsList.Add(new() { Name = ShowShadowUnderWindowString, VisualTag = "ShowShadowUnderWindow" });
+            VisualEffectsList.Add(new() { Name = FadeoutMenuAfterClickingString, VisualTag = "FadeoutMenuAfterClicking" });
+            VisualEffectsList.Add(new() { Name = FadeinFadeoutOrSlideToolTipInViewString, VisualTag = "FadeinFadeoutOrSlideToolTipInView" });
+            VisualEffectsList.Add(new() { Name = ShowShadowUnderMousePointerString, VisualTag = "ShowShadowUnderMousePointer" });
+            VisualEffectsList.Add(new() { Name = UseShadowForIconLabelsOnDesktopString, VisualTag = "UseShadowForIconLabelsOnDesktop" });
+            VisualEffectsList.Add(new() { Name = ShowAnimationWhenMaximizingOrMinimizingString, VisualTag = "ShowAnimationWhenMaximizingOrMinimizing" });
         }
 
         /// <summary>
@@ -839,42 +835,20 @@ namespace PowerToolbox.Views.Pages
                 bool userFolderDesktopIconVisible = await GetDesktopIconVisibilityAsync("UserFolder");
 
                 DesktopIconDisplayCollection.Clear();
-                DesktopIconDisplayCollection.Add(new()
-                {
-                    DisplayName = thisPCDisplayName,
-                    IconTag = "ThisPC",
-                    IsIconVisible = thisPCDesktopIconVisible
-                });
-                DesktopIconDisplayCollection.Add(new()
-                {
-                    DisplayName = recycleBinDisplayName,
-                    IconTag = "RecycleBin",
-                    IsIconVisible = recycleBinDesktopIconVisible
-                });
-                DesktopIconDisplayCollection.Add(new()
-                {
-                    DisplayName = UserFolderString,
-                    IconTag = "UserFolder",
-                    IsIconVisible = userFolderDesktopIconVisible
-                });
-                DesktopIconDisplayCollection.Add(new()
-                {
-                    DisplayName = controlPanelDisplayName,
-                    IconTag = "ControlPanel",
-                    IsIconVisible = controlPanelDesktopIconVisible
-                });
-                DesktopIconDisplayCollection.Add(new()
-                {
-                    DisplayName = networkDisplayName,
-                    IconTag = "Network",
-                    IsIconVisible = networkDesktopIconVisible
-                });
-                DesktopIconDisplayCollection.Add(new()
-                {
-                    DisplayName = libraryDisplayName,
-                    IconTag = "Library",
-                    IsIconVisible = libraryDesktopIconVisible
-                });
+                DesktopIconDisplayCollection.Add(new() { DisplayName = thisPCDisplayName, IconTag = "ThisPC" });
+                DesktopIconDisplayCollection.Add(new() { DisplayName = recycleBinDisplayName, IconTag = "RecycleBin" });
+                DesktopIconDisplayCollection.Add(new() { DisplayName = UserFolderString, IconTag = "UserFolder" });
+                DesktopIconDisplayCollection.Add(new() { DisplayName = controlPanelDisplayName, IconTag = "ControlPanel" });
+                DesktopIconDisplayCollection.Add(new() { DisplayName = networkDisplayName, IconTag = "Network" });
+                DesktopIconDisplayCollection.Add(new() { DisplayName = libraryDisplayName, IconTag = "Library" });
+
+                DesktopIconDisplayGridView.SelectAll();
+                if (!thisPCDesktopIconVisible) DesktopIconDisplayGridView.DeselectRange(new(0, 1));
+                if (!recycleBinDesktopIconVisible) DesktopIconDisplayGridView.DeselectRange(new(1, 1));
+                if (!userFolderDesktopIconVisible) DesktopIconDisplayGridView.DeselectRange(new(2, 1));
+                if (!controlPanelDesktopIconVisible) DesktopIconDisplayGridView.DeselectRange(new(3, 1));
+                if (!networkDesktopIconVisible) DesktopIconDisplayGridView.DeselectRange(new(4, 1));
+                if (!libraryDesktopIconVisible) DesktopIconDisplayGridView.DeselectRange(new(5, 1));
 
                 IsShortcutWithoutShortcutTextEnabled = await GetIsShortcutWithoutShortcutTextEnabledAsync();
 
@@ -893,42 +867,20 @@ namespace PowerToolbox.Views.Pages
                     bool removableDeviceNavigationPaneIconVisible = await GetNavigationPaneIconVisibilityAsync("RemovableDevice");
 
                     NavigationPaneIconDisplayCollection.Clear();
-                    NavigationPaneIconDisplayCollection.Add(new()
-                    {
-                        DisplayName = homeDisplayName,
-                        IconTag = "Home",
-                        IsIconVisible = homeNavigationPaneIconVisible
-                    });
-                    NavigationPaneIconDisplayCollection.Add(new()
-                    {
-                        DisplayName = photoGalleryDisplayName,
-                        IconTag = "PhotoGallery",
-                        IsIconVisible = photoGalleryNavigationPaneIconVisible
-                    });
-                    NavigationPaneIconDisplayCollection.Add(new()
-                    {
-                        DisplayName = recycleBinDisplayName,
-                        IconTag = "RecycleBin",
-                        IsIconVisible = recycleBinNavigationPaneIconVisible
-                    });
-                    NavigationPaneIconDisplayCollection.Add(new()
-                    {
-                        DisplayName = linuxDisplayName,
-                        IconTag = "Linux",
-                        IsIconVisible = linuxNavigationPaneIconVisible
-                    });
-                    NavigationPaneIconDisplayCollection.Add(new()
-                    {
-                        DisplayName = libraryDisplayName,
-                        IconTag = "Library",
-                        IsIconVisible = libraryNavigationPaneIconVisible
-                    });
-                    NavigationPaneIconDisplayCollection.Add(new()
-                    {
-                        DisplayName = RemovableDeviceString,
-                        IconTag = "RemovableDevice",
-                        IsIconVisible = removableDeviceNavigationPaneIconVisible
-                    });
+                    NavigationPaneIconDisplayCollection.Add(new() { DisplayName = homeDisplayName, IconTag = "Home" });
+                    NavigationPaneIconDisplayCollection.Add(new() { DisplayName = photoGalleryDisplayName, IconTag = "PhotoGallery" });
+                    NavigationPaneIconDisplayCollection.Add(new() { DisplayName = recycleBinDisplayName, IconTag = "RecycleBin" });
+                    NavigationPaneIconDisplayCollection.Add(new() { DisplayName = linuxDisplayName, IconTag = "Linux" });
+                    NavigationPaneIconDisplayCollection.Add(new() { DisplayName = libraryDisplayName, IconTag = "Library" });
+                    NavigationPaneIconDisplayCollection.Add(new() { DisplayName = RemovableDeviceString, IconTag = "RemovableDevice" });
+
+                    NavigationPaneIconDisplayGridView.SelectAll();
+                    if (!homeNavigationPaneIconVisible) NavigationPaneIconDisplayGridView.DeselectRange(new(0, 1));
+                    if (!photoGalleryNavigationPaneIconVisible) NavigationPaneIconDisplayGridView.DeselectRange(new(1, 1));
+                    if (!recycleBinNavigationPaneIconVisible) NavigationPaneIconDisplayGridView.DeselectRange(new(2, 1));
+                    if (!linuxNavigationPaneIconVisible) NavigationPaneIconDisplayGridView.DeselectRange(new(3, 1));
+                    if (!libraryNavigationPaneIconVisible) NavigationPaneIconDisplayGridView.DeselectRange(new(4, 1));
+                    if (!removableDeviceNavigationPaneIconVisible) NavigationPaneIconDisplayGridView.DeselectRange(new(5, 1));
 
                     IsSyncProviderNotificationsEnabled = await GetIsSyncProviderNotificationsEnabledAsync();
                     FileExplorerHomePosition = await GetFileExplorerHomePositionAsync();
@@ -1041,7 +993,6 @@ namespace PowerToolbox.Views.Pages
                             break;
                         }
                 }
-                Shell32Library.SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSH, 0, 0);
             });
         }
 
@@ -1266,7 +1217,7 @@ namespace PowerToolbox.Views.Pages
                                 break;
                             }
                     }
-                    Shell32Library.SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSH, 0, 0);
+                    SendChangeNotify();
                 });
             }
             return iconRegistryValuePath;
@@ -1318,7 +1269,7 @@ namespace PowerToolbox.Views.Pages
                             break;
                         }
                 }
-                Shell32Library.SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSH, 0, 0);
+                SendChangeNotify();
                 return iconRegistryValuePath;
             });
         }
@@ -1667,7 +1618,6 @@ namespace PowerToolbox.Views.Pages
                     cbSize = (uint)Marshal.SizeOf<ANIMATIONINFO>(),
                     iMinAnimate = Convert.ToInt32(visualEffects.ShowAnimationWhenMaximizingOrMinimizing)
                 });
-                Shell32Library.SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSH, 0, 0);
             });
         }
 
@@ -1685,30 +1635,28 @@ namespace PowerToolbox.Views.Pages
 
             if (VisualEffectsPlan is not null)
             {
-                VisualEffectsList[0].IsVisualEnabled = visualEffects.SaveTaskbarThumbnailPreview;
-                VisualEffectsList[1].IsVisualEnabled = visualEffects.AnimationControlsAndElementsInsideWindow;
-                VisualEffectsList[2].IsVisualEnabled = visualEffects.FadeinAndOutOrSlideMenuToView;
-                VisualEffectsList[3].IsVisualEnabled = visualEffects.SlideToOpenCombobox;
-                VisualEffectsList[4].IsVisualEnabled = visualEffects.SmoothScrollListbox;
-                VisualEffectsList[5].IsVisualEnabled = visualEffects.SmoothScreenFontEdges;
-                VisualEffectsList[6].IsVisualEnabled = visualEffects.EnablePeek;
-                VisualEffectsList[7].IsVisualEnabled = visualEffects.TaskbarAnimations;
-                VisualEffectsList[8].IsVisualEnabled = visualEffects.ShowWindowContentsWhileDragging;
-                VisualEffectsList[9].IsVisualEnabled = visualEffects.ShowThumbnail;
-                VisualEffectsList[10].IsVisualEnabled = visualEffects.ShowSemitransparentSelectedRectangle;
-                VisualEffectsList[11].IsVisualEnabled = visualEffects.ShowShadowUnderWindow;
-                VisualEffectsList[12].IsVisualEnabled = visualEffects.FadeoutMenuAfterClicking;
-                VisualEffectsList[13].IsVisualEnabled = visualEffects.FadeinFadeoutOrSlideToolTipInView;
-                VisualEffectsList[14].IsVisualEnabled = visualEffects.ShowShadowUnderMousePointer;
-                VisualEffectsList[15].IsVisualEnabled = visualEffects.UseShadowForIconLabelsOnDesktop;
-                VisualEffectsList[16].IsVisualEnabled = visualEffects.ShowAnimationWhenMaximizingOrMinimizing;
+                VisualEffectsListView.SelectAll();
+                if (!visualEffects.SaveTaskbarThumbnailPreview) VisualEffectsListView.DeselectRange(new(0, 1));
+                if (!visualEffects.AnimationControlsAndElementsInsideWindow) VisualEffectsListView.DeselectRange(new(1, 1));
+                if (!visualEffects.FadeinAndOutOrSlideMenuToView) VisualEffectsListView.DeselectRange(new(2, 1));
+                if (!visualEffects.SlideToOpenCombobox) VisualEffectsListView.DeselectRange(new(3, 1));
+                if (!visualEffects.SmoothScrollListbox) VisualEffectsListView.DeselectRange(new(4, 1));
+                if (!visualEffects.SmoothScreenFontEdges) VisualEffectsListView.DeselectRange(new(5, 1));
+                if (!visualEffects.EnablePeek) VisualEffectsListView.DeselectRange(new(6, 1));
+                if (!visualEffects.TaskbarAnimations) VisualEffectsListView.DeselectRange(new(7, 1));
+                if (!visualEffects.ShowWindowContentsWhileDragging) VisualEffectsListView.DeselectRange(new(8, 1));
+                if (!visualEffects.ShowThumbnail) VisualEffectsListView.DeselectRange(new(9, 1));
+                if (!visualEffects.ShowSemitransparentSelectedRectangle) VisualEffectsListView.DeselectRange(new(10, 1));
+                if (!visualEffects.ShowShadowUnderWindow) VisualEffectsListView.DeselectRange(new(11, 1));
+                if (!visualEffects.FadeoutMenuAfterClicking) VisualEffectsListView.DeselectRange(new(12, 1));
+                if (!visualEffects.FadeinFadeoutOrSlideToolTipInView) VisualEffectsListView.DeselectRange(new(13, 1));
+                if (!visualEffects.ShowShadowUnderMousePointer) VisualEffectsListView.DeselectRange(new(14, 1));
+                if (!visualEffects.UseShadowForIconLabelsOnDesktop) VisualEffectsListView.DeselectRange(new(15, 1));
+                if (!visualEffects.ShowAnimationWhenMaximizingOrMinimizing) VisualEffectsListView.DeselectRange(new(16, 1));
             }
             else
             {
-                foreach (VisualEffectsModel visualEffectsItem in VisualEffectsList)
-                {
-                    visualEffectsItem.IsVisualEnabled = false;
-                }
+                VisualEffectsListView.DeselectRange(new(0, (uint)VisualEffectsListView.Items.Count));
             }
         }
 
@@ -1879,6 +1827,14 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第七部分：数据操作与业务逻辑
+        /// <summary>
+        /// 发送修改通知
+        /// </summary>
+        private void SendChangeNotify()
+        {
+            Shell32Library.SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSH, 0, 0);
+        }
+
+        #endregion 第六部分：数据操作与业务逻辑
     }
 }
