@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Win32;
 using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Extensions.DataType.Enums;
+using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.NotificationTips;
@@ -15,6 +16,7 @@ using PowerToolbox.WindowsAPI.PInvoke.Kernel32;
 using PowerToolbox.WindowsAPI.PInvoke.Shlwapi;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -35,16 +37,23 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class ContextMenuManagerPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private const string packageComPackageKey = @"SOFTWARE\Classes\PackagedCom\Package";
         private const string blockedKey = @"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked";
+        private readonly string ContextMenuCountInfoString = ResourceService.ContextMenuManagerResource.GetString("ContextMenuCountInfo");
         private readonly string MenuEmptyDescriptionString = ResourceService.ContextMenuManagerResource.GetString("MenuEmptyDescription");
         private readonly string MenuEmptyWithConditionDescriptionString = ResourceService.ContextMenuManagerResource.GetString("MenuEmptyWithConditionDescription");
         private readonly BitmapImage emptyImage = new();
         private bool isInitialized;
 
-        private string _searchText = string.Empty;
+        #endregion 第一部分：常量、资源与状态字段
 
-        internal string SearchText
+        #region 第二部分：属性、列表与事件
+
+        private string _searchText;
+
+        private string SearchText
         {
             get { return _searchText; }
 
@@ -60,7 +69,7 @@ namespace PowerToolbox.Views.Pages
 
         private ContextMenuResultKind _contextMenuResultKind;
 
-        internal ContextMenuResultKind ContextMenuResultKind
+        private ContextMenuResultKind ContextMenuResultKind
         {
             get { return _contextMenuResultKind; }
 
@@ -76,7 +85,7 @@ namespace PowerToolbox.Views.Pages
 
         private string _contextMenuFailedContent;
 
-        internal string ContextMenuFailedContent
+        private string ContextMenuFailedContent
         {
             get { return _contextMenuFailedContent; }
 
@@ -96,12 +105,18 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal ContextMenuManagerPage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面触发的事件
@@ -117,9 +132,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第一部分：重写父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #region 第五部分：命令调用处理
 
         /// <summary>
         /// 打开应用包路径
@@ -128,113 +143,80 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is string path)
             {
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        Process.Start(path);
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnOpenPackagePathExecuteRequested), 1, e);
-                    }
-                });
+                OpenPackagePath(path);
             }
         }
 
         /// <summary>
-        /// 点击复选框时使保存按钮处于可选状态
+        /// 保存右键菜单显示状态结果
         /// </summary>
         private async void OnCheckBoxClickExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (args.Parameter is ContextMenuItemModel contextMenu)
+            if (args.Parameter is ContextMenuItemModel contextMenuItem)
             {
-                (BlockedClsidType blockedClsidType, bool operationResult) result = await Task.Run(() =>
+                string blockedClsid = contextMenuItem.Clsid.ToString("B").ToUpperInvariant();
+                if (contextMenuItem.IsEnabled)
                 {
-                    RegistryKey registryKey = null;
-                    BlockedClsidType blockedClsidType = BlockedClsidType.Unknown;
-                    if (contextMenu.BlockedClsidType is BlockedClsidType.LocalMachine)
-                    {
-                        try
-                        {
-                            registryKey = Registry.LocalMachine.CreateSubKey(blockedKey, true);
-                            blockedClsidType = BlockedClsidType.LocalMachine;
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnCheckBoxClickExecuteRequested), 1, e);
-                        }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            registryKey = Registry.CurrentUser.CreateSubKey(blockedKey, true);
-                            blockedClsidType = BlockedClsidType.CurrentUser;
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnCheckBoxClickExecuteRequested), 2, e);
-                        }
-                    }
-
-                    if (registryKey is not null)
-                    {
-                        try
-                        {
-                            string name = contextMenu.Clsid.ToString("B").ToUpperInvariant();
-                            if (contextMenu.IsEnabled)
-                            {
-                                object oldValue = registryKey.GetValue(name);
-                                if (oldValue is null)
-                                {
-                                    registryKey.SetValue(name, "Blocked by PowerToolbox");
-                                    registryKey.Close();
-                                    registryKey.Dispose();
-                                }
-                                return ValueTuple.Create(blockedClsidType, true);
-                            }
-                            else
-                            {
-                                registryKey.DeleteValue(name);
-                                registryKey.Close();
-                                registryKey.Dispose();
-                                return ValueTuple.Create(blockedClsidType, true);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnCheckBoxClickExecuteRequested), 3, e);
-                            registryKey.Close();
-                            registryKey.Dispose();
-                            return ValueTuple.Create(blockedClsidType, false);
-                        }
-                    }
-                    else
-                    {
-                        registryKey.Close();
-                        registryKey.Dispose();
-                        return ValueTuple.Create(blockedClsidType, true);
-                    }
-                });
-
-                if (result.operationResult)
-                {
-                    contextMenu.IsEnabled = !contextMenu.IsEnabled;
-                    contextMenu.BlockedClsidType = IsEnabled ? BlockedClsidType.Unknown : result.blockedClsidType;
+                    contextMenuItem.IsEnabled = !contextMenuItem.IsEnabled;
+                    contextMenuItem.BlockedClsidType = BlockedClsidType.CurrentUser;
+                    await UpdateContextMenuResultAsync(contextMenuItem.BlockedClsidType, true, blockedClsid);
                 }
                 else
                 {
-                    contextMenu.IsEnabled = contextMenu.IsEnabled;
+                    contextMenuItem.IsEnabled = !contextMenuItem.IsEnabled;
+                    await UpdateContextMenuResultAsync(contextMenuItem.BlockedClsidType, false, blockedClsid);
+                    if (contextMenuItem.BlockedClsidType is BlockedClsidType.LocalMachine && RuntimeHelper.IsElevated)
+                    {
+                        if (string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.LocalMachine, blockedKey, blockedClsid), string.Format("Blocked by {0}", nameof(PowerToolbox))))
+                        {
+                            RegistryHelper.RemoveRegistryKey(Registry.LocalMachine, blockedKey, blockedClsid);
+                        }
+                    }
+                    else if (contextMenuItem.BlockedClsidType is BlockedClsidType.CurrentUser)
+                    {
+                        if (string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, blockedKey, blockedClsid), string.Format("Blocked by {0}", nameof(PowerToolbox))))
+                        {
+                            RegistryHelper.RemoveRegistryKey(Registry.CurrentUser, blockedKey, blockedClsid);
+                        }
+                    }
                 }
 
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ContextMenuUpdate, result.operationResult));
+                bool isLocalMachineBlocked = RegistryHelper.ReadRegistryKey<object>(Registry.LocalMachine, blockedKey, blockedClsid) is not null;
+                bool isCurrentUserBlocked = RegistryHelper.ReadRegistryKey<object>(Registry.CurrentUser, blockedKey, blockedClsid) is not null;
+
+                if (isLocalMachineBlocked || isCurrentUserBlocked)
+                {
+                    contextMenuItem.IsEnabled = false;
+                    if (isLocalMachineBlocked)
+                    {
+                        contextMenuItem.BlockedClsidType = BlockedClsidType.LocalMachine;
+                    }
+                    else if (isCurrentUserBlocked)
+                    {
+                        contextMenuItem.BlockedClsidType = BlockedClsidType.CurrentUser;
+                    }
+                    else
+                    {
+                        contextMenuItem.BlockedClsidType = BlockedClsidType.Unknown;
+                    }
+                }
+                else
+                {
+                    contextMenuItem.IsEnabled = true;
+                    contextMenuItem.BlockedClsidType = BlockedClsidType.Unknown;
+                }
+
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ContextMenuUpdate, true));
+            }
+            else
+            {
+                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ContextMenuUpdate, false));
             }
         }
 
-        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #endregion 第五部分：命令调用处理
 
-        #region 第三部分：右键菜单管理页面——挂载的事件
+        #region 第六部分：挂载事件处理
 
         /// <summary>
         /// 点击关闭按钮关闭使用说明
@@ -266,19 +248,12 @@ namespace PowerToolbox.Views.Pages
                 ContextMenuCollection.Clear();
                 foreach (ContextMenuModel contextMenuItem in ContextMenuList)
                 {
-                    if (!string.IsNullOrEmpty(contextMenuItem.PackageDisplayName) && contextMenuItem.PackageDisplayName.Contains(SearchText))
-                    {
-                        ContextMenuCollection.Add(contextMenuItem);
-                        continue;
-                    }
-
-                    if (!string.IsNullOrEmpty(contextMenuItem.PackageFullName) && contextMenuItem.PackageFullName.Contains(SearchText))
+                    if ((!string.IsNullOrEmpty(contextMenuItem.PackageDisplayName) && contextMenuItem.PackageDisplayName.Contains(SearchText)) || (!string.IsNullOrEmpty(contextMenuItem.PackageFullName) && contextMenuItem.PackageFullName.Contains(SearchText)))
                     {
                         ContextMenuCollection.Add(contextMenuItem);
                         continue;
                     }
                 }
-
                 ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.Successfully;
                 ContextMenuFailedContent = ContextMenuCollection.Count is 0 ? MenuEmptyWithConditionDescriptionString : string.Empty;
             }
@@ -298,7 +273,6 @@ namespace PowerToolbox.Views.Pages
                 {
                     ContextMenuCollection.Add(contextMenuItem);
                 }
-
                 ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.Successfully;
                 ContextMenuFailedContent = ContextMenuCollection.Count is 0 ? MenuEmptyWithConditionDescriptionString : string.Empty;
             }
@@ -319,52 +293,7 @@ namespace PowerToolbox.Views.Pages
         {
             ContextMenuResultKind = ContextMenuResultKind.Loading;
             SearchText = string.Empty;
-
-            await Task.Run(() =>
-            {
-                List<ContextMenuModel> contextMenuList = [.. ContextMenuList];
-
-                try
-                {
-                    RegistryKey blockKey = Registry.LocalMachine.OpenSubKey(blockedKey, true);
-                    string[] blcokedClsidArray = blockKey.GetValueNames();
-                    foreach (string blockedClsid in blcokedClsidArray)
-                    {
-                        if (Convert.ToString(blockKey.GetValue(blockedClsid)) is "Blocked by PowerToolbox")
-                        {
-                            blockKey.DeleteValue(blockedClsid);
-                        }
-                    }
-
-                    blockKey.Close();
-                    blockKey.Dispose();
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnRestoreDefaultClicked), 1, e);
-                }
-
-                try
-                {
-                    RegistryKey blockKey = Registry.CurrentUser.OpenSubKey(blockedKey, true);
-                    string[] blcokedClsidArray = blockKey.GetValueNames();
-                    foreach (string blockedClsid in blcokedClsidArray)
-                    {
-                        if (Convert.ToString(blockKey.GetValue(blockedClsid)) is "Blocked by PowerToolbox")
-                        {
-                            blockKey.DeleteValue(blockedClsid);
-                        }
-                    }
-
-                    blockKey.Close();
-                    blockKey.Dispose();
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OnRestoreDefaultClicked), 2, e);
-                }
-            });
-
+            await RestoreDefaultAsync();
             await GetContextMenuAsync();
         }
 
@@ -380,7 +309,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第三部分：右键菜单管理页面——挂载的事件
+        #endregion 第六部分：挂载事件处理
+
+        #region 第七部分：数据操作与业务逻辑
 
         /// <summary>
         /// 获取右键菜单数据
@@ -392,144 +323,17 @@ namespace PowerToolbox.Views.Pages
                 ContextMenuResultKind = ContextMenuResultKind.Loading;
                 ContextMenuList.Clear();
                 ContextMenuCollection.Clear();
+                List<ContextMenuModel> contextMenuList = await GetContextMenuInfoListAsync();
 
-                List<ContextMenuModel> queryedContextMenuList = await Task.Run(() =>
-                {
-                    List<ContextMenuModel> queryedContextMenuList = [];
-                    List<KeyValuePair<Guid, string>> blockedList = GetBlockedClsidList();
-                    List<INET_FIREWALL_APP_CONTAINER> inetLoopbackList = GetAppContainerList();
-
-                    try
-                    {
-                        RegistryKey packageListKey = Registry.LocalMachine.OpenSubKey(packageComPackageKey, false);
-
-                        if (packageListKey is not null)
-                        {
-                            string[] packageFullNameArray = packageListKey.GetSubKeyNames();
-                            int length = 0;
-                            string currentPackageFullName = string.Empty;
-
-                            if (Kernel32Library.GetCurrentPackageFullName(ref length, null) is 122)
-                            {
-                                StringBuilder packageFullNameBuilder = new(length + 1);
-                                Kernel32Library.GetCurrentPackageFullName(ref length, packageFullNameBuilder);
-                                currentPackageFullName = Convert.ToString(packageFullNameBuilder);
-                            }
-
-                            foreach (string packageFullName in packageFullNameArray)
-                            {
-                                if (string.Equals(packageFullName, currentPackageFullName, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    continue;
-                                }
-
-                                RegistryKey classKey = packageListKey.OpenSubKey(string.Join(@"\", packageFullName, "Class"));
-
-                                if (classKey is not null)
-                                {
-                                    string[] clsidArray = classKey.GetSubKeyNames();
-                                    List<ContextMenuItemModel> contextMenuItemList = [];
-
-                                    foreach (string clsidString in clsidArray)
-                                    {
-                                        if (Guid.TryParse(clsidString, out Guid clsid))
-                                        {
-                                            RegistryKey clsidKey = classKey.OpenSubKey(clsidString, false);
-
-                                            if (clsidKey is not null)
-                                            {
-                                                string dllPath = Convert.ToString(clsidKey.GetValue("DllPath", string.Empty));
-
-                                                if (!string.IsNullOrEmpty(dllPath) && dllPath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
-                                                {
-                                                    int serverId = Convert.ToInt32(clsidKey.GetValue("ServerId", 0));
-                                                    int threading = Convert.ToInt32(clsidKey.GetValue("Threading", 0));
-                                                    int index = blockedList.FindIndex(item => Equals(item.Key, clsid));
-
-                                                    contextMenuItemList.Add(new()
-                                                    {
-                                                        BlockedClsidType = index >= 0 && index < blockedList.Count ? Enum.TryParse(blockedList[index].Value, out BlockedClsidType blockedClsidType) ? blockedClsidType : BlockedClsidType.Unknown : BlockedClsidType.Unknown,
-                                                        Clsid = clsid,
-                                                        ClsidString = Convert.ToString(clsid).ToUpperInvariant(),
-                                                        DllPath = dllPath,
-                                                        IsEnabled = index is -1,
-                                                        ThreadingMode = threading switch
-                                                        {
-                                                            0 => ApartmentState.STA,
-                                                            1 => ApartmentState.MTA,
-                                                            _ => ApartmentState.Unknown,
-                                                        }
-                                                    });
-                                                }
-                                            }
-
-                                            clsidKey.Close();
-                                            clsidKey.Dispose();
-                                        }
-                                    }
-
-                                    length = 0;
-                                    string packagePath = string.Empty;
-
-                                    if (Kernel32Library.GetPackagePathByFullName(packageFullName, ref length, null) is 122)
-                                    {
-                                        StringBuilder packagePathBuilder = new(length + 1);
-                                        int result = Kernel32Library.GetPackagePathByFullName(packageFullName, ref length, packagePathBuilder);
-                                        packagePath = Convert.ToString(packagePathBuilder);
-                                    }
-
-                                    (string displayName, string logoFullPath, List<Guid> clsidList) = GetAppInfo(packagePath);
-
-                                    if (clsidList.Count > 0)
-                                    {
-                                        StringBuilder displayNameBuilder = new(1024);
-                                        foreach (INET_FIREWALL_APP_CONTAINER inetContainerItem in inetLoopbackList)
-                                        {
-                                            if (inetContainerItem.displayName.Contains(packageFullName))
-                                            {
-                                                ShlwapiLibrary.SHLoadIndirectString(inetContainerItem.displayName, displayNameBuilder, displayNameBuilder.Capacity, 0);
-                                            }
-                                        }
-
-                                        ContextMenuModel contextMenu = new()
-                                        {
-                                            PackageDisplayName = string.IsNullOrEmpty(Convert.ToString(displayNameBuilder)) ? displayName : Convert.ToString(displayNameBuilder),
-                                            PackageFullName = packageFullName,
-                                            PackageIconUri = Uri.TryCreate(logoFullPath, UriKind.Absolute, out Uri uri) ? uri : null,
-                                            PackagePath = packagePath,
-                                            ContextMenuItemCollection = [.. contextMenuItemList]
-                                        };
-
-                                        queryedContextMenuList.Add(contextMenu);
-                                    }
-
-                                    classKey.Close();
-                                    classKey.Dispose();
-                                }
-                            }
-
-                            packageListKey.Close();
-                            packageListKey.Dispose();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 1, e);
-                    }
-
-                    return queryedContextMenuList;
-                });
-
-                ContextMenuList.AddRange(queryedContextMenuList);
-
-                if (ContextMenuList.Count is 0)
+                if (contextMenuList.Count is 0)
                 {
                     ContextMenuResultKind = ContextMenuResultKind.Failed;
                     ContextMenuFailedContent = MenuEmptyDescriptionString;
                 }
                 else
                 {
-                    foreach (ContextMenuModel contextMenuItem in ContextMenuList)
+                    ContextMenuList.AddRange(contextMenuList);
+                    foreach (ContextMenuModel contextMenuItem in contextMenuList)
                     {
                         try
                         {
@@ -542,35 +346,123 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 2, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 1, e);
                             contextMenuItem.PackageIcon = emptyImage;
-                        }
-
-                        if (string.IsNullOrEmpty(SearchText))
-                        {
-                            ContextMenuCollection.Add(contextMenuItem);
-                            continue;
-                        }
-                        else
-                        {
-                            if (!string.IsNullOrEmpty(contextMenuItem.PackageDisplayName) && contextMenuItem.PackageDisplayName.Contains(SearchText))
-                            {
-                                ContextMenuCollection.Add(contextMenuItem);
-                                continue;
-                            }
-
-                            if (!string.IsNullOrEmpty(contextMenuItem.PackageFullName) && contextMenuItem.PackageFullName.Contains(SearchText))
-                            {
-                                ContextMenuCollection.Add(contextMenuItem);
-                                continue;
-                            }
                         }
                     }
 
+                    foreach (ContextMenuModel contextMenuItem in ContextMenuList)
+                    {
+                        if (string.IsNullOrEmpty(SearchText))
+                        {
+                            ContextMenuCollection.Add(contextMenuItem);
+                        }
+                        else
+                        {
+                            if ((!string.IsNullOrEmpty(contextMenuItem.PackageDisplayName) && contextMenuItem.PackageDisplayName.Contains(SearchText)) || (!string.IsNullOrEmpty(contextMenuItem.PackageFullName) && contextMenuItem.PackageFullName.Contains(SearchText)))
+                            {
+                                ContextMenuCollection.Add(contextMenuItem);
+                            }
+                        }
+                    }
                     ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.Successfully;
                     ContextMenuFailedContent = ContextMenuCollection.Count is 0 ? MenuEmptyWithConditionDescriptionString : string.Empty;
                 }
             }
+        }
+
+        /// <summary>
+        /// 获取右键菜单信息
+        /// </summary>
+        private async Task<List<ContextMenuModel>> GetContextMenuInfoListAsync()
+        {
+            return await Task.Run(() =>
+            {
+                List<ContextMenuModel> contextMenuList = [];
+
+                try
+                {
+                    List<KeyValuePair<Guid, string>> blockedList = GetBlockedClsidList();
+                    List<INET_FIREWALL_APP_CONTAINER> inetLoopbackList = GetAppContainerList();
+                    ReadOnlyCollection<string> packageFullNameCollection = RegistryHelper.GetSubKeyCollection(Registry.LocalMachine, packageComPackageKey);
+                    string currentPackageFullName = GetCurrentPackageFullName();
+
+                    foreach (string packageFullName in packageFullNameCollection)
+                    {
+                        // 排除当前应用（当前应用需要在设置中修改右键菜单显示状态）
+                        if (string.Equals(packageFullName, currentPackageFullName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            continue;
+                        }
+
+                        ReadOnlyCollection<string> classCollection = RegistryHelper.GetSubKeyCollection(Registry.LocalMachine, string.Format(@"{0}\{1}\Class", packageComPackageKey, packageFullName));
+
+                        List<ContextMenuItemModel> contextMenuItemList = [];
+
+                        foreach (string clsidString in classCollection)
+                        {
+                            if (Guid.TryParse(clsidString, out Guid clsid))
+                            {
+                                string dllPath = RegistryHelper.ReadRegistryKey<string>(Registry.LocalMachine, string.Format(@"{0}\{1}\Class\{2}", packageComPackageKey, packageFullName, clsidString), "DllPath");
+
+                                if (!string.IsNullOrEmpty(dllPath) && dllPath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    int serverId = RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, string.Format(@"{0}\{1}\Class\{2}", packageComPackageKey, packageFullName, clsidString), "ServerId");
+                                    int threading = RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, string.Format(@"{0}\{1}\Class\{2}", packageComPackageKey, packageFullName, clsidString), "Threading");
+                                    int index = blockedList.FindIndex(item => Equals(item.Key, clsid));
+
+                                    contextMenuItemList.Add(new()
+                                    {
+                                        BlockedClsidType = index >= 0 && index < blockedList.Count ? Enum.TryParse(blockedList[index].Value, out BlockedClsidType blockedClsidType) ? blockedClsidType : BlockedClsidType.Unknown : BlockedClsidType.Unknown,
+                                        Clsid = clsid,
+                                        ClsidString = Convert.ToString(clsid).ToUpperInvariant(),
+                                        DllPath = dllPath,
+                                        IsEnabled = index is -1,
+                                        ThreadingMode = threading switch
+                                        {
+                                            0 => ApartmentState.STA,
+                                            1 => ApartmentState.MTA,
+                                            _ => ApartmentState.Unknown,
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        if (GetPackagePath(packageFullName) is string packagePath)
+                        {
+                            (string displayName, string logoFullPath, List<Guid> clsidList) = GetAppInfo(packagePath);
+
+                            if (clsidList is not null && clsidList.Count > 0)
+                            {
+                                StringBuilder displayNameBuilder = new(1024);
+                                foreach (INET_FIREWALL_APP_CONTAINER inetContainerItem in from INET_FIREWALL_APP_CONTAINER inetContainerItem in inetLoopbackList where inetContainerItem.displayName.Contains(packageFullName) select inetContainerItem)
+                                {
+                                    ShlwapiLibrary.SHLoadIndirectString(inetContainerItem.displayName, displayNameBuilder, displayNameBuilder.Capacity, 0);
+                                    break;
+                                }
+
+                                ContextMenuModel contextMenu = new()
+                                {
+                                    PackageDisplayName = string.IsNullOrEmpty(Convert.ToString(displayNameBuilder)) ? displayName : Convert.ToString(displayNameBuilder),
+                                    PackageFullName = packageFullName,
+                                    PackageIconUri = Uri.TryCreate(logoFullPath, UriKind.Absolute, out Uri uri) ? uri : null,
+                                    PackagePath = packagePath,
+                                    ContextMenuItemCollection = [.. contextMenuItemList]
+                                };
+
+                                contextMenuList.Add(contextMenu);
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 1, e);
+                }
+
+                return contextMenuList;
+            });
         }
 
         /// <summary>
@@ -582,22 +474,14 @@ namespace PowerToolbox.Views.Pages
 
             try
             {
-                RegistryKey blockKey = Registry.LocalMachine.OpenSubKey(blockedKey, false);
+                ReadOnlyCollection<string> blcokedClsidCollection = RegistryHelper.GetValueNameCollection(Registry.LocalMachine, blockedKey);
 
-                if (blockKey is not null)
+                foreach (string blockedClsid in blcokedClsidCollection)
                 {
-                    string[] blcokedClsidArray = blockKey.GetValueNames();
-
-                    foreach (string blockedClsid in blcokedClsidArray)
+                    if (Guid.TryParse(blockedClsid, out Guid clsid))
                     {
-                        if (Guid.TryParse(blockedClsid, out Guid clsid))
-                        {
-                            blockClsidList.Add(new(clsid, Convert.ToString(Registry.LocalMachine)));
-                        }
+                        blockClsidList.Add(new(clsid, Convert.ToString(Registry.LocalMachine)));
                     }
-
-                    blockKey.Close();
-                    blockKey.Dispose();
                 }
             }
             catch (Exception e)
@@ -607,22 +491,14 @@ namespace PowerToolbox.Views.Pages
 
             try
             {
-                RegistryKey blockKey = Registry.CurrentUser.OpenSubKey(blockedKey, false);
+                ReadOnlyCollection<string> blcokedClsidCollection = RegistryHelper.GetValueNameCollection(Registry.CurrentUser, blockedKey);
 
-                if (blockKey is not null)
+                foreach (string blockedClsid in blcokedClsidCollection)
                 {
-                    string[] blcokedClsidArray = blockKey.GetValueNames();
-
-                    foreach (string blockedClsid in blcokedClsidArray)
+                    if (Guid.TryParse(blockedClsid, out Guid clsid))
                     {
-                        if (Guid.TryParse(blockedClsid, out Guid clsid))
-                        {
-                            blockClsidList.Add(new(clsid, Convert.ToString(Registry.CurrentUser)));
-                        }
+                        blockClsidList.Add(new(clsid, Convert.ToString(Registry.LocalMachine)));
                     }
-
-                    blockKey.Close();
-                    blockKey.Dispose();
                 }
             }
             catch (Exception e)
@@ -643,13 +519,13 @@ namespace PowerToolbox.Views.Pages
         /// </returns>
         private static (string displayName, string logoFullPath, List<Guid> clsidList) GetAppInfo(string packageInstalledLocation)
         {
+            if (string.IsNullOrEmpty(packageInstalledLocation))
+            {
+                return default;
+            }
+
             try
             {
-                if (string.IsNullOrEmpty(packageInstalledLocation))
-                {
-                    return ValueTuple.Create(string.Empty, string.Empty, new List<Guid>());
-                }
-
                 string manifestFilePath = Path.Combine(packageInstalledLocation, "AppxManifest.xml");
 
                 if (File.Exists(manifestFilePath))
@@ -758,13 +634,11 @@ namespace PowerToolbox.Views.Pages
             FirewallAPILibrary.NetworkIsolationEnumAppContainers(NETISO_FLAG.NETISO_FLAG_MAX, out size, out arrayValue);
 
             nint pACs = arrayValue;
-
             int structSize = Marshal.SizeOf<INET_FIREWALL_APP_CONTAINER>();
 
             for (int index = 0; index < size; index++)
             {
                 INET_FIREWALL_APP_CONTAINER container = Marshal.PtrToStructure<INET_FIREWALL_APP_CONTAINER>(arrayValue);
-
                 inetContainerList.Add(container);
                 arrayValue = new IntPtr((long)arrayValue + structSize);
             }
@@ -773,6 +647,137 @@ namespace PowerToolbox.Views.Pages
             handle_ppACs.Free();
             FirewallAPILibrary.NetworkIsolationFreeAppContainers(pACs);
             return inetContainerList;
+        }
+
+        /// <summary>
+        /// 恢复默认
+        /// </summary>
+        private async Task RestoreDefaultAsync()
+        {
+            await Task.Run(() =>
+            {
+                if (RuntimeHelper.IsElevated)
+                {
+                    try
+                    {
+                        ReadOnlyCollection<string> blcokedClsidCollection = RegistryHelper.GetValueNameCollection(Registry.LocalMachine, blockedKey);
+                        foreach (string blockedClsid in blcokedClsidCollection)
+                        {
+                            if (string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.LocalMachine, blockedKey, blockedClsid), string.Format("Blocked by {0}", nameof(PowerToolbox))))
+                            {
+                                RegistryHelper.RemoveRegistryKey(Registry.LocalMachine, blockedKey, blockedClsid);
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(RestoreDefaultAsync), 1, e);
+                    }
+                }
+
+                try
+                {
+                    ReadOnlyCollection<string> blcokedClsidCollection = RegistryHelper.GetValueNameCollection(Registry.CurrentUser, blockedKey);
+                    foreach (string blockedClsid in blcokedClsidCollection)
+                    {
+                        if (string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, blockedKey, blockedClsid), string.Format("Blocked by {0}", nameof(PowerToolbox))))
+                        {
+                            RegistryHelper.RemoveRegistryKey(Registry.CurrentUser, blockedKey, blockedClsid);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(RestoreDefaultAsync), 2, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 更新右键菜单显示效果
+        /// </summary>
+        private async Task UpdateContextMenuResultAsync(BlockedClsidType blockedClsidType, bool isBlocked, string blockedClsid)
+        {
+            if (isBlocked)
+            {
+                RegistryHelper.SaveRegistryKey(Registry.CurrentUser, blockedKey, blockedClsid, string.Format("Blocked by {0}", nameof(PowerToolbox)));
+            }
+            else
+            {
+                if (blockedClsidType is BlockedClsidType.LocalMachine && RuntimeHelper.IsElevated)
+                {
+                    if (string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.LocalMachine, blockedKey, blockedClsid), string.Format("Blocked by {0}", nameof(PowerToolbox))))
+                    {
+                        RegistryHelper.RemoveRegistryKey(Registry.LocalMachine, blockedKey, blockedClsid);
+                    }
+                }
+                else if (blockedClsidType is BlockedClsidType.CurrentUser)
+                {
+                    if (string.Equals(RegistryHelper.ReadRegistryKey<string>(Registry.CurrentUser, blockedKey, blockedClsid), string.Format("Blocked by {0}", nameof(PowerToolbox))))
+                    {
+                        RegistryHelper.RemoveRegistryKey(Registry.CurrentUser, blockedKey, blockedClsid);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取当前应用包完整名称
+        /// </summary>
+        private string GetCurrentPackageFullName()
+        {
+            int length = 0;
+            string currentPackageFullName = string.Empty;
+
+            if (Kernel32Library.GetCurrentPackageFullName(ref length, null) is 122)
+            {
+                StringBuilder packageFullNameBuilder = new(length + 1);
+                Kernel32Library.GetCurrentPackageFullName(ref length, packageFullNameBuilder);
+                currentPackageFullName = Convert.ToString(packageFullNameBuilder);
+            }
+
+            return currentPackageFullName;
+        }
+
+        /// <summary>
+        /// 获取当前应用包完整名称
+        /// </summary>
+        private string GetPackagePath(string packageFullName)
+        {
+            if (string.IsNullOrEmpty(packageFullName))
+            {
+                return default;
+            }
+
+            int length = 0;
+            string packagePath = string.Empty;
+
+            if (Kernel32Library.GetPackagePathByFullName(packageFullName, ref length, null) is 122)
+            {
+                StringBuilder packagePathBuilder = new(length + 1);
+                Kernel32Library.GetPackagePathByFullName(packageFullName, ref length, packagePathBuilder);
+                packagePath = Convert.ToString(packagePathBuilder);
+            }
+
+            return packagePath;
+        }
+
+        /// <summary>
+        /// 打开应用包路径
+        /// </summary>
+        private void OpenPackagePath(string filePath)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start(filePath);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(OpenPackagePath), 1, e);
+                }
+            });
         }
 
         /// <summary>
@@ -799,5 +804,7 @@ namespace PowerToolbox.Views.Pages
         {
             return contextMenuResultKind is not ContextMenuResultKind.Loading;
         }
+
+        #endregion 第七部分：数据操作与业务逻辑
     }
 }

@@ -3,6 +3,8 @@ using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.PInvoke.Advapi32;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -229,6 +231,58 @@ namespace PowerToolbox.Helpers.Root
             }
 
             return registryEnumKeyItem;
+        }
+
+        /// <summary>
+        /// 获取当前注册表项的所有值
+        /// </summary>
+        internal static ReadOnlyCollection<string> GetValueNameCollection(RegistryKey rootRegistryKey, string rootKey)
+        {
+            List<string> valueNameList = [];
+
+            try
+            {
+                if (rootRegistryKey is not null && (Equals(rootRegistryKey, Registry.ClassesRoot) || Equals(rootRegistryKey, Registry.CurrentConfig) || Equals(rootRegistryKey, Registry.CurrentUser) || Equals(rootRegistryKey, Registry.LocalMachine) || Equals(rootRegistryKey, Registry.PerformanceData) || Equals(rootRegistryKey, Registry.Users)) && rootRegistryKey.OpenSubKey(rootKey) is RegistryKey registryKey)
+                {
+                    string[] valueNameArray = registryKey.GetValueNames();
+                    valueNameList.AddRange(valueNameArray);
+
+                    registryKey.Close();
+                    registryKey.Dispose();
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(EnumSubKey), 1, e);
+            }
+
+            return valueNameList.AsReadOnly();
+        }
+
+        /// <summary>
+        /// 获取当前注册表项的所有子项
+        /// </summary>
+        internal static ReadOnlyCollection<string> GetSubKeyCollection(RegistryKey rootRegistryKey, string rootKey)
+        {
+            List<string> valueNameList = [];
+
+            try
+            {
+                if (rootRegistryKey is not null && (Equals(rootRegistryKey, Registry.ClassesRoot) || Equals(rootRegistryKey, Registry.CurrentConfig) || Equals(rootRegistryKey, Registry.CurrentUser) || Equals(rootRegistryKey, Registry.LocalMachine) || Equals(rootRegistryKey, Registry.PerformanceData) || Equals(rootRegistryKey, Registry.Users)) && rootRegistryKey.OpenSubKey(rootKey) is RegistryKey registryKey)
+                {
+                    string[] valueNameArray = registryKey.GetSubKeyNames();
+                    valueNameList.AddRange(valueNameArray);
+
+                    registryKey.Close();
+                    registryKey.Dispose();
+                }
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(EnumSubKey), 1, e);
+            }
+
+            return valueNameList.AsReadOnly();
         }
 
         /// <summary>

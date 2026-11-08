@@ -145,7 +145,7 @@
                         ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('RestoreDefault')}">
 
                         <AppBarButton.Icon>
-                            <FontIcon Glyph="&#xE777;" />
+                            <FontIcon Glyph="&#xE7A7;" />
                         </AppBarButton.Icon>
                     </AppBarButton>
                 </CommandBar.PrimaryCommands>
@@ -350,17 +350,7 @@
                                                     Margin="4,0,9,0"
                                                     Command="{StaticResource CheckBoxClickCommand}"
                                                     CommandParameter="{x:Bind}"
-                                                    IsChecked="{x:Bind IsEnabled, Mode=OneWay}">
-
-                                                    <ToolTipService.ToolTip>
-                                                        <ToolTip>
-                                                            <Grid>
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('Selected')}" Visibility="{x:Bind IsEnabled, Mode=OneWay}" />
-                                                                <TextBlock Text="{x:Bind rootservice:ResourceService.ContextMenuManagerResource.GetString('UnSelected')}" Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsEnabled), Mode=OneWay}" />
-                                                            </Grid>
-                                                        </ToolTip>
-                                                    </ToolTipService.ToolTip>
-                                                </CheckBox>
+                                                    IsChecked="{x:Bind IsEnabled, Mode=OneWay}" />
 
                                                 <TextBlock
                                                     Grid.Column="1"
