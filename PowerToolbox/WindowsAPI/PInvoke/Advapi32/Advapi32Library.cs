@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 
 // 抑制 CA1401 警告
 #pragma warning disable CA1401
@@ -28,6 +30,26 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Advapi32
         [DllImport(Advapi32, CharSet = CharSet.Unicode, EntryPoint = "AdjustTokenPrivileges", PreserveSig = true, SetLastError = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool AdjustTokenPrivileges(nint TokenHandle, [MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges, ref TOKEN_PRIVILEGES NewState, uint BufferLength, nint PreviousState, nint ReturnLength);
+
+        /// <summary>
+        /// ConvertStringSidToSid 函数将字符串格式 安全标识符（SID）转换为有效的功能 SID。 可以使用此函数检索 ConvertSidToStringSid 函数转换为字符串格式的 SID。
+        /// </summary>
+        /// <param name="StringSid">指向包含要转换的字符串格式 SID 的 null 终止字符串的指针。SID 字符串可以使用标准 S-R-I-S-S...SID 字符串的格式，或 SID 字符串常量格式，例如内置管理员的“BA”。</param>
+        /// <param name="Sid">指向接收指向转换后的 SID 的指针的变量的指针。 若要释放返回的缓冲区，请调用 LocalFree 函数。</param>
+        /// <returns>如果函数成功，则返回值为非零。如果函数失败，则返回值为零。 </returns>
+        [DllImport(Advapi32, CharSet = CharSet.Unicode, EntryPoint = "ConvertStringSidToSidW", PreserveSig = true, SetLastError = false)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool ConvertStringSidToSid([MarshalAs(UnmanagedType.LPWStr)] string StringSid, out nint Sid);
+
+        /// <summary>
+        /// ConvertSidToStringSid 函数将 安全标识符（SID）转换为适合显示、存储或传输的字符串格式。若要将字符串格式 SID 转换回有效的功能 SID，请调用 ConvertStringSidToSid 函数。
+        /// </summary>
+        /// <param name="Sid">指向要转换的 SID 结构的指针。</param>
+        /// <param name="StringSid">指向一个变量的指针，该变量接收指向以 null 结尾的 SID 字符串的指针。 若要释放返回的缓冲区，请调用 LocalFree 函数。</param>
+        /// <returns>如果函数成功，则返回值为非零。如果函数失败，则返回值为零。</returns>
+        [DllImport(Advapi32, CharSet = CharSet.Unicode, EntryPoint = "ConvertSidToStringSidW", PreserveSig = true, SetLastError = false)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool ConvertSidToStringSid(nint Sid, [MarshalAs(UnmanagedType.LPWStr)] out string StringSid);
 
         /// <summary>
         /// 启动指定计算机的关闭和可选重启，并选择性地记录关闭的原因。

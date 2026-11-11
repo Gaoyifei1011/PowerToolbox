@@ -55,11 +55,6 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 应用容器的包标识符
         /// </summary>
-        internal nint AppContainerSID { get; set; }
-
-        /// <summary>
-        /// 应用容器的包标识符名称
-        /// </summary>
-        internal string AppContainerSIDName { get; set; }
+        internal string AppContainerSID { get; set; }
     }
 }

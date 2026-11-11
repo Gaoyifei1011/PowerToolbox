@@ -8,6 +8,7 @@ using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
+using PowerToolbox.WindowsAPI.PInvoke.Advapi32;
 using PowerToolbox.WindowsAPI.PInvoke.FirewallAPI;
 using PowerToolbox.WindowsAPI.PInvoke.Shlwapi;
 using System;
@@ -19,6 +20,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -32,32 +34,23 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class LoopbackManagerPage : Page, INotifyPropertyChanged
     {
-        private readonly string LoopbackInformationString = ResourceService.LoopbackManagerResource.GetString("LoopbackInformation");
+        #region 第一部分：常量、资源与状态字段
+
+        private readonly string LoopbackCountInfoString = ResourceService.LoopbackManagerResource.GetString("LoopbackCountInfo");
         private readonly string LoopbackEmptyDescriptionString = ResourceService.LoopbackManagerResource.GetString("LoopbackEmptyDescription");
-        private readonly string LoopbackEmptyWithConditionDescriptionString = ResourceService.LoopbackManagerResource.GetString("LoopbackEmptyWithConditionDescription");
         private readonly string NotAvailableString = ResourceService.LoopbackManagerResource.GetString("NotAvailable");
+        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly BitmapImage emptyImage = new();
+        private readonly HashSet<LoopbackModel> selectedItemsSet = [];
         private bool isInitialized;
 
-        private string _loopbackDescription = string.Empty;
+        #endregion 第一部分：常量、资源与状态字段
 
-        internal string LoopbackDescription
-        {
-            get { return _loopbackDescription; }
-
-            set
-            {
-                if (!Equals(_loopbackDescription, value))
-                {
-                    _loopbackDescription = value;
-                    PropertyChanged?.Invoke(this, new(nameof(LoopbackDescription)));
-                }
-            }
-        }
+        #region 第二部分：属性、列表与事件
 
         private LoopbackResultKind _loopbackResultKind;
 
-        internal LoopbackResultKind LoopbackResultKind
+        private LoopbackResultKind LoopbackResultKind
         {
             get { return _loopbackResultKind; }
 
@@ -71,9 +64,25 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private int _selectedItemsCount;
+
+        private int SelectedItemsCount
+        {
+            get { return _selectedItemsCount; }
+
+            set
+            {
+                if (!Equals(_selectedItemsCount, value))
+                {
+                    _selectedItemsCount = value;
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedItemsCount)));
+                }
+            }
+        }
+
         private string _loopbackFailedContent;
 
-        internal string LoopbackFailedContent
+        private string LoopbackFailedContent
         {
             get { return _loopbackFailedContent; }
 
@@ -87,25 +96,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _searchText = string.Empty;
-
-        internal string SearchText
-        {
-            get { return _searchText; }
-
-            set
-            {
-                if (!Equals(_searchText, value))
-                {
-                    _searchText = value;
-                    PropertyChanged?.Invoke(this, new(nameof(SearchText)));
-                }
-            }
-        }
-
         private bool _isSaved;
 
-        internal bool IsSaved
+        private bool IsSaved
         {
             get { return _isSaved; }
 
@@ -119,18 +112,22 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<LoopbackModel> LoopbackList { get; } = [];
-
         private WinRTObservableCollection<LoopbackModel> LoopbackCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
 
         internal LoopbackManagerPage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面触发的事件
@@ -146,9 +143,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第一部分：重写父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #region 第五部分：命令调用处理
 
         /// <summary>
         /// 打开应用程序的工作目录
@@ -157,131 +154,20 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is string parameter && !string.IsNullOrEmpty(parameter))
             {
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        Process.Start(parameter);
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(OnOpenWorkingDirectoryExecuteRequested), 1, e);
-                    }
-                });
+                OpenWorkingDirectory(parameter);
             }
         }
 
-        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #endregion 第五部分：命令调用处理
 
-        #region 第三部分：网络回环管理页面——挂载的事件
+        #region 第六部分：挂载事件处理
 
         /// <summary>
         /// 了解网络回环
         /// </summary>
         private void OnLearnLoopbackClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("https://learn.microsoft.com/previous-versions/windows/apps/hh780593(v=win.10)");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(OnLearnLoopbackClicked), 1, e);
-                }
-            });
-        }
-
-        /// <summary>
-        /// 查询搜索内容
-        /// </summary>
-        private void OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(SearchText) && LoopbackResultKind is not LoopbackResultKind.Loading && LoopbackList.Count > 0)
-            {
-                LoopbackResultKind = LoopbackResultKind.Loading;
-                LoopbackCollection.Clear();
-                foreach (LoopbackModel loopbackItem in LoopbackList)
-                {
-                    if (!string.IsNullOrEmpty(loopbackItem.AppContainerName) && loopbackItem.AppContainerName.Contains(SearchText))
-                    {
-                        LoopbackCollection.Add(loopbackItem);
-                        continue;
-                    }
-
-                    if (!string.IsNullOrEmpty(loopbackItem.DisplayName) && loopbackItem.DisplayName.Contains(SearchText))
-                    {
-                        LoopbackCollection.Add(loopbackItem);
-                        continue;
-                    }
-
-                    if (!string.IsNullOrEmpty(loopbackItem.Description) && loopbackItem.Description.Contains(SearchText))
-                    {
-                        LoopbackCollection.Add(loopbackItem);
-                        continue;
-                    }
-
-                    if (!string.IsNullOrEmpty(loopbackItem.PackageFullName) && loopbackItem.PackageFullName.Contains(SearchText))
-                    {
-                        LoopbackCollection.Add(loopbackItem);
-                        continue;
-                    }
-
-                    if (!string.IsNullOrEmpty(loopbackItem.AppContainerUserName) && loopbackItem.AppContainerUserName.Contains(SearchText))
-                    {
-                        LoopbackCollection.Add(loopbackItem);
-                        continue;
-                    }
-
-                    if (!string.IsNullOrEmpty(loopbackItem.AppContainerSIDName) && loopbackItem.AppContainerSIDName.Contains(SearchText))
-                    {
-                        LoopbackCollection.Add(loopbackItem);
-                        continue;
-                    }
-                }
-
-                foreach (LoopbackModel loopbackItem in LoopbackCollection)
-                {
-                    if (loopbackItem.IsOldChecked)
-                    {
-                        LoopbackManagerListView.SelectedItems.Add(loopbackItem);
-                    }
-                }
-            }
-
-            LoopbackResultKind = LoopbackCollection.Count is 0 ? LoopbackResultKind.Failed : LoopbackResultKind.Successfully;
-            LoopbackFailedContent = LoopbackCollection.Count is 0 ? LoopbackEmptyWithConditionDescriptionString : string.Empty;
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackManagerListView.SelectedItems.Count);
-        }
-
-        /// <summary>
-        /// 搜索应用名称内容发生变化事件
-        /// </summary>
-        private void OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-        {
-            SearchText = sender.Text;
-            if (string.IsNullOrEmpty(SearchText) && LoopbackResultKind is not LoopbackResultKind.Loading && LoopbackList.Count > 0)
-            {
-                LoopbackResultKind = LoopbackResultKind.Loading;
-                LoopbackCollection.Clear();
-                foreach (LoopbackModel loopbackItem in LoopbackList)
-                {
-                    LoopbackCollection.Add(loopbackItem);
-                }
-
-                foreach (LoopbackModel loopbackItem in LoopbackCollection)
-                {
-                    if (loopbackItem.IsOldChecked)
-                    {
-                        LoopbackManagerListView.SelectedItems.Add(loopbackItem);
-                    }
-                }
-            }
-
-            LoopbackResultKind = LoopbackCollection.Count is 0 ? LoopbackResultKind.Failed : LoopbackResultKind.Successfully;
-            LoopbackFailedContent = LoopbackCollection.Count is 0 ? LoopbackEmptyWithConditionDescriptionString : string.Empty;
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackManagerListView.SelectedItems.Count);
+            LearnLoopback();
         }
 
         /// <summary>
@@ -289,7 +175,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackManagerListView.SelectedItems.Count);
+            if (LoopbackResultKind is not LoopbackResultKind.Loading)
+            {
+                IsSaved = true;
+                SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
+            }
         }
 
         /// <summary>
@@ -297,9 +187,12 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectAllClicked(object sender, RoutedEventArgs args)
         {
-            IsSaved = true;
-            LoopbackManagerListView.SelectAll();
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackManagerListView.SelectedItems.Count);
+            if (LoopbackResultKind is not LoopbackResultKind.Loading)
+            {
+                IsSaved = true;
+                LoopbackManagerListView.SelectAll();
+                SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
+            }
         }
 
         /// <summary>
@@ -307,9 +200,12 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
         {
-            IsSaved = true;
-            LoopbackManagerListView.DeselectRange(new(0, (uint)LoopbackManagerListView.Items.Count));
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackManagerListView.SelectedItems.Count);
+            if (LoopbackResultKind is not LoopbackResultKind.Loading)
+            {
+                IsSaved = true;
+                LoopbackManagerListView.DeselectRange(new(0, (uint)LoopbackManagerListView.Items.Count));
+                SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
+            }
         }
 
         /// <summary>
@@ -317,21 +213,17 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectReverseClicked(object sender, RoutedEventArgs args)
         {
-            List<object> selectedItemList = [.. LoopbackManagerListView.SelectedItems];
-
-            foreach (object item in LoopbackManagerListView.Items)
+            if (LoopbackResultKind is not LoopbackResultKind.Loading)
             {
-                if (selectedItemList.Contains(item))
+                IsSaved = true;
+                List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. LoopbackManagerListView.SelectedRanges];
+                LoopbackManagerListView.SelectAll();
+                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
                 {
-                    LoopbackManagerListView.SelectedItems.Remove(item);
+                    LoopbackManagerListView.DeselectRange(itemIndexRange);
                 }
-                else
-                {
-                    LoopbackManagerListView.SelectedItems.Add(item);
-                }
+                SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
             }
-
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackManagerListView.SelectedItems.Count);
         }
 
         /// <summary>
@@ -339,19 +231,30 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnSaveClicked(object sender, RoutedEventArgs args)
         {
-            IsSaved = false;
-            List<LoopbackModel> selectedLoopbackList = [];
-            foreach (object loopbackItemObj in LoopbackManagerListView.SelectedItems)
+            if (LoopbackResultKind is not LoopbackResultKind.Loading)
             {
-                if (loopbackItemObj is LoopbackModel loopbackItem)
+                IsSaved = false;
+                List<LoopbackModel> selectedLoopbackList = [];
+                foreach (LoopbackModel loopbackItem in LoopbackCollection)
                 {
-                    loopbackItem.IsOldChecked = true;
-                    selectedLoopbackList.Add(loopbackItem);
+                    loopbackItem.IsOldChecked = false;
                 }
+                foreach (object loopbackItemObj in LoopbackManagerListView.SelectedItems)
+                {
+                    if (loopbackItemObj is LoopbackModel loopbackItem)
+                    {
+                        loopbackItem.IsOldChecked = true;
+                        selectedLoopbackList.Add(loopbackItem);
+                    }
+                }
+                SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
+                bool result = await SaveLoopbackStateAsync(selectedLoopbackList);
+                synchronizationContext.Post(async (_) =>
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.LoopbackSetResult, result));
+                }, null);
+                await GetLoopbackDataAsync();
             }
-
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackManagerListView.SelectedItems.Count);
-            await SetLoopbackStateAsync(selectedLoopbackList);
         }
 
         /// <summary>
@@ -359,25 +262,22 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnResetClicked(object sender, RoutedEventArgs args)
         {
-            IsSaved = false;
-            SearchText = string.Empty;
-
-            if (LoopbackResultKind is not LoopbackResultKind.Loading && LoopbackList.Count > 0)
+            if (LoopbackResultKind is not LoopbackResultKind.Loading)
             {
+                IsSaved = false;
                 LoopbackResultKind = LoopbackResultKind.Loading;
                 LoopbackManagerListView.SelectedItems.Clear();
-
-                foreach (LoopbackModel loopbackItem in LoopbackCollection)
+                for (int index = 0; index < LoopbackCollection.Count; index++)
                 {
+                    LoopbackModel loopbackItem = LoopbackCollection[index];
                     if (loopbackItem.IsOldChecked)
                     {
-                        LoopbackManagerListView.SelectedItems.Add(loopbackItem);
+                        LoopbackManagerListView.SelectRange(new(index, 1));
                     }
                 }
+                SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
+                LoopbackResultKind = LoopbackCollection.Count is 0 ? LoopbackResultKind.Failed : LoopbackResultKind.Successfully;
             }
-
-            LoopbackResultKind = LoopbackCollection.Count is 0 ? LoopbackResultKind.Failed : LoopbackResultKind.Successfully;
-            LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackManagerListView.SelectedItems.Count);
         }
 
         /// <summary>
@@ -388,7 +288,9 @@ namespace PowerToolbox.Views.Pages
             await GetLoopbackDataAsync();
         }
 
-        #endregion 第三部分：网络回环管理页面——挂载的事件
+        #endregion 第六部分：挂载事件处理
+
+        #region 第七部分：数据操作与业务逻辑
 
         /// <summary>
         /// 获取应用数据
@@ -399,111 +301,17 @@ namespace PowerToolbox.Views.Pages
             {
                 LoopbackResultKind = LoopbackResultKind.Loading;
                 IsSaved = false;
-                LoopbackList.Clear();
                 LoopbackCollection.Clear();
-                LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackManagerListView.SelectedItems.Count);
+                List<LoopbackModel> loopbackList = await GetLoopbackInfoListAsync();
 
-                List<LoopbackModel> loopbackList = await Task.Run(() =>
-                {
-                    List<LoopbackModel> loopbackList = [];
-                    List<INET_FIREWALL_APP_CONTAINER> inetLoopbackList = GetLoopbackList();
-                    List<SID_AND_ATTRIBUTES> inetLoopbackEnabledList = GetLoopbackEnabledList();
-
-                    foreach (INET_FIREWALL_APP_CONTAINER inetContainerItem in inetLoopbackList)
-                    {
-                        try
-                        {
-                            bool isEnabled = GetLoopbackEnabled(inetContainerItem.appContainerSid, inetLoopbackEnabledList);
-
-                            StringBuilder displayNameBuilder = new(1024);
-                            ShlwapiLibrary.SHLoadIndirectString(inetContainerItem.displayName, displayNameBuilder, displayNameBuilder.Capacity, 0);
-
-                            StringBuilder descriptionBuilder = new(1024);
-                            ShlwapiLibrary.SHLoadIndirectString(inetContainerItem.description, descriptionBuilder, descriptionBuilder.Capacity, 0);
-
-                            INET_FIREWALL_AC_BINARIES inetBinaries = inetContainerItem.binaries;
-                            string[] stringBinaries = null;
-                            if (inetBinaries.count is not 0 && inetBinaries.binaries is not 0)
-                            {
-                                stringBinaries = new string[inetBinaries.count];
-                                long num = inetBinaries.binaries;
-                                for (int i = 0; i < inetBinaries.count; i++)
-                                {
-                                    stringBinaries[i] = Marshal.PtrToStringUni(Marshal.ReadIntPtr((nint)num));
-                                    num += IntPtr.Size;
-                                }
-                            }
-
-                            SecurityIdentifier appContainerSid = null;
-
-                            try
-                            {
-                                byte revision = Marshal.ReadByte(inetContainerItem.appContainerSid, 0);
-                                if (revision is 1 && inetContainerItem.appContainerSid is not 0)
-                                {
-                                    appContainerSid = new(inetContainerItem.appContainerSid);
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 1, e);
-                            }
-
-                            NTAccount userAccountType = null;
-
-                            try
-                            {
-                                byte revision = Marshal.ReadByte(inetContainerItem.appContainerSid, 0);
-                                if (revision is 1 && inetContainerItem.userSid is not 0)
-                                {
-                                    SecurityIdentifier userSid = new(inetContainerItem.userSid);
-                                    userAccountType = (NTAccount)userSid.Translate(typeof(NTAccount));
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 2, e);
-                            }
-
-                            string logoFullPath = GetLogoInfo(inetContainerItem.workingDirectory);
-
-                            LoopbackModel loopbackItem = new()
-                            {
-                                AppContainerName = string.IsNullOrEmpty(inetContainerItem.appContainerName) ? NotAvailableString : inetContainerItem.appContainerName,
-                                AppContainerSID = inetContainerItem.appContainerSid,
-                                AppContainerSIDName = string.IsNullOrEmpty(Convert.ToString(appContainerSid)) ? NotAvailableString : Convert.ToString(appContainerSid),
-                                DisplayName = string.IsNullOrEmpty(Convert.ToString(displayNameBuilder)) ? NotAvailableString : Convert.ToString(displayNameBuilder),
-                                Description = string.IsNullOrEmpty(Convert.ToString(descriptionBuilder)) ? NotAvailableString : Convert.ToString(descriptionBuilder),
-                                WorkingDirectory = string.IsNullOrEmpty(inetContainerItem.workingDirectory) ? NotAvailableString : inetContainerItem.workingDirectory,
-                                PackageFullName = string.IsNullOrEmpty(inetContainerItem.packageFullName) ? NotAvailableString : inetContainerItem.packageFullName,
-                                PackageIconUri = Uri.TryCreate(logoFullPath, UriKind.Absolute, out Uri uri) ? uri : null,
-                                AppBinariesPath = stringBinaries is not null ? string.Concat(stringBinaries) : NotAvailableString,
-                                AppContainerUserName = userAccountType is not null ? Convert.ToString(userAccountType) : NotAvailableString,
-                                IsOldChecked = isEnabled
-                            };
-
-                            loopbackList.Add(loopbackItem);
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 3, e);
-                            continue;
-                        }
-                    }
-
-                    return loopbackList;
-                });
-
-                LoopbackList.AddRange(loopbackList);
-
-                if (LoopbackList.Count is 0)
+                if (loopbackList.Count is 0)
                 {
                     LoopbackResultKind = LoopbackResultKind.Failed;
                     LoopbackFailedContent = LoopbackEmptyDescriptionString;
                 }
                 else
                 {
-                    foreach (LoopbackModel loopbackItem in LoopbackList)
+                    foreach (LoopbackModel loopbackItem in loopbackList)
                     {
                         try
                         {
@@ -516,68 +324,122 @@ namespace PowerToolbox.Views.Pages
                         }
                         catch (Exception e)
                         {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 4, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 1, e);
                             loopbackItem.AppIcon = emptyImage;
                         }
-
-                        if (string.IsNullOrEmpty(SearchText))
-                        {
-                            LoopbackCollection.Add(loopbackItem);
-                            continue;
-                        }
-                        else
-                        {
-                            if (!string.IsNullOrEmpty(loopbackItem.AppContainerName) && loopbackItem.AppContainerName.Contains(SearchText))
-                            {
-                                LoopbackCollection.Add(loopbackItem);
-                                continue;
-                            }
-
-                            if (!string.IsNullOrEmpty(loopbackItem.DisplayName) && loopbackItem.DisplayName.Contains(SearchText))
-                            {
-                                LoopbackCollection.Add(loopbackItem);
-                                continue;
-                            }
-
-                            if (!string.IsNullOrEmpty(loopbackItem.Description) && loopbackItem.Description.Contains(SearchText))
-                            {
-                                LoopbackCollection.Add(loopbackItem);
-                                continue;
-                            }
-
-                            if (!string.IsNullOrEmpty(loopbackItem.PackageFullName) && loopbackItem.PackageFullName.Contains(SearchText))
-                            {
-                                LoopbackCollection.Add(loopbackItem);
-                                continue;
-                            }
-
-                            if (!string.IsNullOrEmpty(loopbackItem.AppContainerUserName) && loopbackItem.AppContainerUserName.Contains(SearchText))
-                            {
-                                LoopbackCollection.Add(loopbackItem);
-                                continue;
-                            }
-
-                            if (!string.IsNullOrEmpty(loopbackItem.AppContainerSIDName) && loopbackItem.AppContainerSIDName.Contains(SearchText))
-                            {
-                                LoopbackCollection.Add(loopbackItem);
-                                continue;
-                            }
-                        }
+                        LoopbackCollection.Add(loopbackItem);
                     }
-
-                    foreach (LoopbackModel loopbackItem in LoopbackCollection)
+                    for (int index = 0; index < LoopbackCollection.Count; index++)
                     {
+                        LoopbackModel loopbackItem = LoopbackCollection[index];
                         if (loopbackItem.IsOldChecked)
                         {
-                            LoopbackManagerListView.SelectedItems.Add(loopbackItem);
+                            LoopbackManagerListView.SelectRange(new(index, 1));
                         }
                     }
-
-                    LoopbackResultKind = LoopbackCollection.Count is 0 ? LoopbackResultKind.Failed : LoopbackResultKind.Successfully;
-                    LoopbackFailedContent = LoopbackCollection.Count is 0 ? LoopbackEmptyWithConditionDescriptionString : string.Empty;
-                    LoopbackDescription = string.Format(LoopbackInformationString, LoopbackCollection.Count, LoopbackManagerListView.SelectedItems.Count);
+                    LoopbackResultKind = LoopbackResultKind.Successfully;
+                    LoopbackFailedContent = string.Empty;
+                    SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
                 }
             }
+        }
+
+        /// <summary>
+        /// 获取网络回环信息
+        /// </summary>
+        private async Task<List<LoopbackModel>> GetLoopbackInfoListAsync()
+        {
+            return await Task.Run(() =>
+            {
+                List<LoopbackModel> loopbackList = [];
+                List<INET_FIREWALL_APP_CONTAINER> inetLoopbackList = GetLoopbackList();
+                List<SID_AND_ATTRIBUTES> inetLoopbackEnabledList = GetLoopbackEnabledList();
+
+                foreach (INET_FIREWALL_APP_CONTAINER inetContainerItem in inetLoopbackList)
+                {
+                    try
+                    {
+                        bool isLoopbackEnabled = GetLoopbackEnabled(inetContainerItem.appContainerSid, inetLoopbackEnabledList);
+
+                        StringBuilder displayNameBuilder = new(1024);
+                        ShlwapiLibrary.SHLoadIndirectString(inetContainerItem.displayName, displayNameBuilder, displayNameBuilder.Capacity, 0);
+
+                        StringBuilder descriptionBuilder = new(1024);
+                        ShlwapiLibrary.SHLoadIndirectString(inetContainerItem.description, descriptionBuilder, descriptionBuilder.Capacity, 0);
+
+                        INET_FIREWALL_AC_BINARIES inetBinaries = inetContainerItem.binaries;
+                        string[] stringBinaries = null;
+                        if (inetBinaries.count is not 0 && inetBinaries.binaries is not 0)
+                        {
+                            stringBinaries = new string[inetBinaries.count];
+                            long num = inetBinaries.binaries;
+                            for (int i = 0; i < inetBinaries.count; i++)
+                            {
+                                stringBinaries[i] = Marshal.PtrToStringUni(Marshal.ReadIntPtr((nint)num));
+                                num += IntPtr.Size;
+                            }
+                        }
+
+                        SecurityIdentifier appContainerSid = null;
+
+                        try
+                        {
+                            byte revision = Marshal.ReadByte(inetContainerItem.appContainerSid, 0);
+                            if (revision is 1 && inetContainerItem.appContainerSid is not 0)
+                            {
+                                appContainerSid = new(inetContainerItem.appContainerSid);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 1, e);
+                        }
+
+                        NTAccount userAccountType = null;
+
+                        try
+                        {
+                            byte revision = Marshal.ReadByte(inetContainerItem.appContainerSid, 0);
+                            if (revision is 1 && inetContainerItem.userSid is not 0)
+                            {
+                                SecurityIdentifier userSid = new(inetContainerItem.userSid);
+                                if (userSid.IsValidTargetType(typeof(NTAccount)))
+                                {
+                                    userAccountType = (NTAccount)userSid.Translate(typeof(NTAccount));
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackDataAsync), 2, e);
+                        }
+
+                        string logoFullPath = GetLogoInfo(inetContainerItem.workingDirectory);
+                        if (Advapi32Library.ConvertSidToStringSid(inetContainerItem.appContainerSid, out string appContainerStringSid))
+                        {
+                            loopbackList.Add(new()
+                            {
+                                AppContainerName = string.IsNullOrEmpty(inetContainerItem.appContainerName) ? NotAvailableString : inetContainerItem.appContainerName,
+                                AppContainerSID = appContainerStringSid,
+                                DisplayName = string.IsNullOrEmpty(Convert.ToString(displayNameBuilder)) ? NotAvailableString : Convert.ToString(displayNameBuilder),
+                                Description = string.IsNullOrEmpty(Convert.ToString(descriptionBuilder)) ? NotAvailableString : Convert.ToString(descriptionBuilder),
+                                WorkingDirectory = string.IsNullOrEmpty(inetContainerItem.workingDirectory) ? NotAvailableString : inetContainerItem.workingDirectory,
+                                PackageFullName = string.IsNullOrEmpty(inetContainerItem.packageFullName) ? NotAvailableString : inetContainerItem.packageFullName,
+                                PackageIconUri = Uri.TryCreate(logoFullPath, UriKind.Absolute, out Uri uri) ? uri : null,
+                                AppBinariesPath = stringBinaries is not null ? string.Concat(stringBinaries) : NotAvailableString,
+                                AppContainerUserName = userAccountType is not null ? Convert.ToString(userAccountType) : NotAvailableString,
+                                IsOldChecked = isLoopbackEnabled
+                            });
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackInfoListAsync), 1, e);
+                        continue;
+                    }
+                }
+                return loopbackList;
+            });
         }
 
         /// <summary>
@@ -635,7 +497,6 @@ namespace PowerToolbox.Views.Pages
 
             handle_pdwCntPublicACs.Free();
             handle_ppACs.Free();
-
             return inetContainerConfigList;
         }
 
@@ -644,6 +505,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private bool GetLoopbackEnabled(nint appContainerSid, List<SID_AND_ATTRIBUTES> loopbackEnabledList)
         {
+            if (loopbackEnabledList is null || loopbackEnabledList.Count is 0)
+            {
+                return default;
+            }
+
             foreach (SID_AND_ATTRIBUTES sidItem in loopbackEnabledList)
             {
                 try
@@ -676,38 +542,35 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 设置网络回环状态
+        /// 保存网络回环状态
         /// </summary>
-        private async Task SetLoopbackStateAsync(List<LoopbackModel> loopbackList)
+        private async Task<bool> SaveLoopbackStateAsync(List<LoopbackModel> loopbackList)
         {
-            if (loopbackList is not null)
+            if (loopbackList is null)
             {
-                bool result = await Task.Run(() =>
-                {
-                    SID_AND_ATTRIBUTES[] sidAndAttributesArray = new SID_AND_ATTRIBUTES[loopbackList.Count];
-                    int count = 0;
-
-                    foreach (LoopbackModel loopbackItem in loopbackList)
-                    {
-                        sidAndAttributesArray[count] = new()
-                        {
-                            Attributes = 0u,
-                            Sid = loopbackItem.AppContainerSID
-                        };
-                        count++;
-                    }
-
-                    return FirewallAPILibrary.NetworkIsolationSetAppContainerConfig(loopbackList.Count, sidAndAttributesArray) is 0;
-                });
-
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.LoopbackSetResult, result));
+                return default;
             }
+
+            return await Task.Run(() =>
+            {
+                SID_AND_ATTRIBUTES[] sidAndAttributesArray = new SID_AND_ATTRIBUTES[loopbackList.Count];
+                for (int index = 0; index < loopbackList.Count; index++)
+                {
+                    LoopbackModel loopbackItem = loopbackList[index];
+                    Advapi32Library.ConvertStringSidToSid(loopbackItem.AppContainerSID, out nint psid);
+                    sidAndAttributesArray[index] = new()
+                    {
+                        Attributes = 0,
+                        Sid = psid
+                    };
+                }
+                return FirewallAPILibrary.NetworkIsolationSetAppContainerConfig((uint)loopbackList.Count, sidAndAttributesArray) is 0;
+            });
         }
 
         /// <summary>
         /// 获取应用图标路径
         /// </summary>
-
         private string GetLogoInfo(string packageInstalledLocation)
         {
             string logoFullPath = string.Empty;
@@ -765,6 +628,47 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
+        /// 打开应用程序的工作目录
+        /// </summary>
+        private void OpenWorkingDirectory(string folderPath)
+        {
+            if (string.IsNullOrEmpty(folderPath))
+            {
+                return;
+            }
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start(folderPath);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(OpenWorkingDirectory), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 了解网络回环
+        /// </summary>
+        private void LearnLoopback()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("https://learn.microsoft.com/previous-versions/windows/apps/hh780593(v=win.10)");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(LearnLoopback), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
         /// 获取加载网络回环是否成功
         /// </summary>
         private Visibility GetLoopbackSuccessfullyVisibility(LoopbackResultKind loopbackResultKind, bool isSuccessfully)
@@ -795,5 +699,7 @@ namespace PowerToolbox.Views.Pages
         {
             return loopbackResultKind is not LoopbackResultKind.Loading && isSaved;
         }
+
+        #endregion 第七部分：数据操作与业务逻辑
     }
 }

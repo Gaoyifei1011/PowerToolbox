@@ -43,6 +43,6 @@ namespace PowerToolbox.WindowsAPI.PInvoke.FirewallAPI
         /// <param name="appContainerSids">安全标识符 (允许发送环回流量的应用容器) SID。 用于调试目的。</param>
         /// <returns>如果成功，则返回ERROR_SUCCESS，否则返回错误值。</returns>
         [DllImport(FirewallAPI, CharSet = CharSet.Unicode, EntryPoint = "NetworkIsolationSetAppContainerConfig", PreserveSig = true, SetLastError = false)]
-        internal static extern uint NetworkIsolationSetAppContainerConfig(int dwNumPublicAppCs, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] SID_AND_ATTRIBUTES[] appContainerSids);
+        internal static extern uint NetworkIsolationSetAppContainerConfig(uint dwNumPublicAppCs, SID_AND_ATTRIBUTES[] appContainerSids);
     }
 }
