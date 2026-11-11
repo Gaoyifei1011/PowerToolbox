@@ -41,7 +41,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string NotAvailableString = ResourceService.LoopbackManagerResource.GetString("NotAvailable");
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly BitmapImage emptyImage = new();
-        private readonly HashSet<LoopbackModel> selectedItemsSet = [];
         private bool isInitialized;
 
         #endregion 第一部分：常量、资源与状态字段
