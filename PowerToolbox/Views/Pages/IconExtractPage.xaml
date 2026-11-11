@@ -16,7 +16,6 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -24,7 +23,7 @@
             Grid.Row="0"
             MinWidth="100"
             MinHeight="32"
-            Margin="30,17,30,0"
+            Margin="30,17,30,3"
             HorizontalAlignment="Left">
 
             <Rectangle
@@ -42,21 +41,7 @@
                 Text="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('IconExtract')}" />
         </Grid>
 
-        <TextBlock
-            x:Name="GetResultsTextBlock"
-            Grid.Row="1"
-            Margin="32,3,32,3"
-            FontSize="14"
-            Text="{x:Bind GetResults, Mode=OneWay}"
-            TextTrimming="CharacterEllipsis"
-            TextWrapping="NoWrap">
-
-            <ToolTipService.ToolTip>
-                <ToolTip Content="{x:Bind GetResults, Mode=OneWay}" Visibility="{x:Bind GetResultsTextBlock.IsTextTrimmed, Mode=OneWay}" />
-            </ToolTipService.ToolTip>
-        </TextBlock>
-
-        <Grid Grid.Row="2" Margin="30,0">
+        <Grid Grid.Row="1" Margin="30,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -217,6 +202,7 @@
             <!--  图标提取右侧控制栏  -->
             <Grid Grid.Column="2" VerticalAlignment="Top">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -635,8 +621,15 @@
                     Content="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('ExportAllIcons')}"
                     IsEnabled="{x:Bind system:Convert.ToBoolean(IconCollection.Count), Mode=OneWay}" />
 
-                <StackPanel
+                <TextBlock
                     Grid.Row="8"
+                    FontSize="14"
+                    Text="{x:Bind GetResults, Mode=OneWay}"
+                    TextTrimming="CharacterEllipsis"
+                    TextWrapping="Wrap" />
+
+                <StackPanel
+                    Grid.Row="9"
                     Margin="0,5,0,5"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"

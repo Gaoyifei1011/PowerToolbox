@@ -112,7 +112,6 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -120,7 +119,7 @@
             Grid.Row="0"
             MinWidth="100"
             MinHeight="32"
-            Margin="30,17,30,0"
+            Margin="30,17,30,3"
             HorizontalAlignment="Left">
 
             <Rectangle
@@ -138,21 +137,7 @@
                 Text="{x:Bind rootservice:ResourceService.PriExtractResource.GetString('PriExtract')}" />
         </Grid>
 
-        <TextBlock
-            x:Name="GetResultsTextBlock"
-            Grid.Row="1"
-            Margin="32,3,32,3"
-            FontSize="14"
-            Text="{x:Bind GetResults, Mode=OneWay}"
-            TextTrimming="CharacterEllipsis"
-            TextWrapping="NoWrap">
-
-            <ToolTipService.ToolTip>
-                <ToolTip Content="{x:Bind GetResults, Mode=OneWay}" Visibility="{x:Bind GetResultsTextBlock.IsTextTrimmed, Mode=OneWay}" />
-            </ToolTipService.ToolTip>
-        </TextBlock>
-
-        <Grid Grid.Row="2" Margin="30,0">
+        <Grid Grid.Row="1" Margin="30,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -806,6 +791,13 @@
                                 Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[2].SelectedValue), Mode=OneWay}" />
                         </StackPanel>
                     </ContentControl>
+
+                    <MenuFlyoutSeparator Margin="5,3" />
+
+                    <TextBlock
+                        FontSize="14"
+                        Text="{x:Bind GetResults, Mode=OneWay}"
+                        TextWrapping="Wrap" />
                 </StackPanel>
 
                 <StackPanel

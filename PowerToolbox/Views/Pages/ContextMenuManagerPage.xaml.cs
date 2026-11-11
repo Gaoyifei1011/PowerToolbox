@@ -128,7 +128,7 @@ namespace PowerToolbox.Views.Pages
             if (!isInitialized)
             {
                 isInitialized = true;
-                await GetContextMenuAsync();
+                await GetContextMenuAsync(SearchText);
             }
         }
 
@@ -283,7 +283,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnRefreshClicked(object sender, RoutedEventArgs args)
         {
-            await GetContextMenuAsync();
+            await GetContextMenuAsync(SearchText);
         }
 
         /// <summary>
@@ -294,7 +294,7 @@ namespace PowerToolbox.Views.Pages
             ContextMenuResultKind = ContextMenuResultKind.Loading;
             SearchText = string.Empty;
             await RestoreDefaultAsync();
-            await GetContextMenuAsync();
+            await GetContextMenuAsync(SearchText);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取右键菜单数据
         /// </summary>
-        private async Task GetContextMenuAsync()
+        private async Task GetContextMenuAsync(string searchText)
         {
             if (ContextMenuResultKind is not ContextMenuResultKind.Loading)
             {
@@ -353,13 +353,13 @@ namespace PowerToolbox.Views.Pages
 
                     foreach (ContextMenuModel contextMenuItem in ContextMenuList)
                     {
-                        if (string.IsNullOrEmpty(SearchText))
+                        if (string.IsNullOrEmpty(searchText))
                         {
                             ContextMenuCollection.Add(contextMenuItem);
                         }
                         else
                         {
-                            if ((!string.IsNullOrEmpty(contextMenuItem.PackageDisplayName) && contextMenuItem.PackageDisplayName.Contains(SearchText)) || (!string.IsNullOrEmpty(contextMenuItem.PackageFullName) && contextMenuItem.PackageFullName.Contains(SearchText)))
+                            if ((!string.IsNullOrEmpty(contextMenuItem.PackageDisplayName) && contextMenuItem.PackageDisplayName.Contains(searchText)) || (!string.IsNullOrEmpty(contextMenuItem.PackageFullName) && contextMenuItem.PackageFullName.Contains(searchText)))
                             {
                                 ContextMenuCollection.Add(contextMenuItem);
                             }

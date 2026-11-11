@@ -5,7 +5,7 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 视觉效果数据模型
     /// </summary>
-    internal sealed class VisualEffectsModel : INotifyPropertyChanged
+    internal sealed class VisualEffectsModel
     {
         /// <summary>
         /// 视觉效果名称
@@ -16,7 +16,5 @@ namespace PowerToolbox.Models
         /// 视觉效果标签
         /// </summary>
         internal string VisualTag { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
