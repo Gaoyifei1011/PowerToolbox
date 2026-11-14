@@ -10,12 +10,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:PowerToolbox.Models"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
+    xmlns:system="using:System"
     x:Name="ScheduledTaskPage"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <class:ExecuteCommand x:Name="CheckBoxClickCommand" ExecuteRequested="{x:Bind OnCheckBoxExecuteRequested}" />
         <class:ExecuteCommand x:Name="DisableScheduledTaskCommand" ExecuteRequested="{x:Bind OnDisableScheduledTaskExecuteRequested}" />
         <class:ExecuteCommand x:Name="EnableScheduledTaskCommand" ExecuteRequested="{x:Bind OnEnableScheduledTaskExecuteRequested}" />
         <class:ExecuteCommand x:Name="RunScheduledTaskCommand" ExecuteRequested="{x:Bind OnRunScheduledTaskExecuteRequested}" />
@@ -28,673 +28,711 @@
     <SplitView
         x:Name="ScheduledTaskSplitView"
         DisplayMode="Overlay"
+        OpenPaneLength="320"
         PaneBackground="Transparent"
         PanePlacement="Right">
 
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <StackPanel
+            <!--  计划任务管理控制栏  -->
+            <CommandBar
                 Grid.Row="0"
-                Margin="30,15,30,0"
-                Orientation="Horizontal"
-                Spacing="5">
+                Margin="24,7,22,-5"
+                VerticalAlignment="Center"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Center"
+                Background="Transparent"
+                CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
+                DefaultLabelPosition="Collapsed"
+                IsDynamicOverflowEnabled="False">
 
-                <TextBlock
-                    HorizontalAlignment="Left"
-                    FontSize="22"
-                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ScheduledTaskManager')}" />
+                <CommandBar.Content>
+                    <Grid Margin="0,0,12,0">
+                        <Grid
+                            Grid.Row="0"
+                            MinWidth="100"
+                            MinHeight="32"
+                            HorizontalAlignment="Left">
 
-                <TextBlock VerticalAlignment="Bottom" Text="{x:Bind ScheduledTaskDescription, Mode=OneWay}" />
-            </StackPanel>
+                            <Rectangle
+                                Fill="{ThemeResource PillItemBackgroundSelected}"
+                                RadiusX="16"
+                                RadiusY="16"
+                                Stroke="{ThemeResource PillItemBorderBrushSelected}"
+                                StrokeThickness="1" />
 
-            <!--  驱动管理控制栏  -->
-            <Grid
-                Grid.Row="1"
-                Height="60"
-                Margin="30,5,30,3"
-                Padding="12,0,0,0"
-                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                BorderThickness="1"
-                CornerRadius="{StaticResource ControlCornerRadius}">
+                            <TextBlock
+                                Padding="16,4,16,6"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource PillItemForegroundSelected}"
+                                Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ScheduledTaskManager')}" />
+                        </Grid>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+                        <Grid HorizontalAlignment="Right">
+                            <InfoBadge
+                                Style="{StaticResource InformationalValueInfoBadgeStyle}"
+                                ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ScheduledTaskEmpty')}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(ScheduledTaskCollection.Count), Mode=OneWay}"
+                                Value="{x:Bind ScheduledTaskCollection.Count, Mode=OneWay}" />
 
-                <AutoSuggestBox
-                    Grid.Column="0"
-                    Margin="0,0,2,0"
-                    VerticalAlignment="Center"
-                    IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                    PlaceholderText="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('SearchScheduledTaskPHText')}"
-                    QueryIcon="Find"
-                    QuerySubmitted="{x:Bind OnQuerySubmitted}"
-                    Text="{x:Bind SearchText, Mode=OneWay}"
-                    TextChanged="{x:Bind OnTextChanged}" />
+                            <InfoBadge
+                                ToolTipService.ToolTip="{x:Bind x:String.Format(ScheduledTaskCountInfoString, ScheduledTaskCollection.Count, SelectedItemsCount), Mode=OneWay}"
+                                Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(ScheduledTaskCollection.Count), Mode=OneWay}"
+                                Value="{x:Bind ScheduledTaskCollection.Count, Mode=OneWay}" />
+                        </Grid>
+                    </Grid>
+                </CommandBar.Content>
 
-                <CommandBar
-                    Grid.Column="1"
-                    VerticalAlignment="Center"
-                    CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
-                    DefaultLabelPosition="Right">
+                <CommandBar.PrimaryCommands>
+                    <AppBarButton
+                        Width="48"
+                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('MultiSelect')}">
 
-                    <CommandBar.PrimaryCommands>
-                        <AppBarButton IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}" Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('MultiSelect')}">
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xE762;" />
+                        </AppBarButton.Icon>
 
-                            <AppBarButton.Icon>
-                                <FontIcon Glyph="&#xE762;" />
-                            </AppBarButton.Icon>
+                        <AppBarButton.Flyout>
+                            <MenuFlyout Placement="Bottom">
+                                <MenuFlyoutItem
+                                    Click="{x:Bind OnSelectAllClicked}"
+                                    IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('SelectAll')}">
 
-                            <AppBarButton.Flyout>
-                                <MenuFlyout Placement="Bottom">
-                                    <MenuFlyoutItem
-                                        Click="{x:Bind OnSelectAllClicked}"
-                                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('SelectAll')}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE8B3;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
 
-                                        <MenuFlyoutItem.Icon>
-                                            <FontIcon Glyph="&#xE8B3;" />
-                                        </MenuFlyoutItem.Icon>
-                                    </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    Click="{x:Bind OnSelectNoneClicked}"
+                                    IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('SelectNone')}">
 
-                                    <MenuFlyoutItem
-                                        Click="{x:Bind OnSelectNoneClicked}"
-                                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('SelectNone')}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xE8E6;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
 
-                                        <MenuFlyoutItem.Icon>
-                                            <FontIcon Glyph="&#xE8E6;" />
-                                        </MenuFlyoutItem.Icon>
-                                    </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    Click="{x:Bind OnSelectReverseClicked}"
+                                    IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('SelectReverse')}">
 
-                                    <MenuFlyoutItem
-                                        Click="{x:Bind OnSelectReverseClicked}"
-                                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('SelectReverse')}">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon Glyph="&#xEA98;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
 
-                                        <MenuFlyoutItem.Icon>
-                                            <FontIcon Glyph="&#xEA98;" />
-                                        </MenuFlyoutItem.Icon>
-                                    </MenuFlyoutItem>
-                                </MenuFlyout>
-                            </AppBarButton.Flyout>
-                        </AppBarButton>
+                    <AppBarButton
+                        Width="48"
+                        Click="{x:Bind OnRefreshClicked}"
+                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Refresh')}">
 
-                        <AppBarButton
-                            Click="{x:Bind OnRefreshClicked}"
-                            IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                            Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Refresh')}">
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xE72C;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
+                </CommandBar.PrimaryCommands>
 
-                            <AppBarButton.Icon>
-                                <FontIcon Glyph="&#xE72C;" />
-                            </AppBarButton.Icon>
-                        </AppBarButton>
-                    </CommandBar.PrimaryCommands>
+                <CommandBar.SecondaryCommands>
+                    <AppBarButton
+                        Click="{x:Bind OnRunScheduledTaskClicked}"
+                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                        Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('RunScheduledTask')}">
 
-                    <CommandBar.SecondaryCommands>
-                        <AppBarButton
-                            Click="{x:Bind OnRunScheduledTaskClicked}"
-                            IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                            Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('RunScheduledTask')}">
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xE768;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
 
-                            <AppBarButton.Icon>
-                                <FontIcon Glyph="&#xE768;" />
-                            </AppBarButton.Icon>
-                        </AppBarButton>
+                    <AppBarButton
+                        Click="{x:Bind OnStopScheduledTaskClicked}"
+                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                        Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('StopScheduledTask')}">
 
-                        <AppBarButton
-                            Click="{x:Bind OnStopScheduledTaskClicked}"
-                            IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                            Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('StopScheduledTask')}">
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xE71A;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
 
-                            <AppBarButton.Icon>
-                                <FontIcon Glyph="&#xE71A;" />
-                            </AppBarButton.Icon>
-                        </AppBarButton>
+                    <AppBarButton
+                        Click="{x:Bind OnExportScheduledTaskClicked}"
+                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                        Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ExportScheduledTask')}">
 
-                        <AppBarButton
-                            Click="{x:Bind OnExportScheduledTaskClicked}"
-                            IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
-                            Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ExportScheduledTask')}">
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xE74E;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
 
-                            <AppBarButton.Icon>
-                                <FontIcon Glyph="&#xE74E;" />
-                            </AppBarButton.Icon>
-                        </AppBarButton>
+                    <AppBarButton
+                        Click="{x:Bind OnDeleteScheduledTaskClicked}"
+                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                        Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('DeleteScheduledTask')}">
 
-                        <AppBarSeparator />
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xE74D;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
 
-                        <AppBarButton
-                            Click="{x:Bind OnViewErrorInformationClicked}"
-                            IsEnabled="{x:Bind IsModifiedFailed, Mode=OneWay}"
-                            Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ViewErrorInformation')}">
+                    <AppBarSeparator />
 
-                            <AppBarButton.Icon>
-                                <FontIcon Glyph="&#xEA39;" />
-                            </AppBarButton.Icon>
-                        </AppBarButton>
+                    <AppBarButton
+                        Click="{x:Bind OnViewErrorInformationClicked}"
+                        IsEnabled="{x:Bind system:Convert.ToBoolean(ScheduledTaskFailedCollection.Count), Mode=OneWay}"
+                        Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ViewErrorInformation')}">
 
-                        <AppBarSeparator />
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xEA39;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
 
-                        <AppBarButton Click="{x:Bind OnUseInstructionClicked}" Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('UseInstruction')}">
-                            <AppBarButton.Icon>
-                                <FontIcon Glyph="&#xE946;" />
-                            </AppBarButton.Icon>
-                        </AppBarButton>
+                    <AppBarSeparator />
 
-                        <AppBarButton Click="{x:Bind OnOpenScheduledTaskProgramClicked}" Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('OpenScheduledTaskProgram')}">
-                            <AppBarButton.Icon>
-                                <FontIcon Glyph="&#xED5A;" />
-                            </AppBarButton.Icon>
-                        </AppBarButton>
-                    </CommandBar.SecondaryCommands>
-                </CommandBar>
-            </Grid>
+                    <AppBarButton Click="{x:Bind OnUseInstructionClicked}" Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('UseInstruction')}">
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xE946;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
 
-            <!--  计划任务管理状态显示栏  -->
-            <Grid
-                Grid.Row="2"
-                Height="60"
-                Margin="30,0,30,0"
-                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                BorderThickness="1"
-                CornerRadius="{StaticResource ControlCornerRadius}"
-                Visibility="{x:Bind GetScheduledTaskSuccessfullyVisibility(ScheduledTaskResultKind, x:False), Mode=OneWay}">
+                    <AppBarButton Click="{x:Bind OnOpenScheduledTaskProgramClicked}" Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('OpenScheduledTaskProgram')}">
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xED5A;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
+                </CommandBar.SecondaryCommands>
+            </CommandBar>
 
-                <!--  正在加载中  -->
-                <StackPanel
+            <Grid Grid.Row="1">
+                <!--  计划任务管理状态显示  -->
+                <Grid
+                    Margin="30,0,30,60"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Orientation="Horizontal"
-                    Spacing="10"
-                    Visibility="{x:Bind CheckScheduledTaskResultKindVisibility(ScheduledTaskResultKind, enum:ScheduledTaskResultKind.Loading), Mode=OneWay}">
+                    Visibility="{x:Bind GetScheduledTaskSuccessfullyVisibility(ScheduledTaskResultKind, x:False), Mode=OneWay}">
 
-                    <ProgressRing IsActive="True" IsEnabled="True" />
+                    <!--  正在加载中  -->
+                    <StackPanel Spacing="20" Visibility="{x:Bind CheckScheduledTaskResultKindVisibility(ScheduledTaskResultKind, enum:ScheduledTaskResultKind.Loading), Mode=OneWay}">
+                        <Image
+                            Width="150"
+                            Height="150"
+                            Source="ms-appx:///Assets/Image/Search.png" />
 
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('LoadingScheduledTask')}"
-                        TextAlignment="Center" />
-                </StackPanel>
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                <!--  加载失败（包含搜索结果为空）  -->
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Text="{x:Bind ScheduledTaskFailedContent, Mode=OneWay}"
-                    TextAlignment="Center"
-                    Visibility="{x:Bind CheckScheduledTaskResultKindVisibility(ScheduledTaskResultKind, enum:ScheduledTaskResultKind.Failed), Mode=OneWay}" />
-            </Grid>
+                            <ProgressRing
+                                Grid.Column="0"
+                                Width="30"
+                                Height="30"
+                                IsActive="True" />
 
-            <!--  网络回环管理结果展示项目控件  -->
-            <ListView
-                x:Name="ScheduledTaskManagerListView"
-                Grid.Row="3"
-                Padding="30,0,30,30"
-                ItemsSource="{x:Bind ScheduledTaskCollection}"
-                SelectionChanged="{x:Bind OnSelectionChanged}"
-                SelectionMode="Multiple"
-                Visibility="{x:Bind GetScheduledTaskSuccessfullyVisibility(ScheduledTaskResultKind, x:True), Mode=OneWay}">
+                            <TextBlock
+                                Grid.Column="1"
+                                MaxWidth="800"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="18"
+                                FontWeight="Medium"
+                                Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('LoadingScheduledTask')}"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </Grid>
+                    </StackPanel>
 
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
-                        <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="Foreground" Value="{ThemeResource ListViewItemForeground}" />
-                        <Setter Property="TabNavigation" Value="Local" />
-                        <Setter Property="IsHoldingEnabled" Value="True" />
-                        <Setter Property="Padding" Value="0" />
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="MinHeight" Value="30" />
-                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                        <Setter Property="MinWidth" Value="{ThemeResource ListViewItemMinWidth}" />
-                        <Setter Property="HorizontalAlignment" Value="Stretch" />
-                        <Setter Property="AllowDrop" Value="False" />
-                        <Setter Property="UseSystemFocusVisuals" Value="True" />
-                        <Setter Property="FocusVisualMargin" Value="1" />
-                        <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource ListViewItemFocusVisualPrimaryBrush}" />
-                        <Setter Property="FocusVisualPrimaryThickness" Value="2" />
-                        <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource ListViewItemFocusVisualSecondaryBrush}" />
-                        <Setter Property="FocusVisualSecondaryThickness" Value="1" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListViewItem">
-                                    <customcontrol:ExpanderListViewItemPresenter
-                                        x:Name="Root"
-                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                        CheckBoxBorderBrush="{ThemeResource ListViewItemCheckBoxBorderBrush}"
-                                        CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}"
-                                        CheckBoxCornerRadius="{ThemeResource ListViewItemCheckBoxCornerRadius}"
-                                        CheckBoxDisabledBorderBrush="{ThemeResource ListViewItemCheckBoxDisabledBorderBrush}"
-                                        CheckBoxDisabledBrush="{ThemeResource ListViewItemCheckBoxDisabledBrush}"
-                                        CheckBoxPointerOverBorderBrush="{ThemeResource ListViewItemCheckBoxPointerOverBorderBrush}"
-                                        CheckBoxPointerOverBrush="{ThemeResource ControlAltFillColorTertiaryBrush}"
-                                        CheckBoxPressedBorderBrush="{ThemeResource ListViewItemCheckBoxPressedBorderBrush}"
-                                        CheckBoxPressedBrush="{ThemeResource ListViewItemCheckBoxPressedBrush}"
-                                        CheckBoxSelectedBrush="{ThemeResource ListViewItemCheckBoxSelectedBrush}"
-                                        CheckBoxSelectedDisabledBrush="{ThemeResource ListViewItemCheckBoxSelectedDisabledBrush}"
-                                        CheckBoxSelectedPointerOverBrush="{ThemeResource ListViewItemCheckBoxSelectedPointerOverBrush}"
-                                        CheckBoxSelectedPressedBrush="{ThemeResource ListViewItemCheckBoxSelectedPressedBrush}"
-                                        CheckBrush="{ThemeResource ListViewItemCheckBrush}"
-                                        CheckDisabledBrush="{ThemeResource ListViewItemCheckDisabledBrush}"
-                                        CheckMode="{ThemeResource ListViewItemCheckMode}"
-                                        CheckPressedBrush="{ThemeResource ListViewItemCheckPressedBrush}"
-                                        ContentMargin="{TemplateBinding Padding}"
-                                        ContentTransitions="{TemplateBinding ContentTransitions}"
-                                        Control.IsTemplateFocusTarget="True"
-                                        CornerRadius="{ThemeResource ListViewItemCornerRadius}"
-                                        DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
-                                        DragBackground="{ThemeResource ListViewItemDragBackground}"
-                                        DragForeground="{ThemeResource ListViewItemDragForeground}"
-                                        DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
-                                        FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}"
-                                        FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}"
-                                        FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
-                                        FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}"
-                                        FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
-                                        FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}"
-                                        FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
-                                        PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackground}"
-                                        PointerOverBackground="Transparent"
-                                        PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}"
-                                        PressedBackground="Transparent"
-                                        ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
-                                        SelectedBackground="Transparent"
-                                        SelectedDisabledBackground="Transparent"
-                                        SelectedForeground="{ThemeResource ListViewItemForegroundSelected}"
-                                        SelectedPointerOverBackground="Transparent"
-                                        SelectedPressedBackground="Transparent"
-                                        SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}"
-                                        SelectionIndicatorBrush="{ThemeResource ListViewItemSelectionIndicatorBrush}"
-                                        SelectionIndicatorCornerRadius="{ThemeResource ListViewItemSelectionIndicatorCornerRadius}"
-                                        SelectionIndicatorDisabledBrush="{ThemeResource ListViewItemSelectionIndicatorDisabledBrush}"
-                                        SelectionIndicatorPointerOverBrush="{ThemeResource ListViewItemSelectionIndicatorPointerOverBrush}"
-                                        SelectionIndicatorPressedBrush="{ThemeResource ListViewItemSelectionIndicatorPressedBrush}"
-                                        SelectionIndicatorVisualEnabled="{ThemeResource ListViewItemSelectionIndicatorVisualEnabled}" />
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
+                    <!--  加载失败（包含搜索结果为空）  -->
+                    <StackPanel Spacing="20" Visibility="{x:Bind CheckScheduledTaskResultKindVisibility(ScheduledTaskResultKind, enum:ScheduledTaskResultKind.Failed), Mode=OneWay}">
+                        <Image
+                            Width="150"
+                            Height="150"
+                            Source="ms-appx:///Assets/Image/Failed.png" />
 
-                <ItemsControl.ItemContainerTransitions>
-                    <TransitionCollection />
-                </ItemsControl.ItemContainerTransitions>
+                        <TextBlock
+                            MaxWidth="800"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="18"
+                            FontWeight="Medium"
+                            Text="{x:Bind ScheduledTaskFailedContent, Mode=OneWay}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
 
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="model:ScheduledTaskModel">
-                        <Expander
-                            Margin="-28,0,0,2"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Stretch"
-                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                            IsExpanded="False"
-                            Style="{StaticResource ExpanderListViewStyle}">
+                <!--  网络回环管理结果展示项目控件  -->
+                <ListView
+                    x:Name="ScheduledTaskManagerListView"
+                    Padding="30,0,28,30"
+                    ItemsSource="{x:Bind ScheduledTaskCollection}"
+                    SelectionChanged="{x:Bind OnSelectionChanged}"
+                    SelectionMode="Multiple"
+                    Visibility="{x:Bind GetScheduledTaskSuccessfullyVisibility(ScheduledTaskResultKind, x:True), Mode=OneWay}">
 
-                            <Expander.Header>
-                                <Grid Height="60">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+                            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="{ThemeResource ListViewItemForeground}" />
+                            <Setter Property="TabNavigation" Value="Local" />
+                            <Setter Property="IsHoldingEnabled" Value="True" />
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="MinHeight" Value="30" />
+                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                            <Setter Property="MinWidth" Value="{ThemeResource ListViewItemMinWidth}" />
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter Property="AllowDrop" Value="False" />
+                            <Setter Property="UseSystemFocusVisuals" Value="True" />
+                            <Setter Property="FocusVisualMargin" Value="1" />
+                            <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource ListViewItemFocusVisualPrimaryBrush}" />
+                            <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+                            <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource ListViewItemFocusVisualSecondaryBrush}" />
+                            <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <customcontrol:ExpanderListViewItemPresenter
+                                            x:Name="Root"
+                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            CheckBoxBorderBrush="{ThemeResource ListViewItemCheckBoxBorderBrush}"
+                                            CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}"
+                                            CheckBoxCornerRadius="{ThemeResource ListViewItemCheckBoxCornerRadius}"
+                                            CheckBoxDisabledBorderBrush="{ThemeResource ListViewItemCheckBoxDisabledBorderBrush}"
+                                            CheckBoxDisabledBrush="{ThemeResource ListViewItemCheckBoxDisabledBrush}"
+                                            CheckBoxPointerOverBorderBrush="{ThemeResource ListViewItemCheckBoxPointerOverBorderBrush}"
+                                            CheckBoxPointerOverBrush="{ThemeResource ControlAltFillColorTertiaryBrush}"
+                                            CheckBoxPressedBorderBrush="{ThemeResource ListViewItemCheckBoxPressedBorderBrush}"
+                                            CheckBoxPressedBrush="{ThemeResource ListViewItemCheckBoxPressedBrush}"
+                                            CheckBoxSelectedBrush="{ThemeResource ListViewItemCheckBoxSelectedBrush}"
+                                            CheckBoxSelectedDisabledBrush="{ThemeResource ListViewItemCheckBoxSelectedDisabledBrush}"
+                                            CheckBoxSelectedPointerOverBrush="{ThemeResource ListViewItemCheckBoxSelectedPointerOverBrush}"
+                                            CheckBoxSelectedPressedBrush="{ThemeResource ListViewItemCheckBoxSelectedPressedBrush}"
+                                            CheckBrush="{ThemeResource ListViewItemCheckBrush}"
+                                            CheckDisabledBrush="{ThemeResource ListViewItemCheckDisabledBrush}"
+                                            CheckMode="{ThemeResource ListViewItemCheckMode}"
+                                            CheckPressedBrush="{ThemeResource ListViewItemCheckPressedBrush}"
+                                            ContentMargin="{TemplateBinding Padding}"
+                                            ContentTransitions="{TemplateBinding ContentTransitions}"
+                                            Control.IsTemplateFocusTarget="True"
+                                            CornerRadius="{ThemeResource ListViewItemCornerRadius}"
+                                            DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                                            DragBackground="{ThemeResource ListViewItemDragBackground}"
+                                            DragForeground="{ThemeResource ListViewItemDragForeground}"
+                                            DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                                            FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}"
+                                            FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}"
+                                            FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                                            FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}"
+                                            FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
+                                            FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}"
+                                            FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
+                                            PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackground}"
+                                            PointerOverBackground="Transparent"
+                                            PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}"
+                                            PressedBackground="Transparent"
+                                            ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                                            SelectedBackground="Transparent"
+                                            SelectedDisabledBackground="Transparent"
+                                            SelectedForeground="{ThemeResource ListViewItemForegroundSelected}"
+                                            SelectedPointerOverBackground="Transparent"
+                                            SelectedPressedBackground="Transparent"
+                                            SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}"
+                                            SelectionIndicatorBrush="{ThemeResource ListViewItemSelectionIndicatorBrush}"
+                                            SelectionIndicatorCornerRadius="{ThemeResource ListViewItemSelectionIndicatorCornerRadius}"
+                                            SelectionIndicatorDisabledBrush="{ThemeResource ListViewItemSelectionIndicatorDisabledBrush}"
+                                            SelectionIndicatorPointerOverBrush="{ThemeResource ListViewItemSelectionIndicatorPointerOverBrush}"
+                                            SelectionIndicatorPressedBrush="{ThemeResource ListViewItemSelectionIndicatorPressedBrush}"
+                                            SelectionIndicatorVisualEnabled="{ThemeResource ListViewItemSelectionIndicatorVisualEnabled}" />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ItemsControl.ItemContainerTransitions>
+                        <TransitionCollection />
+                    </ItemsControl.ItemContainerTransitions>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:ScheduledTaskModel">
+                            <Expander
+                                Margin="-28,0,0,2"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                IsExpanded="False"
+                                Style="{StaticResource ExpanderListViewStyle}">
+
+                                <Expander.Header>
+                                    <Grid Height="60">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid
+                                            Grid.Column="0"
+                                            Width="30"
+                                            Height="30"
+                                            Margin="0,0,12,0"
+                                            Padding="2"
+                                            Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
+                                            BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="{StaticResource ControlCornerRadius}">
+                                            <ImageIcon Source="{x:Bind TaskIcon}" />
+                                        </Grid>
+
+                                        <StackPanel
+                                            Grid.Column="1"
+                                            Margin="0,10"
+                                            VerticalAlignment="Center"
+                                            Orientation="Vertical">
+
+                                            <TextBlock
+                                                x:Name="NameTextBlock"
+                                                HorizontalAlignment="Left"
+                                                IsTextSelectionEnabled="True"
+                                                Style="{StaticResource BodyTextBlockStyle}"
+                                                Text="{x:Bind Name}"
+                                                TextTrimming="CharacterEllipsis"
+                                                TextWrapping="NoWrap">
+
+                                                <ToolTipService.ToolTip>
+                                                    <ToolTip Content="{x:Bind Name}" Visibility="{Binding ElementName=NameTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                </ToolTipService.ToolTip>
+                                            </TextBlock>
+
+                                            <TextBlock
+                                                x:Name="DescriptionTextBlock"
+                                                HorizontalAlignment="Left"
+                                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                                IsTextSelectionEnabled="True"
+                                                Style="{StaticResource CaptionTextBlockStyle}"
+                                                Text="{x:Bind Description}"
+                                                TextTrimming="CharacterEllipsis"
+                                                TextWrapping="NoWrap">
+
+                                                <ToolTipService.ToolTip>
+                                                    <ToolTip Content="{x:Bind Description}" Visibility="{Binding ElementName=DescriptionTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
+                                                </ToolTipService.ToolTip>
+                                            </TextBlock>
+                                        </StackPanel>
+
+                                        <SplitButton
+                                            Grid.Column="2"
+                                            Margin="5,0,0,0"
+                                            Command="{StaticResource DisableScheduledTaskCommand}"
+                                            CommandParameter="{x:Bind}"
+                                            Content="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Disable')}"
+                                            CornerRadius="{StaticResource ControlCornerRadius}"
+                                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsProcessing), Mode=OneWay}"
+                                            ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Disable')}"
+                                            Visibility="{x:Bind IsEnabled, Mode=OneWay}">
+
+                                            <SplitButton.Flyout>
+                                                <MenuFlyout Placement="Bottom">
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource RunScheduledTaskCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('RunScheduledTask')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE768;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource StopScheduledTaskCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('StopScheduledTask')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE71A;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource ExportScheduledTaskCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ExportScheduledTask')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE74E;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource DeleteScheduledTaskCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('DeleteScheduledTask')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE74D;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutSeparator />
+
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource OpenProcessPathCommand}"
+                                                        CommandParameter="{x:Bind ProcessPath}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('OpenProcessPath')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE7AC;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+                                                </MenuFlyout>
+                                            </SplitButton.Flyout>
+                                        </SplitButton>
+
+                                        <SplitButton
+                                            Grid.Column="3"
+                                            Margin="5,0,0,0"
+                                            Command="{StaticResource EnableScheduledTaskCommand}"
+                                            CommandParameter="{x:Bind}"
+                                            Content="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Enable')}"
+                                            CornerRadius="{StaticResource ControlCornerRadius}"
+                                            IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsProcessing), Mode=OneWay}"
+                                            ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Enable')}"
+                                            Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsEnabled), Mode=OneWay}">
+
+                                            <SplitButton.Flyout>
+                                                <MenuFlyout Placement="Bottom">
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource ExportScheduledTaskCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ExportScheduledTask')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE74E;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource DeleteScheduledTaskCommand}"
+                                                        CommandParameter="{x:Bind}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('DeleteScheduledTask')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE74D;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutSeparator />
+
+                                                    <MenuFlyoutItem
+                                                        Command="{StaticResource OpenProcessPathCommand}"
+                                                        CommandParameter="{x:Bind ProcessPath}"
+                                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('OpenProcessPath')}">
+
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="&#xE7AC;" />
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+                                                </MenuFlyout>
+                                            </SplitButton.Flyout>
+                                        </SplitButton>
+                                    </Grid>
+                                </Expander.Header>
+
+                                <Grid
+                                    Margin="40,0,0,0"
+                                    ColumnSpacing="15"
+                                    RowSpacing="3">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <Grid
+                                    <TextBlock
+                                        Grid.Row="0"
                                         Grid.Column="0"
-                                        Width="30"
-                                        Height="30"
-                                        Margin="0,0,12,0"
-                                        Padding="2"
-                                        Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
-                                        BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="{StaticResource ControlCornerRadius}">
-                                        <ImageIcon Source="{x:Bind TaskIcon}" />
-                                    </Grid>
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Author')}" />
 
-                                    <StackPanel
+                                    <TextBlock
+                                        Grid.Row="0"
                                         Grid.Column="1"
-                                        Margin="0,10"
-                                        VerticalAlignment="Center"
-                                        Orientation="Vertical">
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind Author}"
+                                        TextWrapping="Wrap" />
 
-                                        <TextBlock
-                                            x:Name="NameTextBlock"
-                                            HorizontalAlignment="Left"
-                                            IsTextSelectionEnabled="True"
-                                            Style="{StaticResource BodyTextBlockStyle}"
-                                            Text="{x:Bind Name}"
-                                            TextTrimming="CharacterEllipsis"
-                                            TextWrapping="NoWrap">
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Path')}" />
 
-                                            <ToolTipService.ToolTip>
-                                                <ToolTip Content="{x:Bind Name}" Visibility="{Binding ElementName=NameTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
-                                            </ToolTipService.ToolTip>
-                                        </TextBlock>
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind Path}"
+                                        TextWrapping="Wrap" />
 
-                                        <TextBlock
-                                            x:Name="DescriptionTextBlock"
-                                            HorizontalAlignment="Left"
-                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                            IsTextSelectionEnabled="True"
-                                            Style="{StaticResource CaptionTextBlockStyle}"
-                                            Text="{x:Bind Description}"
-                                            TextTrimming="CharacterEllipsis"
-                                            TextWrapping="NoWrap">
+                                    <TextBlock
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('State')}" />
 
-                                            <ToolTipService.ToolTip>
-                                                <ToolTip Content="{x:Bind Description}" Visibility="{Binding ElementName=DescriptionTextBlock, Path=IsTextTrimmed, Mode=OneWay}" />
-                                            </ToolTipService.ToolTip>
-                                        </TextBlock>
-                                    </StackPanel>
+                                    <TextBlock
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind State, Mode=OneWay}"
+                                        TextWrapping="Wrap" />
 
-                                    <SplitButton
-                                        Grid.Column="2"
-                                        Margin="5,0,0,0"
-                                        Command="{StaticResource DisableScheduledTaskCommand}"
-                                        CommandParameter="{x:Bind}"
-                                        Content="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Disable')}"
-                                        CornerRadius="{StaticResource ControlCornerRadius}"
-                                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsProcessing), Mode=OneWay}"
-                                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Disable')}"
-                                        Visibility="{x:Bind IsEnabled, Mode=OneWay}">
+                                    <TextBlock
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('LastRunTime')}" />
 
-                                        <SplitButton.Flyout>
-                                            <MenuFlyout Placement="Bottom">
-                                                <MenuFlyoutItem
-                                                    Command="{StaticResource RunScheduledTaskCommand}"
-                                                    CommandParameter="{x:Bind}"
-                                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('RunScheduledTask')}">
+                                    <TextBlock
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind LastRunTime, Mode=OneWay}"
+                                        TextWrapping="Wrap" />
 
-                                                    <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE768;" />
-                                                    </MenuFlyoutItem.Icon>
-                                                </MenuFlyoutItem>
+                                    <TextBlock
+                                        Grid.Row="4"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('LastTaskResult')}" />
 
-                                                <MenuFlyoutItem
-                                                    Command="{StaticResource StopScheduledTaskCommand}"
-                                                    CommandParameter="{x:Bind}"
-                                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('StopScheduledTask')}">
+                                    <TextBlock
+                                        Grid.Row="4"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind LastTaskResult, Mode=OneWay}"
+                                        TextWrapping="Wrap" />
 
-                                                    <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE71A;" />
-                                                    </MenuFlyoutItem.Icon>
-                                                </MenuFlyoutItem>
+                                    <TextBlock
+                                        Grid.Row="5"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('NextRunTime')}" />
 
-                                                <MenuFlyoutItem
-                                                    Command="{StaticResource ExportScheduledTaskCommand}"
-                                                    CommandParameter="{x:Bind}"
-                                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ExportScheduledTask')}">
+                                    <TextBlock
+                                        Grid.Row="5"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind NextRunTime}"
+                                        TextWrapping="Wrap" />
 
-                                                    <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE74E;" />
-                                                    </MenuFlyoutItem.Icon>
-                                                </MenuFlyoutItem>
+                                    <TextBlock
+                                        Grid.Row="6"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ProcessPath')}" />
 
-                                                <MenuFlyoutItem
-                                                    Command="{StaticResource DeleteScheduledTaskCommand}"
-                                                    CommandParameter="{x:Bind}"
-                                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('DeleteScheduledTask')}">
+                                    <TextBlock
+                                        Grid.Row="6"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind ProcessPath}"
+                                        TextWrapping="Wrap" />
 
-                                                    <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE74D;" />
-                                                    </MenuFlyoutItem.Icon>
-                                                </MenuFlyoutItem>
+                                    <TextBlock
+                                        Grid.Row="7"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ProcessArguments')}" />
 
-                                                <MenuFlyoutSeparator />
+                                    <TextBlock
+                                        Grid.Row="7"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind ProcessArguments}"
+                                        TextWrapping="Wrap" />
 
-                                                <MenuFlyoutItem
-                                                    Command="{StaticResource OpenProcessPathCommand}"
-                                                    CommandParameter="{x:Bind ProcessPath}"
-                                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('OpenProcessPath')}">
+                                    <TextBlock
+                                        Grid.Row="8"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Version')}" />
 
-                                                    <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE7AC;" />
-                                                    </MenuFlyoutItem.Icon>
-                                                </MenuFlyoutItem>
-                                            </MenuFlyout>
-                                        </SplitButton.Flyout>
-                                    </SplitButton>
-
-                                    <SplitButton
-                                        Grid.Column="3"
-                                        Margin="5,0,0,0"
-                                        Command="{StaticResource EnableScheduledTaskCommand}"
-                                        CommandParameter="{x:Bind}"
-                                        Content="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Enable')}"
-                                        CornerRadius="{StaticResource ControlCornerRadius}"
-                                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsProcessing), Mode=OneWay}"
-                                        ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Enable')}"
-                                        Visibility="{x:Bind converter:ValueConverterHelper.BooleanToVisibilityReverseConvert(IsEnabled), Mode=OneWay}">
-
-                                        <SplitButton.Flyout>
-                                            <MenuFlyout Placement="Bottom">
-                                                <MenuFlyoutItem
-                                                    Command="{StaticResource ExportScheduledTaskCommand}"
-                                                    CommandParameter="{x:Bind}"
-                                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ExportScheduledTask')}">
-
-                                                    <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE74E;" />
-                                                    </MenuFlyoutItem.Icon>
-                                                </MenuFlyoutItem>
-
-                                                <MenuFlyoutItem
-                                                    Command="{StaticResource DeleteScheduledTaskCommand}"
-                                                    CommandParameter="{x:Bind}"
-                                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('DeleteScheduledTask')}">
-
-                                                    <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE74D;" />
-                                                    </MenuFlyoutItem.Icon>
-                                                </MenuFlyoutItem>
-
-                                                <MenuFlyoutSeparator />
-
-                                                <MenuFlyoutItem
-                                                    Command="{StaticResource OpenProcessPathCommand}"
-                                                    CommandParameter="{x:Bind ProcessPath}"
-                                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('OpenProcessPath')}">
-
-                                                    <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE7AC;" />
-                                                    </MenuFlyoutItem.Icon>
-                                                </MenuFlyoutItem>
-                                            </MenuFlyout>
-                                        </SplitButton.Flyout>
-                                    </SplitButton>
+                                    <TextBlock
+                                        Grid.Row="8"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        FontSize="14"
+                                        IsTextSelectionEnabled="True"
+                                        Text="{x:Bind Version}"
+                                        TextWrapping="Wrap" />
                                 </Grid>
-                            </Expander.Header>
-
-                            <Grid
-                                Margin="40,0,0,0"
-                                ColumnSpacing="15"
-                                RowSpacing="3">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Author')}" />
-
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind Author}"
-                                    TextWrapping="Wrap" />
-
-                                <TextBlock
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Path')}" />
-
-                                <TextBlock
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind Path}"
-                                    TextWrapping="Wrap" />
-
-                                <TextBlock
-                                    Grid.Row="2"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('State')}" />
-
-                                <TextBlock
-                                    Grid.Row="2"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind State, Mode=OneWay}"
-                                    TextWrapping="Wrap" />
-
-                                <TextBlock
-                                    Grid.Row="3"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('LastRunTime')}" />
-
-                                <TextBlock
-                                    Grid.Row="3"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind LastRunTime, Mode=OneWay}"
-                                    TextWrapping="Wrap" />
-
-                                <TextBlock
-                                    Grid.Row="4"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('LastTaskResult')}" />
-
-                                <TextBlock
-                                    Grid.Row="4"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind LastTaskResult, Mode=OneWay}"
-                                    TextWrapping="Wrap" />
-
-                                <TextBlock
-                                    Grid.Row="5"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('NextRunTime')}" />
-
-                                <TextBlock
-                                    Grid.Row="5"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind NextRunTime}"
-                                    TextWrapping="Wrap" />
-
-                                <TextBlock
-                                    Grid.Row="6"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ProcessPath')}" />
-
-                                <TextBlock
-                                    Grid.Row="6"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind ProcessPath}"
-                                    TextWrapping="Wrap" />
-
-                                <TextBlock
-                                    Grid.Row="7"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ProcessArguments')}" />
-
-                                <TextBlock
-                                    Grid.Row="7"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind ProcessArguments}"
-                                    TextWrapping="Wrap" />
-
-                                <TextBlock
-                                    Grid.Row="8"
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Version')}" />
-
-                                <TextBlock
-                                    Grid.Row="8"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Left"
-                                    FontSize="14"
-                                    IsTextSelectionEnabled="True"
-                                    Text="{x:Bind Version}"
-                                    TextWrapping="Wrap" />
-                            </Grid>
-                        </Expander>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                            </Expander>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
         </Grid>
 
         <SplitView.Pane>

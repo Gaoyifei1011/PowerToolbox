@@ -7,6 +7,7 @@ using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,11 +39,11 @@ namespace PowerToolbox.Views.Dialogs
 
         #region 第三部分：构造函数
 
-        internal ScheduledTaskFailedDialog(List<ScheduledTaskFailedModel> scheduledTaskFailedList)
+        internal ScheduledTaskFailedDialog(ReadOnlyCollection<ScheduledTaskFailedModel> scheduledTaskFailedCollection)
         {
             InitializeComponent();
 
-            foreach (ScheduledTaskFailedModel scheduledTaskFailedItem in scheduledTaskFailedList)
+            foreach (ScheduledTaskFailedModel scheduledTaskFailedItem in scheduledTaskFailedCollection)
             {
                 ScheduledTaskFailedCollection.Add(scheduledTaskFailedItem);
             }

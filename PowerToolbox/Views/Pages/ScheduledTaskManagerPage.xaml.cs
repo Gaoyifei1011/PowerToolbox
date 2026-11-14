@@ -19,7 +19,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -36,39 +35,27 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class ScheduledTaskManagerPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string NotAvailableString = ResourceService.ScheduledTaskManagerResource.GetString("NotAvailable");
-        private readonly string ScheduledTaskInformationString = ResourceService.ScheduledTaskManagerResource.GetString("ScheduledTaskInformation");
+        private readonly string ScheduledTaskCountInfoString = ResourceService.ScheduledTaskManagerResource.GetString("ScheduledTaskCountInfo");
         private readonly string ScheduledTaskEmptyDescriptionString = ResourceService.ScheduledTaskManagerResource.GetString("ScheduledTaskEmptyDescription");
-        private readonly string ScheduledTaskEmptyWithConditionDescriptionString = ResourceService.ScheduledTaskManagerResource.GetString("ScheduledTaskEmptyWithConditionDescription");
         private readonly string SelectFolderString = ResourceService.ScheduledTaskManagerResource.GetString("SelectFolder");
         private readonly string TaskStateDisabledString = ResourceService.ScheduledTaskManagerResource.GetString("TaskStateDisabled");
         private readonly string TaskStateQueuedString = ResourceService.ScheduledTaskManagerResource.GetString("TaskStateQueued");
         private readonly string TaskStateReadyString = ResourceService.ScheduledTaskManagerResource.GetString("TaskStateReady");
         private readonly string TaskStateRunningString = ResourceService.ScheduledTaskManagerResource.GetString("TaskStateRunning");
-        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly BitmapImage emptyImage = new();
         private ITaskService taskService;
         private bool isInitialized;
 
-        private string _scheduledTaskDescription;
+        #endregion 第一部分：常量、资源与状态字段
 
-        internal string ScheduledTaskDescription
-        {
-            get { return _scheduledTaskDescription; }
-
-            set
-            {
-                if (!string.Equals(_scheduledTaskDescription, value))
-                {
-                    _scheduledTaskDescription = value;
-                    PropertyChanged?.Invoke(this, new(nameof(ScheduledTaskDescription)));
-                }
-            }
-        }
+        #region 第二部分：属性、列表与事件
 
         private ScheduledTaskResultKind _scheduledTaskResultKind;
 
-        internal ScheduledTaskResultKind ScheduledTaskResultKind
+        private ScheduledTaskResultKind ScheduledTaskResultKind
         {
             get { return _scheduledTaskResultKind; }
 
@@ -82,9 +69,25 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private int _selectedItemsCount;
+
+        private int SelectedItemsCount
+        {
+            get { return _selectedItemsCount; }
+
+            set
+            {
+                if (!Equals(_selectedItemsCount, value))
+                {
+                    _selectedItemsCount = value;
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedItemsCount)));
+                }
+            }
+        }
+
         private string _scheduledTaskFailedContent;
 
-        internal string ScheduledTaskFailedContent
+        private string ScheduledTaskFailedContent
         {
             get { return _scheduledTaskFailedContent; }
 
@@ -98,25 +101,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _searchText = string.Empty;
-
-        internal string SearchText
-        {
-            get { return _searchText; }
-
-            set
-            {
-                if (!string.Equals(_searchText, value))
-                {
-                    _searchText = value;
-                    PropertyChanged?.Invoke(this, new(nameof(SearchText)));
-                }
-            }
-        }
-
         private bool _isModifiedFailed;
 
-        internal bool IsModifiedFailed
+        private bool IsModifiedFailed
         {
             get { return _isModifiedFailed; }
 
@@ -130,20 +117,25 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<ScheduledTaskModel> ScheduledTaskList { get; } = [];
-
-        private List<ScheduledTaskFailedModel> ScheduledTaskFailedList { get; } = [];
+        private WinRTObservableCollection<ScheduledTaskFailedModel> ScheduledTaskFailedCollection { get; } = [];
 
         private WinRTObservableCollection<ScheduledTaskModel> ScheduledTaskCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal ScheduledTaskManagerPage()
         {
             InitializeComponent();
+            InitializeSchedulerTaskService();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面触发的事件
@@ -155,87 +147,25 @@ namespace PowerToolbox.Views.Pages
             if (!isInitialized)
             {
                 isInitialized = true;
-                await Task.Factory.StartNew((param) =>
-                {
-                    try
-                    {
-                        taskService = (ITaskService)Activator.CreateInstance(Type.GetTypeFromCLSID(new("0F87369F-A4E5-4CFC-BD3E-73E6154572DD")));
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnNavigatedTo), 1, e);
-                    }
-                }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
                 await GetScheduledTaskAsync();
             }
         }
 
-        #endregion 第一部分：重写父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第二部分：ExecuteCommand 命令调用时挂载的事件
-
-        /// <summary>
-        /// 点击选中计划任务项
-        /// </summary>
-        private void OnCheckBoxExecuteRequested(object sender, ExecuteRequestedEventArgs args)
-        {
-            ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskManagerListView.SelectedItems.Count);
-        }
+        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 禁用计划任务
         /// </summary>
         private async void OnDisableScheduledTaskExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask is not null)
+            if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask.RegisteredTask is not null)
             {
-                scheduledTask.IsProcessing = true;
-                IsModifiedFailed = false;
-                ScheduledTaskFailedList.Clear();
-
-                (bool result, Exception exception, ScheduledTaskModel newScheduledTask) = await Task.Factory.StartNew((param) =>
-                {
-                    try
-                    {
-                        scheduledTask.RegisteredTask.Enabled = false;
-                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new()
-                        {
-                            LastRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                            LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
-                            NextRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                            State = GetTaskState(scheduledTask.RegisteredTask.State),
-                            IsEnabled = scheduledTask.RegisteredTask.Enabled
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnDisableScheduledTaskExecuteRequested), 1, e);
-                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(false, e, null);
-                    }
-                }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
-
-                scheduledTask.IsProcessing = false;
-
-                if (result)
-                {
-                    scheduledTask.LastRunTime = newScheduledTask.LastRunTime;
-                    scheduledTask.LastTaskResult = newScheduledTask.LastTaskResult;
-                    scheduledTask.NextRunTime = newScheduledTask.NextRunTime;
-                    scheduledTask.State = newScheduledTask.State;
-                    scheduledTask.IsEnabled = newScheduledTask.IsEnabled;
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskDisable, 1, 0));
-                }
-                else
-                {
-                    IsModifiedFailed = true;
-                    ScheduledTaskFailedList.Add(new()
-                    {
-                        Name = scheduledTask.Name,
-                        Path = scheduledTask.Path,
-                        Exception = exception
-                    });
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskDisable, 0, 1));
-                }
+                List<ScheduledTaskModel> scheduledTaskList = [scheduledTask];
+                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind.Disable, scheduledTaskList);
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Disable, scheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Disable, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
             }
         }
 
@@ -244,55 +174,12 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnEnableScheduledTaskExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask is not null)
+            if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask.RegisteredTask is not null)
             {
-                scheduledTask.IsProcessing = true;
-                IsModifiedFailed = false;
-                ScheduledTaskFailedList.Clear();
-
-                (bool result, Exception exception, ScheduledTaskModel newScheduledTask) = await Task.Factory.StartNew((param) =>
-                {
-                    try
-                    {
-                        scheduledTask.RegisteredTask.Enabled = true;
-                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new()
-                        {
-                            LastRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                            LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
-                            NextRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                            State = GetTaskState(scheduledTask.RegisteredTask.State),
-                            IsEnabled = scheduledTask.RegisteredTask.Enabled
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnEnableScheduledTaskExecuteRequested), 1, e);
-                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(false, e, null);
-                    }
-                }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
-
-                scheduledTask.IsProcessing = false;
-
-                if (result)
-                {
-                    scheduledTask.LastRunTime = newScheduledTask.LastRunTime;
-                    scheduledTask.LastTaskResult = newScheduledTask.LastTaskResult;
-                    scheduledTask.NextRunTime = newScheduledTask.NextRunTime;
-                    scheduledTask.State = newScheduledTask.State;
-                    scheduledTask.IsEnabled = newScheduledTask.IsEnabled;
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskEnable, 1, 0));
-                }
-                else
-                {
-                    IsModifiedFailed = true;
-                    ScheduledTaskFailedList.Add(new()
-                    {
-                        Name = scheduledTask.Name,
-                        Path = scheduledTask.Path,
-                        Exception = exception
-                    });
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskEnable, 0, 1));
-                }
+                List<ScheduledTaskModel> scheduledTaskList = [scheduledTask];
+                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind.Enable, scheduledTaskList);
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Enable, scheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Enable, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
             }
         }
 
@@ -301,55 +188,12 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnRunScheduledTaskExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask is not null)
+            if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask.RegisteredTask is not null)
             {
-                scheduledTask.IsProcessing = true;
-                IsModifiedFailed = false;
-                ScheduledTaskFailedList.Clear();
-
-                (bool result, Exception exception, ScheduledTaskModel newScheduledTask) = await Task.Factory.StartNew((param) =>
-                {
-                    try
-                    {
-                        scheduledTask.RegisteredTask.Run(null);
-                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new()
-                        {
-                            LastRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                            LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
-                            NextRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                            State = GetTaskState(scheduledTask.RegisteredTask.State),
-                            IsEnabled = scheduledTask.RegisteredTask.Enabled
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnRunScheduledTaskExecuteRequested), 1, e);
-                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(false, e, null);
-                    }
-                }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
-
-                scheduledTask.IsProcessing = false;
-
-                if (result)
-                {
-                    scheduledTask.LastRunTime = newScheduledTask.LastRunTime;
-                    scheduledTask.LastTaskResult = newScheduledTask.LastTaskResult;
-                    scheduledTask.NextRunTime = newScheduledTask.NextRunTime;
-                    scheduledTask.State = newScheduledTask.State;
-                    scheduledTask.IsEnabled = newScheduledTask.IsEnabled;
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskRun, 1, 0));
-                }
-                else
-                {
-                    IsModifiedFailed = true;
-                    ScheduledTaskFailedList.Add(new()
-                    {
-                        Name = scheduledTask.Name,
-                        Path = scheduledTask.Path,
-                        Exception = exception
-                    });
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskRun, 0, 1));
-                }
+                List<ScheduledTaskModel> scheduledTaskList = [scheduledTask];
+                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind.Run, scheduledTaskList);
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Run, scheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Run, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
             }
         }
 
@@ -358,55 +202,12 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnStopScheduledTaskExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask is not null)
+            if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask.RegisteredTask is not null)
             {
-                scheduledTask.IsProcessing = true;
-                IsModifiedFailed = false;
-                ScheduledTaskFailedList.Clear();
-
-                (bool result, Exception exception, ScheduledTaskModel newScheduledTask) = await Task.Factory.StartNew((param) =>
-                {
-                    try
-                    {
-                        scheduledTask.RegisteredTask.Stop(0);
-                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(true, null, new()
-                        {
-                            LastRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                            LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTask.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTask.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
-                            NextRunTime = new DateTimeOffset(scheduledTask.RegisteredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                            State = GetTaskState(scheduledTask.RegisteredTask.State),
-                            IsEnabled = scheduledTask.RegisteredTask.Enabled
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnStopScheduledTaskExecuteRequested), 1, e);
-                        return ValueTuple.Create<bool, Exception, ScheduledTaskModel>(false, e, null);
-                    }
-                }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
-
-                scheduledTask.IsProcessing = false;
-
-                if (result)
-                {
-                    scheduledTask.LastRunTime = newScheduledTask.LastRunTime;
-                    scheduledTask.LastTaskResult = newScheduledTask.LastTaskResult;
-                    scheduledTask.NextRunTime = newScheduledTask.NextRunTime;
-                    scheduledTask.State = newScheduledTask.State;
-                    scheduledTask.IsEnabled = newScheduledTask.IsEnabled;
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskStop, 1, 0));
-                }
-                else
-                {
-                    IsModifiedFailed = true;
-                    ScheduledTaskFailedList.Add(new()
-                    {
-                        Name = scheduledTask.Name,
-                        Path = scheduledTask.Path,
-                        Exception = exception
-                    });
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskStop, 0, 1));
-                }
+                List<ScheduledTaskModel> scheduledTaskList = [scheduledTask];
+                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind.Stop, scheduledTaskList);
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Stop, scheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Stop, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
             }
         }
 
@@ -415,7 +216,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnExportScheduledTaskExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask is not null)
+            if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask.RegisteredTask is not null)
             {
                 OpenFolderDialog openFolderDialog = new((nint)MainWindow.Current.AppWindow.Id.Value)
                 {
@@ -425,28 +226,10 @@ namespace PowerToolbox.Views.Pages
                 DialogResult dialogResult = openFolderDialog.ShowDialog();
                 if (dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes)
                 {
-                    bool result = await Task.Factory.StartNew((param) =>
-                    {
-                        try
-                        {
-                            File.WriteAllText(Path.Combine(openFolderDialog.SelectedPath, scheduledTask.Name + ".xml"), scheduledTask.RegisteredTask.Xml);
-                            return true;
-                        }
-                        catch (Exception e)
-                        {
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnExportScheduledTaskExecuteRequested), 1, e);
-                            return false;
-                        }
-                    }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
-
-                    if (result)
-                    {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskExport, 1, 0));
-                    }
-                    else
-                    {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskExport, 0, 1));
-                    }
+                    List<ScheduledTaskModel> scheduledTaskList = [scheduledTask];
+                    (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await ExportScheduledTaskListAsync(openFolderDialog.SelectedPath, scheduledTaskList);
+                    await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Export, scheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
+                    await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Export, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
                 }
                 openFolderDialog.Dispose();
             }
@@ -457,57 +240,12 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnDeleteScheduledTaskExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask is not null)
+            if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask.RegisteredTask is not null)
             {
-                scheduledTask.IsProcessing = true;
-                IsModifiedFailed = false;
-                ScheduledTaskFailedList.Clear();
-
-                (bool result, Exception exception) = await Task.Factory.StartNew((param) =>
-                {
-                    try
-                    {
-                        scheduledTask.TaskFolder.DeleteTask(scheduledTask.RegisteredTask.Name, 0);
-                        return ValueTuple.Create<bool, Exception>(true, null);
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnStopScheduledTaskExecuteRequested), 1, e);
-                        return ValueTuple.Create(false, e);
-                    }
-                }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
-
-                scheduledTask.IsProcessing = false;
-
-                if (result)
-                {
-                    ScheduledTaskCollection.Remove(scheduledTask);
-                    ScheduledTaskList.Remove(scheduledTask);
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskDelete, 1, 0));
-
-                    if (ScheduledTaskList.Count is 0)
-                    {
-                        ScheduledTaskResultKind = ScheduledTaskResultKind.Failed;
-                        ScheduledTaskFailedContent = ScheduledTaskEmptyDescriptionString;
-                    }
-                    else
-                    {
-                        ScheduledTaskResultKind = ScheduledTaskCollection.Count is 0 ? ScheduledTaskResultKind.Failed : ScheduledTaskResultKind.Successfully;
-                        ScheduledTaskFailedContent = ScheduledTaskCollection.Count is 0 ? ScheduledTaskEmptyWithConditionDescriptionString : string.Empty;
-                        ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskManagerListView.SelectedItems.Count);
-                    }
-                }
-                else
-                {
-                    IsModifiedFailed = true;
-                    ScheduledTaskFailedList.Add(new()
-                    {
-                        Name = scheduledTask.Name,
-                        Path = scheduledTask.Path,
-                        Exception = exception
-                    });
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskDelete, 0, 1));
-                }
+                List<ScheduledTaskModel> scheduledTaskList = [scheduledTask];
+                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await DeleteScheduledTaskListAsync(scheduledTaskList);
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Delete, scheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Delete, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
             }
         }
 
@@ -518,47 +256,13 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is string processPath && !string.IsNullOrEmpty(processPath))
             {
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        if (!string.IsNullOrEmpty(processPath))
-                        {
-                            if (File.Exists(processPath))
-                            {
-                                nint pidlList = Shell32Library.ILCreateFromPath(processPath);
-                                if (pidlList is not 0)
-                                {
-                                    Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
-                                    Shell32Library.ILFree(pidlList);
-                                }
-                            }
-                            else
-                            {
-                                string directoryPath = Path.GetDirectoryName(processPath);
-
-                                if (Directory.Exists(directoryPath))
-                                {
-                                    Process.Start(directoryPath);
-                                }
-                                else
-                                {
-                                    Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnOpenProcessPathExecuteRequested), 1, e);
-                    }
-                });
+                OpenProcessPath(processPath);
             }
         }
 
-        #endregion 第二部分：ExecuteCommand 命令调用时挂载的事件
+        #endregion 第五部分：挂载事件处理
 
-        #region 第三部分：计划任务管理页面——挂载的事件
+        #region 第六部分：挂载事件处理
 
         /// <summary>
         /// 点击关闭按钮关闭使用说明
@@ -574,75 +278,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 以管理员身份运行
         /// </summary>
-
         private void OnRunAsAdministratorClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    ProcessStartInfo startInfo = new()
-                    {
-                        UseShellExecute = true,
-                        WorkingDirectory = Environment.CurrentDirectory,
-                        Arguments = "--elevated",
-                        FileName = System.Windows.Forms.Application.ExecutablePath,
-                        Verb = "runas"
-                    };
-                    Process.Start(startInfo);
-                }
-                catch
-                {
-                    return;
-                }
-            });
-        }
-
-        /// <summary>
-        /// 搜索计划任务名称
-        /// </summary>
-        private void OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(SearchText) && ScheduledTaskResultKind is not ScheduledTaskResultKind.Loading && ScheduledTaskList.Count > 0)
-            {
-                ScheduledTaskResultKind = ScheduledTaskResultKind.Loading;
-                ScheduledTaskCollection.Clear();
-                foreach (ScheduledTaskModel scheduledTaskItem in ScheduledTaskList)
-                {
-                    if (scheduledTaskItem.Name.Contains(SearchText) || scheduledTaskItem.Author.Contains(SearchText) || scheduledTaskItem.Description.Contains(SearchText) || scheduledTaskItem.Path.Contains(SearchText) || scheduledTaskItem.ProcessPath.Contains(SearchText))
-                    {
-                        ScheduledTaskCollection.Add(scheduledTaskItem);
-                    }
-                }
-
-                ScheduledTaskResultKind = ScheduledTaskCollection.Count is 0 ? ScheduledTaskResultKind.Failed : ScheduledTaskResultKind.Successfully;
-                ScheduledTaskFailedContent = ScheduledTaskCollection.Count is 0 ? ScheduledTaskEmptyWithConditionDescriptionString : string.Empty;
-                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskManagerListView.SelectedItems.Count);
-            }
-        }
-
-        /// <summary>
-        /// 计划任务名称内容发生变化事件
-        /// </summary>
-        private void OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-        {
-            SearchText = sender.Text;
-            if (string.IsNullOrEmpty(SearchText) && ScheduledTaskResultKind is not ScheduledTaskResultKind.Loading && ScheduledTaskList.Count > 0)
-            {
-                ScheduledTaskResultKind = ScheduledTaskResultKind.Loading;
-                ScheduledTaskCollection.Clear();
-                foreach (ScheduledTaskModel scheduledTaskItem in ScheduledTaskList)
-                {
-                    if (scheduledTaskItem.Name.Contains(SearchText) || scheduledTaskItem.Author.Contains(SearchText) || scheduledTaskItem.Description.Contains(SearchText) || scheduledTaskItem.Path.Contains(SearchText) || scheduledTaskItem.ProcessPath.Contains(SearchText))
-                    {
-                        ScheduledTaskCollection.Add(scheduledTaskItem);
-                    }
-                }
-
-                ScheduledTaskResultKind = ScheduledTaskCollection.Count is 0 ? ScheduledTaskResultKind.Failed : ScheduledTaskResultKind.Successfully;
-                ScheduledTaskFailedContent = ScheduledTaskCollection.Count is 0 ? ScheduledTaskEmptyWithConditionDescriptionString : string.Empty;
-                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskManagerListView.SelectedItems.Count);
-            }
+            RunAsAdministrator();
         }
 
         /// <summary>
@@ -650,8 +288,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectAllClicked(object sender, RoutedEventArgs args)
         {
-            ScheduledTaskManagerListView.SelectAll();
-            ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskManagerListView.SelectedItems.Count);
+            if (ScheduledTaskResultKind is not ScheduledTaskResultKind.Loading)
+            {
+                ScheduledTaskManagerListView.SelectAll();
+                SelectedItemsCount = ScheduledTaskManagerListView.SelectedItems.Count;
+            }
         }
 
         /// <summary>
@@ -659,8 +300,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
         {
-            ScheduledTaskManagerListView.DeselectRange(new(0, (uint)ScheduledTaskManagerListView.Items.Count));
-            ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskManagerListView.SelectedItems.Count);
+            if (ScheduledTaskResultKind is not ScheduledTaskResultKind.Loading)
+            {
+                ScheduledTaskManagerListView.DeselectRange(new(0, (uint)ScheduledTaskManagerListView.Items.Count));
+                SelectedItemsCount = ScheduledTaskManagerListView.SelectedItems.Count;
+            }
         }
 
         /// <summary>
@@ -668,21 +312,16 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectReverseClicked(object sender, RoutedEventArgs args)
         {
-            List<object> selectedItemList = [.. ScheduledTaskManagerListView.SelectedItems];
-
-            foreach (object item in ScheduledTaskManagerListView.Items)
+            if (ScheduledTaskResultKind is not ScheduledTaskResultKind.Loading)
             {
-                if (selectedItemList.Contains(item))
+                List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. ScheduledTaskManagerListView.SelectedRanges];
+                ScheduledTaskManagerListView.SelectAll();
+                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
                 {
-                    ScheduledTaskManagerListView.SelectedItems.Remove(item);
+                    ScheduledTaskManagerListView.DeselectRange(itemIndexRange);
                 }
-                else
-                {
-                    ScheduledTaskManagerListView.SelectedItems.Add(item);
-                }
+                SelectedItemsCount = ScheduledTaskManagerListView.SelectedItems.Count;
             }
-
-            ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskManagerListView.SelectedItems.Count);
         }
 
         /// <summary>
@@ -709,77 +348,9 @@ namespace PowerToolbox.Views.Pages
 
             if (selectedScheduledTaskList.Count > 0)
             {
-                List<ScheduledTaskModel> newScheduledTaskList = [];
-                IsModifiedFailed = false;
-                ScheduledTaskFailedList.Clear();
-                ScheduledTaskManagerListView.SelectedItems.Clear();
-                foreach (ScheduledTaskModel scheduledTaskItem in selectedScheduledTaskList)
-                {
-                    scheduledTaskItem.IsProcessing = true;
-                }
-                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskManagerListView.SelectedItems.Count);
-
-                await Task.Factory.StartNew((param) =>
-                {
-                    foreach (ScheduledTaskModel scheduledTaskItem in selectedScheduledTaskList)
-                    {
-                        bool result = false;
-
-                        if (scheduledTaskItem.IsEnabled)
-                        {
-                            try
-                            {
-                                scheduledTaskItem.RegisteredTask.Run(null);
-                                result = true;
-                            }
-                            catch (Exception e)
-                            {
-                                ScheduledTaskFailedList.Add(new()
-                                {
-                                    Name = scheduledTaskItem.Name,
-                                    Path = scheduledTaskItem.Path,
-                                    Exception = e
-                                });
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnRunScheduledTaskClicked), 1, e);
-                            }
-                        }
-
-                        if (result)
-                        {
-                            newScheduledTaskList.Add(new()
-                            {
-                                Name = scheduledTaskItem.Name,
-                                Path = scheduledTaskItem.Path,
-                                LastRunTime = new DateTimeOffset(scheduledTaskItem.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                                LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTaskItem.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTaskItem.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
-                                NextRunTime = new DateTimeOffset(scheduledTaskItem.RegisteredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                                State = GetTaskState(scheduledTaskItem.RegisteredTask.State),
-                                IsEnabled = scheduledTaskItem.RegisteredTask.Enabled,
-                            });
-                        }
-                    }
-                }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
-                IsModifiedFailed = ScheduledTaskFailedList.Count > 0;
-                synchronizationContext.Post(async (_) =>
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskRun, selectedScheduledTaskList.Count - ScheduledTaskFailedList.Count, ScheduledTaskFailedList.Count));
-                }, null);
-
-                foreach (ScheduledTaskModel scheduledTaskItem in ScheduledTaskList)
-                {
-                    scheduledTaskItem.IsProcessing = false;
-                    foreach (ScheduledTaskModel newScheduledTaskItem in newScheduledTaskList)
-                    {
-                        if (string.Equals(scheduledTaskItem.Name, newScheduledTaskItem.Name) && string.Equals(scheduledTaskItem.Path, newScheduledTaskItem.Path))
-                        {
-                            scheduledTaskItem.LastRunTime = newScheduledTaskItem.LastRunTime;
-                            scheduledTaskItem.LastTaskResult = newScheduledTaskItem.LastTaskResult;
-                            scheduledTaskItem.NextRunTime = newScheduledTaskItem.NextRunTime;
-                            scheduledTaskItem.State = newScheduledTaskItem.State;
-                            scheduledTaskItem.IsEnabled = newScheduledTaskItem.IsEnabled;
-                        }
-                    }
-                }
+                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind.Run, selectedScheduledTaskList);
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Run, selectedScheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Run, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
             }
         }
 
@@ -799,76 +370,9 @@ namespace PowerToolbox.Views.Pages
 
             if (selectedScheduledTaskList.Count > 0)
             {
-                List<ScheduledTaskModel> newScheduledTaskList = [];
-                IsModifiedFailed = false;
-                ScheduledTaskFailedList.Clear();
-                foreach (ScheduledTaskModel scheduledTaskItem in selectedScheduledTaskList)
-                {
-                    scheduledTaskItem.IsProcessing = true;
-                }
-                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskManagerListView.SelectedItems.Count);
-
-                await Task.Factory.StartNew((param) =>
-                {
-                    foreach (ScheduledTaskModel scheduledTaskItem in selectedScheduledTaskList)
-                    {
-                        bool result = false;
-
-                        if (scheduledTaskItem.IsEnabled)
-                        {
-                            try
-                            {
-                                scheduledTaskItem.RegisteredTask.Stop(0);
-                                result = true;
-                            }
-                            catch (Exception e)
-                            {
-                                ScheduledTaskFailedList.Add(new()
-                                {
-                                    Name = scheduledTaskItem.Name,
-                                    Path = scheduledTaskItem.Path,
-                                    Exception = e
-                                });
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnStopScheduledTaskClicked), 1, e);
-                            }
-                        }
-
-                        if (result)
-                        {
-                            newScheduledTaskList.Add(new()
-                            {
-                                Name = scheduledTaskItem.Name,
-                                Path = scheduledTaskItem.Path,
-                                LastRunTime = new DateTimeOffset(scheduledTaskItem.RegisteredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                                LastTaskResult = string.Format("0x{0:X8}({1})", scheduledTaskItem.RegisteredTask.LastTaskResult, new Win32Exception(scheduledTaskItem.RegisteredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
-                                NextRunTime = new DateTimeOffset(scheduledTaskItem.RegisteredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                                State = GetTaskState(scheduledTaskItem.RegisteredTask.State),
-                                IsEnabled = scheduledTaskItem.RegisteredTask.Enabled,
-                            });
-                        }
-                    }
-                }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
-                IsModifiedFailed = ScheduledTaskFailedList.Count > 0;
-                synchronizationContext.Post(async (_) =>
-                {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskStop, selectedScheduledTaskList.Count - ScheduledTaskFailedList.Count, ScheduledTaskFailedList.Count));
-                }, null);
-
-                foreach (ScheduledTaskModel scheduledTaskItem in ScheduledTaskList)
-                {
-                    scheduledTaskItem.IsProcessing = false;
-                    foreach (ScheduledTaskModel newScheduledTaskItem in newScheduledTaskList)
-                    {
-                        if (string.Equals(scheduledTaskItem.Name, newScheduledTaskItem.Name) && string.Equals(scheduledTaskItem.Path, newScheduledTaskItem.Path))
-                        {
-                            scheduledTaskItem.LastRunTime = newScheduledTaskItem.LastRunTime;
-                            scheduledTaskItem.LastTaskResult = newScheduledTaskItem.LastTaskResult;
-                            scheduledTaskItem.NextRunTime = newScheduledTaskItem.NextRunTime;
-                            scheduledTaskItem.State = newScheduledTaskItem.State;
-                            scheduledTaskItem.IsEnabled = newScheduledTaskItem.IsEnabled;
-                        }
-                    }
-                }
+                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind.Stop, selectedScheduledTaskList);
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Stop, selectedScheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Stop, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
             }
         }
 
@@ -896,30 +400,33 @@ namespace PowerToolbox.Views.Pages
                 DialogResult dialogResult = openFolderDialog.ShowDialog();
                 if (dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes)
                 {
-                    await Task.Factory.StartNew((param) =>
-                    {
-                        foreach (ScheduledTaskModel scheduledTaskItem in selectedScheduledTaskList)
-                        {
-                            try
-                            {
-                                File.WriteAllText(Path.Combine(openFolderDialog.SelectedPath, scheduledTaskItem.Name + ".xml"), scheduledTaskItem.RegisteredTask.Xml);
-                            }
-                            catch (Exception e)
-                            {
-                                ScheduledTaskFailedList.Add(new()
-                                {
-                                    Name = scheduledTaskItem.Name,
-                                    Path = scheduledTaskItem.Path,
-                                    Exception = e
-                                });
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnExportScheduledTaskClicked), 1, e);
-                            }
-                        }
-                    }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
+                    (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await ExportScheduledTaskListAsync(openFolderDialog.SelectedPath, selectedScheduledTaskList);
+                    await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Export, selectedScheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
+                    await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Export, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
                 }
                 openFolderDialog.Dispose();
-                IsModifiedFailed = ScheduledTaskFailedList.Count > 0;
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ScheduledTaskExport, selectedScheduledTaskList.Count - ScheduledTaskFailedList.Count, ScheduledTaskFailedList.Count));
+            }
+        }
+
+        /// <summary>
+        /// 删除计划任务
+        /// </summary>
+        private async void OnDeleteScheduledTaskClicked(object sender, RoutedEventArgs args)
+        {
+            List<ScheduledTaskModel> selectedScheduledTaskList = [];
+            foreach (object item in ScheduledTaskManagerListView.SelectedItems)
+            {
+                if (item is ScheduledTaskModel scheduledTaskItem)
+                {
+                    selectedScheduledTaskList.Add(scheduledTaskItem);
+                }
+            }
+
+            if (selectedScheduledTaskList.Count > 0)
+            {
+                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await DeleteScheduledTaskListAsync(selectedScheduledTaskList);
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Delete, selectedScheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Delete, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
             }
         }
 
@@ -928,7 +435,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnViewErrorInformationClicked(object sender, RoutedEventArgs args)
         {
-            await MainWindow.Current.ShowDialogAsync(new ScheduledTaskFailedDialog(ScheduledTaskFailedList));
+            await MainWindow.Current.ShowDialogAsync(new ScheduledTaskFailedDialog(new(ScheduledTaskFailedCollection)));
         }
 
         /// <summary>
@@ -949,17 +456,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnOpenScheduledTaskProgramClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("taskschd.msc");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OnOpenScheduledTaskProgramClicked), 1, e);
-                }
-            });
+            OpenScheduledTaskProgram();
         }
 
         /// <summary>
@@ -967,7 +464,10 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskManagerListView.SelectedItems.Count);
+            if (ScheduledTaskResultKind is not ScheduledTaskResultKind.Loading)
+            {
+                SelectedItemsCount = ScheduledTaskManagerListView.SelectedItems.Count;
+            }
         }
 
         /// <summary>
@@ -978,7 +478,27 @@ namespace PowerToolbox.Views.Pages
             return !(scheduledTaskResultKind is ScheduledTaskResultKind.Loading || scheduledTaskResultKind is ScheduledTaskResultKind.Operating);
         }
 
-        #endregion 第三部分：计划任务管理页面——挂载的事件
+        #endregion 第六部分：挂载事件处理
+
+        #region 第七部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化任务服务
+        /// </summary>
+        private void InitializeSchedulerTaskService()
+        {
+            Task.Factory.StartNew((param) =>
+            {
+                try
+                {
+                    taskService = (ITaskService)Activator.CreateInstance(Type.GetTypeFromCLSID(new("0F87369F-A4E5-4CFC-BD3E-73E6154572DD")));
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(InitializeSchedulerTaskService), 1, e);
+                }
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
+        }
 
         /// <summary>
         /// 获取计划任务
@@ -988,155 +508,145 @@ namespace PowerToolbox.Views.Pages
             if (ScheduledTaskResultKind is not ScheduledTaskResultKind.Loading)
             {
                 ScheduledTaskResultKind = ScheduledTaskResultKind.Loading;
-                ScheduledTaskList.Clear();
                 ScheduledTaskCollection.Clear();
-                ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskManagerListView.SelectedItems.Count);
+                List<ScheduledTaskModel> scheduledTaskList = await GetScheduledTaskInfoListAsync();
 
-                List<ScheduledTaskModel> scheduledTaskList = await Task.Factory.StartNew((param) =>
-                {
-                    List<ScheduledTaskModel> scheduledTaskList = [];
-
-                    try
-                    {
-                        if (!taskService.Connected)
-                        {
-                            taskService.Connect(null, null, null, null);
-                        }
-
-                        ITaskFolder rootFolder = taskService.GetFolder("\\");
-                        List<ITaskFolder> taskFolderList = [];
-                        taskFolderList.Add(rootFolder);
-                        taskFolderList.AddRange(GetSubTaskFolder(rootFolder));
-
-                        List<(ITaskFolder, List<IRegisteredTask>)> registeredTaskDict = [];
-                        foreach (ITaskFolder taskFolder in taskFolderList)
-                        {
-                            List<IRegisteredTask> registeredTaskList = GetRegisteredTask(taskFolder);
-                            if (registeredTaskList.Count > 0)
-                            {
-                                registeredTaskDict.Add(ValueTuple.Create(taskFolder, registeredTaskList));
-                            }
-                        }
-                        foreach ((ITaskFolder taskFolder, List<IRegisteredTask> registeredTaskList) in registeredTaskDict)
-                        {
-                            foreach (IRegisteredTask registeredTask in registeredTaskList)
-                            {
-                                ScheduledTaskModel scheduledTask = GetScheduledTasks(registeredTask, taskFolder);
-                                if (scheduledTask is not null)
-                                {
-                                    scheduledTaskList.Add(scheduledTask);
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskAsync), 1, e);
-                    }
-
-                    return scheduledTaskList;
-                }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
-
-                ScheduledTaskList.AddRange(scheduledTaskList);
-
-                if (ScheduledTaskList.Count is 0)
+                if (scheduledTaskList.Count is 0)
                 {
                     ScheduledTaskResultKind = ScheduledTaskResultKind.Failed;
                     ScheduledTaskFailedContent = ScheduledTaskEmptyDescriptionString;
+                    SelectedItemsCount = ScheduledTaskManagerListView.SelectedItems.Count;
                 }
                 else
                 {
-                    foreach (ScheduledTaskModel scheduledTaskItem in ScheduledTaskList)
+                    foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskList)
                     {
-                        MemoryStream memoryStream = await Task.Run(() =>
-                        {
-                            MemoryStream memoryStream = null;
-
-                            try
-                            {
-                                if (!string.IsNullOrEmpty(scheduledTaskItem.ProcessPath) && !string.Equals(scheduledTaskItem.ProcessPath, NotAvailableString, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    Bitmap thumbnailBitmap = ThumbnailHelper.GetThumbnailBitmap(scheduledTaskItem.ProcessPath, 256);
-
-                                    if (thumbnailBitmap is not null)
-                                    {
-                                        memoryStream = new();
-                                        thumbnailBitmap.Save(memoryStream, ImageFormat.Png);
-                                        memoryStream.Seek(0, SeekOrigin.Begin);
-                                        thumbnailBitmap.Dispose();
-                                    }
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskAsync), 2, e);
-                            }
-
-                            return memoryStream;
-                        });
-
-                        if (memoryStream is not null)
-                        {
-                            try
-                            {
-                                BitmapImage bitmapImage = new();
-                                bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
-                                scheduledTaskItem.TaskIcon = bitmapImage;
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskAsync), 3, e);
-                                scheduledTaskItem.TaskIcon = emptyImage;
-                            }
-                            finally
-                            {
-                                memoryStream?.Dispose();
-                            }
-                        }
-
-                        if (string.IsNullOrEmpty(SearchText))
-                        {
-                            ScheduledTaskCollection.Add(scheduledTaskItem);
-                            continue;
-                        }
-                        else
-                        {
-                            if (!string.IsNullOrEmpty(scheduledTaskItem.Name) && scheduledTaskItem.Name.Contains(SearchText))
-                            {
-                                ScheduledTaskCollection.Add(scheduledTaskItem);
-                                continue;
-                            }
-
-                            if (!string.IsNullOrEmpty(scheduledTaskItem.Author) && scheduledTaskItem.Author.Contains(SearchText))
-                            {
-                                ScheduledTaskCollection.Add(scheduledTaskItem);
-                                continue;
-                            }
-
-                            if (!string.IsNullOrEmpty(scheduledTaskItem.Description) && scheduledTaskItem.Description.Contains(SearchText))
-                            {
-                                ScheduledTaskCollection.Add(scheduledTaskItem);
-                                continue;
-                            }
-
-                            if (!string.IsNullOrEmpty(scheduledTaskItem.Path) && scheduledTaskItem.Path.Contains(SearchText))
-                            {
-                                ScheduledTaskCollection.Add(scheduledTaskItem);
-                                continue;
-                            }
-
-                            if (!string.IsNullOrEmpty(scheduledTaskItem.ProcessPath) && scheduledTaskItem.ProcessPath.Contains(SearchText))
-                            {
-                                ScheduledTaskCollection.Add(scheduledTaskItem);
-                                continue;
-                            }
-                        }
+                        scheduledTaskItem.TaskIcon = await GetScheduledTaskProgramThumbnailImageAsync(scheduledTaskItem.ProcessPath);
+                        ScheduledTaskCollection.Add(scheduledTaskItem);
                     }
 
                     ScheduledTaskResultKind = ScheduledTaskCollection.Count is 0 ? ScheduledTaskResultKind.Failed : ScheduledTaskResultKind.Successfully;
-                    ScheduledTaskFailedContent = ScheduledTaskCollection.Count is 0 ? ScheduledTaskEmptyWithConditionDescriptionString : string.Empty;
-                    ScheduledTaskDescription = string.Format(ScheduledTaskInformationString, ScheduledTaskCollection.Count, ScheduledTaskManagerListView.SelectedItems.Count);
+                    ScheduledTaskFailedContent = ScheduledTaskCollection.Count is 0 ? ScheduledTaskEmptyDescriptionString : string.Empty;
+                    SelectedItemsCount = ScheduledTaskManagerListView.SelectedItems.Count;
                 }
+            }
+        }
+
+        /// <summary>
+        /// 获取计划任务信息
+        /// </summary>
+        private async Task<List<ScheduledTaskModel>> GetScheduledTaskInfoListAsync()
+        {
+            return await Task.Factory.StartNew((param) =>
+            {
+                List<ScheduledTaskModel> scheduledTaskList = [];
+
+                try
+                {
+                    if (!taskService.Connected)
+                    {
+                        taskService.Connect(null, null, null, null);
+                    }
+
+                    ITaskFolder rootFolder = taskService.GetFolder("\\");
+                    List<ITaskFolder> taskFolderList = [];
+                    taskFolderList.Add(rootFolder);
+                    taskFolderList.AddRange(GetSubTaskFolder(rootFolder));
+
+                    List<(ITaskFolder, List<IRegisteredTask>)> registeredTaskDict = [];
+                    foreach (ITaskFolder taskFolder in taskFolderList)
+                    {
+                        List<IRegisteredTask> registeredTaskList = GetRegisteredTask(taskFolder);
+                        if (registeredTaskList.Count > 0)
+                        {
+                            registeredTaskDict.Add(ValueTuple.Create(taskFolder, registeredTaskList));
+                        }
+                    }
+                    foreach ((ITaskFolder taskFolder, List<IRegisteredTask> registeredTaskList) in registeredTaskDict)
+                    {
+                        foreach (IRegisteredTask registeredTask in registeredTaskList)
+                        {
+                            if (GetScheduledTask(registeredTask, taskFolder) is ScheduledTaskModel scheduledTask)
+                            {
+                                scheduledTaskList.Add(scheduledTask);
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskInfoListAsync), 1, e);
+                }
+
+                scheduledTaskList.Sort((item1, item2) => item1.Name.CompareTo(item2.Name));
+                return scheduledTaskList;
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
+        }
+
+        /// <summary>
+        /// 获取计划任务信息
+        /// </summary>
+        private ScheduledTaskModel GetScheduledTask(IRegisteredTask registeredTask, ITaskFolder taskFolder)
+        {
+            try
+            {
+                ITaskDefinition taskDefinition = registeredTask.Definition;
+                string version = string.Empty;
+                try
+                {
+                    XDocument doc = XDocument.Parse(registeredTask.Xml);
+                    XNamespace ns = "http://schemas.microsoft.com/windows/2004/02/mit/task";
+                    XElement taskElement = doc.Root;
+                    version = taskElement.Attribute("version")?.Value;
+                }
+                catch (Exception sube)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTask), 1, sube);
+                }
+
+                ScheduledTaskModel scheduledTask = new()
+                {
+                    Name = string.IsNullOrEmpty(registeredTask.Name) ? NotAvailableString : registeredTask.Name,
+                    Path = string.IsNullOrEmpty(registeredTask.Path) ? NotAvailableString : registeredTask.Path,
+                    LastRunTime = new DateTimeOffset(registeredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
+                    LastTaskResult = string.Format("0x{0:X8}({1})", registeredTask.LastTaskResult, new Win32Exception(registeredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
+                    NextRunTime = new DateTimeOffset(registeredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
+                    State = GetTaskState(registeredTask.State),
+                    IsEnabled = registeredTask.Enabled,
+                    Author = string.IsNullOrEmpty(registeredTask.Definition.RegistrationInfo.Author) ? NotAvailableString : registeredTask.Definition.RegistrationInfo.Author,
+                    Description = string.IsNullOrEmpty(registeredTask.Definition.RegistrationInfo.Description) ? NotAvailableString : registeredTask.Definition.RegistrationInfo.Description,
+                    Version = string.IsNullOrEmpty(version) ? NotAvailableString : version,
+                    RegisteredTask = registeredTask,
+                    TaskFolder = taskFolder
+                };
+
+                IActionCollection actionCollection = registeredTask.Definition.Actions;
+                for (int index = 1; index <= actionCollection.Count; index++)
+                {
+                    if (actionCollection[index] is IExecAction2 execAction)
+                    {
+                        scheduledTask.ProcessPath = string.IsNullOrEmpty(execAction.Path) ? NotAvailableString : Environment.ExpandEnvironmentVariables(execAction.Path.Trim('"'));
+                        scheduledTask.ProcessArguments = string.IsNullOrEmpty(execAction.Arguments) ? NotAvailableString : execAction.Arguments;
+                        break;
+                    }
+                }
+
+                if (string.IsNullOrEmpty(scheduledTask.ProcessPath))
+                {
+                    scheduledTask.ProcessPath = string.Empty;
+                }
+
+                if (string.IsNullOrEmpty(scheduledTask.ProcessArguments))
+                {
+                    scheduledTask.ProcessArguments = string.Empty;
+                }
+
+                return scheduledTask;
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTask), 2, e);
+                return null;
             }
         }
 
@@ -1196,60 +706,436 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 获取计划任务信息
+        /// 获取计划任务的状态
         /// </summary>
-        private ScheduledTaskModel GetScheduledTasks(IRegisteredTask registeredTask, ITaskFolder taskFolder)
+        private async Task<(bool result, ScheduledTaskModel newScheduledTask)> GetTaskSchedulerStateAsync(IRegisteredTask registeredTask)
         {
-            try
+            if (registeredTask is null)
             {
-                ITaskDefinition taskDefinition = registeredTask.Definition;
-                string version = string.Empty;
+                return default;
+            }
+
+            return await Task.Factory.StartNew((param) =>
+            {
                 try
                 {
-                    XDocument doc = XDocument.Parse(registeredTask.Xml);
-                    XNamespace ns = "http://schemas.microsoft.com/windows/2004/02/mit/task";
-                    XElement taskElement = doc.Root;
-                    version = taskElement.Attribute("version")?.Value;
-                }
-                catch (Exception sube)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTasks), 1, sube);
-                }
-
-                ScheduledTaskModel scheduledTask = new()
-                {
-                    Name = string.IsNullOrEmpty(registeredTask.Name) ? NotAvailableString : registeredTask.Name,
-                    Path = string.IsNullOrEmpty(registeredTask.Path) ? NotAvailableString : registeredTask.Path,
-                    LastRunTime = new DateTimeOffset(registeredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                    LastTaskResult = string.Format("0x{0:X8}({1})", registeredTask.LastTaskResult, new Win32Exception(registeredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
-                    NextRunTime = new DateTimeOffset(registeredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                    State = GetTaskState(registeredTask.State),
-                    IsEnabled = registeredTask.Enabled,
-                    Author = string.IsNullOrEmpty(registeredTask.Definition.RegistrationInfo.Author) ? NotAvailableString : registeredTask.Definition.RegistrationInfo.Author,
-                    Description = string.IsNullOrEmpty(registeredTask.Definition.RegistrationInfo.Description) ? NotAvailableString : registeredTask.Definition.RegistrationInfo.Description,
-                    Version = string.IsNullOrEmpty(version) ? NotAvailableString : version,
-                    RegisteredTask = registeredTask,
-                    TaskFolder = taskFolder
-                };
-
-                IActionCollection actionCollection = registeredTask.Definition.Actions;
-                for (int index = 1; index <= actionCollection.Count; index++)
-                {
-                    if (actionCollection[index] is IExecAction2 execAction)
+                    return ValueTuple.Create<bool, ScheduledTaskModel>(true, new()
                     {
-                        scheduledTask.ProcessPath = string.IsNullOrEmpty(execAction.Path) ? NotAvailableString : Environment.ExpandEnvironmentVariables(execAction.Path.Trim('"'));
-                        scheduledTask.ProcessArguments = string.IsNullOrEmpty(execAction.Arguments) ? NotAvailableString : execAction.Arguments;
-                        break;
+                        LastRunTime = new DateTimeOffset(registeredTask.LastRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
+                        LastTaskResult = string.Format("0x{0:X8}({1})", registeredTask.LastTaskResult, new Win32Exception(registeredTask.LastTaskResult) is Exception exception ? exception.Message : NotAvailableString),
+                        NextRunTime = new DateTimeOffset(registeredTask.NextRunTime).ToString("yyyy-MM-dd HH:mm:ss"),
+                        State = GetTaskState(registeredTask.State),
+                        IsEnabled = registeredTask.Enabled
+                    });
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetTaskSchedulerStateAsync), 1, e);
+                    return ValueTuple.Create<bool, ScheduledTaskModel>(false, null);
+                }
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
+        }
+
+        /// <summary>
+        /// 获取计划任务程序缩略图
+        /// </summary>
+        private async Task<BitmapImage> GetScheduledTaskProgramThumbnailImageAsync(string programPath)
+        {
+            if (string.IsNullOrEmpty(programPath))
+            {
+                return default;
+            }
+
+            MemoryStream memoryStream = await Task.Run(() =>
+            {
+                MemoryStream memoryStream = null;
+
+                try
+                {
+                    if (File.Exists(programPath) && ThumbnailHelper.GetThumbnailBitmap(programPath, 256) is Bitmap thumbnailBitmap)
+                    {
+                        memoryStream = new();
+                        thumbnailBitmap.Save(memoryStream, ImageFormat.Png);
+                        memoryStream.Seek(0, SeekOrigin.Begin);
+                        thumbnailBitmap.Dispose();
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskProgramThumbnailImageAsync), 1, e);
+                }
+
+                return memoryStream;
+            });
+
+            if (memoryStream is not null)
+            {
+                try
+                {
+                    BitmapImage bitmapImage = new();
+                    bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
+                    return bitmapImage;
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskProgramThumbnailImageAsync), 2, e);
+                    return emptyImage;
+                }
+                finally
+                {
+                    memoryStream?.Dispose();
+                }
+            }
+            else
+            {
+                return emptyImage;
+            }
+        }
+
+        /// <summary>
+        /// 更新计划任务的状态
+        /// </summary>
+        private async Task<(List<ScheduledTaskModel>, List<(ScheduledTaskModel, Exception)>)> SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind schedulerTaskOperationKind, List<ScheduledTaskModel> scheduledTaskList)
+        {
+            if (scheduledTaskList is null || scheduledTaskList.Count is 0)
+            {
+                return ValueTuple.Create<List<ScheduledTaskModel>, List<(ScheduledTaskModel, Exception)>>([], []);
+            }
+
+            foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskList)
+            {
+                scheduledTaskItem.IsProcessing = true;
+            }
+
+            List<ScheduledTaskModel> successfullyScheduledTaskList = [];
+            List<(ScheduledTaskModel, Exception)> failedScheduledTaskList = [];
+            foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskList)
+            {
+                (bool result, Exception exception) = await SetScheduledTaskStateAsync(schedulerTaskOperationKind, scheduledTaskItem.RegisteredTask);
+                scheduledTaskItem.IsProcessing = false;
+                if (result)
+                {
+                    successfullyScheduledTaskList.Add(scheduledTaskItem);
+                }
+                else
+                {
+                    failedScheduledTaskList.Add(ValueTuple.Create(scheduledTaskItem, exception is null ? new Exception() : exception));
+                }
+            }
+            return ValueTuple.Create(successfullyScheduledTaskList, failedScheduledTaskList);
+        }
+
+        /// <summary>
+        /// 设置计划任务的状态
+        /// </summary>
+        private async Task<(bool, Exception)> SetScheduledTaskStateAsync(ScheduledTaskOperationKind schedulerTaskOperationKind, IRegisteredTask registeredTask)
+        {
+            if (registeredTask is null)
+            {
+                return default;
+            }
+
+            return await Task.Factory.StartNew((param) =>
+            {
+                try
+                {
+                    if (schedulerTaskOperationKind is ScheduledTaskOperationKind.Disable)
+                    {
+                        registeredTask.Enabled = false;
+                    }
+                    else if (schedulerTaskOperationKind is ScheduledTaskOperationKind.Enable)
+                    {
+                        registeredTask.Enabled = true;
+                    }
+                    else if (schedulerTaskOperationKind is ScheduledTaskOperationKind.Run)
+                    {
+                        if (registeredTask.Enabled)
+                        {
+                            registeredTask.Run(null);
+                        }
+                    }
+                    else if (schedulerTaskOperationKind is ScheduledTaskOperationKind.Stop)
+                    {
+                        if (registeredTask.Enabled)
+                        {
+                            registeredTask.Stop(0);
+                        }
+                    }
+                    return ValueTuple.Create<bool, Exception>(true, null);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(SetScheduledTaskStateAsync), 1, e);
+                    return ValueTuple.Create(false, e);
+                }
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
+        }
+
+        /// <summary>
+        /// 导出计划任务
+        /// </summary>
+        private async Task<(List<ScheduledTaskModel>, List<(ScheduledTaskModel, Exception)>)> ExportScheduledTaskListAsync(string folderPath, List<ScheduledTaskModel> scheduledTaskList)
+        {
+            if (string.IsNullOrEmpty(folderPath) || scheduledTaskList is null || scheduledTaskList.Count is 0)
+            {
+                return ValueTuple.Create<List<ScheduledTaskModel>, List<(ScheduledTaskModel, Exception)>>([], []);
+            }
+
+            List<ScheduledTaskModel> successfullyScheduledTaskList = [];
+            List<(ScheduledTaskModel, Exception)> failedScheduledTaskList = [];
+            foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskList)
+            {
+                (bool result, Exception exception) = await ExportScheduledTaskAsync(folderPath, scheduledTaskItem.RegisteredTask);
+                if (result)
+                {
+                    successfullyScheduledTaskList.Add(scheduledTaskItem);
+                }
+                else
+                {
+                    failedScheduledTaskList.Add(ValueTuple.Create(scheduledTaskItem, exception is null ? new Exception() : exception));
+                }
+            }
+            return ValueTuple.Create(successfullyScheduledTaskList, failedScheduledTaskList);
+        }
+
+        /// <summary>
+        /// 导出计划任务
+        /// </summary>
+        private async Task<(bool, Exception)> ExportScheduledTaskAsync(string folderPath, IRegisteredTask registeredTask)
+        {
+            if (string.IsNullOrEmpty(folderPath) || registeredTask is null)
+            {
+                return default;
+            }
+
+            return await Task.Factory.StartNew((param) =>
+            {
+                try
+                {
+                    File.WriteAllText(Path.Combine(folderPath, registeredTask.Name + ".xml"), registeredTask.Xml);
+                    return ValueTuple.Create<bool, Exception>(true, null);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(ExportScheduledTaskAsync), 1, e);
+                    return ValueTuple.Create(false, e);
+                }
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
+        }
+
+        /// <summary>
+        /// 删除计划任务
+        /// </summary>
+        private async Task<(List<ScheduledTaskModel>, List<(ScheduledTaskModel, Exception)>)> DeleteScheduledTaskListAsync(List<ScheduledTaskModel> scheduledTaskList)
+        {
+            if (scheduledTaskList is null || scheduledTaskList.Count is 0)
+            {
+                return ValueTuple.Create<List<ScheduledTaskModel>, List<(ScheduledTaskModel, Exception)>>([], []);
+            }
+
+            List<ScheduledTaskModel> successfullyScheduledTaskList = [];
+            List<(ScheduledTaskModel, Exception)> failedScheduledTaskList = [];
+            foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskList)
+            {
+                (bool result, Exception exception) = await DeleteScheduledTaskAsync(scheduledTaskItem.TaskFolder, scheduledTaskItem.RegisteredTask.Name);
+                if (result)
+                {
+                    successfullyScheduledTaskList.Add(scheduledTaskItem);
+                }
+                else
+                {
+                    failedScheduledTaskList.Add(ValueTuple.Create(scheduledTaskItem, exception is null ? new Exception() : exception));
+                }
+            }
+            return ValueTuple.Create(successfullyScheduledTaskList, failedScheduledTaskList);
+        }
+
+        /// <summary>
+        /// 删除计划任务
+        /// </summary>
+        private async Task<(bool, Exception)> DeleteScheduledTaskAsync(ITaskFolder taskFolder, string taskName)
+        {
+            if (taskFolder is null || string.IsNullOrEmpty(taskName))
+            {
+                return default;
+            }
+
+            return await Task.Factory.StartNew((param) =>
+            {
+                try
+                {
+                    taskFolder.DeleteTask(taskName, 0);
+                    return ValueTuple.Create<bool, Exception>(true, null);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(DeleteScheduledTaskAsync), 1, e);
+                    return ValueTuple.Create(false, e);
+                }
+            }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
+        }
+
+        /// <summary>
+        /// 更新计划任务状态
+        /// </summary>
+        private async Task UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind scheduledTaskOperationKind, List<ScheduledTaskModel> scheduledTaskList, List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList)
+        {
+            if (scheduledTaskList is null || scheduledTaskList.Count is 0 || successfullyScheduledTaskList is null || failedScheduledTaskList is null)
+            {
+                return;
+            }
+
+            if (successfullyScheduledTaskList.Count > 0)
+            {
+                if (scheduledTaskOperationKind is ScheduledTaskOperationKind.Disable || scheduledTaskOperationKind is ScheduledTaskOperationKind.Enable || scheduledTaskOperationKind is ScheduledTaskOperationKind.Stop || scheduledTaskOperationKind is ScheduledTaskOperationKind.Run)
+                {
+                    foreach (ScheduledTaskModel scheduledTask in successfullyScheduledTaskList)
+                    {
+                        (bool result, ScheduledTaskModel updatedScheduledTask) = await GetTaskSchedulerStateAsync(scheduledTask.RegisteredTask);
+                        if (result)
+                        {
+                            scheduledTask.LastRunTime = updatedScheduledTask.LastRunTime;
+                            scheduledTask.LastTaskResult = updatedScheduledTask.LastTaskResult;
+                            scheduledTask.NextRunTime = updatedScheduledTask.NextRunTime;
+                            scheduledTask.State = updatedScheduledTask.State;
+                            scheduledTask.IsEnabled = updatedScheduledTask.IsEnabled;
+                        }
                     }
                 }
 
-                return scheduledTask;
+                if (scheduledTaskOperationKind is ScheduledTaskOperationKind.Delete)
+                {
+                    foreach (ScheduledTaskModel scheduledTask in successfullyScheduledTaskList)
+                    {
+                        ScheduledTaskCollection.Remove(scheduledTask);
+                    }
+                    SelectedItemsCount = ScheduledTaskManagerListView.SelectedItems.Count;
+                }
             }
-            catch (Exception e)
+
+            ScheduledTaskFailedCollection.Clear();
+            if (failedScheduledTaskList.Count > 0)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTasks), 2, e);
-                return null;
+                foreach ((ScheduledTaskModel failedScheduledTask, Exception exception) in failedScheduledTaskList)
+                {
+                    ScheduledTaskFailedCollection.Add(new()
+                    {
+                        Name = failedScheduledTask.Name,
+                        Path = failedScheduledTask.Path,
+                        Exception = exception
+                    });
+                }
             }
+        }
+
+        /// <summary>
+        /// 显示计划任务操作结果通知
+        /// </summary>
+        private async Task ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind scheduledTaskOperationKind, int successItems, int failedItems)
+        {
+            OperationKind operationKind = scheduledTaskOperationKind switch
+            {
+                ScheduledTaskOperationKind.Delete => OperationKind.ScheduledTaskDelete,
+                ScheduledTaskOperationKind.Export => OperationKind.ScheduledTaskExport,
+                ScheduledTaskOperationKind.Disable => OperationKind.ScheduledTaskDisable,
+                ScheduledTaskOperationKind.Enable => OperationKind.ScheduledTaskEnable,
+                ScheduledTaskOperationKind.Stop => OperationKind.ScheduledTaskStop,
+                ScheduledTaskOperationKind.Run => OperationKind.ScheduledTaskRun,
+                _ => OperationKind.NoOperation
+            };
+            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(operationKind, successItems, failedItems));
+        }
+
+        /// <summary>
+        /// 打开文件路径
+        /// </summary>
+        private void OpenProcessPath(string processPath)
+        {
+            if (string.IsNullOrEmpty(processPath))
+            {
+                return;
+            }
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    if (!string.IsNullOrEmpty(processPath))
+                    {
+                        if (File.Exists(processPath))
+                        {
+                            nint pidlList = Shell32Library.ILCreateFromPath(processPath);
+                            if (pidlList is not 0)
+                            {
+                                Shell32Library.SHOpenFolderAndSelectItems(pidlList, 0, 0, 0);
+                                Shell32Library.ILFree(pidlList);
+                            }
+                        }
+                        else
+                        {
+                            string directoryPath = Path.GetDirectoryName(processPath);
+
+                            if (Directory.Exists(directoryPath))
+                            {
+                                Process.Start(directoryPath);
+                            }
+                            else
+                            {
+                                Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OpenProcessPath), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 以管理员身份运行
+        /// </summary>
+        private void RunAsAdministrator()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    ProcessStartInfo startInfo = new()
+                    {
+                        UseShellExecute = true,
+                        WorkingDirectory = Environment.CurrentDirectory,
+                        Arguments = "--elevated",
+                        FileName = System.Windows.Forms.Application.ExecutablePath,
+                        Verb = "runas"
+                    };
+                    Process.Start(startInfo);
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(RunAsAdministrator), 1, e);
+                    return;
+                }
+            });
+        }
+
+        /// <summary>
+        /// 打开计划任务程序
+        /// </summary>
+        private void OpenScheduledTaskProgram()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("taskschd.msc");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(OpenScheduledTaskProgram), 1, e);
+                }
+            });
         }
 
         /// <summary>
@@ -1280,5 +1166,7 @@ namespace PowerToolbox.Views.Pages
             _TASK_STATE.TASK_STATE_RUNNING => TaskStateRunningString,
             _ => NotAvailableString,
         };
+
+        #endregion 第七部分：数据操作与业务逻辑
     }
 }
