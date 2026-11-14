@@ -461,6 +461,7 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 1, e);
                 }
 
+                contextMenuList.Sort((item1, item2) => item1.PackageDisplayName.CompareTo(item2.PackageDisplayName));
                 return contextMenuList;
             });
         }

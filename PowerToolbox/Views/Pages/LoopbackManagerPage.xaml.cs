@@ -301,6 +301,7 @@ namespace PowerToolbox.Views.Pages
                 LoopbackResultKind = LoopbackResultKind.Loading;
                 IsSaved = false;
                 LoopbackCollection.Clear();
+                SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
                 List<LoopbackModel> loopbackList = await GetLoopbackInfoListAsync();
 
                 if (loopbackList.Count is 0)
@@ -437,6 +438,7 @@ namespace PowerToolbox.Views.Pages
                         continue;
                     }
                 }
+                loopbackList.Sort((item1, item2) => item1.DisplayName.CompareTo(item2.DisplayName));
                 return loopbackList;
             });
         }
