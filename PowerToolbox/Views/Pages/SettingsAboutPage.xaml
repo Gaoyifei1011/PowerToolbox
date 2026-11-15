@@ -302,9 +302,9 @@
                         </Style>
                     </GridView.ItemContainerStyle>
 
-                    <ItemsControl.ItemContainerTransitions>
+                    <GridView.ItemContainerTransitions>
                         <TransitionCollection />
-                    </ItemsControl.ItemContainerTransitions>
+                    </GridView.ItemContainerTransitions>
 
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="collection:DictionaryEntry">
@@ -382,9 +382,9 @@
                             </Style>
                         </GridView.ItemContainerStyle>
 
-                        <ItemsControl.ItemContainerTransitions>
+                        <GridView.ItemContainerTransitions>
                             <TransitionCollection />
-                        </ItemsControl.ItemContainerTransitions>
+                        </GridView.ItemContainerTransitions>
 
                         <GridView.ItemTemplate>
                             <DataTemplate x:DataType="collection:DictionaryEntry">

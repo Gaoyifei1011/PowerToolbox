@@ -399,9 +399,9 @@
                             </Style>
                         </ListView.ItemContainerStyle>
 
-                        <ItemsControl.ItemContainerTransitions>
+                        <ListView.ItemContainerTransitions>
                             <TransitionCollection />
-                        </ItemsControl.ItemContainerTransitions>
+                        </ListView.ItemContainerTransitions>
 
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="model:UpdateModel">
@@ -919,9 +919,9 @@
                                                     </Style>
                                                 </ListView.ItemContainerStyle>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </ListView.ItemContainerTransitions>
 
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
@@ -977,9 +977,9 @@
                                                     </Style>
                                                 </ListView.ItemContainerStyle>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </ListView.ItemContainerTransitions>
 
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
@@ -1044,9 +1044,9 @@
                                                     </Style>
                                                 </ListView.ItemContainerStyle>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </ListView.ItemContainerTransitions>
 
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
@@ -1100,9 +1100,9 @@
                                                     </Style>
                                                 </ListView.ItemContainerStyle>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </ListView.ItemContainerTransitions>
 
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
@@ -1524,9 +1524,9 @@
                             </Style>
                         </ListView.ItemContainerStyle>
 
-                        <ItemsControl.ItemContainerTransitions>
+                        <ListView.ItemContainerTransitions>
                             <TransitionCollection />
-                        </ItemsControl.ItemContainerTransitions>
+                        </ListView.ItemContainerTransitions>
 
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="model:UpdateModel">
@@ -2035,9 +2035,9 @@
                                                     </Style>
                                                 </ListView.ItemContainerStyle>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </ListView.ItemContainerTransitions>
 
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
@@ -2093,9 +2093,9 @@
                                                     </Style>
                                                 </ListView.ItemContainerStyle>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </ListView.ItemContainerTransitions>
 
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
@@ -2160,9 +2160,9 @@
                                                     </Style>
                                                 </ListView.ItemContainerStyle>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </ListView.ItemContainerTransitions>
 
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
@@ -2218,9 +2218,9 @@
                                                     </Style>
                                                 </ListView.ItemContainerStyle>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </ListView.ItemContainerTransitions>
 
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
@@ -2659,9 +2659,9 @@
                             </Style>
                         </ListView.ItemContainerStyle>
 
-                        <ItemsControl.ItemContainerTransitions>
+                        <ListView.ItemContainerTransitions>
                             <TransitionCollection />
-                        </ItemsControl.ItemContainerTransitions>
+                        </ListView.ItemContainerTransitions>
 
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="model:UpdateModel">
@@ -3112,9 +3112,9 @@
                                                     </Style>
                                                 </ListView.ItemContainerStyle>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </ListView.ItemContainerTransitions>
 
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
@@ -3170,9 +3170,9 @@
                                                     </Style>
                                                 </ListView.ItemContainerStyle>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </ListView.ItemContainerTransitions>
 
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
@@ -3237,9 +3237,9 @@
                                                     </Style>
                                                 </ListView.ItemContainerStyle>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </ListView.ItemContainerTransitions>
 
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
@@ -3295,9 +3295,9 @@
                                                     </Style>
                                                 </ListView.ItemContainerStyle>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </ListView.ItemContainerTransitions>
 
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
@@ -3570,9 +3570,9 @@
                             </Style>
                         </ListView.ItemContainerStyle>
 
-                        <ItemsControl.ItemContainerTransitions>
+                        <ListView.ItemContainerTransitions>
                             <TransitionCollection />
-                        </ItemsControl.ItemContainerTransitions>
+                        </ListView.ItemContainerTransitions>
 
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="model:UpdateModel">

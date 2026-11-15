@@ -388,9 +388,9 @@
                                                     </DataTemplate>
                                                 </GridView.ItemTemplate>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <GridView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </GridView.ItemContainerTransitions>
                                             </GridView>
 
                                             <GridView
@@ -490,9 +490,9 @@
                                                     </DataTemplate>
                                                 </GridView.ItemTemplate>
 
-                                                <ItemsControl.ItemContainerTransitions>
+                                                <GridView.ItemContainerTransitions>
                                                     <TransitionCollection />
-                                                </ItemsControl.ItemContainerTransitions>
+                                                </GridView.ItemContainerTransitions>
                                             </GridView>
                                         </Grid>
                                     </Grid>

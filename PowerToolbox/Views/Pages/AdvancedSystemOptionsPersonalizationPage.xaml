@@ -228,9 +228,9 @@
                             </Style>
                         </GridView.ItemContainerStyle>
 
-                        <ItemsControl.ItemContainerTransitions>
+                        <GridView.ItemContainerTransitions>
                             <TransitionCollection />
-                        </ItemsControl.ItemContainerTransitions>
+                        </GridView.ItemContainerTransitions>
                     </GridView>
 
                     <MenuFlyoutSeparator />
@@ -350,9 +350,9 @@
                                 </Style>
                             </GridView.ItemContainerStyle>
 
-                            <ItemsControl.ItemContainerTransitions>
+                            <GridView.ItemContainerTransitions>
                                 <TransitionCollection />
-                            </ItemsControl.ItemContainerTransitions>
+                            </GridView.ItemContainerTransitions>
 
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="model:DesktopIconDisplayModel">
@@ -922,9 +922,9 @@
                             </Style>
                         </ListView.ItemContainerStyle>
 
-                        <ItemsControl.ItemContainerTransitions>
+                        <ListView.ItemContainerTransitions>
                             <TransitionCollection />
-                        </ItemsControl.ItemContainerTransitions>
+                        </ListView.ItemContainerTransitions>
 
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="model:VisualEffectsModel">

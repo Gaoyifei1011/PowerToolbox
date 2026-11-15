@@ -161,9 +161,9 @@
                     SelectionMode="Multiple"
                     Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[0].SelectedValue), Mode=OneWay}">
 
-                    <ItemsControl.ItemContainerTransitions>
+                    <ListView.ItemContainerTransitions>
                         <TransitionCollection />
-                    </ItemsControl.ItemContainerTransitions>
+                    </ListView.ItemContainerTransitions>
 
                     <ListView.Header>
                         <Grid
@@ -339,9 +339,9 @@
                     SelectionMode="Multiple"
                     Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[1].SelectedValue), Mode=OneWay}">
 
-                    <ItemsControl.ItemContainerTransitions>
+                    <ListView.ItemContainerTransitions>
                         <TransitionCollection />
-                    </ItemsControl.ItemContainerTransitions>
+                    </ListView.ItemContainerTransitions>
 
                     <ListView.Header>
                         <!--  文件路径资源  -->
@@ -487,9 +487,9 @@
                     SelectionMode="Multiple"
                     Visibility="{x:Bind converter:ValueConverterHelper.ObjectToVisibilityConvert(SelectedResourceCandidateKind.SelectedValue, ResourceCandidateKindList[2].SelectedValue), Mode=OneWay}">
 
-                    <ItemsControl.ItemContainerTransitions>
+                    <ListView.ItemContainerTransitions>
                         <TransitionCollection />
-                    </ItemsControl.ItemContainerTransitions>
+                    </ListView.ItemContainerTransitions>
 
                     <ListView.Header>
                         <!--  嵌入数据资源  -->

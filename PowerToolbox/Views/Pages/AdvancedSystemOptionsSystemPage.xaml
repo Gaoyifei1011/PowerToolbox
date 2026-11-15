@@ -1008,9 +1008,9 @@
                                         </Style>
                                     </ListView.ItemContainerStyle>
 
-                                    <ItemsControl.ItemContainerTransitions>
+                                    <ListView.ItemContainerTransitions>
                                         <TransitionCollection />
-                                    </ItemsControl.ItemContainerTransitions>
+                                    </ListView.ItemContainerTransitions>
                                 </ListView>
                             </StackPanel>
                         </ToolTip>
