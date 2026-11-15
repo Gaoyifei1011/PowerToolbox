@@ -36,6 +36,8 @@ namespace PowerToolbox.Views.Pages
     /// </summary>
     internal sealed partial class DriverManagerPage : Page, INotifyPropertyChanged
     {
+        #region 第一部分：常量、资源与状态字段
+
         private readonly string AddingDriverFailedString = ResourceService.DriverManagerResource.GetString("AddingDriverFailed");
         private readonly string AddingDriverString = ResourceService.DriverManagerResource.GetString("AddingDriver");
         private readonly string AddingDriverSuccessfullyString = ResourceService.DriverManagerResource.GetString("AddingDriverSuccessfully");
@@ -45,10 +47,9 @@ namespace PowerToolbox.Views.Pages
         private readonly string DeletingDriverFailedString = ResourceService.DriverManagerResource.GetString("DeletingDriverFailed");
         private readonly string DeletingDriverString = ResourceService.DriverManagerResource.GetString("DeletingDriver");
         private readonly string DeletingDriverSuccessfullyString = ResourceService.DriverManagerResource.GetString("DeletingDriverSuccessfully");
-        private readonly string DriverFilterConditionString = ResourceService.DriverManagerResource.GetString("DriverFilterCondition");
-        private readonly string DriverInformationString = ResourceService.DriverManagerResource.GetString("DriverInformation");
+        private readonly string DriverCountInfoString = ResourceService.DriverManagerResource.GetString("DriverCountInfo");
         private readonly string DriverEmptyDescriptionString = ResourceService.DriverManagerResource.GetString("DriverEmptyDescription");
-        private readonly string DriverEmptyWithConditionDescriptionString = ResourceService.DriverManagerResource.GetString("DriverEmptyWithConditionDescription");
+        private readonly string DriverFilterConditionString = ResourceService.DriverManagerResource.GetString("DriverFilterCondition");
         private readonly string ForceDeletingDriverFailedString = ResourceService.DriverManagerResource.GetString("ForceDeletingDriverFailed");
         private readonly string ForceDeletingDriverString = ResourceService.DriverManagerResource.GetString("ForceDeletingDriver");
         private readonly string ForceDeletingDriverSuccessfullyString = ResourceService.DriverManagerResource.GetString("ForceDeletingDriverSuccessfully");
@@ -239,25 +240,13 @@ namespace PowerToolbox.Views.Pages
             { "DEVPKEY_DeviceContainer_InstallInProgress", new() { fmtid = new("83DA6326-97A6-4088-9453-A1923F573B29"), pid = 9 }}
         };
 
-        private string _driverDescription = string.Empty;
+        #endregion 第一部分：常量、资源与状态字段
 
-        internal string DriverDescription
-        {
-            get { return _driverDescription; }
-
-            set
-            {
-                if (!string.Equals(_driverDescription, value))
-                {
-                    _driverDescription = value;
-                    PropertyChanged?.Invoke(this, new(nameof(DriverDescription)));
-                }
-            }
-        }
+        #region 第二部分：属性、列表与事件
 
         private DriverPaneKind _driverPaneKind;
 
-        internal DriverPaneKind DriverPaneKind
+        private DriverPaneKind DriverPaneKind
         {
             get { return _driverPaneKind; }
 
@@ -273,7 +262,7 @@ namespace PowerToolbox.Views.Pages
 
         private DriverResultKind _driverResultKind;
 
-        internal DriverResultKind DriverResultKind
+        private DriverResultKind DriverResultKind
         {
             get { return _driverResultKind; }
 
@@ -287,9 +276,25 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
+        private int _selectedItemsCount;
+
+        private int SelectedItemsCount
+        {
+            get { return _selectedItemsCount; }
+
+            set
+            {
+                if (!Equals(_selectedItemsCount, value))
+                {
+                    _selectedItemsCount = value;
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedItemsCount)));
+                }
+            }
+        }
+
         private string _driverFailedContent;
 
-        internal string DriverFailedContent
+        private string DriverFailedContent
         {
             get { return _driverFailedContent; }
 
@@ -303,25 +308,9 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private string _searchText = string.Empty;
-
-        internal string SearchText
-        {
-            get { return _searchText; }
-
-            set
-            {
-                if (!string.Equals(_searchText, value))
-                {
-                    _searchText = value;
-                    PropertyChanged?.Invoke(this, new(nameof(SearchText)));
-                }
-            }
-        }
-
         private bool _isIncrease = true;
 
-        internal bool IsIncrease
+        private bool IsIncrease
         {
             get { return _isIncrease; }
 
@@ -335,18 +324,18 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private DriverSortRuleKind _selectedRule = DriverSortRuleKind.DeviceName;
+        private DriverSortRuleKind _selectedDriverSortRuleKind = DriverSortRuleKind.DeviceName;
 
-        internal DriverSortRuleKind SelectedRule
+        private DriverSortRuleKind SelectedDriverSortRuleKind
         {
-            get { return _selectedRule; }
+            get { return _selectedDriverSortRuleKind; }
 
             set
             {
-                if (!Equals(_selectedRule, value))
+                if (!Equals(_selectedDriverSortRuleKind, value))
                 {
-                    _selectedRule = value;
-                    PropertyChanged?.Invoke(this, new(nameof(SelectedRule)));
+                    _selectedDriverSortRuleKind = value;
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedDriverSortRuleKind)));
                 }
             }
         }
@@ -359,12 +348,18 @@ namespace PowerToolbox.Views.Pages
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #endregion 第二部分：属性、列表与事件
+
+        #region 第三部分：构造函数
+
         internal DriverManagerPage()
         {
             InitializeComponent();
         }
 
-        #region 第一部分：重写父类事件
+        #endregion 第三部分：构造函数
+
+        #region 第四部分：父类虚方法重写
 
         /// <summary>
         /// 导航到该页面触发的事件
@@ -376,13 +371,13 @@ namespace PowerToolbox.Views.Pages
             if (!isInitialized)
             {
                 isInitialized = true;
-                await GetDriverAsync();
+                await GetDriverAsync(SelectedDriverSortRuleKind, IsIncrease);
             }
         }
 
-        #endregion 第一部分：重写父类事件
+        #endregion 第四部分：父类虚方法重写
 
-        #region 第一部分：ExecuteCommand 命令调用时挂载的事件
+        #region 第五部分：命令调用处理
 
         /// <summary>
         /// 打开文件夹
@@ -391,17 +386,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is string driverLocation)
             {
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        Process.Start(File.Exists(driverLocation) ? Path.GetDirectoryName(driverLocation) : Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(OnOpenFolderExecuteRequested), 1, e);
-                    }
-                });
+                OpenDriverLocation(driverLocation);
             }
         }
 
@@ -410,49 +395,26 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnDeleteDriverExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (RuntimeHelper.IsElevated && args.Parameter is DriverModel driver && File.Exists(driver.DriverLocation))
+            if (RuntimeHelper.IsElevated && args.Parameter is DriverModel driver && File.Exists(driver.DriverLocation) && (DriverResultKind is not DriverResultKind.Loading || DriverResultKind is not DriverResultKind.Operating))
             {
+                DriverResultKind oldDriverResultKind = DriverResultKind;
                 DriverResultKind = DriverResultKind.Operating;
                 Guid driverOperationGuid = Guid.NewGuid();
-                DriverOperationCollection.Add(new()
+                DriverOperationModel driverOperation = new()
                 {
                     DriverInfName = driver.DriverInfName,
                     DriverOperation = DeletingDriverString,
                     DriverOperationGuid = driverOperationGuid,
                     IsOperating = true
-                });
-
-                // 删除驱动
-                (bool operationResult, Win32Exception win32Exception) = await Task.Run(() =>
+                };
+                DriverOperationCollection.Add(driverOperation);
+                List<(string, string, DriverOperationModel)> driverList = [ValueTuple.Create(driver.DriverOEMInfName, driver.DriverLocation, driverOperation)];
+                (bool needReboot, int successfullyCount, int failedCount) = await DeleteDriverListAsync(false, driverList);
+                if (needReboot)
                 {
-                    bool result = SetupapiLibrary.SetupUninstallOEMInf(driver.DriverOEMInfName, SUOI_Flags.SUOI_NONE, 0);
-                    return result ? ValueTuple.Create<bool, Win32Exception>(result, null) : ValueTuple.Create(result, new Win32Exception(Kernel32Library.GetLastError()));
-                });
-
-                foreach (DriverOperationModel driverOperationItem in DriverOperationCollection)
-                {
-                    if (Equals(driverOperationItem.DriverOperationGuid, driverOperationGuid))
-                    {
-                        driverOperationItem.IsOperating = false;
-                        driverOperationItem.DriverOperation = operationResult ? DeletingDriverSuccessfullyString : string.Format(DeletingDriverFailedString, win32Exception.NativeErrorCode, win32Exception.HResult, win32Exception.Message);
-                        break;
-                    }
+                    ShowRebootNotification(DriverInstallKind.UnInstallDriver);
                 }
-
-                if (operationResult)
-                {
-                    synchronizationContext.Send(async (_) =>
-                    {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DeleteDriverSuccessfully));
-                    }, null);
-
-                    await GetDriverAsync();
-                }
-                else
-                {
-                    DriverResultKind = DriverResultKind.Successfully;
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DeleteDriverFailed));
-                }
+                await UpdateDriverOperationResultAsync(DriverInstallKind.UnInstallDriver, false, false, successfullyCount, failedCount, oldDriverResultKind);
             }
         }
 
@@ -461,66 +423,26 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnForceDeleteDriverExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (RuntimeHelper.IsElevated && args.Parameter is DriverModel driver && File.Exists(driver.DriverLocation))
+            if (RuntimeHelper.IsElevated && args.Parameter is DriverModel driver && File.Exists(driver.DriverLocation) && (DriverResultKind is not DriverResultKind.Loading || DriverResultKind is not DriverResultKind.Operating))
             {
+                DriverResultKind oldDriverResultKind = DriverResultKind;
                 DriverResultKind = DriverResultKind.Operating;
                 Guid driverOperationGuid = Guid.NewGuid();
-                DriverOperationCollection.Add(new()
+                DriverOperationModel driverOperation = new()
                 {
                     DriverInfName = driver.DriverInfName,
                     DriverOperation = ForceDeletingDriverString,
                     DriverOperationGuid = driverOperationGuid,
                     IsOperating = true
-                });
-
-                // 强制删除驱动
-                bool needReboot = false;
-                (bool operationResult, Win32Exception win32Exception) = await Task.Run(() =>
+                };
+                DriverOperationCollection.Add(driverOperation);
+                List<(string, string, DriverOperationModel)> driverList = [ValueTuple.Create(driver.DriverOEMInfName, driver.DriverLocation, driverOperation)];
+                (bool needReboot, int successfullyCount, int failedCount) = await DeleteDriverListAsync(true, driverList);
+                if (needReboot)
                 {
-                    bool result = NewDevLibrary.DiUninstallDriver(0, driver.DriverLocation, DIURFLAG.NO_REMOVE_INF, out needReboot) && SetupapiLibrary.SetupUninstallOEMInf(driver.DriverOEMInfName, SUOI_Flags.SUOI_FORCEDELETE, 0);
-                    return result ? ValueTuple.Create<bool, Win32Exception>(result, null) : ValueTuple.Create(result, new Win32Exception(Kernel32Library.GetLastError()));
-                });
-
-                foreach (DriverOperationModel driverOperationItem in DriverOperationCollection)
-                {
-                    if (Equals(driverOperationItem.DriverOperationGuid, driverOperationGuid))
-                    {
-                        driverOperationItem.IsOperating = false;
-                        driverOperationItem.DriverOperation = operationResult ? ForceDeletingDriverSuccessfullyString : string.Format(ForceDeletingDriverFailedString, win32Exception.NativeErrorCode, win32Exception.HResult, win32Exception.Message);
-                        break;
-                    }
+                    ShowRebootNotification(DriverInstallKind.UnInstallDriver);
                 }
-
-                if (operationResult)
-                {
-                    synchronizationContext.Send(async (_) =>
-                    {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ForceDeleteDriverSuccessfully));
-                    }, null);
-
-                    if (needReboot)
-                    {
-                        synchronizationContext.Send(async (_) =>
-                        {
-                            ContentDialogResult contentDialogResult = await MainWindow.Current.ShowDialogAsync(new RebootDialog(DriverInstallKind.UnInstallDriver));
-
-                            await Task.Run(() =>
-                            {
-                                if (contentDialogResult is ContentDialogResult.Primary)
-                                {
-                                    ShutdownHelper.Restart(RestartPCString, TimeSpan.FromSeconds(120));
-                                }
-                            });
-                        }, null);
-                    }
-
-                    await GetDriverAsync();
-                }
-                else
-                {
-                    DriverResultKind = DriverResultKind.Successfully;
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ForceDeleteDriverFailed));
-                }
+                await UpdateDriverOperationResultAsync(DriverInstallKind.UnInstallDriver, false, true, successfullyCount, failedCount, oldDriverResultKind);
             }
         }
 
@@ -535,34 +457,16 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第一部分：ExecuteCommand 命令调用时挂载的事件
+        #endregion 第五部分：命令调用处理
 
-        #region 第二部分：驱动管理页面——挂载的事件
+        #region 第六部分：挂载事件处理
 
         /// <summary>
         /// 以管理员身份运行
         /// </summary>
         private void OnRunAsAdministratorClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    ProcessStartInfo startInfo = new()
-                    {
-                        UseShellExecute = true,
-                        WorkingDirectory = Environment.CurrentDirectory,
-                        Arguments = "--elevated",
-                        FileName = System.Windows.Forms.Application.ExecutablePath,
-                        Verb = "runas"
-                    };
-                    Process.Start(startInfo);
-                }
-                catch
-                {
-                    return;
-                }
-            });
+            RunAsAdministrator();
         }
 
         /// <summary>
@@ -584,17 +488,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnOpenDeviceManagementClicked(object sender, RoutedEventArgs args)
         {
-            Task.Run(() =>
-            {
-                try
-                {
-                    Process.Start("devmgmt.msc");
-                }
-                catch (Exception e)
-                {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(OnOpenDeviceManagementClicked), 1, e);
-                }
-            });
+            OpenDeviceManagement();
         }
 
         /// <summary>
@@ -602,7 +496,10 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
+            if (DriverResultKind is not DriverResultKind.Loading || DriverResultKind is not DriverResultKind.Operating)
+            {
+                SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
+            }
         }
 
         /// <summary>
@@ -632,56 +529,15 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 搜索驱动名称
-        /// </summary>
-        private void OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        {
-            if (!string.IsNullOrEmpty(SearchText) && DriverResultKind is not DriverResultKind.Loading && DriverList.Count > 0)
-            {
-                DriverResultKind = DriverResultKind.Loading;
-                DriverCollection.Clear();
-                foreach (DriverModel driverItem in DriverList)
-                {
-                    if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                    {
-                        DriverCollection.Add(driverItem);
-                    }
-                }
-
-                DriverResultKind = DriverResultKind.Successfully;
-                DriverFailedContent = string.Empty;
-                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
-            }
-        }
-
-        /// <summary>
-        /// 搜索驱动名称内容发生变化事件
-        /// </summary>
-        private void OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-        {
-            SearchText = sender.Text;
-            if (string.IsNullOrEmpty(SearchText) && DriverResultKind is not DriverResultKind.Loading && DriverList.Count > 0)
-            {
-                DriverResultKind = DriverResultKind.Loading;
-                DriverCollection.Clear();
-                foreach (DriverModel driverItem in DriverList)
-                {
-                    DriverCollection.Add(driverItem);
-                }
-
-                DriverResultKind = DriverResultKind.Successfully;
-                DriverFailedContent = string.Empty;
-                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
-            }
-        }
-
-        /// <summary>
         /// 全选
         /// </summary>
         private void OnSelectAllClicked(object sender, RoutedEventArgs args)
         {
-            DriverManagerListView.SelectAll();
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
+            if (DriverResultKind is not DriverResultKind.Loading || DriverResultKind is not DriverResultKind.Operating)
+            {
+                DriverManagerListView.SelectAll();
+                SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
+            }
         }
 
         /// <summary>
@@ -689,8 +545,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectNoneClicked(object sender, RoutedEventArgs args)
         {
-            DriverManagerListView.DeselectRange(new(0, (uint)DriverManagerListView.Items.Count));
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
+            if (DriverResultKind is not DriverResultKind.Loading || DriverResultKind is not DriverResultKind.Operating)
+            {
+                DriverManagerListView.DeselectRange(new(0, (uint)DriverManagerListView.Items.Count));
+                SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
+            }
         }
 
         /// <summary>
@@ -698,21 +557,16 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectReverseClicked(object sender, RoutedEventArgs args)
         {
-            List<object> selectedItemList = [.. DriverManagerListView.SelectedItems];
-
-            foreach (object item in DriverManagerListView.Items)
+            if (DriverResultKind is not DriverResultKind.Loading || DriverResultKind is not DriverResultKind.Operating)
             {
-                if (selectedItemList.Contains(item))
+                List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. DriverManagerListView.SelectedRanges];
+                DriverManagerListView.SelectAll();
+                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
                 {
-                    DriverManagerListView.SelectedItems.Remove(item);
+                    DriverManagerListView.DeselectRange(itemIndexRange);
                 }
-                else
-                {
-                    DriverManagerListView.SelectedItems.Add(item);
-                }
+                SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
             }
-
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
         }
 
         /// <summary>
@@ -731,24 +585,38 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 排序方式
         /// </summary>
-        private void OnSortWayClicked(object sender, RoutedEventArgs args)
+        private async void OnSortWayClicked(object sender, RoutedEventArgs args)
         {
             if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is bool tag)
             {
                 IsIncrease = tag;
-                GetMatchedDrivers();
+                List<DriverModel> sortedDriverList = await GetSortedDriversAsync(SelectedDriverSortRuleKind, IsIncrease, DriverList);
+                foreach (DriverModel sortedDriverItem in sortedDriverList)
+                {
+                    DriverCollection.Add(sortedDriverItem);
+                }
+                DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
+                DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyDescriptionString : string.Empty;
+                SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
             }
         }
 
         /// <summary>
         /// 排序规则
         /// </summary>
-        private void OnSortRuleClicked(object sender, RoutedEventArgs args)
+        private async void OnSortRuleClicked(object sender, RoutedEventArgs args)
         {
             if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is DriverSortRuleKind driverSortRuleKind)
             {
-                SelectedRule = driverSortRuleKind;
-                GetMatchedDrivers();
+                SelectedDriverSortRuleKind = driverSortRuleKind;
+                List<DriverModel> sortedDriverList = await GetSortedDriversAsync(SelectedDriverSortRuleKind, IsIncrease, DriverList);
+                foreach (DriverModel sortedDriverItem in sortedDriverList)
+                {
+                    DriverCollection.Add(sortedDriverItem);
+                }
+                DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
+                DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyDescriptionString : string.Empty;
+                SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
             }
         }
 
@@ -757,7 +625,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnRefreshClicked(object sender, RoutedEventArgs args)
         {
-            await GetDriverAsync();
+            await GetDriverAsync(SelectedDriverSortRuleKind, IsIncrease);
         }
 
         /// <summary>
@@ -774,79 +642,30 @@ namespace PowerToolbox.Views.Pages
                     Filter = DriverFilterConditionString,
                 };
 
-                if (openFileDialog.ShowDialog() is DialogResult.OK && DriverResultKind is not DriverResultKind.Loading)
+                if (openFileDialog.ShowDialog() is DialogResult.OK && (DriverResultKind is not DriverResultKind.Loading || DriverResultKind is not DriverResultKind.Operating))
                 {
                     DriverResultKind oldDriverResultKind = DriverResultKind;
-                    DriverResultKind = DriverResultKind.Loading;
-                    List<Task> addDriverTaskList = [];
-                    Dictionary<Guid, (string fileName, bool result, string driverOperation)> addDriverResultDict = [];
-                    object addDriverResultDictObject = new();
-
+                    DriverResultKind = DriverResultKind.Operating;
+                    List<(string, DriverOperationModel)> driverList = [];
                     foreach (string fileName in openFileDialog.FileNames)
                     {
                         Guid driverOperationGuid = Guid.NewGuid();
-                        DriverOperationCollection.Add(new()
+                        DriverOperationModel driverOperation = new()
                         {
                             DriverInfName = Path.GetFileName(fileName),
                             DriverOperation = AddingDriverString,
                             DriverOperationGuid = driverOperationGuid,
                             IsOperating = true
-                        });
-
-                        addDriverTaskList.Add(Task.Run(() =>
-                        {
-                            StringBuilder stringBuilder = new(260);
-                            uint bufferSize = 0;
-                            bool result = SetupapiLibrary.SetupCopyOEMInf(fileName, null, SPOST.SPOST_PATH, SP_COPY.SP_COPY_NONE, stringBuilder, (uint)stringBuilder.Capacity, ref bufferSize, 0);
-                            Win32Exception win32Exception = new(Kernel32Library.GetLastError());
-                            string driverOperation = result ? AddingDriverSuccessfullyString : string.Format(AddingDriverFailedString, win32Exception.NativeErrorCode, win32Exception.HResult, win32Exception.Message);
-
-                            lock (addDriverResultDictObject)
-                            {
-                                addDriverResultDict.Add(driverOperationGuid, ValueTuple.Create(fileName, result, driverOperation));
-                            }
-
-                            synchronizationContext.Send((_) =>
-                            {
-                                foreach (DriverOperationModel driverOperationItem in DriverOperationCollection)
-                                {
-                                    if (Equals(driverOperationItem.DriverOperationGuid, driverOperationGuid))
-                                    {
-                                        driverOperationItem.DriverOperation = driverOperation;
-                                        driverOperationItem.IsOperating = false;
-                                        break;
-                                    }
-                                }
-                            }, null);
-                        }));
+                        };
+                        DriverOperationCollection.Add(driverOperation);
+                        driverList.Add(ValueTuple.Create(fileName, driverOperation));
                     }
-
-                    await Task.WhenAll([.. addDriverTaskList]);
-
-                    if (addDriverResultDict.Values.Any(item => item.result))
+                    (bool needReboot, int successfullyCount, int failedCount) = await AddDriverListAsync(false, driverList);
+                    if (needReboot)
                     {
-                        if (addDriverResultDict.Values.All(item => item.result))
-                        {
-                            synchronizationContext.Send(async (_) =>
-                            {
-                                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.AddDriverAllSuccessfully));
-                            }, null);
-                        }
-                        else
-                        {
-                            synchronizationContext.Send(async (_) =>
-                            {
-                                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.AddDriverPartialSuccessfully));
-                            }, null);
-                        }
-
-                        await GetDriverAsync();
+                        ShowRebootNotification(DriverInstallKind.InstallDriver);
                     }
-                    else
-                    {
-                        DriverResultKind = oldDriverResultKind;
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.AddDriverFailed));
-                    }
+                    await UpdateDriverOperationResultAsync(DriverInstallKind.InstallDriver, false, false, successfullyCount, failedCount, oldDriverResultKind);
                 }
             }
         }
@@ -865,96 +684,30 @@ namespace PowerToolbox.Views.Pages
                     Filter = DriverFilterConditionString,
                 };
 
-                if (openFileDialog.ShowDialog() is DialogResult.OK && DriverResultKind is not DriverResultKind.Loading)
+                if (openFileDialog.ShowDialog() is DialogResult.OK && (DriverResultKind is not DriverResultKind.Loading || DriverResultKind is DriverResultKind.Operating))
                 {
-                    bool needReboot = false;
                     DriverResultKind oldDriverResultKind = DriverResultKind;
-                    DriverResultKind = DriverResultKind.Loading;
-                    List<Task> addInstallDriverTaskList = [];
-                    Dictionary<Guid, (string fileName, bool result, string driverOperation)> addInstallDriverResultDict = [];
-                    object addInstallDriverResultDictObject = new();
-
+                    DriverResultKind = DriverResultKind.Operating;
+                    List<(string, DriverOperationModel)> driverList = [];
                     foreach (string fileName in openFileDialog.FileNames)
                     {
                         Guid driverOperationGuid = Guid.NewGuid();
-
-                        DriverOperationCollection.Add(new()
+                        DriverOperationModel driverOperation = new()
                         {
                             DriverInfName = Path.GetFileName(fileName),
                             DriverOperation = AddInstallingDriverString,
                             DriverOperationGuid = driverOperationGuid,
                             IsOperating = true
-                        });
-
-                        addInstallDriverTaskList.Add(Task.Run(() =>
-                        {
-                            StringBuilder stringBuilder = new(260);
-                            uint bufferSize = 0;
-                            bool result = NewDevLibrary.DiInstallDriver(0, fileName, 0, out bool NeedReboot) && SetupapiLibrary.SetupCopyOEMInf(fileName, null, SPOST.SPOST_PATH, SP_COPY.SP_COPY_NONE, stringBuilder, (uint)stringBuilder.Capacity, ref bufferSize, 0);
-                            Win32Exception win32Exception = new(Kernel32Library.GetLastError());
-                            string driverOperation = result ? AddInstallingDriverSuccessfullyString : string.Format(AddInstallingDriverFailedString, win32Exception.NativeErrorCode, win32Exception.HResult, win32Exception.Message);
-                            lock (addInstallDriverResultDictObject)
-                            {
-                                addInstallDriverResultDict.Add(driverOperationGuid, ValueTuple.Create(fileName, result, driverOperation));
-                            }
-
-                            synchronizationContext.Send((_) =>
-                            {
-                                foreach (DriverOperationModel driverOperationItem in DriverOperationCollection)
-                                {
-                                    if (Equals(driverOperationItem.DriverOperationGuid, driverOperationGuid))
-                                    {
-                                        driverOperationItem.DriverOperation = driverOperation;
-                                        driverOperationItem.IsOperating = false;
-                                        break;
-                                    }
-                                }
-                            }, null);
-                        }));
+                        };
+                        DriverOperationCollection.Add(driverOperation);
+                        driverList.Add(ValueTuple.Create(fileName, driverOperation));
                     }
-
-                    await Task.WhenAll([.. addInstallDriverTaskList]);
-
-                    if (addInstallDriverResultDict.Values.Any(item => item.result))
+                    (bool needReboot, int successfullyCount, int failedCount) = await AddDriverListAsync(true, driverList);
+                    if (needReboot)
                     {
-                        if (addInstallDriverResultDict.Values.All(item => item.result))
-                        {
-                            synchronizationContext.Send(async (_) =>
-                            {
-                                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.AddInstallDriverAllSuccessfully));
-                            }, null);
-                        }
-                        else
-                        {
-                            synchronizationContext.Send(async (_) =>
-                            {
-                                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.AddInstallDriverPartialSuccessfully));
-                            }, null);
-                        }
-
-                        if (needReboot)
-                        {
-                            synchronizationContext.Send(async (_) =>
-                            {
-                                ContentDialogResult contentDialogResult = await MainWindow.Current.ShowDialogAsync(new RebootDialog(DriverInstallKind.InstallDriver));
-
-                                await Task.Run(() =>
-                                {
-                                    if (contentDialogResult is ContentDialogResult.Primary)
-                                    {
-                                        ShutdownHelper.Restart(RestartPCString, TimeSpan.FromSeconds(120));
-                                    }
-                                });
-                            }, null);
-                        }
-
-                        await GetDriverAsync();
+                        ShowRebootNotification(DriverInstallKind.InstallDriver);
                     }
-                    else
-                    {
-                        DriverResultKind = oldDriverResultKind;
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.AddInstallDriverFailed));
-                    }
+                    await UpdateDriverOperationResultAsync(DriverInstallKind.InstallDriver, true, false, successfullyCount, failedCount, oldDriverResultKind);
                 }
             }
         }
@@ -967,7 +720,6 @@ namespace PowerToolbox.Views.Pages
             if (RuntimeHelper.IsElevated)
             {
                 List<DriverModel> selectedDriverList = [];
-
                 foreach (object item in DriverManagerListView.SelectedItems)
                 {
                     if (item is DriverModel driverItem)
@@ -982,73 +734,30 @@ namespace PowerToolbox.Views.Pages
                     return;
                 }
 
-                DriverResultKind oldDriverResultKind = DriverResultKind;
-                DriverResultKind = DriverResultKind.Operating;
-                List<Task> deleteDriverTaskList = [];
-                Dictionary<Guid, (string driverInfName, bool result, string driverOperation)> deleteDriverResultDict = [];
-                object deleteDriverResultDictLock = new();
-
-                foreach (DriverModel driverItem in selectedDriverList)
+                if (RuntimeHelper.IsElevated && (DriverResultKind is not DriverResultKind.Loading || DriverResultKind is not DriverResultKind.Operating))
                 {
-                    Guid driverOperationGuid = Guid.NewGuid();
-                    DriverOperationCollection.Add(new()
+                    DriverResultKind oldDriverResultKind = DriverResultKind;
+                    DriverResultKind = DriverResultKind.Operating;
+                    List<(string, string, DriverOperationModel)> driverList = [];
+                    foreach (DriverModel driverItem in selectedDriverList)
                     {
-                        DriverInfName = driverItem.DriverInfName,
-                        DriverOperation = DeletingDriverString,
-                        DriverOperationGuid = driverOperationGuid,
-                        IsOperating = true
-                    });
-
-                    deleteDriverTaskList.Add(Task.Run(() =>
-                    {
-                        bool result = SetupapiLibrary.SetupUninstallOEMInf(driverItem.DriverOEMInfName, SUOI_Flags.SUOI_NONE, 0);
-                        Win32Exception win32Exception = new(Kernel32Library.GetLastError());
-                        string driverOperation = result ? DeletingDriverSuccessfullyString : string.Format(DeletingDriverFailedString, win32Exception.NativeErrorCode, win32Exception.HResult, win32Exception.Message);
-                        lock (deleteDriverResultDictLock)
+                        Guid driverOperationGuid = Guid.NewGuid();
+                        DriverOperationModel driverOperation = new()
                         {
-                            deleteDriverResultDict.Add(driverOperationGuid, ValueTuple.Create(driverItem.DriverInfName, result, driverOperation));
-                        }
-
-                        synchronizationContext.Send((_) =>
-                        {
-                            foreach (DriverOperationModel driverOperationItem in DriverOperationCollection)
-                            {
-                                if (Equals(driverOperationItem.DriverOperationGuid, driverOperationGuid))
-                                {
-                                    driverOperationItem.DriverOperation = driverOperation;
-                                    driverOperationItem.IsOperating = false;
-                                    break;
-                                }
-                            }
-                        }, null);
-                    }));
-                }
-
-                await Task.WhenAll([.. deleteDriverTaskList]);
-
-                if (deleteDriverResultDict.Values.Any(item => item.result))
-                {
-                    if (deleteDriverResultDict.Values.All(item => item.result))
-                    {
-                        synchronizationContext.Send(async (_) =>
-                        {
-                            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DeleteDriverAllSuccessfully));
-                        }, null);
+                            DriverInfName = driverItem.DriverInfName,
+                            DriverOperation = DeletingDriverString,
+                            DriverOperationGuid = driverOperationGuid,
+                            IsOperating = true
+                        };
+                        DriverOperationCollection.Add(driverOperation);
+                        driverList.Add(ValueTuple.Create(driverItem.DriverOEMInfName, driverItem.DriverLocation, driverOperation));
                     }
-                    else
+                    (bool needReboot, int successfullyCount, int failedCount) = await DeleteDriverListAsync(false, driverList);
+                    if (needReboot)
                     {
-                        synchronizationContext.Send(async (_) =>
-                        {
-                            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DeleteDriverPartialSuccessfully));
-                        }, null);
+                        ShowRebootNotification(DriverInstallKind.UnInstallDriver);
                     }
-
-                    await GetDriverAsync();
-                }
-                else
-                {
-                    DriverResultKind = oldDriverResultKind;
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DeleteDriverFailed));
+                    await UpdateDriverOperationResultAsync(DriverInstallKind.UnInstallDriver, false, false, successfullyCount, failedCount, oldDriverResultKind);
                 }
             }
         }
@@ -1076,97 +785,30 @@ namespace PowerToolbox.Views.Pages
                     return;
                 }
 
-                bool needReboot = false;
-                DriverResultKind oldDriverResultKind = DriverResultKind;
-                DriverResultKind = DriverResultKind.Operating;
-                List<Task> forceDeleteDriverTaskList = [];
-                Dictionary<Guid, (string driverInfName, bool result, string driverOperation)> forceDeleteDriverResultDict = [];
-                object forceDeleteDriverResultDictLock = new();
-
-                foreach (DriverModel driverItem in selectedDriverList)
+                if (RuntimeHelper.IsElevated && (DriverResultKind is not DriverResultKind.Loading || DriverResultKind is not DriverResultKind.Operating))
                 {
-                    Guid driverOperationGuid = Guid.NewGuid();
-
-                    DriverOperationCollection.Add(new()
+                    DriverResultKind oldDriverResultKind = DriverResultKind;
+                    DriverResultKind = DriverResultKind.Operating;
+                    List<(string, string, DriverOperationModel)> driverList = [];
+                    foreach (DriverModel driverItem in selectedDriverList)
                     {
-                        DriverInfName = driverItem.DriverInfName,
-                        DriverOperation = ForceDeletingDriverString,
-                        DriverOperationGuid = driverOperationGuid,
-                        IsOperating = true
-                    });
-
-                    forceDeleteDriverTaskList.Add(Task.Run(() =>
-                    {
-                        bool result = NewDevLibrary.DiUninstallDriver(0, driverItem.DriverLocation, DIURFLAG.NO_REMOVE_INF, out bool NeedReboot) && SetupapiLibrary.SetupUninstallOEMInf(driverItem.DriverOEMInfName, SUOI_Flags.SUOI_FORCEDELETE, 0);
-                        Win32Exception win32Exception = new(Kernel32Library.GetLastError());
-                        string driverOperation = result ? ForceDeletingDriverSuccessfullyString : string.Format(ForceDeletingDriverFailedString, win32Exception.NativeErrorCode, win32Exception.HResult, win32Exception.Message);
-                        lock (forceDeleteDriverResultDictLock)
+                        Guid driverOperationGuid = Guid.NewGuid();
+                        DriverOperationModel driverOperation = new()
                         {
-                            forceDeleteDriverResultDict.Add(driverOperationGuid, ValueTuple.Create(driverItem.DriverInfName, result, driverOperation));
-                        }
-
-                        if (NeedReboot)
-                        {
-                            needReboot = NeedReboot;
-                        }
-
-                        synchronizationContext.Send((_) =>
-                        {
-                            foreach (DriverOperationModel driverOperationItem in DriverOperationCollection)
-                            {
-                                if (Equals(driverOperationItem.DriverOperationGuid, driverOperationGuid))
-                                {
-                                    driverOperationItem.DriverOperation = driverOperation;
-                                    driverOperationItem.IsOperating = false;
-                                    break;
-                                }
-                            }
-                        }, null);
-                    }));
-                }
-
-                await Task.WhenAll([.. forceDeleteDriverTaskList]);
-
-                if (forceDeleteDriverResultDict.Values.Any(item => item.result))
-                {
-                    if (forceDeleteDriverResultDict.Values.All(item => item.result))
-                    {
-                        synchronizationContext.Send(async (_) =>
-                        {
-                            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ForceDeleteDriverAllSuccessfully));
-                        }, null);
+                            DriverInfName = driverItem.DriverInfName,
+                            DriverOperation = ForceDeletingDriverString,
+                            DriverOperationGuid = driverOperationGuid,
+                            IsOperating = true
+                        };
+                        DriverOperationCollection.Add(driverOperation);
+                        driverList.Add(ValueTuple.Create(driverItem.DriverOEMInfName, driverItem.DriverLocation, driverOperation));
                     }
-                    else
-                    {
-                        synchronizationContext.Send(async (_) =>
-                        {
-                            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ForceDeleteDriverPartialSuccessfully));
-                        }, null);
-                    }
-
-                    // 添加重启提示
+                    (bool needReboot, int successfullyCount, int failedCount) = await DeleteDriverListAsync(false, driverList);
                     if (needReboot)
                     {
-                        synchronizationContext.Send(async (_) =>
-                        {
-                            ContentDialogResult contentDialogResult = await MainWindow.Current.ShowDialogAsync(new RebootDialog(DriverInstallKind.UnInstallDriver));
-
-                            await Task.Run(() =>
-                            {
-                                if (contentDialogResult is ContentDialogResult.Primary)
-                                {
-                                    ShutdownHelper.Restart(RestartPCString, TimeSpan.FromSeconds(120));
-                                }
-                            });
-                        }, null);
+                        ShowRebootNotification(DriverInstallKind.UnInstallDriver);
                     }
-
-                    await GetDriverAsync();
-                }
-                else
-                {
-                    DriverResultKind = oldDriverResultKind;
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ForceDeleteDriverFailed));
+                    await UpdateDriverOperationResultAsync(DriverInstallKind.UnInstallDriver, false, true, successfullyCount, failedCount, oldDriverResultKind);
                 }
             }
         }
@@ -1177,482 +819,292 @@ namespace PowerToolbox.Views.Pages
         private void OnSelectOldDriverClicked(object sender, RoutedEventArgs args)
         {
             DriverManagerListView.SelectedItems.Clear();
-            IEnumerable<IGrouping<string, DriverModel>> driverInfGroupInfoList = DriverCollection.GroupBy(item => item.DriverInfName);
-
-            foreach (IGrouping<string, DriverModel> driverInfGroupInfo in driverInfGroupInfoList)
+            Dictionary<string, List<(int Index, DateTimeOffset DriverDate)>> driverInfGroupInfoList = [];
+            for (int index = 0; index < DriverCollection.Count; index++)
             {
-                if (driverInfGroupInfo.Count() <= 1)
+                DriverModel driverItem = DriverCollection[index];
+
+                if (!driverInfGroupInfoList.TryGetValue(driverItem.DriverInfName, out List<(int Index, DateTimeOffset DriverDate)> driverList))
+                {
+                    driverList = [];
+                    driverInfGroupInfoList.Add(driverItem.DriverInfName, driverList);
+                }
+
+                driverList.Add((index, driverItem.DriverDate));
+            }
+
+            List<int> selectedIndexList = [];
+            foreach (List<(int Index, DateTimeOffset DriverDate)> driverList in driverInfGroupInfoList.Values)
+            {
+                if (driverList.Count <= 1)
                 {
                     continue;
                 }
 
-                DateTimeOffset latestDate = driverInfGroupInfo.Max(item => item.DriverDate);
+                DateTimeOffset latestDate = driverList.Max(item => item.DriverDate);
 
-                foreach (DriverModel driverItem in driverInfGroupInfo)
+                foreach ((int Index, DateTimeOffset DriverDate) in driverList)
                 {
-                    if (driverItem.DriverDate < latestDate)
+                    if (DriverDate < latestDate)
                     {
-                        DriverManagerListView.SelectedItems.Add(driverItem);
+                        selectedIndexList.Add(Index);
                     }
                 }
             }
 
-            DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
+            foreach (int index in selectedIndexList)
+            {
+                DriverManagerListView.SelectRange(new(index, 1));
+            }
+            SelectedItemsCount = selectedIndexList.Count;
         }
 
-        #endregion 第二部分：驱动管理页面——挂载的事件
+        #endregion 第六部分：挂载事件处理
+
+        #region 第七部分：数据操作与业务逻辑
 
         /// <summary>
         /// 初始化数据
         /// </summary>
-        private async Task GetDriverAsync()
+        private async Task GetDriverAsync(DriverSortRuleKind driverSortRuleKind, bool isIncrease)
         {
             if (DriverResultKind is not DriverResultKind.Loading)
             {
                 DriverResultKind = DriverResultKind.Loading;
                 DriverList.Clear();
                 DriverCollection.Clear();
-                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
+                SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
+                List<DriverModel> driverList = await GetDriverInformationListAsync();
 
-                List<DriverModel> driverList = await Task.Run(() =>
-                {
-                    List<DriverModel> driverList = GetDriverInformationList();
-                    driverList.Sort((item1, item2) => item1.DriverOEMInfName.CompareTo(item2.DriverOEMInfName));
-                    return driverList;
-                });
-
-                DriverList.AddRange(driverList);
-
-                if (DriverList.Count is 0)
+                if (driverList.Count is 0)
                 {
                     DriverResultKind = DriverResultKind.Failed;
                     DriverFailedContent = DriverEmptyDescriptionString;
                 }
                 else
                 {
-                    if (Equals(SelectedRule, DriverSortRuleKind.DeviceName))
+                    DriverList.AddRange(driverList);
+                    List<DriverModel> sortedDriverList = await GetSortedDriversAsync(driverSortRuleKind, isIncrease, DriverList);
+                    foreach (DriverModel sortedDriverItem in sortedDriverList)
                     {
-                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DeviceName) : DriverList.OrderByDescending(item => item.DeviceName))
-                        {
-                            if (string.IsNullOrEmpty(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                            else
-                            {
-                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                                {
-                                    DriverCollection.Add(driverItem);
-                                }
-                            }
-                        }
+                        DriverCollection.Add(sortedDriverItem);
                     }
-                    else if (Equals(SelectedRule, DriverSortRuleKind.InfName))
-                    {
-                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverInfName) : DriverList.OrderByDescending(item => item.DriverInfName))
-                        {
-                            if (string.IsNullOrEmpty(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                            else
-                            {
-                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                                {
-                                    DriverCollection.Add(driverItem);
-                                }
-                            }
-                        }
-                    }
-                    else if (Equals(SelectedRule, DriverSortRuleKind.OEMInfName))
-                    {
-                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverOEMInfName) : DriverList.OrderByDescending(item => item.DriverOEMInfName))
-                        {
-                            if (string.IsNullOrEmpty(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                            else
-                            {
-                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                                {
-                                    DriverCollection.Add(driverItem);
-                                }
-                            }
-                        }
-                    }
-                    else if (Equals(SelectedRule, DriverSortRuleKind.DeviceType))
-                    {
-                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverType) : DriverList.OrderByDescending(item => item.DriverType))
-                        {
-                            if (string.IsNullOrEmpty(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                            else
-                            {
-                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                                {
-                                    DriverCollection.Add(driverItem);
-                                }
-                            }
-                        }
-                    }
-                    else if (Equals(SelectedRule, DriverSortRuleKind.Manufacturer))
-                    {
-                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverManufacturer) : DriverList.OrderByDescending(item => item.DriverManufacturer))
-                        {
-                            if (string.IsNullOrEmpty(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                            else
-                            {
-                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                                {
-                                    DriverCollection.Add(driverItem);
-                                }
-                            }
-                        }
-                    }
-                    else if (Equals(SelectedRule, DriverSortRuleKind.Manufacturer))
-                    {
-                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverVersion) : DriverList.OrderByDescending(item => item.DriverVersion))
-                        {
-                            if (string.IsNullOrEmpty(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                            else
-                            {
-                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                                {
-                                    DriverCollection.Add(driverItem);
-                                }
-                            }
-                        }
-                    }
-                    else if (Equals(SelectedRule, DriverSortRuleKind.Date))
-                    {
-                        foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverDate) : DriverList.OrderByDescending(item => item.DriverDate))
-                        {
-                            if (string.IsNullOrEmpty(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                            else
-                            {
-                                if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                                {
-                                    DriverCollection.Add(driverItem);
-                                }
-                            }
-                        }
-                    }
-
                     DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
-                    DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyWithConditionDescriptionString : string.Empty;
-                    DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
+                    DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyDescriptionString : string.Empty;
+                    SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
                 }
-            }
-        }
-
-        /// <summary>
-        /// 检索符合条件的驱动
-        /// </summary>
-        private void GetMatchedDrivers()
-        {
-            if (DriverResultKind is not DriverResultKind.Loading && DriverList.Count > 0)
-            {
-                DriverResultKind = DriverResultKind.Loading;
-                DriverCollection.Clear();
-
-                if (Equals(SelectedRule, DriverSortRuleKind.DeviceName))
-                {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DeviceName) : DriverList.OrderByDescending(item => item.DeviceName))
-                    {
-                        if (string.IsNullOrEmpty(SearchText))
-                        {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                        }
-                    }
-                }
-                else if (Equals(SelectedRule, DriverSortRuleKind.InfName))
-                {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverInfName) : DriverList.OrderByDescending(item => item.DriverInfName))
-                    {
-                        if (string.IsNullOrEmpty(SearchText))
-                        {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                        }
-                    }
-                }
-                else if (Equals(SelectedRule, DriverSortRuleKind.OEMInfName))
-                {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverOEMInfName) : DriverList.OrderByDescending(item => item.DriverOEMInfName))
-                    {
-                        if (string.IsNullOrEmpty(SearchText))
-                        {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                        }
-                    }
-                }
-                else if (Equals(SelectedRule, DriverSortRuleKind.DeviceType))
-                {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverType) : DriverList.OrderByDescending(item => item.DriverType))
-                    {
-                        if (string.IsNullOrEmpty(SearchText))
-                        {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                        }
-                    }
-                }
-                else if (Equals(SelectedRule, DriverSortRuleKind.Manufacturer))
-                {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverManufacturer) : DriverList.OrderByDescending(item => item.DriverManufacturer))
-                    {
-                        if (string.IsNullOrEmpty(SearchText))
-                        {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                        }
-                    }
-                }
-                else if (Equals(SelectedRule, DriverSortRuleKind.Manufacturer))
-                {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverVersion) : DriverList.OrderByDescending(item => item.DriverVersion))
-                    {
-                        if (string.IsNullOrEmpty(SearchText))
-                        {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                        }
-                    }
-                }
-                else if (Equals(SelectedRule, DriverSortRuleKind.Date))
-                {
-                    foreach (DriverModel driverItem in IsIncrease ? DriverList.OrderBy(item => item.DriverDate) : DriverList.OrderByDescending(item => item.DriverDate))
-                    {
-                        if (string.IsNullOrEmpty(SearchText))
-                        {
-                            DriverCollection.Add(driverItem);
-                        }
-                        else
-                        {
-                            if (driverItem.DeviceName.Contains(SearchText) || driverItem.DriverInfName.Contains(SearchText) || driverItem.DriverOEMInfName.Contains(SearchText) || driverItem.DriverManufacturer.Contains(SearchText))
-                            {
-                                DriverCollection.Add(driverItem);
-                            }
-                        }
-                    }
-                }
-
-                DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
-                DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyWithConditionDescriptionString : string.Empty;
-                DriverDescription = string.Format(DriverInformationString, DriverCollection.Count, DriverManagerListView.SelectedItems.Count);
             }
         }
 
         /// <summary>
         /// 获取设备上所有的驱动信息
         /// </summary>
-        private List<DriverModel> GetDriverInformationList()
+        private async Task<List<DriverModel>> GetDriverInformationListAsync()
         {
-            List<DriverModel> driverList = [];
-
-            try
+            return await Task.Run(() =>
             {
-                ProcessStartInfo startInfo = new()
+                List<DriverModel> driverList = [];
+
+                try
                 {
-                    FileName = "pnputil.exe",
-                    Arguments = @"/enum-drivers /format ""xml""",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true,
-                    StandardOutputEncoding = Encoding.UTF8,
-                    StandardErrorEncoding = Encoding.UTF8
-                };
-
-                Process process = Process.Start(startInfo);
-                StreamReader streamReader = process.StandardOutput;
-                string driverString = streamReader.ReadToEnd();
-                process.WaitForExit();
-                process.Dispose();
-
-                XDocument xDocument = XDocument.Parse(driverString);
-                List<PnpDriverInformation> pnpDriverInformationList = [];
-
-                if (xDocument is not null)
-                {
-                    List<XElement> driverNodeList = [.. xDocument.Descendants("Driver")];
-
-                    foreach (XElement driverNode in driverNodeList)
+                    ProcessStartInfo startInfo = new()
                     {
-                        PnpDriverInformation pnpDriverInformation = new();
+                        FileName = "pnputil.exe",
+                        Arguments = @"/enum-drivers /format ""xml""",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        CreateNoWindow = true,
+                        StandardOutputEncoding = Encoding.UTF8,
+                        StandardErrorEncoding = Encoding.UTF8
+                    };
 
-                        if (driverNode.Attribute("DriverName") is XAttribute driverNameAttribute)
+                    Process process = Process.Start(startInfo);
+                    StreamReader streamReader = process.StandardOutput;
+                    string driverString = streamReader.ReadToEnd();
+                    process.WaitForExit();
+                    process.Dispose();
+
+                    XDocument xDocument = XDocument.Parse(driverString);
+                    List<PnpDriverInformation> pnpDriverInformationList = [];
+
+                    if (xDocument is not null)
+                    {
+                        List<XElement> driverNodeList = [.. xDocument.Descendants("Driver")];
+
+                        foreach (XElement driverNode in driverNodeList)
                         {
-                            pnpDriverInformation.DriverName = driverNameAttribute.Value;
-                        }
+                            PnpDriverInformation pnpDriverInformation = new();
 
-                        if (driverNode.Element("OriginalName") is XElement driverNameElement)
-                        {
-                            pnpDriverInformation.OriginalName = driverNameElement.Value;
-                        }
-
-                        if (driverNode.Element("ProviderName") is XElement providerNameElement)
-                        {
-                            pnpDriverInformation.ProviderName = providerNameElement.Value;
-                        }
-
-                        if (driverNode.Element("ClassName") is XElement classNameElement)
-                        {
-                            pnpDriverInformation.ClassName = classNameElement.Value;
-                        }
-
-                        if (driverNode.Element("ClassGuid") is XElement classGuidElement)
-                        {
-                            pnpDriverInformation.ClassGuid = classGuidElement.Value;
-                        }
-
-                        if (driverNode.Element("DriverVersion") is XElement driverVersionElement)
-                        {
-                            string[] driverVersionArray = driverVersionElement.Value.Split(' ');
-
-                            if (driverVersionArray.Length is 2)
+                            if (driverNode.Attribute("DriverName") is XAttribute driverNameAttribute)
                             {
-                                pnpDriverInformation.DriverDate = driverVersionArray[0];
-                                pnpDriverInformation.DriverVersion = driverVersionArray[1];
+                                pnpDriverInformation.DriverName = driverNameAttribute.Value;
+                            }
+
+                            if (driverNode.Element("OriginalName") is XElement driverNameElement)
+                            {
+                                pnpDriverInformation.OriginalName = driverNameElement.Value;
+                            }
+
+                            if (driverNode.Element("ProviderName") is XElement providerNameElement)
+                            {
+                                pnpDriverInformation.ProviderName = providerNameElement.Value;
+                            }
+
+                            if (driverNode.Element("ClassName") is XElement classNameElement)
+                            {
+                                pnpDriverInformation.ClassName = classNameElement.Value;
+                            }
+
+                            if (driverNode.Element("ClassGuid") is XElement classGuidElement)
+                            {
+                                pnpDriverInformation.ClassGuid = classGuidElement.Value;
+                            }
+
+                            if (driverNode.Element("DriverVersion") is XElement driverVersionElement)
+                            {
+                                string[] driverVersionArray = driverVersionElement.Value.Split(' ');
+
+                                if (driverVersionArray.Length is 2)
+                                {
+                                    pnpDriverInformation.DriverDate = driverVersionArray[0];
+                                    pnpDriverInformation.DriverVersion = driverVersionArray[1];
+                                }
+                            }
+
+                            if (driverNode.Element("SignerName") is XElement signerNameElement)
+                            {
+                                pnpDriverInformation.SignerName = signerNameElement.Value;
+                            }
+
+                            pnpDriverInformationList.Add(pnpDriverInformation);
+                        }
+                    }
+
+                    List<SystemDriverInformation> systemDriverInformationList = [];
+                    nint deviceInfoSet = SetupapiLibrary.SetupDiGetClassDevs(Guid.Empty, null, 0, DIGCF.DIGCF_ALLCLASSES);
+
+                    if (deviceInfoSet is not 0)
+                    {
+                        SP_DEVINFO_DATA deviceInfoData = new()
+                        {
+                            cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>(),
+                        };
+
+                        // 枚举所有设备
+                        for (int index = 0; SetupapiLibrary.SetupDiEnumDeviceInfo(deviceInfoSet, index, ref deviceInfoData); index++)
+                        {
+                            object deviceGuid = GetDevNodeProperty("DEVPKEY_Device_ClassGuid", deviceInfoData, deviceInfoSet);
+                            object deviceDesc = GetDevNodeProperty("DEVPKEY_Device_DeviceDesc", deviceInfoData, deviceInfoSet);
+                            object driverInfPath = GetDevNodeProperty("DEVPKEY_Device_DriverInfPath", deviceInfoData, deviceInfoSet);
+                            object driverDate = GetDevNodeProperty("DEVPKEY_Device_DriverDate", deviceInfoData, deviceInfoSet);
+                            object driverVersion = GetDevNodeProperty("DEVPKEY_Device_DriverVersion", deviceInfoData, deviceInfoSet);
+
+                            if (deviceGuid is not null && deviceDesc is not null && driverInfPath is not null && driverDate is not null && driverVersion is not null)
+                            {
+                                systemDriverInformationList.Add(new()
+                                {
+                                    DeviceGuid = deviceGuid is null ? Guid.NewGuid() : Guid.TryParse(Convert.ToString(deviceGuid), out Guid guid) ? guid : Guid.NewGuid(),
+                                    Description = Convert.ToString(deviceDesc),
+                                    InfPath = Convert.ToString(driverInfPath),
+                                    Date = (DateTimeOffset)driverDate,
+                                    Version = new(Convert.ToString(driverVersion))
+                                });
                             }
                         }
 
-                        if (driverNode.Element("SignerName") is XElement signerNameElement)
-                        {
-                            pnpDriverInformation.SignerName = signerNameElement.Value;
-                        }
-
-                        pnpDriverInformationList.Add(pnpDriverInformation);
+                        SetupapiLibrary.SetupDiDestroyDeviceInfoList(deviceInfoSet);
                     }
-                }
 
-                List<SystemDriverInformation> systemDriverInformationList = [];
-                nint deviceInfoSet = SetupapiLibrary.SetupDiGetClassDevs(Guid.Empty, null, 0, DIGCF.DIGCF_ALLCLASSES);
-
-                if (deviceInfoSet is not 0)
-                {
-                    SP_DEVINFO_DATA deviceInfoData = new()
+                    foreach (PnpDriverInformation pnpDriverInformationItem in pnpDriverInformationList)
                     {
-                        cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>(),
-                    };
+                        string driverLocation = GetDriverStoreLocation(pnpDriverInformationItem.DriverName);
 
-                    // 枚举所有设备
-                    for (int index = 0; SetupapiLibrary.SetupDiEnumDeviceInfo(deviceInfoSet, index, ref deviceInfoData); index++)
-                    {
-                        object deviceGuid = GetDevNodeProperty("DEVPKEY_Device_ClassGuid", deviceInfoData, deviceInfoSet);
-                        object deviceDesc = GetDevNodeProperty("DEVPKEY_Device_DeviceDesc", deviceInfoData, deviceInfoSet);
-                        object driverInfPath = GetDevNodeProperty("DEVPKEY_Device_DriverInfPath", deviceInfoData, deviceInfoSet);
-                        object driverDate = GetDevNodeProperty("DEVPKEY_Device_DriverDate", deviceInfoData, deviceInfoSet);
-                        object driverVersion = GetDevNodeProperty("DEVPKEY_Device_DriverVersion", deviceInfoData, deviceInfoSet);
-
-                        if (deviceGuid is not null && deviceDesc is not null && driverInfPath is not null && driverDate is not null && driverVersion is not null)
+                        DriverModel driverItem = new()
                         {
-                            systemDriverInformationList.Add(new()
+                            DriverInfName = pnpDriverInformationItem.OriginalName,
+                            DriverOEMInfName = pnpDriverInformationItem.DriverName,
+                            DriverManufacturer = pnpDriverInformationItem.ProviderName,
+                            DriverDate = DateTimeOffset.Parse(pnpDriverInformationItem.DriverDate),
+                            DriverVersion = new(pnpDriverInformationItem.DriverVersion),
+                            DriverSize = string.IsNullOrEmpty(driverLocation) ? "0B" : VolumeSizeHelper.ConvertVolumeSizeToString(GetFolderSize(Path.GetDirectoryName(driverLocation))),
+                            DriverLocation = driverLocation,
+                            DriverType = pnpDriverInformationItem.ClassName,
+                            SignatureName = string.IsNullOrEmpty(pnpDriverInformationItem.SignerName) ? NotAvailableString : pnpDriverInformationItem.SignerName,
+                        };
+
+                        Guid dismDriverPackageItemGuid = new(pnpDriverInformationItem.ClassGuid);
+
+                        foreach (SystemDriverInformation systemDriverInformation in systemDriverInformationList)
+                        {
+                            if (Equals(dismDriverPackageItemGuid, systemDriverInformation.DeviceGuid) && string.Equals(driverItem.DriverOEMInfName, systemDriverInformation.InfPath, StringComparison.OrdinalIgnoreCase) && driverItem.DriverDate.Date.Equals(systemDriverInformation.Date.Date) && driverItem.DriverVersion.Equals(systemDriverInformation.Version))
                             {
-                                DeviceGuid = deviceGuid is null ? Guid.NewGuid() : Guid.TryParse(Convert.ToString(deviceGuid), out Guid guid) ? guid : Guid.NewGuid(),
-                                Description = Convert.ToString(deviceDesc),
-                                InfPath = Convert.ToString(driverInfPath),
-                                Date = (DateTimeOffset)driverDate,
-                                Version = new(Convert.ToString(driverVersion))
-                            });
+                                driverItem.DeviceName = string.IsNullOrEmpty(systemDriverInformation.Description) ? NotAvailableString : systemDriverInformation.Description;
+                                break;
+                            }
                         }
-                    }
 
-                    SetupapiLibrary.SetupDiDestroyDeviceInfoList(deviceInfoSet);
-                }
-
-                foreach (PnpDriverInformation pnpDriverInformationItem in pnpDriverInformationList)
-                {
-                    string driverLocation = GetDriverStoreLocation(pnpDriverInformationItem.DriverName);
-
-                    DriverModel driverItem = new()
-                    {
-                        DriverInfName = pnpDriverInformationItem.OriginalName,
-                        DriverOEMInfName = pnpDriverInformationItem.DriverName,
-                        DriverManufacturer = pnpDriverInformationItem.ProviderName,
-                        DriverDate = DateTimeOffset.Parse(pnpDriverInformationItem.DriverDate),
-                        DriverVersion = new(pnpDriverInformationItem.DriverVersion),
-                        DriverSize = string.IsNullOrEmpty(driverLocation) ? "0B" : VolumeSizeHelper.ConvertVolumeSizeToString(GetFolderSize(Path.GetDirectoryName(driverLocation))),
-                        DriverLocation = driverLocation,
-                        DriverType = pnpDriverInformationItem.ClassName,
-                        SignatureName = string.IsNullOrEmpty(pnpDriverInformationItem.SignerName) ? NotAvailableString : pnpDriverInformationItem.SignerName,
-                    };
-
-                    Guid dismDriverPackageItemGuid = new(pnpDriverInformationItem.ClassGuid);
-
-                    foreach (SystemDriverInformation systemDriverInformation in systemDriverInformationList)
-                    {
-                        if (Equals(dismDriverPackageItemGuid, systemDriverInformation.DeviceGuid) && string.Equals(driverItem.DriverOEMInfName, systemDriverInformation.InfPath, StringComparison.OrdinalIgnoreCase) && driverItem.DriverDate.Date.Equals(systemDriverInformation.Date.Date) && driverItem.DriverVersion.Equals(systemDriverInformation.Version))
+                        if (string.IsNullOrEmpty(driverItem.DeviceName))
                         {
-                            driverItem.DeviceName = string.IsNullOrEmpty(systemDriverInformation.Description) ? NotAvailableString : systemDriverInformation.Description;
-                            break;
+                            driverItem.DeviceName = NotAvailableString;
                         }
-                    }
 
-                    if (string.IsNullOrEmpty(driverItem.DeviceName))
-                    {
-                        driverItem.DeviceName = NotAvailableString;
+                        driverList.Add(driverItem);
                     }
-
-                    driverList.Add(driverItem);
                 }
-            }
-            catch (Exception e)
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetDriverInformationListAsync), 1, e);
+                }
+
+                driverList.Sort((item1, item2) => item1.DriverOEMInfName.CompareTo(item2.DriverOEMInfName));
+                return driverList;
+            });
+        }
+
+        /// <summary>
+        /// 获取排序后的驱动
+        /// </summary>
+        private async Task<List<DriverModel>> GetSortedDriversAsync(DriverSortRuleKind driverSortRuleKind, bool isIncrease, List<DriverModel> driverList)
+        {
+            if (driverList is null || driverList.Count is 0)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetDriverInformationList), 1, e);
+                return default;
             }
 
-            return driverList;
+            return await Task.Run(() =>
+            {
+                List<DriverModel> sortedDriverList = [];
+                if (driverSortRuleKind is DriverSortRuleKind.DeviceName)
+                {
+                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DeviceName)] : [.. driverList.OrderByDescending(item => item.DeviceName)];
+                }
+                else if (driverSortRuleKind is DriverSortRuleKind.InfName)
+                {
+                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DriverInfName)] : [.. driverList.OrderByDescending(item => item.DriverInfName)];
+                }
+                else if (driverSortRuleKind is DriverSortRuleKind.OEMInfName)
+                {
+                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DriverOEMInfName)] : [.. driverList.OrderByDescending(item => item.DriverOEMInfName)];
+                }
+                else if (driverSortRuleKind is DriverSortRuleKind.DeviceType)
+                {
+                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DriverType)] : [.. driverList.OrderByDescending(item => item.DriverType)];
+                }
+                else if (driverSortRuleKind is DriverSortRuleKind.Manufacturer)
+                {
+                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DriverManufacturer)] : [.. driverList.OrderByDescending(item => item.DriverManufacturer)];
+                }
+                else if (driverSortRuleKind is DriverSortRuleKind.Version)
+                {
+                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DriverVersion)] : [.. driverList.OrderByDescending(item => item.DriverVersion)];
+                }
+                else if (driverSortRuleKind is DriverSortRuleKind.Date)
+                {
+                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DriverDate)] : [.. driverList.OrderByDescending(item => item.DriverDate)];
+                }
+                return sortedDriverList;
+            });
         }
 
         /// <summary>
@@ -1660,6 +1112,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private object GetDevNodeProperty(string devPropKey, SP_DEVINFO_DATA deviceInfoData, nint deviceInfoSet)
         {
+            if (string.IsNullOrEmpty(devPropKey))
+            {
+                return default;
+            }
+
             object value = null;
 
             if (DevPropKeyDict.TryGetValue(devPropKey, out DEVPROPKEY devPropKeyItem))
@@ -1873,82 +1330,78 @@ namespace PowerToolbox.Views.Pages
 
                 Marshal.FreeHGlobal(propertyBufferPtr);
             }
-
             return value;
         }
 
         /// <summary>
         /// 获取文件夹大小
         /// </summary>
-        internal long GetFolderSize(string directoryPath)
+        private long GetFolderSize(string directoryPath)
         {
-            long totalSize = 0;
-
-            if (Directory.Exists(directoryPath))
+            if (string.IsNullOrEmpty(directoryPath) || !Directory.Exists(directoryPath))
             {
+                return default;
+            }
+
+            long totalSize = 0;
+            try
+            {
+                DirectoryInfo directoryInfo = new(directoryPath);
+                long fileAllSize = 0;
+
+                // 获取当前目录所有文件大小
                 try
                 {
-                    DirectoryInfo directoryInfo = new(directoryPath);
-                    long fileAllSize = 0;
-
-                    // 获取当前目录所有文件大小
-                    try
+                    FileInfo[] filesArray = directoryInfo.GetFiles();
+                    Parallel.ForEach(filesArray, file =>
                     {
-                        FileInfo[] filesArray = directoryInfo.GetFiles();
-
-                        Parallel.ForEach(filesArray, file =>
+                        try
                         {
-                            try
-                            {
-                                long fileSize = file.Length;
-                                Interlocked.Add(ref fileAllSize, fileSize);
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 1, e);
-                            }
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 2, e);
-                    }
-
-                    totalSize += fileAllSize;
-
-                    // 获取当前文件夹包含的所有子目录大小
-                    long folderAllSize = 0;
-
-                    try
-                    {
-                        DirectoryInfo[] directoryArray = directoryInfo.GetDirectories();
-
-                        Parallel.ForEach(directoryArray, directory =>
+                            long fileSize = file.Length;
+                            Interlocked.Add(ref fileAllSize, fileSize);
+                        }
+                        catch (Exception e)
                         {
-                            try
-                            {
-                                long folderSize = GetFolderSize(directory.FullName);
-                                Interlocked.Add(ref folderAllSize, folderSize);
-                            }
-                            catch (Exception e)
-                            {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 3, e);
-                            }
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 4, e);
-                    }
-
-                    totalSize += folderAllSize;
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 1, e);
+                        }
+                    });
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 5, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 2, e);
                 }
-            }
 
+                totalSize += fileAllSize;
+
+                // 获取当前文件夹包含的所有子目录大小
+                long folderAllSize = 0;
+
+                try
+                {
+                    DirectoryInfo[] directoryArray = directoryInfo.GetDirectories();
+                    Parallel.ForEach(directoryArray, directory =>
+                    {
+                        try
+                        {
+                            long folderSize = GetFolderSize(directory.FullName);
+                            Interlocked.Add(ref folderAllSize, folderSize);
+                        }
+                        catch (Exception e)
+                        {
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 3, e);
+                        }
+                    });
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 4, e);
+                }
+                totalSize += folderAllSize;
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetFolderSize), 5, e);
+            }
             return totalSize;
         }
 
@@ -1968,6 +1421,325 @@ namespace PowerToolbox.Views.Pages
             {
                 return string.Empty;
             }
+        }
+
+        /// <summary>
+        /// 添加并安装驱动
+        /// </summary>
+        private async Task<(bool, int, int)> AddDriverListAsync(bool isAddandInstall, List<(string, DriverOperationModel)> driverList)
+        {
+            if (driverList is null || driverList.Count is 0)
+            {
+                return default;
+            }
+
+            int successfullyCount = 0;
+            int failedCount = 0;
+            bool needReboot = false;
+            foreach ((string fileName, DriverOperationModel driverOperationItem) in driverList)
+            {
+                (bool result, bool needRebootResult, Win32Exception win32Exception) = await AddDriverAsync(isAddandInstall, fileName);
+                driverOperationItem.IsOperating = false;
+                if (result)
+                {
+                    driverOperationItem.DriverOperation = isAddandInstall ? AddInstallingDriverSuccessfullyString : AddingDriverSuccessfullyString;
+                    successfullyCount++;
+                }
+                else
+                {
+                    driverOperationItem.DriverOperation = string.Format(isAddandInstall ? AddingDriverFailedString : AddInstallingDriverFailedString, win32Exception.NativeErrorCode, win32Exception.HResult, win32Exception.Message);
+                    failedCount++;
+                }
+                if (!needReboot && needRebootResult)
+                {
+                    needReboot = true;
+                }
+            }
+            return ValueTuple.Create(needReboot, successfullyCount, failedCount);
+        }
+
+        /// <summary>
+        /// 添加并安装驱动
+        /// </summary>
+        private async Task<(bool, bool, Win32Exception)> AddDriverAsync(bool isAddandInstall, string fileName)
+        {
+            return await Task.Run(() =>
+            {
+                bool result = false;
+                bool needReboot = false;
+                Win32Exception win32Exception = null;
+
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    if (isAddandInstall)
+                    {
+                        StringBuilder stringBuilder = new(260);
+                        uint bufferSize = 0;
+                        result = NewDevLibrary.DiInstallDriver(0, fileName, 0, out bool needRebootResult) && SetupapiLibrary.SetupCopyOEMInf(fileName, null, SPOST.SPOST_PATH, SP_COPY.SP_COPY_NONE, stringBuilder, (uint)stringBuilder.Capacity, ref bufferSize, 0);
+                        if (!result)
+                        {
+                            win32Exception = new Win32Exception(Kernel32Library.GetLastError());
+                        }
+                        if (!needReboot && needRebootResult)
+                        {
+                            needReboot = true;
+                        }
+                    }
+                    else
+                    {
+                        StringBuilder stringBuilder = new(260);
+                        uint bufferSize = 0;
+                        result = SetupapiLibrary.SetupCopyOEMInf(fileName, null, SPOST.SPOST_PATH, SP_COPY.SP_COPY_NONE, stringBuilder, (uint)stringBuilder.Capacity, ref bufferSize, 0);
+                        if (!result)
+                        {
+                            win32Exception = new Win32Exception(Kernel32Library.GetLastError());
+                        }
+                    }
+                }
+                return ValueTuple.Create(result, needReboot, win32Exception);
+            });
+        }
+
+        /// <summary>
+        /// 删除驱动
+        /// </summary>
+        private async Task<(bool, int, int)> DeleteDriverListAsync(bool isForce, List<(string, string, DriverOperationModel)> driverList)
+        {
+            if (driverList is null || driverList.Count is 0)
+            {
+                return default;
+            }
+
+            int successfullyCount = 0;
+            int failedCount = 0;
+            bool needReboot = false;
+            foreach ((string driverOEMInfName, string driverLocation, DriverOperationModel driverOperationItem) in driverList)
+            {
+                (bool result, bool needRebootResult, Win32Exception win32Exception) = await DeleteDriverAsync(isForce, driverOEMInfName, driverLocation);
+                driverOperationItem.IsOperating = false;
+                if (result)
+                {
+                    driverOperationItem.DriverOperation = isForce ? DeletingDriverSuccessfullyString : ForceDeletingDriverSuccessfullyString;
+                    successfullyCount++;
+                }
+                else
+                {
+                    driverOperationItem.DriverOperation = string.Format(isForce ? DeletingDriverFailedString : ForceDeletingDriverFailedString, win32Exception.NativeErrorCode, win32Exception.HResult, win32Exception.Message);
+                    failedCount++;
+                }
+                if (!needReboot && needRebootResult)
+                {
+                    needReboot = true;
+                }
+            }
+            return ValueTuple.Create(needReboot, successfullyCount, failedCount);
+        }
+
+        /// <summary>
+        /// 强制删除驱动
+        /// </summary>
+        private async Task<(bool, bool, Win32Exception)> DeleteDriverAsync(bool isForce, string driverOEMInfName, string driverLocation)
+        {
+            return await Task.Run(() =>
+            {
+                bool result = false;
+                bool needReboot = false;
+                Win32Exception win32Exception = null;
+
+                if (isForce)
+                {
+                    if (!string.IsNullOrEmpty(driverOEMInfName) || !string.IsNullOrEmpty(driverLocation))
+                    {
+                        result = NewDevLibrary.DiUninstallDriver(0, driverLocation, DIURFLAG.NO_REMOVE_INF, out bool needRebootResult) && SetupapiLibrary.SetupUninstallOEMInf(driverOEMInfName, SUOI_Flags.SUOI_FORCEDELETE, 0);
+                        if (!result)
+                        {
+                            win32Exception = new Win32Exception(Kernel32Library.GetLastError());
+                        }
+                        if (!needReboot && needRebootResult)
+                        {
+                            needReboot = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(driverOEMInfName))
+                    {
+                        result = SetupapiLibrary.SetupUninstallOEMInf(driverOEMInfName, SUOI_Flags.SUOI_FORCEDELETE, 0);
+                        if (!result)
+                        {
+                            win32Exception = new Win32Exception(Kernel32Library.GetLastError());
+                        }
+                    }
+                }
+                return ValueTuple.Create(result, needReboot, win32Exception);
+            });
+        }
+
+        /// <summary>
+        /// 更新驱动操作结果
+        /// </summary>
+        private async Task UpdateDriverOperationResultAsync(DriverInstallKind driverInstallKind, bool isAddandInstall, bool isForceUninstall, int successfullyCount, int failedCount, DriverResultKind oldDriverResultKind)
+        {
+            OperationKind operationKind = OperationKind.NoOperation;
+            if (driverInstallKind is DriverInstallKind.InstallDriver)
+            {
+                if (successfullyCount + failedCount is 0)
+                {
+                    operationKind = isAddandInstall ? OperationKind.AddInstallDriverFailed : OperationKind.AddDriverFailed;
+                }
+                else
+                {
+                    if (successfullyCount > 0 && failedCount > 0)
+                    {
+                        operationKind = isAddandInstall ? OperationKind.AddInstallDriverPartialSuccessfully : OperationKind.AddDriverPartialSuccessfully;
+                    }
+                    else if (successfullyCount > 0 && failedCount is 0)
+                    {
+                        operationKind = isAddandInstall ? OperationKind.AddInstallDriverAllSuccessfully : OperationKind.AddDriverAllSuccessfully;
+                    }
+                    else if (successfullyCount is 0 && failedCount > 0)
+                    {
+                        operationKind = isAddandInstall ? OperationKind.AddInstallDriverFailed : OperationKind.AddDriverFailed;
+                    }
+                }
+            }
+            else if (driverInstallKind is DriverInstallKind.UnInstallDriver)
+            {
+                if (successfullyCount + failedCount is 0)
+                {
+                    operationKind = isForceUninstall ? OperationKind.ForceDeleteDriverFailed : OperationKind.DeleteDriverFailed;
+                }
+                else if (successfullyCount + failedCount is 1)
+                {
+                    if (successfullyCount is 1 && failedCount is 0)
+                    {
+                        operationKind = isForceUninstall ? OperationKind.ForceDeleteDriverSuccessfully : OperationKind.DeleteDriverSuccessfully;
+                    }
+                    else if (successfullyCount is 0 && failedCount is 1)
+                    {
+                        operationKind = isForceUninstall ? OperationKind.ForceDeleteDriverFailed : OperationKind.DeleteDriverFailed;
+                    }
+                }
+                else
+                {
+                    if (successfullyCount > 0 && failedCount > 0)
+                    {
+                        operationKind = isForceUninstall ? OperationKind.ForceDeleteDriverPartialSuccessfully : OperationKind.DeleteDriverPartialSuccessfully;
+                    }
+                    else if (successfullyCount > 0 && failedCount is 0)
+                    {
+                        operationKind = isForceUninstall ? OperationKind.ForceDeleteDriverAllSuccessfully : OperationKind.DeleteDriverAllSuccessfully;
+                    }
+                    else if (successfullyCount is 0 && failedCount > 0)
+                    {
+                        operationKind = isForceUninstall ? OperationKind.ForceDeleteDriverFailed : OperationKind.DeleteDriverFailed;
+                    }
+                }
+            }
+
+            if (operationKind is not OperationKind.NoOperation)
+            {
+                synchronizationContext.Send(async (_) =>
+                {
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(operationKind));
+                }, null);
+            }
+
+            if (successfullyCount > 0)
+            {
+                await GetDriverAsync(SelectedDriverSortRuleKind, IsIncrease);
+            }
+            else
+            {
+                DriverResultKind = oldDriverResultKind;
+            }
+        }
+
+        /// <summary>
+        /// 显示重新启动的消息通知
+        /// </summary>
+        private void ShowRebootNotification(DriverInstallKind driverInstallKind)
+        {
+            synchronizationContext.Send(async (_) =>
+            {
+                ContentDialogResult contentDialogResult = await MainWindow.Current.ShowDialogAsync(new RebootDialog(driverInstallKind));
+
+                await Task.Run(() =>
+                {
+                    if (contentDialogResult is ContentDialogResult.Primary)
+                    {
+                        ShutdownHelper.Restart(RestartPCString, TimeSpan.FromSeconds(120));
+                    }
+                });
+            }, null);
+        }
+
+        /// <summary>
+        /// 打开驱动存储的路径
+        /// </summary>
+        private void OpenDriverLocation(string driverLocation)
+        {
+            if (string.IsNullOrEmpty(driverLocation))
+            {
+                return;
+            }
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start(File.Exists(driverLocation) ? Path.GetDirectoryName(driverLocation) : Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(OpenDriverLocation), 1, e);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 以管理员身份运行
+        /// </summary>
+        private void RunAsAdministrator()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    ProcessStartInfo startInfo = new()
+                    {
+                        UseShellExecute = true,
+                        WorkingDirectory = Environment.CurrentDirectory,
+                        Arguments = "--elevated",
+                        FileName = System.Windows.Forms.Application.ExecutablePath,
+                        Verb = "runas"
+                    };
+                    Process.Start(startInfo);
+                }
+                catch
+                {
+                    return;
+                }
+            });
+        }
+
+        /// <summary>
+        /// 打开设备管理器
+        /// </summary>
+        private void OpenDeviceManagement()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    Process.Start("devmgmt.msc");
+                }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(OpenDeviceManagement), 1, e);
+                }
+            });
         }
 
         /// <summary>
@@ -2017,5 +1789,7 @@ namespace PowerToolbox.Views.Pages
         {
             return driverResultKind is not DriverResultKind.Operating;
         }
+
+        #endregion 第七部分：数据操作与业务逻辑
     }
 }
