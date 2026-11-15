@@ -101,22 +101,6 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool _isModifiedFailed;
-
-        private bool IsModifiedFailed
-        {
-            get { return _isModifiedFailed; }
-
-            set
-            {
-                if (!Equals(_isModifiedFailed, value))
-                {
-                    _isModifiedFailed = value;
-                    PropertyChanged?.Invoke(this, new(nameof(IsModifiedFailed)));
-                }
-            }
-        }
-
         private WinRTObservableCollection<ScheduledTaskFailedModel> ScheduledTaskFailedCollection { get; } = [];
 
         private WinRTObservableCollection<ScheduledTaskModel> ScheduledTaskCollection { get; } = [];
@@ -153,7 +137,7 @@ namespace PowerToolbox.Views.Pages
 
         #endregion 第四部分：父类虚方法重写
 
-        #region 第五部分：挂载事件处理
+        #region 第五部分：命令调用处理
 
         /// <summary>
         /// 禁用计划任务
@@ -260,7 +244,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        #endregion 第五部分：挂载事件处理
+        #endregion 第五部分：命令调用处理
 
         #region 第六部分：挂载事件处理
 
