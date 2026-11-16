@@ -51,49 +51,43 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private string _searchText;
-
         private string SearchText
         {
-            get { return _searchText; }
+            get;
 
             set
             {
-                if (!string.Equals(_searchText, value))
+                if (!string.Equals(field, value))
                 {
-                    _searchText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SearchText)));
                 }
             }
         }
 
-        private ContextMenuResultKind _contextMenuResultKind;
-
         private ContextMenuResultKind ContextMenuResultKind
         {
-            get { return _contextMenuResultKind; }
+            get;
 
             set
             {
-                if (!Equals(_contextMenuResultKind, value))
+                if (!Equals(field, value))
                 {
-                    _contextMenuResultKind = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ContextMenuResultKind)));
                 }
             }
         }
 
-        private string _contextMenuFailedContent;
-
         private string ContextMenuFailedContent
         {
-            get { return _contextMenuFailedContent; }
+            get;
 
             set
             {
-                if (!string.Equals(_contextMenuFailedContent, value))
+                if (!string.Equals(field, value))
                 {
-                    _contextMenuFailedContent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ContextMenuFailedContent)));
                 }
             }

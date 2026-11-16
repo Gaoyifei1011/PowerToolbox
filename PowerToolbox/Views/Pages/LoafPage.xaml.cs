@@ -42,113 +42,99 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private bool _loadImageCompleted;
-
         private bool LoadImageCompleted
         {
-            get { return _loadImageCompleted; }
+            get;
 
             set
             {
-                if (!Equals(_loadImageCompleted, value))
+                if (!Equals(field, value))
                 {
-                    _loadImageCompleted = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(LoadImageCompleted)));
                 }
             }
         }
 
-        private BitmapImage _loafImage;
-
         private BitmapImage LoafImage
         {
-            get { return _loafImage; }
+            get;
 
             set
             {
-                if (!Equals(_loafImage, value))
+                if (!Equals(field, value))
                 {
-                    _loafImage = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(LoafImage)));
                 }
             }
         }
 
-        private bool _isLoafing;
-
         private bool IsLoafing
         {
-            get { return _isLoafing; }
+            get;
 
             set
             {
-                if (!Equals(_isLoafing, value))
+                if (!Equals(field, value))
                 {
-                    _isLoafing = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsLoafing)));
                 }
             }
         }
 
-        private bool _blockAllKeys;
-
         private bool BlockAllKeys
         {
-            get { return _blockAllKeys; }
+            get;
 
             set
             {
-                if (!Equals(_blockAllKeys, value))
+                if (!Equals(field, value))
                 {
-                    _blockAllKeys = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(BlockAllKeys)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedSimulateUpdateStyle;
-
         private ComboBoxItemModel SelectedSimulateUpdateStyle
         {
-            get { return _selectedSimulateUpdateStyle; }
+            get;
 
             set
             {
-                if (!Equals(_selectedSimulateUpdateStyle, value))
+                if (!Equals(field, value))
                 {
-                    _selectedSimulateUpdateStyle = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedSimulateUpdateStyle)));
                 }
             }
         }
 
-        private TimeSpan _durationTime;
-
         private TimeSpan DurationTime
         {
-            get { return _durationTime; }
+            get;
 
             set
             {
-                if (!Equals(_durationTime, value))
+                if (!TimeSpan.Equals(field, value))
                 {
-                    _durationTime = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DurationTime)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedAfterSimulatedOperation;
-
         private ComboBoxItemModel SelectedAfterSimulateOperation
         {
-            get { return _selectedAfterSimulatedOperation; }
+            get;
 
             set
             {
-                if (!Equals(_selectedAfterSimulatedOperation, value))
+                if (!Equals(field, value))
                 {
-                    _selectedAfterSimulatedOperation = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedAfterSimulateOperation)));
                 }
             }

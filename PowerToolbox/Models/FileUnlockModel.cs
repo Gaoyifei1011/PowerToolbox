@@ -37,17 +37,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 是否处于修改状态中
         /// </summary>
-        private bool _isModifyingNow;
-
         internal bool IsModifyingNow
         {
-            get { return _isModifyingNow; }
+            get;
 
             set
             {
-                if (!Equals(_isModifyingNow, value))
+                if (!Equals(field, value))
                 {
-                    _isModifyingNow = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
@@ -56,49 +54,43 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 文件解锁状态
         /// </summary>
-        private FileUnlockState _fileUnlockState;
-
         internal FileUnlockState FileUnlockState
         {
-            get { return _fileUnlockState; }
+            get;
 
             set
             {
-                if (!Equals(_fileUnlockState, value))
+                if (!Equals(field, value))
                 {
-                    _fileUnlockState = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(FileUnlockState)));
                 }
             }
         }
 
-        private int _fileUnlockFinishedCount;
-
         internal int FileUnlockFinishedCount
         {
-            get { return _fileUnlockFinishedCount; }
+            get;
 
             set
             {
-                if (!Equals(_fileUnlockFinishedCount, value))
+                if (!Equals(field, value))
                 {
-                    _fileUnlockFinishedCount = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(FileUnlockFinishedCount)));
                 }
             }
         }
 
-        private int _fileUnlockProcessingPercentage;
-
         internal int FileUnlockProgressingPercentage
         {
-            get { return _fileUnlockProcessingPercentage; }
+            get;
 
             set
             {
-                if (!Equals(_fileUnlockProcessingPercentage, value))
+                if (!Equals(field, value))
                 {
-                    _fileUnlockProcessingPercentage = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(FileUnlockProgressingPercentage)));
                 }
             }

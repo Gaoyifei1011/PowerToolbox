@@ -13,17 +13,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 菜单是否启用
         /// </summary>
-        private bool _isEnabled;
-
         internal bool IsEnabled
         {
-            get { return _isEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsEnabled)));
                 }
             }

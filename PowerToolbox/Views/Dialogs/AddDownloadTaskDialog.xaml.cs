@@ -36,65 +36,57 @@ namespace PowerToolbox.Views.Dialogs
 
         #region 第二部分：属性、列表与事件
 
-        private bool _isPrimaryEnabled;
-
         private bool IsPrimaryEnabled
         {
-            get { return _isPrimaryEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isPrimaryEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isPrimaryEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsPrimaryEnabled)));
                 }
             }
         }
 
-        private string _downloadLinkText;
-
         private string DownloadLinkText
         {
-            get { return _downloadLinkText; }
+            get;
 
             set
             {
-                if (!string.Equals(_downloadLinkText, value))
+                if (!string.Equals(field, value))
                 {
-                    _downloadLinkText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DownloadLinkText)));
                 }
             }
         }
 
-        private string _downloadFileNameText;
-
         private string DownloadFileNameText
         {
-            get { return _downloadFileNameText; }
+            get;
 
             set
             {
-                if (!string.Equals(_downloadFileNameText, value))
+                if (!string.Equals(field, value))
                 {
-                    _downloadFileNameText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DownloadFileNameText)));
                 }
             }
         }
 
-        private string _downloadFolderText = DownloadOptionsService.DownloadFolder;
-
         private string DownloadFolderText
         {
-            get { return _downloadFolderText; }
+            get;
 
             set
             {
-                if (!string.Equals(_downloadFolderText, value))
+                if (!string.Equals(field, value))
                 {
-                    _downloadFolderText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DownloadFolderText)));
                 }
             }
@@ -109,6 +101,7 @@ namespace PowerToolbox.Views.Dialogs
         internal AddDownloadTaskDialog()
         {
             InitializeComponent();
+            DownloadFolderText = DownloadOptionsService.DownloadFolder;
             IsPrimaryButtonEnabled = !string.IsNullOrEmpty(DownloadLinkText) && !string.IsNullOrEmpty(DownloadFolderText);
         }
 

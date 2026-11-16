@@ -59,177 +59,155 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private IconExtractResultKind _iconExtractResultKind;
-
         internal IconExtractResultKind IconExtractResultKind
         {
-            get { return _iconExtractResultKind; }
+            get;
 
             private set
             {
-                if (!Equals(_iconExtractResultKind, value))
+                if (!Equals(field, value))
                 {
-                    _iconExtractResultKind = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IconExtractResultKind)));
                 }
             }
         }
 
-        private bool _isItemSelected;
-
         private bool IsItemSelected
         {
-            get { return _isItemSelected; }
+            get;
 
             set
             {
-                if (!Equals(_isItemSelected, value))
+                if (!Equals(field, value))
                 {
-                    _isItemSelected = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsItemSelected)));
                 }
             }
         }
 
-        private bool _isImageEmpty;
-
         private bool IsImageEmpty
         {
-            get { return _isImageEmpty; }
+            get;
 
             set
             {
-                if (!Equals(_isImageEmpty, value))
+                if (!Equals(field, value))
                 {
-                    _isImageEmpty = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsImageEmpty)));
                 }
             }
         }
 
-        private bool _isSaving;
-
         internal bool IsSaving
         {
-            get { return _isSaving; }
+            get;
 
             private set
             {
-                if (!Equals(_isSaving, value))
+                if (!Equals(field, value))
                 {
-                    _isSaving = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsSaving)));
                 }
             }
         }
 
-        private string _getResults;
-
         private string GetResults
         {
-            get { return _getResults; }
+            get;
 
             set
             {
-                if (!string.Equals(_getResults, value))
+                if (!string.Equals(field, value))
                 {
-                    _getResults = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(GetResults)));
                 }
             }
         }
 
-        private string _noResources;
-
         private string NoResources
         {
-            get { return _noResources; }
+            get;
 
             set
             {
-                if (!string.Equals(_noResources, value))
+                if (!string.Equals(field, value))
                 {
-                    _noResources = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(NoResources)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedGetIconType;
-
         internal ComboBoxItemModel SelectedGetIconType
         {
-            get { return _selectedGetIconType; }
+            get;
 
             private set
             {
-                if (!Equals(_selectedGetIconType, value))
+                if (!Equals(field, value))
                 {
-                    _selectedGetIconType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedGetIconType)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedIconFormat;
-
         private ComboBoxItemModel SelectedIconFormat
         {
-            get { return _selectedIconFormat; }
+            get;
 
             set
             {
-                if (!Equals(_selectedIconFormat, value))
+                if (!Equals(field, value))
                 {
-                    _selectedIconFormat = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedIconFormat)));
                 }
             }
         }
 
-        private IconSizeModel _selectedFileContainSize;
-
         public IconSizeModel SelectedFileContainSize
         {
-            get { return _selectedFileContainSize; }
+            get;
 
             set
             {
-                if (!Equals(_selectedFileContainSize, value))
+                if (!Equals(field, value))
                 {
-                    _selectedFileContainSize = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedFileContainSize)));
                 }
             }
         }
 
-        private IconSizeModel _selectedFileAssociateSize;
-
         public IconSizeModel SelectedFileAssociateSize
         {
-            get { return _selectedFileAssociateSize; }
+            get;
 
             set
             {
-                if (!Equals(_selectedFileAssociateSize, value))
+                if (!Equals(field, value))
                 {
-                    _selectedFileAssociateSize = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedFileAssociateSize)));
                 }
             }
         }
 
-        private ImageSource _imageSource;
-
         private ImageSource ImageSource
         {
-            get { return _imageSource; }
+            get;
 
             set
             {
-                if (!Equals(_imageSource, value))
+                if (!Equals(field, value))
                 {
-                    _imageSource = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ImageSource)));
                 }
             }

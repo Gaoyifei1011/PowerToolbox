@@ -122,593 +122,519 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private int _selectedIndex;
-
         private int SelectedIndex
         {
-            get { return _selectedIndex; }
+            get;
 
             set
             {
-                if (!Equals(_selectedIndex, value))
+                if (!Equals(field, value))
                 {
-                    _selectedIndex = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedIndex)));
                 }
             }
         }
 
-        private string _encryptFile;
-
         internal string EncryptFile
         {
-            get { return _encryptFile; }
+            get;
 
             set
             {
-                if (!Equals(_encryptFile, value))
+                if (!string.Equals(field, value))
                 {
-                    _encryptFile = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(EncryptFile)));
                 }
             }
         }
 
-        private string _encryptContent;
-
         private string EncryptContent
         {
-            get { return _encryptContent; }
+            get;
 
             set
             {
-                if (!Equals(_encryptContent, value))
+                if (!string.Equals(field, value))
                 {
-                    _encryptContent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(EncryptContent)));
                 }
             }
         }
 
-        private InfoBarSeverity _resultSeverity;
-
         private InfoBarSeverity ResultSeverity
         {
-            get { return _resultSeverity; }
+            get;
 
             set
             {
-                if (!Equals(_resultSeverity, value))
+                if (!Equals(field, value))
                 {
-                    _resultSeverity = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ResultSeverity)));
                 }
             }
         }
 
-        private string _resultMessage;
-
         private string ResultMessage
         {
-            get { return _resultMessage; }
+            get;
 
             set
             {
-                if (!string.Equals(_resultMessage, value))
+                if (!string.Equals(field, value))
                 {
-                    _resultMessage = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ResultMessage)));
                 }
             }
         }
 
-        private string _encryptFailedInformation;
-
         private string EncryptFailedInformation
         {
-            get { return _encryptFailedInformation; }
+            get;
 
             set
             {
-                if (!string.Equals(_encryptFailedInformation, value))
+                if (!string.Equals(field, value))
                 {
-                    _encryptFailedInformation = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(EncryptFailedInformation)));
                 }
             }
         }
 
-        private DataEncryptTypeModel _selectedDataEncryptType;
-
         private DataEncryptTypeModel SelectedDataEncryptType
         {
-            get { return _selectedDataEncryptType; }
+            get;
 
             set
             {
-                if (!Equals(_selectedDataEncryptType, value))
+                if (!Equals(field, value))
                 {
-                    _selectedDataEncryptType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedDataEncryptType)));
                 }
             }
         }
 
-        private bool _hasEncryptOptions;
-
         private bool HasEncryptOptions
         {
-            get { return _hasEncryptOptions; }
+            get;
 
             set
             {
-                if (!Equals(_hasEncryptOptions, value))
+                if (!Equals(field, value))
                 {
-                    _hasEncryptOptions = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasEncryptOptions)));
                 }
             }
         }
 
-        private bool _hasEncryptKey;
-
         private bool HasEncryptKey
         {
-            get { return _hasEncryptKey; }
+            get;
 
             set
             {
-                if (!Equals(_hasEncryptKey, value))
+                if (!Equals(field, value))
                 {
-                    _hasEncryptKey = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasEncryptKey)));
                 }
             }
         }
 
-        private bool _hasEncryptKeyStringType;
-
         private bool HasEncryptKeyStringType
         {
-            get { return _hasEncryptKeyStringType; }
+            get;
 
             set
             {
-                if (!Equals(_hasEncryptKeyStringType, value))
+                if (!Equals(field, value))
                 {
-                    _hasEncryptKeyStringType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasEncryptKeyStringType)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedEncryptKeyStringType;
-
         private ComboBoxItemModel SelectedEncryptKeyStringType
         {
-            get { return _selectedEncryptKeyStringType; }
+            get;
 
             set
             {
-                if (!Equals(_selectedEncryptKeyStringType, value))
+                if (!Equals(field, value))
                 {
-                    _selectedEncryptKeyStringType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedEncryptKeyStringType)));
                 }
             }
         }
 
-        private string _encryptKeyPHText;
-
         private string EncryptKeyPHText
         {
-            get { return _encryptKeyPHText; }
+            get;
 
             set
             {
-                if (!string.Equals(_encryptKeyPHText, value))
+                if (!string.Equals(field, value))
                 {
-                    _encryptKeyPHText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(EncryptKeyPHText)));
                 }
             }
         }
 
-        private string _encryptKeyText;
-
         private string EncryptKeyText
         {
-            get { return _encryptKeyText; }
+            get;
 
             set
             {
-                if (!string.Equals(_encryptKeyText, value))
+                if (!string.Equals(field, value))
                 {
-                    _encryptKeyText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(EncryptKeyText)));
                 }
             }
         }
 
-        private bool _hasInitializationVector;
-
         private bool HasInitializationVector
         {
-            get { return _hasInitializationVector; }
+            get;
 
             set
             {
-                if (!Equals(_hasInitializationVector, value))
+                if (!Equals(field, value))
                 {
-                    _hasInitializationVector = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasInitializationVector)));
                 }
             }
         }
 
-        private string _initializationVectorPHText;
-
         private string InitializationVectorPHText
         {
-            get { return _initializationVectorPHText; }
+            get;
 
             set
             {
-                if (!string.Equals(_initializationVectorPHText, value))
+                if (!string.Equals(field, value))
                 {
-                    _initializationVectorPHText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(InitializationVectorPHText)));
                 }
             }
         }
 
-        private string _initializationVectorText;
-
         private string InitializationVectorText
         {
-            get { return _initializationVectorText; }
+            get;
 
             set
             {
-                if (!string.Equals(_initializationVectorText, value))
+                if (!string.Equals(field, value))
                 {
-                    _initializationVectorText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(InitializationVectorText)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedInitializationVectorStringType;
-
         private ComboBoxItemModel SelectedInitializationVectorStringType
         {
-            get { return _selectedInitializationVectorStringType; }
+            get;
 
             set
             {
-                if (!Equals(_selectedInitializationVectorStringType, value))
+                if (!Equals(field, value))
                 {
-                    _selectedInitializationVectorStringType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedInitializationVectorStringType)));
                 }
             }
         }
 
-        private bool _hasEncryptedBlockCipherMode;
-
         private bool HasEncryptedBlockCipherMode
         {
-            get { return _hasEncryptedBlockCipherMode; }
+            get;
 
             set
             {
-                if (!Equals(_hasEncryptedBlockCipherMode, value))
+                if (!Equals(field, value))
                 {
-                    _hasEncryptedBlockCipherMode = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasEncryptedBlockCipherMode)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedEncryptedBlockCipherMode;
-
         private ComboBoxItemModel SelectedEncryptedBlockCipherMode
         {
-            get { return _selectedEncryptedBlockCipherMode; }
+            get;
 
             set
             {
-                if (!Equals(_selectedEncryptedBlockCipherMode, value))
+                if (!Equals(field, value))
                 {
-                    _selectedEncryptedBlockCipherMode = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedEncryptedBlockCipherMode)));
                 }
             }
         }
 
-        private bool _hasPaddingMode;
-
         private bool HasPaddingMode
         {
-            get { return _hasPaddingMode; }
+            get;
 
             set
             {
-                if (!Equals(_hasPaddingMode, value))
+                if (!Equals(field, value))
                 {
-                    _hasPaddingMode = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasPaddingMode)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedPaddingMode;
-
         private ComboBoxItemModel SelectedPaddingMode
         {
-            get { return _selectedPaddingMode; }
+            get;
 
             set
             {
-                if (!Equals(_selectedPaddingMode, value))
+                if (!Equals(field, value))
                 {
-                    _selectedPaddingMode = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedPaddingMode)));
                 }
             }
         }
 
-        private bool _hasOffset;
-
         private bool HasOffset
         {
-            get { return _hasOffset; }
+            get;
 
             set
             {
-                if (!Equals(_hasOffset, value))
+                if (!Equals(field, value))
                 {
-                    _hasOffset = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasOffset)));
                 }
             }
         }
 
-        private int _offset;
-
         private int Offset
         {
-            get { return _offset; }
+            get;
 
             set
             {
-                if (!Equals(_offset, value))
+                if (!Equals(field, value))
                 {
-                    _offset = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(Offset)));
                 }
             }
         }
 
-        private bool _hasEncryptPublicKey;
-
         private bool HasEncryptPublicKey
         {
-            get { return _hasEncryptPublicKey; }
+            get;
 
             set
             {
-                if (!Equals(_hasEncryptPublicKey, value))
+                if (!Equals(field, value))
                 {
-                    _hasEncryptPublicKey = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasEncryptPublicKey)));
                 }
             }
         }
 
-        private string _encryptPublicKeyText;
-
         private string EncryptPublicKeyText
         {
-            get { return _encryptPublicKeyText; }
+            get;
 
             set
             {
-                if (!Equals(_encryptPublicKeyText, value))
+                if (!string.Equals(field, value))
                 {
-                    _encryptPublicKeyText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(EncryptPublicKeyText)));
                 }
             }
         }
 
-        private bool _hasEncryptPrivateKey;
-
         private bool HasEncryptPrivateKey
         {
-            get { return _hasEncryptPrivateKey; }
+            get;
 
             set
             {
-                if (!Equals(_hasEncryptPrivateKey, value))
+                if (!Equals(field, value))
                 {
-                    _hasEncryptPrivateKey = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasEncryptPrivateKey)));
                 }
             }
         }
 
-        private string _encryptPrivateKeyText;
-
         private string EncryptPrivateKeyText
         {
-            get { return _encryptPrivateKeyText; }
+            get;
 
             set
             {
-                if (!Equals(_encryptPrivateKeyText, value))
+                if (!string.Equals(field, value))
                 {
-                    _encryptPrivateKeyText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(EncryptPrivateKeyText)));
                 }
             }
         }
 
-        private bool _hasRSAEncryptionPaddingMode;
-
         private bool HasRSAEncryptionPaddingMode
         {
-            get { return _hasRSAEncryptionPaddingMode; }
+            get;
 
             set
             {
-                if (!Equals(_hasRSAEncryptionPaddingMode, value))
+                if (!Equals(field, value))
                 {
-                    _hasRSAEncryptionPaddingMode = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasRSAEncryptionPaddingMode)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedRSAEncryptionPaddingMode;
-
         private ComboBoxItemModel SelectedRSAEncryptionPaddingMode
         {
-            get { return _selectedRSAEncryptionPaddingMode; }
+            get;
 
             set
             {
-                if (!Equals(_selectedRSAEncryptionPaddingMode, value))
+                if (!Equals(field, value))
                 {
-                    _selectedRSAEncryptionPaddingMode = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedRSAEncryptionPaddingMode)));
                 }
             }
         }
 
-        private bool _hasRSAEncryptionOtherOptions;
-
         private bool HasRSAEncryptionOtherOptions
         {
-            get { return _hasRSAEncryptionOtherOptions; }
+            get;
 
             set
             {
-                if (!Equals(_hasRSAEncryptionOtherOptions, value))
+                if (!Equals(field, value))
                 {
-                    _hasRSAEncryptionOtherOptions = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasRSAEncryptionOtherOptions)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedTextEncodingType;
-
         private ComboBoxItemModel SelectedTextEncodingType
         {
-            get { return _selectedTextEncodingType; }
+            get;
 
             set
             {
-                if (!Equals(_selectedTextEncodingType, value))
+                if (!Equals(field, value))
                 {
-                    _selectedTextEncodingType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedTextEncodingType)));
                 }
             }
         }
 
-        private string _textEncodingCustomTypeText;
-
         private string TextEncodingCustomTypeText
         {
-            get { return _textEncodingCustomTypeText; }
+            get;
 
             set
             {
-                if (!Equals(_textEncodingCustomTypeText, value))
+                if (!string.Equals(field, value))
                 {
-                    _textEncodingCustomTypeText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(TextEncodingCustomTypeText)));
                 }
             }
         }
 
-        private bool _saveEncryptedDataToLocalFile;
-
         private bool SaveEncryptedDataToLocalFile
         {
-            get { return _saveEncryptedDataToLocalFile; }
+            get;
 
             set
             {
-                if (!Equals(_saveEncryptedDataToLocalFile, value))
+                if (!Equals(field, value))
                 {
-                    _saveEncryptedDataToLocalFile = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SaveEncryptedDataToLocalFile)));
                 }
             }
         }
 
-        private string _saveEncryptedFilePath;
-
         private string SaveEncryptedFilePath
         {
-            get { return _saveEncryptedFilePath; }
+            get;
 
             set
             {
-                if (!Equals(_saveEncryptedFilePath, value))
+                if (!string.Equals(field, value))
                 {
-                    _saveEncryptedFilePath = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SaveEncryptedFilePath)));
                 }
             }
         }
 
-        private bool _isEncrypting;
-
         internal bool IsEncrypting
         {
-            get { return _isEncrypting; }
+            get;
 
             private set
             {
-                if (!Equals(_isEncrypting, value))
+                if (!Equals(field, value))
                 {
-                    _isEncrypting = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsEncrypting)));
                 }
             }
         }
 
-        private string _encryptResult;
-
         private string EncryptResult
         {
-            get { return _encryptResult; }
+            get;
 
             set
             {
-                if (!string.Equals(_encryptResult, value))
+                if (!string.Equals(field, value))
                 {
-                    _encryptResult = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(EncryptResult)));
                 }
             }
         }
 
-        private bool _isLargeContent;
-
         private bool IsLargeContent
         {
-            get { return _isLargeContent; }
+            get;
 
             set
             {
-                if (!Equals(_isLargeContent, value))
+                if (!Equals(field, value))
                 {
-                    _isLargeContent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsLargeContent)));
                 }
             }

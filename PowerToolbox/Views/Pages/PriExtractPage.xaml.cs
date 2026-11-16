@@ -57,241 +57,211 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private bool _isExtractSaveSame;
-
         private bool IsExtractSaveSame
         {
-            get { return _isExtractSaveSame; }
+            get;
 
             set
             {
-                if (!Equals(_isExtractSaveSame, value))
+                if (!Equals(field, value))
                 {
-                    _isExtractSaveSame = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsExtractSaveSame)));
                 }
             }
         }
 
-        private bool _isExtractSaveString;
-
         private bool IsExtractSaveString
         {
-            get { return _isExtractSaveString; }
+            get;
 
             set
             {
-                if (!Equals(_isExtractSaveString, value))
+                if (!Equals(field, value))
                 {
-                    _isExtractSaveString = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsExtractSaveString)));
                 }
             }
         }
 
-        private bool _isExtractSaveFilePath;
-
         private bool IsExtractSaveFilePath
         {
-            get { return _isExtractSaveFilePath; }
+            get;
 
             set
             {
-                if (!Equals(_isExtractSaveFilePath, value))
+                if (!Equals(field, value))
                 {
-                    _isExtractSaveFilePath = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsExtractSaveFilePath)));
                 }
             }
         }
 
-        private bool _isExtractSaveEmbeddedData;
-
         private bool IsExtractSaveEmbeddedData
         {
-            get { return _isExtractSaveEmbeddedData; }
+            get;
 
             set
             {
-                if (!Equals(_isExtractSaveEmbeddedData, value))
+                if (!Equals(field, value))
                 {
-                    _isExtractSaveEmbeddedData = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsExtractSaveEmbeddedData)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedLanguage;
-
         private ComboBoxItemModel SelectedLanguage
         {
-            get { return _selectedLanguage; }
+            get;
 
             set
             {
-                if (!Equals(_selectedLanguage, value))
+                if (!Equals(field, value))
                 {
-                    _selectedLanguage = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedLanguage)));
                 }
             }
         }
 
-        private bool _isProcessing;
-
         internal bool IsProcessing
         {
-            get { return _isProcessing; }
+            get;
 
             private set
             {
-                if (!Equals(_isProcessing, value))
+                if (!Equals(field, value))
                 {
-                    _isProcessing = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsProcessing)));
                 }
             }
         }
 
-        private string _getResults;
-
         private string GetResults
         {
-            get { return _getResults; }
+            get;
 
             set
             {
-                if (!string.Equals(_getResults, value))
+                if (!string.Equals(field, value))
                 {
-                    _getResults = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(GetResults)));
                 }
             }
         }
 
-        private string _selectedSaveFolder;
-
         private string SelectedSaveFolder
         {
-            get { return _selectedSaveFolder; }
+            get;
 
             set
             {
-                if (!string.Equals(_selectedSaveFolder, value))
+                if (!string.Equals(field, value))
                 {
-                    _selectedSaveFolder = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedSaveFolder)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedResourceCandidateKind;
-
         private ComboBoxItemModel SelectedResourceCandidateKind
         {
-            get { return _selectedResourceCandidateKind; }
+            get;
 
             set
             {
-                if (!Equals(_selectedResourceCandidateKind, value))
+                if (!Equals(field, value))
                 {
-                    _selectedResourceCandidateKind = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedResourceCandidateKind)));
                 }
             }
         }
 
-        private bool _hasStringResource;
-
         private bool HasStringResource
         {
-            get { return _hasStringResource; }
+            get;
 
             set
             {
-                if (!Equals(_hasStringResource, value))
+                if (!Equals(field, value))
                 {
-                    _hasStringResource = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasStringResource)));
                 }
             }
         }
 
-        private string _stringSearchText;
-
         private string StringSearchText
         {
-            get { return _stringSearchText; }
+            get;
 
             set
             {
-                if (!string.Equals(_stringSearchText, value))
+                if (!string.Equals(field, value))
                 {
-                    _stringSearchText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(StringSearchText)));
                 }
             }
         }
 
-        private bool _hasFilePathResource;
-
         private bool HasFilePathResource
         {
-            get { return _hasFilePathResource; }
+            get;
 
             set
             {
-                if (!Equals(_hasFilePathResource, value))
+                if (!Equals(field, value))
                 {
-                    _hasFilePathResource = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasFilePathResource)));
                 }
             }
         }
 
-        private string _filePathSearchText;
-
         private string FilePathSearchText
         {
-            get { return _filePathSearchText; }
+            get;
 
             set
             {
-                if (!string.Equals(_filePathSearchText, value))
+                if (!string.Equals(field, value))
                 {
-                    _filePathSearchText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(FilePathSearchText)));
                 }
             }
         }
 
-        private bool _hasEmbeddedDataResource;
-
         private bool HasEmbeddedDataResource
         {
-            get { return _hasEmbeddedDataResource; }
+            get;
 
             set
             {
-                if (!Equals(_hasEmbeddedDataResource, value))
+                if (!Equals(field, value))
                 {
-                    _hasEmbeddedDataResource = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HasEmbeddedDataResource)));
                 }
             }
         }
 
-        private string _embeddedDataSearchText;
-
         private string EmbeddedDataSearchText
         {
-            get { return _embeddedDataSearchText; }
+            get;
 
             set
             {
-                if (!string.Equals(_embeddedDataSearchText, value))
+                if (!string.Equals(field, value))
                 {
-                    _embeddedDataSearchText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(EmbeddedDataSearchText)));
                 }
             }

@@ -43,97 +43,85 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private bool _isModifyingNow;
-
         internal bool IsModifyingNow
         {
-            get { return _isModifyingNow; }
+            get;
 
             private set
             {
-                if (!Equals(_isModifyingNow, value))
+                if (!Equals(field, value))
                 {
-                    _isModifyingNow = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
         }
 
-        private ExtensionNameSelectedKind _selectedKind;
-
         private ExtensionNameSelectedKind SelectedKind
         {
-            get { return _selectedKind; }
+            get;
 
             set
             {
-                if (!Equals(_selectedKind, value))
+                if (!Equals(field, value))
                 {
-                    _selectedKind = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedKind)));
                 }
             }
         }
 
-        private string _changeToText;
-
         private string ChangeToText
         {
-            get { return _changeToText; }
+            get;
 
             set
             {
-                if (!string.Equals(_changeToText, value))
+                if (!string.Equals(field, value))
                 {
-                    _changeToText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ChangeToText)));
                 }
             }
         }
 
-        private string _searchText;
-
         private string SearchText
         {
-            get { return _searchText; }
+            get;
 
             set
             {
-                if (!string.Equals(_searchText, value))
+                if (!string.Equals(field, value))
                 {
-                    _searchText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SearchText)));
                 }
             }
         }
 
-        private string _replaceText;
-
         private string ReplaceText
         {
-            get { return _replaceText; }
+            get;
 
             set
             {
-                if (!string.Equals(_replaceText, value))
+                if (!string.Equals(field, value))
                 {
-                    _replaceText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ReplaceText)));
                 }
             }
         }
 
-        private bool _isOperationFailed;
-
         private bool IsOperationFailed
         {
-            get { return _isOperationFailed; }
+            get;
 
             set
             {
-                if (!Equals(_isOperationFailed, value))
+                if (!Equals(field, value))
                 {
-                    _isOperationFailed = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsOperationFailed)));
                 }
             }

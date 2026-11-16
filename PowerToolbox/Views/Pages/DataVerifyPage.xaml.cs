@@ -98,113 +98,99 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private int _selectedIndex;
-
         private int SelectedIndex
         {
-            get { return _selectedIndex; }
+            get;
 
             set
             {
-                if (!Equals(_selectedIndex, value))
+                if (!Equals(field, value))
                 {
-                    _selectedIndex = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedIndex)));
                 }
             }
         }
 
-        private string _verifyFile;
-
         internal string VerifyFile
         {
-            get { return _verifyFile; }
+            get;
 
             set
             {
-                if (!Equals(_verifyFile, value))
+                if (!string.Equals(field, value))
                 {
-                    _verifyFile = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(VerifyFile)));
                 }
             }
         }
 
-        private string _verifyContent;
-
         private string VerifyContent
         {
-            get { return _verifyContent; }
+            get;
 
             set
             {
-                if (!Equals(_verifyContent, value))
+                if (!string.Equals(field, value))
                 {
-                    _verifyContent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(VerifyContent)));
                 }
             }
         }
 
-        private InfoBarSeverity _resultSeverity;
-
         private InfoBarSeverity ResultSeverity
         {
-            get { return _resultSeverity; }
+            get;
 
             set
             {
-                if (!Equals(_resultSeverity, value))
+                if (!Equals(field, value))
                 {
-                    _resultSeverity = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ResultSeverity)));
                 }
             }
         }
 
-        private string _resultMessage;
-
         private string ResultMessage
         {
-            get { return _resultMessage; }
+            get;
 
             set
             {
-                if (!string.Equals(_resultMessage, value))
+                if (!string.Equals(field, value))
                 {
-                    _resultMessage = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ResultMessage)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedUpperCaseType;
-
         private ComboBoxItemModel SelectedUpperCaseType
         {
-            get { return _selectedUpperCaseType; }
+            get;
 
             set
             {
-                if (!Equals(_selectedUpperCaseType, value))
+                if (!Equals(field, value))
                 {
-                    _selectedUpperCaseType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedUpperCaseType)));
                 }
             }
         }
 
-        private bool _isVerifying;
-
         internal bool IsVerifying
         {
-            get { return _isVerifying; }
+            get;
 
-            private set
+            set
             {
-                if (!Equals(_isVerifying, value))
+                if (!Equals(field, value))
                 {
-                    _isVerifying = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsVerifying)));
                 }
             }

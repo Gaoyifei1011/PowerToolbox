@@ -123,273 +123,239 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private int _selectedIndex;
-
         private int SelectedIndex
         {
-            get { return _selectedIndex; }
+            get;
 
             set
             {
-                if (!Equals(_selectedIndex, value))
+                if (!Equals(field, value))
                 {
-                    _selectedIndex = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedIndex)));
                 }
             }
         }
 
-        private string _windowsUpdateVersion;
-
         private string WindowsUpdateVersion
         {
-            get { return _windowsUpdateVersion; }
+            get;
 
             set
             {
-                if (!Equals(_windowsUpdateVersion, value))
+                if (!string.Equals(field, value))
                 {
-                    _windowsUpdateVersion = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(WindowsUpdateVersion)));
                 }
             }
         }
 
-        private string _wuapiDllVersion;
-
         private string WuapiDllVersion
         {
-            get { return _wuapiDllVersion; }
+            get;
 
             set
             {
-                if (!Equals(_wuapiDllVersion, value))
+                if (!string.Equals(field, value))
                 {
-                    _wuapiDllVersion = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(WuapiDllVersion)));
                 }
             }
         }
 
-        private bool _isCheckUpdateEnabled;
-
         private bool IsCheckUpdateEnabled
         {
-            get { return _isCheckUpdateEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isCheckUpdateEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isCheckUpdateEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsCheckUpdateEnabled)));
                 }
             }
         }
 
-        private bool _isChecking;
-
         private bool IsChecking
         {
-            get { return _isChecking; }
+            get;
 
             set
             {
-                if (!Equals(_isChecking, value))
+                if (!Equals(field, value))
                 {
-                    _isChecking = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsChecking)));
                 }
             }
         }
 
-        private bool _isAvailableHideEnabled;
-
         private bool IsAvailableHideEnabled
         {
-            get { return _isAvailableHideEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isAvailableHideEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isAvailableHideEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsAvailableHideEnabled)));
                 }
             }
         }
 
-        private bool _isAvailableInstallEnabled;
-
         private bool IsAvailableInstallEnabled
         {
-            get { return _isAvailableInstallEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isAvailableInstallEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isAvailableInstallEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsAvailableInstallEnabled)));
                 }
             }
         }
 
-        private bool _isAvailableCancelInstallEnabled;
-
         private bool IsAvailableCancelInstallEnabled
         {
-            get { return _isAvailableCancelInstallEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isAvailableCancelInstallEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isAvailableCancelInstallEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsAvailableCancelInstallEnabled)));
                 }
             }
         }
 
-        private bool _isInstalledUninstallEnabled;
-
         private bool IsInstalledUninstallEnabled
         {
-            get { return _isInstalledUninstallEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isInstalledUninstallEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isInstalledUninstallEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsInstalledUninstallEnabled)));
                 }
             }
         }
 
-        private bool _isInstalledCancelInstallEnabled;
-
         private bool IsInstalledCancelInstallEnabled
         {
-            get { return _isInstalledCancelInstallEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isInstalledCancelInstallEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isInstalledCancelInstallEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsInstalledCancelInstallEnabled)));
                 }
             }
         }
 
-        private bool _isHiddenShowEnabled;
-
         private bool IsHiddenShowEnabled
         {
-            get { return _isHiddenShowEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isHiddenShowEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isHiddenShowEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsHiddenShowEnabled)));
                 }
             }
         }
 
-        private bool _isExcludeDrivers;
-
         private bool IsExcludeDrivers
         {
-            get { return _isExcludeDrivers; }
+            get;
 
             set
             {
-                if (!Equals(_isExcludeDrivers, value))
+                if (!Equals(field, value))
                 {
-                    _isExcludeDrivers = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsExcludeDrivers)));
                 }
             }
         }
 
-        private bool _isCleaning;
-
         private bool IsCleaning
         {
-            get { return _isCleaning; }
+            get;
 
             set
             {
-                if (!Equals(_isCleaning, value))
+                if (!Equals(field, value))
                 {
-                    _isCleaning = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsCleaning)));
                 }
             }
         }
 
-        private bool _isUpdateCompletedNeedRebootPrompt;
-
         private bool IsUpdateCompletedNeedRebootPrompt
         {
-            get { return _isUpdateCompletedNeedRebootPrompt; }
+            get;
 
             set
             {
-                if (!Equals(_isUpdateCompletedNeedRebootPrompt, value))
+                if (!Equals(field, value))
                 {
-                    _isUpdateCompletedNeedRebootPrompt = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsUpdateCompletedNeedRebootPrompt)));
                 }
             }
         }
 
-        private bool _isPreviewChannelChangedNeedRebootPrompt;
-
         private bool IsPreviewChannelChangedNeedRebootPrompt
         {
-            get { return _isPreviewChannelChangedNeedRebootPrompt; }
+            get;
 
             set
             {
-                if (!Equals(_isPreviewChannelChangedNeedRebootPrompt, value))
+                if (!Equals(field, value))
                 {
-                    _isPreviewChannelChangedNeedRebootPrompt = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsPreviewChannelChangedNeedRebootPrompt)));
                 }
             }
         }
 
-        private bool _isIncludePotentiallySupersededUpdate;
-
         private bool IsIncludePotentiallySupersededUpdate
         {
-            get { return _isIncludePotentiallySupersededUpdate; }
+            get;
 
             set
             {
-                if (!Equals(_isIncludePotentiallySupersededUpdate, value))
+                if (!Equals(field, value))
                 {
-                    _isIncludePotentiallySupersededUpdate = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsIncludePotentiallySupersededUpdate)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedUpdateSource;
-
         private ComboBoxItemModel SelectedUpdateSource
         {
-            get { return _selectedUpdateSource; }
+            get;
 
             set
             {
-                if (!Equals(_selectedUpdateSource, value))
+                if (!Equals(field, value))
                 {
-                    _selectedUpdateSource = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedUpdateSource)));
                 }
             }

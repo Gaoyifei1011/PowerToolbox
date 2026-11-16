@@ -12,17 +12,15 @@ namespace PowerToolbox.Services.Settings
         private static readonly string settingsKey = ConfigKey.AlwaysShowBackdropKey;
         private static readonly bool defaultAlwaysShowBackdrop = false;
 
-        private static bool _alwaysShowBackdrop;
-
         internal static bool AlwaysShowBackdrop
         {
-            get { return _alwaysShowBackdrop; }
+            get;
 
-            private set
+            set
             {
-                if (!Equals(_alwaysShowBackdrop, value))
+                if (!Equals(field, value))
                 {
-                    _alwaysShowBackdrop = value;
+                    field = value;
                     PropertyChanged?.Invoke(null, new(nameof(AlwaysShowBackdrop)));
                 }
             }

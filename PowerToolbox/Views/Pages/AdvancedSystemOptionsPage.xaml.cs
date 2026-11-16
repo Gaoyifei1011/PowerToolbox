@@ -33,81 +33,71 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private bool _isAdvancedSettingsInfoWarning;
-
         private bool IsAdvancedSettingsInfoWarning
         {
-            get { return _isAdvancedSettingsInfoWarning; }
+            get;
 
             set
             {
-                if (!Equals(_isAdvancedSettingsInfoWarning, value))
+                if (!Equals(field, value))
                 {
-                    _isAdvancedSettingsInfoWarning = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsAdvancedSettingsInfoWarning)));
                 }
             }
         }
 
-        private bool _isRestartExplorerVisible;
-
         private bool IsRestartExplorerVisible
         {
-            get { return _isRestartExplorerVisible; }
+            get;
 
             set
             {
-                if (!Equals(_isRestartExplorerVisible, value))
+                if (!Equals(field, value))
                 {
-                    _isRestartExplorerVisible = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsRestartExplorerVisible)));
                 }
             }
         }
 
-        private bool _isRestartPCVisible;
-
         private bool IsRestartPCVisible
         {
-            get { return _isRestartPCVisible; }
+            get;
 
             set
             {
-                if (!Equals(_isRestartPCVisible, value))
+                if (!Equals(field, value))
                 {
-                    _isRestartPCVisible = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsRestartPCVisible)));
                 }
             }
         }
 
-        private bool _isRestarting;
-
         private bool IsRestarting
         {
-            get { return _isRestarting; }
+            get;
 
             set
             {
-                if (!Equals(_isRestarting, value))
+                if (!Equals(field, value))
                 {
-                    _isRestarting = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsRestarting)));
                 }
             }
         }
 
-        private string _restartExplorerText;
-
         private string RestartExplorerText
         {
-            get { return _restartExplorerText; }
+            get;
 
             set
             {
-                if (!Equals(_restartExplorerText, value))
+                if (!string.Equals(field, value))
                 {
-                    _restartExplorerText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(RestartExplorerText)));
                 }
             }

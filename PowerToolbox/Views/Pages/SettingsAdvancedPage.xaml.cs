@@ -25,33 +25,29 @@ namespace PowerToolbox.Views.Pages
     {
         #region 第一部分：属性、列表与事件
 
-        private bool _isRestarting;
-
         private bool IsRestarting
         {
-            get { return _isRestarting; }
+            get;
 
             set
             {
-                if (!Equals(_isRestarting, value))
+                if (!Equals(field, value))
                 {
-                    _isRestarting = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsRestarting)));
                 }
             }
         }
 
-        private bool _fileShellMenu;
-
         private bool FileShellMenu
         {
-            get { return _fileShellMenu; }
+            get;
 
             set
             {
-                if (!Equals(_fileShellMenu, value))
+                if (!Equals(field, value))
                 {
-                    _fileShellMenu = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(FileShellMenu)));
                 }
             }

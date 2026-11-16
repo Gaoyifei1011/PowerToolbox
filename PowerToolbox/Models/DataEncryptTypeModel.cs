@@ -1,32 +1,12 @@
 ﻿using PowerToolbox.Extensions.DataType.Enums;
-using System.ComponentModel;
 
 namespace PowerToolbox.Models
 {
     /// <summary>
     /// 数据加密类型数据模型
     /// </summary>
-    internal sealed class DataEncryptTypeModel : INotifyPropertyChanged
+    internal sealed class DataEncryptTypeModel
     {
-        /// <summary>
-        /// 数据加密类型是否被选择
-        /// </summary>
-        private bool _isSelected;
-
-        internal bool IsSelected
-        {
-            get { return _isSelected; }
-
-            set
-            {
-                if (!Equals(_isSelected, value))
-                {
-                    _isSelected = value;
-                    PropertyChanged?.Invoke(this, new(nameof(IsSelected)));
-                }
-            }
-        }
-
         /// <summary>
         /// 数据加密类型名称
         /// </summary>
@@ -36,7 +16,5 @@ namespace PowerToolbox.Models
         /// 数据加密类型
         /// </summary>
         internal DataEncryptType DataEncryptType { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

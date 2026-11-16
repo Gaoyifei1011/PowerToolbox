@@ -8,17 +8,15 @@ namespace PowerToolbox.Views.NotificationTips
     /// </summary>
     internal sealed partial class CopyPasteNotificationTip : TeachingTip, INotifyPropertyChanged
     {
-        private bool _isSuccessfully;
-
         internal bool IsSuccessfully
         {
-            get { return _isSuccessfully; }
+            get;
 
             set
             {
-                if (!Equals(_isSuccessfully, value))
+                if (!Equals(field, value))
                 {
-                    _isSuccessfully = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsSuccessfully)));
                 }
             }

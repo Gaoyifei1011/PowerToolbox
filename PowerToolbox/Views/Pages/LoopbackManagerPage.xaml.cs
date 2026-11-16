@@ -47,65 +47,57 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private LoopbackResultKind _loopbackResultKind;
-
         private LoopbackResultKind LoopbackResultKind
         {
-            get { return _loopbackResultKind; }
+            get;
 
             set
             {
-                if (!Equals(_loopbackResultKind, value))
+                if (!Equals(field, value))
                 {
-                    _loopbackResultKind = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(LoopbackResultKind)));
                 }
             }
         }
 
-        private int _selectedItemsCount;
-
         private int SelectedItemsCount
         {
-            get { return _selectedItemsCount; }
+            get;
 
             set
             {
-                if (!Equals(_selectedItemsCount, value))
+                if (!Equals(field, value))
                 {
-                    _selectedItemsCount = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedItemsCount)));
                 }
             }
         }
 
-        private string _loopbackFailedContent;
-
         private string LoopbackFailedContent
         {
-            get { return _loopbackFailedContent; }
+            get;
 
             set
             {
-                if (!string.Equals(_loopbackFailedContent, value))
+                if (!string.Equals(field, value))
                 {
-                    _loopbackFailedContent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(LoopbackFailedContent)));
                 }
             }
         }
 
-        private bool _isSaved;
-
         private bool IsSaved
         {
-            get { return _isSaved; }
+            get;
 
             set
             {
-                if (!Equals(_isSaved, value))
+                if (!Equals(field, value))
                 {
-                    _isSaved = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsSaved)));
                 }
             }

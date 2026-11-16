@@ -47,17 +47,15 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private int _selectedIndex;
-
         private int SelectedIndex
         {
-            get { return _selectedIndex; }
+            get;
 
             set
             {
-                if (!Equals(_selectedIndex, value))
+                if (!Equals(field, value))
                 {
-                    _selectedIndex = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedIndex)));
                 }
             }

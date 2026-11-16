@@ -172,17 +172,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 当前更新是否正在更新中
         /// </summary>
-        private bool _isUpdating;
-
         internal bool IsUpdating
         {
-            get { return _isUpdating; }
+            get;
 
             set
             {
-                if (!Equals(_isUpdating, value))
+                if (!Equals(field, value))
                 {
-                    _isUpdating = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsUpdating)));
                 }
             }
@@ -191,17 +189,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 是否在准备安装当前更新
         /// </summary>
-        private bool _isUpdatePreparing;
-
         internal bool IsUpdatePreparing
         {
-            get { return _isUpdatePreparing; }
+            get;
 
             set
             {
-                if (!Equals(_isUpdatePreparing, value))
+                if (!Equals(field, value))
                 {
-                    _isUpdatePreparing = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsUpdatePreparing)));
                 }
             }
@@ -210,17 +206,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 更新安装是否已取消
         /// </summary>
-        private bool _isUpdateCanceled;
-
         internal bool IsUpdateCanceled
         {
-            get { return _isUpdateCanceled; }
+            get;
 
             set
             {
-                if (!Equals(_isUpdateCanceled, value))
+                if (!Equals(field, value))
                 {
-                    _isUpdateCanceled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsUpdateCanceled)));
                 }
             }
@@ -229,33 +223,29 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 更新进度
         /// </summary>
-        private string _updateProgress;
-
         internal string UpdateProgress
         {
-            get { return _updateProgress; }
+            get;
 
             set
             {
-                if (!string.Equals(_updateProgress, value))
+                if (!string.Equals(field, value))
                 {
-                    _updateProgress = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(UpdateProgress)));
                 }
             }
         }
 
-        private double _updatePercentage;
-
         internal double UpdatePercentage
         {
-            get { return _updatePercentage; }
+            get;
 
             set
             {
-                if (!Equals(_updatePercentage, value))
+                if (!Equals(field, value))
                 {
-                    _updatePercentage = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(UpdatePercentage)));
                 }
             }

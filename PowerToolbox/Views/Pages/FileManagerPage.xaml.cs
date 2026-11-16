@@ -54,33 +54,29 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、集合与事件
 
-        private int _selectedIndex;
-
         private int SelectedIndex
         {
-            get { return _selectedIndex; }
+            get;
 
             set
             {
-                if (!Equals(_selectedIndex, value))
+                if (!Equals(field, value))
                 {
-                    _selectedIndex = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedIndex)));
                 }
             }
         }
 
-        private int _currentIndex;
-
         private int CurrentIndex
         {
-            get { return _currentIndex; }
+            get;
 
             set
             {
-                if (!Equals(_currentIndex, value))
+                if (!Equals(field, value))
                 {
-                    _currentIndex = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(CurrentIndex)));
                 }
             }

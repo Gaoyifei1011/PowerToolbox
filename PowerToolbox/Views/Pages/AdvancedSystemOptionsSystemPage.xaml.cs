@@ -56,273 +56,239 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private bool _isHibernationEnabled;
-
         private bool IsHibernationEnabled
         {
-            get { return _isHibernationEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isHibernationEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isHibernationEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsHibernationEnabled)));
                 }
             }
         }
 
-        private bool _isHibernationOpened;
-
         private bool IsHibernationOpened
         {
-            get { return _isHibernationOpened; }
+            get;
 
             set
             {
-                if (!Equals(_isHibernationOpened, value))
+                if (!Equals(field, value))
                 {
-                    _isHibernationOpened = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsHibernationOpened)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedHibernationFileType;
-
         private ComboBoxItemModel SelectedHibernationFileType
         {
-            get { return _selectedHibernationFileType; }
+            get;
 
             set
             {
-                if (!Equals(_selectedHibernationFileType, value))
+                if (!Equals(field, value))
                 {
-                    _selectedHibernationFileType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedHibernationFileType)));
                 }
             }
         }
 
-        private string _hibernationFileSize;
-
         private string HibernationFileSize
         {
-            get { return _hibernationFileSize; }
+            get;
 
             set
             {
-                if (!Equals(_hibernationFileSize, value))
+                if (!string.Equals(field, value))
                 {
-                    _hibernationFileSize = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HibernationFileSize)));
                 }
             }
         }
 
-        private int _hibernationFilePercent;
-
         private int HibernationFilePercent
         {
-            get { return _hibernationFilePercent; }
+            get;
 
             set
             {
-                if (!Equals(_hibernationFilePercent, value))
+                if (!Equals(field, value))
                 {
-                    _hibernationFilePercent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(HibernationFilePercent)));
                 }
             }
         }
 
-        private bool _isFastStartupEnabled;
-
         private bool IsFastStartupEnabled
         {
-            get { return _isFastStartupEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isFastStartupEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isFastStartupEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsFastStartupEnabled)));
                 }
             }
         }
 
-        private bool _isGeneratingBatteryReport;
-
         private bool IsGeneratingBatteryReport
         {
-            get { return _isGeneratingBatteryReport; }
+            get;
 
             set
             {
-                if (!Equals(_isGeneratingBatteryReport, value))
+                if (!Equals(field, value))
                 {
-                    _isGeneratingBatteryReport = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsGeneratingBatteryReport)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedNotifyMode;
-
         private ComboBoxItemModel SelectedNotifyMode
         {
-            get { return _selectedNotifyMode; }
+            get;
 
             set
             {
-                if (!Equals(_selectedNotifyMode, value))
+                if (!Equals(field, value))
                 {
-                    _selectedNotifyMode = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedNotifyMode)));
                 }
             }
         }
 
-        private bool _isBackgroundAppsTaskEnabled;
-
         private bool IsBackgroundAppsTaskEnabled
         {
-            get { return _isBackgroundAppsTaskEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isBackgroundAppsTaskEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isBackgroundAppsTaskEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsBackgroundAppsTaskEnabled)));
                 }
             }
         }
 
-        private bool _isSystemReservedStorageLoadingOrUpdating;
-
         private bool IsSystemReservedStorageLoadingOrUpdating
         {
-            get { return _isSystemReservedStorageLoadingOrUpdating; }
+            get;
 
             set
             {
-                if (!Equals(_isSystemReservedStorageLoadingOrUpdating, value))
+                if (!Equals(field, value))
                 {
-                    _isSystemReservedStorageLoadingOrUpdating = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsSystemReservedStorageLoadingOrUpdating)));
                 }
             }
         }
 
-        private bool _isSystemReservedStorageEnabled;
-
         private bool IsSystemReservedStorageEnabled
         {
-            get { return _isSystemReservedStorageEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isSystemReservedStorageEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isSystemReservedStorageEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsSystemReservedStorageEnabled)));
                 }
             }
         }
 
-        private bool _isVirtualizationBasedSecurityEnabled;
-
         private bool IsVirtualizationBasedSecurityEnabled
         {
-            get { return _isVirtualizationBasedSecurityEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isVirtualizationBasedSecurityEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isVirtualizationBasedSecurityEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsVirtualizationBasedSecurityEnabled)));
                 }
             }
         }
 
-        private bool _isNICOffloadSettingsEnabled;
-
         private bool IsNICOffloadSettingsEnabled
         {
-            get { return _isNICOffloadSettingsEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isNICOffloadSettingsEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isNICOffloadSettingsEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsNICOffloadSettingsEnabled)));
                 }
             }
         }
 
-        private bool _isClosingWakeUpTask;
-
         private bool IsClosingWakeUpTask
         {
-            get { return _isClosingWakeUpTask; }
+            get;
 
             set
             {
-                if (!Equals(_isClosingWakeUpTask, value))
+                if (!Equals(field, value))
                 {
-                    _isClosingWakeUpTask = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsClosingWakeUpTask)));
                 }
             }
         }
 
-        private bool _isRestartingGraphicsDriver;
-
         private bool IsRestartingGraphicsDriver
         {
-            get { return _isRestartingGraphicsDriver; }
+            get;
 
             set
             {
-                if (!Equals(_isRestartingGraphicsDriver, value))
+                if (!Equals(field, value))
                 {
-                    _isRestartingGraphicsDriver = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsRestartingGraphicsDriver)));
                 }
             }
         }
 
-        private bool _isWindowsPhotoViewerEnabled;
-
         private bool IsWindowsPhotoViewerEnabled
         {
-            get { return _isWindowsPhotoViewerEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isWindowsPhotoViewerEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isWindowsPhotoViewerEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsWindowsPhotoViewerEnabled)));
                 }
             }
         }
 
-        private bool _isApprovalModeForBuiltinAdministratorAccountEnabled;
-
         private bool IsApprovalModeForBuiltinAdministratorAccountEnabled
         {
-            get { return _isApprovalModeForBuiltinAdministratorAccountEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isApprovalModeForBuiltinAdministratorAccountEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isApprovalModeForBuiltinAdministratorAccountEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsApprovalModeForBuiltinAdministratorAccountEnabled)));
                 }
             }

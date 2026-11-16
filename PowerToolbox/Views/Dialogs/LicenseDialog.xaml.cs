@@ -11,17 +11,15 @@ namespace PowerToolbox.Views.Dialogs
     {
         #region 第一部分：属性、列表与事件
 
-        private string _licenseText = Encoding.UTF8.GetString(Strings.Resources.LICENSE);
-
         private string LicenseText
         {
-            get { return _licenseText; }
+            get;
 
             set
             {
-                if (!Equals(_licenseText, value))
+                if (!string.Equals(field, value))
                 {
-                    _licenseText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(LicenseText)));
                 }
             }
@@ -36,6 +34,7 @@ namespace PowerToolbox.Views.Dialogs
         internal LicenseDialog()
         {
             InitializeComponent();
+            LicenseText = Encoding.UTF8.GetString(Strings.Resources.LICENSE);
         }
 
         #endregion 第二部分：构造函数

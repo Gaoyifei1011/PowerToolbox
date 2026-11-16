@@ -83,513 +83,449 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private bool _isDriveLoadCompleted;
-
         private bool IsDriveLoadCompleted
         {
-            get { return _isDriveLoadCompleted; }
+            get;
 
             set
             {
-                if (!Equals(_isDriveLoadCompleted, value))
+                if (!Equals(field, value))
                 {
-                    _isDriveLoadCompleted = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsDriveLoadCompleted)));
                 }
             }
         }
 
-        private DriveModel _selectedItem;
-
         private DriveModel SelectedItem
         {
-            get { return _selectedItem; }
+            get;
 
             set
             {
-                if (!Equals(_selectedItem, value))
+                if (!Equals(field, value))
                 {
-                    _selectedItem = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
                 }
             }
         }
 
-        private bool _isManualCloseInfoBar;
-
         private bool IsManualCloseInfoBar
         {
-            get { return _isManualCloseInfoBar; }
+            get;
 
             set
             {
-                if (!Equals(_isManualCloseInfoBar, value))
+                if (!Equals(field, value))
                 {
-                    _isManualCloseInfoBar = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsManualCloseInfoBar)));
                 }
             }
         }
 
-        private bool _isWinFRInstalled;
-
         private bool IsWinFRInstalled
         {
-            get { return _isWinFRInstalled; }
+            get;
 
             set
             {
-                if (!Equals(_isWinFRInstalled, value))
+                if (!Equals(field, value))
                 {
-                    _isWinFRInstalled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsWinFRInstalled)));
                 }
             }
         }
 
-        private string _saveFolder;
-
         private string SaveFolder
         {
-            get { return _saveFolder; }
+            get;
 
             set
             {
-                if (!string.Equals(_saveFolder, value))
+                if (!string.Equals(field, value))
                 {
-                    _saveFolder = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SaveFolder)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedRecoveryMode;
-
         private ComboBoxItemModel SelectedRecoveryMode
         {
-            get { return _selectedRecoveryMode; }
+            get;
 
             set
             {
-                if (!Equals(_saveFolder, value))
+                if (!Equals(field, value))
                 {
-                    _selectedRecoveryMode = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedRecoveryMode)));
                 }
             }
         }
 
-        private bool _useCustomLogFolder;
-
         private bool UseCustomLogFolder
         {
-            get { return _useCustomLogFolder; }
+            get;
 
             set
             {
-                if (!Equals(_useCustomLogFolder, value))
+                if (!Equals(field, value))
                 {
-                    _useCustomLogFolder = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(UseCustomLogFolder)));
                 }
             }
         }
 
-        private string _logSaveFolder;
-
         private string LogSaveFolder
         {
-            get { return _logSaveFolder; }
+            get;
 
             set
             {
-                if (!string.Equals(_logSaveFolder, value))
+                if (!string.Equals(field, value))
                 {
-                    _logSaveFolder = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(LogSaveFolder)));
                 }
             }
         }
 
-        private string _regularRestoreContent;
-
         private string RegularRestoreContent
         {
-            get { return _regularRestoreContent; }
+            get;
 
             set
             {
-                if (!string.Equals(_regularRestoreContent, value))
+                if (!string.Equals(field, value))
                 {
-                    _regularRestoreContent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(RegularRestoreContent)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedRegularDuplicatedFileOption;
-
         private ComboBoxItemModel SelectedRegularDuplicatedFileOption
         {
-            get { return _selectedRegularDuplicatedFileOption; }
+            get;
 
             set
             {
-                if (!Equals(_selectedRegularDuplicatedFileOption, value))
+                if (!Equals(field, value))
                 {
-                    _selectedRegularDuplicatedFileOption = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedRegularDuplicatedFileOption)));
                 }
             }
         }
 
-        private string _extensiveRestoreContent;
-
         private string ExtensiveRestoreContent
         {
-            get { return _extensiveRestoreContent; }
+            get;
 
             set
             {
-                if (!string.Equals(_extensiveRestoreContent, value))
+                if (!string.Equals(field, value))
                 {
-                    _extensiveRestoreContent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ExtensiveRestoreContent)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedExtensiveDuplicatedFileOption;
-
         private ComboBoxItemModel SelectedExtensiveDuplicatedFileOption
         {
-            get { return _selectedExtensiveDuplicatedFileOption; }
+            get;
 
             set
             {
-                if (!Equals(_selectedExtensiveDuplicatedFileOption, value))
+                if (!Equals(field, value))
                 {
-                    _selectedExtensiveDuplicatedFileOption = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedExtensiveDuplicatedFileOption)));
                 }
             }
         }
 
-        private string _ntfsRestoreContent;
-
         private string NTFSRestoreContent
         {
-            get { return _ntfsRestoreContent; }
+            get;
 
             set
             {
-                if (!string.Equals(_ntfsRestoreContent, value))
+                if (!string.Equals(field, value))
                 {
-                    _ntfsRestoreContent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(NTFSRestoreContent)));
                 }
             }
         }
 
-        private bool _ntfsRestoreFromRecyclebin;
-
         private bool NTFSRestoreFromRecyclebin
         {
-            get { return _ntfsRestoreFromRecyclebin; }
+            get;
 
             set
             {
-                if (!Equals(_ntfsRestoreFromRecyclebin, value))
+                if (!Equals(field, value))
                 {
-                    _ntfsRestoreFromRecyclebin = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(NTFSRestoreFromRecyclebin)));
                 }
             }
         }
 
-        private bool _ntfsRestoreSystemFile;
-
         private bool NTFSRestoreSystemFile
         {
-            get { return _ntfsRestoreSystemFile; }
+            get;
 
             set
             {
-                if (!Equals(_ntfsRestoreSystemFile, value))
+                if (!Equals(field, value))
                 {
-                    _ntfsRestoreSystemFile = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(NTFSRestoreSystemFile)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedNTFSDuplicatedFileOption;
-
         private ComboBoxItemModel SelectedNTFSDuplicatedFileOption
         {
-            get { return _selectedNTFSDuplicatedFileOption; }
+            get;
 
             set
             {
-                if (!Equals(_selectedNTFSDuplicatedFileOption, value))
+                if (!Equals(field, value))
                 {
-                    _selectedNTFSDuplicatedFileOption = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedNTFSDuplicatedFileOption)));
                 }
             }
         }
 
-        private bool _ntfsRestoreNonMainDataStream;
-
         private bool NTFSRestoreNonMainDataStream
         {
-            get { return _ntfsRestoreNonMainDataStream; }
+            get;
 
             set
             {
-                if (!Equals(_ntfsRestoreNonMainDataStream, value))
+                if (!Equals(field, value))
                 {
-                    _ntfsRestoreNonMainDataStream = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(NTFSRestoreNonMainDataStream)));
                 }
             }
         }
 
-        private bool _ntfsUseCustomFileFilterType;
-
         private bool NTFSUseCustomFileFilterType
         {
-            get { return _ntfsUseCustomFileFilterType; }
+            get;
 
             set
             {
-                if (!Equals(_ntfsUseCustomFileFilterType, value))
+                if (!Equals(field, value))
                 {
-                    _ntfsUseCustomFileFilterType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(NTFSUseCustomFileFilterType)));
                 }
             }
         }
 
-        private string _ntfsCustomFileFilterType;
-
         private string NTFSCustomFileFilterType
         {
-            get { return _ntfsCustomFileFilterType; }
+            get;
 
             set
             {
-                if (!string.Equals(_ntfsCustomFileFilterType, value))
+                if (!string.Equals(field, value))
                 {
-                    _ntfsCustomFileFilterType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(NTFSCustomFileFilterType)));
                 }
             }
         }
 
-        private string _segmentRestoreContent;
-
         private string SegmentRestoreContent
         {
-            get { return _segmentRestoreContent; }
+            get;
 
             set
             {
-                if (!string.Equals(_segmentRestoreContent, value))
+                if (!string.Equals(field, value))
                 {
-                    _segmentRestoreContent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SegmentRestoreContent)));
                 }
             }
         }
 
-        private bool _segmentRestoreFromRecyclebin;
-
         private bool SegmentRestoreFromRecyclebin
         {
-            get { return _segmentRestoreFromRecyclebin; }
+            get;
 
             set
             {
-                if (!Equals(_segmentRestoreFromRecyclebin, value))
+                if (!Equals(field, value))
                 {
-                    _segmentRestoreFromRecyclebin = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SegmentRestoreFromRecyclebin)));
                 }
             }
         }
 
-        private bool _segmentRestoreSystemFile;
-
         private bool SegmentRestoreSystemFile
         {
-            get { return _segmentRestoreSystemFile; }
+            get;
 
             set
             {
-                if (!Equals(_segmentRestoreSystemFile, value))
+                if (!Equals(field, value))
                 {
-                    _segmentRestoreSystemFile = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SegmentRestoreSystemFile)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedSegmentDuplicatedFileOption;
-
         private ComboBoxItemModel SelectedSegmentDuplicatedFileOption
         {
-            get { return _selectedSegmentDuplicatedFileOption; }
+            get;
 
             set
             {
-                if (!Equals(_selectedSegmentDuplicatedFileOption, value))
+                if (!Equals(field, value))
                 {
-                    _selectedSegmentDuplicatedFileOption = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedSegmentDuplicatedFileOption)));
                 }
             }
         }
 
-        private bool _segmentRestoreNonMainDataStream;
-
         private bool SegmentRestoreNonMainDataStream
         {
-            get { return _segmentRestoreNonMainDataStream; }
+            get;
 
             set
             {
-                if (!Equals(_segmentRestoreNonMainDataStream, value))
+                if (!Equals(field, value))
                 {
-                    _segmentRestoreNonMainDataStream = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SegmentRestoreNonMainDataStream)));
                 }
             }
         }
 
-        private bool _segmentUseCustomFileFilterType;
-
         private bool SegmentUseCustomFileFilterType
         {
-            get { return _segmentUseCustomFileFilterType; }
+            get;
 
             set
             {
-                if (!Equals(_segmentUseCustomFileFilterType, value))
+                if (!Equals(field, value))
                 {
-                    _segmentUseCustomFileFilterType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SegmentUseCustomFileFilterType)));
                 }
             }
         }
 
-        private string _segmentCustomFileFilterType;
-
         private string SegmentCustomFileFilterType
         {
-            get { return _segmentCustomFileFilterType; }
+            get;
 
             set
             {
-                if (!string.Equals(_segmentCustomFileFilterType, value))
+                if (!string.Equals(field, value))
                 {
-                    _segmentCustomFileFilterType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SegmentCustomFileFilterType)));
                 }
             }
         }
 
-        private int _segmentSourceDeviceNumberSectors;
-
         private int SegmentSourceDeviceNumberSectors
         {
-            get { return _segmentSourceDeviceNumberSectors; }
+            get;
 
             set
             {
-                if (!Equals(_segmentSourceDeviceNumberSectors, value))
+                if (!Equals(field, value))
                 {
-                    _segmentSourceDeviceNumberSectors = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SegmentSourceDeviceNumberSectors)));
                 }
             }
         }
 
-        private int _segmentSourceDeviceClusterSize;
-
         private int SegmentSourceDeviceClusterSize
         {
-            get { return _segmentSourceDeviceClusterSize; }
+            get;
 
             set
             {
-                if (!Equals(_segmentSourceDeviceClusterSize, value))
+                if (!Equals(field, value))
                 {
-                    _segmentSourceDeviceClusterSize = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SegmentSourceDeviceClusterSize)));
                 }
             }
         }
 
-        private bool _signatureUseRestoreSpecificExtensionGroups;
-
         private bool SignatureUseRestoreSpecificExtensionGroups
         {
-            get { return _signatureUseRestoreSpecificExtensionGroups; }
+            get;
 
             set
             {
-                if (!Equals(_signatureUseRestoreSpecificExtensionGroups, value))
+                if (!Equals(field, value))
                 {
-                    _signatureUseRestoreSpecificExtensionGroups = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SignatureUseRestoreSpecificExtensionGroups)));
                 }
             }
         }
 
-        private string _signatureRestoreSpecificExtensionGroupsType;
-
         private string SignatureRestoreSpecificExtensionGroupsType
         {
-            get { return _signatureRestoreSpecificExtensionGroupsType; }
+            get;
 
             set
             {
-                if (!string.Equals(_signatureRestoreSpecificExtensionGroupsType, value))
+                if (!string.Equals(field, value))
                 {
-                    _signatureRestoreSpecificExtensionGroupsType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SignatureRestoreSpecificExtensionGroupsType)));
                 }
             }
         }
 
-        private int _signatureSourceDeviceNumberSectors;
-
         private int SignatureSourceDeviceNumberSectors
         {
-            get { return _signatureSourceDeviceNumberSectors; }
+            get;
 
             set
             {
-                if (!Equals(_signatureSourceDeviceNumberSectors, value))
+                if (!Equals(field, value))
                 {
-                    _signatureSourceDeviceNumberSectors = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SignatureSourceDeviceNumberSectors)));
                 }
             }
         }
 
-        private int _signatureSourceDeviceClusterSize;
-
         private int SignatureSourceDeviceClusterSize
         {
-            get { return _signatureSourceDeviceClusterSize; }
+            get;
 
             set
             {
-                if (!Equals(_signatureSourceDeviceClusterSize, value))
+                if (!Equals(field, value))
                 {
-                    _signatureSourceDeviceClusterSize = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SignatureSourceDeviceClusterSize)));
                 }
             }
@@ -1238,7 +1174,6 @@ namespace PowerToolbox.Views.Pages
 
                     DriveModel driveItem = new()
                     {
-                        IsSelected = false,
                         Name = string.Format("{0} ({1})", driveInfo.VolumeLabel, driveInfo.Name.TrimEnd('\\')),
                         Space = string.Format(DiskSpaceString, VolumeSizeHelper.ConvertVolumeSizeToString(driveInfo.TotalFreeSpace), VolumeSizeHelper.ConvertVolumeSizeToString(driveInfo.TotalSize)),
                         DriveUsedPercentage = driveUsedPercentage,

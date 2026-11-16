@@ -15,17 +15,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 加密 / 校验后的结果
         /// </summary>
-        private string _result;
-
         internal string Result
         {
-            get { return _result; }
+            get;
 
             set
             {
-                if (!Equals(_result, value))
+                if (!string.Equals(field, value))
                 {
-                    _result = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(Result)));
                 }
             }

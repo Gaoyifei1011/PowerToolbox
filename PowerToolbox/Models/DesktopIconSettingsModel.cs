@@ -36,17 +36,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 文件图标
         /// </summary>
-        private ImageSource _iconImage;
-
         internal ImageSource IconImage
         {
-            get { return _iconImage; }
+            get;
 
             set
             {
-                if (!Equals(_iconImage, value))
+                if (!Equals(field, value))
                 {
-                    _iconImage = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IconImage)));
                 }
             }

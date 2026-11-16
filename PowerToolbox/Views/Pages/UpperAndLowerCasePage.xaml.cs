@@ -52,49 +52,43 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private bool _isModifyingNow;
-
         internal bool IsModifyingNow
         {
-            get { return _isModifyingNow; }
+            get;
 
             private set
             {
-                if (!Equals(_isModifyingNow, value))
+                if (!Equals(field, value))
                 {
-                    _isModifyingNow = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
         }
 
-        private UpperAndLowerCaseRadioItemModel _selectedItem;
-
         private UpperAndLowerCaseRadioItemModel SelectedItem
         {
-            get { return _selectedItem; }
+            get;
 
             set
             {
-                if (!Equals(_selectedItem, value))
+                if (!Equals(field, value))
                 {
-                    _selectedItem = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
                 }
             }
         }
 
-        private bool _isOperationFailed;
-
         private bool IsOperationFailed
         {
-            get { return _isOperationFailed; }
+            get;
 
             set
             {
-                if (!Equals(_isOperationFailed, value))
+                if (!Equals(field, value))
                 {
-                    _isOperationFailed = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsOperationFailed)));
                 }
             }

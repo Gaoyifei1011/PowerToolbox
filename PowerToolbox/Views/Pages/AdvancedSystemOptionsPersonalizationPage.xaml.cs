@@ -145,161 +145,141 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private bool _isRebuildingIconCache;
-
         private bool IsRebuildingIconCache
         {
-            get { return _isRebuildingIconCache; }
+            get;
 
             set
             {
-                if (!Equals(_isRebuildingIconCache, value))
+                if (!Equals(field, value))
                 {
-                    _isRebuildingIconCache = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsRebuildingIconCache)));
                 }
             }
         }
 
-        private bool _isIconSelected;
-
         private bool IsIconSelected
         {
-            get { return _isIconSelected; }
+            get;
 
             set
             {
-                if (!Equals(_isIconSelected, value))
+                if (!Equals(field, value))
                 {
-                    _isIconSelected = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsIconSelected)));
                 }
             }
         }
 
-        private DesktopIconSettingsModel _selectedIconItem;
-
         private DesktopIconSettingsModel SelectedIconItem
         {
-            get { return _selectedIconItem; }
+            get;
 
             set
             {
-                if (!Equals(_selectedIconItem, value))
+                if (!Equals(field, value))
                 {
-                    _selectedIconItem = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedIconItem)));
                 }
             }
         }
 
-        private ComboBoxItemModel _rightClickMenuStyle;
-
         private ComboBoxItemModel RightClickMenuStyle
         {
-            get { return _rightClickMenuStyle; }
+            get;
 
             set
             {
-                if (!Equals(_rightClickMenuStyle, value))
+                if (!Equals(field, value))
                 {
-                    _rightClickMenuStyle = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(RightClickMenuStyle)));
                 }
             }
         }
 
-        private ComboBoxItemModel _fileExplorerStyle;
-
         private ComboBoxItemModel FileExplorerStyle
         {
-            get { return _fileExplorerStyle; }
+            get;
 
             set
             {
-                if (!Equals(_fileExplorerStyle, value))
+                if (!Equals(field, value))
                 {
-                    _fileExplorerStyle = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(FileExplorerStyle)));
                 }
             }
         }
 
-        private bool _isSyncProviderNotificationsEnabled;
-
         private bool IsSyncProviderNotificationsEnabled
         {
-            get { return _isSyncProviderNotificationsEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isSyncProviderNotificationsEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isSyncProviderNotificationsEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsSyncProviderNotificationsEnabled)));
                 }
             }
         }
 
-        private ComboBoxItemModel _fileExplorerHomePosition;
-
         private ComboBoxItemModel FileExplorerHomePosition
         {
-            get { return _fileExplorerHomePosition; }
+            get;
 
             set
             {
-                if (!Equals(_fileExplorerHomePosition, value))
+                if (!Equals(field, value))
                 {
-                    _fileExplorerHomePosition = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(FileExplorerHomePosition)));
                 }
             }
         }
 
-        private bool _isShortcutWithoutShortcutTextEnabled;
-
         private bool IsShortcutWithoutShortcutTextEnabled
         {
-            get { return _isShortcutWithoutShortcutTextEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isShortcutWithoutShortcutTextEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isShortcutWithoutShortcutTextEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsShortcutWithoutShortcutTextEnabled)));
                 }
             }
         }
 
-        private ComboBoxItemModel _visualEffectsPlan;
-
         private ComboBoxItemModel VisualEffectsPlan
         {
-            get { return _visualEffectsPlan; }
+            get;
 
             set
             {
-                if (!Equals(_visualEffectsPlan, value))
+                if (!Equals(field, value))
                 {
-                    _visualEffectsPlan = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(VisualEffectsPlan)));
                 }
             }
         }
 
-        private bool _isUpdatingVisualEffects;
-
         private bool IsUpdatingVisualEffects
         {
-            get { return _isUpdatingVisualEffects; }
+            get;
 
             set
             {
-                if (!Equals(_isUpdatingVisualEffects, value))
+                if (!Equals(field, value))
                 {
-                    _isUpdatingVisualEffects = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsUpdatingVisualEffects)));
                 }
             }

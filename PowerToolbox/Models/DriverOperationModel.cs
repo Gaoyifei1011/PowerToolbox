@@ -11,17 +11,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 驱动操作是否正在进行中
         /// </summary>
-        private bool _isOperating;
-
         internal bool IsOperating
         {
-            get { return _isOperating; }
+            get;
 
             set
             {
-                if (!Equals(_isOperating, value))
+                if (!Equals(field, value))
                 {
-                    _isOperating = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsOperating)));
                 }
             }
@@ -30,17 +28,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 驱动操作信息
         /// </summary>
-        private string _driverOperation;
-
         internal string DriverOperation
         {
-            get { return _driverOperation; }
+            get;
 
             set
             {
-                if (!string.Equals(_driverOperation, value))
+                if (!string.Equals(field, value))
                 {
-                    _driverOperation = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DriverOperation)));
                 }
             }

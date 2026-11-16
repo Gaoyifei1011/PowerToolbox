@@ -14,17 +14,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 菜单标题
         /// </summary>
-        private string _menuTitleText;
-
         internal string MenuTitleText
         {
-            get { return _menuTitleText; }
+            get;
 
             set
             {
-                if (!string.Equals(_menuTitleText, value))
+                if (!string.Equals(field, value))
                 {
-                    _menuTitleText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(MenuTitleText)));
                 }
             }
@@ -33,17 +31,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 使用图标
         /// </summary>
-        private bool _useIcon;
-
         internal bool UseIcon
         {
-            get { return _useIcon; }
+            get;
 
             set
             {
-                if (!Equals(_useIcon, value))
+                if (!Equals(field, value))
                 {
-                    _useIcon = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(UseIcon)));
                 }
             }
@@ -52,17 +48,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 使用应用程序图标
         /// </summary>
-        private bool _useProgramIcon;
-
         internal bool UseProgramIcon
         {
-            get { return _useProgramIcon; }
+            get;
 
             set
             {
-                if (!Equals(_useProgramIcon, value))
+                if (!Equals(field, value))
                 {
-                    _useProgramIcon = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(UseProgramIcon)));
                 }
             }
@@ -71,17 +65,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 使用主题图标
         /// </summary>
-        private bool _useThemeIcon;
-
         internal bool UseThemeIcon
         {
-            get { return _useThemeIcon; }
+            get;
 
             set
             {
-                if (!Equals(_useThemeIcon, value))
+                if (!Equals(field, value))
                 {
-                    _useThemeIcon = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(UseThemeIcon)));
                 }
             }
@@ -90,17 +82,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 菜单项图标
         /// </summary>
-        private ImageSource _menuIcon;
-
         internal ImageSource MenuIcon
         {
-            get { return _menuIcon; }
+            get;
 
             set
             {
-                if (!Equals(_menuIcon, value))
+                if (!Equals(field, value))
                 {
-                    _menuIcon = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(MenuIcon)));
                 }
             }
@@ -109,17 +99,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 是否选中当前菜单项
         /// </summary>
-        private bool _isSelected;
-
         internal bool IsSelected
         {
-            get { return _isSelected; }
+            get;
 
             set
             {
-                if (!Equals(_isSelected, value))
+                if (!Equals(field, value))
                 {
-                    _isSelected = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsSelected)));
                 }
             }
@@ -128,17 +116,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 菜单项索引
         /// </summary>
-        private int _menuIndex;
-
         internal int MenuIndex
         {
-            get { return _menuIndex; }
+            get;
 
             set
             {
-                if (!Equals(_menuIndex, value))
+                if (!Equals(field, value))
                 {
-                    _menuIndex = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(MenuIndex)));
                 }
             }

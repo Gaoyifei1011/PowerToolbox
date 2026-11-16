@@ -46,49 +46,43 @@ namespace PowerToolbox.Views.Windows
 
         internal new static SimulateUpdateWindow Current { get; private set; }
 
-        private SimulateUpdateKind _simulateUpdateKind;
-
         private SimulateUpdateKind SimulateUpdateKind
         {
-            get { return _simulateUpdateKind; }
+            get;
 
             set
             {
-                if (!Equals(_simulateUpdateKind, value))
+                if (!Equals(field, value))
                 {
-                    _simulateUpdateKind = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SimulateUpdateKind)));
                 }
             }
         }
 
-        private string _windows11UpdateText;
-
         private string Windows11UpdateText
         {
-            get { return _windows11UpdateText; }
+            get;
 
             set
             {
-                if (!Equals(_windows11UpdateText, value))
+                if (!string.Equals(field, value))
                 {
-                    _windows11UpdateText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(Windows11UpdateText)));
                 }
             }
         }
 
-        private string _windows10UpdateText;
-
         private string Windows10UpdateText
         {
-            get { return _windows10UpdateText; }
+            get;
 
             set
             {
-                if (!Equals(_windows10UpdateText, value))
+                if (!string.Equals(field, value))
                 {
-                    _windows10UpdateText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(Windows10UpdateText)));
                 }
             }

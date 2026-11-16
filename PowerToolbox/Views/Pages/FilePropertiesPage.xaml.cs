@@ -50,193 +50,169 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private bool _isReadOnlyChecked;
-
         private bool IsReadOnlyChecked
         {
-            get { return _isReadOnlyChecked; }
+            get;
 
             set
             {
-                if (!Equals(_isReadOnlyChecked, value))
+                if (!Equals(field, value))
                 {
-                    _isReadOnlyChecked = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsReadOnlyChecked)));
                 }
             }
         }
 
-        private bool _isArchiveChecked;
-
         private bool IsArchiveChecked
         {
-            get { return _isArchiveChecked; }
+            get;
 
             set
             {
-                if (!Equals(_isArchiveChecked, value))
+                if (!Equals(field, value))
                 {
-                    _isArchiveChecked = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsArchiveChecked)));
                 }
             }
         }
 
-        private bool _isCreateDateChecked;
-
         private bool IsCreateDateChecked
         {
-            get { return _isCreateDateChecked; }
+            get;
 
             set
             {
-                if (!Equals(_isCreateDateChecked, value))
+                if (!Equals(field, value))
                 {
-                    _isCreateDateChecked = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsCreateDateChecked)));
                 }
             }
         }
 
-        private bool _isHideChecked;
-
         private bool IsHideChecked
         {
-            get { return _isHideChecked; }
+            get;
 
             set
             {
-                if (!Equals(_isHideChecked, value))
+                if (!Equals(field, value))
                 {
-                    _isHideChecked = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsHideChecked)));
                 }
             }
         }
 
-        private bool _isSystemChecked;
-
         private bool IsSystemChecked
         {
-            get { return _isSystemChecked; }
+            get;
 
             set
             {
-                if (!Equals(_isSystemChecked, value))
+                if (!Equals(field, value))
                 {
-                    _isSystemChecked = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsSystemChecked)));
                 }
             }
         }
 
-        private bool _isModifyDateChecked;
-
         private bool IsModifyDateChecked
         {
-            get { return _isModifyDateChecked; }
+            get;
 
             set
             {
-                if (!Equals(_isModifyDateChecked, value))
+                if (!Equals(field, value))
                 {
-                    _isModifyDateChecked = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsModifyDateChecked)));
                 }
             }
         }
 
-        private bool _isModifyingNow;
-
         internal bool IsModifyingNow
         {
-            get { return _isModifyingNow; }
+            get;
 
             private set
             {
-                if (!Equals(_isModifyingNow, value))
+                if (!Equals(field, value))
                 {
-                    _isModifyingNow = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
         }
 
-        private DateTimeOffset _createDate;
-
         private DateTimeOffset CreateDate
         {
-            get { return _createDate; }
+            get;
 
             set
             {
-                if (!Equals(_createDate, value))
+                if (!DateTimeOffset.Equals(field, value))
                 {
-                    _createDate = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(CreateDate)));
                 }
             }
         }
 
-        private TimeSpan _createTime;
-
         private TimeSpan CreateTime
         {
-            get { return _createTime; }
+            get;
 
             set
             {
-                if (!Equals(_createTime, value))
+                if (!TimeSpan.Equals(field, value))
                 {
-                    _createTime = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(CreateTime)));
                 }
             }
         }
 
-        private DateTimeOffset _modifyDate;
-
         private DateTimeOffset ModifyDate
         {
-            get { return _modifyDate; }
+            get;
 
             set
             {
-                if (!Equals(_modifyDate, value))
+                if (!DateTimeOffset.Equals(field, value))
                 {
-                    _modifyDate = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ModifyDate)));
                 }
             }
         }
 
-        private TimeSpan _modifyTime;
-
         private TimeSpan ModifyTime
         {
-            get { return _modifyTime; }
+            get;
 
             set
             {
-                if (!Equals(_modifyTime, value))
+                if (!TimeSpan.Equals(field, value))
                 {
-                    _modifyTime = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ModifyTime)));
                 }
             }
         }
 
-        private bool _isOperationFailed;
-
         private bool IsOperationFailed
         {
-            get { return _isOperationFailed; }
+            get;
 
             set
             {
-                if (!Equals(_isOperationFailed, value))
+                if (!Equals(field, value))
                 {
-                    _isOperationFailed = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsOperationFailed)));
                 }
             }

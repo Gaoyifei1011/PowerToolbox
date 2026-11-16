@@ -244,97 +244,85 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private DriverPaneKind _driverPaneKind;
-
         private DriverPaneKind DriverPaneKind
         {
-            get { return _driverPaneKind; }
+            get;
 
             set
             {
-                if (!Equals(_driverPaneKind, value))
+                if (!Equals(field, value))
                 {
-                    _driverPaneKind = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DriverPaneKind)));
                 }
             }
         }
 
-        private DriverResultKind _driverResultKind;
-
         private DriverResultKind DriverResultKind
         {
-            get { return _driverResultKind; }
+            get;
 
             set
             {
-                if (!Equals(_driverResultKind, value))
+                if (!Equals(field, value))
                 {
-                    _driverResultKind = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DriverResultKind)));
                 }
             }
         }
 
-        private int _selectedItemsCount;
-
         private int SelectedItemsCount
         {
-            get { return _selectedItemsCount; }
+            get;
 
             set
             {
-                if (!Equals(_selectedItemsCount, value))
+                if (!Equals(field, value))
                 {
-                    _selectedItemsCount = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedItemsCount)));
                 }
             }
         }
 
-        private string _driverFailedContent;
-
         private string DriverFailedContent
         {
-            get { return _driverFailedContent; }
+            get;
 
             set
             {
-                if (!string.Equals(_driverFailedContent, value))
+                if (!string.Equals(field, value))
                 {
-                    _driverFailedContent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DriverFailedContent)));
                 }
             }
         }
 
-        private bool _isIncrease = true;
-
         private bool IsIncrease
         {
-            get { return _isIncrease; }
+            get;
 
             set
             {
-                if (!Equals(_isIncrease, value))
+                if (!Equals(field, value))
                 {
-                    _isIncrease = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsIncrease)));
                 }
             }
         }
 
-        private DriverSortRuleKind _selectedDriverSortRuleKind = DriverSortRuleKind.DeviceName;
-
         private DriverSortRuleKind SelectedDriverSortRuleKind
         {
-            get { return _selectedDriverSortRuleKind; }
+            get;
 
             set
             {
-                if (!Equals(_selectedDriverSortRuleKind, value))
+                if (!Equals(field, value))
                 {
-                    _selectedDriverSortRuleKind = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedDriverSortRuleKind)));
                 }
             }
@@ -355,6 +343,7 @@ namespace PowerToolbox.Views.Pages
         internal DriverManagerPage()
         {
             InitializeComponent();
+            InitializeData();
         }
 
         #endregion 第三部分：构造函数
@@ -865,6 +854,15 @@ namespace PowerToolbox.Views.Pages
 
         /// <summary>
         /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
+            IsIncrease = true;
+            SelectedDriverSortRuleKind = DriverSortRuleKind.DeviceName;
+        }
+
+        /// <summary>
+        /// 获取设备驱动信息
         /// </summary>
         private async Task GetDriverAsync(DriverSortRuleKind driverSortRuleKind, bool isIncrease)
         {

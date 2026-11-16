@@ -37,113 +37,99 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private ShellMenuItemModel _selectedItem;
-
         private ShellMenuItemModel SelectedItem
         {
-            get { return _selectedItem; }
+            get;
 
             set
             {
-                if (!Equals(_selectedItem, value))
+                if (!Equals(field, value))
                 {
-                    _selectedItem = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
                 }
             }
         }
 
-        private bool _isLoading;
-
         private bool IsLoading
         {
-            get { return _isLoading; }
+            get;
 
             set
             {
-                if (!Equals(_isLoading, value))
+                if (!Equals(field, value))
                 {
-                    _isLoading = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsLoading)));
                 }
             }
         }
 
-        private bool _isAddMenuEnabled;
-
         private bool IsAddMenuEnabled
         {
-            get { return _isAddMenuEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isAddMenuEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isAddMenuEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsAddMenuEnabled)));
                 }
             }
         }
 
-        private bool _isRemoveMenuEnabled;
-
         private bool IsRemoveMenuEnabled
         {
-            get { return _isRemoveMenuEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isRemoveMenuEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isRemoveMenuEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsRemoveMenuEnabled)));
                 }
             }
         }
 
-        private bool _isEditMenuEnabled;
-
         private bool IsEditMenuEnabled
         {
-            get { return _isEditMenuEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isEditMenuEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isEditMenuEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsEditMenuEnabled)));
                 }
             }
         }
 
-        private bool _isMoveUpEnabled;
-
         private bool IsMoveUpEnabled
         {
-            get { return _isMoveUpEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isMoveUpEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isMoveUpEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsMoveUpEnabled)));
                 }
             }
         }
 
-        private bool _isMoveDownEnabled;
-
         private bool IsMoveDownEnabled
         {
-            get { return _isMoveDownEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isMoveDownEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isMoveDownEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsMoveDownEnabled)));
                 }
             }

@@ -12,17 +12,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 计划任务是否已启用
         /// </summary>
-        private bool _isEnabled;
-
         internal bool IsEnabled
         {
-            get { return _isEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsEnabled)));
                 }
             }
@@ -31,17 +29,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 计划任务是否正在处理中
         /// </summary>
-        private bool _isProcessing;
-
         internal bool IsProcessing
         {
-            get { return _isProcessing; }
+            get;
 
             set
             {
-                if (!Equals(_isProcessing, value))
+                if (!Equals(field, value))
                 {
-                    _isProcessing = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsProcessing)));
                 }
             }
@@ -75,17 +71,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 计划任务状态
         /// </summary>
-        private string _state;
-
         internal string State
         {
-            get { return _state; }
+            get;
 
             set
             {
-                if (!Equals(_state, value))
+                if (!string.Equals(field, value))
                 {
-                    _state = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(State)));
                 }
             }
@@ -94,17 +88,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 计划任务上次运行的时间
         /// </summary>
-        private string _lastRunTime;
-
         internal string LastRunTime
         {
-            get { return _lastRunTime; }
+            get;
 
             set
             {
-                if (!Equals(_lastRunTime, value))
+                if (!string.Equals(field, value))
                 {
-                    _lastRunTime = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(LastRunTime)));
                 }
             }
@@ -113,17 +105,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 上次运行计划任务时返回的结果
         /// </summary>
-        private string _lastTaskResult;
-
         internal string LastTaskResult
         {
-            get { return _lastTaskResult; }
+            get;
 
             set
             {
-                if (!Equals(_lastTaskResult, value))
+                if (!string.Equals(field, value))
                 {
-                    _lastTaskResult = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(LastTaskResult)));
                 }
             }
@@ -132,17 +122,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 计划任务下次运行时间
         /// </summary>
-        private string _nextRunTime;
-
         internal string NextRunTime
         {
-            get { return _nextRunTime; }
+            get;
 
             set
             {
-                if (!Equals(_nextRunTime, value))
+                if (!string.Equals(field, value))
                 {
-                    _nextRunTime = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(NextRunTime)));
                 }
             }

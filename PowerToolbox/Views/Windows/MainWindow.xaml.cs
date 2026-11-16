@@ -84,97 +84,85 @@ namespace PowerToolbox.Views.Windows
 
         internal new static MainWindow Current { get; private set; }
 
-        private string _windowTitle;
-
         private string WindowTitle
         {
-            get { return _windowTitle; }
+            get;
 
             set
             {
-                if (!string.Equals(_windowTitle, value))
+                if (!string.Equals(field, value))
                 {
-                    _windowTitle = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(WindowTitle)));
                 }
             }
         }
 
-        private SystemBackdrop _windowSystemBackdrop;
-
         private SystemBackdrop WindowSystemBackdrop
         {
-            get { return _windowSystemBackdrop; }
+            get;
 
             set
             {
-                if (!Equals(_windowSystemBackdrop, value))
+                if (!Equals(field, value))
                 {
-                    _windowSystemBackdrop = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(WindowSystemBackdrop)));
                 }
             }
         }
 
-        private ElementTheme _windowTheme;
-
         private ElementTheme WindowTheme
         {
-            get { return _windowTheme; }
+            get;
 
             set
             {
-                if (!Equals(_windowTheme, value))
+                if (!Equals(field, value))
                 {
-                    _windowTheme = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(WindowTheme)));
                 }
             }
         }
 
-        private bool _isWindowMaximized;
-
         private bool IsWindowMaximized
         {
-            get { return _isWindowMaximized; }
+            get;
 
             set
             {
-                if (!Equals(_isWindowMaximized, value))
+                if (!Equals(field, value))
                 {
-                    _isWindowMaximized = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsWindowMaximized)));
                 }
             }
         }
 
-        private bool _isBackEnabled;
-
         private bool IsBackEnabled
         {
-            get { return _isBackEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isBackEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isBackEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsBackEnabled)));
                 }
             }
         }
 
-        private NavigationViewItemModel _selectedItem;
-
         private NavigationViewItemModel SelectedItem
         {
-            get { return _selectedItem; }
+            get;
 
             set
             {
-                if (!Equals(_selectedItem, value))
+                if (!Equals(field, value))
                 {
-                    _selectedItem = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedItem)));
                 }
             }
@@ -1191,6 +1179,13 @@ namespace PowerToolbox.Views.Windows
                     if (!dataEncryptPage.IsEncrypting && filesList.Count is 1)
                     {
                         dataEncryptPage.EncryptFile = filesList[0];
+                    }
+                }
+                else if (currentDataVerifyEncryptContent is DataDecryptPage dataDecryptPage)
+                {
+                    if (!dataDecryptPage.IsDecrypting && filesList.Count is 1)
+                    {
+                        dataDecryptPage.DecryptFile = filesList[0];
                     }
                 }
                 else if (currentDataVerifyEncryptContent is DataVerifyPage dataVerifyPage)

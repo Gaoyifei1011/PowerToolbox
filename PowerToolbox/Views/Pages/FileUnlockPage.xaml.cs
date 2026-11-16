@@ -46,49 +46,43 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private bool _isModifyingNow;
-
         internal bool IsModifyingNow
         {
-            get { return _isModifyingNow; }
+            get;
 
             private set
             {
-                if (!Equals(_isModifyingNow, value))
+                if (!Equals(field, value))
                 {
-                    _isModifyingNow = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
         }
 
-        private bool _isOperationCancelling;
-
         private bool IsOperationCancelling
         {
-            get { return _isOperationCancelling; }
+            get;
 
             set
             {
-                if (!Equals(_isOperationCancelling, value))
+                if (!Equals(field, value))
                 {
-                    _isOperationCancelling = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsOperationCancelling)));
                 }
             }
         }
 
-        private bool _isOperationFailed;
-
         private bool IsOperationFailed
         {
-            get { return _isOperationFailed; }
+            get;
 
             set
             {
-                if (!Equals(_isOperationFailed, value))
+                if (!Equals(field, value))
                 {
-                    _isOperationFailed = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsOperationFailed)));
                 }
             }

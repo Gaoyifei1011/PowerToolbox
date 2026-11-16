@@ -74,33 +74,29 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private SystemInformationResultKind _systemInformationResultKind;
-
         private SystemInformationResultKind SystemInformationResultKind
         {
-            get { return _systemInformationResultKind; }
+            get;
 
             set
             {
-                if (!Equals(_systemInformationResultKind, value))
+                if (!Equals(field, value))
                 {
-                    _systemInformationResultKind = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SystemInformationResultKind)));
                 }
             }
         }
 
-        private string _systemInformationFailedContent;
-
         private string SystemInformationFailedContent
         {
-            get { return _systemInformationFailedContent; }
+            get;
 
             set
             {
-                if (!Equals(_systemInformationFailedContent, value))
+                if (!string.Equals(field, value))
                 {
-                    _systemInformationFailedContent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SystemInformationFailedContent)));
                 }
             }

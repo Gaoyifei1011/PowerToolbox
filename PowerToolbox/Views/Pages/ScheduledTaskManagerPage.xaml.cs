@@ -53,49 +53,43 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private ScheduledTaskResultKind _scheduledTaskResultKind;
-
         private ScheduledTaskResultKind ScheduledTaskResultKind
         {
-            get { return _scheduledTaskResultKind; }
+            get;
 
             set
             {
-                if (!Equals(_scheduledTaskResultKind, value))
+                if (!Equals(field, value))
                 {
-                    _scheduledTaskResultKind = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ScheduledTaskResultKind)));
                 }
             }
         }
 
-        private int _selectedItemsCount;
-
         private int SelectedItemsCount
         {
-            get { return _selectedItemsCount; }
+            get;
 
             set
             {
-                if (!Equals(_selectedItemsCount, value))
+                if (!Equals(field, value))
                 {
-                    _selectedItemsCount = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedItemsCount)));
                 }
             }
         }
 
-        private string _scheduledTaskFailedContent;
-
         private string ScheduledTaskFailedContent
         {
-            get { return _scheduledTaskFailedContent; }
+            get;
 
             set
             {
-                if (!string.Equals(_scheduledTaskFailedContent, value))
+                if (!string.Equals(field, value))
                 {
-                    _scheduledTaskFailedContent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ScheduledTaskFailedContent)));
                 }
             }

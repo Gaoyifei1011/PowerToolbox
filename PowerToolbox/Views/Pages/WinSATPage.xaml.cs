@@ -40,161 +40,141 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private string _processorSubScore;
-
         private string ProcessorSubScore
         {
-            get { return _processorSubScore; }
+            get;
 
             set
             {
-                if (!string.Equals(_processorSubScore, value))
+                if (!string.Equals(field, value))
                 {
-                    _processorSubScore = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ProcessorSubScore)));
                 }
             }
         }
 
-        private string _memorySubScore;
-
         private string MemorySubScore
         {
-            get { return _memorySubScore; }
+            get;
 
             set
             {
-                if (!string.Equals(_memorySubScore, value))
+                if (!string.Equals(field, value))
                 {
-                    _memorySubScore = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(MemorySubScore)));
                 }
             }
         }
 
-        private string _graphicsSubScore;
-
         private string GraphicsSubScore
         {
-            get { return _graphicsSubScore; }
+            get;
 
             set
             {
-                if (!string.Equals(_graphicsSubScore, value))
+                if (!string.Equals(field, value))
                 {
-                    _graphicsSubScore = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(GraphicsSubScore)));
                 }
             }
         }
 
-        private string _gamingGraphicsSubScore;
-
         private string GamingGraphicsSubScore
         {
-            get { return _gamingGraphicsSubScore; }
+            get;
 
             set
             {
-                if (!string.Equals(_gamingGraphicsSubScore, value))
+                if (!string.Equals(field, value))
                 {
-                    _gamingGraphicsSubScore = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(GamingGraphicsSubScore)));
                 }
             }
         }
 
-        private string _primaryDiskSubScore;
-
         private string PrimaryDiskSubScore
         {
-            get { return _primaryDiskSubScore; }
+            get;
 
             set
             {
-                if (!string.Equals(_primaryDiskSubScore, value))
+                if (!string.Equals(field, value))
                 {
-                    _primaryDiskSubScore = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(PrimaryDiskSubScore)));
                 }
             }
         }
 
-        private string _basicScore;
-
         private string BasicScore
         {
-            get { return _basicScore; }
+            get;
 
             set
             {
-                if (!string.Equals(_basicScore, value))
+                if (!string.Equals(field, value))
                 {
-                    _basicScore = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(BasicScore)));
                 }
             }
         }
 
-        private bool _basicScoreExisted;
-
         private bool BasicScoreExisted
         {
-            get { return _basicScoreExisted; }
+            get;
 
             set
             {
-                if (!Equals(_basicScoreExisted, value))
+                if (!Equals(field, value))
                 {
-                    _basicScoreExisted = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(BasicScoreExisted)));
                 }
             }
         }
 
-        private bool _isNotRunningAssessment = true;
-
         private bool IsNotRunningAssessment
         {
-            get { return _isNotRunningAssessment; }
+            get;
 
             set
             {
-                if (!Equals(_isNotRunningAssessment, value))
+                if (!Equals(field, value))
                 {
-                    _isNotRunningAssessment = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsNotRunningAssessment)));
                 }
             }
         }
 
-        private InfoBarSeverity _resultSeverity;
-
         private InfoBarSeverity ResultSeverity
         {
-            get { return _resultSeverity; }
+            get;
 
             set
             {
-                if (!Equals(_resultSeverity, value))
+                if (!Equals(field, value))
                 {
-                    _resultSeverity = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ResultSeverity)));
                 }
             }
         }
 
-        private string _resultMessage;
-
         private string ResultMessage
         {
-            get { return _resultMessage; }
+            get;
 
             set
             {
-                if (!string.Equals(_resultMessage, value))
+                if (!string.Equals(field, value))
                 {
-                    _resultMessage = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ResultMessage)));
                 }
             }
@@ -209,6 +189,7 @@ namespace PowerToolbox.Views.Pages
         internal WinSATPage()
         {
             InitializeComponent();
+            IsNotRunningAssessment = true;
         }
 
         #endregion 第三部分：构造函数

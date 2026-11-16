@@ -10,33 +10,29 @@ namespace PowerToolbox.Views.NotificationTips
     /// </summary>
     internal sealed partial class OperationResultNotificationTip : TeachingTip, INotifyPropertyChanged
     {
-        private bool _isSuccessOperation;
-
         internal bool IsSuccessOperation
         {
-            get { return _isSuccessOperation; }
+            get;
 
             set
             {
-                if (!Equals(_isSuccessOperation, value))
+                if (!Equals(field, value))
                 {
-                    _isSuccessOperation = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsSuccessOperation)));
                 }
             }
         }
 
-        private string _operationContent;
-
         internal string OperationContent
         {
-            get { return _operationContent; }
+            get;
 
             set
             {
-                if (!string.Equals(_operationContent, value))
+                if (!string.Equals(field, value))
                 {
-                    _operationContent = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(OperationContent)));
                 }
             }

@@ -58,337 +58,295 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private string _menuTitleText;
-
         private string MenuTitleText
         {
-            get { return _menuTitleText; }
+            get;
 
             set
             {
-                if (!Equals(_menuTitleText, value))
+                if (!string.Equals(field, value))
                 {
-                    _menuTitleText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(MenuTitleText)));
                 }
             }
         }
 
-        private bool _useIcon;
-
         private bool UseIcon
         {
-            get { return _useIcon; }
+            get;
 
             set
             {
-                if (!Equals(_useIcon, value))
+                if (!Equals(field, value))
                 {
-                    _useIcon = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(UseIcon)));
                 }
             }
         }
 
-        private bool _useProgramIcon;
-
         private bool UseProgramIcon
         {
-            get { return _useProgramIcon; }
+            get;
 
             set
             {
-                if (!Equals(_useProgramIcon, value))
+                if (!Equals(field, value))
                 {
-                    _useProgramIcon = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(UseProgramIcon)));
                 }
             }
         }
 
-        private bool _useThemeIcon;
-
         private bool UseThemeIcon
         {
-            get { return _useThemeIcon; }
+            get;
 
             set
             {
-                if (!Equals(_useThemeIcon, value))
+                if (!Equals(field, value))
                 {
-                    _useThemeIcon = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(UseThemeIcon)));
                 }
             }
         }
 
-        private ImageSource _defaultIconImage;
-
         private ImageSource DefaultIconImage
         {
-            get { return _defaultIconImage; }
+            get;
 
             set
             {
-                if (!Equals(_defaultIconImage, value))
+                if (!Equals(field, value))
                 {
-                    _defaultIconImage = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DefaultIconImage)));
                 }
             }
         }
 
-        private string _defaultIconPath;
-
         private string DefaultIconPath
         {
-            get { return _defaultIconPath; }
+            get;
 
             set
             {
-                if (!string.Equals(_defaultIconPath, value))
+                if (!string.Equals(field, value))
                 {
-                    _defaultIconPath = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DefaultIconPath)));
                 }
             }
         }
 
-        private ImageSource _lightThemeIconImage;
-
         private ImageSource LightThemeIconImage
         {
-            get { return _lightThemeIconImage; }
+            get;
 
             set
             {
-                if (!Equals(_lightThemeIconImage, value))
+                if (!Equals(field, value))
                 {
-                    _lightThemeIconImage = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(LightThemeIconImage)));
                 }
             }
         }
 
-        private string _lightThemeIconPath;
-
         private string LightThemeIconPath
         {
-            get { return _lightThemeIconPath; }
+            get;
 
             set
             {
-                if (!string.Equals(_lightThemeIconPath, value))
+                if (!string.Equals(field, value))
                 {
-                    _lightThemeIconPath = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(LightThemeIconPath)));
                 }
             }
         }
 
-        private ImageSource _darkThemeIconImage;
-
         private ImageSource DarkThemeIconImage
         {
-            get { return _darkThemeIconImage; }
+            get;
 
             set
             {
-                if (!Equals(_darkThemeIconImage, value))
+                if (!Equals(field, value))
                 {
-                    _darkThemeIconImage = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DarkThemeIconImage)));
                 }
             }
         }
 
-        private string _darkThemeIconPath;
-
         private string DarkThemeIconPath
         {
-            get { return _darkThemeIconPath; }
+            get;
 
             set
             {
-                if (!string.Equals(_darkThemeIconPath, value))
+                if (!string.Equals(field, value))
                 {
-                    _darkThemeIconPath = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DarkThemeIconPath)));
                 }
             }
         }
 
-        private string _menuProgramPathText;
-
         private string MenuProgramPathText
         {
-            get { return _menuProgramPathText; }
+            get;
 
             set
             {
-                if (!string.Equals(_menuProgramPathText, value))
+                if (!string.Equals(field, value))
                 {
-                    _menuProgramPathText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(MenuProgramPathText)));
                 }
             }
         }
 
-        private string _menuParameterText;
-
         private string MenuParameterText
         {
-            get { return _menuParameterText; }
+            get;
 
             set
             {
-                if (!string.Equals(_menuParameterText, value))
+                if (!string.Equals(field, value))
                 {
-                    _menuParameterText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(MenuParameterText)));
                 }
             }
         }
 
-        private bool _isAlwaysRunAsAdministrator;
-
         private bool IsAlwaysRunAsAdministrator
         {
-            get { return _isAlwaysRunAsAdministrator; }
+            get;
 
             set
             {
-                if (!Equals(_isAlwaysRunAsAdministrator, value))
+                if (!Equals(field, value))
                 {
-                    _isAlwaysRunAsAdministrator = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsAlwaysRunAsAdministrator)));
                 }
             }
         }
 
-        private bool _folderBackgroundMatch;
-
         private bool FolderBackgroundMatch
         {
-            get { return _folderBackgroundMatch; }
+            get;
 
             set
             {
-                if (!Equals(_folderBackgroundMatch, value))
+                if (!Equals(field, value))
                 {
-                    _folderBackgroundMatch = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(FolderBackgroundMatch)));
                 }
             }
         }
 
-        private bool _folderDesktopMatch;
-
         private bool FolderDesktopMatch
         {
-            get { return _folderDesktopMatch; }
+            get;
 
             set
             {
-                if (!Equals(_folderDesktopMatch, value))
+                if (!Equals(field, value))
                 {
-                    _folderDesktopMatch = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(FolderDesktopMatch)));
                 }
             }
         }
 
-        private bool _folderDirectoryMatch;
-
         private bool FolderDirectoryMatch
         {
-            get { return _folderDirectoryMatch; }
+            get;
 
             set
             {
-                if (!Equals(_folderDirectoryMatch, value))
+                if (!Equals(field, value))
                 {
-                    _folderDirectoryMatch = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(FolderDirectoryMatch)));
                 }
             }
         }
 
-        private bool _folderDriveMatch;
-
         private bool FolderDriveMatch
         {
-            get { return _folderDriveMatch; }
+            get;
 
             set
             {
-                if (!Equals(_folderDriveMatch, value))
+                if (!Equals(field, value))
                 {
-                    _folderDriveMatch = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(FolderDriveMatch)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedFileMatchRule;
-
         private ComboBoxItemModel SelectedFileMatchRule
         {
-            get { return _selectedFileMatchRule; }
+            get;
 
             set
             {
-                if (!Equals(_selectedFileMatchRule, value))
+                if (!Equals(field, value))
                 {
-                    _selectedFileMatchRule = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedFileMatchRule)));
                 }
             }
         }
 
-        private bool _needInputMatchFormat;
-
         private bool NeedInputMatchFormat
         {
-            get { return _needInputMatchFormat; }
+            get;
 
             set
             {
-                if (!Equals(_needInputMatchFormat, value))
+                if (!Equals(field, value))
                 {
-                    _needInputMatchFormat = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(NeedInputMatchFormat)));
                 }
             }
         }
 
-        private string _menuFileMatchFormatPHText;
-
         private string MenuFileMatchFormatPHText
         {
-            get { return _menuFileMatchFormatPHText; }
+            get;
 
             set
             {
-                if (!string.Equals(_menuFileMatchFormatPHText, value))
+                if (!string.Equals(field, value))
                 {
-                    _menuFileMatchFormatPHText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(MenuFileMatchFormatPHText)));
                 }
             }
         }
 
-        private string _menuFileMatchFormatText;
-
         private string MenuFileMatchFormatText
         {
-            get { return _menuFileMatchFormatText; }
+            get;
 
             set
             {
-                if (!string.Equals(_menuFileMatchFormatText, value))
+                if (!string.Equals(field, value))
                 {
-                    _menuFileMatchFormatText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(MenuFileMatchFormatText)));
                 }
             }

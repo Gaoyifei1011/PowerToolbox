@@ -10,17 +10,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 是否处于修改状态中
         /// </summary>
-        private bool _isModifyingNow;
-
         internal bool IsModifyingNow
         {
-            get { return _isModifyingNow; }
+            get;
 
             set
             {
-                if (!Equals(_isModifyingNow, value))
+                if (!Equals(field, value))
                 {
-                    _isModifyingNow = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
@@ -29,17 +27,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 文件的初始名称
         /// </summary>
-        private string _originalFileName;
-
         internal string OriginalFileName
         {
-            get { return _originalFileName; }
+            get;
 
             set
             {
-                if (!string.Equals(_originalFileName, value))
+                if (!string.Equals(field, value))
                 {
-                    _originalFileName = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(OriginalFileName)));
                 }
             }
@@ -48,17 +44,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 文件的初始路径
         /// </summary>
-        private string _originalFilePath;
-
         internal string OriginalFilePath
         {
-            get { return _originalFilePath; }
+            get;
 
             set
             {
-                if (!string.Equals(_originalFilePath, value))
+                if (!string.Equals(field, value))
                 {
-                    _originalFilePath = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(OriginalFilePath)));
                 }
             }
@@ -67,17 +61,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 文件新名称
         /// </summary>
-        private string _newFileName;
-
         internal string NewFileName
         {
-            get { return _newFileName; }
+            get;
 
             set
             {
-                if (!string.Equals(_newFileName, value))
+                if (!string.Equals(field, value))
                 {
-                    _newFileName = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(NewFileName)));
                 }
             }
@@ -86,17 +78,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 文件新名称
         /// </summary>
-        private string _newFilePath;
-
         internal string NewFilePath
         {
-            get { return _newFilePath; }
+            get;
 
             set
             {
-                if (!string.Equals(_newFilePath, value))
+                if (!string.Equals(field, value))
                 {
-                    _newFilePath = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(NewFilePath)));
                 }
             }

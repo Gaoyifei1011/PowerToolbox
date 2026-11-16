@@ -45,145 +45,127 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private bool _isChecked;
-
         private bool IsChecked
         {
-            get { return _isChecked; }
+            get;
 
             set
             {
-                if (!Equals(_isChecked, value))
+                if (!Equals(field, value))
                 {
-                    _isChecked = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsChecked)));
                 }
             }
         }
 
-        private bool _isModifyingNow;
-
         internal bool IsModifyingNow
         {
-            get { return _isModifyingNow; }
+            get;
 
             private set
             {
-                if (!Equals(_isModifyingNow, value))
+                if (!Equals(field, value))
                 {
-                    _isModifyingNow = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsModifyingNow)));
                 }
             }
         }
 
-        private string _renameRule;
-
         private string RenameRule
         {
-            get { return _renameRule; }
+            get;
 
             set
             {
-                if (!string.Equals(_renameRule, value))
+                if (!string.Equals(field, value))
                 {
-                    _renameRule = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(RenameRule)));
                 }
             }
         }
 
-        private string _startNumber;
-
         private string StartNumber
         {
-            get { return _startNumber; }
+            get;
 
             set
             {
-                if (!string.Equals(_startNumber, value))
+                if (!string.Equals(field, value))
                 {
-                    _startNumber = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(StartNumber)));
                 }
             }
         }
 
-        private string _extensionName;
-
         private string ExtensionName
         {
-            get { return _extensionName; }
+            get;
 
             set
             {
-                if (!string.Equals(_extensionName, value))
+                if (!string.Equals(field, value))
                 {
-                    _extensionName = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ExtensionName)));
                 }
             }
         }
 
-        private string _lookUpText;
-
         private string LookUpText
         {
-            get { return _lookUpText; }
+            get;
 
             set
             {
-                if (!string.Equals(_lookUpText, value))
+                if (!string.Equals(field, value))
                 {
-                    _lookUpText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(LookUpText)));
                 }
             }
         }
 
-        private string _replaceText;
-
         private string ReplaceText
         {
-            get { return _replaceText; }
+            get;
 
             set
             {
-                if (!string.Equals(_replaceText, value))
+                if (!string.Equals(field, value))
                 {
-                    _replaceText = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(ReplaceText)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedNumberFormat;
-
         private ComboBoxItemModel SelectedNumberFormat
         {
-            get { return _selectedNumberFormat; }
+            get;
 
             set
             {
-                if (!Equals(_selectedNumberFormat, value))
+                if (!Equals(field, value))
                 {
-                    _selectedNumberFormat = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedNumberFormat)));
                 }
             }
         }
 
-        private bool _isOperationFailed;
-
         private bool IsOperationFailed
         {
-            get { return _isOperationFailed; }
+            get;
 
             set
             {
-                if (!Equals(_isOperationFailed, value))
+                if (!Equals(field, value))
                 {
-                    _isOperationFailed = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsOperationFailed)));
                 }
             }

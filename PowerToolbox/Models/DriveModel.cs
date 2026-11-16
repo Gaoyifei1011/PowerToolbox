@@ -1,5 +1,4 @@
 ﻿using Microsoft.UI.Xaml.Media;
-using System.ComponentModel;
 using System.IO;
 
 namespace PowerToolbox.Models
@@ -7,24 +6,8 @@ namespace PowerToolbox.Models
     /// <summary>
     /// 驱动器数据模型
     /// </summary>
-    internal sealed class DriveModel : INotifyPropertyChanged
+    internal sealed class DriveModel
     {
-        private bool _isSelected;
-
-        internal bool IsSelected
-        {
-            get { return _isSelected; }
-
-            set
-            {
-                if (!Equals(_isSelected, value))
-                {
-                    _isSelected = value;
-                    PropertyChanged?.Invoke(this, new(nameof(IsSelected)));
-                }
-            }
-        }
-
         internal ImageSource DiskImage { get; set; }
 
         /// <summary>
@@ -61,7 +44,5 @@ namespace PowerToolbox.Models
         /// 驱动器信息
         /// </summary>
         internal DriveInfo DriveInfo { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

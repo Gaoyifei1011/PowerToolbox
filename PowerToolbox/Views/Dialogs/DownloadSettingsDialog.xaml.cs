@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Windows.Storage;
 
 // 抑制 CA1806，IDE0060 警告
 #pragma warning disable CA1806,IDE0060
@@ -37,33 +38,29 @@ namespace PowerToolbox.Views.Dialogs
 
         #region 第二部分：属性、列表与事件
 
-        private string _downloadFolder = DownloadOptionsService.DownloadFolder;
-
         private string DownloadFolder
         {
-            get { return _downloadFolder; }
+            get;
 
             set
             {
-                if (!Equals(_downloadFolder, value))
+                if (!string.Equals(field, value))
                 {
-                    _downloadFolder = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DownloadFolder)));
                 }
             }
         }
 
-        private ComboBoxItemModel _doEngineMode;
-
         private ComboBoxItemModel DoEngineMode
         {
-            get { return _doEngineMode; }
+            get;
 
             set
             {
-                if (!Equals(_doEngineMode, value))
+                if (!Equals(field, value))
                 {
-                    _doEngineMode = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DoEngineMode)));
                 }
             }
@@ -80,10 +77,7 @@ namespace PowerToolbox.Views.Dialogs
         internal DownloadSettingsDialog()
         {
             InitializeComponent();
-            DoEngineModeList.Add(new() { SelectedValue = DownloadOptionsService.DoEngineModeList[0], DisplayMember = DoEngineDoString });
-            DoEngineModeList.Add(new() { SelectedValue = DownloadOptionsService.DoEngineModeList[1], DisplayMember = DoEngineBitsString });
-            DoEngineModeList.Add(new() { SelectedValue = DownloadOptionsService.DoEngineModeList[2], DisplayMember = DoEngineAria2String });
-            DoEngineMode = DoEngineModeList.Find(item => string.Equals(Convert.ToString(item.SelectedValue), DownloadOptionsService.DoEngineMode, StringComparison.OrdinalIgnoreCase));
+            InitializeData();
         }
 
         #endregion 第三部分：构造函数
@@ -201,6 +195,18 @@ namespace PowerToolbox.Views.Dialogs
         #endregion 第四部分：挂载事件处理
 
         #region 第五部分：数据操作与业务逻辑
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        private void InitializeData()
+        {
+            DoEngineModeList.Add(new() { SelectedValue = DownloadOptionsService.DoEngineModeList[0], DisplayMember = DoEngineDoString });
+            DoEngineModeList.Add(new() { SelectedValue = DownloadOptionsService.DoEngineModeList[1], DisplayMember = DoEngineBitsString });
+            DoEngineModeList.Add(new() { SelectedValue = DownloadOptionsService.DoEngineModeList[2], DisplayMember = DoEngineAria2String });
+            DownloadFolder = DownloadOptionsService.DownloadFolder;
+            DoEngineMode = DoEngineModeList.Find(item => string.Equals(Convert.ToString(item.SelectedValue), DownloadOptionsService.DoEngineMode, StringComparison.OrdinalIgnoreCase));
+        }
 
         /// <summary>
         /// 打开下载文件夹

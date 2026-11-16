@@ -62,433 +62,379 @@ namespace PowerToolbox.Views.Pages
 
         #region 第二部分：属性、列表与事件
 
-        private Brush _systemAppBackground;
-
         private Brush SystemAppBackground
         {
-            get { return _systemAppBackground; }
+            get;
 
             set
             {
-                if (!Equals(_systemAppBackground, value))
+                if (!Equals(field, value))
                 {
-                    _systemAppBackground = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SystemAppBackground)));
                 }
             }
         }
 
-        private ElementTheme _systemAppTheme;
-
         private ElementTheme SystemAppTheme
         {
-            get { return _systemAppTheme; }
+            get;
 
             set
             {
-                if (!Equals(_systemAppTheme, value))
+                if (!Equals(field, value))
                 {
-                    _systemAppTheme = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SystemAppTheme)));
                 }
             }
         }
 
-        private ImageSource _systemAppImage;
-
         private ImageSource SystemAppImage
         {
-            get { return _systemAppImage; }
+            get;
 
             set
             {
-                if (!Equals(_systemAppImage, value))
+                if (!Equals(field, value))
                 {
-                    _systemAppImage = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SystemAppImage)));
                 }
             }
         }
 
-        private bool _isManualCloseInfoBar;
-
         private bool IsManualCloseInfoBar
         {
-            get { return _isManualCloseInfoBar; }
+            get;
 
             set
             {
-                if (!Equals(_isManualCloseInfoBar, value))
+                if (!Equals(field, value))
                 {
-                    _isManualCloseInfoBar = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsManualCloseInfoBar)));
                 }
             }
         }
 
-        private bool _isThemeSwitchNotificationEnabled;
-
         private bool IsThemeSwitchNotificationEnabled
         {
-            get { return _isThemeSwitchNotificationEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isThemeSwitchNotificationEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isThemeSwitchNotificationEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsThemeSwitchNotificationEnabled)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedSystemThemeStyle;
-
         private ComboBoxItemModel SelectedSystemThemeStyle
         {
-            get { return _selectedSystemThemeStyle; }
+            get;
 
             set
             {
-                if (!Equals(_selectedSystemThemeStyle, value))
+                if (!Equals(field, value))
                 {
-                    _selectedSystemThemeStyle = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedSystemThemeStyle)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedAppThemeStyle;
-
         private ComboBoxItemModel SelectedAppThemeStyle
         {
-            get { return _selectedAppThemeStyle; }
+            get;
 
             set
             {
-                if (!Equals(_selectedAppThemeStyle, value))
+                if (!Equals(field, value))
                 {
-                    _selectedAppThemeStyle = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedAppThemeStyle)));
                 }
             }
         }
 
-        private bool _isShowThemeColorInStartAndTaskbar;
-
         private bool IsShowThemeColorInStartAndTaskbar
         {
-            get { return _isShowThemeColorInStartAndTaskbar; }
+            get;
 
             set
             {
-                if (!Equals(_isShowThemeColorInStartAndTaskbar, value))
+                if (!Equals(field, value))
                 {
-                    _isShowThemeColorInStartAndTaskbar = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsShowThemeColorInStartAndTaskbar)));
                 }
             }
         }
 
-        private bool _isShowThemeColorInStartAndTaskbarEnabled;
-
         private bool IsShowThemeColorInStartAndTaskbarEnabled
         {
-            get { return _isShowThemeColorInStartAndTaskbarEnabled; }
+            get;
 
             set
             {
-                if (!Equals(_isShowThemeColorInStartAndTaskbarEnabled, value))
+                if (!Equals(field, value))
                 {
-                    _isShowThemeColorInStartAndTaskbarEnabled = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsShowThemeColorInStartAndTaskbarEnabled)));
                 }
             }
         }
 
-        private bool _isAutoThemeSwitchEnable = AutoThemeSwitchService.AutoThemeSwitchEnable;
-
         private bool IsAutoThemeSwitchEnable
         {
-            get { return _isAutoThemeSwitchEnable; }
+            get;
 
             set
             {
-                if (!Equals(_isAutoThemeSwitchEnable, value))
+                if (!Equals(field, value))
                 {
-                    _isAutoThemeSwitchEnable = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsAutoThemeSwitchEnable)));
                 }
             }
         }
 
-        private ComboBoxItemModel _selectedAutoThemeSwitchType;
-
         private ComboBoxItemModel SelectedAutoThemeSwitchType
         {
-            get { return _selectedAutoThemeSwitchType; }
+            get;
 
             set
             {
-                if (!Equals(_selectedAutoThemeSwitchType, value))
+                if (!Equals(field, value))
                 {
-                    _selectedAutoThemeSwitchType = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SelectedAutoThemeSwitchType)));
                 }
             }
         }
 
-        private bool _isAutoSwitchSystemTheme = AutoThemeSwitchService.AutoSwitchSystemTheme;
-
         private bool IsAutoSwitchSystemTheme
         {
-            get { return _isAutoSwitchSystemTheme; }
+            get;
 
             set
             {
-                if (!Equals(_isAutoSwitchSystemTheme, value))
+                if (!Equals(field, value))
                 {
-                    _isAutoSwitchSystemTheme = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsAutoSwitchSystemTheme)));
                 }
             }
         }
 
-        private bool _isAutoSwitchAppTheme = AutoThemeSwitchService.AutoSwitchAppTheme;
-
         private bool IsAutoSwitchAppTheme
         {
-            get { return _isAutoSwitchAppTheme; }
+            get;
 
             set
             {
-                if (!Equals(_isAutoSwitchAppTheme, value))
+                if (!Equals(field, value))
                 {
-                    _isAutoSwitchAppTheme = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsAutoSwitchAppTheme)));
                 }
             }
         }
 
-        private bool _isShowColorInDarkTheme = AutoThemeSwitchService.IsShowColorInDarkTheme;
-
         private bool IsShowColorInDarkTheme
         {
-            get { return _isShowColorInDarkTheme; }
+            get;
 
             set
             {
-                if (!Equals(_isShowColorInDarkTheme, value))
+                if (!Equals(field, value))
                 {
-                    _isShowColorInDarkTheme = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsShowColorInDarkTheme)));
                 }
             }
         }
 
-        private bool _isGettingPosition;
-
         private bool IsGettingPosition
         {
-            get { return _isGettingPosition; }
+            get;
 
             set
             {
-                if (!Equals(_isGettingPosition, value))
+                if (!Equals(field, value))
                 {
-                    _isGettingPosition = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsGettingPosition)));
                 }
             }
         }
 
-        private int _sunriseOffset = AutoThemeSwitchService.SunriseOffset;
-
         private int SunriseOffset
         {
-            get { return _sunriseOffset; }
+            get;
 
             set
             {
-                if (!Equals(_sunriseOffset, value))
+                if (!Equals(field, value))
                 {
-                    _sunriseOffset = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SunriseOffset)));
                 }
             }
         }
 
-        private int _sunsetOffset = AutoThemeSwitchService.SunsetOffset;
-
         private int SunsetOffset
         {
-            get { return _sunsetOffset; }
+            get;
 
             set
             {
-                if (!Equals(_sunsetOffset, value))
+                if (!Equals(field, value))
                 {
-                    _sunsetOffset = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SunsetOffset)));
                 }
             }
         }
 
-        private string _longitude;
-
         private string Longitude
         {
-            get { return _longitude; }
+            get;
 
             set
             {
-                if (!string.Equals(_longitude, value))
+                if (!string.Equals(field, value))
                 {
-                    _longitude = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(Longitude)));
                 }
             }
         }
 
-        private string _latitude;
-
         private string Latitude
         {
-            get { return _latitude; }
+            get;
 
             set
             {
-                if (!string.Equals(_latitude, value))
+                if (!string.Equals(field, value))
                 {
-                    _latitude = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(Latitude)));
                 }
             }
         }
 
-        private string _sunriseTime;
-
         private string SunriseTime
         {
-            get { return _sunriseTime; }
+            get;
 
             set
             {
-                if (!string.Equals(_sunriseTime, value))
+                if (!string.Equals(field, value))
                 {
-                    _sunriseTime = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SunriseTime)));
                 }
             }
         }
 
-        private string _sunsetTime;
-
         private string SunsetTime
         {
-            get { return _sunsetTime; }
+            get;
 
             set
             {
-                if (!string.Equals(_sunsetTime, value))
+                if (!string.Equals(field, value))
                 {
-                    _sunsetTime = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SunsetTime)));
                 }
             }
         }
 
-        private bool _isPolarNightRegion;
-
         private bool IsPolarNightRegion
         {
-            get { return _isPolarNightRegion; }
+            get;
 
             set
             {
-                if (!Equals(_isPolarNightRegion, value))
+                if (!Equals(field, value))
                 {
-                    _isPolarNightRegion = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsPolarNightRegion)));
                 }
             }
         }
 
-        private bool _isPolarDayRegion;
-
         private bool IsPolarDayRegion
         {
-            get { return _isPolarDayRegion; }
+            get;
 
             set
             {
-                if (!Equals(_isPolarDayRegion, value))
+                if (!Equals(field, value))
                 {
-                    _isPolarDayRegion = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsPolarDayRegion)));
                 }
             }
         }
 
-        private TimeSpan _systemThemeLightTime;
-
         private TimeSpan SystemThemeLightTime
         {
-            get { return _systemThemeLightTime; }
+            get;
 
             set
             {
-                if (!Equals(_systemThemeLightTime, value))
+                if (!TimeSpan.Equals(field, value))
                 {
-                    _systemThemeLightTime = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SystemThemeLightTime)));
                 }
             }
         }
 
-        private TimeSpan _systemThemeDarkTime;
-
         private TimeSpan SystemThemeDarkTime
         {
-            get { return _systemThemeDarkTime; }
+            get;
 
             set
             {
-                if (!Equals(_systemThemeDarkTime, value))
+                if (!TimeSpan.Equals(field, value))
                 {
-                    _systemThemeDarkTime = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(SystemThemeDarkTime)));
                 }
             }
         }
 
-        private TimeSpan _appThemeLightTime;
-
         private TimeSpan AppThemeLightTime
         {
-            get { return _appThemeLightTime; }
+            get;
 
             set
             {
-                if (!Equals(_appThemeLightTime, value))
+                if (!TimeSpan.Equals(field, value))
                 {
-                    _appThemeLightTime = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(AppThemeLightTime)));
                 }
             }
         }
 
-        private TimeSpan _appThemeDarkTime;
-
         private TimeSpan AppThemeDarkTime
         {
-            get { return _appThemeDarkTime; }
+            get;
 
             set
             {
-                if (!Equals(_appThemeDarkTime, value))
+                if (!TimeSpan.Equals(field, value))
                 {
-                    _appThemeDarkTime = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(AppThemeDarkTime)));
                 }
             }

@@ -12,17 +12,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 下载操作是否正在进行中
         /// </summary>
-        private bool _isOperating;
-
         internal bool IsOperating
         {
-            get { return _isOperating; }
+            get;
 
             set
             {
-                if (!Equals(_isOperating, value))
+                if (!Equals(field, value))
                 {
-                    _isOperating = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IsOperating)));
                 }
             }
@@ -31,17 +29,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 文件图标
         /// </summary>
-        private ImageSource _iconImage;
-
         internal ImageSource IconImage
         {
-            get { return _iconImage; }
+            get;
 
             set
             {
-                if (!Equals(_iconImage, value))
+                if (!Equals(field, value))
                 {
-                    _iconImage = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(IconImage)));
                 }
             }
@@ -65,17 +61,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 文件下载状态
         /// </summary>
-        private DownloadProgressState _downloadProgressState;
-
         internal DownloadProgressState DownloadProgressState
         {
-            get { return _downloadProgressState; }
+            get;
 
             set
             {
-                if (!Equals(_downloadProgressState, value))
+                if (!Equals(field, value))
                 {
-                    _downloadProgressState = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DownloadProgressState)));
                 }
             }
@@ -84,17 +78,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 下载文件已完成的进度
         /// </summary>
-        private double _completedSize;
-
         internal double CompletedSize
         {
-            get { return _completedSize; }
+            get;
 
             set
             {
-                if (!Equals(_completedSize, value))
+                if (!Equals(field, value))
                 {
-                    _completedSize = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(CompletedSize)));
                 }
             }
@@ -103,17 +95,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 下载文件的总大小
         /// </summary>
-        private double _totalSize;
-
         internal double TotalSize
         {
-            get { return _totalSize; }
+            get;
 
             set
             {
-                if (!Equals(_totalSize, value))
+                if (!Equals(field, value))
                 {
-                    _totalSize = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(TotalSize)));
                 }
             }
@@ -122,17 +112,15 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 文件下载速度
         /// </summary>
-        private double _downloadSpeed;
-
         internal double DownloadSpeed
         {
-            get { return _downloadSpeed; }
+            get;
 
             set
             {
-                if (!Equals(_downloadSpeed, value))
+                if (!Equals(field, value))
                 {
-                    _downloadSpeed = value;
+                    field = value;
                     PropertyChanged?.Invoke(this, new(nameof(DownloadSpeed)));
                 }
             }
