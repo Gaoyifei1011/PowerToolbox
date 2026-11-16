@@ -109,7 +109,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 binaryReader.ReadUInt32();
             }
 
-            List<ScopeAndItemInfo> scopeAndItemInfoList = new((int)(numScopes + numItems));
+            List<ScopeAndItemInfo> scopeAndItemInfoList = [with((int)(numScopes + numItems))];
 
             for (int i = 0; i < numScopes + numItems; i++)
             {
@@ -133,7 +133,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            List<ScopeExInfo> scopeExInfoList = new((int)numScopes);
+            List<ScopeExInfo> scopeExInfoList = [with((int)numScopes)];
 
             for (int i = 0; i < numScopes; i++)
             {
@@ -222,7 +222,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
             for (int i = 0; i < numScopes; i++)
             {
-                List<ResourceMapScopeAndItem> children = new(scopeExInfoList[i].ChildCount);
+                List<ResourceMapScopeAndItem> children = [with(scopeExInfoList[i].ChildCount)];
 
                 for (int j = 0; j < scopeExInfoList[i].ChildCount; j++)
                 {

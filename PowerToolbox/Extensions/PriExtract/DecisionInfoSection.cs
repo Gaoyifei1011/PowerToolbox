@@ -49,7 +49,7 @@ namespace PowerToolbox.Extensions.PriExtract
             ushort numIndexTableEntries = binaryReader.ReadUInt16();
             ushort totalDataLength = binaryReader.ReadUInt16();
 
-            List<DecisionInfo> decisionInfoList = new(numDecisions);
+            List<DecisionInfo> decisionInfoList = [with(numDecisions)];
             for (int i = 0; i < numDecisions; i++)
             {
                 ushort firstQualifierSetIndexIndex = binaryReader.ReadUInt16();
@@ -61,7 +61,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            List<QualifierSetInfo> qualifierSetInfoList = new(numQualifierSets);
+            List<QualifierSetInfo> qualifierSetInfoList = [with(numQualifierSets)];
             for (int i = 0; i < numQualifierSets; i++)
             {
                 ushort firstQualifierIndexIndex = binaryReader.ReadUInt16();
@@ -73,7 +73,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            List<QualifierInfo> qualifierInfoList = new(numQualifiers);
+            List<QualifierInfo> qualifierInfoList = [with(numQualifiers)];
             for (int i = 0; i < numQualifiers; i++)
             {
                 ushort index = binaryReader.ReadUInt16();
@@ -88,7 +88,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            List<DistinctQualifierInfo> distinctQualifierInfoList = new(numDistinctQualifiers);
+            List<DistinctQualifierInfo> distinctQualifierInfoList = [with(numDistinctQualifiers)];
             for (int i = 0; i < numDistinctQualifiers; i++)
             {
                 binaryReader.ReadUInt16();
@@ -111,7 +111,7 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             long dataStartOffset = binaryReader.BaseStream.Position;
-            List<Qualifier> qualifiersList = new(numQualifiers);
+            List<Qualifier> qualifiersList = [with(numQualifiers)];
 
             for (int i = 0; i < numQualifiers; i++)
             {
@@ -130,11 +130,11 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             QualifiersList = qualifiersList;
-            List<QualifierSet> qualifierSetsList = new(numQualifierSets);
+            List<QualifierSet> qualifierSetsList = [with(numQualifierSets)];
 
             for (int i = 0; i < numQualifierSets; i++)
             {
-                List<Qualifier> qualifiersInSet = new(qualifierSetInfoList[i].NumQualifiersInSet);
+                List<Qualifier> qualifiersInSet = [with(qualifierSetInfoList[i].NumQualifiersInSet)];
 
                 for (int j = 0; j < qualifierSetInfoList[i].NumQualifiersInSet; j++)
                 {
@@ -149,11 +149,11 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             QualifierSetsList = qualifierSetsList;
-            List<Decision> decisionsList = new(numDecisions);
+            List<Decision> decisionsList = [with(numDecisions)];
 
             for (int i = 0; i < numDecisions; i++)
             {
-                List<QualifierSet> qualifierSetsInDecision = new(decisionInfoList[i].NumQualifierSetsInDecision);
+                List<QualifierSet> qualifierSetsInDecision = [with(decisionInfoList[i].NumQualifierSetsInDecision)];
 
                 for (int j = 0; j < decisionInfoList[i].NumQualifierSetsInDecision; j++)
                 {

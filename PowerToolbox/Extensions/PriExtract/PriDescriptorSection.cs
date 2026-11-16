@@ -63,7 +63,7 @@ namespace PowerToolbox.Extensions.PriExtract
             ushort numDataItemSections = binaryReader.ReadUInt16();
             binaryReader.ExpectUInt16(0);
 
-            List<int> hierarchicalSchemaSectionsList = new(numHierarchicalSchemaSections);
+            List<int> hierarchicalSchemaSectionsList = [with(numHierarchicalSchemaSections)];
 
             for (int index = 0; index < numHierarchicalSchemaSections; index++)
             {
@@ -71,8 +71,7 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             HierarchicalSchemaSectionsList = hierarchicalSchemaSectionsList;
-
-            List<int> decisionInfoSectionsList = new(numHierarchicalSchemaSections);
+            List<int> decisionInfoSectionsList = [with(numHierarchicalSchemaSections)];
 
             for (int index = 0; index < numHierarchicalSchemaSections; index++)
             {
@@ -80,8 +79,7 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             DecisionInfoSectionsList = decisionInfoSectionsList;
-
-            List<int> resourceMapSectionsList = new(numHierarchicalSchemaSections);
+            List<int> resourceMapSectionsList = [with(numHierarchicalSchemaSections)];
 
             for (int index = 0; index < numResourceMapSections; index++)
             {
@@ -89,8 +87,7 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             ResourceMapSectionsList = resourceMapSectionsList;
-
-            List<int> referencedFileSectionsList = new(numHierarchicalSchemaSections);
+            List<int> referencedFileSectionsList = [with(numHierarchicalSchemaSections)];
 
             for (int index = 0; index < numReferencedFileSections; index++)
             {
@@ -98,8 +95,7 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             ReferencedFileSectionsList = referencedFileSectionsList;
-
-            List<int> dataItemSectionsList = new(numDataItemSections);
+            List<int> dataItemSectionsList = [with(numDataItemSections)];
 
             for (int index = 0; index < numDataItemSections; index++)
             {

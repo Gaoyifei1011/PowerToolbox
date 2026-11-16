@@ -43,7 +43,7 @@ namespace PowerToolbox.Extensions.PriExtract
             binaryReader.ExpectUInt16(0);
             uint totalDataLength = binaryReader.ReadUInt32();
 
-            List<FolderInfo> folderInfoList = new(numFolders);
+            List<FolderInfo> folderInfoList = [with(numFolders)];
 
             for (int i = 0; i < numFolders; i++)
             {
@@ -69,7 +69,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            List<FileInfo> fileInfoList = new(numFiles);
+            List<FileInfo> fileInfoList = [with(numFiles)];
 
             for (int i = 0; i < numFiles; i++)
             {
@@ -88,7 +88,7 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             long dataStartPosition = binaryReader.BaseStream.Position;
-            List<ReferencedFileOrFolder> referencedFolders = new(numFolders);
+            List<ReferencedFileOrFolder> referencedFolders = [with(numFolders)];
 
             for (int i = 0; i < numFolders; i++)
             {
@@ -110,7 +110,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 }
             }
 
-            List<ReferencedFileOrFolder> referencedFilesList = new(numFiles);
+            List<ReferencedFileOrFolder> referencedFilesList = [with(numFiles)];
 
             for (int i = 0; i < numFiles; i++)
             {
@@ -126,7 +126,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
             for (int i = 0; i < numFolders; i++)
             {
-                List<ReferencedFileOrFolder> children = new(folderInfoList[i].NumFoldersInFolder + folderInfoList[i].NumFilesInFolder);
+                List<ReferencedFileOrFolder> children = [with(folderInfoList[i].NumFoldersInFolder + folderInfoList[i].NumFilesInFolder)];
 
                 for (int j = 0; j < folderInfoList[i].NumFoldersInFolder; j++)
                 {

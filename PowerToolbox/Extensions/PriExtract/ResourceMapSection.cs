@@ -124,7 +124,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 }
             }
 
-            List<ResourceValueType> resourceValueTypeTableList = new(resourceValueTypeTableSize);
+            List<ResourceValueType> resourceValueTypeTableList = [with(resourceValueTypeTableSize)];
 
             for (int i = 0; i < resourceValueTypeTableSize; i++)
             {
@@ -219,7 +219,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 }
             }
 
-            List<CandidateInfo> candidateInfoList = new((int)numCandidates);
+            List<CandidateInfo> candidateInfoList = [with((int)numCandidates)];
             for (int i = 0; i < numCandidates; i++)
             {
                 byte type = binaryReader.ReadByte();
@@ -290,7 +290,7 @@ namespace PowerToolbox.Extensions.PriExtract
                     ItemInfo itemInfo = itemInfoList[(int)itemInfoIndex];
                     ushort decisionIndex = (ushort)itemInfo.Decision;
                     Decision decision = (sectionList[DecisionInfoSectionIndex] as DecisionInfoSection)?.DecisionsList[decisionIndex];
-                    List<Candidate> candidatesList = new(decision.QualifierSetsList.Count);
+                    List<Candidate> candidatesList = [with(decision.QualifierSetsList.Count)];
 
                     for (int i = 0; i < decision.QualifierSetsList.Count; i++)
                     {

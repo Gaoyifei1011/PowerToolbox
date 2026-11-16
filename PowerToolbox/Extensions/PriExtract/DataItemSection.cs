@@ -45,7 +45,7 @@ namespace PowerToolbox.Extensions.PriExtract
             ushort numBlobs = binaryReader.ReadUInt16();
             uint totalDataLength = binaryReader.ReadUInt32();
 
-            List<ByteSpan> dataItemsList = new(numStrings + numBlobs);
+            List<ByteSpan> dataItemsList = [with(numStrings + numBlobs)];
 
             long dataStartOffset = binaryReader.BaseStream.Position + numStrings * 2 * sizeof(ushort) + numBlobs * 2 * sizeof(uint);
 
