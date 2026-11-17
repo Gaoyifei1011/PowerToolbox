@@ -15,7 +15,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
         internal uint SectionLength { get; private set; }
 
-        internal IReadOnlyList<ReferencedFileOrFolder> ReferencedFilesList { get; private set; }
+        internal IReadOnlyList<ReferencedFileOrFolder> ReferencedFileList { get; private set; }
 
         internal ReferencedFileSection(string sectionIdentifier, BinaryReader binaryReader)
         {
@@ -37,15 +37,15 @@ namespace PowerToolbox.Extensions.PriExtract
             using SubStream subStream = new(binaryReader.BaseStream, binaryReader.BaseStream.Position, (int)SectionLength - 16 - 24);
             using BinaryReader subBinaryReader = new(subStream, Encoding.ASCII);
 
-            ushort numRoots = binaryReader.ReadUInt16();
-            ushort numFolders = binaryReader.ReadUInt16();
-            ushort numFiles = binaryReader.ReadUInt16();
+            ushort rootNum = binaryReader.ReadUInt16();
+            ushort folderNum = binaryReader.ReadUInt16();
+            ushort fileNum = binaryReader.ReadUInt16();
             binaryReader.ExpectUInt16(0);
             uint totalDataLength = binaryReader.ReadUInt32();
 
-            List<FolderInfo> folderInfoList = [with(numFolders)];
+            List<FolderInfo> folderInfoList = [with(folderNum)];
 
-            for (int i = 0; i < numFolders; i++)
+            for (int i = 0; i < folderNum; i++)
             {
                 binaryReader.ExpectUInt16(0);
                 ushort parentFolder = binaryReader.ReadUInt16();
@@ -69,9 +69,9 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            List<FileInfo> fileInfoList = [with(numFiles)];
+            List<FileInfo> fileInfoList = [with(fileNum)];
 
-            for (int i = 0; i < numFiles; i++)
+            for (int i = 0; i < fileNum; i++)
             {
                 binaryReader.ReadUInt16();
                 ushort parentFolder = binaryReader.ReadUInt16();
@@ -88,60 +88,60 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             long dataStartPosition = binaryReader.BaseStream.Position;
-            List<ReferencedFileOrFolder> referencedFolders = [with(numFolders)];
+            List<ReferencedFileOrFolder> referencedFolderList = [with(folderNum)];
 
-            for (int i = 0; i < numFolders; i++)
+            for (int i = 0; i < folderNum; i++)
             {
                 binaryReader.BaseStream.Seek(dataStartPosition + folderInfoList[i].FolderNameOffset * 2, SeekOrigin.Begin);
                 string name = binaryReader.ReadString(Encoding.Unicode, folderInfoList[i].FolderNameLength);
-                referencedFolders.Add(new()
+                referencedFolderList.Add(new()
                 {
                     Parent = null,
                     Name = name,
-                    Children = null
+                    ChildrenList = null
                 });
             }
 
-            for (int i = 0; i < numFolders; i++)
+            for (int i = 0; i < folderNum; i++)
             {
                 if (folderInfoList[i].ParentFolder is not 0xFFFF)
                 {
-                    referencedFolders[i].Parent = referencedFolders[folderInfoList[i].ParentFolder];
+                    referencedFolderList[i].Parent = referencedFolderList[folderInfoList[i].ParentFolder];
                 }
             }
 
-            List<ReferencedFileOrFolder> referencedFilesList = [with(numFiles)];
+            List<ReferencedFileOrFolder> referencedFileList = [with(fileNum)];
 
-            for (int i = 0; i < numFiles; i++)
+            for (int i = 0; i < fileNum; i++)
             {
                 binaryReader.BaseStream.Seek(dataStartPosition + fileInfoList[i].FileNameOffset * 2, SeekOrigin.Begin);
                 string name = binaryReader.ReadString(Encoding.Unicode, fileInfoList[i].FileNameLength);
-                ReferencedFileOrFolder parentFolder = fileInfoList[i].ParentFolder is not 0xFFFF ? referencedFolders[fileInfoList[i].ParentFolder] : null;
-                referencedFilesList.Add(new()
+                ReferencedFileOrFolder parentFolder = fileInfoList[i].ParentFolder is not 0xFFFF ? referencedFolderList[fileInfoList[i].ParentFolder] : null;
+                referencedFileList.Add(new()
                 {
                     Parent = parentFolder,
                     Name = name,
                 });
             }
 
-            for (int i = 0; i < numFolders; i++)
+            for (int i = 0; i < folderNum; i++)
             {
-                List<ReferencedFileOrFolder> children = [with(folderInfoList[i].NumFoldersInFolder + folderInfoList[i].NumFilesInFolder)];
+                List<ReferencedFileOrFolder> childrenList = [with(folderInfoList[i].NumFoldersInFolder + folderInfoList[i].NumFilesInFolder)];
 
                 for (int j = 0; j < folderInfoList[i].NumFoldersInFolder; j++)
                 {
-                    children.Add(referencedFolders[folderInfoList[i].FirstFolderInFolder + j]);
+                    childrenList.Add(referencedFolderList[folderInfoList[i].FirstFolderInFolder + j]);
                 }
 
                 for (int j = 0; j < folderInfoList[i].NumFilesInFolder; j++)
                 {
-                    children.Add(referencedFilesList[folderInfoList[i].FirstFileInFolder + j]);
+                    childrenList.Add(referencedFileList[folderInfoList[i].FirstFileInFolder + j]);
                 }
 
-                referencedFolders[i].Children = children;
+                referencedFolderList[i].ChildrenList = childrenList;
             }
 
-            ReferencedFilesList = referencedFilesList;
+            ReferencedFileList = referencedFileList;
         }
     }
 }

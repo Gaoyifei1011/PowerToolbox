@@ -21,9 +21,9 @@ namespace PowerToolbox.Extensions.PriExtract
 
         internal string Name { get; private set; }
 
-        internal IReadOnlyList<ResourceMapScopeAndItem> ScopesList { get; private set; }
+        internal IReadOnlyList<ResourceMapScopeAndItem> ScopeList { get; private set; }
 
-        internal IReadOnlyList<ResourceMapScopeAndItem> ItemsList { get; private set; }
+        internal IReadOnlyList<ResourceMapScopeAndItem> ItemList { get; private set; }
 
         internal HierarchicalSchemaSection(string sectionIdentifier, BinaryReader binaryReader, bool extendedVersion)
         {
@@ -50,8 +50,8 @@ namespace PowerToolbox.Extensions.PriExtract
                 Version = null;
                 UniqueName = null;
                 Name = null;
-                ScopesList = [];
-                ItemsList = [];
+                ScopeList = [];
+                ItemList = [];
             }
 
             binaryReader.ExpectUInt16(1);
@@ -75,16 +75,16 @@ namespace PowerToolbox.Extensions.PriExtract
             ushort minorVersion = binaryReader.ReadUInt16();
             binaryReader.ExpectUInt32(0);
             uint checksum = binaryReader.ReadUInt32();
-            uint numScopes = binaryReader.ReadUInt32();
-            uint numItems = binaryReader.ReadUInt32();
+            uint scopeNum = binaryReader.ReadUInt32();
+            uint itemNum = binaryReader.ReadUInt32();
 
             Version = new()
             {
                 MajorVersion = majorVersion,
                 MinorVersion = minorVersion,
                 Checksum = checksum,
-                NumScopes = numScopes,
-                NumItems = numItems
+                NumScopes = scopeNum,
+                NumItems = itemNum
             };
 
             UniqueName = binaryReader.ReadNullTerminatedString(Encoding.Unicode);
@@ -98,9 +98,9 @@ namespace PowerToolbox.Extensions.PriExtract
             binaryReader.ExpectUInt16(0);
             ushort maxFullPathLength = binaryReader.ReadUInt16();
             binaryReader.ExpectUInt16(0);
-            binaryReader.ExpectUInt32(numScopes + numItems);
-            binaryReader.ExpectUInt32(numScopes);
-            binaryReader.ExpectUInt32(numItems);
+            binaryReader.ExpectUInt32(scopeNum + itemNum);
+            binaryReader.ExpectUInt32(scopeNum);
+            binaryReader.ExpectUInt32(itemNum);
             uint unicodeDataLength = binaryReader.ReadUInt32();
             binaryReader.ReadUInt32();
 
@@ -109,9 +109,9 @@ namespace PowerToolbox.Extensions.PriExtract
                 binaryReader.ReadUInt32();
             }
 
-            List<ScopeAndItemInfo> scopeAndItemInfoList = [with((int)(numScopes + numItems))];
+            List<ScopeAndItemInfo> scopeAndItemInfoList = [with((int)(scopeNum + itemNum))];
 
-            for (int i = 0; i < numScopes + numItems; i++)
+            for (int i = 0; i < scopeNum + itemNum; i++)
             {
                 ushort parent = binaryReader.ReadUInt16();
                 ushort fullPathLength = binaryReader.ReadUInt16();
@@ -133,9 +133,9 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            List<ScopeExInfo> scopeExInfoList = [with((int)numScopes)];
+            List<ScopeExInfo> scopeExInfoList = [with((int)scopeNum)];
 
-            for (int i = 0; i < numScopes; i++)
+            for (int i = 0; i < scopeNum; i++)
             {
                 ushort scopeIndex = binaryReader.ReadUInt16();
                 ushort childCount = binaryReader.ReadUInt16();
@@ -149,9 +149,9 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            ushort[] itemIndexPropertyToIndex = new ushort[numItems];
+            ushort[] itemIndexPropertyToIndex = new ushort[itemNum];
 
-            for (int i = 0; i < numItems; i++)
+            for (int i = 0; i < itemNum; i++)
             {
                 itemIndexPropertyToIndex[i] = binaryReader.ReadUInt16();
             }
@@ -159,10 +159,10 @@ namespace PowerToolbox.Extensions.PriExtract
             long unicodeDataOffset = binaryReader.BaseStream.Position;
             long asciiDataOffset = binaryReader.BaseStream.Position + unicodeDataLength * 2;
 
-            ResourceMapScopeAndItem[] scopesArray = new ResourceMapScopeAndItem[numScopes];
-            ResourceMapScopeAndItem[] itemsArray = new ResourceMapScopeAndItem[numItems];
+            ResourceMapScopeAndItem[] scopesArray = new ResourceMapScopeAndItem[scopeNum];
+            ResourceMapScopeAndItem[] itemsArray = new ResourceMapScopeAndItem[itemNum];
 
-            for (int i = 0; i < numScopes + numItems; i++)
+            for (int i = 0; i < scopeNum + itemNum; i++)
             {
                 long pos = scopeAndItemInfoList[i].NameInAscii ? asciiDataOffset + scopeAndItemInfoList[i].NameOffset : unicodeDataOffset + scopeAndItemInfoList[i].NameOffset * 2;
                 binaryReader.BaseStream.Seek(pos, SeekOrigin.Begin);
@@ -199,7 +199,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 }
             }
 
-            for (int i = 0; i < numScopes + numItems; i++)
+            for (int i = 0; i < scopeNum + itemNum; i++)
             {
                 ushort index = scopeAndItemInfoList[i].Index;
                 ushort parent = scopeAndItemInfoList[scopeAndItemInfoList[i].Parent].Index;
@@ -220,7 +220,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 }
             }
 
-            for (int i = 0; i < numScopes; i++)
+            for (int i = 0; i < scopeNum; i++)
             {
                 List<ResourceMapScopeAndItem> children = [with(scopeExInfoList[i].ChildCount)];
 
@@ -238,11 +238,11 @@ namespace PowerToolbox.Extensions.PriExtract
                     }
                 }
 
-                scopesArray[i].Children = children;
+                scopesArray[i].ChildrenList = children;
             }
 
-            ScopesList = scopesArray;
-            ItemsList = itemsArray;
+            ScopeList = scopesArray;
+            ItemList = itemsArray;
         }
     }
 }

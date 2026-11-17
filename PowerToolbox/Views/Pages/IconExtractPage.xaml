@@ -258,7 +258,7 @@
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
                             DisplayMemberPath="DisplayMember"
-                            ItemsSource="{x:Bind IconFormatList}"
+                            ItemsSource="{x:Bind IconFormatCollection}"
                             SelectedItem="{x:Bind SelectedIconFormat, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnIconFormatSelectionChanged}"
                             Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
@@ -274,7 +274,7 @@
                             Grid.Column="1"
                             HorizontalAlignment="Stretch"
                             Content="{x:Bind rootservice:ResourceService.IconExtractResource.GetString('SetIconSize')}"
-                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckIconFormatVisibility(SelectedIconFormat.SelectedValue, IconFormatList[0].SelectedValue), Mode=OneWay}">
+                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckIconFormatVisibility(SelectedIconFormat.SelectedValue, IconFormatCollection[0].SelectedValue), Mode=OneWay}">
 
                             <DropDownButton.Flyout>
                                 <Flyout Placement="Bottom" ShouldConstrainToRootBounds="False">
@@ -295,7 +295,7 @@
                                                 x:Name="FileContainIconGridView"
                                                 MaxWidth="320"
                                                 Padding="0"
-                                                ItemsSource="{x:Bind FileContainIconSizeList}"
+                                                ItemsSource="{x:Bind FileContainIconSizeCollection}"
                                                 SelectionMode="Multiple"
                                                 Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}">
 
@@ -397,7 +397,7 @@
                                                 x:Name="FileAssociateIconGridView"
                                                 MaxWidth="210"
                                                 Padding="0"
-                                                ItemsSource="{x:Bind FileAssociateIconSizeList}"
+                                                ItemsSource="{x:Bind FileAssociateIconSizeCollection}"
                                                 SelectionMode="Multiple"
                                                 Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[1]), Mode=OneWay}">
 
@@ -503,13 +503,13 @@
                         <Grid
                             Grid.Row="2"
                             Grid.Column="1"
-                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckIconFormatVisibility(SelectedIconFormat.SelectedValue, IconFormatList[1].SelectedValue), Mode=OneWay}">
+                            Visibility="{x:Bind converter:ValueCheckConverterHelper.CheckIconFormatVisibility(SelectedIconFormat.SelectedValue, IconFormatCollection[1].SelectedValue), Mode=OneWay}">
 
                             <ComboBox
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
                                 DisplayMemberPath="ExtractSize"
-                                ItemsSource="{x:Bind FileContainIconSizeList}"
+                                ItemsSource="{x:Bind FileContainIconSizeCollection}"
                                 SelectedItem="{x:Bind SelectedFileContainSize, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnFileContainSizeSelectionChanged}"
                                 Style="{StaticResource ComboBoxWithSystemBackdropStyle}"
@@ -519,7 +519,7 @@
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
                                 DisplayMemberPath="ExtractSize"
-                                ItemsSource="{x:Bind FileAssociateIconSizeList}"
+                                ItemsSource="{x:Bind FileContainIconSizeCollection}"
                                 SelectedItem="{x:Bind SelectedFileAssociateSize, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnFileAssociateSizeSelectionChanged}"
                                 Style="{StaticResource ComboBoxWithSystemBackdropStyle}"

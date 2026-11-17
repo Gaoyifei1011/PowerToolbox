@@ -106,6 +106,6 @@ namespace PowerToolbox.Extensions.DataType.Class
         /// <summary>
         /// 子菜单项
         /// </summary>
-        internal List<ShellMenuItem> SubShellMenuItem { get; set; } = [];
+        internal List<ShellMenuItem> SubShellMenuItemList { get; set; } = [];
     }
 }

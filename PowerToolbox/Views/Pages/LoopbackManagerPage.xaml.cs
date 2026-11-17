@@ -13,6 +13,7 @@ using PowerToolbox.WindowsAPI.PInvoke.FirewallAPI;
 using PowerToolbox.WindowsAPI.PInvoke.Shlwapi;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -207,9 +208,9 @@ namespace PowerToolbox.Views.Pages
             if (LoopbackResultKind is not LoopbackResultKind.Loading)
             {
                 IsSaved = true;
-                List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. LoopbackManagerListView.SelectedRanges];
+                ReadOnlyCollection<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeCollection = new([.. LoopbackManagerListView.SelectedRanges]);
                 LoopbackManagerListView.SelectAll();
-                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
+                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeCollection)
                 {
                     LoopbackManagerListView.DeselectRange(itemIndexRange);
                 }
@@ -239,7 +240,7 @@ namespace PowerToolbox.Views.Pages
                     }
                 }
                 SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
-                bool result = await SaveLoopbackStateAsync(selectedLoopbackList);
+                bool result = await SaveLoopbackStateAsync(selectedLoopbackList.AsReadOnly());
                 synchronizationContext.Post(async (_) =>
                 {
                     await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.LoopbackSetResult, result));
@@ -294,16 +295,16 @@ namespace PowerToolbox.Views.Pages
                 IsSaved = false;
                 LoopbackCollection.Clear();
                 SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
-                List<LoopbackModel> loopbackList = await GetLoopbackInfoListAsync();
+                ReadOnlyCollection<LoopbackModel> loopbackCollection = await GetLoopbackInfoCollectionAsync();
 
-                if (loopbackList.Count is 0)
+                if (loopbackCollection.Count is 0)
                 {
                     LoopbackResultKind = LoopbackResultKind.Failed;
                     LoopbackFailedContent = LoopbackEmptyDescriptionString;
                 }
                 else
                 {
-                    foreach (LoopbackModel loopbackItem in loopbackList)
+                    foreach (LoopbackModel loopbackItem in loopbackCollection)
                     {
                         try
                         {
@@ -339,19 +340,19 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取网络回环信息
         /// </summary>
-        private async Task<List<LoopbackModel>> GetLoopbackInfoListAsync()
+        private async Task<ReadOnlyCollection<LoopbackModel>> GetLoopbackInfoCollectionAsync()
         {
             return await Task.Run(() =>
             {
                 List<LoopbackModel> loopbackList = [];
-                List<INET_FIREWALL_APP_CONTAINER> inetLoopbackList = GetLoopbackList();
-                List<SID_AND_ATTRIBUTES> inetLoopbackEnabledList = GetLoopbackEnabledList();
+                ReadOnlyCollection<INET_FIREWALL_APP_CONTAINER> inetLoopbackCollection = GetLoopbackCollection();
+                ReadOnlyCollection<SID_AND_ATTRIBUTES> inetLoopbackEnabledCollection = GetLoopbackEnabledCollection();
 
-                foreach (INET_FIREWALL_APP_CONTAINER inetContainerItem in inetLoopbackList)
+                foreach (INET_FIREWALL_APP_CONTAINER inetContainerItem in inetLoopbackCollection)
                 {
                     try
                     {
-                        bool isLoopbackEnabled = GetLoopbackEnabled(inetContainerItem.appContainerSid, inetLoopbackEnabledList);
+                        bool isLoopbackEnabled = GetLoopbackEnabled(inetContainerItem.appContainerSid, inetLoopbackEnabledCollection);
 
                         StringBuilder displayNameBuilder = new(1024);
                         ShlwapiLibrary.SHLoadIndirectString(inetContainerItem.displayName, displayNameBuilder, displayNameBuilder.Capacity, 0);
@@ -426,19 +427,19 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackInfoListAsync), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoopbackManagerPage), nameof(GetLoopbackInfoCollectionAsync), 1, e);
                         continue;
                     }
                 }
                 loopbackList.Sort((item1, item2) => item1.DisplayName.CompareTo(item2.DisplayName));
-                return loopbackList;
+                return loopbackList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取网络回环列表数据
         /// </summary>
-        private List<INET_FIREWALL_APP_CONTAINER> GetLoopbackList()
+        private ReadOnlyCollection<INET_FIREWALL_APP_CONTAINER> GetLoopbackCollection()
         {
             nint arrayValue = 0;
             uint size = 0;
@@ -464,13 +465,13 @@ namespace PowerToolbox.Views.Pages
             handle_ppACs.Free();
 
             FirewallAPILibrary.NetworkIsolationFreeAppContainers(pACs);
-            return inetContainerList;
+            return inetContainerList.AsReadOnly();
         }
 
         /// <summary>
         /// 获取已开启网络回环的信息列表数据
         /// </summary>
-        private List<SID_AND_ATTRIBUTES> GetLoopbackEnabledList()
+        private ReadOnlyCollection<SID_AND_ATTRIBUTES> GetLoopbackEnabledCollection()
         {
             nint arrayValue = 0;
             uint size = 0;
@@ -490,20 +491,20 @@ namespace PowerToolbox.Views.Pages
 
             handle_pdwCntPublicACs.Free();
             handle_ppACs.Free();
-            return inetContainerConfigList;
+            return inetContainerConfigList.AsReadOnly();
         }
 
         /// <summary>
         /// 检查应用网络回环是否已开启
         /// </summary>
-        private bool GetLoopbackEnabled(nint appContainerSid, List<SID_AND_ATTRIBUTES> loopbackEnabledList)
+        private bool GetLoopbackEnabled(nint appContainerSid, ReadOnlyCollection<SID_AND_ATTRIBUTES> loopbackEnabledCollection)
         {
-            if (loopbackEnabledList is null || loopbackEnabledList.Count is 0)
+            if (loopbackEnabledCollection is null || loopbackEnabledCollection.Count is 0)
             {
                 return default;
             }
 
-            foreach (SID_AND_ATTRIBUTES sidItem in loopbackEnabledList)
+            foreach (SID_AND_ATTRIBUTES sidItem in loopbackEnabledCollection)
             {
                 try
                 {
@@ -537,19 +538,19 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 保存网络回环状态
         /// </summary>
-        private async Task<bool> SaveLoopbackStateAsync(List<LoopbackModel> loopbackList)
+        private async Task<bool> SaveLoopbackStateAsync(ReadOnlyCollection<LoopbackModel> loopbackCollection)
         {
-            if (loopbackList is null)
+            if (loopbackCollection is null)
             {
                 return default;
             }
 
             return await Task.Run(() =>
             {
-                SID_AND_ATTRIBUTES[] sidAndAttributesArray = new SID_AND_ATTRIBUTES[loopbackList.Count];
-                for (int index = 0; index < loopbackList.Count; index++)
+                SID_AND_ATTRIBUTES[] sidAndAttributesArray = new SID_AND_ATTRIBUTES[loopbackCollection.Count];
+                for (int index = 0; index < loopbackCollection.Count; index++)
                 {
-                    LoopbackModel loopbackItem = loopbackList[index];
+                    LoopbackModel loopbackItem = loopbackCollection[index];
                     Advapi32Library.ConvertStringSidToSid(loopbackItem.AppContainerSID, out nint psid);
                     sidAndAttributesArray[index] = new()
                     {
@@ -557,7 +558,7 @@ namespace PowerToolbox.Views.Pages
                         Sid = psid
                     };
                 }
-                return FirewallAPILibrary.NetworkIsolationSetAppContainerConfig((uint)loopbackList.Count, sidAndAttributesArray) is 0;
+                return FirewallAPILibrary.NetworkIsolationSetAppContainerConfig((uint)loopbackCollection.Count, sidAndAttributesArray) is 0;
             });
         }
 

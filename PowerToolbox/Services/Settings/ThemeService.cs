@@ -3,7 +3,9 @@ using PowerToolbox.Extensions.DataType.Constant;
 using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace PowerToolbox.Services.Settings
 {
@@ -29,7 +31,7 @@ namespace PowerToolbox.Services.Settings
             }
         }
 
-        internal static List<string> ThemeList { get; } = [nameof(ElementTheme.Default), nameof(ElementTheme.Light), nameof(ElementTheme.Dark)];
+        internal static ReadOnlyCollection<string> ThemeCollection { get; } = new([nameof(ElementTheme.Default), nameof(ElementTheme.Light), nameof(ElementTheme.Dark)]);
 
         internal static event PropertyChangedEventHandler PropertyChanged;
 
@@ -38,7 +40,7 @@ namespace PowerToolbox.Services.Settings
         /// </summary>
         internal static void InitializeTheme()
         {
-            defaultAppTheme = ThemeList.Find(item => string.Equals(item, nameof(ElementTheme.Default), StringComparison.OrdinalIgnoreCase));
+            defaultAppTheme = ThemeCollection.FirstOrDefault(item => string.Equals(item, nameof(ElementTheme.Default), StringComparison.OrdinalIgnoreCase));
             AppTheme = GetTheme();
         }
 
@@ -55,7 +57,7 @@ namespace PowerToolbox.Services.Settings
                 return defaultAppTheme;
             }
 
-            string selectedTheme = ThemeList.Find(item => string.Equals(item, theme, StringComparison.OrdinalIgnoreCase));
+            string selectedTheme = ThemeCollection.FirstOrDefault(item => string.Equals(item, theme, StringComparison.OrdinalIgnoreCase));
             return string.IsNullOrEmpty(selectedTheme) ? defaultAppTheme : selectedTheme;
         }
 

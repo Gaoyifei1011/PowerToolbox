@@ -60,7 +60,7 @@ namespace PowerToolbox.Views.Dialogs
         {
             if (args.Parameter is ScheduledTaskFailedModel scheduledTaskFailedItem)
             {
-                string scheduledTaskFailedString = await GetScheduledTaskFailedStringAsync([scheduledTaskFailedItem]);
+                string scheduledTaskFailedString = await GetScheduledTaskFailedStringAsync(new([scheduledTaskFailedItem]));
 
                 if (!string.IsNullOrEmpty(scheduledTaskFailedString))
                 {
@@ -84,7 +84,7 @@ namespace PowerToolbox.Views.Dialogs
 
             try
             {
-                string scheduledTaskFailedString = await GetScheduledTaskFailedStringAsync([.. ScheduledTaskFailedCollection]);
+                string scheduledTaskFailedString = await GetScheduledTaskFailedStringAsync(new(ScheduledTaskFailedCollection));
 
                 if (!string.IsNullOrEmpty(scheduledTaskFailedString))
                 {
@@ -118,9 +118,9 @@ namespace PowerToolbox.Views.Dialogs
         /// <summary>
         /// 获取计划任务失败信息内容
         /// </summary>
-        private async Task<string> GetScheduledTaskFailedStringAsync(List<ScheduledTaskFailedModel> scheduledTaskFailedList)
+        private async Task<string> GetScheduledTaskFailedStringAsync(ReadOnlyCollection<ScheduledTaskFailedModel> scheduledTaskFailedCollection)
         {
-            if (scheduledTaskFailedList is null || scheduledTaskFailedList.Count is 0)
+            if (scheduledTaskFailedCollection is null || scheduledTaskFailedCollection.Count is 0)
             {
                 return default;
             }
@@ -131,7 +131,7 @@ namespace PowerToolbox.Views.Dialogs
                 {
                     StringBuilder stringBuilder = new();
 
-                    foreach (ScheduledTaskFailedModel scheduledTaskFailedItem in scheduledTaskFailedList)
+                    foreach (ScheduledTaskFailedModel scheduledTaskFailedItem in scheduledTaskFailedCollection)
                     {
                         stringBuilder.Append(ScheduledTaskNameCopyString);
                         stringBuilder.AppendLine(scheduledTaskFailedItem.Name);

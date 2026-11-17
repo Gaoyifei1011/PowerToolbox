@@ -7,9 +7,11 @@ using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -239,7 +241,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 else
                 {
-                    if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count is 1)
+                    if (await GetDragDropSelectedFilesAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count is 1)
                     {
                         args.AcceptedOperation = DataPackageOperation.Copy;
                         args.DragUIOverride.IsCaptionVisible = true;
@@ -278,9 +280,9 @@ namespace PowerToolbox.Views.Pages
 
             try
             {
-                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count is 1)
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count is 1)
                 {
-                    filePath = fileList[0];
+                    filePath = fileCollection[0];
                 }
             }
             catch (Exception e)
@@ -400,7 +402,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectReverseClicked(object sender, RoutedEventArgs args)
         {
-            List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. DataVerifyGridView.SelectedRanges];
+            ReadOnlyCollection<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = new([.. DataVerifyGridView.SelectedRanges]);
             DataVerifyGridView.SelectAll();
             foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
             {
@@ -441,9 +443,9 @@ namespace PowerToolbox.Views.Pages
             ResultSeverity = InfoBarSeverity.Informational;
             ResultMessage = VerifyingString;
             DataVerifyResultCollection.Clear();
-            if (await GetDataVerifyResultListAsync(selectVerifyIndex, selectedVerifyFile, selectedVerifyContent, selectedDataVerifyTypeList) is List<DataVerifyResultModel> dataVerifyResultList)
+            if (await GetDataVerifyResultCollectionAsync(selectVerifyIndex, selectedVerifyFile, selectedVerifyContent, selectedDataVerifyTypeList.AsReadOnly()) is ReadOnlyCollection<DataVerifyResultModel> dataVerifyResultCollection)
             {
-                UpdateDataVerifyResult(selectVerifyIndex, selectedDataVerifyTypeList, dataVerifyResultList);
+                UpdateDataVerifyResult(selectVerifyIndex, selectedDataVerifyTypeList.AsReadOnly(), dataVerifyResultCollection);
             }
             else
             {
@@ -552,9 +554,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取校验后的数据
         /// </summary>
-        private async Task<List<DataVerifyResultModel>> GetDataVerifyResultListAsync(int selectedIndex, string selectedVerifyFile, string selectedVerifyContent, List<DataVerifyTypeModel> selectedDataVerifyTypeList)
+        private async Task<ReadOnlyCollection<DataVerifyResultModel>> GetDataVerifyResultCollectionAsync(int selectedIndex, string selectedVerifyFile, string selectedVerifyContent, ReadOnlyCollection<DataVerifyTypeModel> selectedDataVerifyTypeCollection)
         {
-            if (selectedDataVerifyTypeList is null || selectedDataVerifyTypeList.Count is 0)
+            if (selectedDataVerifyTypeCollection is null || selectedDataVerifyTypeCollection.Count is 0)
             {
                 return default;
             }
@@ -562,8 +564,7 @@ namespace PowerToolbox.Views.Pages
             return await Task.Run(async () =>
             {
                 List<DataVerifyResultModel> dataVerifyResultList = [];
-
-                foreach (DataVerifyTypeModel dataVerifyTypeItem in selectedDataVerifyTypeList)
+                foreach (DataVerifyTypeModel dataVerifyTypeItem in selectedDataVerifyTypeCollection)
                 {
                     string verifyResultContent = string.Empty;
                     if (selectedIndex is 0 && !string.IsNullOrEmpty(selectedVerifyFile))
@@ -586,7 +587,7 @@ namespace PowerToolbox.Views.Pages
                 }
 
                 dataVerifyResultList.Sort((item1, item2) => item1.Name.CompareTo(item2.Name));
-                return dataVerifyResultList;
+                return dataVerifyResultList.AsReadOnly();
             });
         }
 
@@ -1886,9 +1887,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 更新数据校验结果
         /// </summary>
-        private void UpdateDataVerifyResult(int selectedIndex, List<DataVerifyTypeModel> selectedDataVerifyTypeList, List<DataVerifyResultModel> dataVerifyResultList)
+        private void UpdateDataVerifyResult(int selectedIndex, ReadOnlyCollection<DataVerifyTypeModel> selectedDataVerifyTypeCollection, ReadOnlyCollection<DataVerifyResultModel> dataVerifyResultCollection)
         {
-            if (selectedDataVerifyTypeList is null || dataVerifyResultList is null)
+            if (selectedDataVerifyTypeCollection is null || dataVerifyResultCollection is null)
             {
                 ResultSeverity = InfoBarSeverity.Error;
                 if (selectedIndex is 0)
@@ -1904,9 +1905,9 @@ namespace PowerToolbox.Views.Pages
 
             if (Equals(SelectedUpperCaseType, UpperCaseTypeList[0]))
             {
-                if (dataVerifyResultList.Count > 0)
+                if (dataVerifyResultCollection.Count > 0)
                 {
-                    foreach (DataVerifyResultModel dataVerifyResultItem in dataVerifyResultList)
+                    foreach (DataVerifyResultModel dataVerifyResultItem in dataVerifyResultCollection)
                     {
                         dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToLowerInvariant();
                         DataVerifyResultCollection.Add(dataVerifyResultItem);
@@ -1915,9 +1916,9 @@ namespace PowerToolbox.Views.Pages
             }
             else if (Equals(SelectedUpperCaseType, UpperCaseTypeList[1]))
             {
-                if (dataVerifyResultList.Count > 0)
+                if (dataVerifyResultCollection.Count > 0)
                 {
-                    foreach (DataVerifyResultModel dataVerifyResultItem in dataVerifyResultList)
+                    foreach (DataVerifyResultModel dataVerifyResultItem in dataVerifyResultCollection)
                     {
                         dataVerifyResultItem.Result = dataVerifyResultItem.Result.ToUpperInvariant();
                         DataVerifyResultCollection.Add(dataVerifyResultItem);
@@ -1928,7 +1929,7 @@ namespace PowerToolbox.Views.Pages
             if (DataVerifyResultCollection.Count > 0)
             {
                 ResultSeverity = InfoBarSeverity.Success;
-                if (Equals(selectedDataVerifyTypeList.Count, DataVerifyResultCollection.Count))
+                if (Equals(selectedDataVerifyTypeCollection.Count, DataVerifyResultCollection.Count))
                 {
                     if (selectedIndex is 0)
                     {
@@ -1943,11 +1944,11 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (selectedIndex is 0)
                     {
-                        ResultMessage = string.Format(FileVerifyPartSuccessfullyString, DataVerifyResultCollection.Count, selectedDataVerifyTypeList.Count - DataVerifyResultCollection.Count);
+                        ResultMessage = string.Format(FileVerifyPartSuccessfullyString, DataVerifyResultCollection.Count, selectedDataVerifyTypeCollection.Count - DataVerifyResultCollection.Count);
                     }
                     else if (selectedIndex is 1)
                     {
-                        ResultMessage = string.Format(ContentVerifyPartSuccessfullyString, DataVerifyResultCollection.Count, selectedDataVerifyTypeList.Count - DataVerifyResultCollection.Count);
+                        ResultMessage = string.Format(ContentVerifyPartSuccessfullyString, DataVerifyResultCollection.Count, selectedDataVerifyTypeCollection.Count - DataVerifyResultCollection.Count);
                     }
                 }
             }
@@ -1968,7 +1969,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取拖拽支持选中的文件
         /// </summary>
-        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        private async Task<ReadOnlyCollection<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
         {
             if (dataPackageView is null)
             {
@@ -1993,8 +1994,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DataVerifyPage), nameof(GetDragDropSelectedFilesAsync), 1, e);
                 }
-
-                return fileList;
+                return fileList.AsReadOnly();
             });
         }
 

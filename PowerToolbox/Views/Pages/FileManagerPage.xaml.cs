@@ -5,8 +5,10 @@ using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 
 // 抑制 IDE0060 警告
 #pragma warning disable IDE0060
@@ -84,15 +86,15 @@ namespace PowerToolbox.Views.Pages
 
         private List<RadioButtonItemModel> FileManagerSelectorRadioList { get; } = [];
 
-        private List<Type> PageList { get; } = [typeof(FileNamePage), typeof(ExtensionNamePage), typeof(UpperAndLowerCasePage), typeof(FilePropertiesPage)];
+        private ReadOnlyCollection<Type> PageCollection { get; } = new([typeof(FileNamePage), typeof(ExtensionNamePage), typeof(UpperAndLowerCasePage), typeof(FilePropertiesPage)]);
 
-        private List<OldAndNewNameModel> NameChangeList { get; } =
+        private ReadOnlyCollection<OldAndNewNameModel> NameChangeCollection { get; } = new(
         [
             new(){ OriginalFileName = string.Empty, NewFileName = string.Empty },
             new(){ OriginalFileName = string.Empty, NewFileName = string.Empty },
             new(){ OriginalFileName = string.Empty, NewFileName = string.Empty },
             new(){ OriginalFileName = string.Empty, NewFileName = string.Empty },
-        ];
+        ]);
 
         private List<string> NameChangeRuleList { get; } = [];
 
@@ -125,7 +127,7 @@ namespace PowerToolbox.Views.Pages
             // 第一次导航
             if (GetCurrentPageType() is null)
             {
-                NavigateTo(PageList[0], this);
+                NavigateTo(PageCollection[0], this);
             }
         }
 
@@ -147,30 +149,30 @@ namespace PowerToolbox.Views.Pages
             {
                 int index = SelectedIndex;
                 Type currentPage = GetCurrentPageType();
-                int currentIndex = PageList.FindIndex(item => Equals(item, currentPage));
+                int currentIndex = PageCollection.IndexOf(PageCollection.FirstOrDefault(item => Equals(item, currentPage)));
 
                 if (index is 0)
                 {
                     if (currentPage is null)
                     {
-                        NavigateTo(PageList[0]);
+                        NavigateTo(PageCollection[0]);
                     }
-                    else if (!Equals(currentPage, PageList[0]))
+                    else if (!Equals(currentPage, PageCollection[0]))
                     {
-                        NavigateTo(PageList[0], null, index > currentIndex);
+                        NavigateTo(PageCollection[0], null, index > currentIndex);
                     }
                 }
-                else if (index is 1 && !Equals(GetCurrentPageType(), PageList[1]))
+                else if (index is 1 && !Equals(GetCurrentPageType(), PageCollection[1]))
                 {
-                    NavigateTo(PageList[1], null, index > currentIndex);
+                    NavigateTo(PageCollection[1], null, index > currentIndex);
                 }
-                else if (index is 2 && !Equals(GetCurrentPageType(), PageList[2]))
+                else if (index is 2 && !Equals(GetCurrentPageType(), PageCollection[2]))
                 {
-                    NavigateTo(PageList[2], null, index > currentIndex);
+                    NavigateTo(PageCollection[2], null, index > currentIndex);
                 }
-                else if (index is 3 && !Equals(GetCurrentPageType(), PageList[3]))
+                else if (index is 3 && !Equals(GetCurrentPageType(), PageCollection[3]))
                 {
-                    NavigateTo(PageList[3], null, index > currentIndex);
+                    NavigateTo(PageCollection[3], null, index > currentIndex);
                 }
             }
         }
@@ -181,7 +183,7 @@ namespace PowerToolbox.Views.Pages
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs args)
         {
             args.Handled = true;
-            int index = PageList.FindIndex(item => Equals(item, GetCurrentPageType()));
+            int index = PageCollection.IndexOf(PageCollection.FirstOrDefault(item => Equals(item, GetCurrentPageType())));
 
             if (index >= 0 && index < FileManagerSelectorRadioList.Count)
             {
@@ -209,10 +211,10 @@ namespace PowerToolbox.Views.Pages
         {
             CurrentIndex = CurrentIndex is 0 ? 3 : CurrentIndex - 1;
 
-            for (int index = 0; index < NameChangeList.Count; index++)
+            for (int index = 0; index < NameChangeCollection.Count; index++)
             {
-                NameChangeList[index].OriginalFileName = NameChangeDict[CurrentIndex][index].OriginalFileName;
-                NameChangeList[index].NewFileName = NameChangeDict[CurrentIndex][index].NewFileName;
+                NameChangeCollection[index].OriginalFileName = NameChangeDict[CurrentIndex][index].OriginalFileName;
+                NameChangeCollection[index].NewFileName = NameChangeDict[CurrentIndex][index].NewFileName;
             }
         }
 
@@ -223,10 +225,10 @@ namespace PowerToolbox.Views.Pages
         {
             CurrentIndex = CurrentIndex is 3 ? 0 : CurrentIndex + 1;
 
-            for (int index = 0; index < NameChangeList.Count; index++)
+            for (int index = 0; index < NameChangeCollection.Count; index++)
             {
-                NameChangeList[index].OriginalFileName = NameChangeDict[CurrentIndex][index].OriginalFileName;
-                NameChangeList[index].NewFileName = NameChangeDict[CurrentIndex][index].NewFileName;
+                NameChangeCollection[index].OriginalFileName = NameChangeDict[CurrentIndex][index].OriginalFileName;
+                NameChangeCollection[index].NewFileName = NameChangeDict[CurrentIndex][index].NewFileName;
             }
         }
 
@@ -280,10 +282,10 @@ namespace PowerToolbox.Views.Pages
 
             CurrentIndex = 0;
 
-            for (int index = 0; index < NameChangeList.Count; index++)
+            for (int index = 0; index < NameChangeCollection.Count; index++)
             {
-                NameChangeList[index].OriginalFileName = NameChangeDict[CurrentIndex][index].OriginalFileName;
-                NameChangeList[index].NewFileName = NameChangeDict[CurrentIndex][index].NewFileName;
+                NameChangeCollection[index].OriginalFileName = NameChangeDict[CurrentIndex][index].OriginalFileName;
+                NameChangeCollection[index].NewFileName = NameChangeDict[CurrentIndex][index].NewFileName;
             }
         }
 

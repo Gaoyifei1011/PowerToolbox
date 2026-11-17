@@ -14,6 +14,7 @@ using PowerToolbox.WindowsAPI.PInvoke.NewDev;
 using PowerToolbox.WindowsAPI.PInvoke.Setupapi;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -397,8 +398,8 @@ namespace PowerToolbox.Views.Pages
                     IsOperating = true
                 };
                 DriverOperationCollection.Add(driverOperation);
-                List<(string, string, DriverOperationModel)> driverList = [ValueTuple.Create(driver.DriverOEMInfName, driver.DriverLocation, driverOperation)];
-                (bool needReboot, int successfullyCount, int failedCount) = await DeleteDriverListAsync(false, driverList);
+                ReadOnlyCollection<(string, string, DriverOperationModel)> driverCollection = new([ValueTuple.Create(driver.DriverOEMInfName, driver.DriverLocation, driverOperation)]);
+                (bool needReboot, int successfullyCount, int failedCount) = await DeleteDriverCollectionAsync(false, driverCollection);
                 if (needReboot)
                 {
                     ShowRebootNotification(DriverInstallKind.UnInstallDriver);
@@ -425,8 +426,8 @@ namespace PowerToolbox.Views.Pages
                     IsOperating = true
                 };
                 DriverOperationCollection.Add(driverOperation);
-                List<(string, string, DriverOperationModel)> driverList = [ValueTuple.Create(driver.DriverOEMInfName, driver.DriverLocation, driverOperation)];
-                (bool needReboot, int successfullyCount, int failedCount) = await DeleteDriverListAsync(true, driverList);
+                ReadOnlyCollection<(string, string, DriverOperationModel)> driverCollection = new([ValueTuple.Create(driver.DriverOEMInfName, driver.DriverLocation, driverOperation)]);
+                (bool needReboot, int successfullyCount, int failedCount) = await DeleteDriverCollectionAsync(true, driverCollection);
                 if (needReboot)
                 {
                     ShowRebootNotification(DriverInstallKind.UnInstallDriver);
@@ -548,9 +549,9 @@ namespace PowerToolbox.Views.Pages
         {
             if (DriverResultKind is not DriverResultKind.Loading || DriverResultKind is not DriverResultKind.Operating)
             {
-                List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. DriverManagerListView.SelectedRanges];
+                ReadOnlyCollection<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeCollection = new([.. DriverManagerListView.SelectedRanges]);
                 DriverManagerListView.SelectAll();
-                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
+                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeCollection)
                 {
                     DriverManagerListView.DeselectRange(itemIndexRange);
                 }
@@ -579,8 +580,8 @@ namespace PowerToolbox.Views.Pages
             if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is bool tag)
             {
                 IsIncrease = tag;
-                List<DriverModel> sortedDriverList = await GetSortedDriversAsync(SelectedDriverSortRuleKind, IsIncrease, DriverList);
-                foreach (DriverModel sortedDriverItem in sortedDriverList)
+                ReadOnlyCollection<DriverModel> sortedDriverCollection = await GetSortedDriversAsync(SelectedDriverSortRuleKind, IsIncrease, DriverList.AsReadOnly());
+                foreach (DriverModel sortedDriverItem in sortedDriverCollection)
                 {
                     DriverCollection.Add(sortedDriverItem);
                 }
@@ -598,8 +599,8 @@ namespace PowerToolbox.Views.Pages
             if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is DriverSortRuleKind driverSortRuleKind)
             {
                 SelectedDriverSortRuleKind = driverSortRuleKind;
-                List<DriverModel> sortedDriverList = await GetSortedDriversAsync(SelectedDriverSortRuleKind, IsIncrease, DriverList);
-                foreach (DriverModel sortedDriverItem in sortedDriverList)
+                ReadOnlyCollection<DriverModel> sortedDriverCollection = await GetSortedDriversAsync(SelectedDriverSortRuleKind, IsIncrease, DriverList.AsReadOnly());
+                foreach (DriverModel sortedDriverItem in sortedDriverCollection)
                 {
                     DriverCollection.Add(sortedDriverItem);
                 }
@@ -649,7 +650,7 @@ namespace PowerToolbox.Views.Pages
                         DriverOperationCollection.Add(driverOperation);
                         driverList.Add(ValueTuple.Create(fileName, driverOperation));
                     }
-                    (bool needReboot, int successfullyCount, int failedCount) = await AddDriverListAsync(false, driverList);
+                    (bool needReboot, int successfullyCount, int failedCount) = await AddDriverCollectionAsync(false, driverList.AsReadOnly());
                     if (needReboot)
                     {
                         ShowRebootNotification(DriverInstallKind.InstallDriver);
@@ -691,7 +692,7 @@ namespace PowerToolbox.Views.Pages
                         DriverOperationCollection.Add(driverOperation);
                         driverList.Add(ValueTuple.Create(fileName, driverOperation));
                     }
-                    (bool needReboot, int successfullyCount, int failedCount) = await AddDriverListAsync(true, driverList);
+                    (bool needReboot, int successfullyCount, int failedCount) = await AddDriverCollectionAsync(true, driverList.AsReadOnly());
                     if (needReboot)
                     {
                         ShowRebootNotification(DriverInstallKind.InstallDriver);
@@ -741,7 +742,7 @@ namespace PowerToolbox.Views.Pages
                         DriverOperationCollection.Add(driverOperation);
                         driverList.Add(ValueTuple.Create(driverItem.DriverOEMInfName, driverItem.DriverLocation, driverOperation));
                     }
-                    (bool needReboot, int successfullyCount, int failedCount) = await DeleteDriverListAsync(false, driverList);
+                    (bool needReboot, int successfullyCount, int failedCount) = await DeleteDriverCollectionAsync(false, driverList.AsReadOnly());
                     if (needReboot)
                     {
                         ShowRebootNotification(DriverInstallKind.UnInstallDriver);
@@ -792,7 +793,7 @@ namespace PowerToolbox.Views.Pages
                         DriverOperationCollection.Add(driverOperation);
                         driverList.Add(ValueTuple.Create(driverItem.DriverOEMInfName, driverItem.DriverLocation, driverOperation));
                     }
-                    (bool needReboot, int successfullyCount, int failedCount) = await DeleteDriverListAsync(false, driverList);
+                    (bool needReboot, int successfullyCount, int failedCount) = await DeleteDriverCollectionAsync(false, driverList.AsReadOnly());
                     if (needReboot)
                     {
                         ShowRebootNotification(DriverInstallKind.UnInstallDriver);
@@ -872,18 +873,18 @@ namespace PowerToolbox.Views.Pages
                 DriverList.Clear();
                 DriverCollection.Clear();
                 SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
-                List<DriverModel> driverList = await GetDriverInformationListAsync();
+                ReadOnlyCollection<DriverModel> driverCollection = await GetDriverInformationCollectionAsync();
 
-                if (driverList.Count is 0)
+                if (driverCollection.Count is 0)
                 {
                     DriverResultKind = DriverResultKind.Failed;
                     DriverFailedContent = DriverEmptyDescriptionString;
                 }
                 else
                 {
-                    DriverList.AddRange(driverList);
-                    List<DriverModel> sortedDriverList = await GetSortedDriversAsync(driverSortRuleKind, isIncrease, DriverList);
-                    foreach (DriverModel sortedDriverItem in sortedDriverList)
+                    DriverList.AddRange(driverCollection);
+                    ReadOnlyCollection<DriverModel> sortedDriverCollection = await GetSortedDriversAsync(driverSortRuleKind, isIncrease, DriverList.AsReadOnly());
+                    foreach (DriverModel sortedDriverItem in sortedDriverCollection)
                     {
                         DriverCollection.Add(sortedDriverItem);
                     }
@@ -897,7 +898,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取设备上所有的驱动信息
         /// </summary>
-        private async Task<List<DriverModel>> GetDriverInformationListAsync()
+        private async Task<ReadOnlyCollection<DriverModel>> GetDriverInformationCollectionAsync()
         {
             return await Task.Run(() =>
             {
@@ -928,7 +929,7 @@ namespace PowerToolbox.Views.Pages
 
                     if (xDocument is not null)
                     {
-                        List<XElement> driverNodeList = [.. xDocument.Descendants("Driver")];
+                        ReadOnlyCollection<XElement> driverNodeList = new([.. xDocument.Descendants("Driver")]);
 
                         foreach (XElement driverNode in driverNodeList)
                         {
@@ -1052,20 +1053,20 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetDriverInformationListAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DriverManagerPage), nameof(GetDriverInformationCollectionAsync), 1, e);
                 }
 
                 driverList.Sort((item1, item2) => item1.DriverOEMInfName.CompareTo(item2.DriverOEMInfName));
-                return driverList;
+                return driverList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取排序后的驱动
         /// </summary>
-        private async Task<List<DriverModel>> GetSortedDriversAsync(DriverSortRuleKind driverSortRuleKind, bool isIncrease, List<DriverModel> driverList)
+        private async Task<ReadOnlyCollection<DriverModel>> GetSortedDriversAsync(DriverSortRuleKind driverSortRuleKind, bool isIncrease, ReadOnlyCollection<DriverModel> driverCollection)
         {
-            if (driverList is null || driverList.Count is 0)
+            if (driverCollection is null || driverCollection.Count is 0)
             {
                 return default;
             }
@@ -1075,33 +1076,33 @@ namespace PowerToolbox.Views.Pages
                 List<DriverModel> sortedDriverList = [];
                 if (driverSortRuleKind is DriverSortRuleKind.DeviceName)
                 {
-                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DeviceName)] : [.. driverList.OrderByDescending(item => item.DeviceName)];
+                    sortedDriverList = isIncrease ? [.. driverCollection.OrderBy(item => item.DeviceName)] : [.. driverCollection.OrderByDescending(item => item.DeviceName)];
                 }
                 else if (driverSortRuleKind is DriverSortRuleKind.InfName)
                 {
-                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DriverInfName)] : [.. driverList.OrderByDescending(item => item.DriverInfName)];
+                    sortedDriverList = isIncrease ? [.. driverCollection.OrderBy(item => item.DriverInfName)] : [.. driverCollection.OrderByDescending(item => item.DriverInfName)];
                 }
                 else if (driverSortRuleKind is DriverSortRuleKind.OEMInfName)
                 {
-                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DriverOEMInfName)] : [.. driverList.OrderByDescending(item => item.DriverOEMInfName)];
+                    sortedDriverList = isIncrease ? [.. driverCollection.OrderBy(item => item.DriverOEMInfName)] : [.. driverCollection.OrderByDescending(item => item.DriverOEMInfName)];
                 }
                 else if (driverSortRuleKind is DriverSortRuleKind.DeviceType)
                 {
-                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DriverType)] : [.. driverList.OrderByDescending(item => item.DriverType)];
+                    sortedDriverList = isIncrease ? [.. driverCollection.OrderBy(item => item.DriverType)] : [.. driverCollection.OrderByDescending(item => item.DriverType)];
                 }
                 else if (driverSortRuleKind is DriverSortRuleKind.Manufacturer)
                 {
-                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DriverManufacturer)] : [.. driverList.OrderByDescending(item => item.DriverManufacturer)];
+                    sortedDriverList = isIncrease ? [.. driverCollection.OrderBy(item => item.DriverManufacturer)] : [.. driverCollection.OrderByDescending(item => item.DriverManufacturer)];
                 }
                 else if (driverSortRuleKind is DriverSortRuleKind.Version)
                 {
-                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DriverVersion)] : [.. driverList.OrderByDescending(item => item.DriverVersion)];
+                    sortedDriverList = isIncrease ? [.. driverCollection.OrderBy(item => item.DriverVersion)] : [.. driverCollection.OrderByDescending(item => item.DriverVersion)];
                 }
                 else if (driverSortRuleKind is DriverSortRuleKind.Date)
                 {
-                    sortedDriverList = isIncrease ? [.. driverList.OrderBy(item => item.DriverDate)] : [.. driverList.OrderByDescending(item => item.DriverDate)];
+                    sortedDriverList = isIncrease ? [.. driverCollection.OrderBy(item => item.DriverDate)] : [.. driverCollection.OrderByDescending(item => item.DriverDate)];
                 }
-                return sortedDriverList;
+                return sortedDriverList.AsReadOnly();
             });
         }
 
@@ -1424,9 +1425,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 添加并安装驱动
         /// </summary>
-        private async Task<(bool, int, int)> AddDriverListAsync(bool isAddandInstall, List<(string, DriverOperationModel)> driverList)
+        private async Task<(bool, int, int)> AddDriverCollectionAsync(bool isAddandInstall, ReadOnlyCollection<(string, DriverOperationModel)> driverCollection)
         {
-            if (driverList is null || driverList.Count is 0)
+            if (driverCollection is null || driverCollection.Count is 0)
             {
                 return default;
             }
@@ -1434,7 +1435,7 @@ namespace PowerToolbox.Views.Pages
             int successfullyCount = 0;
             int failedCount = 0;
             bool needReboot = false;
-            foreach ((string fileName, DriverOperationModel driverOperationItem) in driverList)
+            foreach ((string fileName, DriverOperationModel driverOperationItem) in driverCollection)
             {
                 (bool result, bool needRebootResult, Win32Exception win32Exception) = await AddDriverAsync(isAddandInstall, fileName);
                 driverOperationItem.IsOperating = false;
@@ -1501,9 +1502,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 删除驱动
         /// </summary>
-        private async Task<(bool, int, int)> DeleteDriverListAsync(bool isForce, List<(string, string, DriverOperationModel)> driverList)
+        private async Task<(bool, int, int)> DeleteDriverCollectionAsync(bool isForce, ReadOnlyCollection<(string, string, DriverOperationModel)> driverCollection)
         {
-            if (driverList is null || driverList.Count is 0)
+            if (driverCollection is null || driverCollection.Count is 0)
             {
                 return default;
             }
@@ -1511,7 +1512,7 @@ namespace PowerToolbox.Views.Pages
             int successfullyCount = 0;
             int failedCount = 0;
             bool needReboot = false;
-            foreach ((string driverOEMInfName, string driverLocation, DriverOperationModel driverOperationItem) in driverList)
+            foreach ((string driverOEMInfName, string driverLocation, DriverOperationModel driverOperationItem) in driverCollection)
             {
                 (bool result, bool needRebootResult, Win32Exception win32Exception) = await DeleteDriverAsync(isForce, driverOEMInfName, driverLocation);
                 driverOperationItem.IsOperating = false;

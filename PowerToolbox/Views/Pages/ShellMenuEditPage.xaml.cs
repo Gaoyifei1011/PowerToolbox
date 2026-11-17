@@ -12,6 +12,7 @@ using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -403,7 +404,7 @@ namespace PowerToolbox.Views.Pages
 
                 if (MainWindow.Current.GetFrameContent() is ShellMenuPage shellMenuPage)
                 {
-                    shellMenuPage.NavigateTo(shellMenuPage.PageList[0], null, false);
+                    shellMenuPage.NavigateTo(shellMenuPage.PageCollection[0], null, false);
                 }
             }
         }
@@ -619,10 +620,10 @@ namespace PowerToolbox.Views.Pages
 
             lastUpdateTime = ShellMenuService.GetLastUpdateTime();
 
-            if (args.Parameter is List<object> argsList && argsList.Count is 2 && argsList[1] is ShellMenuItem shellMenuItem)
+            if (args.Parameter is ReadOnlyCollection<object> argsCollection && argsCollection.Count is 2 && argsCollection[1] is ShellMenuItem shellMenuItem)
             {
                 // 添加菜单
-                if (argsList[0] is ShellEditKind.AddMenu)
+                if (argsCollection[0] is ShellEditKind.AddMenu)
                 {
                     selectedDefaultIconPath = string.Empty;
                     selectedLightThemeIconPath = string.Empty;
@@ -662,7 +663,7 @@ namespace PowerToolbox.Views.Pages
                     MenuFileMatchFormatText = string.Empty;
                 }
                 // 编辑菜单
-                else if (argsList[0] is ShellEditKind.EditMenu)
+                else if (argsCollection[0] is ShellEditKind.EditMenu)
                 {
                     selectedDefaultIconPath = string.Empty;
                     selectedLightThemeIconPath = string.Empty;

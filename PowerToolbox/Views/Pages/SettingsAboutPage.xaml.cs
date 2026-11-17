@@ -6,14 +6,18 @@ using PowerToolbox.Views.Dialogs;
 using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Services.Store;
+using Windows.UI.Text;
 
 // 抑制 CA1806，CA1822，IDE0060 警告
 #pragma warning disable CA1806,CA1822,IDE0060
@@ -44,26 +48,26 @@ namespace PowerToolbox.Views.Pages
         private List<OperationBarItemModel> OperationBarItemList { get; } = [];
 
         // 项目引用信息
-        private ListDictionary ReferenceList { get; } = new()
-        {
-            { "Microsoft.Windows.SDK.BuildTools", new Uri("https://aka.ms/WinSDKProjectURL") },
-            { "Microsoft.Windows.SDK.BuildTools.MSIX", new Uri("https://aka.ms/WinSDKProjectURL") },
-            { "Microsoft.Windows.SDK.NET.Ref", new Uri("https://aka.ms/WinSDKProjectURL") },
-            { "Microsoft.WindowsAppSDK", new Uri("https://github.com/microsoft/windowsappsdk") },
-            { "Mile.Aria2", new Uri("https://github.com/ProjectMile/Mile.Aria2") },
-            { "System.Numerics.Vectors", new Uri("https://github.com/dotnet/maintenance-packages") },
-            { "System.Runtime.WindowsRuntime", new Uri("https://github.com/dotnet/corefx") }
-        };
+        private ReadOnlyCollection<DictionaryEntry> ReferenceCollection { get; } = new(
+        [
+            new("Microsoft.Windows.SDK.BuildTools", new Uri("https://aka.ms/WinSDKProjectURL")),
+            new("Microsoft.Windows.SDK.BuildTools.MSIX", new Uri("https://aka.ms/WinSDKProjectURL")),
+            new("Microsoft.Windows.SDK.NET.Ref", new Uri("https://aka.ms/WinSDKProjectURL")),
+            new("Microsoft.WindowsAppSDK", new Uri("https://github.com/microsoft/windowsappsdk")),
+            new("Mile.Aria2", new Uri("https://github.com/ProjectMile/Mile.Aria2")),
+            new("System.Numerics.Vectors", new Uri("https://github.com/dotnet/maintenance-packages")),
+            new("System.Runtime.WindowsRuntime", new Uri("https://github.com/dotnet/corefx"))
+        ]);
 
         // 项目感谢者信息
-        private ListDictionary ThanksList { get; } = new()
-        {
-            { "AndromedaMelody", new Uri("https://github.com/AndromedaMelody") },
-            { "Blinue", new Uri("https://github.com/Blinue") },
-            { "cnbluefire", new Uri("https://github.com/cnbluefire") },
-            { "MouriNaruto" , new Uri("https://github.com/MouriNaruto") },
-            { "Osirisoo0O" , new Uri("https://github.com/Osirisoo0O") }
-        };
+        private ReadOnlyCollection<DictionaryEntry> ThanksCollection { get; } = new(
+        [
+            new( "AndromedaMelody", new Uri("https://github.com/AndromedaMelody")),
+            new("Blinue", new Uri("https://github.com/Blinue")),
+            new ( "cnbluefire", new Uri("https://github.com/cnbluefire")),
+            new ( "MouriNaruto" , new Uri("https://github.com/MouriNaruto")),
+            new ("Osirisoo0O" , new Uri("https://github.com/Osirisoo0O"))
+        ]);
 
         #endregion 第二部分：属性、列表与事件
 

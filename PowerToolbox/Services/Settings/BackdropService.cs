@@ -4,7 +4,9 @@ using PowerToolbox.Extensions.DataType.Constant;
 using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace PowerToolbox.Services.Settings
 {
@@ -30,7 +32,7 @@ namespace PowerToolbox.Services.Settings
             }
         }
 
-        internal static List<string> BackdropList { get; } = [nameof(ElementTheme.Default), nameof(MicaKind) + nameof(MicaKind.Base), nameof(MicaKind) + nameof(MicaKind.BaseAlt), nameof(DesktopAcrylicKind) + nameof(DesktopAcrylicKind.Default), nameof(DesktopAcrylicKind) + nameof(DesktopAcrylicKind.Base), nameof(DesktopAcrylicKind) + nameof(DesktopAcrylicKind.Thin)];
+        internal static ReadOnlyCollection<string> BackdropCollection { get; } = new([nameof(ElementTheme.Default), nameof(MicaKind) + nameof(MicaKind.Base), nameof(MicaKind) + nameof(MicaKind.BaseAlt), nameof(DesktopAcrylicKind) + nameof(DesktopAcrylicKind.Default), nameof(DesktopAcrylicKind) + nameof(DesktopAcrylicKind.Base), nameof(DesktopAcrylicKind) + nameof(DesktopAcrylicKind.Thin)]);
 
         internal static event PropertyChangedEventHandler PropertyChanged;
 
@@ -39,7 +41,7 @@ namespace PowerToolbox.Services.Settings
         /// </summary>
         internal static void InitializeBackdrop()
         {
-            defaultAppBackdrop = BackdropList.Find(item => string.Equals(item, nameof(ElementTheme.Default), StringComparison.OrdinalIgnoreCase));
+            defaultAppBackdrop = BackdropCollection.FirstOrDefault(item => string.Equals(item, nameof(ElementTheme.Default), StringComparison.OrdinalIgnoreCase));
             AppBackdrop = GetBackdrop();
         }
 
@@ -56,7 +58,7 @@ namespace PowerToolbox.Services.Settings
                 return defaultAppBackdrop;
             }
 
-            string selectedBackdrop = BackdropList.Find(item => string.Equals(item, backdrop, StringComparison.OrdinalIgnoreCase));
+            string selectedBackdrop = BackdropCollection.FirstOrDefault(item => string.Equals(item, backdrop, StringComparison.OrdinalIgnoreCase));
             return string.IsNullOrEmpty(selectedBackdrop) ? defaultAppBackdrop : selectedBackdrop;
         }
 

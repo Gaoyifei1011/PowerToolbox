@@ -11,7 +11,7 @@ namespace PowerToolbox.Extensions.Hashing
         private const int BLOCKSIZE = 9500 * 1024;
         private readonly byte[] nullArray = [];
         private readonly byte[] nullMd4Hash;
-        private readonly List<byte[]> md4HashBlocks = [];
+        private readonly List<byte[]> md4HashBlockList = [];
         private readonly MD4 md4 = new();
         private int missing = BLOCKSIZE;
         private byte[] redHash;
@@ -46,7 +46,7 @@ namespace PowerToolbox.Extensions.Hashing
                 else
                 {
                     md4.TransformFinalBlock(array, ibStart, missing);
-                    md4HashBlocks.Add(md4.Hash);
+                    md4HashBlockList.Add(md4.Hash);
                     md4.Initialize();
 
                     cbSize -= missing;
@@ -61,16 +61,16 @@ namespace PowerToolbox.Extensions.Hashing
             redHash = null;
             blueHash = null;
 
-            if (md4HashBlocks.Count is 0)
+            if (md4HashBlockList.Count is 0)
             {
                 md4.TransformFinalBlock(nullArray, 0, 0);
                 blueHash = md4.Hash;
             }
-            else if (md4HashBlocks.Count is 1 && missing is BLOCKSIZE)
+            else if (md4HashBlockList.Count is 1 && missing is BLOCKSIZE)
             {
-                blueHash = md4HashBlocks[0];
+                blueHash = md4HashBlockList[0];
 
-                md4.TransformBlock(md4HashBlocks[0], 0, 16, null, 0);
+                md4.TransformBlock(md4HashBlockList[0], 0, 16, null, 0);
                 md4.TransformFinalBlock(md4.ComputeHash(nullArray), 0, 16);
                 redHash = md4.Hash;
             }
@@ -79,11 +79,11 @@ namespace PowerToolbox.Extensions.Hashing
                 if (missing is not BLOCKSIZE)
                 {
                     md4.TransformFinalBlock(nullArray, 0, 0);
-                    md4HashBlocks.Add(md4.Hash);
+                    md4HashBlockList.Add(md4.Hash);
                 }
 
                 md4.Initialize();
-                foreach (byte[] md4HashBlock in md4HashBlocks)
+                foreach (byte[] md4HashBlock in md4HashBlockList)
                 {
                     md4.TransformBlock(md4HashBlock, 0, 16, null, 0);
                 }
@@ -108,7 +108,7 @@ namespace PowerToolbox.Extensions.Hashing
         {
             missing = BLOCKSIZE;
             md4.Initialize();
-            md4HashBlocks.Clear();
+            md4HashBlockList.Clear();
         }
     }
 }

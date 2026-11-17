@@ -12,6 +12,7 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Imagehlp;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -126,9 +127,9 @@ namespace PowerToolbox.Views.Pages
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
             try
             {
-                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count > 0 && await GetNeedConvertFileListAsync(fileList) is List<CertificateResultModel> fileCertificateList && fileCertificateList.Count > 0)
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count > 0 && await GetNeedConvertFileCollectionAsync(fileCollection) is ReadOnlyCollection<CertificateResultModel> fileCertificateCollection && fileCertificateCollection.Count > 0)
                 {
-                    AddToFileCertificatePage(fileCertificateList);
+                    AddToFileCertificatePage(fileCertificateCollection);
                     IsOperationFailed = false;
                     OperationFailedList.Clear();
                 }
@@ -214,9 +215,9 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
-                if (await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]) is List<CertificateResultModel> fileCertificateList && fileCertificateList.Count > 0)
+                if (await GetNeedConvertFileCollectionAsync(new(openFileDialog.FileNames)) is ReadOnlyCollection<CertificateResultModel> fileCertificateCollection && fileCertificateCollection.Count > 0)
                 {
-                    AddToFileCertificatePage(fileCertificateList);
+                    AddToFileCertificatePage(fileCertificateCollection);
                 }
             }
             openFileDialog.Dispose();
@@ -237,9 +238,9 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
-                if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath) && await GetFileAsync(openFolderDialog.SelectedPath) is List<CertificateResultModel> fileNameList && fileNameList.Count > 0)
+                if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath) && await GetFileAsync(openFolderDialog.SelectedPath) is ReadOnlyCollection<CertificateResultModel> fileNameCollection && fileNameCollection.Count > 0)
                 {
-                    AddToFileCertificatePage(fileNameList);
+                    AddToFileCertificatePage(fileNameCollection);
                 }
             }
             openFolderDialog.Dispose();
@@ -250,7 +251,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnViewErrorInformationClicked(object sender, RoutedEventArgs args)
         {
-            await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList));
+            await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList.AsReadOnly()));
         }
 
         #endregion 第六部分：挂载事件处理
@@ -260,11 +261,11 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 添加到数字签名页面
         /// </summary>
-        internal void AddToFileCertificatePage(List<CertificateResultModel> fileCertificateList)
+        internal void AddToFileCertificatePage(ReadOnlyCollection<CertificateResultModel> fileCertificateCollection)
         {
             lock (fileCertificateLock)
             {
-                foreach (CertificateResultModel certificateResultItem in fileCertificateList)
+                foreach (CertificateResultModel certificateResultItem in fileCertificateCollection)
                 {
                     FileCertificateCollection.Add(certificateResultItem);
                 }
@@ -309,7 +310,7 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            List<OperationFailedModel> operationFailedList = await GetOperationFailedListAsync();
+            ReadOnlyCollection<OperationFailedModel> operationFailedCollection = await GetOperationFailedCollectionAsync();
 
             IsModifyingNow = false;
             lock (fileCertificateLock)
@@ -319,9 +320,9 @@ namespace PowerToolbox.Views.Pages
                     certificateResult.IsModifyingNow = false;
                 }
             }
-            if (operationFailedList is not null && operationFailedList.Count > 0)
+            if (operationFailedCollection is not null && operationFailedCollection.Count > 0)
             {
-                foreach (OperationFailedModel operationFailedItem in operationFailedList)
+                foreach (OperationFailedModel operationFailedItem in operationFailedCollection)
                 {
                     OperationFailedList.Add(operationFailedItem);
                 }
@@ -341,7 +342,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取拖拽支持选中的文件
         /// </summary>
-        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        private async Task<ReadOnlyCollection<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
         {
             if (dataPackageView is null)
             {
@@ -367,16 +368,16 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(GetDragDropSelectedFilesAsync), 1, e);
                 }
 
-                return fileList;
+                return fileList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取要待转换的文件列表
         /// </summary>
-        private async Task<List<CertificateResultModel>> GetNeedConvertFileListAsync(List<string> fileList)
+        private async Task<ReadOnlyCollection<CertificateResultModel>> GetNeedConvertFileCollectionAsync(ReadOnlyCollection<string> fileCollection)
         {
-            if (fileList is null || fileList.Count is 0)
+            if (fileCollection is null || fileCollection.Count is 0)
             {
                 return default;
             }
@@ -385,7 +386,7 @@ namespace PowerToolbox.Views.Pages
             {
                 List<CertificateResultModel> fileCertificateList = [];
 
-                foreach (string file in fileList)
+                foreach (string file in fileCollection)
                 {
                     try
                     {
@@ -406,23 +407,23 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(GetNeedConvertFileListAsync), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(GetNeedConvertFileCollectionAsync), 1, e);
                         continue;
                     }
                 }
 
-                return fileCertificateList;
+                return fileCertificateList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取文件夹的所有文件
         /// </summary>
-        private async Task<List<CertificateResultModel>> GetFileAsync(string folderPath)
+        private async Task<ReadOnlyCollection<CertificateResultModel>> GetFileAsync(string folderPath)
         {
             if (string.IsNullOrEmpty(folderPath))
             {
-                return [];
+                return default;
             }
 
             return await Task.Run(() =>
@@ -450,14 +451,14 @@ namespace PowerToolbox.Views.Pages
                 {
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileCertificatePage), nameof(GetFileAsync), 1, e);
                 }
-                return fileCertificateList;
+                return fileCertificateList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取失败操作列表
         /// </summary>
-        private async Task<List<OperationFailedModel>> GetOperationFailedListAsync()
+        private async Task<ReadOnlyCollection<OperationFailedModel>> GetOperationFailedCollectionAsync()
         {
             return await Task.Run(() =>
             {
@@ -496,7 +497,7 @@ namespace PowerToolbox.Views.Pages
                         }
                     }
                 }
-                return operationFailedList;
+                return operationFailedList.AsReadOnly();
             });
         }
 

@@ -8,6 +8,6 @@ namespace PowerToolbox.Extensions.PriExtract
 
         internal ReferencedFileOrFolder Parent { get; set; }
 
-        internal IReadOnlyList<ReferencedFileOrFolder> Children { get; set; }
+        internal IReadOnlyList<ReferencedFileOrFolder> ChildrenList { get; set; }
     }
 }

@@ -15,6 +15,7 @@ using PowerToolbox.WindowsAPI.PInvoke.FirewallAPI;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -1163,7 +1164,7 @@ namespace PowerToolbox.Views.Pages
         {
             IsDriveLoadCompleted = false;
 
-            List<DriveModel> driveList = await Task.Run(() =>
+            ReadOnlyCollection<DriveModel> driveCollection = await Task.Run(() =>
             {
                 List<DriveModel> driveList = [];
                 DriveInfo[] driverInfoArray = DriveInfo.GetDrives();
@@ -1198,12 +1199,12 @@ namespace PowerToolbox.Views.Pages
                     driveList.Add(driveItem);
                 }
 
-                return driveList;
+                return driveList.AsReadOnly();
             });
 
             SelectedItem = null;
             DriveCollection.Clear();
-            foreach (DriveModel driveItem in driveList)
+            foreach (DriveModel driveItem in driveCollection)
             {
                 DriveCollection.Add(driveItem);
             }
@@ -1537,9 +1538,9 @@ namespace PowerToolbox.Views.Pages
         {
             return await Task.Run(() =>
             {
-                List<INET_FIREWALL_APP_CONTAINER> inetLoopbackList = GetAppContainerList();
+                ReadOnlyCollection<INET_FIREWALL_APP_CONTAINER> inetLoopbackCollection = GetAppContainerCollection();
 
-                foreach (INET_FIREWALL_APP_CONTAINER inetContainerItem in inetLoopbackList)
+                foreach (INET_FIREWALL_APP_CONTAINER inetContainerItem in inetLoopbackCollection)
                 {
                     if (!string.IsNullOrEmpty(inetContainerItem.packageFullName) && string.Equals(inetContainerItem.packageFullName, "Microsoft.WindowsFileRecovery_8wekyb3d8bbwe", StringComparison.OrdinalIgnoreCase))
                     {
@@ -1874,7 +1875,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取设备所有应用容器数据列表
         /// </summary>
-        private List<INET_FIREWALL_APP_CONTAINER> GetAppContainerList()
+        private ReadOnlyCollection<INET_FIREWALL_APP_CONTAINER> GetAppContainerCollection()
         {
             nint arrayValue = 0;
             uint size = 0;
@@ -1885,7 +1886,6 @@ namespace PowerToolbox.Views.Pages
             FirewallAPILibrary.NetworkIsolationEnumAppContainers(NETISO_FLAG.NETISO_FLAG_MAX, out size, out arrayValue);
 
             nint pACs = arrayValue;
-
             int structSize = Marshal.SizeOf<INET_FIREWALL_APP_CONTAINER>();
 
             for (int index = 0; index < size; index++)
@@ -1899,7 +1899,7 @@ namespace PowerToolbox.Views.Pages
             handle_pdwCntPublicACs.Free();
             handle_ppACs.Free();
             FirewallAPILibrary.NetworkIsolationFreeAppContainers(pACs);
-            return inetContainerList;
+            return inetContainerList.AsReadOnly();
         }
 
         /// <summary>

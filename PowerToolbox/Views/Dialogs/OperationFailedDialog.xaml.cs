@@ -7,6 +7,7 @@ using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,11 +39,11 @@ namespace PowerToolbox.Views.Dialogs
 
         #region 第三部分：构造函数
 
-        internal OperationFailedDialog(List<OperationFailedModel> operationFailedList)
+        internal OperationFailedDialog(ReadOnlyCollection<OperationFailedModel> operationFailedCollection)
         {
             InitializeComponent();
 
-            foreach (OperationFailedModel operationFailedItem in operationFailedList)
+            foreach (OperationFailedModel operationFailedItem in operationFailedCollection)
             {
                 OperationFailedCollection.Add(operationFailedItem);
             }
@@ -59,7 +60,7 @@ namespace PowerToolbox.Views.Dialogs
         {
             if (args.Parameter is OperationFailedModel operationFailedItem)
             {
-                string operationFailedString = await GetOperationFailedStringAsync([operationFailedItem]);
+                string operationFailedString = await GetOperationFailedStringAsync(new([operationFailedItem]));
 
                 if (!string.IsNullOrEmpty(operationFailedString))
                 {
@@ -83,7 +84,7 @@ namespace PowerToolbox.Views.Dialogs
 
             try
             {
-                string operationFailedString = await GetOperationFailedStringAsync([.. OperationFailedCollection]);
+                string operationFailedString = await GetOperationFailedStringAsync(new(OperationFailedCollection));
 
                 if (!string.IsNullOrEmpty(operationFailedString))
                 {
@@ -109,9 +110,9 @@ namespace PowerToolbox.Views.Dialogs
         /// <summary>
         /// 获取文件解锁失败信息内容
         /// </summary>
-        private async Task<string> GetOperationFailedStringAsync(List<OperationFailedModel> operationFailedList)
+        private async Task<string> GetOperationFailedStringAsync(ReadOnlyCollection<OperationFailedModel> operationFailedCollection)
         {
-            if (operationFailedList is null || operationFailedList.Count is 0)
+            if (operationFailedCollection is null || operationFailedCollection.Count is 0)
             {
                 return default;
             }
@@ -122,7 +123,7 @@ namespace PowerToolbox.Views.Dialogs
                 {
                     StringBuilder stringBuilder = new();
 
-                    foreach (OperationFailedModel operationFailedItem in operationFailedList)
+                    foreach (OperationFailedModel operationFailedItem in operationFailedCollection)
                     {
                         stringBuilder.Append(FileNameCopyString);
                         stringBuilder.AppendLine(operationFailedItem.FileName);

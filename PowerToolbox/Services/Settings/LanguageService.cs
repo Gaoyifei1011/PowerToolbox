@@ -33,7 +33,7 @@ namespace PowerToolbox.Services.Settings
         private static KeyValuePair<string, string> defaultAppLanguage;
         internal static KeyValuePair<string, string> AppLanguage { get; private set; }
         internal static FlowDirection FlowDirection { get; private set; }
-        private static readonly List<string> AppLanguagesList = [];
+        private static readonly List<string> AppLanguageList = [];
         internal static List<KeyValuePair<string, string>> LanguageList { get; } = [];
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace PowerToolbox.Services.Settings
                         {
                             if (appxManifestQualifiedResourcesEnumerator.GetCurrent(out IAppxManifestQualifiedResource appxManifestQualifiedResource) is 0 && appxManifestQualifiedResource.GetLanguage(out string language) is 0 && !string.IsNullOrEmpty(language))
                             {
-                                AppLanguagesList.Add(language);
+                                AppLanguageList.Add(language);
                             }
 
                             appxManifestQualifiedResourcesEnumerator.MoveNext(out _);
@@ -73,21 +73,21 @@ namespace PowerToolbox.Services.Settings
                     Marshal.Release(Marshal.GetIUnknownForObject(stream));
                 }
 
-                if (AppLanguagesList.Count is 0)
+                if (AppLanguageList.Count is 0)
                 {
-                    AppLanguagesList.Add("en-us");
+                    AppLanguageList.Add("en-us");
                 }
 
-                AppLanguagesList.Sort();
+                AppLanguageList.Sort();
             }
             catch (Exception e)
             {
                 LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LanguageService), nameof(InitializeLanguageList), 1, e);
-                AppLanguagesList.Clear();
-                AppLanguagesList.Add("en-us");
+                AppLanguageList.Clear();
+                AppLanguageList.Add("en-us");
             }
 
-            foreach (string appLanguage in AppLanguagesList)
+            foreach (string appLanguage in AppLanguageList)
             {
                 CultureInfo culture = CultureInfo.GetCultureInfo(appLanguage);
 

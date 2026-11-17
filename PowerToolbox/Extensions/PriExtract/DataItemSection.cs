@@ -15,7 +15,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
         internal uint SectionLength { get; private set; }
 
-        internal IReadOnlyList<ByteSpan> DataItemsList { get; private set; }
+        internal IReadOnlyList<ByteSpan> DataItemList { get; private set; }
 
         internal DataItemSection(string sectionIdentifier, BinaryReader binaryReader)
         {
@@ -45,15 +45,14 @@ namespace PowerToolbox.Extensions.PriExtract
             ushort numBlobs = binaryReader.ReadUInt16();
             uint totalDataLength = binaryReader.ReadUInt32();
 
-            List<ByteSpan> dataItemsList = [with(numStrings + numBlobs)];
-
+            List<ByteSpan> dataItemList = [with(numStrings + numBlobs)];
             long dataStartOffset = binaryReader.BaseStream.Position + numStrings * 2 * sizeof(ushort) + numBlobs * 2 * sizeof(uint);
 
             for (int i = 0; i < numStrings; i++)
             {
                 ushort stringOffset = binaryReader.ReadUInt16();
                 ushort stringLength = binaryReader.ReadUInt16();
-                dataItemsList.Add(new()
+                dataItemList.Add(new()
                 {
                     Offset = sectionPosition + dataStartOffset + stringOffset,
                     Length = stringLength
@@ -64,14 +63,14 @@ namespace PowerToolbox.Extensions.PriExtract
             {
                 uint blobOffset = binaryReader.ReadUInt32();
                 uint blobLength = binaryReader.ReadUInt32();
-                dataItemsList.Add(new()
+                dataItemList.Add(new()
                 {
                     Offset = sectionPosition + dataStartOffset + blobOffset,
                     Length = blobLength
                 });
             }
 
-            DataItemsList = dataItemsList;
+            DataItemList = dataItemList;
         }
     }
 }

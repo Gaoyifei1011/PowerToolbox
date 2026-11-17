@@ -20,9 +20,9 @@ namespace PowerToolbox.Extensions.PriExtract
 
         internal uint[] Mapping { get; private set; }
 
-        internal IReadOnlyList<ResourceMapScopeAndItem> ScopesList { get; private set; }
+        internal IReadOnlyList<ResourceMapScopeAndItem> ScopeList { get; private set; }
 
-        internal IReadOnlyList<ResourceMapScopeAndItem> ItemsList { get; private set; }
+        internal IReadOnlyList<ResourceMapScopeAndItem> ItemList { get; private set; }
 
         internal ReverseMapSection(string sectionIdentifier, BinaryReader binaryReader)
         {
@@ -182,11 +182,11 @@ namespace PowerToolbox.Extensions.PriExtract
                     childrenArray[j] = isScope ? scopesArray[index] : itemsArray[index];
                 }
 
-                scopesArray[i].Children = childrenArray;
+                scopesArray[i].ChildrenList = childrenArray;
             }
 
-            ScopesList = scopesArray;
-            ItemsList = itemsArray;
+            ScopeList = scopesArray;
+            ItemList = itemsArray;
         }
     }
 }

@@ -48,7 +48,7 @@ namespace PowerToolbox.Extensions.DataType.Class
 
         public BindableVector()
         {
-            implementation = new List<object>();
+            implementation = new List<object>().AsReadOnly();
         }
 
         public BindableVector(IList list)

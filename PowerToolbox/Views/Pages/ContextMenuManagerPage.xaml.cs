@@ -317,17 +317,17 @@ namespace PowerToolbox.Views.Pages
                 ContextMenuResultKind = ContextMenuResultKind.Loading;
                 ContextMenuList.Clear();
                 ContextMenuCollection.Clear();
-                List<ContextMenuModel> contextMenuList = await GetContextMenuInfoListAsync();
+                ReadOnlyCollection<ContextMenuModel> contextMenuCollection = await GetContextMenuInfoCollectionAsync();
 
-                if (contextMenuList.Count is 0)
+                if (contextMenuCollection.Count is 0)
                 {
                     ContextMenuResultKind = ContextMenuResultKind.Failed;
                     ContextMenuFailedContent = MenuEmptyDescriptionString;
                 }
                 else
                 {
-                    ContextMenuList.AddRange(contextMenuList);
-                    foreach (ContextMenuModel contextMenuItem in contextMenuList)
+                    ContextMenuList.AddRange(contextMenuCollection);
+                    foreach (ContextMenuModel contextMenuItem in contextMenuCollection)
                     {
                         try
                         {
@@ -368,7 +368,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取右键菜单信息
         /// </summary>
-        private async Task<List<ContextMenuModel>> GetContextMenuInfoListAsync()
+        private async Task<ReadOnlyCollection<ContextMenuModel>> GetContextMenuInfoCollectionAsync()
         {
             return await Task.Run(() =>
             {
@@ -376,8 +376,8 @@ namespace PowerToolbox.Views.Pages
 
                 try
                 {
-                    List<KeyValuePair<Guid, string>> blockedList = GetBlockedClsidList();
-                    List<INET_FIREWALL_APP_CONTAINER> inetLoopbackList = GetAppContainerList();
+                    ReadOnlyCollection<KeyValuePair<Guid, string>> blockedCollection = GetBlockedClsidCollection();
+                    ReadOnlyCollection<INET_FIREWALL_APP_CONTAINER> inetLoopbackCollection = GetAppContainerCollection();
                     ReadOnlyCollection<string> packageFullNameCollection = RegistryHelper.GetSubKeyCollection(Registry.LocalMachine, packageComPackageKey);
                     string currentPackageFullName = GetCurrentPackageFullName();
 
@@ -390,7 +390,6 @@ namespace PowerToolbox.Views.Pages
                         }
 
                         ReadOnlyCollection<string> classCollection = RegistryHelper.GetSubKeyCollection(Registry.LocalMachine, string.Format(@"{0}\{1}\Class", packageComPackageKey, packageFullName));
-
                         List<ContextMenuItemModel> contextMenuItemList = [];
 
                         foreach (string clsidString in classCollection)
@@ -403,11 +402,11 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     int serverId = RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, string.Format(@"{0}\{1}\Class\{2}", packageComPackageKey, packageFullName, clsidString), "ServerId");
                                     int threading = RegistryHelper.ReadRegistryKey<int>(Registry.LocalMachine, string.Format(@"{0}\{1}\Class\{2}", packageComPackageKey, packageFullName, clsidString), "Threading");
-                                    int index = blockedList.FindIndex(item => Equals(item.Key, clsid));
+                                    int index = blockedCollection.IndexOf(blockedCollection.FirstOrDefault(item => Equals(item.Key, clsid)));
 
                                     contextMenuItemList.Add(new()
                                     {
-                                        BlockedClsidType = index >= 0 && index < blockedList.Count ? Enum.TryParse(blockedList[index].Value, out BlockedClsidType blockedClsidType) ? blockedClsidType : BlockedClsidType.Unknown : BlockedClsidType.Unknown,
+                                        BlockedClsidType = index >= 0 && index < blockedCollection.Count ? Enum.TryParse(blockedCollection[index].Value, out BlockedClsidType blockedClsidType) ? blockedClsidType : BlockedClsidType.Unknown : BlockedClsidType.Unknown,
                                         Clsid = clsid,
                                         ClsidString = Convert.ToString(clsid).ToUpperInvariant(),
                                         DllPath = dllPath,
@@ -425,12 +424,12 @@ namespace PowerToolbox.Views.Pages
 
                         if (GetPackagePath(packageFullName) is string packagePath)
                         {
-                            (string displayName, string logoFullPath, List<Guid> clsidList) = GetAppInfo(packagePath);
+                            (string displayName, string logoFullPath, ReadOnlyCollection<Guid> clsidCollection) = GetAppInfo(packagePath);
 
-                            if (clsidList is not null && clsidList.Count > 0)
+                            if (clsidCollection is not null && clsidCollection.Count > 0)
                             {
                                 StringBuilder displayNameBuilder = new(1024);
-                                foreach (INET_FIREWALL_APP_CONTAINER inetContainerItem in from INET_FIREWALL_APP_CONTAINER inetContainerItem in inetLoopbackList where inetContainerItem.displayName.Contains(packageFullName) select inetContainerItem)
+                                foreach (INET_FIREWALL_APP_CONTAINER inetContainerItem in from INET_FIREWALL_APP_CONTAINER inetContainerItem in inetLoopbackCollection where inetContainerItem.displayName.Contains(packageFullName) select inetContainerItem)
                                 {
                                     ShlwapiLibrary.SHLoadIndirectString(inetContainerItem.displayName, displayNameBuilder, displayNameBuilder.Capacity, 0);
                                     break;
@@ -456,14 +455,14 @@ namespace PowerToolbox.Views.Pages
                 }
 
                 contextMenuList.Sort((item1, item2) => item1.PackageDisplayName.CompareTo(item2.PackageDisplayName));
-                return contextMenuList;
+                return contextMenuList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取已禁用菜单 CLSID 列表
         /// </summary>
-        private List<KeyValuePair<Guid, string>> GetBlockedClsidList()
+        private ReadOnlyCollection<KeyValuePair<Guid, string>> GetBlockedClsidCollection()
         {
             List<KeyValuePair<Guid, string>> blockClsidList = [];
 
@@ -481,7 +480,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetBlockedClsidList), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetBlockedClsidCollection), 1, e);
             }
 
             try
@@ -498,10 +497,10 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetBlockedClsidList), 2, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetBlockedClsidCollection), 2, e);
             }
 
-            return blockClsidList;
+            return blockClsidList.AsReadOnly();
         }
 
         /// <summary>
@@ -512,7 +511,7 @@ namespace PowerToolbox.Views.Pages
         /// 参数 2：返回应用的显示图片位置
         /// 参数 3：返回应用的菜单 clsid 项列表
         /// </returns>
-        private static (string displayName, string logoFullPath, List<Guid> clsidList) GetAppInfo(string packageInstalledLocation)
+        private static (string, string, ReadOnlyCollection<Guid>) GetAppInfo(string packageInstalledLocation)
         {
             if (string.IsNullOrEmpty(packageInstalledLocation))
             {
@@ -603,22 +602,22 @@ namespace PowerToolbox.Views.Pages
                         }
                     }
 
-                    return ValueTuple.Create(displayName, logoFullPath, clsidList);
+                    return ValueTuple.Create(displayName, logoFullPath, clsidList.AsReadOnly());
                 }
 
-                return ValueTuple.Create(string.Empty, string.Empty, new List<Guid>());
+                return ValueTuple.Create<string, string, ReadOnlyCollection<Guid>>(string.Empty, string.Empty, new([]));
             }
             catch (Exception e)
             {
                 LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetAppInfo), 1, e);
-                return ValueTuple.Create(string.Empty, string.Empty, new List<Guid>());
+                return ValueTuple.Create<string, string, ReadOnlyCollection<Guid>>(string.Empty, string.Empty, new([]));
             }
         }
 
         /// <summary>
         /// 获取设备所有应用容器数据列表
         /// </summary>
-        private List<INET_FIREWALL_APP_CONTAINER> GetAppContainerList()
+        private ReadOnlyCollection<INET_FIREWALL_APP_CONTAINER> GetAppContainerCollection()
         {
             nint arrayValue = 0;
             uint size = 0;
@@ -641,7 +640,7 @@ namespace PowerToolbox.Views.Pages
             handle_pdwCntPublicACs.Free();
             handle_ppACs.Free();
             FirewallAPILibrary.NetworkIsolationFreeAppContainers(pACs);
-            return inetContainerList;
+            return inetContainerList.AsReadOnly();
         }
 
         /// <summary>

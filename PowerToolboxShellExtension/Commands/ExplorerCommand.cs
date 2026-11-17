@@ -236,7 +236,7 @@ namespace PowerToolboxShellExtension.Commands
         public unsafe int Invoke(IShellItemArray psiItemArray, nint pbc)
         {
             // 没有子菜单，该菜单可以直接调用命令
-            if (shellMenuItem is not null && shellMenuItem.SubShellMenuItem.Count is 0)
+            if (shellMenuItem is not null && shellMenuItem.SubShellMenuItemList.Count is 0)
             {
                 int fileMatchedCount = 0;
                 int folderMatchedCount = 0;
@@ -383,7 +383,7 @@ namespace PowerToolboxShellExtension.Commands
         {
             if (shellMenuItem is not null)
             {
-                pFlags = shellMenuItem.SubShellMenuItem.Count is 0 ? EXPCMDFLAGS.ECF_DEFAULT : EXPCMDFLAGS.ECF_HASSUBCOMMANDS;
+                pFlags = shellMenuItem.SubShellMenuItemList.Count is 0 ? EXPCMDFLAGS.ECF_DEFAULT : EXPCMDFLAGS.ECF_HASSUBCOMMANDS;
                 return 0;
             }
             else
@@ -400,10 +400,10 @@ namespace PowerToolboxShellExtension.Commands
         {
             if (shellMenuItem is not null)
             {
-                ExplorerCommand[] subExplorerCommandArray = new ExplorerCommand[shellMenuItem.SubShellMenuItem.Count];
-                for (int index = 0; index < shellMenuItem.SubShellMenuItem.Count; index++)
+                ExplorerCommand[] subExplorerCommandArray = new ExplorerCommand[shellMenuItem.SubShellMenuItemList.Count];
+                for (int index = 0; index < shellMenuItem.SubShellMenuItemList.Count; index++)
                 {
-                    subExplorerCommandArray[index] = new ExplorerCommand(shellMenuItem.SubShellMenuItem[index]);
+                    subExplorerCommandArray[index] = new ExplorerCommand(shellMenuItem.SubShellMenuItemList[index]);
                 }
 
                 ppEnum = new EnumExplorerCommand(subExplorerCommandArray);
@@ -445,14 +445,14 @@ namespace PowerToolboxShellExtension.Commands
         /// </summary>
         private EXPCMDSTATE EnumerateMatchFolderDesktop(ShellMenuItem shellMenuItem)
         {
-            if (shellMenuItem.SubShellMenuItem.Count is 0)
+            if (shellMenuItem.SubShellMenuItemList.Count is 0)
             {
                 return shellMenuItem.FolderDesktop ? EXPCMDSTATE.ECS_ENABLED : EXPCMDSTATE.ECS_HIDDEN;
             }
             else
             {
                 bool isMatched = false;
-                foreach (ShellMenuItem subShellMenuItem in shellMenuItem.SubShellMenuItem)
+                foreach (ShellMenuItem subShellMenuItem in shellMenuItem.SubShellMenuItemList)
                 {
                     if (EnumerateMatchFolderDesktop(subShellMenuItem) is EXPCMDSTATE.ECS_ENABLED)
                     {
@@ -470,14 +470,14 @@ namespace PowerToolboxShellExtension.Commands
         /// </summary>
         private EXPCMDSTATE EnumerateMatchFolderDirectory(ShellMenuItem shellMenuItem)
         {
-            if (shellMenuItem.SubShellMenuItem.Count is 0)
+            if (shellMenuItem.SubShellMenuItemList.Count is 0)
             {
                 return shellMenuItem.FolderDirectory ? EXPCMDSTATE.ECS_ENABLED : EXPCMDSTATE.ECS_HIDDEN;
             }
             else
             {
                 bool isMatched = false;
-                foreach (ShellMenuItem subShellMenuItem in shellMenuItem.SubShellMenuItem)
+                foreach (ShellMenuItem subShellMenuItem in shellMenuItem.SubShellMenuItemList)
                 {
                     if (EnumerateMatchFolderDirectory(subShellMenuItem) is EXPCMDSTATE.ECS_ENABLED)
                     {
@@ -495,14 +495,14 @@ namespace PowerToolboxShellExtension.Commands
         /// </summary>
         private EXPCMDSTATE EnumerateMatchFolderDrive(ShellMenuItem shellMenuItem)
         {
-            if (shellMenuItem.SubShellMenuItem.Count is 0)
+            if (shellMenuItem.SubShellMenuItemList.Count is 0)
             {
                 return shellMenuItem.FolderDrive ? EXPCMDSTATE.ECS_ENABLED : EXPCMDSTATE.ECS_HIDDEN;
             }
             else
             {
                 bool isMatched = false;
-                foreach (ShellMenuItem subShellMenuItem in shellMenuItem.SubShellMenuItem)
+                foreach (ShellMenuItem subShellMenuItem in shellMenuItem.SubShellMenuItemList)
                 {
                     if (EnumerateMatchFolderDrive(subShellMenuItem) is EXPCMDSTATE.ECS_ENABLED)
                     {
@@ -520,14 +520,14 @@ namespace PowerToolboxShellExtension.Commands
         /// </summary>
         private EXPCMDSTATE EnumerateMatchFile(ShellMenuItem shellMenuItem, string filePath)
         {
-            if (shellMenuItem.SubShellMenuItem.Count is 0)
+            if (shellMenuItem.SubShellMenuItemList.Count is 0)
             {
                 // 匹配文件格式
-                if (string.Equals(shellMenuItem.MenuFileMatchRule, ShellMenuService.FileMatchRuleList[0]))
+                if (string.Equals(shellMenuItem.MenuFileMatchRule, ShellMenuService.FileMatchRuleCollection[0]))
                 {
                     return EXPCMDSTATE.ECS_HIDDEN;
                 }
-                else if (string.Equals(shellMenuItem.MenuFileMatchRule, ShellMenuService.FileMatchRuleList[1]))
+                else if (string.Equals(shellMenuItem.MenuFileMatchRule, ShellMenuService.FileMatchRuleCollection[1]))
                 {
                     string[] fileMatchFormatArray = shellMenuItem.MenuFileMatchFormatText.Split('|');
 
@@ -544,7 +544,7 @@ namespace PowerToolboxShellExtension.Commands
 
                     return isMatched ? EXPCMDSTATE.ECS_ENABLED : EXPCMDSTATE.ECS_HIDDEN;
                 }
-                else if (string.Equals(shellMenuItem.MenuFileMatchRule, ShellMenuService.FileMatchRuleList[2]))
+                else if (string.Equals(shellMenuItem.MenuFileMatchRule, ShellMenuService.FileMatchRuleCollection[2]))
                 {
                     string[] fileMatchFormatArray = shellMenuItem.MenuFileMatchFormatText.Split('|');
                     bool isMatched = false;
@@ -563,7 +563,7 @@ namespace PowerToolboxShellExtension.Commands
 
                     return isMatched ? EXPCMDSTATE.ECS_ENABLED : EXPCMDSTATE.ECS_HIDDEN;
                 }
-                else if (string.Equals(shellMenuItem.MenuFileMatchRule, ShellMenuService.FileMatchRuleList[3]))
+                else if (string.Equals(shellMenuItem.MenuFileMatchRule, ShellMenuService.FileMatchRuleCollection[3]))
                 {
                     string[] fileMatchFormatArray = shellMenuItem.MenuFileMatchFormatText.Split('|');
                     bool isMatched = false;
@@ -580,7 +580,7 @@ namespace PowerToolboxShellExtension.Commands
 
                     return isMatched ? EXPCMDSTATE.ECS_ENABLED : EXPCMDSTATE.ECS_HIDDEN;
                 }
-                else if (string.Equals(shellMenuItem.MenuFileMatchRule, ShellMenuService.FileMatchRuleList[4]))
+                else if (string.Equals(shellMenuItem.MenuFileMatchRule, ShellMenuService.FileMatchRuleCollection[4]))
                 {
                     return EXPCMDSTATE.ECS_ENABLED;
                 }
@@ -592,7 +592,7 @@ namespace PowerToolboxShellExtension.Commands
             else
             {
                 bool isMatched = false;
-                foreach (ShellMenuItem subShellMenuItem in shellMenuItem.SubShellMenuItem)
+                foreach (ShellMenuItem subShellMenuItem in shellMenuItem.SubShellMenuItemList)
                 {
                     if (EnumerateMatchFile(subShellMenuItem, filePath) is EXPCMDSTATE.ECS_ENABLED)
                     {

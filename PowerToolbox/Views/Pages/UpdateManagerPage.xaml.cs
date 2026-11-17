@@ -14,6 +14,7 @@ using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -407,9 +408,9 @@ namespace PowerToolbox.Views.Pages
                 WuapiDllVersion = wuapiDllVersion;
 
                 // 获取历史更新记录
-                List<UpdateModel> updateHistoryList = await Task.Run(GetUpdateHistoryList);
+                ReadOnlyCollection<UpdateModel> updateHistoryCollection = await Task.Run(GetUpdateHistoryCollectionAsync);
                 UpdateHistoryCollection.Clear();
-                foreach (UpdateModel updateHistoryItem in updateHistoryList)
+                foreach (UpdateModel updateHistoryItem in updateHistoryCollection)
                 {
                     UpdateHistoryCollection.Add(updateHistoryItem);
                 }
@@ -653,41 +654,41 @@ namespace PowerToolbox.Views.Pages
             IsChecking = true;
             if (SelectedUpdateSource is not null)
             {
-                (bool searchResult, List<UpdateModel> availableUpdateList, List<UpdateModel> installedUpdateList, List<UpdateModel> hiddenUpdateList, List<UpdateModel> updateHistoryList) = await CheckUpdateAsync(IsIncludePotentiallySupersededUpdate, Convert.ToString(SelectedUpdateSource.SelectedValue));
+                (bool searchResult, ReadOnlyCollection<UpdateModel> availableUpdateCollecction, ReadOnlyCollection<UpdateModel> installedUpdateCollection, ReadOnlyCollection<UpdateModel> hiddenUpdateCollection, ReadOnlyCollection<UpdateModel> updateHistoryCollection) = await CheckUpdateAsync(IsIncludePotentiallySupersededUpdate, Convert.ToString(SelectedUpdateSource.SelectedValue));
 
                 if (searchResult)
                 {
                     AvailableUpdateCollection.Clear();
-                    if (availableUpdateList is not null && availableUpdateList.Count > 0)
+                    if (availableUpdateCollecction is not null && availableUpdateCollecction.Count > 0)
                     {
-                        foreach (UpdateModel availableUpdateItem in availableUpdateList)
+                        foreach (UpdateModel availableUpdateItem in availableUpdateCollecction)
                         {
                             AvailableUpdateCollection.Add(availableUpdateItem);
                         }
                     }
 
                     InstalledUpdateCollection.Clear();
-                    if (installedUpdateList is not null && installedUpdateList.Count > 0)
+                    if (installedUpdateCollection is not null && installedUpdateCollection.Count > 0)
                     {
-                        foreach (UpdateModel installedUpdateItem in installedUpdateList)
+                        foreach (UpdateModel installedUpdateItem in installedUpdateCollection)
                         {
                             InstalledUpdateCollection.Add(installedUpdateItem);
                         }
                     }
 
                     HiddenUpdateCollection.Clear();
-                    if (hiddenUpdateList is not null && hiddenUpdateList.Count > 0)
+                    if (hiddenUpdateCollection is not null && hiddenUpdateCollection.Count > 0)
                     {
-                        foreach (UpdateModel hiddenUpdateItem in hiddenUpdateList)
+                        foreach (UpdateModel hiddenUpdateItem in hiddenUpdateCollection)
                         {
                             HiddenUpdateCollection.Add(hiddenUpdateItem);
                         }
                     }
 
                     UpdateHistoryCollection.Clear();
-                    if (updateHistoryList is not null && updateHistoryList.Count > 0)
+                    if (updateHistoryCollection is not null && updateHistoryCollection.Count > 0)
                     {
-                        foreach (UpdateModel updateHistoryItem in updateHistoryList)
+                        foreach (UpdateModel updateHistoryItem in updateHistoryCollection)
                         {
                             UpdateHistoryCollection.Add(updateHistoryItem);
                         }
@@ -766,9 +767,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAvailableSelectReverseClicked(object sender, RoutedEventArgs args)
         {
-            List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. UpdateManagerAvailableListView.SelectedRanges];
+            ReadOnlyCollection<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeCollection = new([.. UpdateManagerAvailableListView.SelectedRanges]);
             UpdateManagerAvailableListView.SelectAll();
-            foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
+            foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeCollection)
             {
                 UpdateManagerAvailableListView.DeselectRange(itemIndexRange);
             }
@@ -928,9 +929,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnInstalledSelectReverseClicked(object sender, RoutedEventArgs args)
         {
-            List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. UpdateManagerInstalledListView.SelectedRanges];
+            ReadOnlyCollection<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeCollection = new([.. UpdateManagerInstalledListView.SelectedRanges]);
             UpdateManagerInstalledListView.SelectAll();
-            foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
+            foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeCollection)
             {
                 UpdateManagerInstalledListView.DeselectRange(itemIndexRange);
             }
@@ -1047,9 +1048,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnHiddenSelectReverseClicked(object sender, RoutedEventArgs args)
         {
-            List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. UpdateManagerHiddenListView.SelectedRanges];
+            ReadOnlyCollection<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeCollection = new([.. UpdateManagerHiddenListView.SelectedRanges]);
             UpdateManagerHiddenListView.SelectAll();
-            foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
+            foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeCollection)
             {
                 UpdateManagerHiddenListView.DeselectRange(itemIndexRange);
             }
@@ -1167,9 +1168,9 @@ namespace PowerToolbox.Views.Pages
                 await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CleanUpdateHistory, cleanResult));
             }, null);
             // 获取历史更新记录
-            List<UpdateModel> updateHistoryList = await Task.Run(GetUpdateHistoryList);
+            ReadOnlyCollection<UpdateModel> updateHistoryCollection = await GetUpdateHistoryCollectionAsync();
             UpdateHistoryCollection.Clear();
-            foreach (UpdateModel updateHistoryItem in updateHistoryList)
+            foreach (UpdateModel updateHistoryItem in updateHistoryCollection)
             {
                 UpdateHistoryCollection.Add(updateHistoryItem);
             }
@@ -1288,14 +1289,14 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 检查更新
         /// </summary>
-        private async Task<(bool, List<UpdateModel>, List<UpdateModel>, List<UpdateModel>, List<UpdateModel>)> CheckUpdateAsync(bool isIncludePotentiallySupersededUpdate, string updateSource)
+        private async Task<(bool, ReadOnlyCollection<UpdateModel>, ReadOnlyCollection<UpdateModel>, ReadOnlyCollection<UpdateModel>, ReadOnlyCollection<UpdateModel>)> CheckUpdateAsync(bool isIncludePotentiallySupersededUpdate, string updateSource)
         {
             if (string.IsNullOrEmpty(updateSource))
             {
                 return default;
             }
 
-            return await Task.Run(() =>
+            return await Task.Run(async () =>
             {
                 bool result = false;
                 List<UpdateModel> availableUpdateList = [];
@@ -1476,67 +1477,70 @@ namespace PowerToolbox.Views.Pages
                         result = true;
                     }
 
-                    updateHistoryList.AddRange(GetUpdateHistoryList());
+                    updateHistoryList.AddRange(await GetUpdateHistoryCollectionAsync());
                 }
                 catch (Exception e)
                 {
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(CheckUpdateAsync), 1, e);
                 }
 
-                return (result, availableUpdateList, installedUpdateList, hiddenUpdateList, updateHistoryList);
+                return (result, availableUpdateList.AsReadOnly(), installedUpdateList.AsReadOnly(), hiddenUpdateList.AsReadOnly(), updateHistoryList.AsReadOnly());
             });
         }
 
         /// <summary>
         /// 获取历史更新记录
         /// </summary>
-        private List<UpdateModel> GetUpdateHistoryList()
+        private async Task<ReadOnlyCollection<UpdateModel>> GetUpdateHistoryCollectionAsync()
         {
-            List<UpdateModel> updateHistoryList = [];
-
-            try
+            return await Task.Run(() =>
             {
-                int updateHistoryCount = updateSearcher.GetTotalHistoryCount();
+                List<UpdateModel> updateHistoryList = [];
 
-                if (updateHistoryCount > 0)
+                try
                 {
-                    foreach (IUpdateHistoryEntry2 updateHistoryEntry in updateSearcher.QueryHistory(0, updateHistoryCount))
+                    int updateHistoryCount = updateSearcher.GetTotalHistoryCount();
+
+                    if (updateHistoryCount > 0)
                     {
-                        if (!string.IsNullOrEmpty(updateHistoryEntry.Title))
+                        foreach (IUpdateHistoryEntry2 updateHistoryEntry in updateSearcher.QueryHistory(0, updateHistoryCount))
                         {
-                            UpdateHistoryInformation updateHistoryInformation = new()
+                            if (!string.IsNullOrEmpty(updateHistoryEntry.Title))
                             {
-                                ClientApplicationID = updateHistoryEntry.ClientApplicationID,
-                                Date = updateHistoryEntry.Date,
-                                HResult = updateHistoryEntry.HResult,
-                                OperationResultCode = updateHistoryEntry.ResultCode,
-                                SupportUrl = updateHistoryEntry.SupportUrl,
-                                Title = updateHistoryEntry.Title,
-                                UpdateHistoryEntry = updateHistoryEntry,
-                                UpdateID = !string.IsNullOrEmpty(updateHistoryEntry.UpdateIdentity.UpdateID) ? Guid.NewGuid().ToString() : updateHistoryEntry.UpdateIdentity.UpdateID
-                            };
+                                UpdateHistoryInformation updateHistoryInformation = new()
+                                {
+                                    ClientApplicationID = updateHistoryEntry.ClientApplicationID,
+                                    Date = updateHistoryEntry.Date,
+                                    HResult = updateHistoryEntry.HResult,
+                                    OperationResultCode = updateHistoryEntry.ResultCode,
+                                    SupportUrl = updateHistoryEntry.SupportUrl,
+                                    Title = updateHistoryEntry.Title,
+                                    UpdateHistoryEntry = updateHistoryEntry,
+                                    UpdateID = !string.IsNullOrEmpty(updateHistoryEntry.UpdateIdentity.UpdateID) ? Guid.NewGuid().ToString() : updateHistoryEntry.UpdateIdentity.UpdateID
+                                };
 
-                            UpdateModel update = new()
-                            {
-                                UpdateHistoryInformation = updateHistoryInformation,
-                                Date = updateHistoryInformation.Date.ToString("yyyy/MM/dd"),
-                                HistoryUpdateResult = GetUpdateResult(updateHistoryInformation.OperationResultCode, updateHistoryInformation.Date, updateHistoryInformation.HResult),
-                                SupportURL = updateHistoryInformation.SupportUrl,
-                                Title = updateHistoryInformation.Title,
-                                UpdateID = updateHistoryInformation.UpdateID
-                            };
+                                UpdateModel update = new()
+                                {
+                                    UpdateHistoryInformation = updateHistoryInformation,
+                                    Date = updateHistoryInformation.Date.ToString("yyyy/MM/dd"),
+                                    HistoryUpdateResult = GetUpdateResult(updateHistoryInformation.OperationResultCode, updateHistoryInformation.Date, updateHistoryInformation.HResult),
+                                    SupportURL = updateHistoryInformation.SupportUrl,
+                                    Title = updateHistoryInformation.Title,
+                                    UpdateID = updateHistoryInformation.UpdateID
+                                };
 
-                            updateHistoryList.Add(update);
+                                updateHistoryList.Add(update);
+                            }
                         }
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(GetUpdateHistoryList), 1, e);
-            }
+                catch (Exception e)
+                {
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(GetUpdateHistoryCollectionAsync), 1, e);
+                }
 
-            return updateHistoryList;
+                return updateHistoryList.AsReadOnly();
+            });
         }
 
         /// <summary>

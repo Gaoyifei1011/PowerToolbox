@@ -201,8 +201,8 @@ namespace PowerToolbox.Views.Pages
 
             if (MainWindow.Current.GetFrameContent() is ShellMenuPage shellMenuPage)
             {
-                shellMenuPage.NavigateTo(shellMenuPage.PageList[1], new List<object>
-                {
+                shellMenuPage.NavigateTo(shellMenuPage.PageCollection[1], new ReadOnlyCollection<object>(
+                [
                     ShellEditKind.AddMenu,
                     new ShellMenuItem()
                     {
@@ -210,7 +210,7 @@ namespace PowerToolbox.Views.Pages
                         MenuKey = menuKey,
                         MenuIndex = menuIndex
                     }
-                }, true);
+                ]), true);
             }
         }
 
@@ -308,8 +308,8 @@ namespace PowerToolbox.Views.Pages
 
             if (MainWindow.Current.GetFrameContent() is ShellMenuPage shellMenuPage)
             {
-                shellMenuPage.NavigateTo(shellMenuPage.PageList[1], new List<object>
-                {
+                shellMenuPage.NavigateTo(shellMenuPage.PageCollection[1], new ReadOnlyCollection<object>(
+                [
                     ShellEditKind.EditMenu,
                     new ShellMenuItem()
                     {
@@ -333,7 +333,7 @@ namespace PowerToolbox.Views.Pages
                         MenuFileMatchFormatText = SelectedItem.MenuFileMatchFormatText,
                         MenuIndex = SelectedItem.MenuIndex,
                     }
-                }, true);
+                ]), true);
             }
         }
 
@@ -483,7 +483,7 @@ namespace PowerToolbox.Views.Pages
             }
 
             // 递归遍历子项
-            foreach (ShellMenuItem subMenuItem in menuItem.SubShellMenuItem)
+            foreach (ShellMenuItem subMenuItem in menuItem.SubShellMenuItemList)
             {
                 if (menuType is MenuType.FirstLevelMenu)
                 {

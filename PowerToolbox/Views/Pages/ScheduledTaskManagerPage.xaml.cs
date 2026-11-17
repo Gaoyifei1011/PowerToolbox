@@ -14,6 +14,7 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -140,10 +141,10 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask.RegisteredTask is not null)
             {
-                List<ScheduledTaskModel> scheduledTaskList = [scheduledTask];
-                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind.Disable, scheduledTaskList);
-                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Disable, scheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
-                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Disable, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
+                ReadOnlyCollection<ScheduledTaskModel> scheduledTaskCollection = new([scheduledTask]);
+                (ReadOnlyCollection<ScheduledTaskModel> successfullyScheduledTaskCollection, ReadOnlyCollection<(ScheduledTaskModel, Exception)> failedScheduledTaskCollection) = await SetTaskSchedulerCollectionStateAsync(ScheduledTaskOperationKind.Disable, scheduledTaskCollection);
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Disable, scheduledTaskCollection, successfullyScheduledTaskCollection, failedScheduledTaskCollection);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Disable, successfullyScheduledTaskCollection.Count, failedScheduledTaskCollection.Count);
             }
         }
 
@@ -154,10 +155,10 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask.RegisteredTask is not null)
             {
-                List<ScheduledTaskModel> scheduledTaskList = [scheduledTask];
-                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind.Enable, scheduledTaskList);
-                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Enable, scheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
-                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Enable, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
+                ReadOnlyCollection<ScheduledTaskModel> scheduledTaskCollection = new([scheduledTask]);
+                (ReadOnlyCollection<ScheduledTaskModel> successfullyScheduledTaskCollection, ReadOnlyCollection<(ScheduledTaskModel, Exception)> failedScheduledTaskCollection) = await SetTaskSchedulerCollectionStateAsync(ScheduledTaskOperationKind.Enable, scheduledTaskCollection);
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Enable, scheduledTaskCollection, successfullyScheduledTaskCollection, failedScheduledTaskCollection);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Enable, successfullyScheduledTaskCollection.Count, failedScheduledTaskCollection.Count);
             }
         }
 
@@ -168,10 +169,10 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask.RegisteredTask is not null)
             {
-                List<ScheduledTaskModel> scheduledTaskList = [scheduledTask];
-                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind.Run, scheduledTaskList);
-                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Run, scheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
-                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Run, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
+                ReadOnlyCollection<ScheduledTaskModel> scheduledTaskCollection = new([scheduledTask]);
+                (ReadOnlyCollection<ScheduledTaskModel> successfullyScheduledTaskCollection, ReadOnlyCollection<(ScheduledTaskModel, Exception)> failedScheduledTaskCollection) = await SetTaskSchedulerCollectionStateAsync(ScheduledTaskOperationKind.Run, scheduledTaskCollection);
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Run, scheduledTaskCollection, successfullyScheduledTaskCollection, failedScheduledTaskCollection);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Run, successfullyScheduledTaskCollection.Count, failedScheduledTaskCollection.Count);
             }
         }
 
@@ -182,10 +183,10 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask.RegisteredTask is not null)
             {
-                List<ScheduledTaskModel> scheduledTaskList = [scheduledTask];
-                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind.Stop, scheduledTaskList);
-                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Stop, scheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
-                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Stop, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
+                ReadOnlyCollection<ScheduledTaskModel> scheduledTaskCollection = new([scheduledTask]);
+                (ReadOnlyCollection<ScheduledTaskModel> successfullyScheduledTaskCollection, ReadOnlyCollection<(ScheduledTaskModel, Exception)> failedScheduledTaskCollection) = await SetTaskSchedulerCollectionStateAsync(ScheduledTaskOperationKind.Stop, scheduledTaskCollection);
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Stop, scheduledTaskCollection, successfullyScheduledTaskCollection, failedScheduledTaskCollection);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Stop, successfullyScheduledTaskCollection.Count, failedScheduledTaskCollection.Count);
             }
         }
 
@@ -204,10 +205,10 @@ namespace PowerToolbox.Views.Pages
                 DialogResult dialogResult = openFolderDialog.ShowDialog();
                 if (dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes)
                 {
-                    List<ScheduledTaskModel> scheduledTaskList = [scheduledTask];
-                    (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await ExportScheduledTaskListAsync(openFolderDialog.SelectedPath, scheduledTaskList);
-                    await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Export, scheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
-                    await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Export, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
+                    ReadOnlyCollection<ScheduledTaskModel> scheduledTaskCollection = new([scheduledTask]);
+                    (ReadOnlyCollection<ScheduledTaskModel> successfullyScheduledTaskCollection, ReadOnlyCollection<(ScheduledTaskModel, Exception)> failedScheduledTaskCollection) = await ExportScheduledTaskCollectionAsync(openFolderDialog.SelectedPath, scheduledTaskCollection);
+                    await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Export, scheduledTaskCollection, successfullyScheduledTaskCollection, failedScheduledTaskCollection);
+                    await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Export, successfullyScheduledTaskCollection.Count, failedScheduledTaskCollection.Count);
                 }
                 openFolderDialog.Dispose();
             }
@@ -220,10 +221,10 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is ScheduledTaskModel scheduledTask && scheduledTask.RegisteredTask is not null)
             {
-                List<ScheduledTaskModel> scheduledTaskList = [scheduledTask];
-                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await DeleteScheduledTaskListAsync(scheduledTaskList);
-                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Delete, scheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
-                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Delete, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
+                ReadOnlyCollection<ScheduledTaskModel> scheduledTaskCollection = new([scheduledTask]);
+                (ReadOnlyCollection<ScheduledTaskModel> successfullyScheduledTaskCollection, ReadOnlyCollection<(ScheduledTaskModel, Exception)> failedScheduledTaskCollection) = await DeleteScheduledTaskCollectionAsync(scheduledTaskCollection);
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Delete, scheduledTaskCollection, successfullyScheduledTaskCollection, failedScheduledTaskCollection);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Delete, successfullyScheduledTaskCollection.Count, failedScheduledTaskCollection.Count);
             }
         }
 
@@ -292,7 +293,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (ScheduledTaskResultKind is not ScheduledTaskResultKind.Loading)
             {
-                List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. ScheduledTaskManagerListView.SelectedRanges];
+                ReadOnlyCollection<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = new([.. ScheduledTaskManagerListView.SelectedRanges]);
                 ScheduledTaskManagerListView.SelectAll();
                 foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
                 {
@@ -326,9 +327,9 @@ namespace PowerToolbox.Views.Pages
 
             if (selectedScheduledTaskList.Count > 0)
             {
-                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind.Run, selectedScheduledTaskList);
-                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Run, selectedScheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
-                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Run, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
+                (ReadOnlyCollection<ScheduledTaskModel> successfullyScheduledTaskCollection, ReadOnlyCollection<(ScheduledTaskModel, Exception)> failedScheduledTaskCollection) = await SetTaskSchedulerCollectionStateAsync(ScheduledTaskOperationKind.Run, selectedScheduledTaskList.AsReadOnly());
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Run, selectedScheduledTaskList.AsReadOnly(), successfullyScheduledTaskCollection, failedScheduledTaskCollection);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Run, successfullyScheduledTaskCollection.Count, failedScheduledTaskCollection.Count);
             }
         }
 
@@ -348,9 +349,9 @@ namespace PowerToolbox.Views.Pages
 
             if (selectedScheduledTaskList.Count > 0)
             {
-                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind.Stop, selectedScheduledTaskList);
-                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Stop, selectedScheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
-                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Stop, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
+                (ReadOnlyCollection<ScheduledTaskModel> successfullyScheduledTaskCollection, ReadOnlyCollection<(ScheduledTaskModel, Exception)> failedScheduledTaskCollection) = await SetTaskSchedulerCollectionStateAsync(ScheduledTaskOperationKind.Stop, selectedScheduledTaskList.AsReadOnly());
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Stop, selectedScheduledTaskList.AsReadOnly(), successfullyScheduledTaskCollection, failedScheduledTaskCollection);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Stop, successfullyScheduledTaskCollection.Count, failedScheduledTaskCollection.Count);
             }
         }
 
@@ -378,9 +379,9 @@ namespace PowerToolbox.Views.Pages
                 DialogResult dialogResult = openFolderDialog.ShowDialog();
                 if (dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes)
                 {
-                    (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await ExportScheduledTaskListAsync(openFolderDialog.SelectedPath, selectedScheduledTaskList);
-                    await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Export, selectedScheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
-                    await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Export, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
+                    (ReadOnlyCollection<ScheduledTaskModel> successfullyScheduledTaskCollection, ReadOnlyCollection<(ScheduledTaskModel, Exception)> failedScheduledTaskCollection) = await ExportScheduledTaskCollectionAsync(openFolderDialog.SelectedPath, selectedScheduledTaskList.AsReadOnly());
+                    await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Export, selectedScheduledTaskList.AsReadOnly(), successfullyScheduledTaskCollection, failedScheduledTaskCollection);
+                    await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Export, successfullyScheduledTaskCollection.Count, failedScheduledTaskCollection.Count);
                 }
                 openFolderDialog.Dispose();
             }
@@ -402,9 +403,9 @@ namespace PowerToolbox.Views.Pages
 
             if (selectedScheduledTaskList.Count > 0)
             {
-                (List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList) = await DeleteScheduledTaskListAsync(selectedScheduledTaskList);
-                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Delete, selectedScheduledTaskList, successfullyScheduledTaskList, failedScheduledTaskList);
-                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Delete, successfullyScheduledTaskList.Count, failedScheduledTaskList.Count);
+                (ReadOnlyCollection<ScheduledTaskModel> successfullyScheduledTaskCollection, ReadOnlyCollection<(ScheduledTaskModel, Exception)> failedScheduledTaskCollection) = await DeleteScheduledTaskCollectionAsync(selectedScheduledTaskList.AsReadOnly());
+                await UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind.Delete, selectedScheduledTaskList.AsReadOnly(), successfullyScheduledTaskCollection, failedScheduledTaskCollection);
+                await ShowTaskSchedulerOperationResultNotificationAsync(ScheduledTaskOperationKind.Delete, successfullyScheduledTaskCollection.Count, failedScheduledTaskCollection.Count);
             }
         }
 
@@ -487,9 +488,9 @@ namespace PowerToolbox.Views.Pages
             {
                 ScheduledTaskResultKind = ScheduledTaskResultKind.Loading;
                 ScheduledTaskCollection.Clear();
-                List<ScheduledTaskModel> scheduledTaskList = await GetScheduledTaskInfoListAsync();
+                ReadOnlyCollection<ScheduledTaskModel> scheduledTaskCollection = await GetScheduledTaskInfoCollectionAsync();
 
-                if (scheduledTaskList.Count is 0)
+                if (scheduledTaskCollection.Count is 0)
                 {
                     ScheduledTaskResultKind = ScheduledTaskResultKind.Failed;
                     ScheduledTaskFailedContent = ScheduledTaskEmptyDescriptionString;
@@ -497,7 +498,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 else
                 {
-                    foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskList)
+                    foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskCollection)
                     {
                         scheduledTaskItem.TaskIcon = await GetScheduledTaskProgramThumbnailImageAsync(scheduledTaskItem.ProcessPath);
                         ScheduledTaskCollection.Add(scheduledTaskItem);
@@ -513,7 +514,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取计划任务信息
         /// </summary>
-        private async Task<List<ScheduledTaskModel>> GetScheduledTaskInfoListAsync()
+        private async Task<ReadOnlyCollection<ScheduledTaskModel>> GetScheduledTaskInfoCollectionAsync()
         {
             return await Task.Factory.StartNew((param) =>
             {
@@ -529,20 +530,20 @@ namespace PowerToolbox.Views.Pages
                     ITaskFolder rootFolder = taskService.GetFolder("\\");
                     List<ITaskFolder> taskFolderList = [];
                     taskFolderList.Add(rootFolder);
-                    taskFolderList.AddRange(GetSubTaskFolder(rootFolder));
+                    taskFolderList.AddRange(GetSubTaskFolderCollection(rootFolder));
 
-                    List<(ITaskFolder, List<IRegisteredTask>)> registeredTaskDict = [];
+                    List<(ITaskFolder, ReadOnlyCollection<IRegisteredTask>)> registeredTaskDict = [];
                     foreach (ITaskFolder taskFolder in taskFolderList)
                     {
-                        List<IRegisteredTask> registeredTaskList = GetRegisteredTask(taskFolder);
-                        if (registeredTaskList.Count > 0)
+                        ReadOnlyCollection<IRegisteredTask> registeredTaskCollection = GetRegisteredTaskCollection(taskFolder);
+                        if (registeredTaskCollection.Count > 0)
                         {
-                            registeredTaskDict.Add(ValueTuple.Create(taskFolder, registeredTaskList));
+                            registeredTaskDict.Add(ValueTuple.Create(taskFolder, registeredTaskCollection));
                         }
                     }
-                    foreach ((ITaskFolder taskFolder, List<IRegisteredTask> registeredTaskList) in registeredTaskDict)
+                    foreach ((ITaskFolder taskFolder, ReadOnlyCollection<IRegisteredTask> registeredTaskCollection) in registeredTaskDict)
                     {
-                        foreach (IRegisteredTask registeredTask in registeredTaskList)
+                        foreach (IRegisteredTask registeredTask in registeredTaskCollection)
                         {
                             if (GetScheduledTask(registeredTask, taskFolder) is ScheduledTaskModel scheduledTask)
                             {
@@ -553,11 +554,11 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskInfoListAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTaskInfoCollectionAsync), 1, e);
                 }
 
                 scheduledTaskList.Sort((item1, item2) => item1.Name.CompareTo(item2.Name));
-                return scheduledTaskList;
+                return scheduledTaskList.AsReadOnly();
             }, null, CancellationToken.None, TaskCreationOptions.DenyChildAttach, System.Threading.Tasks.TaskScheduler.Default);
         }
 
@@ -631,7 +632,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取当前任务文件夹的所有子文件夹
         /// </summary>
-        private List<ITaskFolder> GetSubTaskFolder(ITaskFolder rootFolder)
+        private ReadOnlyCollection<ITaskFolder> GetSubTaskFolderCollection(ITaskFolder rootFolder)
         {
             List<ITaskFolder> subTaskFolderList = [];
 
@@ -648,21 +649,21 @@ namespace PowerToolbox.Views.Pages
                     }
 
                     subTaskFolderList.Add(subFolder);
-                    subTaskFolderList.AddRange(GetSubTaskFolder(subFolder));
+                    subTaskFolderList.AddRange(GetSubTaskFolderCollection(subFolder));
                 }
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetSubTaskFolder), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetSubTaskFolderCollection), 1, e);
             }
 
-            return subTaskFolderList;
+            return subTaskFolderList.AsReadOnly();
         }
 
         /// <summary>
         /// 获取当前任务文件夹的所有计划任务
         /// </summary>
-        private List<IRegisteredTask> GetRegisteredTask(ITaskFolder taskFolder)
+        private ReadOnlyCollection<IRegisteredTask> GetRegisteredTaskCollection(ITaskFolder taskFolder)
         {
             List<IRegisteredTask> registeredTaskList = [];
 
@@ -677,10 +678,10 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetRegisteredTask), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetRegisteredTaskCollection), 1, e);
             }
 
-            return registeredTaskList;
+            return registeredTaskList.AsReadOnly();
         }
 
         /// <summary>
@@ -773,21 +774,21 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 更新计划任务的状态
         /// </summary>
-        private async Task<(List<ScheduledTaskModel>, List<(ScheduledTaskModel, Exception)>)> SetTaskSchedulerListStateAsync(ScheduledTaskOperationKind schedulerTaskOperationKind, List<ScheduledTaskModel> scheduledTaskList)
+        private async Task<(ReadOnlyCollection<ScheduledTaskModel>, ReadOnlyCollection<(ScheduledTaskModel, Exception)>)> SetTaskSchedulerCollectionStateAsync(ScheduledTaskOperationKind schedulerTaskOperationKind, ReadOnlyCollection<ScheduledTaskModel> scheduledTaskCollection)
         {
-            if (scheduledTaskList is null || scheduledTaskList.Count is 0)
+            if (scheduledTaskCollection is null || scheduledTaskCollection.Count is 0)
             {
-                return ValueTuple.Create<List<ScheduledTaskModel>, List<(ScheduledTaskModel, Exception)>>([], []);
+                return ValueTuple.Create<ReadOnlyCollection<ScheduledTaskModel>, ReadOnlyCollection<(ScheduledTaskModel, Exception)>>(new([]), new([]));
             }
 
-            foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskList)
+            foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskCollection)
             {
                 scheduledTaskItem.IsProcessing = true;
             }
 
             List<ScheduledTaskModel> successfullyScheduledTaskList = [];
             List<(ScheduledTaskModel, Exception)> failedScheduledTaskList = [];
-            foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskList)
+            foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskCollection)
             {
                 (bool result, Exception exception) = await SetScheduledTaskStateAsync(schedulerTaskOperationKind, scheduledTaskItem.RegisteredTask);
                 scheduledTaskItem.IsProcessing = false;
@@ -800,7 +801,7 @@ namespace PowerToolbox.Views.Pages
                     failedScheduledTaskList.Add(ValueTuple.Create(scheduledTaskItem, exception is null ? new Exception() : exception));
                 }
             }
-            return ValueTuple.Create(successfullyScheduledTaskList, failedScheduledTaskList);
+            return ValueTuple.Create(successfullyScheduledTaskList.AsReadOnly(), failedScheduledTaskList.AsReadOnly());
         }
 
         /// <summary>
@@ -852,16 +853,16 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 导出计划任务
         /// </summary>
-        private async Task<(List<ScheduledTaskModel>, List<(ScheduledTaskModel, Exception)>)> ExportScheduledTaskListAsync(string folderPath, List<ScheduledTaskModel> scheduledTaskList)
+        private async Task<(ReadOnlyCollection<ScheduledTaskModel>, ReadOnlyCollection<(ScheduledTaskModel, Exception)>)> ExportScheduledTaskCollectionAsync(string folderPath, ReadOnlyCollection<ScheduledTaskModel> scheduledTaskCollection)
         {
-            if (string.IsNullOrEmpty(folderPath) || scheduledTaskList is null || scheduledTaskList.Count is 0)
+            if (string.IsNullOrEmpty(folderPath) || scheduledTaskCollection is null || scheduledTaskCollection.Count is 0)
             {
-                return ValueTuple.Create<List<ScheduledTaskModel>, List<(ScheduledTaskModel, Exception)>>([], []);
+                return ValueTuple.Create<ReadOnlyCollection<ScheduledTaskModel>, ReadOnlyCollection<(ScheduledTaskModel, Exception)>>(new([]), new([]));
             }
 
             List<ScheduledTaskModel> successfullyScheduledTaskList = [];
             List<(ScheduledTaskModel, Exception)> failedScheduledTaskList = [];
-            foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskList)
+            foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskCollection)
             {
                 (bool result, Exception exception) = await ExportScheduledTaskAsync(folderPath, scheduledTaskItem.RegisteredTask);
                 if (result)
@@ -873,7 +874,7 @@ namespace PowerToolbox.Views.Pages
                     failedScheduledTaskList.Add(ValueTuple.Create(scheduledTaskItem, exception is null ? new Exception() : exception));
                 }
             }
-            return ValueTuple.Create(successfullyScheduledTaskList, failedScheduledTaskList);
+            return ValueTuple.Create(successfullyScheduledTaskList.AsReadOnly(), failedScheduledTaskList.AsReadOnly());
         }
 
         /// <summary>
@@ -904,16 +905,16 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 删除计划任务
         /// </summary>
-        private async Task<(List<ScheduledTaskModel>, List<(ScheduledTaskModel, Exception)>)> DeleteScheduledTaskListAsync(List<ScheduledTaskModel> scheduledTaskList)
+        private async Task<(ReadOnlyCollection<ScheduledTaskModel>, ReadOnlyCollection<(ScheduledTaskModel, Exception)>)> DeleteScheduledTaskCollectionAsync(ReadOnlyCollection<ScheduledTaskModel> scheduledTaskCollection)
         {
-            if (scheduledTaskList is null || scheduledTaskList.Count is 0)
+            if (scheduledTaskCollection is null || scheduledTaskCollection.Count is 0)
             {
-                return ValueTuple.Create<List<ScheduledTaskModel>, List<(ScheduledTaskModel, Exception)>>([], []);
+                return ValueTuple.Create<ReadOnlyCollection<ScheduledTaskModel>, ReadOnlyCollection<(ScheduledTaskModel, Exception)>>(new([]), new([]));
             }
 
             List<ScheduledTaskModel> successfullyScheduledTaskList = [];
             List<(ScheduledTaskModel, Exception)> failedScheduledTaskList = [];
-            foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskList)
+            foreach (ScheduledTaskModel scheduledTaskItem in scheduledTaskCollection)
             {
                 (bool result, Exception exception) = await DeleteScheduledTaskAsync(scheduledTaskItem.TaskFolder, scheduledTaskItem.RegisteredTask.Name);
                 if (result)
@@ -925,7 +926,7 @@ namespace PowerToolbox.Views.Pages
                     failedScheduledTaskList.Add(ValueTuple.Create(scheduledTaskItem, exception is null ? new Exception() : exception));
                 }
             }
-            return ValueTuple.Create(successfullyScheduledTaskList, failedScheduledTaskList);
+            return ValueTuple.Create(successfullyScheduledTaskList.AsReadOnly(), failedScheduledTaskList.AsReadOnly());
         }
 
         /// <summary>
@@ -956,18 +957,18 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 更新计划任务状态
         /// </summary>
-        private async Task UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind scheduledTaskOperationKind, List<ScheduledTaskModel> scheduledTaskList, List<ScheduledTaskModel> successfullyScheduledTaskList, List<(ScheduledTaskModel, Exception)> failedScheduledTaskList)
+        private async Task UpdateTaskSchedulerStateAsync(ScheduledTaskOperationKind scheduledTaskOperationKind, ReadOnlyCollection<ScheduledTaskModel> scheduledTaskCollection, ReadOnlyCollection<ScheduledTaskModel> successfullyScheduledTaskCollection, ReadOnlyCollection<(ScheduledTaskModel, Exception)> failedScheduledTaskCollection)
         {
-            if (scheduledTaskList is null || scheduledTaskList.Count is 0 || successfullyScheduledTaskList is null || failedScheduledTaskList is null)
+            if (scheduledTaskCollection is null || scheduledTaskCollection.Count is 0 || successfullyScheduledTaskCollection is null || failedScheduledTaskCollection is null)
             {
                 return;
             }
 
-            if (successfullyScheduledTaskList.Count > 0)
+            if (successfullyScheduledTaskCollection.Count > 0)
             {
                 if (scheduledTaskOperationKind is ScheduledTaskOperationKind.Disable || scheduledTaskOperationKind is ScheduledTaskOperationKind.Enable || scheduledTaskOperationKind is ScheduledTaskOperationKind.Stop || scheduledTaskOperationKind is ScheduledTaskOperationKind.Run)
                 {
-                    foreach (ScheduledTaskModel scheduledTask in successfullyScheduledTaskList)
+                    foreach (ScheduledTaskModel scheduledTask in successfullyScheduledTaskCollection)
                     {
                         (bool result, ScheduledTaskModel updatedScheduledTask) = await GetTaskSchedulerStateAsync(scheduledTask.RegisteredTask);
                         if (result)
@@ -983,7 +984,7 @@ namespace PowerToolbox.Views.Pages
 
                 if (scheduledTaskOperationKind is ScheduledTaskOperationKind.Delete)
                 {
-                    foreach (ScheduledTaskModel scheduledTask in successfullyScheduledTaskList)
+                    foreach (ScheduledTaskModel scheduledTask in successfullyScheduledTaskCollection)
                     {
                         ScheduledTaskCollection.Remove(scheduledTask);
                     }
@@ -992,9 +993,9 @@ namespace PowerToolbox.Views.Pages
             }
 
             ScheduledTaskFailedCollection.Clear();
-            if (failedScheduledTaskList.Count > 0)
+            if (failedScheduledTaskCollection.Count > 0)
             {
-                foreach ((ScheduledTaskModel failedScheduledTask, Exception exception) in failedScheduledTaskList)
+                foreach ((ScheduledTaskModel failedScheduledTask, Exception exception) in failedScheduledTaskCollection)
                 {
                     ScheduledTaskFailedCollection.Add(new()
                     {

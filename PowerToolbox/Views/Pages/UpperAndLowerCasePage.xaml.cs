@@ -12,6 +12,7 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -151,9 +152,9 @@ namespace PowerToolbox.Views.Pages
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
             try
             {
-                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count > 0 && await GetNeedConvertFileListAsync(fileList) is List<OldAndNewNameModel> upperAndLowerCaseList && upperAndLowerCaseList.Count > 0)
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count > 0 && await GetNeedConvertFileCollectionAsync(fileCollection) is ReadOnlyCollection<OldAndNewNameModel> upperAndLowerCaseCollection && upperAndLowerCaseCollection.Count > 0)
                 {
-                    AddToUpperAndLowerCasePage(upperAndLowerCaseList);
+                    AddToUpperAndLowerCasePage(upperAndLowerCaseCollection);
                     IsOperationFailed = false;
                     OperationFailedList.Clear();
                 }
@@ -312,10 +313,10 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
-                List<OldAndNewNameModel> upperAndLowerCaseList = await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]);
-                if (upperAndLowerCaseList is not null && upperAndLowerCaseList.Count > 0)
+                ReadOnlyCollection<OldAndNewNameModel> upperAndLowerCaseCollection = await GetNeedConvertFileCollectionAsync(new(openFileDialog.FileNames));
+                if (upperAndLowerCaseCollection is not null && upperAndLowerCaseCollection.Count > 0)
                 {
-                    AddToUpperAndLowerCasePage(upperAndLowerCaseList);
+                    AddToUpperAndLowerCasePage(upperAndLowerCaseCollection);
                 }
             }
             openFileDialog.Dispose();
@@ -338,16 +339,16 @@ namespace PowerToolbox.Views.Pages
                 OperationFailedList.Clear();
                 if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath))
                 {
-                    (List<OldAndNewNameModel> directoryNameList, List<OldAndNewNameModel> fileNameList) = await GetFileAndDirectoryAsync(openFolderDialog.SelectedPath);
+                    (ReadOnlyCollection<OldAndNewNameModel> directoryNameCollection, ReadOnlyCollection<OldAndNewNameModel> fileNameCollection) = await GetFileAndDirectoryAsync(openFolderDialog.SelectedPath);
 
-                    if (directoryNameList is not null && directoryNameList.Count > 0)
+                    if (directoryNameCollection is not null && directoryNameCollection.Count > 0)
                     {
-                        AddToUpperAndLowerCasePage(directoryNameList);
+                        AddToUpperAndLowerCasePage(directoryNameCollection);
                     }
 
-                    if (fileNameList is not null && fileNameList.Count > 0)
+                    if (fileNameCollection is not null && fileNameCollection.Count > 0)
                     {
-                        AddToUpperAndLowerCasePage(fileNameList);
+                        AddToUpperAndLowerCasePage(fileNameCollection);
                     }
                 }
             }
@@ -359,7 +360,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnViewErrorInformationClicked(object sender, RoutedEventArgs args)
         {
-            await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList));
+            await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList.AsReadOnly()));
         }
 
         #endregion 第六部分：挂载事件处理
@@ -385,16 +386,16 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 添加到大写小写页面
         /// </summary>
-        internal void AddToUpperAndLowerCasePage(List<OldAndNewNameModel> upperAndLowerCaseList)
+        internal void AddToUpperAndLowerCasePage(ReadOnlyCollection<OldAndNewNameModel> upperAndLowerCaseCollection)
         {
-            if (upperAndLowerCaseList is null || upperAndLowerCaseList.Count is 0)
+            if (upperAndLowerCaseCollection is null || upperAndLowerCaseCollection.Count is 0)
             {
                 return;
             }
 
             lock (upperAndLowerCaseLock)
             {
-                foreach (OldAndNewNameModel oldAndNewNameItem in upperAndLowerCaseList)
+                foreach (OldAndNewNameModel oldAndNewNameItem in upperAndLowerCaseCollection)
                 {
                     UpperAndLowerCaseCollection.Add(oldAndNewNameItem);
                 }
@@ -587,7 +588,7 @@ namespace PowerToolbox.Views.Pages
                     oldAndNewName.IsModifyingNow = true;
                 }
             }
-            List<OperationFailedModel> operationFailedList = await GetOperationFailedListAsync();
+            ReadOnlyCollection<OperationFailedModel> operationFailedCollection = await GetOperationFailedCollectionAsync();
 
             IsModifyingNow = false;
             lock (upperAndLowerCaseLock)
@@ -597,9 +598,9 @@ namespace PowerToolbox.Views.Pages
                     oldAndNewName.IsModifyingNow = false;
                 }
             }
-            if (operationFailedList is not null && operationFailedList.Count > 0)
+            if (operationFailedCollection is not null && operationFailedCollection.Count > 0)
             {
-                foreach (OperationFailedModel operationFailedItem in operationFailedList)
+                foreach (OperationFailedModel operationFailedItem in operationFailedCollection)
                 {
                     OperationFailedList.Add(operationFailedItem);
                 }
@@ -619,7 +620,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取拖拽支持选中的文件
         /// </summary>
-        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        private async Task<ReadOnlyCollection<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
         {
             if (dataPackageView is null)
             {
@@ -645,16 +646,16 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetDragDropSelectedFilesAsync), 1, e);
                 }
 
-                return fileList;
+                return fileList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取要待转换的文件列表
         /// </summary>
-        private async Task<List<OldAndNewNameModel>> GetNeedConvertFileListAsync(List<string> fileList)
+        private async Task<ReadOnlyCollection<OldAndNewNameModel>> GetNeedConvertFileCollectionAsync(ReadOnlyCollection<string> fileCollection)
         {
-            if (fileList is null || fileList.Count is 0)
+            if (fileCollection is null || fileCollection.Count is 0)
             {
                 return default;
             }
@@ -663,7 +664,7 @@ namespace PowerToolbox.Views.Pages
              {
                  List<OldAndNewNameModel> upperAndLowerCaseList = [];
 
-                 foreach (string file in fileList)
+                 foreach (string file in fileCollection)
                  {
                      try
                      {
@@ -681,23 +682,22 @@ namespace PowerToolbox.Views.Pages
                      }
                      catch (Exception e)
                      {
-                         LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetNeedConvertFileListAsync), 1, e);
+                         LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetNeedConvertFileCollectionAsync), 1, e);
                          continue;
                      }
                  }
-
-                 return upperAndLowerCaseList;
+                 return upperAndLowerCaseList.AsReadOnly();
              });
         }
 
         /// <summary>
         /// 获取文件夹的所有子文件夹和所有文件
         /// </summary>
-        private async Task<(List<OldAndNewNameModel>, List<OldAndNewNameModel>)> GetFileAndDirectoryAsync(string folderPath)
+        private async Task<(ReadOnlyCollection<OldAndNewNameModel>, ReadOnlyCollection<OldAndNewNameModel>)> GetFileAndDirectoryAsync(string folderPath)
         {
             if (string.IsNullOrEmpty(folderPath))
             {
-                return ValueTuple.Create<List<OldAndNewNameModel>, List<OldAndNewNameModel>>([], []);
+                return ValueTuple.Create<ReadOnlyCollection<OldAndNewNameModel>, ReadOnlyCollection<OldAndNewNameModel>>(new([]), new([]));
             }
 
             return await Task.Run(() =>
@@ -747,14 +747,14 @@ namespace PowerToolbox.Views.Pages
                 {
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpperAndLowerCasePage), nameof(GetFileAndDirectoryAsync), 2, e);
                 }
-                return ValueTuple.Create(directoryNameList, fileNameList);
+                return ValueTuple.Create(directoryNameList.AsReadOnly(), fileNameList.AsReadOnly());
             });
         }
 
         /// <summary>
         /// 获取失败操作列表
         /// </summary>
-        private async Task<List<OperationFailedModel>> GetOperationFailedListAsync()
+        private async Task<ReadOnlyCollection<OperationFailedModel>> GetOperationFailedCollectionAsync()
         {
             return await Task.Run(() =>
             {
@@ -801,7 +801,7 @@ namespace PowerToolbox.Views.Pages
                         }
                     }
                 }
-                return operationFailedList;
+                return operationFailedList.AsReadOnly();
             });
         }
 

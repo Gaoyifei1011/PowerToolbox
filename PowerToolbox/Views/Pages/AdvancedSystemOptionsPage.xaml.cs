@@ -6,6 +6,7 @@ using PowerToolbox.Services.Root;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -103,7 +104,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        internal List<Type> PageList { get; } = [typeof(AdvancedSystemOptionsListPage), typeof(AdvancedSystemOptionsPersonalizationPage), typeof(AdvancedSystemOptionsSystemPage)];
+        internal ReadOnlyCollection<Type> PageCollection { get; } = new([typeof(AdvancedSystemOptionsListPage), typeof(AdvancedSystemOptionsPersonalizationPage), typeof(AdvancedSystemOptionsSystemPage)]);
 
         internal WinRTObservableCollection<DictionaryEntry> BreadcrumbBarCollection { get; } = [];
 
@@ -134,7 +135,7 @@ namespace PowerToolbox.Views.Pages
             // 第一次导航
             if (GetCurrentPageType() is null)
             {
-                NavigateTo(PageList[0], this, null);
+                NavigateTo(PageCollection[0], this, null);
             }
         }
 
@@ -149,7 +150,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Item is DictionaryEntry bread && BreadcrumbBarCollection.Count is 2 && Equals(bread.Key, BreadcrumbBarCollection[0].Key))
             {
-                NavigateTo(PageList[0], this, false);
+                NavigateTo(PageCollection[0], this, false);
             }
         }
 
@@ -158,7 +159,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnNavigated(object sender, NavigationEventArgs args)
         {
-            if (BreadcrumbBarCollection.Count is 0 && Equals(GetCurrentPageType(), PageList[0]))
+            if (BreadcrumbBarCollection.Count is 0 && Equals(GetCurrentPageType(), PageCollection[0]))
             {
                 BreadcrumbBarCollection.Add(new()
                 {
@@ -166,7 +167,7 @@ namespace PowerToolbox.Views.Pages
                     Value = AdvancedSystemOptionsString
                 });
             }
-            else if (BreadcrumbBarCollection.Count is 1 && Equals(GetCurrentPageType(), PageList[1]))
+            else if (BreadcrumbBarCollection.Count is 1 && Equals(GetCurrentPageType(), PageCollection[1]))
             {
                 BreadcrumbBarCollection.Add(new()
                 {
@@ -174,7 +175,7 @@ namespace PowerToolbox.Views.Pages
                     Value = PersonalizationString
                 });
             }
-            else if (BreadcrumbBarCollection.Count is 1 && Equals(GetCurrentPageType(), PageList[2]))
+            else if (BreadcrumbBarCollection.Count is 1 && Equals(GetCurrentPageType(), PageCollection[2]))
             {
                 BreadcrumbBarCollection.Add(new()
                 {
@@ -182,7 +183,7 @@ namespace PowerToolbox.Views.Pages
                     Value = SystemString
                 });
             }
-            else if (BreadcrumbBarCollection.Count is 2 && Equals(GetCurrentPageType(), PageList[0]))
+            else if (BreadcrumbBarCollection.Count is 2 && Equals(GetCurrentPageType(), PageCollection[0]))
             {
                 BreadcrumbBarCollection.RemoveAt(1);
             }

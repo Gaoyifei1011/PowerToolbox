@@ -24,6 +24,7 @@ using PowerToolbox.WindowsAPI.PInvoke.User32;
 using PowerToolbox.WindowsAPI.PInvoke.Uxtheme;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -576,7 +577,7 @@ namespace PowerToolbox.Views.Windows
         /// </summary>
         private void SetWindowTheme()
         {
-            WindowTheme = string.Equals(ThemeService.AppTheme, ThemeService.ThemeList[0]) ? Application.Current.RequestedTheme is ApplicationTheme.Light ? ElementTheme.Light : ElementTheme.Dark : Enum.TryParse(ThemeService.AppTheme, out ElementTheme elementTheme) ? elementTheme : ElementTheme.Default;
+            WindowTheme = string.Equals(ThemeService.AppTheme, ThemeService.ThemeCollection[0]) ? Application.Current.RequestedTheme is ApplicationTheme.Light ? ElementTheme.Light : ElementTheme.Dark : Enum.TryParse(ThemeService.AppTheme, out ElementTheme elementTheme) ? elementTheme : ElementTheme.Default;
         }
 
         /// <summary>
@@ -584,27 +585,27 @@ namespace PowerToolbox.Views.Windows
         /// </summary>
         private void SetSystemBackdrop()
         {
-            if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[1]))
+            if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropCollection[1]))
             {
                 WindowSystemBackdrop = new MaterialBackdrop(MicaKind.Base);
                 VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
             }
-            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[2]))
+            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropCollection[2]))
             {
                 WindowSystemBackdrop = new MaterialBackdrop(MicaKind.BaseAlt);
                 VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
             }
-            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[3]))
+            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropCollection[3]))
             {
                 WindowSystemBackdrop = new MaterialBackdrop(DesktopAcrylicKind.Default);
                 VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
             }
-            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[4]))
+            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropCollection[4]))
             {
                 WindowSystemBackdrop = new MaterialBackdrop(DesktopAcrylicKind.Base);
                 VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
             }
-            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropList[5]))
+            else if (string.Equals(BackdropService.AppBackdrop, BackdropService.BackdropCollection[5]))
             {
                 WindowSystemBackdrop = new MaterialBackdrop(DesktopAcrylicKind.Thin);
                 VisualStateManager.GoToState(MainPage, "BackgroundTransparent", false);
@@ -944,7 +945,7 @@ namespace PowerToolbox.Views.Windows
                     {
                         Task.Run(() =>
                         {
-                            List<string> filesList = [];
+                            List<string> fileList = [];
                             char[] dragFileCharArray = new char[260];
                             uint filesCount = Shell32Library.DragQueryFile(wParam, 0xffffffffu, null, 0);
 
@@ -953,7 +954,7 @@ namespace PowerToolbox.Views.Windows
                                 Array.Clear(dragFileCharArray, 0, dragFileCharArray.Length);
                                 if (Shell32Library.DragQueryFile(wParam, index, dragFileCharArray, (uint)dragFileCharArray.Length) > 0)
                                 {
-                                    filesList.Add(new string(dragFileCharArray).Replace("\0", string.Empty));
+                                    fileList.Add(new string(dragFileCharArray).Replace("\0", string.Empty));
                                 }
                             }
 
@@ -962,7 +963,7 @@ namespace PowerToolbox.Views.Windows
 
                             synchronizationContext.Post(async (_) =>
                             {
-                                await SendReceivedFilesListAsync(filesList);
+                                await SendReceivedFilesCollectionAsync(fileList.AsReadOnly());
                             }, null);
                         });
 
@@ -998,13 +999,13 @@ namespace PowerToolbox.Views.Windows
         {
             if (GetFrameContent() is ShellMenuPage shellMenuPage && shellMenuPage.BreadcrumbBarCollection.Count is 2)
             {
-                shellMenuPage.NavigateTo(shellMenuPage.PageList[0], null, false);
+                shellMenuPage.NavigateTo(shellMenuPage.PageCollection[0], null, false);
                 return;
             }
 
             if (GetFrameContent() is AdvancedSystemOptionsPage advancedSystemOptionsPage && advancedSystemOptionsPage.BreadcrumbBarCollection.Count is 2)
             {
-                advancedSystemOptionsPage.NavigateTo(advancedSystemOptionsPage.PageList[0], null, false);
+                advancedSystemOptionsPage.NavigateTo(advancedSystemOptionsPage.PageCollection[0], null, false);
                 return;
             }
 
@@ -1168,7 +1169,7 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 将提权模式下拖放获得到的文件列表发送到各个页面
         /// </summary>
-        private async Task SendReceivedFilesListAsync(List<string> filesList)
+        private async Task SendReceivedFilesCollectionAsync(ReadOnlyCollection<string> fileCollection)
         {
             object currentFrameContent = GetFrameContent();
             if (currentFrameContent is DataVerifyEncryptPage dataVerifyEncryptPage)
@@ -1176,23 +1177,23 @@ namespace PowerToolbox.Views.Windows
                 object currentDataVerifyEncryptContent = dataVerifyEncryptPage.GetFrameContent();
                 if (currentDataVerifyEncryptContent is DataEncryptPage dataEncryptPage)
                 {
-                    if (!dataEncryptPage.IsEncrypting && filesList.Count is 1)
+                    if (!dataEncryptPage.IsEncrypting && fileCollection.Count is 1)
                     {
-                        dataEncryptPage.EncryptFile = filesList[0];
+                        dataEncryptPage.EncryptFile = fileCollection[0];
                     }
                 }
                 else if (currentDataVerifyEncryptContent is DataDecryptPage dataDecryptPage)
                 {
-                    if (!dataDecryptPage.IsDecrypting && filesList.Count is 1)
+                    if (!dataDecryptPage.IsDecrypting && fileCollection.Count is 1)
                     {
-                        dataDecryptPage.DecryptFile = filesList[0];
+                        dataDecryptPage.DecryptFile = fileCollection[0];
                     }
                 }
                 else if (currentDataVerifyEncryptContent is DataVerifyPage dataVerifyPage)
                 {
-                    if (!dataVerifyPage.IsVerifying && filesList.Count is 1)
+                    if (!dataVerifyPage.IsVerifying && fileCollection.Count is 1)
                     {
-                        dataVerifyPage.VerifyFile = filesList[0];
+                        dataVerifyPage.VerifyFile = fileCollection[0];
                     }
                 }
             }
@@ -1203,11 +1204,11 @@ namespace PowerToolbox.Views.Windows
                 {
                     if (!fileNamePage.IsModifyingNow)
                     {
-                        List<OldAndNewNameModel> fileNameList = await Task.Run(() =>
+                        ReadOnlyCollection<OldAndNewNameModel> fileNameCollection = await Task.Run(() =>
                         {
                             List<OldAndNewNameModel> fileNameList = [];
 
-                            foreach (string file in filesList)
+                            foreach (string file in fileCollection)
                             {
                                 FileInfo fileInfo = new(file);
                                 if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
@@ -1221,22 +1222,20 @@ namespace PowerToolbox.Views.Windows
                                     OriginalFilePath = file,
                                 });
                             }
-
-                            return fileNameList;
+                            return fileNameList.AsReadOnly();
                         });
-
-                        fileNamePage.AddToFileNamePage(fileNameList);
+                        fileNamePage.AddToFileNamePage(fileNameCollection);
                     }
                 }
                 else if (currentFileManagerContent is ExtensionNamePage extensionNamePage)
                 {
                     if (!extensionNamePage.IsModifyingNow)
                     {
-                        List<OldAndNewNameModel> extensionNameList = await Task.Run(() =>
+                        ReadOnlyCollection<OldAndNewNameModel> extensionNameCollection = await Task.Run(() =>
                         {
                             List<OldAndNewNameModel> extensionNameList = [];
 
-                            foreach (string file in filesList)
+                            foreach (string file in fileCollection)
                             {
                                 FileInfo fileInfo = new(file);
                                 if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
@@ -1253,22 +1252,20 @@ namespace PowerToolbox.Views.Windows
                                     });
                                 }
                             }
-
-                            return extensionNameList;
+                            return extensionNameList.AsReadOnly();
                         });
-
-                        extensionNamePage.AddToExtensionNamePage(extensionNameList);
+                        extensionNamePage.AddToExtensionNamePage(extensionNameCollection);
                     }
                 }
                 else if (currentFileManagerContent is UpperAndLowerCasePage upperAndLowerCasePage)
                 {
                     if (!upperAndLowerCasePage.IsModifyingNow)
                     {
-                        List<OldAndNewNameModel> upperAndLowerCaseList = await Task.Run(() =>
+                        ReadOnlyCollection<OldAndNewNameModel> upperAndLowerCaseCollection = await Task.Run(() =>
                         {
                             List<OldAndNewNameModel> upperAndLowerCaseList = [];
 
-                            foreach (string file in filesList)
+                            foreach (string file in fileCollection)
                             {
                                 FileInfo fileInfo = new(file);
                                 if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
@@ -1282,22 +1279,20 @@ namespace PowerToolbox.Views.Windows
                                     OriginalFilePath = file,
                                 });
                             }
-
-                            return upperAndLowerCaseList;
+                            return upperAndLowerCaseList.AsReadOnly();
                         });
-
-                        upperAndLowerCasePage.AddToUpperAndLowerCasePage(upperAndLowerCaseList);
+                        upperAndLowerCasePage.AddToUpperAndLowerCasePage(upperAndLowerCaseCollection);
                     }
                 }
                 else if (currentFileManagerContent is FilePropertiesPage filePropertiesPage)
                 {
                     if (!filePropertiesPage.IsModifyingNow)
                     {
-                        List<OldAndNewPropertiesModel> filePropertiesList = await Task.Run(() =>
+                        ReadOnlyCollection<OldAndNewPropertiesModel> filePropertiesCollection = await Task.Run(() =>
                         {
-                            List<OldAndNewPropertiesModel> filePropertiesList = [];
+                            List<OldAndNewPropertiesModel> filePropertyList = [];
 
-                            foreach (string file in filesList)
+                            foreach (string file in fileCollection)
                             {
                                 FileInfo fileInfo = new(file);
                                 if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
@@ -1305,17 +1300,15 @@ namespace PowerToolbox.Views.Windows
                                     continue;
                                 }
 
-                                filePropertiesList.Add(new()
+                                filePropertyList.Add(new()
                                 {
                                     FileName = Path.GetFileName(file),
                                     FilePath = file,
                                 });
                             }
-
-                            return filePropertiesList;
+                            return filePropertyList.AsReadOnly();
                         });
-
-                        filePropertiesPage.AddToFilePropertiesPage(filePropertiesList);
+                        filePropertiesPage.AddToFilePropertiesPage(filePropertiesCollection);
                     }
                 }
             }
@@ -1323,11 +1316,11 @@ namespace PowerToolbox.Views.Windows
             {
                 if (!fileCertificatePage.IsModifyingNow)
                 {
-                    List<CertificateResultModel> fileCertificateList = await Task.Run(() =>
+                    ReadOnlyCollection<CertificateResultModel> fileCertificateCollection = await Task.Run(() =>
                     {
                         List<CertificateResultModel> fileCertificateList = [];
 
-                        foreach (string file in filesList)
+                        foreach (string file in fileCollection)
                         {
                             FileInfo fileInfo = new(file);
                             if ((fileInfo.Attributes & FileAttributes.Hidden) is FileAttributes.Hidden)
@@ -1344,43 +1337,41 @@ namespace PowerToolbox.Views.Windows
                                 });
                             }
                         }
-
-                        return fileCertificateList;
+                        return fileCertificateList.AsReadOnly();
                     });
-
-                    fileCertificatePage.AddToFileCertificatePage(fileCertificateList);
+                    fileCertificatePage.AddToFileCertificatePage(fileCertificateCollection);
                 }
             }
             else if (currentFrameContent is IconExtractPage iconExtractPage)
             {
-                if (iconExtractPage.GetIsNotParsingOrSaving(iconExtractPage.IconExtractResultKind, iconExtractPage.IsSaving) && filesList.Count is 1 && (string.Equals(Path.GetExtension(filesList[0]), ".exe") || string.Equals(Path.GetExtension(filesList[0]), ".dll")))
+                if (iconExtractPage.GetIsNotParsingOrSaving(iconExtractPage.IconExtractResultKind, iconExtractPage.IsSaving) && fileCollection.Count is 1 && (string.Equals(Path.GetExtension(fileCollection[0]), ".exe") || string.Equals(Path.GetExtension(fileCollection[0]), ".dll")))
                 {
                     if (Equals(iconExtractPage.SelectedGetIconType, iconExtractPage.GetIconTypeList[0]))
                     {
-                        await iconExtractPage.ParseFileContainIconAsync(filesList[0]);
+                        await iconExtractPage.ParseFileContainIconAsync(fileCollection[0]);
                     }
                     else if (Equals(iconExtractPage.SelectedGetIconType, iconExtractPage.GetIconTypeList[1]))
                     {
-                        await iconExtractPage.ParseFileAssociateIconAsync(filesList[1]);
+                        await iconExtractPage.ParseFileAssociateIconAsync(fileCollection[1]);
                     }
                 }
             }
             else if (currentFrameContent is PriExtractPage priExtractPage)
             {
-                if (!priExtractPage.IsProcessing && filesList.Count is 1 && string.Equals(Path.GetExtension(filesList[0]), ".pri"))
+                if (!priExtractPage.IsProcessing && fileCollection.Count is 1 && string.Equals(Path.GetExtension(fileCollection[0]), ".pri"))
                 {
-                    await priExtractPage.ParseResourceFileAsync(filesList[0]);
+                    await priExtractPage.ParseResourceFileAsync(fileCollection[0]);
                 }
             }
             else if (currentFrameContent is FileUnlockPage fileUnlockPage)
             {
                 if (!fileUnlockPage.IsModifyingNow)
                 {
-                    List<FileUnlockModel> fileUnlockList = await Task.Run(() =>
+                    ReadOnlyCollection<FileUnlockModel> fileUnlockCollection = await Task.Run(() =>
                     {
                         List<FileUnlockModel> fileUnlockList = [];
 
-                        foreach (string file in filesList)
+                        foreach (string file in fileCollection)
                         {
                             try
                             {
@@ -1396,14 +1387,12 @@ namespace PowerToolbox.Views.Windows
                             }
                             catch (Exception e)
                             {
-                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(SendReceivedFilesListAsync), 1, e);
+                                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(MainWindow), nameof(SendReceivedFilesCollectionAsync), 1, e);
                             }
                         }
-
-                        return fileUnlockList;
+                        return fileUnlockList.AsReadOnly();
                     });
-
-                    await fileUnlockPage.AddToFileUnlockPageAsync(fileUnlockList);
+                    await fileUnlockPage.AddToFileUnlockPageAsync(fileUnlockCollection);
                 }
             }
         }

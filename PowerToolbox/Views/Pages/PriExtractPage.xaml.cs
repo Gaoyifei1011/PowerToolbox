@@ -13,6 +13,7 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -319,9 +320,9 @@ namespace PowerToolbox.Views.Pages
                 }
                 else
                 {
-                    if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count is 1)
+                    if (await GetDragDropSelectedFilesAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count is 1)
                     {
-                        string extensionName = Path.GetExtension(fileList[0]);
+                        string extensionName = Path.GetExtension(fileCollection[0]);
 
                         if (string.Equals(extensionName, ".pri", StringComparison.OrdinalIgnoreCase))
                         {
@@ -373,9 +374,9 @@ namespace PowerToolbox.Views.Pages
 
             try
             {
-                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count is 1)
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count is 1)
                 {
-                    filePath = fileList[0];
+                    filePath = fileCollection[0];
                 }
             }
             catch (Exception e)
@@ -402,7 +403,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnStringExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (args.Parameter is StringModel stringItem && await GetStringCopyListAsync([stringItem]) is string copyString)
+            if (args.Parameter is StringModel stringItem && await GetStringCopyCollectionAsync(new([stringItem])) is string copyString)
             {
                 bool copyResult = CopyPasteHelper.CopyToClipboard(copyString);
                 await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
@@ -414,7 +415,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnFilePathExecuteRequested(object sender, ExecuteRequestedEventArgs args)
         {
-            if (args.Parameter is FilePathModel filePathItem && await GetFilePathCopyListAsync([filePathItem]) is string copyFilePath)
+            if (args.Parameter is FilePathModel filePathItem && await GetFilePathCopyCollectionAsync(new([filePathItem])) is string copyFilePath)
             {
                 bool copyResult = CopyPasteHelper.CopyToClipboard(copyFilePath);
                 await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
@@ -438,7 +439,7 @@ namespace PowerToolbox.Views.Pages
                 DialogResult dialogResult = openFolderDialog.ShowDialog();
                 if (dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes)
                 {
-                    await SaveEmbeddedDataListAsync(openFolderDialog.SelectedPath, [embeddedData]);
+                    await SaveEmbeddedDataCollectionAsync(openFolderDialog.SelectedPath, new([embeddedData]));
                     await OpenEmbeddedDataSavedFolderPathAsync(openFolderDialog.SelectedPath, embeddedData.Key);
                     openFolderDialog.Dispose();
                 }
@@ -513,27 +514,27 @@ namespace PowerToolbox.Views.Pages
         {
             if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[0]))
             {
-                List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. PriExtractStringListView.SelectedRanges];
+                ReadOnlyCollection<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeCollection = new([.. PriExtractStringListView.SelectedRanges]);
                 PriExtractStringListView.SelectAll();
-                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
+                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeCollection)
                 {
                     PriExtractStringListView.DeselectRange(itemIndexRange);
                 }
             }
             else if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[1]))
             {
-                List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. PriExtractFilePathListView.SelectedRanges];
+                ReadOnlyCollection<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeCollection = new([.. PriExtractFilePathListView.SelectedRanges]);
                 PriExtractStringListView.SelectAll();
-                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
+                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeCollection)
                 {
                     PriExtractFilePathListView.DeselectRange(itemIndexRange);
                 }
             }
             else if (Equals(SelectedResourceCandidateKind, ResourceCandidateKindList[2]))
             {
-                List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. PriExtractEmbeddedDataListView.SelectedRanges];
+                ReadOnlyCollection<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeCollection = new([.. PriExtractEmbeddedDataListView.SelectedRanges]);
                 PriExtractStringListView.SelectAll();
-                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
+                foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeCollection)
                 {
                     PriExtractEmbeddedDataListView.DeselectRange(itemIndexRange);
                 }
@@ -570,9 +571,9 @@ namespace PowerToolbox.Views.Pages
                 if (SelectedLanguage is not null)
                 {
                     PriExtractStringListView.SelectedItems.Clear();
-                    if (await GetFilteredStringAsync(StringSearchText, Convert.ToString(SelectedLanguage.SelectedValue), StringList) is List<StringModel> filteredStringList)
+                    if (await GetFilteredStringAsync(StringSearchText, Convert.ToString(SelectedLanguage.SelectedValue), StringList.AsReadOnly()) is ReadOnlyCollection<StringModel> filteredStringCollection)
                     {
-                        UpdateStringResult(filteredStringList);
+                        UpdateStringResult(filteredStringCollection);
                     }
                 }
             }
@@ -614,9 +615,9 @@ namespace PowerToolbox.Views.Pages
         private async void OnStringQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             PriExtractStringListView.SelectedItems.Clear();
-            if (await GetFilteredStringAsync(StringSearchText, Convert.ToString(SelectedLanguage.SelectedValue), StringList) is List<StringModel> filteredStringList)
+            if (await GetFilteredStringAsync(StringSearchText, Convert.ToString(SelectedLanguage.SelectedValue), StringList.AsReadOnly()) is ReadOnlyCollection<StringModel> filteredStringCollection)
             {
-                UpdateStringResult(filteredStringList);
+                UpdateStringResult(filteredStringCollection);
             }
         }
 
@@ -629,9 +630,9 @@ namespace PowerToolbox.Views.Pages
             if (string.IsNullOrEmpty(StringSearchText))
             {
                 PriExtractStringListView.SelectedItems.Clear();
-                if (await GetFilteredStringAsync(StringSearchText, Convert.ToString(SelectedLanguage.SelectedValue), StringList) is List<StringModel> filteredStringList)
+                if (await GetFilteredStringAsync(StringSearchText, Convert.ToString(SelectedLanguage.SelectedValue), StringList.AsReadOnly()) is ReadOnlyCollection<StringModel> filteredStringCollection)
                 {
-                    UpdateStringResult(filteredStringList);
+                    UpdateStringResult(filteredStringCollection);
                 }
             }
         }
@@ -642,9 +643,9 @@ namespace PowerToolbox.Views.Pages
         private async void OnFilePathQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             PriExtractFilePathListView.SelectedItems.Clear();
-            if (await GetFilteredFilePathAsync(FilePathSearchText, FilePathList) is List<FilePathModel> filteredFilePathList)
+            if (await GetFilteredFilePathAsync(FilePathSearchText, FilePathList.AsReadOnly()) is ReadOnlyCollection<FilePathModel> filteredFilePathCollection)
             {
-                UpdateFilePathResult(filteredFilePathList);
+                UpdateFilePathResult(filteredFilePathCollection);
             }
         }
 
@@ -657,9 +658,9 @@ namespace PowerToolbox.Views.Pages
             if (string.IsNullOrEmpty(FilePathSearchText))
             {
                 PriExtractFilePathListView.SelectedItems.Clear();
-                if (await GetFilteredFilePathAsync(FilePathSearchText, FilePathList) is List<FilePathModel> filteredFilePathList)
+                if (await GetFilteredFilePathAsync(FilePathSearchText, FilePathList.AsReadOnly()) is ReadOnlyCollection<FilePathModel> filteredFilePathCollection)
                 {
-                    UpdateFilePathResult(filteredFilePathList);
+                    UpdateFilePathResult(filteredFilePathCollection);
                 }
             }
         }
@@ -670,9 +671,9 @@ namespace PowerToolbox.Views.Pages
         private async void OnEmbeddedDataQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             PriExtractEmbeddedDataListView.SelectedItems.Clear();
-            if (await GetFilteredEmbeddedDataAsync(EmbeddedDataSearchText, EmbeddedDataList) is List<EmbeddedDataModel> filteredEmbeddedDataList)
+            if (await GetFilteredEmbeddedDataAsync(EmbeddedDataSearchText, EmbeddedDataList.AsReadOnly()) is ReadOnlyCollection<EmbeddedDataModel> filteredEmbeddedDataCollection)
             {
-                UpdateEmbeddedDataResult(filteredEmbeddedDataList);
+                UpdateEmbeddedDataResult(filteredEmbeddedDataCollection);
             }
         }
 
@@ -685,9 +686,9 @@ namespace PowerToolbox.Views.Pages
             if (string.IsNullOrEmpty(EmbeddedDataSearchText))
             {
                 PriExtractEmbeddedDataListView.SelectedItems.Clear();
-                if (await GetFilteredEmbeddedDataAsync(EmbeddedDataSearchText, EmbeddedDataList) is List<EmbeddedDataModel> filteredEmbeddedDataList)
+                if (await GetFilteredEmbeddedDataAsync(EmbeddedDataSearchText, EmbeddedDataList.AsReadOnly()) is ReadOnlyCollection<EmbeddedDataModel> filteredEmbeddedDataCollection)
                 {
-                    UpdateEmbeddedDataResult(filteredEmbeddedDataList);
+                    UpdateEmbeddedDataResult(filteredEmbeddedDataCollection);
                 }
             }
         }
@@ -707,7 +708,7 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            if (selectedStringList.Count > 0 && await GetStringCopyListAsync(selectedStringList) is string copyString)
+            if (selectedStringList.Count > 0 && await GetStringCopyCollectionAsync(selectedStringList.AsReadOnly()) is string copyString)
             {
                 bool copyResult = CopyPasteHelper.CopyToClipboard(copyString);
                 IsProcessing = false;
@@ -734,7 +735,7 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            if (selectedFilePathList.Count > 0 && await GetFilePathCopyListAsync(selectedFilePathList) is string copyFilePath)
+            if (selectedFilePathList.Count > 0 && await GetFilePathCopyCollectionAsync(selectedFilePathList.AsReadOnly()) is string copyFilePath)
             {
                 bool copyResult = CopyPasteHelper.CopyToClipboard(copyFilePath);
                 IsProcessing = false;
@@ -771,7 +772,7 @@ namespace PowerToolbox.Views.Pages
                 DialogResult dialogResult = openFolderDialog.ShowDialog();
                 if (dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes)
                 {
-                    await SaveEmbeddedDataListAsync(openFolderDialog.SelectedPath, selectedEmbeddedDataList);
+                    await SaveEmbeddedDataCollectionAsync(openFolderDialog.SelectedPath, selectedEmbeddedDataList.AsReadOnly());
                     await OpenEmbeddedDataSavedFolderPathAsync(openFolderDialog.SelectedPath, null);
                 }
                 openFolderDialog.Dispose();
@@ -785,7 +786,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnCopyAllStringClicked(object sender, RoutedEventArgs args)
         {
             IsProcessing = true;
-            if (await GetStringCopyListAsync([.. StringCollection]) is string copyString)
+            if (await GetStringCopyCollectionAsync(new(StringCollection)) is string copyString)
             {
                 bool copyResult = CopyPasteHelper.CopyToClipboard(copyString);
                 IsProcessing = false;
@@ -803,7 +804,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnCopyAllFilePathClicked(object sender, RoutedEventArgs args)
         {
             IsProcessing = true;
-            if (await GetFilePathCopyListAsync([.. FilePathCollection]) is string copyFilePath)
+            if (await GetFilePathCopyCollectionAsync(new(FilePathCollection)) is string copyFilePath)
             {
                 bool copyResult = CopyPasteHelper.CopyToClipboard(copyFilePath);
                 IsProcessing = false;
@@ -828,9 +829,9 @@ namespace PowerToolbox.Views.Pages
             };
 
             DialogResult dialogResult = openFolderDialog.ShowDialog();
-            if ((dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes) && EmbeddedDataCollection.ToList() is List<EmbeddedDataModel> exportEmbeddedDataList && exportEmbeddedDataList.Count > 0)
+            if ((dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes) && new ReadOnlyCollection<EmbeddedDataModel>(EmbeddedDataCollection) is ReadOnlyCollection<EmbeddedDataModel> exportEmbeddedDataCollection && exportEmbeddedDataCollection.Count > 0)
             {
-                await SaveEmbeddedDataListAsync(openFolderDialog.SelectedPath, exportEmbeddedDataList);
+                await SaveEmbeddedDataCollectionAsync(openFolderDialog.SelectedPath, exportEmbeddedDataCollection);
                 await OpenEmbeddedDataSavedFolderPathAsync(openFolderDialog.SelectedPath, null);
             }
             openFolderDialog.Dispose();
@@ -875,17 +876,17 @@ namespace PowerToolbox.Views.Pages
             StringCollection.Clear();
             FilePathCollection.Clear();
             EmbeddedDataCollection.Clear();
-            (bool result, List<string> languageList, List<StringModel> stringList, List<FilePathModel> filePathList, List<EmbeddedDataModel> embeddedDataList) = await GetResourceFileContentAsync(filePath, IsExtractSaveString, IsExtractSaveFilePath, IsExtractSaveEmbeddedData, SelectedSaveFolder);
+            (bool result, ReadOnlyCollection<string> languageCollection, ReadOnlyCollection<StringModel> stringCollection, ReadOnlyCollection<FilePathModel> filePathCollection, ReadOnlyCollection<EmbeddedDataModel> embeddedDataList) = await GetResourceFileContentAsync(filePath, IsExtractSaveString, IsExtractSaveFilePath, IsExtractSaveEmbeddedData, SelectedSaveFolder);
 
             if (result)
             {
-                StringList.AddRange(stringList);
-                FilePathList.AddRange(filePathList);
+                StringList.AddRange(stringCollection);
+                FilePathList.AddRange(filePathCollection);
                 EmbeddedDataList.AddRange(embeddedDataList);
                 LanguageCollection.Add(new() { SelectedValue = "AllLanguage", DisplayMember = AllLanguageString });
 
                 // 显示获取到的所有内容
-                foreach (string languageItem in languageList)
+                foreach (string languageItem in languageCollection)
                 {
                     CultureInfo cultureInfo = CultureInfo.GetCultureInfo(languageItem);
                     LanguageCollection.Add(new() { SelectedValue = cultureInfo.Name, DisplayMember = string.Format("{0}[{1}]", cultureInfo.DisplayName, languageItem) });
@@ -898,17 +899,17 @@ namespace PowerToolbox.Views.Pages
                 PriExtractStringListView.SelectedItems.Clear();
                 PriExtractFilePathListView.SelectedItems.Clear();
                 PriExtractEmbeddedDataListView.SelectedItems.Clear();
-                if (await GetFilteredStringAsync(StringSearchText, Convert.ToString(SelectedLanguage.SelectedValue), StringList) is List<StringModel> filteredStringList)
+                if (await GetFilteredStringAsync(StringSearchText, Convert.ToString(SelectedLanguage.SelectedValue), StringList.AsReadOnly()) is ReadOnlyCollection<StringModel> filteredStringCollection)
                 {
-                    UpdateStringResult(filteredStringList);
+                    UpdateStringResult(filteredStringCollection);
                 }
-                if (await GetFilteredFilePathAsync(FilePathSearchText, FilePathList) is List<FilePathModel> filteredFilePathList)
+                if (await GetFilteredFilePathAsync(FilePathSearchText, FilePathList.AsReadOnly()) is ReadOnlyCollection<FilePathModel> filteredFilePathCollection)
                 {
-                    UpdateFilePathResult(filteredFilePathList);
+                    UpdateFilePathResult(filteredFilePathCollection);
                 }
-                if (await GetFilteredEmbeddedDataAsync(EmbeddedDataSearchText, EmbeddedDataList) is List<EmbeddedDataModel> filteredEmbeddedDataList)
+                if (await GetFilteredEmbeddedDataAsync(EmbeddedDataSearchText, EmbeddedDataList.AsReadOnly()) is ReadOnlyCollection<EmbeddedDataModel> filteredEmbeddedDataCollection)
                 {
-                    UpdateEmbeddedDataResult(filteredEmbeddedDataList);
+                    UpdateEmbeddedDataResult(filteredEmbeddedDataCollection);
                 }
                 IsProcessing = false;
                 GetResults = string.Format(GetResultsString, Path.GetFileName(filePath), StringList.Count + FilePathList.Count + EmbeddedDataList.Count);
@@ -925,7 +926,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取 PRI 资源文件的所有内容
         /// </summary>
-        private async Task<(bool, List<string>, List<StringModel>, List<FilePathModel>, List<EmbeddedDataModel>)> GetResourceFileContentAsync(string filePath, bool isExtractSaveString, bool isExtractSaveFilePath, bool isExtractSaveEmbeddedData, string saveFolder)
+        private async Task<(bool, ReadOnlyCollection<string>, ReadOnlyCollection<StringModel>, ReadOnlyCollection<FilePathModel>, ReadOnlyCollection<EmbeddedDataModel>)> GetResourceFileContentAsync(string filePath, bool isExtractSaveString, bool isExtractSaveFilePath, bool isExtractSaveEmbeddedData, string saveFolder)
         {
             if (string.IsNullOrEmpty(filePath))
             {
@@ -971,7 +972,7 @@ namespace PowerToolbox.Views.Pages
                     priBinaryReader.BaseStream.Seek(tocOffset, SeekOrigin.Begin);
 
                     // 读取内容列表
-                    List<TocEntry> tocList = new((int)numSections);
+                    List<TocEntry> tocList = [with((int)numSections)];
 
                     for (int index = 0; index < numSections; index++)
                     {
@@ -1062,11 +1063,11 @@ namespace PowerToolbox.Views.Pages
                     }
 
                     // 根据分段列表获取相应的内容
-                    List<PriDescriptorSection> priDescriptorSectionList = [.. sectionArray.OfType<PriDescriptorSection>()];
+                    ReadOnlyCollection<PriDescriptorSection> priDescriptorSectionCollection = new([.. sectionArray.OfType<PriDescriptorSection>()]);
 
-                    foreach (PriDescriptorSection priDescriptorSection in priDescriptorSectionList)
+                    foreach (PriDescriptorSection priDescriptorSection in priDescriptorSectionCollection)
                     {
-                        foreach (int resourceMapIndex in priDescriptorSection.ResourceMapSectionsList)
+                        foreach (int resourceMapIndex in priDescriptorSection.ResourceMapSectionList)
                         {
                             if (sectionArray[resourceMapIndex] is ResourceMapSection resourceMapSection)
                             {
@@ -1081,7 +1082,7 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     if (sectionArray[candidateSet.ResourceMapSectionAndIndex.SchemaSectionIndex] is HierarchicalSchemaSection hierarchicalSchemaSection)
                                     {
-                                        ResourceMapScopeAndItem resourceMapScopeAndItem = hierarchicalSchemaSection.ItemsList[candidateSet.ResourceMapSectionAndIndex.ResourceMapItemIndex];
+                                        ResourceMapScopeAndItem resourceMapScopeAndItem = hierarchicalSchemaSection.ItemList[candidateSet.ResourceMapSectionAndIndex.ResourceMapItemIndex];
 
                                         string key = string.Empty;
 
@@ -1099,7 +1100,7 @@ namespace PowerToolbox.Views.Pages
                                             continue;
                                         }
 
-                                        foreach (Candidate candidate in candidateSet.CandidatesList)
+                                        foreach (Candidate candidate in candidateSet.CandidateList)
                                         {
                                             string value = string.Empty;
 
@@ -1110,7 +1111,7 @@ namespace PowerToolbox.Views.Pages
                                                 if (!candidate.DataItemSectionAndIndex.Equals(default))
                                                 {
                                                     DataItemSection dataItemSection = sectionArray[candidate.DataItemSectionAndIndex.DataItemSection] as DataItemSection;
-                                                    byteSpan = dataItemSection is not null ? dataItemSection.DataItemsList[candidate.DataItemSectionAndIndex.DataItemIndex] : candidate.Data;
+                                                    byteSpan = dataItemSection is not null ? dataItemSection.DataItemList[candidate.DataItemSectionAndIndex.DataItemIndex] : candidate.Data;
                                                 }
 
                                                 if (byteSpan is not null)
@@ -1155,7 +1156,7 @@ namespace PowerToolbox.Views.Pages
                                                                 {
                                                                     Key = key,
                                                                     Content = string.IsNullOrEmpty(content) ? string.Empty : content,
-                                                                    Language = decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList.Count > 0 ? decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList[0].Value : string.Empty,
+                                                                    Language = decisionInfoSection.QualifierSetList[candidate.QualifierSet].QualifierList.Count > 0 ? decisionInfoSection.QualifierSetList[candidate.QualifierSet].QualifierList[0].Value : string.Empty,
                                                                 });
                                                                 break;
                                                             }
@@ -1192,7 +1193,7 @@ namespace PowerToolbox.Views.Pages
                                                                 {
                                                                     Key = key,
                                                                     Content = string.IsNullOrEmpty(content) ? string.Empty : content,
-                                                                    Language = decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList.Count > 0 ? decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList[0].Value : string.Empty,
+                                                                    Language = decisionInfoSection.QualifierSetList[candidate.QualifierSet].QualifierList.Count > 0 ? decisionInfoSection.QualifierSetList[candidate.QualifierSet].QualifierList[0].Value : string.Empty,
                                                                 });
                                                                 break;
                                                             }
@@ -1229,7 +1230,7 @@ namespace PowerToolbox.Views.Pages
                                                                 {
                                                                     Key = key,
                                                                     Content = string.IsNullOrEmpty(content) ? string.Empty : content,
-                                                                    Language = decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList.Count > 0 ? decisionInfoSection.QualifierSetsList[candidate.QualifierSet].QualifiersList[0].Value : string.Empty,
+                                                                    Language = decisionInfoSection.QualifierSetList[candidate.QualifierSet].QualifierList.Count > 0 ? decisionInfoSection.QualifierSetList[candidate.QualifierSet].QualifierList[0].Value : string.Empty,
                                                                 });
                                                                 break;
                                                             }
@@ -1267,12 +1268,12 @@ namespace PowerToolbox.Views.Pages
 
                     priBinaryReader.Dispose();
                     priFileStream.Dispose();
-                    return ValueTuple.Create(true, languageList, stringList, filePathList, embeddedDataList);
+                    return ValueTuple.Create(true, languageList.AsReadOnly(), stringList.AsReadOnly(), filePathList.AsReadOnly(), embeddedDataList.AsReadOnly());
                 }
                 catch (Exception e)
                 {
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 8, e);
-                    return ValueTuple.Create(false, languageList, stringList, filePathList, embeddedDataList);
+                    return ValueTuple.Create(false, languageList.AsReadOnly(), stringList.AsReadOnly(), filePathList.AsReadOnly(), embeddedDataList.AsReadOnly());
                 }
             });
         }
@@ -1280,9 +1281,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取过滤后符合条件的字符串
         /// </summary>
-        private async Task<List<StringModel>> GetFilteredStringAsync(string stringSearchText, string selectedLanguage, List<StringModel> stringList)
+        private async Task<ReadOnlyCollection<StringModel>> GetFilteredStringAsync(string stringSearchText, string selectedLanguage, ReadOnlyCollection<StringModel> stringCollection)
         {
-            if (string.IsNullOrEmpty(selectedLanguage) || stringList is null || stringList.Count is 0)
+            if (string.IsNullOrEmpty(selectedLanguage) || stringCollection is null || stringCollection.Count is 0)
             {
                 return default;
             }
@@ -1295,14 +1296,14 @@ namespace PowerToolbox.Views.Pages
                 {
                     if (string.IsNullOrEmpty(stringSearchText))
                     {
-                        foreach (StringModel stringItem in stringList)
+                        foreach (StringModel stringItem in stringCollection)
                         {
                             filteredStringList.Add(stringItem);
                         }
                     }
                     else
                     {
-                        foreach (StringModel stringItem in stringList)
+                        foreach (StringModel stringItem in stringCollection)
                         {
                             if (stringItem.Key.Contains(stringSearchText) || stringItem.Content.Contains(stringSearchText))
                             {
@@ -1314,18 +1315,18 @@ namespace PowerToolbox.Views.Pages
                 // 某一语言
                 else
                 {
-                    List<StringModel> coincidentStringList = [.. stringList.Where(item => string.Equals(item.Language, Convert.ToString(selectedLanguage), StringComparison.OrdinalIgnoreCase))];
+                    ReadOnlyCollection<StringModel> coincidentStringCollection = new([.. stringCollection.Where(item => string.Equals(item.Language, Convert.ToString(selectedLanguage), StringComparison.OrdinalIgnoreCase))]);
 
                     if (string.IsNullOrEmpty(stringSearchText))
                     {
-                        foreach (StringModel stringItem in coincidentStringList)
+                        foreach (StringModel stringItem in coincidentStringCollection)
                         {
                             filteredStringList.Add(stringItem);
                         }
                     }
                     else
                     {
-                        foreach (StringModel stringItem in coincidentStringList)
+                        foreach (StringModel stringItem in coincidentStringCollection)
                         {
                             if (stringItem.Key.Contains(stringSearchText) || stringItem.Content.Contains(stringSearchText))
                             {
@@ -1335,16 +1336,16 @@ namespace PowerToolbox.Views.Pages
                     }
                 }
 
-                return filteredStringList;
+                return filteredStringList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取过滤后符合条件的文件路径
         /// </summary>
-        private async Task<List<FilePathModel>> GetFilteredFilePathAsync(string filePathSearchText, List<FilePathModel> filePathList)
+        private async Task<ReadOnlyCollection<FilePathModel>> GetFilteredFilePathAsync(string filePathSearchText, ReadOnlyCollection<FilePathModel> filePathCollection)
         {
-            if (filePathList is null || filePathList.Count is 0)
+            if (filePathCollection is null || filePathCollection.Count is 0)
             {
                 return default;
             }
@@ -1355,14 +1356,14 @@ namespace PowerToolbox.Views.Pages
 
                 if (string.IsNullOrEmpty(filePathSearchText))
                 {
-                    foreach (FilePathModel filePathItem in filePathList)
+                    foreach (FilePathModel filePathItem in filePathCollection)
                     {
                         filteredFilePathList.Add(filePathItem);
                     }
                 }
                 else
                 {
-                    foreach (FilePathModel filePathItem in filePathList)
+                    foreach (FilePathModel filePathItem in filePathCollection)
                     {
                         if (filePathItem.Key.Contains(filePathSearchText) || filePathItem.AbsolutePath.Contains(filePathSearchText))
                         {
@@ -1371,16 +1372,16 @@ namespace PowerToolbox.Views.Pages
                     }
                 }
 
-                return filteredFilePathList;
+                return filteredFilePathList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取过滤后符合条件的嵌入的数据
         /// </summary>
-        private async Task<List<EmbeddedDataModel>> GetFilteredEmbeddedDataAsync(string embeddedDataSearchText, List<EmbeddedDataModel> embeddedDataList)
+        private async Task<ReadOnlyCollection<EmbeddedDataModel>> GetFilteredEmbeddedDataAsync(string embeddedDataSearchText, ReadOnlyCollection<EmbeddedDataModel> embeddedDataCollection)
         {
-            if (embeddedDataList is null || embeddedDataList.Count is 0)
+            if (embeddedDataCollection is null || embeddedDataCollection.Count is 0)
             {
                 return default;
             }
@@ -1391,14 +1392,14 @@ namespace PowerToolbox.Views.Pages
 
                 if (string.IsNullOrEmpty(embeddedDataSearchText))
                 {
-                    foreach (EmbeddedDataModel embeddedDataItem in embeddedDataList)
+                    foreach (EmbeddedDataModel embeddedDataItem in embeddedDataCollection)
                     {
                         filteredEmbeddedDataList.Add(embeddedDataItem);
                     }
                 }
                 else
                 {
-                    foreach (EmbeddedDataModel embeddedDataItem in embeddedDataList)
+                    foreach (EmbeddedDataModel embeddedDataItem in embeddedDataCollection)
                     {
                         if (embeddedDataItem.Key.Contains(embeddedDataSearchText))
                         {
@@ -1407,19 +1408,19 @@ namespace PowerToolbox.Views.Pages
                     }
                 }
 
-                return filteredEmbeddedDataList;
+                return filteredEmbeddedDataList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 更新字符串结果
         /// </summary>
-        private void UpdateStringResult(List<StringModel> filteredStringList)
+        private void UpdateStringResult(ReadOnlyCollection<StringModel> filteredStringCollection)
         {
             StringCollection.Clear();
-            if (filteredStringList is not null && filteredStringList.Count > 0)
+            if (filteredStringCollection is not null && filteredStringCollection.Count > 0)
             {
-                foreach (StringModel stringItem in filteredStringList)
+                foreach (StringModel stringItem in filteredStringCollection)
                 {
                     StringCollection.Add(stringItem);
                 }
@@ -1429,12 +1430,12 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 更新文件路径结果
         /// </summary>
-        private void UpdateFilePathResult(List<FilePathModel> filteredFilePathList)
+        private void UpdateFilePathResult(ReadOnlyCollection<FilePathModel> filteredFilePathCollection)
         {
             FilePathCollection.Clear();
-            if (filteredFilePathList is not null && filteredFilePathList.Count > 0)
+            if (filteredFilePathCollection is not null && filteredFilePathCollection.Count > 0)
             {
-                foreach (FilePathModel filePathItem in filteredFilePathList)
+                foreach (FilePathModel filePathItem in filteredFilePathCollection)
                 {
                     FilePathCollection.Add(filePathItem);
                 }
@@ -1444,12 +1445,12 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 更新嵌入的数据结果
         /// </summary>
-        private void UpdateEmbeddedDataResult(List<EmbeddedDataModel> filteredEmbeddedDataList)
+        private void UpdateEmbeddedDataResult(ReadOnlyCollection<EmbeddedDataModel> filteredEmbeddedDataCollection)
         {
             EmbeddedDataCollection.Clear();
-            if (filteredEmbeddedDataList is not null && filteredEmbeddedDataList.Count > 0)
+            if (filteredEmbeddedDataCollection is not null && filteredEmbeddedDataCollection.Count > 0)
             {
-                foreach (EmbeddedDataModel embeddedDataItem in filteredEmbeddedDataList)
+                foreach (EmbeddedDataModel embeddedDataItem in filteredEmbeddedDataCollection)
                 {
                     EmbeddedDataCollection.Add(embeddedDataItem);
                 }
@@ -1459,9 +1460,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取要准备复制的字符串内容
         /// </summary>
-        private async Task<string> GetStringCopyListAsync(List<StringModel> copyStringList)
+        private async Task<string> GetStringCopyCollectionAsync(ReadOnlyCollection<StringModel> copyStringCollection)
         {
-            if (copyStringList is null || copyStringList.Count is 0)
+            if (copyStringCollection is null || copyStringCollection.Count is 0)
             {
                 return default;
             }
@@ -1471,7 +1472,7 @@ namespace PowerToolbox.Views.Pages
                 try
                 {
                     StringBuilder copyStringBuilder = new();
-                    foreach (StringModel stringItem in copyStringList)
+                    foreach (StringModel stringItem in copyStringCollection)
                     {
                         copyStringBuilder.AppendLine(string.Format("Key:{0}, Content:{1}", stringItem.Key, stringItem.Content));
                     }
@@ -1479,7 +1480,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(GetStringCopyListAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(GetStringCopyCollectionAsync), 1, e);
                     return null;
                 }
             });
@@ -1488,9 +1489,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取要准备复制的文件路径内容
         /// </summary>
-        private async Task<string> GetFilePathCopyListAsync(List<FilePathModel> copyFilePathList)
+        private async Task<string> GetFilePathCopyCollectionAsync(ReadOnlyCollection<FilePathModel> copyFilePathCollection)
         {
-            if (copyFilePathList is null || copyFilePathList.Count is 0)
+            if (copyFilePathCollection is null || copyFilePathCollection.Count is 0)
             {
                 return default;
             }
@@ -1500,7 +1501,7 @@ namespace PowerToolbox.Views.Pages
                 try
                 {
                     StringBuilder copyFilePathBuilder = new();
-                    foreach (FilePathModel filePathItem in copyFilePathList)
+                    foreach (FilePathModel filePathItem in copyFilePathCollection)
                     {
                         copyFilePathBuilder.AppendLine(string.Format("Key:{0}, AbsolutePath:{1}", filePathItem.Key, filePathItem.AbsolutePath));
                     }
@@ -1508,7 +1509,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(GetFilePathCopyListAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(GetFilePathCopyCollectionAsync), 1, e);
                     return null;
                 }
             });
@@ -1577,9 +1578,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 保存嵌入数据列表到本地文件中
         /// </summary>
-        private async Task SaveEmbeddedDataListAsync(string folderPath, List<EmbeddedDataModel> embeddedDataList)
+        private async Task SaveEmbeddedDataCollectionAsync(string folderPath, ReadOnlyCollection<EmbeddedDataModel> embeddedDataCollection)
         {
-            if (string.IsNullOrEmpty(folderPath) && embeddedDataList is null || embeddedDataList.Count is 0)
+            if (string.IsNullOrEmpty(folderPath) && embeddedDataCollection is null || embeddedDataCollection.Count is 0)
             {
                 return;
             }
@@ -1588,14 +1589,14 @@ namespace PowerToolbox.Views.Pages
             {
                 try
                 {
-                    foreach (EmbeddedDataModel embeddedDataItem in embeddedDataList)
+                    foreach (EmbeddedDataModel embeddedDataItem in embeddedDataCollection)
                     {
                         File.WriteAllBytes(Path.Combine(folderPath, Path.GetFileName(embeddedDataItem.Key)), embeddedDataItem.EmbeddedData);
                     }
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(SaveEmbeddedDataListAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(SaveEmbeddedDataCollectionAsync), 1, e);
                 }
             });
         }
@@ -1638,7 +1639,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取拖拽支持选中的文件
         /// </summary>
-        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        private async Task<ReadOnlyCollection<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
         {
             if (dataPackageView is null)
             {
@@ -1664,7 +1665,7 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(GetDragDropSelectedFilesAsync), 1, e);
                 }
 
-                return fileList;
+                return fileList.AsReadOnly();
             });
         }
 

@@ -8,6 +8,6 @@ namespace PowerToolbox.Extensions.PriExtract
 
         internal ushort DecisionIndex { get; set; }
 
-        internal IReadOnlyList<Candidate> CandidatesList { get; set; }
+        internal IReadOnlyList<Candidate> CandidateList { get; set; }
     }
 }

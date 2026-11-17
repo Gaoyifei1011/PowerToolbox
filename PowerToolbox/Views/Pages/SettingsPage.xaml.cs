@@ -12,9 +12,11 @@ using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.PInvoke.Kernel32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
@@ -61,7 +63,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<Type> PageList { get; } = [typeof(SettingsGeneralPage), typeof(SettingsAdvancedPage), typeof(SettingsAboutPage)];
+        private ReadOnlyCollection<Type> PageCollection { get; } = new([typeof(SettingsGeneralPage), typeof(SettingsAdvancedPage), typeof(SettingsAboutPage)]);
 
         private List<string> SettingsItemTabList { get; } = [];
 
@@ -92,7 +94,7 @@ namespace PowerToolbox.Views.Pages
             // 第一次导航
             if (GetCurrentPageType() is null)
             {
-                NavigateTo(PageList[0]);
+                NavigateTo(PageCollection[0]);
             }
         }
 
@@ -114,26 +116,26 @@ namespace PowerToolbox.Views.Pages
             {
                 int index = SelectedIndex;
                 Type currentPage = GetCurrentPageType();
-                int currentIndex = PageList.FindIndex(item => Equals(item, currentPage));
+                int currentIndex = PageCollection.IndexOf(PageCollection.FirstOrDefault(item => Equals(item, currentPage)));
 
                 if (index is 0)
                 {
                     if (currentPage is null)
                     {
-                        NavigateTo(PageList[0]);
+                        NavigateTo(PageCollection[0]);
                     }
-                    else if (!Equals(currentPage, PageList[0]))
+                    else if (!Equals(currentPage, PageCollection[0]))
                     {
-                        NavigateTo(PageList[0], null, index > currentIndex);
+                        NavigateTo(PageCollection[0], null, index > currentIndex);
                     }
                 }
-                else if (index is 1 && !Equals(currentPage, PageList[1]))
+                else if (index is 1 && !Equals(currentPage, PageCollection[1]))
                 {
-                    NavigateTo(PageList[1], null, index > currentIndex);
+                    NavigateTo(PageCollection[1], null, index > currentIndex);
                 }
-                else if (index is 2 && !Equals(currentPage, PageList[2]))
+                else if (index is 2 && !Equals(currentPage, PageCollection[2]))
                 {
-                    NavigateTo(PageList[2], null, index > currentIndex);
+                    NavigateTo(PageCollection[2], null, index > currentIndex);
                 }
             }
         }
@@ -144,7 +146,7 @@ namespace PowerToolbox.Views.Pages
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs args)
         {
             args.Handled = true;
-            int index = PageList.FindIndex(item => Equals(item, GetCurrentPageType()));
+            int index = PageCollection.IndexOf(PageCollection.FirstOrDefault(item => Equals(item, GetCurrentPageType())));
 
             if (index >= 0 && index < SettingsItemTabList.Count)
             {
@@ -336,17 +338,17 @@ namespace PowerToolbox.Views.Pages
 
             try
             {
-                IReadOnlyList<AppListEntry> appEntriesList = await Package.Current.GetAppListEntriesAsync();
+                IReadOnlyList<AppListEntry> appEntryList = await Package.Current.GetAppListEntriesAsync();
 
-                if (appEntriesList[0] is AppListEntry defaultEntry)
+                if (appEntryList[0] is AppListEntry appListEntry)
                 {
                     StartScreenManager startScreenManager = StartScreenManager.GetDefault();
 
-                    bool containsEntry = await startScreenManager.ContainsAppListEntryAsync(defaultEntry);
+                    bool containsEntry = await startScreenManager.ContainsAppListEntryAsync(appListEntry);
 
                     if (!containsEntry)
                     {
-                        await startScreenManager.RequestAddAppListEntryAsync(defaultEntry);
+                        await startScreenManager.RequestAddAppListEntryAsync(appListEntry);
                     }
 
                     isPinnedSuccessfully = true;

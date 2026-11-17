@@ -134,11 +134,11 @@ namespace PowerToolbox.Services.Shell
             {
                 foreach (RegistryEnumKeyItem subRegistryKeyItem in registryEnumKeyItem.SubRegistryKeyList)
                 {
-                    shellMenuItem.SubShellMenuItem.Add(EnumShellMenuItem(subRegistryKeyItem));
+                    shellMenuItem.SubShellMenuItemList.Add(EnumShellMenuItem(subRegistryKeyItem));
                 }
 
                 // 递归获取完子列表后，根据列表的索引进行排序
-                shellMenuItem.SubShellMenuItem.Sort((item1, item2) => item1.MenuIndex.CompareTo(item2.MenuIndex));
+                shellMenuItem.SubShellMenuItemList.Sort((item1, item2) => item1.MenuIndex.CompareTo(item2.MenuIndex));
             }
 
             return shellMenuItem;

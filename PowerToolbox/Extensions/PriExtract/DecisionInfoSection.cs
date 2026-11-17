@@ -16,11 +16,11 @@ namespace PowerToolbox.Extensions.PriExtract
 
         internal uint SectionLength { get; private set; }
 
-        internal IReadOnlyList<Decision> DecisionsList { get; private set; }
+        internal IReadOnlyList<Decision> DecisionList { get; private set; }
 
-        internal IReadOnlyList<QualifierSet> QualifierSetsList { get; private set; }
+        internal IReadOnlyList<QualifierSet> QualifierSetList { get; private set; }
 
-        internal IReadOnlyList<Qualifier> QualifiersList { get; private set; }
+        internal IReadOnlyList<Qualifier> QualifierList { get; private set; }
 
         internal DecisionInfoSection(string sectionIdentifier, BinaryReader binaryReader)
         {
@@ -42,15 +42,15 @@ namespace PowerToolbox.Extensions.PriExtract
             using SubStream subStream = new(binaryReader.BaseStream, binaryReader.BaseStream.Position, (int)SectionLength - 16 - 24);
             using BinaryReader subBinaryReader = new(subStream, Encoding.ASCII);
 
-            ushort numDistinctQualifiers = binaryReader.ReadUInt16();
-            ushort numQualifiers = binaryReader.ReadUInt16();
-            ushort numQualifierSets = binaryReader.ReadUInt16();
-            ushort numDecisions = binaryReader.ReadUInt16();
-            ushort numIndexTableEntries = binaryReader.ReadUInt16();
+            ushort distinctQualifierNum = binaryReader.ReadUInt16();
+            ushort qualifierNum = binaryReader.ReadUInt16();
+            ushort qualifierSetNum = binaryReader.ReadUInt16();
+            ushort decisionNum = binaryReader.ReadUInt16();
+            ushort indexTableEntryNum = binaryReader.ReadUInt16();
             ushort totalDataLength = binaryReader.ReadUInt16();
 
-            List<DecisionInfo> decisionInfoList = [with(numDecisions)];
-            for (int i = 0; i < numDecisions; i++)
+            List<DecisionInfo> decisionInfoList = [with(decisionNum)];
+            for (int i = 0; i < decisionNum; i++)
             {
                 ushort firstQualifierSetIndexIndex = binaryReader.ReadUInt16();
                 ushort numQualifierSetsInDecision = binaryReader.ReadUInt16();
@@ -61,8 +61,8 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            List<QualifierSetInfo> qualifierSetInfoList = [with(numQualifierSets)];
-            for (int i = 0; i < numQualifierSets; i++)
+            List<QualifierSetInfo> qualifierSetInfoList = [with(qualifierSetNum)];
+            for (int i = 0; i < qualifierSetNum; i++)
             {
                 ushort firstQualifierIndexIndex = binaryReader.ReadUInt16();
                 ushort numQualifiersInSet = binaryReader.ReadUInt16();
@@ -73,8 +73,8 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            List<QualifierInfo> qualifierInfoList = [with(numQualifiers)];
-            for (int i = 0; i < numQualifiers; i++)
+            List<QualifierInfo> qualifierInfoList = [with(qualifierNum)];
+            for (int i = 0; i < qualifierNum; i++)
             {
                 ushort index = binaryReader.ReadUInt16();
                 ushort priority = binaryReader.ReadUInt16();
@@ -88,8 +88,8 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            List<DistinctQualifierInfo> distinctQualifierInfoList = [with(numDistinctQualifiers)];
-            for (int i = 0; i < numDistinctQualifiers; i++)
+            List<DistinctQualifierInfo> distinctQualifierInfoList = [with(distinctQualifierNum)];
+            for (int i = 0; i < distinctQualifierNum; i++)
             {
                 binaryReader.ReadUInt16();
                 QualifierType qualifierType = (QualifierType)binaryReader.ReadUInt16();
@@ -103,23 +103,23 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            ushort[] indexTableArray = new ushort[numIndexTableEntries];
+            ushort[] indexTableArray = new ushort[indexTableEntryNum];
 
-            for (int i = 0; i < numIndexTableEntries; i++)
+            for (int i = 0; i < indexTableEntryNum; i++)
             {
                 indexTableArray[i] = binaryReader.ReadUInt16();
             }
 
             long dataStartOffset = binaryReader.BaseStream.Position;
-            List<Qualifier> qualifiersList = [with(numQualifiers)];
+            List<Qualifier> qualifierList = [with(qualifierNum)];
 
-            for (int i = 0; i < numQualifiers; i++)
+            for (int i = 0; i < qualifierNum; i++)
             {
                 DistinctQualifierInfo distinctQualifierInfo = distinctQualifierInfoList[qualifierInfoList[i].Index];
                 binaryReader.BaseStream.Seek(dataStartOffset + distinctQualifierInfo.OperandValueOffset * 2, SeekOrigin.Begin);
                 string value = binaryReader.ReadNullTerminatedString(Encoding.Unicode);
 
-                qualifiersList.Add(new()
+                qualifierList.Add(new()
                 {
                     Index = (ushort)i,
                     Type = distinctQualifierInfo.QualifierType,
@@ -129,45 +129,45 @@ namespace PowerToolbox.Extensions.PriExtract
                 });
             }
 
-            QualifiersList = qualifiersList;
-            List<QualifierSet> qualifierSetsList = [with(numQualifierSets)];
+            QualifierList = qualifierList;
+            List<QualifierSet> qualifierSetList = [with(qualifierSetNum)];
 
-            for (int i = 0; i < numQualifierSets; i++)
+            for (int i = 0; i < qualifierSetNum; i++)
             {
                 List<Qualifier> qualifiersInSet = [with(qualifierSetInfoList[i].NumQualifiersInSet)];
 
                 for (int j = 0; j < qualifierSetInfoList[i].NumQualifiersInSet; j++)
                 {
-                    qualifiersInSet.Add(qualifiersList[indexTableArray[qualifierSetInfoList[i].FirstQualifierIndexIndex + j]]);
+                    qualifiersInSet.Add(qualifierList[indexTableArray[qualifierSetInfoList[i].FirstQualifierIndexIndex + j]]);
                 }
 
-                qualifierSetsList.Add(new()
+                qualifierSetList.Add(new()
                 {
                     Index = (ushort)i,
-                    QualifiersList = qualifiersInSet
+                    QualifierList = qualifiersInSet
                 });
             }
 
-            QualifierSetsList = qualifierSetsList;
-            List<Decision> decisionsList = [with(numDecisions)];
+            QualifierSetList = qualifierSetList;
+            List<Decision> decisionList = [with(decisionNum)];
 
-            for (int i = 0; i < numDecisions; i++)
+            for (int i = 0; i < decisionNum; i++)
             {
-                List<QualifierSet> qualifierSetsInDecision = [with(decisionInfoList[i].NumQualifierSetsInDecision)];
+                List<QualifierSet> qualifierSetsInDecisionList = [with(decisionInfoList[i].NumQualifierSetsInDecision)];
 
                 for (int j = 0; j < decisionInfoList[i].NumQualifierSetsInDecision; j++)
                 {
-                    qualifierSetsInDecision.Add(qualifierSetsList[indexTableArray[decisionInfoList[i].FirstQualifierSetIndexIndex + j]]);
+                    qualifierSetsInDecisionList.Add(qualifierSetList[indexTableArray[decisionInfoList[i].FirstQualifierSetIndexIndex + j]]);
                 }
 
-                decisionsList.Add(new()
+                decisionList.Add(new()
                 {
                     Index = (ushort)i,
-                    QualifierSetsList = qualifierSetsInDecision
+                    QualifierSetList = qualifierSetsInDecisionList
                 });
             }
 
-            DecisionsList = decisionsList;
+            DecisionList = decisionList;
         }
     }
 }

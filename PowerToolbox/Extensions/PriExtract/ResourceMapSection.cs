@@ -25,7 +25,7 @@ namespace PowerToolbox.Extensions.PriExtract
 
         internal IReadOnlyDictionary<ushort, CandidateSet> CandidateSetsDict { get; private set; }
 
-        internal ResourceMapSection(string sectionIdentifier, BinaryReader binaryReader, bool version2, ref object[] sectionList)
+        internal ResourceMapSection(string sectionIdentifier, BinaryReader binaryReader, bool version2, ref object[] sectionObjectArray)
         {
             if (!string.Equals(new(binaryReader.ReadChars(16)), sectionIdentifier))
             {
@@ -76,7 +76,7 @@ namespace PowerToolbox.Extensions.PriExtract
             uint dataLength = binaryReader.ReadUInt32();
             uint largeTableLength = binaryReader.ReadUInt32();
 
-            if (sectionList[DecisionInfoSectionIndex] is null)
+            if (sectionObjectArray[DecisionInfoSectionIndex] is null)
             {
                 return;
             }
@@ -133,26 +133,26 @@ namespace PowerToolbox.Extensions.PriExtract
                 resourceValueTypeTableList.Add(resourceValueType);
             }
 
-            List<ItemToItemInfoGroup> itemToItemInfoGroupsList = [];
+            List<ItemToItemInfoGroup> itemToItemInfoGroupList = [];
 
             for (int i = 0; i < ItemToItemInfoGroupCount; i++)
             {
                 ushort firstItem = binaryReader.ReadUInt16();
                 ushort itemInfoGroup = binaryReader.ReadUInt16();
 
-                itemToItemInfoGroupsList.Add(new()
+                itemToItemInfoGroupList.Add(new()
                 {
                     FirstItem = firstItem,
                     ItemInfoGroup = itemInfoGroup
                 });
             }
 
-            List<ItemInfoGroup> itemInfoGroupsList = [];
+            List<ItemInfoGroup> itemInfoGroupList = [];
             for (int i = 0; i < itemInfoGroupCount; i++)
             {
                 ushort groupSize = binaryReader.ReadUInt16();
                 ushort firstItemInfo = binaryReader.ReadUInt16();
-                itemInfoGroupsList.Add(new()
+                itemInfoGroupList.Add(new()
                 {
                     FirstItemInfo = firstItemInfo,
                     GroupSize = groupSize
@@ -184,7 +184,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 {
                     uint firstItem = r.ReadUInt32();
                     uint itemInfoGroup = r.ReadUInt32();
-                    itemToItemInfoGroupsList.Add(new()
+                    itemToItemInfoGroupList.Add(new()
                     {
                         FirstItem = firstItem,
                         ItemInfoGroup = itemInfoGroup
@@ -195,7 +195,7 @@ namespace PowerToolbox.Extensions.PriExtract
                 {
                     uint groupSize = r.ReadUInt32();
                     uint firstItemInfo = r.ReadUInt32();
-                    itemInfoGroupsList.Add(new()
+                    itemInfoGroupList.Add(new()
                     {
                         FirstItemInfo = firstItemInfo,
                         GroupSize = groupSize
@@ -264,24 +264,24 @@ namespace PowerToolbox.Extensions.PriExtract
             }
 
             long stringDataStartOffset = binaryReader.BaseStream.Position;
-            Dictionary<ushort, CandidateSet> candidateSetsList = [];
+            Dictionary<ushort, CandidateSet> candidateSetList = [];
 
-            for (int itemToItemInfoGroupIndex = 0; itemToItemInfoGroupIndex < itemToItemInfoGroupsList.Count; itemToItemInfoGroupIndex++)
+            for (int itemToItemInfoGroupIndex = 0; itemToItemInfoGroupIndex < itemToItemInfoGroupList.Count; itemToItemInfoGroupIndex++)
             {
-                ItemToItemInfoGroup itemToItemInfoGroup = itemToItemInfoGroupsList[itemToItemInfoGroupIndex];
+                ItemToItemInfoGroup itemToItemInfoGroup = itemToItemInfoGroupList[itemToItemInfoGroupIndex];
 
                 ItemInfoGroup itemInfoGroup;
 
-                if (itemToItemInfoGroup.ItemInfoGroup < itemInfoGroupsList.Count)
+                if (itemToItemInfoGroup.ItemInfoGroup < itemInfoGroupList.Count)
                 {
-                    itemInfoGroup = itemInfoGroupsList[(int)itemToItemInfoGroup.ItemInfoGroup];
+                    itemInfoGroup = itemInfoGroupList[(int)itemToItemInfoGroup.ItemInfoGroup];
                 }
                 else
                 {
                     itemInfoGroup = new()
                     {
                         GroupSize = 1,
-                        FirstItemInfo = (uint)(itemToItemInfoGroup.ItemInfoGroup - itemInfoGroupsList.Count)
+                        FirstItemInfo = (uint)(itemToItemInfoGroup.ItemInfoGroup - itemInfoGroupList.Count)
                     };
                 }
 
@@ -289,19 +289,19 @@ namespace PowerToolbox.Extensions.PriExtract
                 {
                     ItemInfo itemInfo = itemInfoList[(int)itemInfoIndex];
                     ushort decisionIndex = (ushort)itemInfo.Decision;
-                    Decision decision = (sectionList[DecisionInfoSectionIndex] as DecisionInfoSection)?.DecisionsList[decisionIndex];
-                    List<Candidate> candidatesList = [with(decision.QualifierSetsList.Count)];
+                    Decision decision = (sectionObjectArray[DecisionInfoSectionIndex] as DecisionInfoSection)?.DecisionList[decisionIndex];
+                    List<Candidate> candidateList = [with(decision.QualifierSetList.Count)];
 
-                    for (int i = 0; i < decision.QualifierSetsList.Count; i++)
+                    for (int i = 0; i < decision.QualifierSetList.Count; i++)
                     {
                         CandidateInfo candidateInfo = candidateInfoList[(int)itemInfo.FirstCandidate + i];
 
                         if (candidateInfo.Type is 0x01)
                         {
                             int? sourceFile = candidateInfo.SourceFileIndex is 0 ? null : candidateInfo.SourceFileIndex - 1;
-                            candidatesList.Add(new()
+                            candidateList.Add(new()
                             {
-                                QualifierSet = decision.QualifierSetsList[i].Index,
+                                QualifierSet = decision.QualifierSetList[i].Index,
                                 Type = candidateInfo.ResourceValueType,
                                 SourceFileIndex = sourceFile,
                                 DataItemSectionAndIndex = ValueTuple.Create(candidateInfo.DataItemSection, candidateInfo.DataItemIndex),
@@ -316,9 +316,9 @@ namespace PowerToolbox.Extensions.PriExtract
                                 Length = candidateInfo.DataLength
                             };
 
-                            candidatesList.Add(new()
+                            candidateList.Add(new()
                             {
-                                QualifierSet = decision.QualifierSetsList[i].Index,
+                                QualifierSet = decision.QualifierSetList[i].Index,
                                 Type = candidateInfo.ResourceValueType,
                                 SourceFileIndex = null,
                                 DataItemSectionAndIndex = default,
@@ -333,14 +333,14 @@ namespace PowerToolbox.Extensions.PriExtract
                     {
                         ResourceMapSectionAndIndex = ValueTuple.Create(SchemaSectionIndex, (int)resourceMapItemIndex),
                         DecisionIndex = decisionIndex,
-                        CandidatesList = candidatesList
+                        CandidateList = candidateList
                     };
 
-                    candidateSetsList.Add(resourceMapItemIndex, candidateSet);
+                    candidateSetList.Add(resourceMapItemIndex, candidateSet);
                 }
             }
 
-            CandidateSetsDict = candidateSetsList;
+            CandidateSetsDict = candidateSetList;
         }
     }
 }

@@ -8,6 +8,7 @@ using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -42,11 +43,11 @@ namespace PowerToolbox.Views.Dialogs
 
         #region 第三部分：构造函数
 
-        internal FileUnlockFailedDialog(List<FileUnlockFailedModel> fileUnlockFailedList)
+        internal FileUnlockFailedDialog(ReadOnlyCollection<FileUnlockFailedModel> fileUnlockFailedCollection)
         {
             InitializeComponent();
 
-            foreach (FileUnlockFailedModel fileUnlockFailedItem in fileUnlockFailedList)
+            foreach (FileUnlockFailedModel fileUnlockFailedItem in fileUnlockFailedCollection)
             {
                 FileUnlockFailedCollection.Add(fileUnlockFailedItem);
             }
@@ -63,7 +64,7 @@ namespace PowerToolbox.Views.Dialogs
         {
             if (args.Parameter is FileUnlockFailedModel fileUnlockFailedItem)
             {
-                string fileUnlockFailedString = await GetFileUnlockFailedStringAsync([fileUnlockFailedItem]);
+                string fileUnlockFailedString = await GetFileUnlockFailedStringAsync(new([fileUnlockFailedItem]));
 
                 if (!string.IsNullOrEmpty(fileUnlockFailedString))
                 {
@@ -109,7 +110,7 @@ namespace PowerToolbox.Views.Dialogs
 
             try
             {
-                string fileUnlockFailedString = await GetFileUnlockFailedStringAsync([.. FileUnlockFailedCollection]);
+                string fileUnlockFailedString = await GetFileUnlockFailedStringAsync(new(FileUnlockFailedCollection));
 
                 if (!string.IsNullOrEmpty(fileUnlockFailedString))
                 {
@@ -144,9 +145,9 @@ namespace PowerToolbox.Views.Dialogs
         /// <summary>
         /// 获取文件解锁失败信息内容
         /// </summary>
-        private async Task<string> GetFileUnlockFailedStringAsync(List<FileUnlockFailedModel> fileUnlockFailedList)
+        private async Task<string> GetFileUnlockFailedStringAsync(ReadOnlyCollection<FileUnlockFailedModel> fileUnlockFailedCollection)
         {
-            if (fileUnlockFailedList is null || fileUnlockFailedList.Count is 0)
+            if (fileUnlockFailedCollection is null || fileUnlockFailedCollection.Count is 0)
             {
                 return default;
             }
@@ -157,7 +158,7 @@ namespace PowerToolbox.Views.Dialogs
                 {
                     StringBuilder stringBuilder = new();
 
-                    foreach (FileUnlockFailedModel fileUnlockFailedItem in fileUnlockFailedList)
+                    foreach (FileUnlockFailedModel fileUnlockFailedItem in fileUnlockFailedCollection)
                     {
                         stringBuilder.Append(FileNameCopyString);
                         stringBuilder.AppendLine(fileUnlockFailedItem.FileName);

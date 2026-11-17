@@ -48,7 +48,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnPersonalizationClicked(object sender, RoutedEventArgs args)
         {
-            advancedSystemOptionsPage?.NavigateTo(advancedSystemOptionsPage.PageList[1], advancedSystemOptionsPage, true);
+            advancedSystemOptionsPage?.NavigateTo(advancedSystemOptionsPage.PageCollection[1], advancedSystemOptionsPage, true);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSystemClicked(object sender, RoutedEventArgs args)
         {
-            advancedSystemOptionsPage?.NavigateTo(advancedSystemOptionsPage.PageList[2], advancedSystemOptionsPage, true);
+            advancedSystemOptionsPage?.NavigateTo(advancedSystemOptionsPage.PageCollection[2], advancedSystemOptionsPage, true);
         }
 
         #endregion 第四部分：挂载事件处理

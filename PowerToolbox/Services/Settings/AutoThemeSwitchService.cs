@@ -2,6 +2,7 @@
 using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace PowerToolbox.Services.Settings
 {
@@ -43,14 +44,14 @@ namespace PowerToolbox.Services.Settings
         internal static TimeSpan AppThemeDarkTime { get; set; }
         internal static int SunriseOffset { get; set; }
         internal static int SunsetOffset { get; set; }
-        internal static List<string> AutoThemeSwitchTypeList { get; } = ["FixedTime", "SunriseSunset", "DarkMode"];
+        internal static ReadOnlyCollection<string> AutoThemeSwitchTypeCollection { get; } = new(["FixedTime", "SunriseSunset", "DarkMode"]);
 
         /// <summary>
         /// 应用在初始化前获取设置存储的自动切换主题所有选项值
         /// </summary>
         internal static void InitializeAutoThemeSwitch()
         {
-            DefaultAutoThemeSwitchType = AutoThemeSwitchTypeList[0];
+            DefaultAutoThemeSwitchType = AutoThemeSwitchTypeCollection[0];
             AutoThemeSwitchEnable = GetAutoThemeSwitchEnable();
             AutoThemeSwitchType = GetAutoThemeSwitchType();
             AutoSwitchSystemTheme = GetAutoSwitchSystemTheme();

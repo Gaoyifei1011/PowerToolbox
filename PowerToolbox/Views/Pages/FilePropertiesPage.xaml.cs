@@ -11,6 +11,7 @@ using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -218,7 +219,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private WinRTObservableCollection<OldAndNewPropertiesModel> FilePropertiesCollection { get; } = [];
+        private WinRTObservableCollection<OldAndNewPropertiesModel> FilePropertyCollection { get; } = [];
 
         private List<OperationFailedModel> OperationFailedList { get; } = [];
 
@@ -273,9 +274,9 @@ namespace PowerToolbox.Views.Pages
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
             try
             {
-                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count > 0 && await GetNeedConvertFileListAsync(fileList) is List<OldAndNewPropertiesModel> filePropertiesList && filePropertiesList.Count > 0)
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count > 0 && await GetNeedConvertFileCollectionAsync(fileCollection) is ReadOnlyCollection<OldAndNewPropertiesModel> filePropertyCollection && filePropertyCollection.Count > 0)
                 {
-                    AddToFilePropertiesPage(filePropertiesList);
+                    AddToFilePropertiesPage(filePropertyCollection);
                     IsOperationFailed = false;
                     OperationFailedList.Clear();
                 }
@@ -304,7 +305,7 @@ namespace PowerToolbox.Views.Pages
             {
                 lock (filePropertiesLock)
                 {
-                    FilePropertiesCollection.Remove(oldAndNewProperties);
+                    FilePropertyCollection.Remove(oldAndNewProperties);
                 }
             }
         }
@@ -318,14 +319,14 @@ namespace PowerToolbox.Views.Pages
             {
                 lock (filePropertiesLock)
                 {
-                    int index = FilePropertiesCollection.IndexOf(oldAndNewProperties);
+                    int index = FilePropertyCollection.IndexOf(oldAndNewProperties);
 
-                    if (index >= 0 && index < FilePropertiesCollection.Count - 1)
+                    if (index >= 0 && index < FilePropertyCollection.Count - 1)
                     {
-                        OldAndNewPropertiesModel upOldAndNewProperties = FilePropertiesCollection[index];
-                        OldAndNewPropertiesModel downOldAndNewProperties = FilePropertiesCollection[index + 1];
-                        FilePropertiesCollection[index] = downOldAndNewProperties;
-                        FilePropertiesCollection[index + 1] = upOldAndNewProperties;
+                        OldAndNewPropertiesModel upOldAndNewProperties = FilePropertyCollection[index];
+                        OldAndNewPropertiesModel downOldAndNewProperties = FilePropertyCollection[index + 1];
+                        FilePropertyCollection[index] = downOldAndNewProperties;
+                        FilePropertyCollection[index + 1] = upOldAndNewProperties;
                     }
                 }
             }
@@ -340,14 +341,14 @@ namespace PowerToolbox.Views.Pages
             {
                 lock (filePropertiesLock)
                 {
-                    int index = FilePropertiesCollection.IndexOf(oldAndNewProperties);
+                    int index = FilePropertyCollection.IndexOf(oldAndNewProperties);
 
                     if (index > 0)
                     {
-                        OldAndNewPropertiesModel upOldAndNewProperties = FilePropertiesCollection[index - 1];
-                        OldAndNewPropertiesModel downOldAndNewProperties = FilePropertiesCollection[index];
-                        FilePropertiesCollection[index - 1] = downOldAndNewProperties;
-                        FilePropertiesCollection[index] = upOldAndNewProperties;
+                        OldAndNewPropertiesModel upOldAndNewProperties = FilePropertyCollection[index - 1];
+                        OldAndNewPropertiesModel downOldAndNewProperties = FilePropertyCollection[index];
+                        FilePropertyCollection[index - 1] = downOldAndNewProperties;
+                        FilePropertyCollection[index] = upOldAndNewProperties;
                     }
                 }
             }
@@ -385,7 +386,7 @@ namespace PowerToolbox.Views.Pages
             lock (filePropertiesLock)
             {
                 IsOperationFailed = false;
-                FilePropertiesCollection.Clear();
+                FilePropertyCollection.Clear();
                 OperationFailedList.Clear();
             }
         }
@@ -436,9 +437,9 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 OperationFailedList.Clear();
-                if (await GetNeedConvertFileListAsync([.. openFileDialog.FileNames]) is List<OldAndNewPropertiesModel> filePropertiesList && filePropertiesList.Count > 0)
+                if (await GetNeedConvertFileCollectionAsync(new(openFileDialog.FileNames)) is ReadOnlyCollection<OldAndNewPropertiesModel> filePropertiesCollection && filePropertiesCollection.Count > 0)
                 {
-                    AddToFilePropertiesPage(filePropertiesList);
+                    AddToFilePropertiesPage(filePropertiesCollection);
                 }
             }
             openFileDialog.Dispose();
@@ -461,16 +462,16 @@ namespace PowerToolbox.Views.Pages
                 OperationFailedList.Clear();
                 if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath))
                 {
-                    (List<OldAndNewPropertiesModel> directoryNameList, List<OldAndNewPropertiesModel> fileNameList) = await GetFileAndDirectoryAsync(openFolderDialog.SelectedPath);
+                    (ReadOnlyCollection<OldAndNewPropertiesModel> directoryNameCollection, ReadOnlyCollection<OldAndNewPropertiesModel> fileNameCollection) = await GetFileAndDirectoryAsync(openFolderDialog.SelectedPath);
 
-                    if (directoryNameList is not null && directoryNameList.Count > 0)
+                    if (directoryNameCollection is not null && directoryNameCollection.Count > 0)
                     {
-                        AddToFilePropertiesPage(directoryNameList);
+                        AddToFilePropertiesPage(directoryNameCollection);
                     }
 
-                    if (fileNameList is not null && fileNameList.Count > 0)
+                    if (fileNameCollection is not null && fileNameCollection.Count > 0)
                     {
-                        AddToFilePropertiesPage(fileNameList);
+                        AddToFilePropertiesPage(fileNameCollection);
                     }
                 }
             }
@@ -518,7 +519,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnViewErrorInformationClicked(object sender, RoutedEventArgs args)
         {
-            await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList));
+            await MainWindow.Current.ShowDialogAsync(new OperationFailedDialog(OperationFailedList.AsReadOnly()));
         }
 
         #endregion 第六部分：挂载事件处理
@@ -539,13 +540,13 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 添加到文件属性页面
         /// </summary>
-        internal void AddToFilePropertiesPage(List<OldAndNewPropertiesModel> filePropertiesList)
+        internal void AddToFilePropertiesPage(ReadOnlyCollection<OldAndNewPropertiesModel> filePropertyCollection)
         {
             lock (filePropertiesLock)
             {
-                foreach (OldAndNewPropertiesModel oldAndNewPropertiesItem in filePropertiesList)
+                foreach (OldAndNewPropertiesModel oldAndNewPropertiesItem in filePropertyCollection)
                 {
-                    FilePropertiesCollection.Add(oldAndNewPropertiesItem);
+                    FilePropertyCollection.Add(oldAndNewPropertiesItem);
                 }
             }
         }
@@ -563,7 +564,7 @@ namespace PowerToolbox.Views.Pages
 
                 lock (filePropertiesLock)
                 {
-                    count = FilePropertiesCollection.Count;
+                    count = FilePropertyCollection.Count;
                 }
 
                 if (count is 0)
@@ -624,7 +625,7 @@ namespace PowerToolbox.Views.Pages
 
             lock (filePropertiesLock)
             {
-                foreach (OldAndNewPropertiesModel oldAndNewPropertiesItem in FilePropertiesCollection)
+                foreach (OldAndNewPropertiesModel oldAndNewPropertiesItem in FilePropertyCollection)
                 {
                     oldAndNewPropertiesItem.FileProperties = Convert.ToString(stringBuilder);
                 }
@@ -639,32 +640,32 @@ namespace PowerToolbox.Views.Pages
             IsModifyingNow = true;
             lock (filePropertiesLock)
             {
-                foreach (OldAndNewPropertiesModel oldAndNewProperties in FilePropertiesCollection)
+                foreach (OldAndNewPropertiesModel oldAndNewProperties in FilePropertyCollection)
                 {
                     oldAndNewProperties.IsModifyingNow = true;
                 }
             }
-            List<OperationFailedModel> operationFailedList = await GetOperationFailedListAsync(isReadOnlyChecked, isArchiveChecked, isCreateDateChecked, isHideChecked, isSystemChecked, isModifyDateChecked, createDate, createTime, modifyDate, modifyTime);
+            ReadOnlyCollection<OperationFailedModel> operationFailedCollection = await GetOperationFailedCollectionAsync(isReadOnlyChecked, isArchiveChecked, isCreateDateChecked, isHideChecked, isSystemChecked, isModifyDateChecked, createDate, createTime, modifyDate, modifyTime);
 
             IsModifyingNow = false;
             lock (filePropertiesLock)
             {
-                foreach (OldAndNewPropertiesModel oldAndNewProperties in FilePropertiesCollection)
+                foreach (OldAndNewPropertiesModel oldAndNewProperties in FilePropertyCollection)
                 {
                     oldAndNewProperties.IsModifyingNow = false;
                 }
             }
-            foreach (OperationFailedModel operationFailedItem in operationFailedList)
+            foreach (OperationFailedModel operationFailedItem in operationFailedCollection)
             {
                 OperationFailedList.Add(operationFailedItem);
             }
 
             IsOperationFailed = OperationFailedList.Count is not 0;
-            int count = FilePropertiesCollection.Count;
+            int count = FilePropertyCollection.Count;
 
             lock (filePropertiesLock)
             {
-                FilePropertiesCollection.Clear();
+                FilePropertyCollection.Clear();
             }
 
             await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.File, count - OperationFailedList.Count, OperationFailedList.Count));
@@ -673,7 +674,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取拖拽支持选中的文件
         /// </summary>
-        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        private async Task<ReadOnlyCollection<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
         {
             if (dataPackageView is null)
             {
@@ -699,25 +700,25 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(GetDragDropSelectedFilesAsync), 1, e);
                 }
 
-                return fileList;
+                return fileList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取要待转换的文件列表
         /// </summary>
-        private async Task<List<OldAndNewPropertiesModel>> GetNeedConvertFileListAsync(List<string> fileList)
+        private async Task<ReadOnlyCollection<OldAndNewPropertiesModel>> GetNeedConvertFileCollectionAsync(ReadOnlyCollection<string> fileCollection)
         {
-            if (fileList is null || fileList.Count is 0)
+            if (fileCollection is null || fileCollection.Count is 0)
             {
                 return default;
             }
 
             return await Task.Run(() =>
             {
-                List<OldAndNewPropertiesModel> filePropertiesList = [];
+                List<OldAndNewPropertiesModel> filePropertyList = [];
 
-                foreach (string file in fileList)
+                foreach (string file in fileCollection)
                 {
                     try
                     {
@@ -727,7 +728,7 @@ namespace PowerToolbox.Views.Pages
                             continue;
                         }
 
-                        filePropertiesList.Add(new()
+                        filePropertyList.Add(new()
                         {
                             FileName = Path.GetFileName(file),
                             FilePath = file,
@@ -735,23 +736,23 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(GetNeedConvertFileListAsync), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(GetNeedConvertFileCollectionAsync), 1, e);
                         continue;
                     }
                 }
 
-                return filePropertiesList;
+                return filePropertyList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取文件夹的所有子文件夹和所有文件
         /// </summary>
-        private async Task<(List<OldAndNewPropertiesModel>, List<OldAndNewPropertiesModel>)> GetFileAndDirectoryAsync(string folderPath)
+        private async Task<(ReadOnlyCollection<OldAndNewPropertiesModel>, ReadOnlyCollection<OldAndNewPropertiesModel>)> GetFileAndDirectoryAsync(string folderPath)
         {
             if (string.IsNullOrEmpty(folderPath))
             {
-                return ValueTuple.Create<List<OldAndNewPropertiesModel>, List<OldAndNewPropertiesModel>>([], []);
+                return ValueTuple.Create<ReadOnlyCollection<OldAndNewPropertiesModel>, ReadOnlyCollection<OldAndNewPropertiesModel>>(new([]), new([]));
             }
 
             return await Task.Run(() =>
@@ -801,14 +802,14 @@ namespace PowerToolbox.Views.Pages
                 {
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FilePropertiesPage), nameof(GetFileAndDirectoryAsync), 2, e);
                 }
-                return ValueTuple.Create(directoryNameList, fileNameList);
+                return ValueTuple.Create(directoryNameList.AsReadOnly(), fileNameList.AsReadOnly());
             });
         }
 
         /// <summary>
         /// 获取失败操作列表
         /// </summary>
-        private async Task<List<OperationFailedModel>> GetOperationFailedListAsync(bool isReadOnlyChecked, bool isArchiveChecked, bool isCreateDateChecked, bool isHideChecked, bool isSystemChecked, bool isModifyDateChecked, DateTimeOffset createDate, TimeSpan createTime, DateTimeOffset modifyDate, TimeSpan modifyTime)
+        private async Task<ReadOnlyCollection<OperationFailedModel>> GetOperationFailedCollectionAsync(bool isReadOnlyChecked, bool isArchiveChecked, bool isCreateDateChecked, bool isHideChecked, bool isSystemChecked, bool isModifyDateChecked, DateTimeOffset createDate, TimeSpan createTime, DateTimeOffset modifyDate, TimeSpan modifyTime)
         {
             return await Task.Run(() =>
             {
@@ -816,7 +817,7 @@ namespace PowerToolbox.Views.Pages
 
                 lock (filePropertiesLock)
                 {
-                    foreach (OldAndNewPropertiesModel oldAndNewPropertiesItem in FilePropertiesCollection)
+                    foreach (OldAndNewPropertiesModel oldAndNewPropertiesItem in FilePropertyCollection)
                     {
                         if (!string.IsNullOrEmpty(oldAndNewPropertiesItem.FileName) && !string.IsNullOrEmpty(oldAndNewPropertiesItem.FilePath))
                         {
@@ -850,7 +851,7 @@ namespace PowerToolbox.Views.Pages
                         }
                     }
                 }
-                return operationFailedList;
+                return operationFailedList.AsReadOnly();
             });
         }
 

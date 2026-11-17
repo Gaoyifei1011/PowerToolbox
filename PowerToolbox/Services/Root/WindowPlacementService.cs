@@ -3,6 +3,7 @@ using PowerToolbox.Helpers.Root;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Xml;
 
@@ -31,7 +32,7 @@ namespace PowerToolbox.Services.Root
                         xmlDocument.LoadXml(windowPlacementRoot);
 
                         XmlElement windowPlacementRootElement = xmlDocument.DocumentElement;
-                        List<RECT> monitorInfoList = GetAllMonitorInfoList();
+                        ReadOnlyCollection<RECT> monitorInfoCollection = GetAllMonitorInfoCollection();
 
                         // 检查显示器布局自我们记录位置以来是否有变化
                         XmlNodeList monitorNodeList = windowPlacementRootElement.SelectNodes("Monitor/MonitorItem");
@@ -42,7 +43,7 @@ namespace PowerToolbox.Services.Root
                                 continue;
                             }
 
-                            foreach (RECT monitorInfo in monitorInfoList)
+                            foreach (RECT monitorInfo in monitorInfoCollection)
                             {
                                 if (!Equals(monitorInfo.left, left) || !Equals(monitorInfo.top, top) || !Equals(monitorInfo.right, right) || !Equals(monitorInfo.bottom, bottom))
                                 {
@@ -117,8 +118,8 @@ namespace PowerToolbox.Services.Root
 
                     // 获取显示器信息
                     XmlElement monitorElement = xmlDocument.CreateElement("Monitor");
-                    List<RECT> monitorInfoList = GetAllMonitorInfoList();
-                    foreach (RECT monitorInfo in monitorInfoList)
+                    ReadOnlyCollection<RECT> monitorInfoCollection = GetAllMonitorInfoCollection();
+                    foreach (RECT monitorInfo in monitorInfoCollection)
                     {
                         XmlElement monitorItemElement = xmlDocument.CreateElement("MonitorItem");
                         monitorItemElement.SetAttribute("Left", Convert.ToString(monitorInfo.left));
@@ -155,7 +156,7 @@ namespace PowerToolbox.Services.Root
         /// <summary>
         /// 获取所有显示器信息列表
         /// </summary>
-        private static unsafe List<RECT> GetAllMonitorInfoList()
+        private static unsafe ReadOnlyCollection<RECT> GetAllMonitorInfoCollection()
         {
             List<RECT> monitorList = [];
 
@@ -166,7 +167,7 @@ namespace PowerToolbox.Services.Root
             }
 
             User32Library.EnumDisplayMonitors(0, 0, MonitorEnumProc, 0);
-            return monitorList;
+            return monitorList.AsReadOnly();
         }
     }
 }

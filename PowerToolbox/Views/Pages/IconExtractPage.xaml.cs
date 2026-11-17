@@ -13,11 +13,13 @@ using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -215,13 +217,13 @@ namespace PowerToolbox.Views.Pages
 
         internal List<ComboBoxItemModel> GetIconTypeList { get; } = [];
 
-        private List<ComboBoxItemModel> IconFormatList { get; } =
+        private ReadOnlyCollection<ComboBoxItemModel> IconFormatCollection { get; } = new(
         [
             new() { SelectedValue = ".ico", DisplayMember = ".ico" },
             new() { SelectedValue = ".png", DisplayMember = ".png" }
-        ];
+        ]);
 
-        private List<IconSizeModel> FileContainIconSizeList { get; } =
+        private ReadOnlyCollection<IconSizeModel> FileContainIconSizeCollection { get; } = new(
         [
             new() { Size = 16, ExtractSize = "16 * 16" },
             new() { Size = 24, ExtractSize = "24 * 24" },
@@ -232,15 +234,15 @@ namespace PowerToolbox.Views.Pages
             new() { Size = 96, ExtractSize = "96 * 96" },
             new() { Size = 128, ExtractSize = "128 * 128" },
             new() { Size = 256, ExtractSize = "256 * 256" }
-        ];
+        ]);
 
-        private List<IconSizeModel> FileAssociateIconSizeList { get; } =
+        private ReadOnlyCollection<IconSizeModel> FileAssociateIconSizeCollection { get; } = new(
         [
             new() { Size = 16, ExtractSize = "16 * 16" },
             new() { Size = 32, ExtractSize = "32 * 32" },
             new() { Size = 48, ExtractSize = "48 * 48" },
             new() { Size = 256, ExtractSize = "256 * 256" }
-        ];
+        ]);
 
         private WinRTObservableCollection<IconModel> IconCollection { get; } = [];
 
@@ -290,12 +292,12 @@ namespace PowerToolbox.Views.Pages
                     }
                     else
                     {
-                        if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count is 1)
+                        if (await GetDragDropSelectedFilesAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count is 1)
                         {
                             // 文件包含的图标
                             if (Equals(SelectedGetIconType, GetIconTypeList[0]))
                             {
-                                string extensionName = Path.GetExtension(fileList[0]);
+                                string extensionName = Path.GetExtension(fileCollection[0]);
 
                                 if (string.Equals(extensionName, ".exe", StringComparison.OrdinalIgnoreCase) || string.Equals(extensionName, ".dll", StringComparison.OrdinalIgnoreCase))
                                 {
@@ -365,9 +367,9 @@ namespace PowerToolbox.Views.Pages
 
             try
             {
-                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count is 1)
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count is 1)
                 {
-                    filePath = fileList[0];
+                    filePath = fileCollection[0];
                 }
             }
             catch (Exception e)
@@ -456,8 +458,8 @@ namespace PowerToolbox.Views.Pages
                 ImageSource = null;
                 NoResources = string.Empty;
                 IsItemSelected = false;
-                SelectedFileContainSize = FileContainIconSizeList[8];
-                SelectedFileAssociateSize = FileAssociateIconSizeList[3];
+                SelectedFileContainSize = FileContainIconSizeCollection[8];
+                SelectedFileAssociateSize = FileAssociateIconSizeCollection[3];
                 IconCollection.Clear();
             }
         }
@@ -546,7 +548,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSelectReverseClicked(object sender, RoutedEventArgs args)
         {
-            List<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = [.. IconExtractGridView.SelectedRanges];
+            ReadOnlyCollection<Microsoft.UI.Xaml.Data.ItemIndexRange> selectedRangeList = new([.. IconExtractGridView.SelectedRanges]);
             IconExtractGridView.SelectAll();
             foreach (Microsoft.UI.Xaml.Data.ItemIndexRange itemIndexRange in selectedRangeList)
             {
@@ -599,8 +601,8 @@ namespace PowerToolbox.Views.Pages
         {
             if (!string.IsNullOrEmpty(filePath))
             {
-                IList<object> selectedItemsList = IconExtractGridView.SelectedItems;
-                if (Equals(SelectedIconFormat, IconFormatList[0]) && ((Equals(SelectedGetIconType, GetIconTypeList[0]) && FileContainIconGridView.SelectedItems.Count is 0) || Equals(SelectedGetIconType, GetIconTypeList[1]) && FileAssociateIconGridView.SelectedItems.Count is 0))
+                ReadOnlyCollection<object> selectedItemsCollection = new(IconExtractGridView.SelectedItems);
+                if (Equals(SelectedIconFormat, IconFormatCollection[0]) && ((Equals(SelectedGetIconType, GetIconTypeList[0]) && FileContainIconGridView.SelectedItems.Count is 0) || Equals(SelectedGetIconType, GetIconTypeList[1]) && FileAssociateIconGridView.SelectedItems.Count is 0))
                 {
                     await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IcoSizeNotSelected));
                     return;
@@ -620,16 +622,16 @@ namespace PowerToolbox.Views.Pages
                     if (Equals(SelectedGetIconType, GetIconTypeList[0]))
                     {
                         // 提取 Ico 图标文件
-                        if (Equals(SelectedIconFormat, IconFormatList[0]))
+                        if (Equals(SelectedIconFormat, IconFormatCollection[0]))
                         {
-                            saveFailedCount = await SaveFileContainIcoImageAsync(openFolderDialog.SelectedPath, [.. FileContainIconGridView.SelectedItems], [.. selectedItemsList]);
+                            saveFailedCount = await SaveFileContainIcoImageAsync(openFolderDialog.SelectedPath, new(FileContainIconGridView.SelectedItems), selectedItemsCollection);
                         }
                         // 提取 Png 图标文件
-                        else if (SelectedIconFormat.Equals(IconFormatList[1]))
+                        else if (SelectedIconFormat.Equals(IconFormatCollection[1]))
                         {
                             if (SelectedFileContainSize is not null)
                             {
-                                saveFailedCount = await SaveFileContainPngImageAsync(openFolderDialog.SelectedPath, SelectedFileContainSize.Size, [.. selectedItemsList]);
+                                saveFailedCount = await SaveFileContainPngImageAsync(openFolderDialog.SelectedPath, SelectedFileContainSize.Size, selectedItemsCollection);
                             }
                         }
                     }
@@ -637,23 +639,23 @@ namespace PowerToolbox.Views.Pages
                     else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
                     {
                         // 提取 Ico 图标文件
-                        if (Equals(SelectedIconFormat, IconFormatList[0]))
+                        if (Equals(SelectedIconFormat, IconFormatCollection[0]))
                         {
-                            saveFailedCount = SaveFileAssociateIcoImage(openFolderDialog.SelectedPath, [.. FileAssociateIconGridView.SelectedItems], [.. selectedItemsList]);
+                            saveFailedCount = SaveFileAssociateIcoImage(openFolderDialog.SelectedPath, new(FileAssociateIconGridView.SelectedItems), selectedItemsCollection);
                         }
                         // 提取 Png 图标文件
-                        else if (SelectedIconFormat.Equals(IconFormatList[1]))
+                        else if (SelectedIconFormat.Equals(IconFormatCollection[1]))
                         {
                             if (SelectedFileAssociateSize is not null)
                             {
-                                saveFailedCount = SaveFileAssociatePngImage(openFolderDialog.SelectedPath, SelectedFileAssociateSize.Size, [.. selectedItemsList]);
+                                saveFailedCount = SaveFileAssociatePngImage(openFolderDialog.SelectedPath, SelectedFileAssociateSize.Size, selectedItemsCollection);
                             }
                         }
                     }
 
                     openFolderDialog.Dispose();
                     IsSaving = false;
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IconExtract, selectedItemsList.Count - saveFailedCount, saveFailedCount));
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IconExtract, selectedItemsCollection.Count - saveFailedCount, saveFailedCount));
                 }
                 else
                 {
@@ -669,7 +671,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (!string.IsNullOrEmpty(filePath))
             {
-                if (Equals(SelectedIconFormat, IconFormatList[0]) && ((Equals(SelectedGetIconType, GetIconTypeList[0]) && FileContainIconGridView.SelectedItems.Count is 0) || Equals(SelectedGetIconType, GetIconTypeList[1]) && FileAssociateIconGridView.SelectedItems.Count is 0))
+                if (Equals(SelectedIconFormat, IconFormatCollection[0]) && ((Equals(SelectedGetIconType, GetIconTypeList[0]) && FileContainIconGridView.SelectedItems.Count is 0) || Equals(SelectedGetIconType, GetIconTypeList[1]) && FileAssociateIconGridView.SelectedItems.Count is 0))
                 {
                     await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IcoSizeNotSelected));
                     return;
@@ -682,7 +684,7 @@ namespace PowerToolbox.Views.Pages
                 DialogResult dialogResult = openFolderDialog.ShowDialog();
                 if (dialogResult is DialogResult.OK || dialogResult is DialogResult.Yes)
                 {
-                    List<object> iconList = [.. IconCollection];
+                    ReadOnlyCollection<object> iconCollection = new([.. IconCollection]);
                     IsSaving = false;
                     int saveFailedCount = 0;
 
@@ -690,16 +692,16 @@ namespace PowerToolbox.Views.Pages
                     if (Equals(SelectedGetIconType, GetIconTypeList[0]))
                     {
                         // 提取 Ico 图标文件
-                        if (Equals(SelectedIconFormat, IconFormatList[0]))
+                        if (Equals(SelectedIconFormat, IconFormatCollection[0]))
                         {
-                            saveFailedCount = await SaveFileContainIcoImageAsync(openFolderDialog.SelectedPath, [.. FileContainIconGridView.SelectedItems], iconList);
+                            saveFailedCount = await SaveFileContainIcoImageAsync(openFolderDialog.SelectedPath, new(FileContainIconGridView.SelectedItems), iconCollection);
                         }
                         // 提取 Png 图标文件
-                        else if (SelectedIconFormat.Equals(IconFormatList[1]))
+                        else if (SelectedIconFormat.Equals(IconFormatCollection[1]))
                         {
                             if (SelectedFileContainSize is not null)
                             {
-                                saveFailedCount = await SaveFileContainPngImageAsync(openFolderDialog.SelectedPath, SelectedFileContainSize.Size, iconList);
+                                saveFailedCount = await SaveFileContainPngImageAsync(openFolderDialog.SelectedPath, SelectedFileContainSize.Size, iconCollection);
                             }
                         }
                     }
@@ -707,16 +709,16 @@ namespace PowerToolbox.Views.Pages
                     else if (Equals(SelectedGetIconType, GetIconTypeList[1]))
                     {
                         // 提取 Ico 图标文件
-                        if (Equals(SelectedIconFormat, IconFormatList[0]))
+                        if (Equals(SelectedIconFormat, IconFormatCollection[0]))
                         {
-                            saveFailedCount = SaveFileAssociateIcoImage(openFolderDialog.SelectedPath, [.. FileAssociateIconGridView.SelectedItems], iconList);
+                            saveFailedCount = SaveFileAssociateIcoImage(openFolderDialog.SelectedPath, new(FileAssociateIconGridView.SelectedItems), iconCollection);
                         }
                         // 提取 Png 图标文件
-                        else if (SelectedIconFormat.Equals(IconFormatList[1]))
+                        else if (SelectedIconFormat.Equals(IconFormatCollection[1]))
                         {
                             if (SelectedFileAssociateSize is not null)
                             {
-                                saveFailedCount = SaveFileAssociatePngImage(openFolderDialog.SelectedPath, SelectedFileAssociateSize.Size, iconList);
+                                saveFailedCount = SaveFileAssociatePngImage(openFolderDialog.SelectedPath, SelectedFileAssociateSize.Size, iconCollection);
                             }
                         }
                     }
@@ -745,9 +747,9 @@ namespace PowerToolbox.Views.Pages
             GetIconTypeList.Add(new() { SelectedValue = "FileAssociated", DisplayMember = FileAssociatedString });
             IconExtractResultKind = IconExtractResultKind.Welcome;
             SelectedGetIconType = GetIconTypeList[0];
-            SelectedIconFormat = IconFormatList[1];
-            SelectedFileContainSize = FileContainIconSizeList[8];
-            SelectedFileAssociateSize = FileAssociateIconSizeList[3];
+            SelectedIconFormat = IconFormatCollection[1];
+            SelectedFileContainSize = FileContainIconSizeCollection[8];
+            SelectedFileAssociateSize = FileAssociateIconSizeCollection[3];
             IsImageEmpty = true;
             IsItemSelected = false;
             GetResults = NoSelectedFileString;
@@ -768,9 +770,9 @@ namespace PowerToolbox.Views.Pages
                 IconCollection.Clear();
                 IconExtractResultKind = IconExtractResultKind.Parsing;
                 filePath = iconFilePath;
-                (int iconTotalNum, List<IconModel> iconList) = await GetFileContainIconListAsync(filePath);
+                (int iconTotalNum, ReadOnlyCollection<IconModel> iconCollection) = await GetFileContainIconCollectionAsync(filePath);
 
-                if (iconList.Count > 0)
+                if (iconCollection.Count > 0)
                 {
                     try
                     {
@@ -779,7 +781,7 @@ namespace PowerToolbox.Views.Pages
                         ImageSource = null;
                         IsImageEmpty = true;
 
-                        foreach (IconModel iconItem in iconList)
+                        foreach (IconModel iconItem in iconCollection)
                         {
                             BitmapImage bitmapImage = new();
                             bitmapImage.SetSource(iconItem.IconMemoryStream.AsRandomAccessStream());
@@ -825,9 +827,9 @@ namespace PowerToolbox.Views.Pages
                 IconCollection.Clear();
                 IconExtractResultKind = IconExtractResultKind.Parsing;
                 filePath = iconFilePath;
-                (int iconTotalNum, List<IconModel> iconList) = GetFileAssociateIconList(filePath);
+                (int iconTotalNum, ReadOnlyCollection<IconModel> iconCollection) = GetFileAssociateIconCollection(filePath);
 
-                if (iconList.Count > 0)
+                if (iconCollection.Count > 0)
                 {
                     try
                     {
@@ -836,7 +838,7 @@ namespace PowerToolbox.Views.Pages
                         ImageSource = null;
                         IsImageEmpty = true;
 
-                        foreach (IconModel iconItem in iconList)
+                        foreach (IconModel iconItem in iconCollection)
                         {
                             BitmapImage bitmapImage = new();
                             bitmapImage.SetSource(iconItem.IconMemoryStream.AsRandomAccessStream());
@@ -870,7 +872,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取文件包含的所有图标列表
         /// </summary>
-        private async Task<(int iconNum, List<IconModel>)> GetFileContainIconListAsync(string filePath)
+        private async Task<(int iconNum, ReadOnlyCollection<IconModel>)> GetFileContainIconCollectionAsync(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
             {
@@ -904,16 +906,16 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(GetFileContainIconListAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(GetFileContainIconCollectionAsync), 1, e);
                 }
-                return ValueTuple.Create(iconTotalNum, fileContainIconList);
+                return ValueTuple.Create(iconTotalNum, fileContainIconList.AsReadOnly());
             });
         }
 
         /// <summary>
         /// 获取文件关联的所有图标列表
         /// </summary>
-        private (int iconNum, List<IconModel>) GetFileAssociateIconList(string filePath)
+        private (int iconNum, ReadOnlyCollection<IconModel>) GetFileAssociateIconCollection(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
             {
@@ -937,19 +939,19 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(GetFileAssociateIconList), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(GetFileAssociateIconCollection), 1, e);
             }
-            return ValueTuple.Create(iconTotalNum, fileAssociateIconList);
+            return ValueTuple.Create(iconTotalNum, fileAssociateIconList.AsReadOnly());
         }
 
         /// <summary>
         /// 获取文件包含的图标列表
         /// </summary>
-        private List<Bitmap> GetFileContainIcoList(List<object> iconSizeList, string filePath, int iconIndex)
+        private ReadOnlyCollection<Bitmap> GetFileContainIcoCollection(ReadOnlyCollection<object> iconSizeCollection, string filePath, int iconIndex)
         {
             List<Bitmap> icoList = [];
 
-            foreach (object iconSizeItem in iconSizeList)
+            foreach (object iconSizeItem in iconSizeCollection)
             {
                 if (iconSizeItem is IconSizeModel iconSize && GetFileContainFixSizeIcon(filePath, iconIndex, iconSize.Size) is Icon icon)
                 {
@@ -957,17 +959,17 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            return icoList;
+            return icoList.AsReadOnly();
         }
 
         /// <summary>
         /// 获取文件关联的图标列表
         /// </summary>
-        private List<Bitmap> GetFileAssociateIcoList(List<object> iconSizeList, string filePath)
+        private ReadOnlyCollection<Bitmap> GetFileAssociateIcoCollection(ReadOnlyCollection<object> iconSizeCollection, string filePath)
         {
             List<Bitmap> icoList = [];
 
-            foreach (object iconSizeItem in iconSizeList)
+            foreach (object iconSizeItem in iconSizeCollection)
             {
                 if (iconSizeItem is IconSizeModel iconSize && GetFileAssociateFixSizeIcon(filePath, iconSize.Size) is Icon icon)
                 {
@@ -975,7 +977,7 @@ namespace PowerToolbox.Views.Pages
                 }
             }
 
-            return icoList;
+            return icoList.AsReadOnly();
         }
 
         /// <summary>
@@ -1045,7 +1047,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取拖拽支持选中的文件
         /// </summary>
-        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        private async Task<ReadOnlyCollection<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
         {
             if (dataPackageView is null)
             {
@@ -1071,7 +1073,7 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(GetDragDropSelectedFilesAsync), 1, e);
                 }
 
-                return fileList;
+                return fileList.AsReadOnly();
             });
         }
 
@@ -1099,9 +1101,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 保存文件包含的 ICO 图片格式
         /// </summary>
-        private async Task<int> SaveFileContainIcoImageAsync(string folderPath, List<object> selectedIconSizeList, List<object> selectedItemList)
+        private async Task<int> SaveFileContainIcoImageAsync(string folderPath, ReadOnlyCollection<object> selectedIconSizeCollection, ReadOnlyCollection<object> selectedItemCollection)
         {
-            if (string.IsNullOrEmpty(folderPath) || selectedIconSizeList is null || selectedIconSizeList.Count is 0 || selectedItemList is null || selectedItemList.Count is 0)
+            if (string.IsNullOrEmpty(folderPath) || selectedIconSizeCollection is null || selectedIconSizeCollection.Count is 0 || selectedItemCollection is null || selectedItemCollection.Count is 0)
             {
                 return default;
             }
@@ -1110,13 +1112,13 @@ namespace PowerToolbox.Views.Pages
             {
                 int saveFailedCount = 0;
 
-                foreach (object selectedItem in selectedItemList)
+                foreach (object selectedItem in selectedItemCollection)
                 {
                     if (selectedItem is IconModel iconItem)
                     {
                         int iconIndex = Convert.ToInt32(iconItem.DisplayIndex);
-                        List<Bitmap> fileContainIcoList = GetFileContainIcoList(selectedIconSizeList, filePath, iconIndex);
-                        if (!(fileContainIcoList.Count > 0 && SaveIcon(Path.Combine(folderPath, string.Format("{0} - {1}.ico", Path.GetFileName(filePath), iconIndex)), fileContainIcoList) is true))
+                        ReadOnlyCollection<Bitmap> fileContainIcoCollection = GetFileContainIcoCollection(selectedIconSizeCollection, filePath, iconIndex);
+                        if (!(fileContainIcoCollection.Count > 0 && SaveIcon(Path.Combine(folderPath, string.Format("{0} - {1}.ico", Path.GetFileName(filePath), iconIndex)), fileContainIcoCollection) is true))
                         {
                             saveFailedCount++;
                         }
@@ -1129,9 +1131,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 保存文件包含的 PNG 图片格式
         /// </summary>
-        private async Task<int> SaveFileContainPngImageAsync(string folderPath, int fileContainSize, List<object> selectedItemList)
+        private async Task<int> SaveFileContainPngImageAsync(string folderPath, int fileContainSize, ReadOnlyCollection<object> selectedItemCollection)
         {
-            if (string.IsNullOrEmpty(folderPath) || selectedItemList is null || selectedItemList.Count is 0)
+            if (string.IsNullOrEmpty(folderPath) || selectedItemCollection is null || selectedItemCollection.Count is 0)
             {
                 return default;
             }
@@ -1140,7 +1142,7 @@ namespace PowerToolbox.Views.Pages
             {
                 int saveFailedCount = 0;
 
-                foreach (object selectedItem in selectedItemList)
+                foreach (object selectedItem in selectedItemCollection)
                 {
                     if (selectedItem is IconModel iconItem)
                     {
@@ -1168,21 +1170,21 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 保存文件关联的 ICO 图片格式
         /// </summary>
-        private int SaveFileAssociateIcoImage(string folderPath, List<object> selectedIconSizeList, List<object> selectedItemList)
+        private int SaveFileAssociateIcoImage(string folderPath, ReadOnlyCollection<object> selectedIconSizeCollection, ReadOnlyCollection<object> selectedItemCollection)
         {
-            if (string.IsNullOrEmpty(folderPath) || selectedIconSizeList is null || selectedIconSizeList.Count is 0 || selectedItemList is null || selectedItemList.Count is 0)
+            if (string.IsNullOrEmpty(folderPath) || selectedIconSizeCollection is null || selectedIconSizeCollection.Count is 0 || selectedItemCollection is null || selectedItemCollection.Count is 0)
             {
                 return default;
             }
 
             int saveFailedCount = 0;
 
-            foreach (object selectedItem in selectedItemList)
+            foreach (object selectedItem in selectedItemCollection)
             {
                 if (selectedItem is IconModel iconItem)
                 {
-                    List<Bitmap> fileAssociateIcoList = GetFileAssociateIcoList(selectedIconSizeList, filePath);
-                    if (!(fileAssociateIcoList.Count > 0 && SaveIcon(Path.Combine(folderPath, string.Format("{0} - {1}.ico", Path.GetFileName(filePath), Convert.ToInt32(iconItem.DisplayIndex))), fileAssociateIcoList) is true))
+                    ReadOnlyCollection<Bitmap> fileAssociateIcoCollection = GetFileAssociateIcoCollection(selectedIconSizeCollection, filePath);
+                    if (!(fileAssociateIcoCollection.Count > 0 && SaveIcon(Path.Combine(folderPath, string.Format("{0} - {1}.ico", Path.GetFileName(filePath), Convert.ToInt32(iconItem.DisplayIndex))), fileAssociateIcoCollection) is true))
                     {
                         saveFailedCount++;
                     }
@@ -1194,16 +1196,16 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 保存文件关联的 PNG 图片格式
         /// </summary>
-        private int SaveFileAssociatePngImage(string folderPath, int fileAssociateSize, List<object> selectedItemList)
+        private int SaveFileAssociatePngImage(string folderPath, int fileAssociateSize, ReadOnlyCollection<object> selectedItemCollection)
         {
-            if (string.IsNullOrEmpty(folderPath) || selectedItemList is null || selectedItemList.Count is 0)
+            if (string.IsNullOrEmpty(folderPath) || selectedItemCollection is null || selectedItemCollection.Count is 0)
             {
                 return default;
             }
 
             int saveFailedCount = 0;
 
-            foreach (object selectedItem in selectedItemList)
+            foreach (object selectedItem in selectedItemCollection)
             {
                 if (selectedItem is IconModel iconItem)
                 {
@@ -1230,9 +1232,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 保存图标文件
         /// </summary>
-        private static bool SaveIcon(string savePath, List<Bitmap> imageList)
+        private static bool SaveIcon(string savePath, ReadOnlyCollection<Bitmap> imageCollection)
         {
-            if (string.IsNullOrEmpty(savePath) || imageList is null || imageList.Count is 0)
+            if (string.IsNullOrEmpty(savePath) || imageCollection is null || imageCollection.Count is 0)
             {
                 return default;
             }
@@ -1246,13 +1248,13 @@ namespace PowerToolbox.Views.Pages
                 // 写入ICO文件头
                 binaryWriter.Write((ushort)0); // 保留字
                 binaryWriter.Write((ushort)1); // 类型：ICO
-                binaryWriter.Write((ushort)imageList.Count); // 图像数量
+                binaryWriter.Write((ushort)imageCollection.Count); // 图像数量
 
-                int currentOffset = 6 + 16 * imageList.Count; // 第一个图像数据偏移
+                int currentOffset = 6 + 16 * imageCollection.Count; // 第一个图像数据偏移
                 List<byte[]> entryList = [];
                 List<byte[]> imageDataList = [];
 
-                foreach (Bitmap bitmap in imageList)
+                foreach (Bitmap bitmap in imageCollection)
                 {
                     // 转换为32位ARGB格式确保透明度
                     if (ConvertTo32bppArgb(bitmap) is Bitmap convertedBmp)

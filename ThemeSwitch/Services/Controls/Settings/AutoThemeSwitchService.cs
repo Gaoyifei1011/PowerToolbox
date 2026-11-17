@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using ThemeSwitch.Extensions.DataType.Constant;
 using ThemeSwitch.Services.Root;
 
@@ -66,14 +67,14 @@ namespace ThemeSwitch.Services.Controls.Settings
 
         internal static int SunsetOffset { get; set; }
 
-        internal static List<string> AutoThemeSwitchTypeList { get; } = ["FixedTime", "SunriseSunset", "DarkMode"];
+        internal static ReadOnlyCollection<string> AutoThemeSwitchTypeCollection { get; } = new(["FixedTime", "SunriseSunset", "DarkMode"]);
 
         /// <summary>
         /// 获取设置存储的自动切换主题所有选项值
         /// </summary>
         internal static void InitializeOrUpdateAutoThemeSwitch()
         {
-            DefaultAutoThemeSwitchType = AutoThemeSwitchTypeList[0];
+            DefaultAutoThemeSwitchType = AutoThemeSwitchTypeCollection[0];
             AutoThemeSwitchEnable = GetAutoThemeSwitchEnable();
             AutoThemeSwitchType = GetAutoThemeSwitchType();
             AutoSwitchSystemTheme = GetAutoSwitchSystemTheme();

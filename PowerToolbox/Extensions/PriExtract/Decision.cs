@@ -6,6 +6,6 @@ namespace PowerToolbox.Extensions.PriExtract
     {
         internal ushort Index { get; set; }
 
-        internal IReadOnlyList<QualifierSet> QualifierSetsList { get; set; }
+        internal IReadOnlyList<QualifierSet> QualifierSetList { get; set; }
     }
 }

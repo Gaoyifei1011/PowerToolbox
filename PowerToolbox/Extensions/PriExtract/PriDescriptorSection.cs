@@ -18,15 +18,15 @@ namespace PowerToolbox.Extensions.PriExtract
 
         internal PriDescriptorFlags PriFlags { get; private set; }
 
-        internal IReadOnlyList<int> HierarchicalSchemaSectionsList { get; private set; }
+        internal IReadOnlyList<int> HierarchicalSchemaSectionList { get; private set; }
 
-        internal IReadOnlyList<int> DecisionInfoSectionsList { get; private set; }
+        internal IReadOnlyList<int> DecisionInfoSectionList { get; private set; }
 
-        internal IReadOnlyList<int> ResourceMapSectionsList { get; private set; }
+        internal IReadOnlyList<int> ResourceMapSectionList { get; private set; }
 
-        internal IReadOnlyList<int> ReferencedFileSectionsList { get; private set; }
+        internal IReadOnlyList<int> ReferencedFileSectionList { get; private set; }
 
-        internal IReadOnlyList<int> DataItemSectionsList { get; private set; }
+        internal IReadOnlyList<int> DataItemSectionList { get; private set; }
 
         internal int? PrimaryResourceMapSection { get; private set; }
 
@@ -53,56 +53,56 @@ namespace PowerToolbox.Extensions.PriExtract
             PriFlags = (PriDescriptorFlags)binaryReader.ReadUInt16();
             ushort includedFileListSection = binaryReader.ReadUInt16();
             binaryReader.ExpectUInt16(0);
-            ushort numHierarchicalSchemaSections = binaryReader.ReadUInt16();
-            ushort numDecisionInfoSections = binaryReader.ReadUInt16();
-            ushort numResourceMapSections = binaryReader.ReadUInt16();
+            ushort hierarchicalSchemaSectionNum = binaryReader.ReadUInt16();
+            ushort decisionInfoSectionNum = binaryReader.ReadUInt16();
+            ushort resourceMapSectionNum = binaryReader.ReadUInt16();
             ushort primaryResourceMapSection = binaryReader.ReadUInt16();
 
             PrimaryResourceMapSection = primaryResourceMapSection is not 0xFFFF ? primaryResourceMapSection : null;
-            ushort numReferencedFileSections = binaryReader.ReadUInt16();
-            ushort numDataItemSections = binaryReader.ReadUInt16();
+            ushort referencedFileSectionNum = binaryReader.ReadUInt16();
+            ushort dataItemSectionNum = binaryReader.ReadUInt16();
             binaryReader.ExpectUInt16(0);
 
-            List<int> hierarchicalSchemaSectionsList = [with(numHierarchicalSchemaSections)];
+            List<int> hierarchicalSchemaSectionList = [with(hierarchicalSchemaSectionNum)];
 
-            for (int index = 0; index < numHierarchicalSchemaSections; index++)
+            for (int index = 0; index < hierarchicalSchemaSectionNum; index++)
             {
-                hierarchicalSchemaSectionsList.Add(binaryReader.ReadUInt16());
+                hierarchicalSchemaSectionList.Add(binaryReader.ReadUInt16());
             }
 
-            HierarchicalSchemaSectionsList = hierarchicalSchemaSectionsList;
-            List<int> decisionInfoSectionsList = [with(numHierarchicalSchemaSections)];
+            HierarchicalSchemaSectionList = hierarchicalSchemaSectionList;
+            List<int> decisionInfoSectionList = [with(hierarchicalSchemaSectionNum)];
 
-            for (int index = 0; index < numHierarchicalSchemaSections; index++)
+            for (int index = 0; index < hierarchicalSchemaSectionNum; index++)
             {
-                decisionInfoSectionsList.Add(binaryReader.ReadUInt16());
+                decisionInfoSectionList.Add(binaryReader.ReadUInt16());
             }
 
-            DecisionInfoSectionsList = decisionInfoSectionsList;
-            List<int> resourceMapSectionsList = [with(numHierarchicalSchemaSections)];
+            DecisionInfoSectionList = decisionInfoSectionList;
+            List<int> resourceMapSectionList = [with(hierarchicalSchemaSectionNum)];
 
-            for (int index = 0; index < numResourceMapSections; index++)
+            for (int index = 0; index < resourceMapSectionNum; index++)
             {
-                resourceMapSectionsList.Add(binaryReader.ReadUInt16());
+                resourceMapSectionList.Add(binaryReader.ReadUInt16());
             }
 
-            ResourceMapSectionsList = resourceMapSectionsList;
-            List<int> referencedFileSectionsList = [with(numHierarchicalSchemaSections)];
+            ResourceMapSectionList = resourceMapSectionList;
+            List<int> referencedFileSectionList = [with(hierarchicalSchemaSectionNum)];
 
-            for (int index = 0; index < numReferencedFileSections; index++)
+            for (int index = 0; index < referencedFileSectionNum; index++)
             {
-                referencedFileSectionsList.Add(binaryReader.ReadUInt16());
+                referencedFileSectionList.Add(binaryReader.ReadUInt16());
             }
 
-            ReferencedFileSectionsList = referencedFileSectionsList;
-            List<int> dataItemSectionsList = [with(numDataItemSections)];
+            ReferencedFileSectionList = referencedFileSectionList;
+            List<int> dataItemSectionList = [with(dataItemSectionNum)];
 
-            for (int index = 0; index < numDataItemSections; index++)
+            for (int index = 0; index < dataItemSectionNum; index++)
             {
-                dataItemSectionsList.Add(binaryReader.ReadUInt16());
+                dataItemSectionList.Add(binaryReader.ReadUInt16());
             }
 
-            DataItemSectionsList = dataItemSectionsList;
+            DataItemSectionList = dataItemSectionList;
         }
     }
 }

@@ -4,8 +4,10 @@ using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 
 // 抑制 IDE0060 警告
 #pragma warning disable IDE0060
@@ -43,7 +45,7 @@ namespace PowerToolbox.Views.Pages
 
         private List<RadioButtonItemModel> DataVerifyEncryptSelectorRadioList { get; } = [];
 
-        private List<Type> PageList { get; } = [typeof(DataVerifyPage), typeof(DataEncryptPage), typeof(DataDecryptPage)];
+        private ReadOnlyCollection<Type> PageList { get; } = new([typeof(DataVerifyPage), typeof(DataEncryptPage), typeof(DataDecryptPage)]);
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -94,7 +96,7 @@ namespace PowerToolbox.Views.Pages
             {
                 int index = SelectedIndex;
                 Type currentPage = GetCurrentPageType();
-                int currentIndex = PageList.FindIndex(item => Equals(item, currentPage));
+                int currentIndex = PageList.IndexOf(PageList.FirstOrDefault(item => Equals(item, currentPage)));
 
                 if (index is 0)
                 {
@@ -124,7 +126,7 @@ namespace PowerToolbox.Views.Pages
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs args)
         {
             args.Handled = true;
-            int index = PageList.FindIndex(item => Equals(item, GetCurrentPageType()));
+            int index = PageList.IndexOf(PageList.FirstOrDefault(item => Equals(item, GetCurrentPageType())));
 
             if (index >= 0 && index < DataVerifyEncryptSelectorRadioList.Count)
             {

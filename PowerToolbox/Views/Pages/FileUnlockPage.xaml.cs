@@ -11,6 +11,7 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Rstrtmgr;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -141,9 +142,9 @@ namespace PowerToolbox.Views.Pages
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
             try
             {
-                if (await GetDragDropSelectedFilesAsync(args.DataView) is List<string> fileList && fileList.Count > 0 && await GetNeedUnlockFileListAsync(fileList) is List<FileUnlockModel> fileUnlockList && fileUnlockList.Count > 0)
+                if (await GetDragDropSelectedFilesAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count > 0 && await GetNeedUnlockFileCollectionAsync(fileCollection) is ReadOnlyCollection<FileUnlockModel> fileUnlockCollection && fileUnlockCollection.Count > 0)
                 {
-                    await AddToFileUnlockPageAsync(fileUnlockList);
+                    await AddToFileUnlockPageAsync(fileUnlockCollection);
                     IsOperationFailed = false;
                     FileUnlockFailedList.Clear();
                 }
@@ -209,9 +210,9 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 FileUnlockFailedList.Clear();
-                if (await GetNeedUnlockFileListAsync([.. openFileDialog.FileNames]) is List<FileUnlockModel> fileUnlockList && fileUnlockList.Count > 0)
+                if (await GetNeedUnlockFileCollectionAsync(new(openFileDialog.FileNames)) is ReadOnlyCollection<FileUnlockModel> fileUnlockCollection && fileUnlockCollection.Count > 0)
                 {
-                    await AddToFileUnlockPageAsync(fileUnlockList);
+                    await AddToFileUnlockPageAsync(fileUnlockCollection);
                 }
             }
             openFileDialog.Dispose();
@@ -232,9 +233,9 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 FileUnlockFailedList.Clear();
-                if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath) && await GetNeedUnlockFileListAsync([openFolderDialog.SelectedPath]) is List<FileUnlockModel> fileUnlockList && fileUnlockList.Count > 0)
+                if (!string.IsNullOrEmpty(openFolderDialog.SelectedPath) && await GetNeedUnlockFileCollectionAsync(new([openFolderDialog.SelectedPath])) is ReadOnlyCollection<FileUnlockModel> fileUnlockCollection && fileUnlockCollection.Count > 0)
                 {
-                    await AddToFileUnlockPageAsync(fileUnlockList);
+                    await AddToFileUnlockPageAsync(fileUnlockCollection);
                 }
             }
             openFolderDialog.Dispose();
@@ -263,7 +264,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnViewErrorInformationClicked(object sender, RoutedEventArgs args)
         {
-            await MainWindow.Current.ShowDialogAsync(new FileUnlockFailedDialog(FileUnlockFailedList));
+            await MainWindow.Current.ShowDialogAsync(new FileUnlockFailedDialog(FileUnlockFailedList.AsReadOnly()));
         }
 
         /// <summary>
@@ -297,16 +298,16 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 添加到文件解锁页面
         /// </summary>
-        internal async Task AddToFileUnlockPageAsync(List<FileUnlockModel> fileUnlockList)
+        internal async Task AddToFileUnlockPageAsync(ReadOnlyCollection<FileUnlockModel> fileUnlockCollection)
         {
-            if (fileUnlockList is null || fileUnlockList.Count is 0)
+            if (fileUnlockCollection is null || fileUnlockCollection.Count is 0)
             {
                 return;
             }
 
             await Task.Run(() =>
             {
-                foreach (FileUnlockModel fileUnlockItem in fileUnlockList)
+                foreach (FileUnlockModel fileUnlockItem in fileUnlockCollection)
                 {
                     // 选择的是目录
                     if (fileUnlockItem.IsDirectory)
@@ -337,7 +338,7 @@ namespace PowerToolbox.Views.Pages
                 }
             });
 
-            foreach (FileUnlockModel fileUnlockItem in fileUnlockList)
+            foreach (FileUnlockModel fileUnlockItem in fileUnlockCollection)
             {
                 FileUnlockCollection.Add(fileUnlockItem);
             }
@@ -376,10 +377,10 @@ namespace PowerToolbox.Views.Pages
                     foreach (string subFile in fileUnlockItem.SubFileList)
                     {
                         // 查找进程并结束进程
-                        if (await GetProcessListAsync(subFile) is List<Process> processList && processList.Count > 0 && await TerminateProcessAsync(subFile, processList) is List<FileUnlockFailedModel> fileUnlockFailedList && (fileUnlockFailedList is null || fileUnlockFailedList.Count is not 0))
+                        if (await GetProcessCollectionAsync(subFile) is ReadOnlyCollection<Process> processCollection && processCollection.Count > 0 && await TerminateProcessAsync(subFile, processCollection) is ReadOnlyCollection<FileUnlockFailedModel> fileUnlockFailedCollection && (fileUnlockFailedCollection is null || fileUnlockFailedCollection.Count is not 0))
                         {
                             unlockSuccessfully = false;
-                            FileUnlockFailedList.AddRange(fileUnlockFailedList);
+                            FileUnlockFailedList.AddRange(fileUnlockFailedCollection);
                         }
 
                         fileUnlockItem.FileUnlockFinishedCount++;
@@ -420,7 +421,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取拖拽支持选中的文件
         /// </summary>
-        private async Task<List<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        private async Task<ReadOnlyCollection<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
         {
             if (dataPackageView is null)
             {
@@ -446,16 +447,16 @@ namespace PowerToolbox.Views.Pages
                     LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(GetDragDropSelectedFilesAsync), 1, e);
                 }
 
-                return fileList;
+                return fileList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取要待解锁的的文件列表
         /// </summary>
-        private async Task<List<FileUnlockModel>> GetNeedUnlockFileListAsync(List<string> fileList)
+        private async Task<ReadOnlyCollection<FileUnlockModel>> GetNeedUnlockFileCollectionAsync(ReadOnlyCollection<string> fileCollection)
         {
-            if (fileList is null || fileList.Count is 0)
+            if (fileCollection is null || fileCollection.Count is 0)
             {
                 return default;
             }
@@ -464,7 +465,7 @@ namespace PowerToolbox.Views.Pages
             {
                 List<FileUnlockModel> fileUnlockList = [];
 
-                foreach (string file in fileList)
+                foreach (string file in fileCollection)
                 {
                     try
                     {
@@ -480,19 +481,19 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(GetNeedUnlockFileListAsync), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(GetNeedUnlockFileCollectionAsync), 1, e);
                         continue;
                     }
                 }
 
-                return fileUnlockList;
+                return fileUnlockList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取文件使用的进程列表
         /// </summary>
-        private async Task<List<Process>> GetProcessListAsync(string fileName)
+        private async Task<ReadOnlyCollection<Process>> GetProcessCollectionAsync(string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
             {
@@ -547,22 +548,22 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(GetProcessListAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(FileUnlockPage), nameof(GetProcessCollectionAsync), 1, e);
                 }
                 finally
                 {
                     RstrtmgrLibrary.RmEndSession(handle);
                 }
-                return processList;
+                return processList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 结束进程
         /// </summary>
-        private async Task<List<FileUnlockFailedModel>> TerminateProcessAsync(string fileName, List<Process> processList)
+        private async Task<ReadOnlyCollection<FileUnlockFailedModel>> TerminateProcessAsync(string fileName, ReadOnlyCollection<Process> processCollection)
         {
-            if (string.IsNullOrEmpty(fileName) || processList is null || processList.Count is 0)
+            if (string.IsNullOrEmpty(fileName) || processCollection is null || processCollection.Count is 0)
             {
                 return default;
             }
@@ -570,7 +571,7 @@ namespace PowerToolbox.Views.Pages
             return await Task.Run(() =>
             {
                 List<FileUnlockFailedModel> fileUnlockFailedList = [];
-                foreach (Process process in processList)
+                foreach (Process process in processCollection)
                 {
                     try
                     {
@@ -600,7 +601,7 @@ namespace PowerToolbox.Views.Pages
                         process?.Dispose();
                     }
                 }
-                return fileUnlockFailedList;
+                return fileUnlockFailedList.AsReadOnly();
             });
         }
 

@@ -4,6 +4,7 @@ using PowerToolboxShellExtension.Helpers.Root;
 using PowerToolboxShellExtension.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.InteropServices.Marshalling;
 
@@ -21,7 +22,7 @@ namespace PowerToolboxShellExtension.Services.Shell
 
         internal static ShellMenuItem RootShellMenuItem { get; private set; }
 
-        internal static List<string> FileMatchRuleList { get; } = ["None", "Name", "NameRegex", "Extension", "All"];
+        internal static ReadOnlyCollection<string> FileMatchRuleCollection { get; } = new(["None", "Name", "NameRegex", "Extension", "All"]);
 
         /// <summary>
         /// 初始化自定义扩展菜单配置
@@ -96,11 +97,11 @@ namespace PowerToolboxShellExtension.Services.Shell
             {
                 foreach (RegistryEnumKeyItem subRegistryKeyItem in registryEnumKeyItem.SubRegistryKeyList)
                 {
-                    shellMenuItem.SubShellMenuItem.Add(EnumShellMenuItem(subRegistryKeyItem));
+                    shellMenuItem.SubShellMenuItemList.Add(EnumShellMenuItem(subRegistryKeyItem));
                 }
 
                 // 递归获取完子列表后，根据列表的索引进行排序
-                shellMenuItem.SubShellMenuItem.Sort((item1, item2) => item1.MenuIndex.CompareTo(item2.MenuIndex));
+                shellMenuItem.SubShellMenuItemList.Sort((item1, item2) => item1.MenuIndex.CompareTo(item2.MenuIndex));
             }
 
             return shellMenuItem;

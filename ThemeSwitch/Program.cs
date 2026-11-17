@@ -108,7 +108,7 @@ namespace ThemeSwitch
             if (AutoThemeSwitchService.AutoThemeSwitchEnable)
             {
                 // 固定时间段
-                if (string.Equals(AutoThemeSwitchService.AutoThemeSwitchType, AutoThemeSwitchService.AutoThemeSwitchTypeList[0]))
+                if (string.Equals(AutoThemeSwitchService.AutoThemeSwitchType, AutoThemeSwitchService.AutoThemeSwitchTypeCollection[0]))
                 {
                     // 如果地理位置服务开启，关闭地理位置服务
                     if (DevicePositionService.IsInitialized)
@@ -131,7 +131,7 @@ namespace ThemeSwitch
                     }
                 }
                 // 日落日出
-                else if (Equals(AutoThemeSwitchService.AutoThemeSwitchType, AutoThemeSwitchService.AutoThemeSwitchTypeList[1]))
+                else if (Equals(AutoThemeSwitchService.AutoThemeSwitchType, AutoThemeSwitchService.AutoThemeSwitchTypeCollection[1]))
                 {
                     if (DevicePositionService.IsInitialized)
                     {
@@ -304,7 +304,7 @@ namespace ThemeSwitch
                     }
                 }
                 // 夜间模式
-                else if (Equals(AutoThemeSwitchService.AutoThemeSwitchType, AutoThemeSwitchService.AutoThemeSwitchTypeList[2]))
+                else if (Equals(AutoThemeSwitchService.AutoThemeSwitchType, AutoThemeSwitchService.AutoThemeSwitchTypeCollection[2]))
                 {
                     // 如果地理位置服务开启，关闭地理位置服务
                     if (DevicePositionService.IsInitialized)

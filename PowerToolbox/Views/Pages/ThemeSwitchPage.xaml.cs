@@ -615,7 +615,13 @@ namespace PowerToolbox.Views.Pages
         {
             await SaveThemeSettingsAsync(AutoThemeSwitchService.DefaultAutoThemeSwitchEnable, AutoThemeSwitchService.DefaultAutoThemeSwitchType, AutoThemeSwitchService.DefaultAutoSwitchSystemTheme, AutoThemeSwitchService.DefaultAutoSwitchAppTheme, AutoThemeSwitchService.DefaultIsShowColorInDarkTheme, AutoThemeSwitchService.DefaultSystemThemeLightTime, AutoThemeSwitchService.DefaultSystemThemeDarkTime, AutoThemeSwitchService.DefaultAppThemeLightTime, AutoThemeSwitchService.DefaultAppThemeDarkTime, AutoThemeSwitchService.DefaultSunriseOffset, AutoThemeSwitchService.DefaultSunsetOffset);
             IsAutoThemeSwitchEnable = AutoThemeSwitchService.AutoThemeSwitchEnable;
-            SelectedAutoThemeSwitchType = AutoThemeSwitchTypeCollection[AutoThemeSwitchService.AutoThemeSwitchTypeList.FindIndex(item => string.Equals(item, AutoThemeSwitchService.AutoThemeSwitchType))];
+            for (int index = 0; index < AutoThemeSwitchService.AutoThemeSwitchTypeCollection.Count; index++)
+            {
+                if (string.Equals(AutoThemeSwitchService.AutoThemeSwitchTypeCollection[index], AutoThemeSwitchService.AutoThemeSwitchType))
+                {
+                    SelectedAutoThemeSwitchType = AutoThemeSwitchTypeCollection[index];
+                }
+            }
             IsAutoSwitchSystemTheme = AutoThemeSwitchService.AutoSwitchSystemTheme;
             IsAutoSwitchAppTheme = AutoThemeSwitchService.AutoSwitchAppTheme;
             IsShowColorInDarkTheme = AutoThemeSwitchService.IsShowColorInDarkTheme;
@@ -943,9 +949,9 @@ namespace PowerToolbox.Views.Pages
             SystemThemeStyleCollection.Add(new() { SelectedValue = ElementTheme.Dark, DisplayMember = DarkString });
             AppThemeStyleCollection.Add(new() { SelectedValue = ElementTheme.Light, DisplayMember = LightString });
             AppThemeStyleCollection.Add(new() { SelectedValue = ElementTheme.Dark, DisplayMember = DarkString });
-            AutoThemeSwitchTypeCollection.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[0], DisplayMember = AutoThemeSwitchTypeFixedTimeString });
-            AutoThemeSwitchTypeCollection.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[1], DisplayMember = AutoThemeSwitchTypeSunriseSunsetString });
-            AutoThemeSwitchTypeCollection.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeList[2], DisplayMember = AutoThemeSwitchTypeDarkModeString });
+            AutoThemeSwitchTypeCollection.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeCollection[0], DisplayMember = AutoThemeSwitchTypeFixedTimeString });
+            AutoThemeSwitchTypeCollection.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeCollection[1], DisplayMember = AutoThemeSwitchTypeSunriseSunsetString });
+            AutoThemeSwitchTypeCollection.Add(new() { SelectedValue = AutoThemeSwitchService.AutoThemeSwitchTypeCollection[2], DisplayMember = AutoThemeSwitchTypeDarkModeString });
             IsAutoThemeSwitchEnable = AutoThemeSwitchService.AutoThemeSwitchEnable;
             IsAutoSwitchSystemTheme = AutoThemeSwitchService.AutoSwitchSystemTheme;
             IsAutoSwitchAppTheme = AutoThemeSwitchService.AutoSwitchAppTheme;

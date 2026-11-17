@@ -3,8 +3,10 @@ using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 // 抑制 CA1806 警告
 #pragma warning disable CA1806
@@ -22,7 +24,7 @@ namespace PowerToolbox.Services.Settings
         private static string defaultDownloadFolder;
         internal static string DownloadFolder { get; private set; }
         internal static string DoEngineMode { get; private set; }
-        internal static List<string> DoEngineModeList { get; } = ["DeliveryOptimization", "Bits", "Aria2"];
+        internal static ReadOnlyCollection<string> DoEngineModeCollection { get; } = new(["DeliveryOptimization", "Bits", "Aria2"]);
 
         /// <summary>
         /// 应用在初始化前获取设置存储的下载目录设置值，并创建默认下载目录
@@ -30,7 +32,7 @@ namespace PowerToolbox.Services.Settings
         internal static void InitializeDownloadOptions()
         {
             Shell32Library.SHGetKnownFolderPath(new("F1B32785-6FBA-4FCF-9D55-7B8E7F157091"), KNOWN_FOLDER_FLAG.KF_FLAG_FORCE_APP_DATA_REDIRECTION, 0, out string downloadFolder);
-            defaultDoEngineMode = DoEngineModeList[0];
+            defaultDoEngineMode = DoEngineModeCollection[0];
             defaultDownloadFolder = downloadFolder;
             DownloadFolder = GetFolder();
             DoEngineMode = GetDoEngineMode();
@@ -78,10 +80,10 @@ namespace PowerToolbox.Services.Settings
             if (doEngineMode is null)
             {
                 SetDoEngineMode(defaultDoEngineMode);
-                return DoEngineModeList.Find(item => string.Equals(item, defaultDoEngineMode, StringComparison.OrdinalIgnoreCase));
+                return DoEngineModeCollection.FirstOrDefault(item => string.Equals(item, defaultDoEngineMode, StringComparison.OrdinalIgnoreCase));
             }
 
-            string selectedDoEngine = DoEngineModeList.Find(item => string.Equals(item, doEngineMode, StringComparison.OrdinalIgnoreCase));
+            string selectedDoEngine = DoEngineModeCollection.FirstOrDefault(item => string.Equals(item, doEngineMode, StringComparison.OrdinalIgnoreCase));
             return string.IsNullOrEmpty(selectedDoEngine) ? defaultDoEngineMode : selectedDoEngine;
         }
 

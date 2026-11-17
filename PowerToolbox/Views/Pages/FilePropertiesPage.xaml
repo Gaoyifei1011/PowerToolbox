@@ -251,7 +251,7 @@
             <ListView
                 Grid.Row="1"
                 Margin="0,0,0,3"
-                ItemsSource="{x:Bind FilePropertiesCollection}"
+                ItemsSource="{x:Bind FilePropertyCollection}"
                 SelectionMode="None">
 
                 <ListView.ItemContainerStyle>
@@ -392,7 +392,7 @@
                 VerticalAlignment="Top"
                 Text="{x:Bind rootservice:ResourceService.FilePropertiesResource.GetString('EmptyList')}"
                 TextAlignment="Center"
-                Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(FilePropertiesCollection.Count), Mode=OneWay}" />
+                Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(FilePropertyCollection.Count), Mode=OneWay}" />
         </Grid>
 
         <!--  文件属性名称底部控制栏  -->
@@ -433,7 +433,7 @@
             <TextBlock
                 Grid.Column="3"
                 VerticalAlignment="Center"
-                Text="{x:Bind x:String.Format(TotalString, FilePropertiesCollection.Count), Mode=OneWay}"
+                Text="{x:Bind x:String.Format(TotalString, FilePropertyCollection.Count), Mode=OneWay}"
                 TextAlignment="Center" />
 
             <HyperlinkButton

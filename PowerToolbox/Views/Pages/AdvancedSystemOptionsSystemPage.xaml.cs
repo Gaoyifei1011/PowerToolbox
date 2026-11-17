@@ -14,6 +14,7 @@ using PowerToolbox.WindowsAPI.PInvoke.PowrProf;
 using PowerToolbox.WindowsAPI.PInvoke.Setupapi;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -367,7 +368,7 @@ namespace PowerToolbox.Views.Pages
 
                 if (SelectedHibernationFileType is not null)
                 {
-                    await SetHibernationFileTypeAsync(SelectedHibernationFileType.SelectedValue, [.. HibernationFileTypeList.Select(x => x.SelectedValue)]);
+                    await SetHibernationFileTypeAsync(SelectedHibernationFileType.SelectedValue, new([.. HibernationFileTypeList.Select(x => x.SelectedValue)]));
                 }
                 await UpdateHibernationAsync();
             }
@@ -594,11 +595,11 @@ namespace PowerToolbox.Views.Pages
             {
                 IsClosingWakeUpTask = true;
                 await DisableAllWakeUpRunTaskAsync();
-                List<string> wakeUpTaskList = await GetWaskUpTaskListAsync();
+                ReadOnlyCollection<string> wakeUpTaskCollection = await GetWaskUpTaskCollectionAsync();
                 WakeUpTaskCollection.Clear();
-                if (wakeUpTaskList.Count > 0)
+                if (wakeUpTaskCollection.Count > 0)
                 {
-                    foreach (string wakeUpTask in wakeUpTaskList)
+                    foreach (string wakeUpTask in wakeUpTaskCollection)
                     {
                         WakeUpTaskCollection.Add(wakeUpTask);
                     }
@@ -704,11 +705,11 @@ namespace PowerToolbox.Views.Pages
                 synchronizationContext.Post(async (_) =>
                 {
                     IsClosingWakeUpTask = true;
-                    List<string> wakeUpTaskList = await GetWaskUpTaskListAsync();
+                    ReadOnlyCollection<string> wakeUpTaskCollection = await GetWaskUpTaskCollectionAsync();
                     WakeUpTaskCollection.Clear();
-                    if (wakeUpTaskList.Count > 0)
+                    if (wakeUpTaskCollection.Count > 0)
                     {
-                        foreach (string wakeUpTask in wakeUpTaskList)
+                        foreach (string wakeUpTask in wakeUpTaskCollection)
                         {
                             WakeUpTaskCollection.Add(wakeUpTask);
                         }
@@ -820,9 +821,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 修改休眠文件类型
         /// </summary>
-        private async Task SetHibernationFileTypeAsync(object hibernationFileType, IReadOnlyList<object> hibernationFileTypeList)
+        private async Task SetHibernationFileTypeAsync(object hibernationFileType, ReadOnlyCollection<object> hibernationFileTypeCollection)
         {
-            if (hibernationFileType is null || hibernationFileTypeList is null || hibernationFileTypeList.Count is 0)
+            if (hibernationFileType is null || hibernationFileTypeCollection is null || hibernationFileTypeCollection.Count is 0)
             {
                 return;
             }
@@ -831,11 +832,11 @@ namespace PowerToolbox.Views.Pages
             {
                 if (RuntimeHelper.IsElevated)
                 {
-                    if (Equals(hibernationFileType, hibernationFileTypeList[0]))
+                    if (Equals(hibernationFileType, hibernationFileTypeCollection[0]))
                     {
                         RegistryHelper.SaveRegistryKey(Registry.LocalMachine, @"SYSTEM\CurrentControlSet\Control\Power", "HiberFileType", 0);
                     }
-                    else if (Equals(hibernationFileType, hibernationFileTypeList[1]))
+                    else if (Equals(hibernationFileType, hibernationFileTypeCollection[1]))
                     {
                         try
                         {
@@ -865,7 +866,7 @@ namespace PowerToolbox.Views.Pages
                             LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(SetHibernationFileTypeAsync), 1, e);
                         }
                     }
-                    else if (Equals(hibernationFileType, hibernationFileTypeList[2]))
+                    else if (Equals(hibernationFileType, hibernationFileTypeCollection[2]))
                     {
                         try
                         {
@@ -1391,7 +1392,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取持续唤醒任务列表
         /// </summary>
-        internal static async Task<List<string>> GetWaskUpTaskListAsync()
+        internal static async Task<ReadOnlyCollection<string>> GetWaskUpTaskCollectionAsync()
         {
             return await Task.Run(() =>
             {
@@ -1426,7 +1427,7 @@ namespace PowerToolbox.Views.Pages
                                 }
                                 catch (Exception e)
                                 {
-                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(GetWaskUpTaskListAsync), 1, e);
+                                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(GetWaskUpTaskCollectionAsync), 1, e);
                                 }
                             }
 
@@ -1439,9 +1440,9 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(GetWaskUpTaskListAsync), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(GetWaskUpTaskCollectionAsync), 2, e);
                 }
-                return wakeUpTaskList;
+                return wakeUpTaskList.AsReadOnly();
             });
         }
 

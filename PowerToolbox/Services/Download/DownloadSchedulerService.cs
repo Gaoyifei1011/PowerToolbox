@@ -291,16 +291,16 @@ namespace PowerToolbox.Services.Download
                 doEngineMode = DownloadOptionsService.DoEngineMode;
 
                 // 初始化下载服务
-                if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[0]))
+                if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[0]))
                 {
                     DeliveryOptimizationService.DownloadProgress += OnDownloadProgress;
                 }
-                else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[1]))
+                else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[1]))
                 {
                     BitsService.Initialize();
                     BitsService.DownloadProgress += OnDownloadProgress;
                 }
-                else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[2]))
+                else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[2]))
                 {
                     Aria2Service.InitializeAria2Conf();
                     Aria2Service.Initialize();
@@ -324,17 +324,17 @@ namespace PowerToolbox.Services.Download
                 // 注销下载服务
                 try
                 {
-                    if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[0]))
+                    if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[0]))
                     {
                         DeliveryOptimizationService.TerminateDownload();
                         DeliveryOptimizationService.DownloadProgress -= OnDownloadProgress;
                     }
-                    else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[1]))
+                    else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[1]))
                     {
                         BitsService.TerminateDownload();
                         BitsService.DownloadProgress -= OnDownloadProgress;
                     }
-                    else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[2]))
+                    else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[2]))
                     {
                         Aria2Service.Release();
                         Aria2Service.DownloadProgress -= OnDownloadProgress;
@@ -357,15 +357,15 @@ namespace PowerToolbox.Services.Download
                 return;
             }
 
-            if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[0]))
+            if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[0]))
             {
                 DeliveryOptimizationService.CreateDownload(fileLink, filePath);
             }
-            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[1]))
+            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[1]))
             {
                 BitsService.CreateDownload(fileLink, filePath);
             }
-            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[2]))
+            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[2]))
             {
                 Aria2Service.CreateDownload(fileLink, filePath);
             }
@@ -381,15 +381,15 @@ namespace PowerToolbox.Services.Download
                 return;
             }
 
-            if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[0]))
+            if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[0]))
             {
                 DeliveryOptimizationService.ContinueDownload(downloadID);
             }
-            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[1]))
+            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[1]))
             {
                 BitsService.ContinueDownload(downloadID);
             }
-            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[2]))
+            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[2]))
             {
                 Aria2Service.ContinueDownload(downloadID);
             }
@@ -405,15 +405,15 @@ namespace PowerToolbox.Services.Download
                 return;
             }
 
-            if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[0]))
+            if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[0]))
             {
                 DeliveryOptimizationService.PauseDownload(downloadID);
             }
-            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[1]))
+            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[1]))
             {
                 BitsService.PauseDownload(downloadID);
             }
-            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[2]))
+            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[2]))
             {
                 Aria2Service.PauseDownload(downloadID);
             }
@@ -429,15 +429,15 @@ namespace PowerToolbox.Services.Download
                 return;
             }
 
-            if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[0]))
+            if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[0]))
             {
                 DeliveryOptimizationService.DeleteDownload(downloadID);
             }
-            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[1]))
+            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[1]))
             {
                 BitsService.DeleteDownload(downloadID);
             }
-            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[2]))
+            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[2]))
             {
                 Aria2Service.DeleteDownload(downloadID);
             }
@@ -448,15 +448,15 @@ namespace PowerToolbox.Services.Download
         /// </summary>
         internal static void TerminateDownload()
         {
-            if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[0]))
+            if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[0]))
             {
                 DeliveryOptimizationService.TerminateDownload();
             }
-            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[1]))
+            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[1]))
             {
                 BitsService.TerminateDownload();
             }
-            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeList[2]))
+            else if (string.Equals(doEngineMode, DownloadOptionsService.DoEngineModeCollection[2]))
             {
                 Aria2Service.Release();
             }

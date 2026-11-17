@@ -9,6 +9,7 @@ using PowerToolbox.WindowsAPI.PInvoke.KernelAppCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -72,9 +73,9 @@ namespace PowerToolbox.Views.Dialogs
         /// </summary>
         private async void OnLoaded(object sender, RoutedEventArgs args)
         {
-            if (await GetDependencyInformationListAsync() is List<KeyValuePair<string, Version>> dependencyInformationList && dependencyInformationList.Count > 0)
+            if (await GetDependencyInformationCollectionAsync() is ReadOnlyCollection<KeyValuePair<string, Version>> dependencyInformationCollection && dependencyInformationCollection.Count > 0)
             {
-                foreach (KeyValuePair<string, Version> dependencyInformation in dependencyInformationList)
+                foreach (KeyValuePair<string, Version> dependencyInformation in dependencyInformationCollection)
                 {
                     AppInformationCollection.Add(new(dependencyInformation.Key, dependencyInformation.Value));
                 }
@@ -93,7 +94,7 @@ namespace PowerToolbox.Views.Dialogs
 
             try
             {
-                string appInformation = await GetAppInformationStringAsync([.. AppInformationCollection]);
+                string appInformation = await GetAppInformationStringAsync(new(AppInformationCollection));
 
                 if (!string.IsNullOrEmpty(appInformation))
                 {
@@ -119,7 +120,7 @@ namespace PowerToolbox.Views.Dialogs
         /// <summary>
         /// 获取依赖信息列表
         /// </summary>
-        private async Task<List<KeyValuePair<string, Version>>> GetDependencyInformationListAsync()
+        private async Task<ReadOnlyCollection<KeyValuePair<string, Version>>> GetDependencyInformationCollectionAsync()
         {
             return await Task.Run(() =>
             {
@@ -159,16 +160,16 @@ namespace PowerToolbox.Views.Dialogs
                     // .NET 版本信息
                     dependencyInformationList.Add(new(DoNetVersionString, new(RuntimeInformation.FrameworkDescription.Remove(0, 15))));
                 }
-                return dependencyInformationList;
+                return dependencyInformationList.AsReadOnly();
             });
         }
 
         /// <summary>
         /// 获取应用信息
         /// </summary>
-        private async Task<string> GetAppInformationStringAsync(List<DictionaryEntry> appInformationList)
+        private async Task<string> GetAppInformationStringAsync(ReadOnlyCollection<DictionaryEntry> appInformationCollection)
         {
-            if (appInformationList is null || appInformationList.Count is 0)
+            if (appInformationCollection is null || appInformationCollection.Count is 0)
             {
                 return default;
             }

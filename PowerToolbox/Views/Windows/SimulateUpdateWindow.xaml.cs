@@ -9,8 +9,10 @@ using PowerToolbox.WindowsAPI.PInvoke.PowrProf;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -88,7 +90,7 @@ namespace PowerToolbox.Views.Windows
             }
         }
 
-        private List<string> AfterSimulateOperationList { get; } = ["None", "LockScreen", "LogOff", "Sleep", "Restart", "Shutdown"];
+        private ReadOnlyCollection<string> AfterSimulateOperationCollection { get; } = new(["None", "LockScreen", "LogOff", "Sleep", "Restart", "Shutdown"]);
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -186,7 +188,7 @@ namespace PowerToolbox.Views.Windows
             simulateUpdateTimer.Elapsed += OnElapsed;
             simulateUpdateTimer.Start();
             _blockAllKeys = blockAllKeys;
-            _afterSimulateOperation = AfterSimulateOperationList.Find(item => string.Equals(item, afterSimulateOperation));
+            _afterSimulateOperation = AfterSimulateOperationCollection.FirstOrDefault(item => string.Equals(item, afterSimulateOperation));
             (Content as WindowsAPI.ComTypes.IUIElementProtected).ProtectedCursor = InputDesktopResourceCursor.CreateFromModule("PowerToolbox.exe", 101);
             int exStyle = GetWindowLongAuto((nint)appWindow.Id.Value, WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE);
             SetWindowLongAuto((nint)appWindow.Id.Value, WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE, exStyle & ~0x00040000 | 0x00000080);
@@ -320,23 +322,23 @@ namespace PowerToolbox.Views.Windows
             Cursor.Show();
             StopHook();
             StopSimulateUpdate();
-            if (Equals(_afterSimulateOperation, AfterSimulateOperationList[1]))
+            if (Equals(_afterSimulateOperation, AfterSimulateOperationCollection[1]))
             {
                 User32Library.LockWorkStation();
             }
-            else if (Equals(_afterSimulateOperation, AfterSimulateOperationList[2]))
+            else if (Equals(_afterSimulateOperation, AfterSimulateOperationCollection[2]))
             {
                 User32Library.ExitWindowsEx(EWX.EWX_LOGOFF, SHTDN_REASON.SHTDN_REASON_MAJOR_OTHER);
             }
-            else if (Equals(_afterSimulateOperation, AfterSimulateOperationList[3]))
+            else if (Equals(_afterSimulateOperation, AfterSimulateOperationCollection[3]))
             {
                 PowrProfLibrary.SetSuspendState(false, true, true);
             }
-            else if (Equals(_afterSimulateOperation, AfterSimulateOperationList[4]))
+            else if (Equals(_afterSimulateOperation, AfterSimulateOperationCollection[4]))
             {
                 ShutdownHelper.Restart(string.Empty, TimeSpan.FromSeconds(0));
             }
-            else if (Equals(_afterSimulateOperation, AfterSimulateOperationList[5]))
+            else if (Equals(_afterSimulateOperation, AfterSimulateOperationCollection[5]))
             {
                 ShutdownHelper.Shutdown(string.Empty, TimeSpan.FromSeconds(0));
             }

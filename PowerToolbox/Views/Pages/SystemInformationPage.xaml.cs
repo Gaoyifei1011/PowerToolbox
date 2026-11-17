@@ -11,6 +11,7 @@ using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.PInvoke.Kernel32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -144,7 +145,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (SystemInformationResultKind is SystemInformationResultKind.Successfully)
             {
-                string copySystemInformationContent = await GetSystemInformationContentAsync([.. SystemInformationCollection]);
+                string copySystemInformationContent = await GetSystemInformationContentAsync(new(SystemInformationCollection));
                 if (!string.IsNullOrEmpty(copySystemInformationContent))
                 {
                     bool copyResult = CopyPasteHelper.CopyToClipboard(copySystemInformationContent);
@@ -468,9 +469,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取系统信息文本内容
         /// </summary>
-        private async Task<string> GetSystemInformationContentAsync(List<SystemInformationModel> systemInformationList)
+        private async Task<string> GetSystemInformationContentAsync(ReadOnlyCollection<SystemInformationModel> systemInformationCollection)
         {
-            if (systemInformationList is null || systemInformationList.Count is 0)
+            if (systemInformationCollection is null || systemInformationCollection.Count is 0)
             {
                 return default;
             }
@@ -479,7 +480,7 @@ namespace PowerToolbox.Views.Pages
             {
                 StringBuilder systemInformationBuilder = new();
 
-                foreach (SystemInformationModel systemInformationItem in systemInformationList)
+                foreach (SystemInformationModel systemInformationItem in systemInformationCollection)
                 {
                     systemInformationBuilder.AppendLine(string.Format("{0}\t{1}", systemInformationItem.Item, systemInformationItem.Content));
                 }

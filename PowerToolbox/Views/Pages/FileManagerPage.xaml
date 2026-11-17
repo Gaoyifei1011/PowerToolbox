@@ -229,7 +229,7 @@
                             <ListView
                                 Grid.Row="8"
                                 Margin="16,0,16,5"
-                                ItemsSource="{x:Bind NameChangeList}"
+                                ItemsSource="{x:Bind NameChangeCollection}"
                                 SelectionMode="None">
 
                                 <ListView.ItemContainerStyle>

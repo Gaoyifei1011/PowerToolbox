@@ -16,6 +16,7 @@ using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
@@ -177,7 +178,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     try
                     {
-                        List<StorageFile> fileList = [await StorageFile.GetFileFromPathAsync(filePath)];
+                        ReadOnlyCollection<StorageFile> fileList = new([await StorageFile.GetFileFromPathAsync(filePath)]);
                         if (fileList is not null && fileList.Count > 0)
                         {
                             ShowShareUI(fileList);
@@ -474,14 +475,14 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 在共享操作启动时发生的事件
         /// </summary>
-        private void OnDataRequested(DataTransferManager sender, DataRequestedEventArgs args, List<StorageFile> fileList)
+        private void OnDataRequested(DataTransferManager sender, DataRequestedEventArgs args, ReadOnlyCollection<StorageFile> fileCollection)
         {
             DataRequestDeferral dataRequestDeferral = args.Request.GetDeferral();
 
             try
             {
                 args.Request.Data.Properties.Title = FileShareString;
-                args.Request.Data.SetStorageItems(fileList);
+                args.Request.Data.SetStorageItems(fileCollection);
             }
             catch (Exception e)
             {
@@ -724,9 +725,9 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 显示分享面板
         /// </summary>
-        private void ShowShareUI(List<StorageFile> fileList)
+        private void ShowShareUI(ReadOnlyCollection<StorageFile> fileCollection)
         {
-            if (fileList is null || fileList.Count is 0)
+            if (fileCollection is null || fileCollection.Count is 0)
             {
                 return;
             }
@@ -734,7 +735,7 @@ namespace PowerToolbox.Views.Pages
             if (dataTransferManagerInterop is not null)
             {
                 dataTransferManagerInterop.GetForWindow((nint)MainWindow.Current.AppWindow.Id.Value, new("A5CAEE9B-8708-49D1-8D36-67D25A8DA00C"), out DataTransferManager dataTransferManager);
-                dataTransferManager.DataRequested += (sender, args) => OnDataRequested(sender, args, fileList);
+                dataTransferManager.DataRequested += (sender, args) => OnDataRequested(sender, args, fileCollection);
                 dataTransferManagerInterop.ShowShareUIForWindow((nint)MainWindow.Current.AppWindow.Id.Value);
             }
         }
