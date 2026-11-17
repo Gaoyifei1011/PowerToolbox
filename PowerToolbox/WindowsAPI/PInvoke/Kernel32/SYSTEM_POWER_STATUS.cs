@@ -24,7 +24,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.Kernel32
         internal byte BatteryLifePercent;
 
         /// <summary>
-        /// 节电模式的状态。 若要参与节能，请在节电模式打开时避免资源密集型任务。 若要在此值更改时收到通知，请使用电源设置 GUID 调用 RegisterPowerSettingNotification 函数，GUID_POWER_SAVING_STATUS。
+        /// 节电模式的状态。 若要参与节能，请在节电模式打开时避免资源密集型任务。 若要在此值更改后收到通知，请使用电源设置 GUID 调用 RegisterPowerSettingNotification 函数，GUID_POWER_SAVING_STATUS。
         /// </summary>
         internal byte SystemStatusFlag;
 

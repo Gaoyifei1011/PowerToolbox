@@ -288,7 +288,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 改为文本框中的内容发生更改时发生的事件
+        /// 改为文本框中的内容发生更改后发生的事件
         /// </summary>
         private void OnChangeToTextChanged(object sender, TextChangedEventArgs args)
         {
@@ -310,7 +310,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 查找文本框中的内容发生更改时发生的事件
+        /// 查找文本框中的内容发生更改后发生的事件
         /// </summary>
         private void OnSearchTextChanged(object sender, TextChangedEventArgs args)
         {
@@ -321,7 +321,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 替换文本框中的内容发生更改时发生的事件
+        /// 替换文本框中的内容发生更改后发生的事件
         /// </summary>
         private void OnReplaceTextChanged(object sender, TextChangedEventArgs args)
         {

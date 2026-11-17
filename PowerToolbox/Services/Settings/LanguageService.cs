@@ -179,7 +179,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 语言发生修改时修改设置存储的语言值
+        /// 语言发生修改后修改设置存储的语言值
         /// </summary>
         internal static void SetLanguage(KeyValuePair<string, string> language)
         {

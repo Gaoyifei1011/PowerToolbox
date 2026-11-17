@@ -334,7 +334,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 改名规则文本框中的内容发生更改时发生的事件
+        /// 改名规则文本框中的内容发生更改后发生的事件
         /// </summary>
         private void OnRenameRuleTextChanged(object sender, TextChangedEventArgs args)
         {
@@ -345,7 +345,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 起始编号文本框中的内容发生更改时发生的事件
+        /// 起始编号文本框中的内容发生更改后发生的事件
         /// </summary>
         private void OnStartNumberTextChanged(object sender, TextChangedEventArgs args)
         {
@@ -356,7 +356,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 扩展名文本框中的内容发生更改时发生的事件
+        /// 扩展名文本框中的内容发生更改后发生的事件
         /// </summary>
         private void OnExtensionNameTextChanged(object sender, TextChangedEventArgs args)
         {
@@ -367,7 +367,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 查找文本框中的内容发生更改时发生的事件
+        /// 查找文本框中的内容发生更改后发生的事件
         /// </summary>
         private void OnLookUpTextChanged(object sender, TextChangedEventArgs args)
         {
@@ -378,7 +378,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 替换文本框中的内容发生更改时发生的事件
+        /// 替换文本框中的内容发生更改后发生的事件
         /// </summary>
         private void OnReplaceTextChanged(object sender, TextChangedEventArgs args)
         {

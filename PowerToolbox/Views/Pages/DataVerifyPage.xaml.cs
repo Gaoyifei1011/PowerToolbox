@@ -354,7 +354,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 输出格式选项发生变化时触发的事件
+        /// 输出格式选项发生变化后触发的事件
         /// </summary>
         private void OnUseUpperCaseSelectionChanged(object sender, SelectionChangedEventArgs args)
         {

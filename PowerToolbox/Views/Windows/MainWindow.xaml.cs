@@ -256,7 +256,7 @@ namespace PowerToolbox.Views.Windows
         }
 
         /// <summary>
-        /// 应用主题变化时设置标题栏按钮的颜色
+        /// 应用主题变化后设置标题栏按钮的颜色
         /// </summary>
         private void OnActualThemeChanged(FrameworkElement sender, object args)
         {
@@ -440,7 +440,7 @@ namespace PowerToolbox.Views.Windows
         }
 
         /// <summary>
-        /// 设置选项发生变化时触发的事件
+        /// 设置选项发生变化后触发的事件
         /// </summary>
         private void OnServicePropertyChanged(object sender, PropertyChangedEventArgs args)
         {
@@ -744,7 +744,7 @@ namespace PowerToolbox.Views.Windows
         {
             switch (Msg)
             {
-                // 窗口位置发生变化时触发的消息
+                // 窗口位置发生变化后触发的消息
                 case WindowMessage.WM_MOVE:
                     {
                         if (TitlebarMenuFlyout.IsOpen)
@@ -758,7 +758,7 @@ namespace PowerToolbox.Views.Windows
                         }
                         break;
                     }
-                // 窗口大小发生变化时触发的消息
+                // 窗口大小发生变化后触发的消息
                 case WindowMessage.WM_SIZE:
                     {
                         if (TitlebarMenuFlyout.IsOpen)
@@ -779,7 +779,7 @@ namespace PowerToolbox.Views.Windows
                         }
                         break;
                     }
-                // 窗口激活状态发生变化时触发的消息
+                // 窗口激活状态发生变化后触发的消息
                 case WindowMessage.WM_ACTIVATE:
                     {
                         try
@@ -889,7 +889,7 @@ namespace PowerToolbox.Views.Windows
                         }
                         return 0;
                     }
-                // 应用主题设置跟随系统发生变化时，当系统主题设置发生变化时修改修改应用背景色
+                // 应用主题设置跟随系统发生变化后，当系统主题设置发生变化后修改修改应用背景色
                 case WindowMessage.WM_SETTINGCHANGE:
                     {
                         SetWindowTheme();

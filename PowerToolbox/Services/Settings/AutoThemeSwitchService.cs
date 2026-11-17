@@ -286,7 +286,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 自动切换主题启用值发生修改时修改设置存储的自动切换主题启用值
+        /// 自动切换主题启用值发生修改后修改设置存储的自动切换主题启用值
         /// </summary>
         internal static void SetAutoThemeSwitchEnable(bool autoThemeSwitchEnable)
         {
@@ -295,7 +295,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 自动切换主题类型值发生修改时修改设置存储的自动切换主题类型值
+        /// 自动切换主题类型值发生修改后修改设置存储的自动切换主题类型值
         /// </summary>
         internal static void SetAutoThemeSwitchType(string autoThemeSwitchType)
         {
@@ -304,7 +304,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 自动切换系统主题启用值发生修改时修改设置存储的自动切换系统主题启用值
+        /// 自动切换系统主题启用值发生修改后修改设置存储的自动切换系统主题启用值
         /// </summary>
         internal static void SetAutoSwitchSystemTheme(bool autoSwitchSystemTheme)
         {
@@ -313,7 +313,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 自动切换应用主题启用值发生修改时修改设置存储的自动切换系统主题启用值
+        /// 自动切换应用主题启用值发生修改后修改设置存储的自动切换系统主题启用值
         /// </summary>
         internal static void SetAutoSwitchAppTheme(bool autoSwitchAppTheme)
         {
@@ -322,7 +322,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 切换系统深色主题时显示主题色值发生修改时修改设置存储的切换系统深色主题时显示主题色值
+        /// 切换系统深色主题时显示主题色值发生修改后修改设置存储的切换系统深色主题时显示主题色值
         /// </summary>
         internal static void SetIsShowColorInDarkTheme(bool isShowColorInDarkTheme)
         {
@@ -331,7 +331,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 自动切换系统浅色主题时间值发生修改时修改设置存储的自动切换系统浅色主题时间值
+        /// 自动切换系统浅色主题时间值发生修改后修改设置存储的自动切换系统浅色主题时间值
         /// </summary>
         internal static void SetSystemThemeLightTime(TimeSpan systemThemeLightTime)
         {
@@ -340,7 +340,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 自动切换系统深色主题时间值发生修改时修改设置存储的自动切换系统深色主题时间值
+        /// 自动切换系统深色主题时间值发生修改后修改设置存储的自动切换系统深色主题时间值
         /// </summary>
         internal static void SetSystemThemeDarkTime(TimeSpan systemThemeDarkTime)
         {
@@ -349,7 +349,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 自动切换系统浅色主题时间值发生修改时修改设置存储的自动切换系统浅色主题时间值
+        /// 自动切换系统浅色主题时间值发生修改后修改设置存储的自动切换系统浅色主题时间值
         /// </summary>
         internal static void SetAppThemeLightTime(TimeSpan appThemeLightTime)
         {
@@ -358,7 +358,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 自动切换系统深色主题时间值发生修改时修改设置存储的自动切换系统深色主题时间值
+        /// 自动切换系统深色主题时间值发生修改后修改设置存储的自动切换系统深色主题时间值
         /// </summary>
         internal static void SetAppThemeDarkTime(TimeSpan appThemeDarkTime)
         {
@@ -367,7 +367,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 日出时间值发生修改时修改设置存储的日出时间值
+        /// 日出时间值发生修改后修改设置存储的日出时间值
         /// </summary>
         internal static void SetSunriseOffset(int sunriseOffset)
         {
@@ -376,7 +376,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 日落时间值发生修改时修改设置存储的日落时间值
+        /// 日落时间值发生修改后修改设置存储的日落时间值
         /// </summary>
         internal static void SetSunsetOffset(int sunsetOffset)
         {

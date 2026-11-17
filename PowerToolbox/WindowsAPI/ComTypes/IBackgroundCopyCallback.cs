@@ -33,7 +33,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         int JobError([MarshalAs(UnmanagedType.Interface)] IBackgroundCopyJob pJob, [MarshalAs(UnmanagedType.Interface)] IBackgroundCopyError pError);
 
         /// <summary>
-        /// 修改作业后，BITS 会调用 JobModification 方法的实现。 当传输字节、文件已添加到作业、修改属性或作业状态更改时，服务将生成此事件。
+        /// 修改作业后，BITS 会调用 JobModification 方法的实现。 当传输字节、文件已添加到作业、修改属性或作业状态更改后，服务将生成此事件。
         /// </summary>
         /// <param name="pJob">包含用于访问作业的属性、进度和状态信息的方法。 不释放 pJob; 当 JobModification 方法返回时，BITS 释放接口。</param>
         /// <param name="dwReserved">保留供将来使用。</param>

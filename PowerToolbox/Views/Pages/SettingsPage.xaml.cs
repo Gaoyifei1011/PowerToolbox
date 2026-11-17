@@ -103,7 +103,7 @@ namespace PowerToolbox.Views.Pages
         #region 第五部分：挂载事件处理
 
         /// <summary>
-        /// 点击选择器栏选中项发生变化时发生的事件
+        /// 点击选择器栏选中项发生变化后发生的事件
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {

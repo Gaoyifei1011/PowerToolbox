@@ -378,7 +378,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 图标选中项发生更改时触发的事件
+        /// 图标选中项发生更改后触发的事件
         /// </summary>
         private void OnIconSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -431,7 +431,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 右键菜单样式选中项发生变化时触发的事件
+        /// 右键菜单样式选中项发生变化后触发的事件
         /// </summary>
         private async void OnRightClickMenuStyleSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -451,7 +451,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 资源管理器样式选中项发生变化时触发的事件
+        /// 资源管理器样式选中项发生变化后触发的事件
         /// </summary>
         private async void OnFileExplorerStyleSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -505,7 +505,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 资源管理器首页位置发生变化时触发的事件
+        /// 资源管理器首页位置发生变化后触发的事件
         /// </summary>
         private async void OnFileExplorerHomePositionSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -574,7 +574,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 视觉效果方案选中项发生变化时触发的事件
+        /// 视觉效果方案选中项发生变化后触发的事件
         /// </summary>
         private void OnVisualEffectsPlanSelectionChanged(object sender, SelectionChangedEventArgs args)
         {

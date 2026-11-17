@@ -260,7 +260,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 选中项发生变化时触发的事件
+        /// 选中项发生变化后触发的事件
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {

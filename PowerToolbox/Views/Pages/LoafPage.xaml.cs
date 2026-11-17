@@ -223,7 +223,7 @@ namespace PowerToolbox.Views.Pages
         #region 第五部分：挂载事件处理
 
         /// <summary>
-        /// 当前应用主题发生变化时对应的事件
+        /// 当前应用主题发生变化后对应的事件
         /// </summary>
         private void OnActualThemeChanged(FrameworkElement sender, object args)
         {
@@ -275,7 +275,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 时间更改时触发的事件
+        /// 时间更改后触发的事件
         /// </summary>
         private void OnTimeChanged(object sender, TimePickerValueChangedEventArgs args)
         {

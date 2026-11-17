@@ -1274,7 +1274,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 解密密钥字符串解码模式发生变化时触发的事件
+        /// 解密密钥字符串解码模式发生变化后触发的事件
         /// </summary>
         private void OnDecryptKeyStringTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -1296,7 +1296,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 初始化向量字符串解码模式发生变化时触发的事件
+        /// 初始化向量字符串解码模式发生变化后触发的事件
         /// </summary>
         private void OnInitializationVectorStringTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -1318,7 +1318,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 解密块密码模式发生变化时触发的事件
+        /// 解密块密码模式发生变化后触发的事件
         /// </summary>
         private void OnDecryptedBlockCipherModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -1334,7 +1334,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 填充模式发生变化时触发的事件
+        /// 填充模式发生变化后触发的事件
         /// </summary>
         private void OnPaddingModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -1345,7 +1345,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 偏移量值发生变化时触发的事件
+        /// 偏移量值发生变化后触发的事件
         /// </summary>
         private void OnOffsetValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
@@ -1364,7 +1364,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 解密私钥内容发生变化时触发的事件
+        /// 解密私钥内容发生变化后触发的事件
         /// </summary>
         private void OnDecryptPrivateKeyTextChanged(object sender, TextChangedEventArgs args)
         {
@@ -1375,7 +1375,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// RSA 非对称加密填充模式发生变化时触发的事件
+        /// RSA 非对称加密填充模式发生变化后触发的事件
         /// </summary>
         private void OnRSADecryptionPaddingModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -1408,7 +1408,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 文字自定义解码类型内容发生变化时触发的事件
+        /// 文字自定义解码类型内容发生变化后触发的事件
         /// </summary>
         private void OnTextEncodingCustomTypeTextChanged(object sender, TextChangedEventArgs args)
         {

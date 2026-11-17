@@ -410,7 +410,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 菜单标题内容发生更改时的事件
+        /// 菜单标题内容发生更改后的事件
         /// </summary>
         private void OnTitleTextChanged(object sender, TextChangedEventArgs args)
         {
@@ -418,7 +418,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 使用图标修改时触发的事件
+        /// 使用图标修改后触发的事件
         /// </summary>
         private void OnUseIconToggled(object sender, RoutedEventArgs args)
         {
@@ -429,7 +429,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 使用应用程序图标修改时触发的事件
+        /// 使用应用程序图标修改后触发的事件
         /// </summary>
         private void OnUseProgramIconToggled(object sender, RoutedEventArgs args)
         {
@@ -440,7 +440,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 启用主题图标按钮修改时触发的事件
+        /// 启用主题图标按钮修改后触发的事件
         /// </summary>
         private void OnUseThemeIconToggled(object sender, RoutedEventArgs args)
         {
@@ -529,7 +529,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 菜单参数内容发生更改时的事件
+        /// 菜单参数内容发生更改后的事件
         /// </summary>
         private void OnMenuParameterTextChanged(object sender, TextChangedEventArgs args)
         {
@@ -537,7 +537,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 总是需要提权运行修改时触发的事件
+        /// 总是需要提权运行修改后触发的事件
         /// </summary>
         private void OnIsAlwaysRunAsAdministratorToggled(object sender, RoutedEventArgs args)
         {
@@ -584,7 +584,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 菜单文件匹配格式内容发生更改时的事件
+        /// 菜单文件匹配格式内容发生更改后的事件
         /// </summary>
         private void OnMenuFileMatchFormatTextChanged(object sender, TextChangedEventArgs args)
         {

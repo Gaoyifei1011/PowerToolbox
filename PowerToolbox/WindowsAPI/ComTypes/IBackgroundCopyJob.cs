@@ -92,7 +92,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         int GetProgress(out BG_JOB_PROGRESS pVal);
 
         /// <summary>
-        /// 检索与作业相关的时间戳，例如作业的创建时间或上次修改时间。
+        /// 检索与作业相关的时间戳，例如作业的创建时间或上次修改后间。
         /// </summary>
         /// <param name="pVal">包含与作业相关的时间戳。 有关可用的时间戳，请参阅 BG_JOB_TIMES 结构。</param>
         /// <returns>此方法返回以下 HRESULT 值以及其他值。</returns>

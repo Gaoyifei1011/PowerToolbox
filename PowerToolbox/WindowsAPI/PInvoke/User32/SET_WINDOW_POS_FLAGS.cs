@@ -26,7 +26,7 @@ namespace PowerToolbox.WindowsAPI.PInvoke.User32
 
         /// <summary>
         /// 使用 SetWindowLong 函数应用设置的新框架样式。 将 WM_NCCALCSIZE 消息发送到窗口，即使窗口的大小未更改也是如此。
-        /// 如果未指定此标志，则仅当窗口的大小发生更改时， 才会发送WM_NCCALCSIZE 。
+        /// 如果未指定此标志，则仅当窗口的大小发生更改后， 才会发送WM_NCCALCSIZE 。
         /// </summary>
         SWP_FRAMECHANGED = SWP_DRAWFRAME,
 

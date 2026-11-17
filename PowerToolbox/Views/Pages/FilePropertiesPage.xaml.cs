@@ -392,7 +392,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 创建日期更改时触发的事件
+        /// 创建日期更改后触发的事件
         /// </summary>
         private void OnCreateDateChanged(object sender, DatePickerValueChangedEventArgs args)
         {
@@ -403,7 +403,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 修改日期更改时触发的事件
+        /// 修改日期更改后触发的事件
         /// </summary>
         private void OnModifyDateChanged(object sender, DatePickerValueChangedEventArgs args)
         {
@@ -485,7 +485,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 时间更改时触发的事件
+        /// 时间更改后触发的事件
         /// </summary>
         private void OnTimeChanged(object sender, TimePickerValueChangedEventArgs args)
         {

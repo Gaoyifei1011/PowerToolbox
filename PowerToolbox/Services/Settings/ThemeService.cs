@@ -62,7 +62,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 应用主题发生修改时修改设置存储的主题值
+        /// 应用主题发生修改后修改设置存储的主题值
         /// </summary>
         internal static void SetTheme(string theme)
         {

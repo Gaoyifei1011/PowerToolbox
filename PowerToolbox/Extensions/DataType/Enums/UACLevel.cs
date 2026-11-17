@@ -8,12 +8,12 @@
         NeverNotify,
 
         /// <summary>
-        /// 尝试更改时通知(不降低桌面亮度)
+        /// 尝试更改后通知(不降低桌面亮度)
         /// </summary>
         NotifyWithoutDimming,
 
         /// <summary>
-        /// 尝试更改时通知
+        /// 尝试更改后通知
         /// </summary>
         Notify,
 

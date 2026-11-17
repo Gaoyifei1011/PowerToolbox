@@ -1082,7 +1082,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 位置或状态发生变化时触发的事件
+        /// 位置或状态发生变化后触发的事件
         /// </summary>
         private async void OnStatusOrPositionChanged()
         {

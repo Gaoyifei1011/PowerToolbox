@@ -54,7 +54,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 窗口置顶值发生修改时修改设置存储的窗口置顶值
+        /// 窗口置顶值发生修改后修改设置存储的窗口置顶值
         /// </summary>
         internal static void SetTopMost(bool topMost)
         {

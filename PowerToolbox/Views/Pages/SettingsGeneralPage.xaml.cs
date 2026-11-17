@@ -325,7 +325,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 在用户首选项发生更改时触发的事件
+        /// 在用户首选项发生更改后触发的事件
         /// </summary>
         private void OnUserPreferenceChanged(object sender, UserPreferenceChangedEventArgs args)
         {

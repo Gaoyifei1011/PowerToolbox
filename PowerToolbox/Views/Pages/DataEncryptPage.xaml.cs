@@ -1261,7 +1261,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 加密密钥字符串编码模式发生变化时触发的事件
+        /// 加密密钥字符串编码模式发生变化后触发的事件
         /// </summary>
         private void OnEncryptKeyStringTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -1292,7 +1292,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 初始化向量字符串编码模式发生变化时触发的事件
+        /// 初始化向量字符串编码模式发生变化后触发的事件
         /// </summary>
         private void OnInitializationVectorStringTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -1323,7 +1323,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 加密块密码模式发生变化时触发的事件
+        /// 加密块密码模式发生变化后触发的事件
         /// </summary>
         private void OnEncryptedBlockCipherModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -1339,7 +1339,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 填充模式发生变化时触发的事件
+        /// 填充模式发生变化后触发的事件
         /// </summary>
         private void OnPaddingModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -1350,7 +1350,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 偏移量值发生变化时触发的事件
+        /// 偏移量值发生变化后触发的事件
         /// </summary>
         private void OnOffsetValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
@@ -1369,7 +1369,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 加密公钥内容发生变化时触发的事件
+        /// 加密公钥内容发生变化后触发的事件
         /// </summary>
         private void OnEncryptPublicKeyTextChanged(object sender, TextChangedEventArgs args)
         {
@@ -1380,7 +1380,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 加密私钥内容发生变化时触发的事件
+        /// 加密私钥内容发生变化后触发的事件
         /// </summary>
         private void OnEncryptPrivateKeyTextChanged(object sender, TextChangedEventArgs args)
         {
@@ -1391,7 +1391,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// RSA 非对称加密填充模式发生变化时触发的事件
+        /// RSA 非对称加密填充模式发生变化后触发的事件
         /// </summary>
         private void OnRSAEncryptionPaddingModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -1445,7 +1445,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 文字自定义编码类型内容发生变化时触发的事件
+        /// 文字自定义编码类型内容发生变化后触发的事件
         /// </summary>
         private void OnTextEncodingCustomTypeTextChanged(object sender, TextChangedEventArgs args)
         {

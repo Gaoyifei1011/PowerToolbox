@@ -37,7 +37,7 @@ namespace PowerToolbox.Services.Settings
         }
 
         /// <summary>
-        /// 文件右键菜单显示值发生修改时修改设置存储的文件右键菜单显示值
+        /// 文件右键菜单显示值发生修改后修改设置存储的文件右键菜单显示值
         /// </summary>
         internal static void SetFileShellMenu(bool fileShellMenu)
         {

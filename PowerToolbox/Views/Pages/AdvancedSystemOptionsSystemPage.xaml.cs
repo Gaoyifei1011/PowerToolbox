@@ -375,7 +375,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 休眠文件百分比值发生变化时触发的事件
+        /// 休眠文件百分比值发生变化后触发的事件
         /// </summary>
         private void OnHibernationFilePercentValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
@@ -480,7 +480,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 通知模式发生更改时触发的事件
+        /// 通知模式发生更改后触发的事件
         /// </summary>
         private async void OnNotifyModeSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -499,7 +499,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 后台应用任务可运行状态发生更改时触发的事件
+        /// 后台应用任务可运行状态发生更改后触发的事件
         /// </summary>
         private async void OnBackgroundAppsTaskToggled(object sender, RoutedEventArgs args)
         {

@@ -732,7 +732,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 点击选择器栏选中项发生变化时发生的事件
+        /// 点击选择器栏选中项发生变化后发生的事件
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -898,7 +898,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 可用更新：选中项发生变化时触发的事件
+        /// 可用更新：选中项发生变化后触发的事件
         /// </summary>
         private void OnAvailableSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -1018,7 +1018,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 已安装更新：选中项发生变化时触发的事件
+        /// 已安装更新：选中项发生变化后触发的事件
         /// </summary>
         private void OnInstalledSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -1087,7 +1087,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 隐藏更新：选中项发生变化时触发的事件
+        /// 隐藏更新：选中项发生变化后触发的事件
         /// </summary>
         private void OnHiddenSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
@@ -1196,7 +1196,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 下载更新中，进度变化时更新 UI 下载进度
+        /// 下载更新中，进度变化后更新 UI 下载进度
         /// </summary>
         private void OnDownloadProgressChanged(object sender, EventArgs args, UpdateModel updateItem)
         {
@@ -1235,7 +1235,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 安装更新中，进度变化时更改 UI 卸载进度
+        /// 安装更新中，进度变化后更改 UI 卸载进度
         /// </summary>
         private void OnInstallationProgressChanged(object sender, EventArgs args, UpdateModel updateItem)
         {
@@ -1250,7 +1250,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 卸载更新中，进度变化时更改 UI 卸载进度
+        /// 卸载更新中，进度变化后更改 UI 卸载进度
         /// </summary>
         private void OnUninstallationProgressChanged(object sender, EventArgs args, UpdateModel updateItem)
         {

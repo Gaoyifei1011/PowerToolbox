@@ -179,7 +179,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <summary>
         /// 注册应用程序窗口以接收立体声状态更改的通知消息。
         /// </summary>
-        /// <param name="WindowHandle">当立体声状态发生更改时，要向其发送通知消息的窗口的句柄。</param>
+        /// <param name="WindowHandle">当立体声状态发生更改后，要向其发送通知消息的窗口的句柄。</param>
         /// <param name="wMsg">标识要发送的通知消息。</param>
         /// <param name="pdwCookie">指向应用程序可以传递给 IDXGIFactory2：：UnregisterStereoStatus 方法的键值的指针，用于取消注册 wMsg 指定的通知消息。</param>
         /// <returns>
@@ -206,7 +206,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         int RegisterStereoStatusEvent(nint hEvent, out uint pdwCookie);
 
         /// <summary>
-        /// 取消注册窗口或事件，以阻止它在立体声状态更改时接收通知。
+        /// 取消注册窗口或事件，以阻止它在立体声状态更改后接收通知。
         /// </summary>
         /// <param name="dwCookie">要注销的窗口或事件的键值。 IDXGIFactory2：：RegisterStereoStatusWindow 或 IDXGIFactory2：：RegisterStereoStatusEvent 方法返回此值。</param>
         [PreserveSig]
@@ -215,7 +215,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <summary>
         /// 注册应用程序窗口，以接收有关遮挡状态更改的通知消息。
         /// </summary>
-        /// <param name="WindowHandle">窗口的句柄，用于在发生遮挡状态更改时向其发送通知消息。</param>
+        /// <param name="WindowHandle">窗口的句柄，用于在发生遮挡状态更改后向其发送通知消息。</param>
         /// <param name="wMsg">标识要发送的通知消息。</param>
         /// <param name="pdwCookie">指向键值的指针，应用程序可以传递给 IDXGIFactory2：：UnregisterOcclusionStatus 方法，以取消注册 wMsg 指定的通知消息。</param>
         /// <returns>
@@ -244,7 +244,7 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         int RegisterOcclusionStatusEvent(nint hEvent, out uint pdwCookie);
 
         /// <summary>
-        /// 取消注册窗口或事件，以在封闭状态更改时阻止它接收通知。
+        /// 取消注册窗口或事件，以在封闭状态更改后阻止它接收通知。
         /// </summary>
         /// <param name="dwCookie">要注销的窗口或事件的键值。 IDXGIFactory2：：RegisterOcclusionStatusWindow 或 IDXGIFactory2：：RegisterOcclusionStatusEvent 方法返回此值。</param>
         [PreserveSig]

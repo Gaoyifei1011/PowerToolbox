@@ -439,7 +439,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 计划任务管理结果列表控件选中项发生变化时触发的事件
+        /// 计划任务管理结果列表控件选中项发生变化后触发的事件
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {

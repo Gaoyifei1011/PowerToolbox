@@ -623,7 +623,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 字符串内容发生变化时触发的事件
+        /// 字符串内容发生变化后触发的事件
         /// </summary>
         private async void OnStringTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
@@ -651,7 +651,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 文件内容发生变化时触发的事件
+        /// 文件内容发生变化后触发的事件
         /// </summary>
         private async void OnFilePathTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
@@ -679,7 +679,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 嵌入的数据发生变化时触发的事件
+        /// 嵌入的数据发生变化后触发的事件
         /// </summary>
         private async void OnEmbeddedDataTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {

@@ -482,7 +482,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 驱动管理结果列表控件选中项发生变化时触发的事件
+        /// 驱动管理结果列表控件选中项发生变化后触发的事件
         /// </summary>
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
