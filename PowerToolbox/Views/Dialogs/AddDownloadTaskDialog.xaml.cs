@@ -120,6 +120,7 @@ namespace PowerToolbox.Views.Dialogs
                 isAllowClosed = true;
                 Hide();
             }
+            args.Handled = true;
         }
 
         /// <summary>

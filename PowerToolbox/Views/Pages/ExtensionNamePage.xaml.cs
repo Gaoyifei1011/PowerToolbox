@@ -283,8 +283,8 @@ namespace PowerToolbox.Views.Pages
                 {
                     await PrepareChangeFileNameAsync(SelectedKind, ChangeToText, SearchText, ReplaceText, true);
                 }
-                args.Handled = true;
             }
+            args.Handled = true;
         }
 
         /// <summary>

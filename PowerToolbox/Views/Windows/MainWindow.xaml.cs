@@ -273,6 +273,7 @@ namespace PowerToolbox.Views.Windows
             {
                 NavigationFrom();
             }
+            args.Handled = true;
         }
 
         /// <summary>

@@ -255,8 +255,8 @@ namespace PowerToolbox.Views.Pages
                         await PrepareChangeFileNameAsync(SelectedItem.UpperAndLowerKind, true);
                     }
                 }
-                args.Handled = true;
             }
+            args.Handled = true;
         }
 
         /// <summary>

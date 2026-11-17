@@ -329,8 +329,8 @@ namespace PowerToolbox.Views.Pages
                 {
                     await PrepareChangeFileNameAsync(RenameRule, StartNumber, IsChecked, LookUpText, ReplaceText, ExtensionName, true, SelectedNumberFormat.SelectedValue, new([.. NumberFormatList.Select(x => x.SelectedValue)]));
                 }
-                args.Handled = true;
             }
+            args.Handled = true;
         }
 
         /// <summary>

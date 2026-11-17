@@ -374,8 +374,8 @@ namespace PowerToolbox.Views.Pages
                 {
                     await PrepareChangeFilePropertiesAsync(IsReadOnlyChecked, IsArchiveChecked, IsCreateDateChecked, IsHideChecked, IsSystemChecked, IsModifyDateChecked, CreateDate, CreateTime, ModifyDate, ModifyTime, true);
                 }
-                args.Handled = true;
             }
+            args.Handled = true;
         }
 
         /// <summary>

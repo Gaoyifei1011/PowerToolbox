@@ -176,8 +176,8 @@ namespace PowerToolbox.Views.Pages
             {
                 IsOperationFailed = false;
                 await ChangeFileAsync();
-                args.Handled = true;
             }
+            args.Handled = true;
         }
 
         /// <summary>
