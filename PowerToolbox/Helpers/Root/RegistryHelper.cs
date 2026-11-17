@@ -253,7 +253,7 @@ namespace PowerToolbox.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(EnumSubKey), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(GetValueNameCollection), 1, e);
             }
 
             return valueNameList.AsReadOnly();
@@ -279,7 +279,7 @@ namespace PowerToolbox.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(EnumSubKey), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(RegistryHelper), nameof(GetSubKeyCollection), 1, e);
             }
 
             return valueNameList.AsReadOnly();

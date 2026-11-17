@@ -451,7 +451,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ContextMenuManagerPage), nameof(GetContextMenuInfoCollectionAsync), 1, e);
                 }
 
                 contextMenuList.Sort((item1, item2) => item1.PackageDisplayName.CompareTo(item2.PackageDisplayName));

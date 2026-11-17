@@ -194,7 +194,7 @@ namespace PowerToolbox.Views.Pages
                     isLoadWallpaperFailed = true;
                     LoafImage = ActualTheme is ElementTheme.Light ? new(new("ms-appx:///Assets/Image/LoafLightWallpaper.png")) : new(new("ms-appx:///Assets/Images/LoafDarkWallpaper.jpg"));
                     LoadImageCompleted = true;
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoafPage), nameof(OnNavigatedTo), 2, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(LoafPage), nameof(OnNavigatedTo), 1, e);
                 }
             }
 

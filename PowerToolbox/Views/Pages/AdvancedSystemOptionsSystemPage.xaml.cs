@@ -1309,7 +1309,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(OnVirtualizationBasedSecurityToggled), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsSystemPage), nameof(GetIsVirtualizationBasedSecurityEnabledAsync), 1, e);
                 }
 
                 return isVirtualizationBasedSecurityEnabled;

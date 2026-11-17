@@ -850,7 +850,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(ParseFileAssociateIconAsync), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(ParseFileAssociateIconAsync), 1, e);
                         GetResults = string.Format(GetFileAssociatedResultsFailedString, Path.GetFileName(filePath), 0);
                         NoResources = string.Format(NoResourcesString, Path.GetFileName(filePath));
                         ImageSource = null;
@@ -1158,7 +1158,7 @@ namespace PowerToolbox.Views.Pages
                         catch (Exception e)
                         {
                             saveFailedCount++;
-                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 2, e);
+                            LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(SaveFileContainPngImageAsync), 1, e);
                         }
                     }
                 }
@@ -1221,7 +1221,7 @@ namespace PowerToolbox.Views.Pages
                     catch (Exception e)
                     {
                         saveFailedCount++;
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(OnExportSelectedIconsClicked), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(SaveFileAssociatePngImage), 1, e);
                     }
                 }
             }

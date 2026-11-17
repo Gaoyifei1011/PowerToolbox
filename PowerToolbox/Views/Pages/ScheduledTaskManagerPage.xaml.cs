@@ -578,9 +578,9 @@ namespace PowerToolbox.Views.Pages
                     XElement taskElement = doc.Root;
                     version = taskElement.Attribute("version")?.Value;
                 }
-                catch (Exception sube)
+                catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTask), 1, sube);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ScheduledTaskManagerPage), nameof(GetScheduledTask), 1, e);
                 }
 
                 ScheduledTaskModel scheduledTask = new()

@@ -720,7 +720,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnNavigatedTo), 1, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(InitializeSettingsOptionsAsync), 1, e);
                     }
                 }
                 if (userFolderIconMemoryStream is not null)
@@ -741,7 +741,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnNavigatedTo), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(InitializeSettingsOptionsAsync), 2, e);
                     }
                 }
                 if (networkIconMemoryStream is not null)
@@ -762,7 +762,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnNavigatedTo), 3, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(InitializeSettingsOptionsAsync), 3, e);
                     }
                 }
                 if (recycleBinFullMemoryStream is not null)
@@ -783,7 +783,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnNavigatedTo), 5, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(InitializeSettingsOptionsAsync), 4, e);
                     }
                 }
                 if (recycleBinEmptyMemoryStream is not null)
@@ -804,7 +804,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(OnNavigatedTo), 5, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(AdvancedSystemOptionsPersonalizationPage), nameof(InitializeSettingsOptionsAsync), 5, e);
                     }
                 }
 

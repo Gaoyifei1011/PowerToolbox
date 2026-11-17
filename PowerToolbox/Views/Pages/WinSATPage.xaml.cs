@@ -304,7 +304,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     catch (Exception e)
                     {
-                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnStatusUpdated), 2, e);
+                        LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnStatusCompleted), 1, e);
                         cWinSATCallbacks = null;
                         progressDialog = null;
                         IsNotRunningAssessment = true;

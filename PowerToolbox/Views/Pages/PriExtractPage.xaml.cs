@@ -1272,7 +1272,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(ParseResourceFileAsync), 8, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(GetResourceFileContentAsync), 1, e);
                     return ValueTuple.Create(false, languageList.AsReadOnly(), stringList.AsReadOnly(), filePathList.AsReadOnly(), embeddedDataList.AsReadOnly());
                 }
             });
@@ -1571,7 +1571,7 @@ namespace PowerToolbox.Views.Pages
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(SaveEmbeddedData), 7, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(SaveEmbeddedData), 1, e);
             }
         }
 
@@ -1631,7 +1631,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OnEmbeddedDataExecuteRequested), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(PriExtractPage), nameof(OpenEmbeddedDataSavedFolderPathAsync), 1, e);
                 }
             });
         }

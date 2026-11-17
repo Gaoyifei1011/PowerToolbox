@@ -124,7 +124,7 @@ namespace PowerToolbox.Views.Dialogs
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateAppDialog), nameof(OnCancelOrCloseClicked), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateAppDialog), nameof(OnClosed), 1, e);
                 }
             }
         }
