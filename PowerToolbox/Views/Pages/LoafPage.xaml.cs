@@ -279,9 +279,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnTimeChanged(object sender, TimePickerValueChangedEventArgs args)
         {
-            if (sender is TimePicker)
+            if (sender is TimePicker timePicker)
             {
-                DurationTime = args.NewTime;
+                DurationTime = timePicker.Time;
             }
         }
 

@@ -774,9 +774,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSystemThemeLightTimeChanged(object sender, TimePickerValueChangedEventArgs args)
         {
-            if (sender is TimePicker)
+            if (sender is TimePicker timePicker)
             {
-                SystemThemeLightTime = args.NewTime;
+                SystemThemeLightTime = timePicker.Time;
             }
         }
 
@@ -785,9 +785,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnSystemThemeDarkTimeChanged(object sender, TimePickerValueChangedEventArgs args)
         {
-            if (sender is TimePicker)
+            if (sender is TimePicker timePicker)
             {
-                SystemThemeDarkTime = args.NewTime;
+                SystemThemeDarkTime = timePicker.Time;
             }
         }
 
@@ -796,9 +796,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAppThemeLightTimeChanged(object sender, TimePickerValueChangedEventArgs args)
         {
-            if (sender is TimePicker)
+            if (sender is TimePicker timePicker)
             {
-                AppThemeLightTime = args.NewTime;
+                AppThemeLightTime = timePicker.Time;
             }
         }
 
@@ -807,9 +807,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnAppThemeDarkTimeChanged(object sender, TimePickerValueChangedEventArgs args)
         {
-            if (sender is TimePicker)
+            if (sender is TimePicker timePicker)
             {
-                AppThemeDarkTime = args.NewTime;
+                AppThemeDarkTime = timePicker.Time;
             }
         }
 

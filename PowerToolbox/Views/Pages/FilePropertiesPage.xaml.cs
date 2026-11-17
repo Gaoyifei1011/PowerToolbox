@@ -396,7 +396,10 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnCreateDateChanged(object sender, DatePickerValueChangedEventArgs args)
         {
-            CreateDate = args.NewDate;
+            if (sender is DatePicker datePicker)
+            {
+                CreateDate = datePicker.Date;
+            }
         }
 
         /// <summary>
@@ -404,7 +407,10 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnModifyDateChanged(object sender, DatePickerValueChangedEventArgs args)
         {
-            ModifyDate = args.NewDate;
+            if (sender is DatePicker datePicker)
+            {
+                ModifyDate = datePicker.Date;
+            }
         }
 
         /// <summary>
@@ -487,11 +493,11 @@ namespace PowerToolbox.Views.Pages
             {
                 if (string.Equals(tag, nameof(CreateTime)))
                 {
-                    CreateTime = args.NewTime;
+                    CreateTime = timePicker.Time;
                 }
                 else if (string.Equals(tag, nameof(ModifyTime)))
                 {
-                    ModifyTime = args.NewTime;
+                    ModifyTime = timePicker.Time;
                 }
             }
         }
