@@ -743,6 +743,7 @@ namespace PowerToolbox.Views.Pages
             }
             finally
             {
+                args.Handled = true;
                 dragOperationDeferral.Complete();
             }
 
