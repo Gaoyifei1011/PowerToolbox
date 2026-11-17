@@ -13,6 +13,7 @@
     DefaultButton="Primary"
     FlowDirection="{x:Bind ((FrameworkElement)window:MainWindow.Current.Content).FlowDirection, Mode=OneWay}"
     IsPrimaryButtonEnabled="{x:Bind IsPrimaryEnabled}"
+    KeyboardAcceleratorPlacementMode="Hidden"
     Opened="{x:Bind OnOpened}"
     PrimaryButtonClick="{x:Bind OnDownloadClicked}"
     PrimaryButtonStyle="{ThemeResource AccentButtonStyle}"
@@ -20,6 +21,10 @@
     RequestedTheme="{x:Bind ((FrameworkElement)window:MainWindow.Current.Content).RequestedTheme, Mode=OneWay}"
     Style="{StaticResource ContentDialogWithSystemBackdropStyle}"
     mc:Ignorable="d">
+
+    <ContentDialog.KeyboardAccelerators>
+        <KeyboardAccelerator Key="Escape" Invoked="{x:Bind OnKeyBoardAcceleratorInvoked}" />
+    </ContentDialog.KeyboardAccelerators>
 
     <StackPanel Spacing="5">
         <TextBox

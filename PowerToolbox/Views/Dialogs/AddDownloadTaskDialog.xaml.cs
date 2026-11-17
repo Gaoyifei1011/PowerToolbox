@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.VisualBasic.FileIO;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Services.Download;
@@ -107,23 +108,19 @@ namespace PowerToolbox.Views.Dialogs
 
         #endregion 第三部分：构造函数
 
-        #region 第四部分：父类虚方法重写
+        #region 第四部分：挂载事件处理
 
         /// <summary>
         /// 对话框接受屏幕按键触发的事件
         /// </summary>
-        protected override void OnKeyDown(Microsoft.UI.Xaml.Input.KeyRoutedEventArgs args)
+        private void OnKeyBoardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
-            if (args.Key is VirtualKey.Escape)
+            if (sender.Key is VirtualKey.Escape)
             {
                 isAllowClosed = true;
                 Hide();
             }
         }
-
-        #endregion 第四部分：父类虚方法重写
-
-        #region 第五部分：挂载事件处理
 
         /// <summary>
         /// 对话框打开后触发的事件
@@ -267,9 +264,9 @@ namespace PowerToolbox.Views.Dialogs
             Hide();
         }
 
-        #endregion 第五部分：挂载事件处理
+        #endregion 第四部分：挂载事件处理
 
-        #region 第六部分：数据操作与业务逻辑
+        #region 第五部分：数据操作与业务逻辑
 
         /// <summary>
         /// 获取链接对应的文件名称
@@ -360,6 +357,6 @@ namespace PowerToolbox.Views.Dialogs
             });
         }
 
-        #endregion 第六部分：数据操作与业务逻辑
+        #endregion 第五部分：数据操作与业务逻辑
     }
 }
