@@ -99,6 +99,6 @@ namespace PowerToolbox.WindowsAPI.ComTypes
         /// <param name="pvResevered">保留。 设置为 NULL。</param>
         /// <returns>如果该方法成功，则返回 S_OK。 否则，将返回 HRESULT 错误代码。</returns>
         [PreserveSig]
-        int Timer(PDTIMER dwTimerAction, [MarshalAs(UnmanagedType.IUnknown)] object pvResevered);
+        int Timer(int dwTimerAction, [MarshalAs(UnmanagedType.IUnknown)] object pvResevered);
     }
 }

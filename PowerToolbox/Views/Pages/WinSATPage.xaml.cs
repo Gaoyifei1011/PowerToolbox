@@ -33,7 +33,7 @@ namespace PowerToolbox.Views.Pages
         private readonly Guid CLSID_ProgressDialog = new("F8383852-FCD3-11d1-A6B9-006097DF5BD4");
         private bool isInitialized;
         private _RemotableHandle _RemotableHandle = new();
-        private CWinSATCallbacks cWinSATCallbacks;
+        private WinSATInitiateEvents winSATInitiateEvents;
         private IProgressDialog progressDialog;
 
         #endregion 第一部分：常量、资源与状态字段
@@ -244,7 +244,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnStatusUpdated(object sender, EventArgs args)
         {
-            if (cWinSATCallbacks is not null && progressDialog is not null)
+            if (winSATInitiateEvents is not null && progressDialog is not null)
             {
                 synchronizationContext.Post(_ =>
                 {
@@ -257,22 +257,22 @@ namespace PowerToolbox.Views.Pages
                             {
                                 progressDialog.StopProgressDialog();
                                 cInitiateWinSAT.CancelAssessment();
-                                cWinSATCallbacks.StatusCompleted -= OnStatusUpdated;
-                                cWinSATCallbacks.StatusUpdated -= OnStatusUpdated;
-                                cWinSATCallbacks = null;
+                                winSATInitiateEvents.StatusCompleted -= OnStatusUpdated;
+                                winSATInitiateEvents.StatusUpdated -= OnStatusUpdated;
+                                winSATInitiateEvents = null;
                                 progressDialog = null;
                                 IsNotRunningAssessment = true;
                                 return;
                             }
 
-                            progressDialog.SetLine(1, cWinSATCallbacks.CurrentState, false, 0);
-                            progressDialog.SetProgress(cWinSATCallbacks.CurrentTick, cWinSATCallbacks.TickTotal);
+                            progressDialog.SetLine(1, winSATInitiateEvents.CurrentState, false, 0);
+                            progressDialog.SetProgress(winSATInitiateEvents.CurrentTick, winSATInitiateEvents.TickTotal);
                         }
                     }
                     catch (Exception e)
                     {
                         LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnStatusUpdated), 1, e);
-                        cWinSATCallbacks = null;
+                        winSATInitiateEvents = null;
                         progressDialog = null;
                         IsNotRunningAssessment = true;
                     }
@@ -285,7 +285,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnStatusCompleted(object sender, EventArgs args)
         {
-            if (cWinSATCallbacks is not null && progressDialog is not null)
+            if (winSATInitiateEvents is not null && progressDialog is not null)
             {
                 synchronizationContext.Post(async _ =>
                 {
@@ -294,9 +294,9 @@ namespace PowerToolbox.Views.Pages
                         if (progressDialog is not null)
                         {
                             progressDialog.StopProgressDialog();
-                            cWinSATCallbacks.StatusCompleted -= OnStatusUpdated;
-                            cWinSATCallbacks.StatusUpdated -= OnStatusUpdated;
-                            cWinSATCallbacks = null;
+                            winSATInitiateEvents.StatusCompleted -= OnStatusUpdated;
+                            winSATInitiateEvents.StatusUpdated -= OnStatusUpdated;
+                            winSATInitiateEvents = null;
                             progressDialog = null;
                             await GetWinSATInfoAsync();
                             IsNotRunningAssessment = true;
@@ -305,7 +305,7 @@ namespace PowerToolbox.Views.Pages
                     catch (Exception e)
                     {
                         LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(OnStatusCompleted), 1, e);
-                        cWinSATCallbacks = null;
+                        winSATInitiateEvents = null;
                         progressDialog = null;
                         IsNotRunningAssessment = true;
                     }
@@ -368,15 +368,15 @@ namespace PowerToolbox.Views.Pages
         {
             try
             {
-                cWinSATCallbacks = new();
+                winSATInitiateEvents = new();
 
-                if (cWinSATCallbacks is not null)
+                if (winSATInitiateEvents is not null)
                 {
-                    cWinSATCallbacks.StatusUpdated += OnStatusUpdated;
-                    cWinSATCallbacks.StatusCompleted += OnStatusCompleted;
+                    winSATInitiateEvents.StatusUpdated += OnStatusUpdated;
+                    winSATInitiateEvents.StatusCompleted += OnStatusCompleted;
                 }
 
-                cInitiateWinSAT.InitiateFormalAssessment(cWinSATCallbacks, ref _RemotableHandle);
+                cInitiateWinSAT.InitiateFormalAssessment(winSATInitiateEvents, ref _RemotableHandle);
                 progressDialog = (IProgressDialog)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_ProgressDialog));
 
                 if (progressDialog is not null)
@@ -389,7 +389,7 @@ namespace PowerToolbox.Views.Pages
             catch (Exception e)
             {
                 LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(WinSATPage), nameof(RunAssessment), 1, e);
-                cWinSATCallbacks = null;
+                winSATInitiateEvents = null;
                 progressDialog = null;
             }
         }
