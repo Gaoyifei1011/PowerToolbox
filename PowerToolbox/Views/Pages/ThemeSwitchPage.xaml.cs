@@ -52,7 +52,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string PolarDayString = ResourceService.ThemeSwitchResource.GetString("PolarDay");
         private readonly string PolarNightString = ResourceService.ThemeSwitchResource.GetString("PolarNight");
         private readonly Guid CLSID_DesktopWallpaper = new("C2CF3110-460E-4fC1-B9D0-8A1C0C9CC4BD");
-
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private string packageFamilyName = string.Empty;
         private bool isInitialized;

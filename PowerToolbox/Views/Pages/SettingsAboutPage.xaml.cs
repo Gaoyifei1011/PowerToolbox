@@ -38,7 +38,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string ShowLicenseString = ResourceService.SettingsAboutResource.GetString("ShowLicense");
         private readonly string ShowReleaseNotesString = ResourceService.SettingsAboutResource.GetString("ShowReleaseNotes");
         private readonly string SystemInformationString = ResourceService.SettingsAboutResource.GetString("SystemInformation");
-
         private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
 
         #endregion 第一部分：常量、资源与状态字段

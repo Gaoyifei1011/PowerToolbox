@@ -29,7 +29,6 @@ namespace PowerToolbox.Views.Dialogs
         private readonly string CloseAppString = ResourceService.DialogResource.GetString("CloseApp");
         private readonly string UpdateString = ResourceService.DialogResource.GetString("Update");
         private readonly string UpdateDownloadingString = ResourceService.DialogResource.GetString("UpdateDownloading");
-        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private IAsyncOperationWithProgress<StorePackageUpdateResult, StorePackageUpdateStatus> storePackageUpdateProgress = null;
 
         #endregion 第一部分：常量、资源与状态字段
