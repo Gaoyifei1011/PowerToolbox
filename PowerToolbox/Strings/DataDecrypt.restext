@@ -75,7 +75,6 @@ OFB=OFB
 Offset=Offset
 OpenFolder=Open the folder corresponding to the file
 OpenLocalFile=Open local file
-Operation=Operation
 PaddingMode=Padding mode
 ParseAsTextData=Parse the decrypted data as text
 ParseAsTextDataOffContent=No

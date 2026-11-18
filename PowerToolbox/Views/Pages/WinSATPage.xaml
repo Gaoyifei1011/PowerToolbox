@@ -16,40 +16,73 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid
+        <CommandBar
             Grid.Row="0"
-            MinWidth="100"
-            MinHeight="32"
-            Margin="30,17,30,3"
-            HorizontalAlignment="Left">
+            Margin="24,7,22,-2"
+            VerticalAlignment="Center"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Center"
+            Background="Transparent"
+            CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
+            DefaultLabelPosition="Collapsed"
+            IsDynamicOverflowEnabled="False">
 
-            <Rectangle
-                Fill="{ThemeResource PillItemBackgroundSelected}"
-                RadiusX="16"
-                RadiusY="16"
-                Stroke="{ThemeResource PillItemBorderBrushSelected}"
-                StrokeThickness="1" />
+            <CommandBar.Content>
+                <Grid
+                    Grid.Row="0"
+                    MinWidth="100"
+                    MinHeight="32"
+                    HorizontalAlignment="Left">
 
-            <TextBlock
-                Padding="16,4,16,6"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Foreground="{ThemeResource PillItemForegroundSelected}"
-                Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('WinSAT')}" />
-        </Grid>
+                    <Rectangle
+                        Fill="{ThemeResource PillItemBackgroundSelected}"
+                        RadiusX="16"
+                        RadiusY="16"
+                        Stroke="{ThemeResource PillItemBorderBrushSelected}"
+                        StrokeThickness="1" />
 
-        <TextBlock
-            Grid.Row="1"
-            Margin="32,0,32,3"
-            FontSize="14"
-            Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Description')}" />
+                    <TextBlock
+                        Padding="16,4,16,6"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource PillItemForegroundSelected}"
+                        Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('WinSAT')}" />
+                </Grid>
+            </CommandBar.Content>
+
+            <CommandBar.PrimaryCommands>
+                <AppBarButton
+                    Width="48"
+                    Click="{x:Bind OnRunAssessmentClicked}"
+                    IsEnabled="{x:Bind IsNotRunningAssessment, Mode=OneWay}"
+                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.WinSATResource.GetString('RunAssessment')}">
+
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE768;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar.PrimaryCommands>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Click="{x:Bind OnOpenAssessmentLogFolderClicked}" Label="{x:Bind rootservice:ResourceService.WinSATResource.GetString('OpenAssessmentLogFolder')}">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE8B7;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+
+                <AppBarButton Click="{x:Bind OnLearnSystemAssessmentClicked}" Label="{x:Bind rootservice:ResourceService.WinSATResource.GetString('LearnSystemAssessment')}">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE8A7;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
 
         <!--  系统评估信息  -->
         <Grid
-            Grid.Row="2"
+            Grid.Row="1"
             Margin="30,0,30,3"
             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
@@ -459,7 +492,7 @@
 
         <!--  系统评估状态信息栏  -->
         <InfoBar
-            Grid.Row="3"
+            Grid.Row="2"
             Height="50"
             Margin="30,0,30,3"
             IsClosable="False"
@@ -471,7 +504,7 @@
 
         <!--  系统评估控制栏  -->
         <Grid
-            Grid.Row="4"
+            Grid.Row="3"
             Height="60"
             Margin="30,0,30,3"
             Padding="16,0"
@@ -492,11 +525,6 @@
                 FontSize="16"
                 Glyph="&#xE74C;" />
 
-            <TextBlock
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('Operation')}" />
-
             <StackPanel
                 Grid.Column="2"
                 Orientation="Horizontal"
@@ -515,7 +543,7 @@
 
         <!--  小提示  -->
         <Expander
-            Grid.Row="5"
+            Grid.Row="4"
             Margin="30,0,30,3"
             Padding="0"
             HorizontalAlignment="Stretch"
@@ -553,10 +581,18 @@
                     TextWrapping="Wrap" />
 
                 <TextBlock
-                    Margin="44,0,16,10"
+                    Margin="44,0,16,5"
                     FontSize="14"
                     FontWeight="Normal"
                     Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('TipContent2')}"
+                    TextAlignment="Justify"
+                    TextWrapping="Wrap" />
+
+                <TextBlock
+                    Margin="44,0,16,10"
+                    FontSize="14"
+                    FontWeight="Normal"
+                    Text="{x:Bind rootservice:ResourceService.WinSATResource.GetString('TipContent3')}"
                     TextAlignment="Justify"
                     TextWrapping="Wrap" />
             </StackPanel>

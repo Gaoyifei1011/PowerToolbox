@@ -773,7 +773,7 @@ namespace PowerToolbox.Views.Windows
 
                         if (MainPage.IsLoaded)
                         {
-                            double dpi = Convert.ToDouble(User32Library.GetDpiForWindow((nint)AppWindow.Id.Value)) / 96;
+                            double dpi = Convert.ToDouble(User32Library.GetDpiForWindow(hWnd)) / 96;
                             overlappedPresenter.PreferredMinimumWidth = Convert.ToInt32(1000 * dpi);
                             overlappedPresenter.PreferredMinimumHeight = Convert.ToInt32(600 * dpi);
                         }
@@ -877,7 +877,7 @@ namespace PowerToolbox.Views.Windows
                         {
                             System.Drawing.Point cursorPos = new((int)LOWORD((uint)lParam), (int)HIWORD((uint)lParam));
                             User32Library.MapWindowPoints(0, hWnd, ref cursorPos, 2); ;
-                            double dpi = Convert.ToDouble(User32Library.GetDpiForWindow((nint)AppWindow.Id.Value)) / 96;
+                            double dpi = Convert.ToDouble(User32Library.GetDpiForWindow(hWnd)) / 96;
 
                             FlyoutShowOptions options = new()
                             {

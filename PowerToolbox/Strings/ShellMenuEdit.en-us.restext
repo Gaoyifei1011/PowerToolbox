@@ -29,7 +29,6 @@ MenuTitlePHText=Please input the menu title
 Name=Name
 NameRegex=Name (Regex)
 None=None
-Operation=Operation
 ProgramFilterCondition=Executable file (*.exe)|*.exe
 RunAsAdministrator=Always run as administrator
 Save=Save

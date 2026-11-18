@@ -75,7 +75,6 @@ OFB=OFB
 Offset=偏移量
 OpenFolder=打开文件所对应的文件夹
 OpenLocalFile=打开本地文件
-Operation=操作
 PaddingMode=填充模式
 ParseAsTextData=以文本方式解析解密后的数据
 ParseAsTextDataOffContent=否

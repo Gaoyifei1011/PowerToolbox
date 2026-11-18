@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
-    xmlns:system="using:System"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
@@ -47,7 +46,6 @@
 
             <Grid Margin="0,0,0,40">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -96,44 +94,8 @@
                 </Grid>
 
                 <!--  摸鱼控制栏  -->
-                <Grid
-                    Grid.Row="1"
-                    Height="60"
-                    Margin="30,0,30,3"
-                    Padding="16,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="{StaticResource ControlCornerRadius}">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <FontIcon
-                        Grid.Column="0"
-                        Margin="0,0,12,0"
-                        FontSize="16"
-                        Glyph="&#xE74C;" />
-
-                    <TextBlock
-                        Grid.Column="1"
-                        VerticalAlignment="Center"
-                        Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('Operation')}" />
-
-                    <Button
-                        Grid.Column="2"
-                        Click="{x:Bind OnStartLoafClicked}"
-                        Content="{x:Bind rootservice:ResourceService.LoafResource.GetString('StartLoaf')}"
-                        IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsLoafing), Mode=OneWay}"
-                        Style="{StaticResource AccentButtonStyle}" />
-                </Grid>
-
-                <!--  摸鱼控制栏  -->
                 <Expander
-                    Grid.Row="2"
+                    Grid.Row="1"
                     Margin="30,0,30,3"
                     Padding="0"
                     HorizontalAlignment="Stretch"
@@ -142,23 +104,48 @@
                     IsExpanded="True">
 
                     <Expander.Header>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                        <CommandBar
+                            Margin="0,0,-15,0"
+                            Padding="0"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
+                            DefaultLabelPosition="Right"
+                            IsDynamicOverflowEnabled="False">
 
-                            <FontIcon
-                                Grid.Column="0"
-                                Margin="0,0,12,0"
-                                FontSize="16"
-                                Glyph="&#xE90F;" />
+                            <CommandBar.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
 
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('ConfigOptions')}" />
-                        </Grid>
+                                    <FontIcon
+                                        Grid.Column="0"
+                                        Margin="0,0,12,0"
+                                        FontSize="16"
+                                        Glyph="&#xE90F;" />
+
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Bind rootservice:ResourceService.LoafResource.GetString('ConfigOptions')}" />
+                                </Grid>
+                            </CommandBar.Content>
+
+                            <CommandBar.PrimaryCommands>
+                                <AppBarButton
+                                    Click="{x:Bind OnStartLoafClicked}"
+                                    Content="{x:Bind rootservice:ResourceService.LoafResource.GetString('StartLoaf')}"
+                                    IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsLoafing), Mode=OneWay}">
+
+                                    <AppBarButton.Icon>
+                                        <FontIcon Glyph="&#xE768;" />
+                                    </AppBarButton.Icon>
+                                </AppBarButton>
+                            </CommandBar.PrimaryCommands>
+                        </CommandBar>
                     </Expander.Header>
 
                     <StackPanel Padding="0">
@@ -274,7 +261,7 @@
 
                 <!--  小提示  -->
                 <Expander
-                    Grid.Row="3"
+                    Grid.Row="2"
                     Margin="30,0,30,3"
                     Padding="0"
                     HorizontalAlignment="Stretch"

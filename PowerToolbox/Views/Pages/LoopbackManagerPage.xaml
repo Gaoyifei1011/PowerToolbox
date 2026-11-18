@@ -23,6 +23,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!--  网络回环管理控制栏  -->
         <CommandBar
             Grid.Row="0"
             Margin="24,7,22,-5"
@@ -154,7 +155,7 @@
                 <AppBarButton Click="{x:Bind OnLearnLoopbackClicked}" Label="{x:Bind rootservice:ResourceService.LoopbackManagerResource.GetString('LearnLoopback')}">
 
                     <AppBarButton.Icon>
-                        <FontIcon Glyph="&#xE890;" />
+                        <FontIcon Glyph="&#xE8A7;" />
                     </AppBarButton.Icon>
                 </AppBarButton>
             </CommandBar.SecondaryCommands>

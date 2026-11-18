@@ -39,15 +39,11 @@
     </Page.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
         <BreadcrumbBar
-            Grid.Column="0"
-            Margin="30,15,30,3"
-            VerticalAlignment="Center"
+            Margin="30,15,30,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Canvas.ZIndex="1"
             ItemClicked="{x:Bind OnItemClicked}"
             ItemsSource="{x:Bind BreadcrumbBarCollection}">
 
@@ -66,7 +62,6 @@
 
         <Frame
             x:Name="ShellMenuFrame"
-            Grid.Row="1"
             Navigated="{x:Bind OnNavigated}"
             NavigationFailed="{x:Bind OnNavigationFailed}" />
     </Grid>

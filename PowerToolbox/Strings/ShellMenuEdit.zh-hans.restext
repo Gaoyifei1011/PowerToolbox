@@ -29,7 +29,6 @@ MenuTitlePHText=请输入菜单标题
 Name=名称
 NameRegex=名称（正则表达式）
 None=不匹配
-Operation=操作
 ProgramFilterCondition=可执行文件(*.exe)|*.exe
 RunAsAdministrator=总是提权运行
 Save=保存

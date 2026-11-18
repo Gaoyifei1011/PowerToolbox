@@ -755,7 +755,7 @@
 
                             <MenuFlyoutItem Click="{x:Bind OnLearnSystemReservedStorageClicked}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('LearnSystemReservedStorage')}">
                                 <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE890;" />
+                                    <FontIcon Glyph="&#xE8A7;" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                         </MenuFlyout>
@@ -840,7 +840,7 @@
                         <MenuFlyout Placement="Bottom">
                             <MenuFlyoutItem Click="{x:Bind OnLearnVBSClicked}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('LearnVBS')}">
                                 <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE890;" />
+                                    <FontIcon Glyph="&#xE8A7;" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                         </MenuFlyout>
@@ -916,7 +916,7 @@
                         <MenuFlyout Placement="Bottom">
                             <MenuFlyoutItem Click="{x:Bind OnLearnNICOffloadClicked}" Text="{x:Bind rootservice:ResourceService.AdvancedSystemOptionsSystemResource.GetString('LearnNICOffload')}">
                                 <MenuFlyoutItem.Icon>
-                                    <FontIcon Glyph="&#xE890;" />
+                                    <FontIcon Glyph="&#xE8A7;" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                         </MenuFlyout>

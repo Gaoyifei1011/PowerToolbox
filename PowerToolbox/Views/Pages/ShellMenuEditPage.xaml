@@ -6,61 +6,40 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
-    xmlns:system="using:System"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
-    <Grid>
+    <Grid Margin="0,10,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid
+        <CommandBar
             Grid.Row="0"
-            Height="60"
-            Margin="30,0,30,3"
-            Padding="16,0,2,0"
-            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="{StaticResource ControlCornerRadius}">
+            Margin="30,-5,22,-4"
+            Padding="16,0,0,0"
+            VerticalAlignment="Center"
+            HorizontalContentAlignment="Right"
+            VerticalContentAlignment="Center"
+            Background="Transparent"
+            CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
+            DefaultLabelPosition="Collapsed"
+            IsDynamicOverflowEnabled="False">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton
+                    Width="48"
+                    VerticalAlignment="Center"
+                    Click="{x:Bind OnSaveClicked}"
+                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('Save')}">
 
-            <FontIcon
-                Grid.Column="0"
-                Margin="0,0,12,0"
-                FontSize="16"
-                Glyph="&#xE74C;" />
-
-            <TextBlock
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                Text="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('Operation')}" />
-
-            <CommandBar
-                Grid.Column="2"
-                VerticalAlignment="Center"
-                CommandBarOverflowPresenterStyle="{StaticResource CommandBarOverflowPresenterWithSystemBackdropStyle}"
-                DefaultLabelPosition="Right">
-
-                <CommandBar.PrimaryCommands>
-                    <AppBarButton
-                        VerticalAlignment="Center"
-                        Click="{x:Bind OnSaveClicked}"
-                        Label="{x:Bind rootservice:ResourceService.ShellMenuEditResource.GetString('Save')}">
-                        <AppBarButton.Icon>
-                            <FontIcon Glyph="&#xE74E;" />
-                        </AppBarButton.Icon>
-                    </AppBarButton>
-                </CommandBar.PrimaryCommands>
-            </CommandBar>
-        </Grid>
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE74E;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
 
         <ScrollViewer
             Grid.Row="1"
