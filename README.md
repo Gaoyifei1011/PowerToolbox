@@ -1,5 +1,5 @@
 <div align=center>
-<img src="https://github.com/user-attachments/assets/97e4fd4f-a172-4c23-aa2c-3238628bd9a0" width="140" height="140"/>
+<img src="https://github.com/user-attachments/assets/23529c47-9a01-4d73-b21c-5bae4f1111be" width="140" height="140"/>
 </div>
 
 # <p align="center">欢迎访问 PowerToolbox</p>
