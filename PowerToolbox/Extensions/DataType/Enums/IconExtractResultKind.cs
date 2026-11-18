@@ -7,7 +7,7 @@
     {
         Welcome = 0,
         Parsing = 1,
-        Successfully = 2,
-        Failed = 3
+        Failed = 2,
+        HasResult = 3
     }
 }

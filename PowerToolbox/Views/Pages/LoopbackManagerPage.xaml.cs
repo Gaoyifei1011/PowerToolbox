@@ -268,7 +268,7 @@ namespace PowerToolbox.Views.Pages
                     }
                 }
                 SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
-                LoopbackResultKind = LoopbackCollection.Count is 0 ? LoopbackResultKind.Failed : LoopbackResultKind.Successfully;
+                LoopbackResultKind = LoopbackCollection.Count is 0 ? LoopbackResultKind.Failed : LoopbackResultKind.HasResult;
             }
         }
 
@@ -330,7 +330,7 @@ namespace PowerToolbox.Views.Pages
                             LoopbackManagerListView.SelectRange(new(index, 1));
                         }
                     }
-                    LoopbackResultKind = LoopbackResultKind.Successfully;
+                    LoopbackResultKind = LoopbackResultKind.HasResult;
                     LoopbackFailedContent = string.Empty;
                     SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
                 }
@@ -663,15 +663,15 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 获取加载网络回环是否成功
+        /// 获取加载网络回环是否加载完成
         /// </summary>
-        private Visibility GetLoopbackSuccessfullyVisibility(LoopbackResultKind loopbackResultKind, bool isSuccessfully)
+        private Visibility GetLoopbackHasResultVisibility(LoopbackResultKind loopbackResultKind, bool isReverse)
         {
-            return isSuccessfully ? loopbackResultKind is LoopbackResultKind.Successfully ? Visibility.Visible : Visibility.Collapsed : loopbackResultKind is LoopbackResultKind.Successfully ? Visibility.Collapsed : Visibility.Visible;
+            return isReverse ? loopbackResultKind is LoopbackResultKind.HasResult ? Visibility.Collapsed : Visibility.Visible : loopbackResultKind is LoopbackResultKind.HasResult ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
-        /// 检查搜索网络回环是否成功
+        /// 检查搜索网络回环结果状态
         /// </summary>
         private Visibility CheckLoopbackResultKindVisibility(LoopbackResultKind loopbackResultKind, LoopbackResultKind comparedLoopbackResultKind)
         {

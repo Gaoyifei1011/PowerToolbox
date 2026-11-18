@@ -673,12 +673,6 @@
                                         <Run Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('NetworkAndInternet')}" />
                                     </Hyperlink>
                                 </TextBlock>
-
-                                <TextBlock HorizontalAlignment="Left">
-                                    <Hyperlink Click="{x:Bind OnOpenSettingsClicked}" UnderlineStyle="None">
-                                        <Run Text="{x:Bind rootservice:ResourceService.DownloadManagerResource.GetString('OpenSettings')}" />
-                                    </Hyperlink>
-                                </TextBlock>
                             </StackPanel>
                         </Grid>
                     </ScrollViewer>

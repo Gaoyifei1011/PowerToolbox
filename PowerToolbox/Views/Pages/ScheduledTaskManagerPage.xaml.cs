@@ -450,11 +450,11 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 获取是否正在加载中或操作中
+        /// 获取是否正在加载中
         /// </summary>
-        private bool GetIsLoadingOrOperating(ScheduledTaskResultKind scheduledTaskResultKind)
+        private bool GetIsLoading(ScheduledTaskResultKind scheduledTaskResultKind)
         {
-            return !(scheduledTaskResultKind is ScheduledTaskResultKind.Loading || scheduledTaskResultKind is ScheduledTaskResultKind.Operating);
+            return scheduledTaskResultKind is not ScheduledTaskResultKind.Loading;
         }
 
         #endregion 第六部分：挂载事件处理
@@ -504,7 +504,7 @@ namespace PowerToolbox.Views.Pages
                         ScheduledTaskCollection.Add(scheduledTaskItem);
                     }
 
-                    ScheduledTaskResultKind = ScheduledTaskCollection.Count is 0 ? ScheduledTaskResultKind.Failed : ScheduledTaskResultKind.Successfully;
+                    ScheduledTaskResultKind = ScheduledTaskCollection.Count is 0 ? ScheduledTaskResultKind.Failed : ScheduledTaskResultKind.HasResult;
                     ScheduledTaskFailedContent = ScheduledTaskCollection.Count is 0 ? ScheduledTaskEmptyDescriptionString : string.Empty;
                     SelectedItemsCount = ScheduledTaskManagerListView.SelectedItems.Count;
                 }
@@ -1118,15 +1118,15 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 获取加载计划任务是否成功
+        /// 获取加载计划任务是否加载完成
         /// </summary>
-        private Visibility GetScheduledTaskSuccessfullyVisibility(ScheduledTaskResultKind scheduledTaskResultKind, bool isSuccessfully)
+        private Visibility GetScheduledTaskHasResultVisibility(ScheduledTaskResultKind scheduledTaskResultKind, bool isReverse)
         {
-            return isSuccessfully ? scheduledTaskResultKind is ScheduledTaskResultKind.Successfully ? Visibility.Visible : Visibility.Collapsed : scheduledTaskResultKind is ScheduledTaskResultKind.Successfully ? Visibility.Collapsed : Visibility.Visible;
+            return isReverse ? scheduledTaskResultKind is ScheduledTaskResultKind.HasResult ? Visibility.Collapsed : Visibility.Visible : scheduledTaskResultKind is ScheduledTaskResultKind.HasResult ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
-        /// 检查搜索计划任务是否成功
+        /// 检查搜索计划任务结果状态
         /// </summary>
         private Visibility CheckScheduledTaskResultKindVisibility(ScheduledTaskResultKind scheduledTaskResultKind, ScheduledTaskResultKind comparedScheduledTaskResultKind)
         {

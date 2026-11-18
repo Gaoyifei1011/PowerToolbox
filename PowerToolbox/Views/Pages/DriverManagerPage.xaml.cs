@@ -585,7 +585,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     DriverCollection.Add(sortedDriverItem);
                 }
-                DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
+                DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.HasResult;
                 DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyDescriptionString : string.Empty;
                 SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
             }
@@ -604,7 +604,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     DriverCollection.Add(sortedDriverItem);
                 }
-                DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
+                DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.HasResult;
                 DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyDescriptionString : string.Empty;
                 SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
             }
@@ -888,7 +888,7 @@ namespace PowerToolbox.Views.Pages
                     {
                         DriverCollection.Add(sortedDriverItem);
                     }
-                    DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.Successfully;
+                    DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.HasResult;
                     DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyDescriptionString : string.Empty;
                     SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
                 }
@@ -1742,15 +1742,15 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 获取加载驱动是否成功
+        /// 获取加载驱动是否加载完成
         /// </summary>
-        private Visibility GetDriverSuccessfullyVisibility(DriverResultKind driverResultKind, bool isSuccessfully)
+        private Visibility GetDriverHasResultVisibility(DriverResultKind driverResultKind, bool isReverse)
         {
-            return isSuccessfully ? driverResultKind is DriverResultKind.Successfully || driverResultKind is DriverResultKind.Operating ? Visibility.Visible : Visibility.Collapsed : driverResultKind is DriverResultKind.Successfully || driverResultKind is DriverResultKind.Operating ? Visibility.Collapsed : Visibility.Visible;
+            return isReverse ? driverResultKind is DriverResultKind.HasResult || driverResultKind is DriverResultKind.Operating ? Visibility.Collapsed : Visibility.Visible : driverResultKind is DriverResultKind.HasResult || driverResultKind is DriverResultKind.Operating ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
-        /// 检查搜索驱动是否成功
+        /// 检查搜索驱动结果状态
         /// </summary>
         private Visibility CheckDriverResultKindVisibility(DriverResultKind driverResultKind, DriverResultKind comparedDriverResultKind)
         {

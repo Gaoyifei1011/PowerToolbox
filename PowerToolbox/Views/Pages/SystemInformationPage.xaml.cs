@@ -143,7 +143,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnCopyClicked(object sender, RoutedEventArgs args)
         {
-            if (SystemInformationResultKind is SystemInformationResultKind.Successfully)
+            if (SystemInformationResultKind is SystemInformationResultKind.HasResult)
             {
                 string copySystemInformationContent = await GetSystemInformationContentAsync(new(SystemInformationCollection));
                 if (!string.IsNullOrEmpty(copySystemInformationContent))
@@ -227,7 +227,7 @@ namespace PowerToolbox.Views.Pages
                     SystemInformationCollection.Add(new() { Item = AvailableVirtualMemoryString, Content = string.IsNullOrEmpty(systemInformation.AvailableVirtualMemory) ? NotAvailableString : systemInformation.AvailableVirtualMemory });
                     SystemInformationCollection.Add(new() { Item = PageFilePositionString, Content = string.IsNullOrEmpty(systemInformation.PageFilePosition) ? NotAvailableString : systemInformation.PageFilePosition });
                     SystemInformationCollection.Add(new() { Item = PageFileSizeString, Content = string.IsNullOrEmpty(systemInformation.PageFileSize) ? NotAvailableString : systemInformation.PageFileSize });
-                    SystemInformationResultKind = SystemInformationResultKind.Successfully;
+                    SystemInformationResultKind = SystemInformationResultKind.HasResult;
                 }
                 else
                 {
@@ -526,15 +526,15 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 获取加载系统信息是否成功
+        /// 获取加载系统信息是否加载完成
         /// </summary>
-        private Visibility GetSystemInformationSuccessfullyVisibility(SystemInformationResultKind systemInformationResultKind, bool isReverse)
+        private Visibility GetSystemInformationHasResultVisibility(SystemInformationResultKind systemInformationResultKind, bool isReverse)
         {
-            return isReverse ? systemInformationResultKind is SystemInformationResultKind.Successfully ? Visibility.Collapsed : Visibility.Visible : systemInformationResultKind is SystemInformationResultKind.Successfully ? Visibility.Visible : Visibility.Collapsed;
+            return isReverse ? systemInformationResultKind is SystemInformationResultKind.HasResult ? Visibility.Collapsed : Visibility.Visible : systemInformationResultKind is SystemInformationResultKind.HasResult ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
-        /// 检查系统信息是否成功
+        /// 检查系统信息结果状态
         /// </summary>
         private Visibility CheckSystemInformationResultKindVisibility(SystemInformationResultKind systemInformationResultKind, SystemInformationResultKind comparedSystemInformationResultKind)
         {

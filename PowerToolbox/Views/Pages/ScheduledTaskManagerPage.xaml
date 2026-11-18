@@ -91,7 +91,7 @@
                 <CommandBar.PrimaryCommands>
                     <AppBarButton
                         Width="48"
-                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                        IsEnabled="{x:Bind GetIsLoading(ScheduledTaskResultKind), Mode=OneWay}"
                         ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('MultiSelect')}">
 
                         <AppBarButton.Icon>
@@ -102,7 +102,7 @@
                             <MenuFlyout Placement="Bottom">
                                 <MenuFlyoutItem
                                     Click="{x:Bind OnSelectAllClicked}"
-                                    IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                                    IsEnabled="{x:Bind GetIsLoading(ScheduledTaskResultKind), Mode=OneWay}"
                                     Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('SelectAll')}">
 
                                     <MenuFlyoutItem.Icon>
@@ -112,7 +112,7 @@
 
                                 <MenuFlyoutItem
                                     Click="{x:Bind OnSelectNoneClicked}"
-                                    IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                                    IsEnabled="{x:Bind GetIsLoading(ScheduledTaskResultKind), Mode=OneWay}"
                                     Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('SelectNone')}">
 
                                     <MenuFlyoutItem.Icon>
@@ -122,7 +122,7 @@
 
                                 <MenuFlyoutItem
                                     Click="{x:Bind OnSelectReverseClicked}"
-                                    IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                                    IsEnabled="{x:Bind GetIsLoading(ScheduledTaskResultKind), Mode=OneWay}"
                                     Text="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('SelectReverse')}">
 
                                     <MenuFlyoutItem.Icon>
@@ -136,7 +136,7 @@
                     <AppBarButton
                         Width="48"
                         Click="{x:Bind OnRefreshClicked}"
-                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                        IsEnabled="{x:Bind GetIsLoading(ScheduledTaskResultKind), Mode=OneWay}"
                         ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('Refresh')}">
 
                         <AppBarButton.Icon>
@@ -148,7 +148,7 @@
                 <CommandBar.SecondaryCommands>
                     <AppBarButton
                         Click="{x:Bind OnRunScheduledTaskClicked}"
-                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                        IsEnabled="{x:Bind GetIsLoading(ScheduledTaskResultKind), Mode=OneWay}"
                         Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('RunScheduledTask')}">
 
                         <AppBarButton.Icon>
@@ -158,7 +158,7 @@
 
                     <AppBarButton
                         Click="{x:Bind OnStopScheduledTaskClicked}"
-                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                        IsEnabled="{x:Bind GetIsLoading(ScheduledTaskResultKind), Mode=OneWay}"
                         Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('StopScheduledTask')}">
 
                         <AppBarButton.Icon>
@@ -168,7 +168,7 @@
 
                     <AppBarButton
                         Click="{x:Bind OnExportScheduledTaskClicked}"
-                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                        IsEnabled="{x:Bind GetIsLoading(ScheduledTaskResultKind), Mode=OneWay}"
                         Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('ExportScheduledTask')}">
 
                         <AppBarButton.Icon>
@@ -178,7 +178,7 @@
 
                     <AppBarButton
                         Click="{x:Bind OnDeleteScheduledTaskClicked}"
-                        IsEnabled="{x:Bind GetIsLoadingOrOperating(ScheduledTaskResultKind), Mode=OneWay}"
+                        IsEnabled="{x:Bind GetIsLoading(ScheduledTaskResultKind), Mode=OneWay}"
                         Label="{x:Bind rootservice:ResourceService.ScheduledTaskManagerResource.GetString('DeleteScheduledTask')}">
 
                         <AppBarButton.Icon>
@@ -220,7 +220,7 @@
                     Margin="30,0,30,60"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Visibility="{x:Bind GetScheduledTaskSuccessfullyVisibility(ScheduledTaskResultKind, x:False), Mode=OneWay}">
+                    Visibility="{x:Bind GetScheduledTaskHasResultVisibility(ScheduledTaskResultKind, x:True), Mode=OneWay}">
 
                     <!--  正在加载中  -->
                     <StackPanel Spacing="20" Visibility="{x:Bind CheckScheduledTaskResultKindVisibility(ScheduledTaskResultKind, enum:ScheduledTaskResultKind.Loading), Mode=OneWay}">
@@ -280,7 +280,7 @@
                     ItemsSource="{x:Bind ScheduledTaskCollection}"
                     SelectionChanged="{x:Bind OnSelectionChanged}"
                     SelectionMode="Multiple"
-                    Visibility="{x:Bind GetScheduledTaskSuccessfullyVisibility(ScheduledTaskResultKind, x:True), Mode=OneWay}">
+                    Visibility="{x:Bind GetScheduledTaskHasResultVisibility(ScheduledTaskResultKind, x:False), Mode=OneWay}">
 
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">

@@ -248,7 +248,7 @@ namespace PowerToolbox.Views.Pages
                         continue;
                     }
                 }
-                ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.Successfully;
+                ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.HasResult;
                 ContextMenuFailedContent = ContextMenuCollection.Count is 0 ? MenuEmptyWithConditionDescriptionString : string.Empty;
             }
         }
@@ -267,7 +267,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     ContextMenuCollection.Add(contextMenuItem);
                 }
-                ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.Successfully;
+                ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.HasResult;
                 ContextMenuFailedContent = ContextMenuCollection.Count is 0 ? MenuEmptyWithConditionDescriptionString : string.Empty;
             }
         }
@@ -359,7 +359,7 @@ namespace PowerToolbox.Views.Pages
                             }
                         }
                     }
-                    ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.Successfully;
+                    ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.HasResult;
                     ContextMenuFailedContent = ContextMenuCollection.Count is 0 ? MenuEmptyWithConditionDescriptionString : string.Empty;
                 }
             }
@@ -775,15 +775,15 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 获取加载右键菜单是否成功
+        /// 获取加载右键菜单结果状态
         /// </summary>
-        private Visibility GetContextMenuSuccessfullyVisibility(ContextMenuResultKind contextMenuResultKind, bool isSuccessfully)
+        private Visibility GetContextMenuHasResultVisibility(ContextMenuResultKind contextMenuResultKind, bool isReverse)
         {
-            return isSuccessfully ? contextMenuResultKind is ContextMenuResultKind.Successfully ? Visibility.Visible : Visibility.Collapsed : contextMenuResultKind is ContextMenuResultKind.Successfully ? Visibility.Collapsed : Visibility.Visible;
+            return isReverse ? contextMenuResultKind is ContextMenuResultKind.HasResult ? Visibility.Collapsed : Visibility.Visible : contextMenuResultKind is ContextMenuResultKind.HasResult ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
-        /// 检查搜索右键菜单是否成功
+        /// 检查搜索右键菜单是否加载完成
         /// </summary>
         private Visibility CheckContextMenuResultKindVisibility(ContextMenuResultKind contextMenuResultKind, ContextMenuResultKind comparedContextMenuResultKind)
         {

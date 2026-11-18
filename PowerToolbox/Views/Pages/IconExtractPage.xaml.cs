@@ -790,7 +790,7 @@ namespace PowerToolbox.Views.Pages
                             iconItem.IconMemoryStream.Dispose();
                         }
 
-                        IconExtractResultKind = IconExtractResultKind.Successfully;
+                        IconExtractResultKind = IconExtractResultKind.HasResult;
                     }
                     catch (Exception e)
                     {
@@ -847,7 +847,7 @@ namespace PowerToolbox.Views.Pages
                             iconItem.IconMemoryStream.Dispose();
                         }
 
-                        IconExtractResultKind = IconExtractResultKind.Successfully;
+                        IconExtractResultKind = IconExtractResultKind.HasResult;
                     }
                     catch (Exception e)
                     {
@@ -1338,7 +1338,7 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 检查图标提取是否成功
+        /// 检查图标提取结果状态
         /// </summary>
         private Visibility CheckIconExtractResultKindVisibility(IconExtractResultKind iconResultResultKind, IconExtractResultKind comparedIconExtractResultKind)
         {

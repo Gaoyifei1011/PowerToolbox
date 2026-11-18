@@ -67,7 +67,7 @@
                     SelectionChanged="{x:Bind OnSelectionChanged}"
                     SelectionMode="Extended"
                     TabIndex="1"
-                    Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Successfully), Mode=OneWay}">
+                    Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.HasResult), Mode=OneWay}">
 
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="model:IconModel">
