@@ -21,7 +21,7 @@ namespace PowerToolboxShellExtension.Commands
     /// 菜单项
     /// </summary>
     [GeneratedComClass, Guid("C169E7D7-21E1-A102-602E-3F3936BEBB58")]
-    public partial class ExplorerCommand(ShellMenuItem shellMenuItem) : IExplorerCommand, IObjectWithSite
+    internal partial class ExplorerCommand(ShellMenuItem shellMenuItem) : IExplorerCommand, IObjectWithSite
     {
         private readonly Guid SID_SFolderView = new("CDE725B0-CCC9-4519-917E-325D72FAB4CE");
         private readonly Guid IID_IUnknown = new("00000000-0000-0000-C000-000000000046");

@@ -11,7 +11,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// Block size: 1024 bits / 128 bytes
     /// Based on the EDON-R reference implementation by Aleksey Kravchenko
     /// </summary>
-    public sealed class EdonR512 : HashAlgorithm
+    internal sealed class EdonR512 : HashAlgorithm
     {
         private const int BlockSize = 128;
         private const int HashSizeBytes = 64;
@@ -20,7 +20,7 @@ namespace PowerToolbox.Extensions.Hashing
         private int _bufferLength;
         private ulong _length;
 
-        public EdonR512()
+        internal EdonR512()
         {
             HashSizeValue = 512;
             Initialize();

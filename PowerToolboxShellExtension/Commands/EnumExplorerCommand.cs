@@ -7,7 +7,7 @@ namespace PowerToolboxShellExtension.Commands
     /// 命令栏的命令枚举接口实现类
     /// </summary>
     [GeneratedComClass]
-    public partial class EnumExplorerCommand(ExplorerCommand[] explorerCommands) : IEnumExplorerCommand
+    internal partial class EnumExplorerCommand(ExplorerCommand[] explorerCommands) : IEnumExplorerCommand
     {
         private readonly ExplorerCommand[] subExplorerCommandArray = explorerCommands is null ? ([]) : explorerCommands;
         private int index = 0;

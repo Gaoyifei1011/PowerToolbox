@@ -193,12 +193,18 @@
                             <AppBarElementContainer Margin="0,0,2,0" VerticalContentAlignment="Center">
                                 <ComboBox
                                     VerticalAlignment="Center"
-                                    DisplayMemberPath="DisplayMember"
                                     IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsVerifying), Mode=OneWay}"
                                     ItemsSource="{x:Bind UpperCaseTypeList}"
                                     SelectedItem="{x:Bind SelectedUpperCaseType, Mode=OneWay}"
                                     SelectionChanged="{x:Bind OnUseUpperCaseSelectionChanged}"
-                                    Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                                    Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                            <TextBlock Text="{x:Bind DisplayMember}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </AppBarElementContainer>
 
                             <AppBarButton Label="{x:Bind rootservice:ResourceService.DataVerifyResource.GetString('MultiSelect')}">

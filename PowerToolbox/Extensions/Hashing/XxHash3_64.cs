@@ -215,7 +215,7 @@ namespace PowerToolbox.Extensions.Hashing
             return Hash(data, seed);
         }
 
-        public static ulong HashStream(Stream stream)
+        internal static ulong HashStream(Stream stream)
         {
             if (stream is null)
             {
@@ -225,7 +225,7 @@ namespace PowerToolbox.Extensions.Hashing
             return HashStream(stream, 0);
         }
 
-        public static ulong HashStream(Stream stream, ulong seed)
+        internal static ulong HashStream(Stream stream, ulong seed)
         {
             if (stream is null)
             {
@@ -237,7 +237,7 @@ namespace PowerToolbox.Extensions.Hashing
             return Hash(memoryStream.GetBuffer(), 0, (int)memoryStream.Length, seed);
         }
 
-        public static ulong HashFile(string fileName)
+        internal static ulong HashFile(string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
             {
@@ -247,7 +247,7 @@ namespace PowerToolbox.Extensions.Hashing
             return HashFile(fileName, 0);
         }
 
-        public static ulong HashFile(string fileName, ulong seed)
+        internal static ulong HashFile(string fileName, ulong seed)
         {
             if (string.IsNullOrEmpty(fileName))
             {

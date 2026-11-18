@@ -239,11 +239,17 @@
                             Margin="0,0,0,3"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
-                            DisplayMemberPath="DisplayMember"
                             ItemsSource="{x:Bind GetIconTypeList}"
                             SelectedItem="{x:Bind SelectedGetIconType, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnGetIconTypeSelectionChanged}"
-                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                    <TextBlock Text="{x:Bind DisplayMember}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
 
                         <TextBlock
                             Grid.Row="1"
@@ -257,11 +263,17 @@
                             Margin="0,0,0,3"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
-                            DisplayMemberPath="DisplayMember"
                             ItemsSource="{x:Bind IconFormatCollection}"
                             SelectedItem="{x:Bind SelectedIconFormat, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnIconFormatSelectionChanged}"
-                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                    <TextBlock Text="{x:Bind DisplayMember}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
 
                         <TextBlock
                             Grid.Row="2"
@@ -508,22 +520,34 @@
                             <ComboBox
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
-                                DisplayMemberPath="ExtractSize"
                                 ItemsSource="{x:Bind FileContainIconSizeCollection}"
                                 SelectedItem="{x:Bind SelectedFileContainSize, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnFileContainSizeSelectionChanged}"
                                 Style="{StaticResource ComboBoxWithSystemBackdropStyle}"
-                                Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}" />
+                                Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[0]), Mode=OneWay}">
+
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="model:IconSizeModel">
+                                        <TextBlock Text="{x:Bind ExtractSize}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
 
                             <ComboBox
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
-                                DisplayMemberPath="ExtractSize"
                                 ItemsSource="{x:Bind FileContainIconSizeCollection}"
                                 SelectedItem="{x:Bind SelectedFileAssociateSize, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnFileAssociateSizeSelectionChanged}"
                                 Style="{StaticResource ComboBoxWithSystemBackdropStyle}"
-                                Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[1]), Mode=OneWay}" />
+                                Visibility="{x:Bind GetIconTypeVisibility(SelectedGetIconType, GetIconTypeList[1]), Mode=OneWay}">
+
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="model:IconSizeModel">
+                                        <TextBlock Text="{x:Bind ExtractSize}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </Grid>
                     </Grid>
                 </Grid>

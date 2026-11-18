@@ -3,7 +3,7 @@
     /// <summary>
     /// 操作栏类型
     /// </summary>
-    public enum OperationBarKind
+    internal enum OperationBarKind
     {
         Ordinary,
         CheckUpdate

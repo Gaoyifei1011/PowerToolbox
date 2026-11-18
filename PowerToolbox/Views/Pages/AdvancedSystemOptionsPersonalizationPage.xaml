@@ -478,11 +478,17 @@
                         <ComboBox
                             Grid.Column="1"
                             VerticalAlignment="Center"
-                            DisplayMemberPath="DisplayMember"
                             ItemsSource="{x:Bind RightClickMenuStyleList}"
                             SelectedItem="{x:Bind RightClickMenuStyle, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnRightClickMenuStyleSelectionChanged}"
-                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                    <TextBlock Text="{x:Bind DisplayMember}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind roothelper:RuntimeHelper.IsWindows11}" />
@@ -508,11 +514,17 @@
                         <ComboBox
                             Grid.Column="1"
                             VerticalAlignment="Center"
-                            DisplayMemberPath="DisplayMember"
                             ItemsSource="{x:Bind FileExplorerStyleList}"
                             SelectedItem="{x:Bind FileExplorerStyle, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnFileExplorerStyleSelectionChanged}"
-                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                    <TextBlock Text="{x:Bind DisplayMember}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind roothelper:RuntimeHelper.IsWindows11}" />
@@ -702,11 +714,17 @@
                         <ComboBox
                             Grid.Column="1"
                             VerticalAlignment="Center"
-                            DisplayMemberPath="DisplayMember"
                             ItemsSource="{x:Bind FileExplorerHomePositionList}"
                             SelectedItem="{x:Bind FileExplorerHomePosition, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnFileExplorerHomePositionSelectionChanged}"
-                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                    <TextBlock Text="{x:Bind DisplayMember}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
 
                     <MenuFlyoutSeparator />
@@ -821,12 +839,18 @@
                         <ComboBox
                             Grid.Column="1"
                             VerticalAlignment="Center"
-                            DisplayMemberPath="DisplayMember"
                             IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsUpdatingVisualEffects), Mode=OneWay}"
                             ItemsSource="{x:Bind VisualEffectsPlanList}"
                             SelectedItem="{x:Bind VisualEffectsPlan, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnVisualEffectsPlanSelectionChanged}"
-                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                    <TextBlock Text="{x:Bind DisplayMember}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
 
                     <MenuFlyoutSeparator />

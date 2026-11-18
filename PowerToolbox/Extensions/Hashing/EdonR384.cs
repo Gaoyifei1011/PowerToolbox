@@ -11,7 +11,7 @@ namespace PowerToolbox.Extensions.Hashing
     /// Hash size: 384 bits / 48 bytes
     /// Block size: 1024 bits / 128 bytes
     /// </summary>
-    public sealed class EdonR384 : HashAlgorithm
+    internal sealed class EdonR384 : HashAlgorithm
     {
         private const int BlockSize = 128;
         private const int HashSizeBytes = 48;
@@ -20,7 +20,7 @@ namespace PowerToolbox.Extensions.Hashing
         private int _bufferLength;
         private ulong _length;
 
-        public EdonR384()
+        internal EdonR384()
         {
             HashSizeValue = 384;
             Initialize();

@@ -405,13 +405,19 @@
                             Grid.Column="2"
                             Margin="2,0,0,0"
                             VerticalAlignment="Center"
-                            DisplayMemberPath="DisplayMember"
                             IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
                             ItemsSource="{x:Bind EncryptKeyStringTypeList}"
                             SelectedItem="{x:Bind SelectedEncryptKeyStringType, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnEncryptKeyStringTypeSelectionChanged}"
                             Style="{StaticResource ComboBoxWithSystemBackdropStyle}"
-                            Visibility="{x:Bind HasEncryptKeyStringType, Mode=OneWay}" />
+                            Visibility="{x:Bind HasEncryptKeyStringType, Mode=OneWay}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                    <TextBlock Text="{x:Bind DisplayMember}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
 
                         <TextBox
                             Grid.Column="3"
@@ -476,12 +482,18 @@
                             Grid.Column="2"
                             Margin="2,0,0,0"
                             VerticalAlignment="Center"
-                            DisplayMemberPath="DisplayMember"
                             IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
                             ItemsSource="{x:Bind InitializationVectorStringTypeList}"
                             SelectedItem="{x:Bind SelectedInitializationVectorStringType, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnInitializationVectorStringTypeSelectionChanged}"
-                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                    <TextBlock Text="{x:Bind DisplayMember}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
 
                         <TextBox
                             Grid.Column="3"
@@ -536,12 +548,18 @@
                         <ComboBox
                             Grid.Column="1"
                             VerticalAlignment="Center"
-                            DisplayMemberPath="DisplayMember"
                             IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
                             ItemsSource="{x:Bind EncryptedBlockCipherModeList}"
                             SelectedItem="{x:Bind SelectedEncryptedBlockCipherMode, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnEncryptedBlockCipherModeSelectionChanged}"
-                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                    <TextBlock Text="{x:Bind DisplayMember}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind HasPaddingMode, Mode=OneWay}" />
@@ -567,12 +585,18 @@
                         <ComboBox
                             Grid.Column="1"
                             VerticalAlignment="Center"
-                            DisplayMemberPath="DisplayMember"
                             IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
                             ItemsSource="{x:Bind PaddingModeList}"
                             SelectedItem="{x:Bind SelectedPaddingMode, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnPaddingModeSelectionChanged}"
-                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                    <TextBlock Text="{x:Bind DisplayMember}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind HasOffset, Mode=OneWay}" />
@@ -697,12 +721,18 @@
                         <ComboBox
                             Grid.Column="1"
                             VerticalAlignment="Center"
-                            DisplayMemberPath="DisplayMember"
                             IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
                             ItemsSource="{x:Bind RSAEncryptionPaddingModeList}"
                             SelectedItem="{x:Bind SelectedRSAEncryptionPaddingMode, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnRSAEncryptionPaddingModeSelectionChanged}"
-                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                    <TextBlock Text="{x:Bind DisplayMember}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind HasRSAEncryptionOtherOptions, Mode=OneWay}" />
@@ -801,12 +831,18 @@
                         <ComboBox
                             Grid.Column="1"
                             VerticalAlignment="Center"
-                            DisplayMemberPath="DisplayMember"
                             IsEnabled="{x:Bind converter:ValueConverterHelper.BooleanReverseConvert(IsEncrypting), Mode=OneWay}"
                             ItemsSource="{x:Bind TextEncodingTypeList}"
                             SelectedItem="{x:Bind SelectedTextEncodingType, Mode=OneWay}"
                             SelectionChanged="{x:Bind OnTextEncodingTypeSelectionChanged}"
-                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                            Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                    <TextBlock Text="{x:Bind DisplayMember}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
 
                     <MenuFlyoutSeparator Visibility="{x:Bind GetTextEncodingTypeVisibility(SelectedTextEncodingType.SelectedValue, TextEncodingTypeList[10].SelectedValue), Mode=OneWay}" />

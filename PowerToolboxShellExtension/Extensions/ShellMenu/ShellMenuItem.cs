@@ -6,7 +6,7 @@ namespace PowerToolboxShellExtension.Extensions.ShellMenu
     /// <summary>
     /// 菜单项设置选项
     /// </summary>
-    public sealed class ShellMenuItem
+    internal sealed class ShellMenuItem
     {
         /// <summary>
         /// 菜单键值

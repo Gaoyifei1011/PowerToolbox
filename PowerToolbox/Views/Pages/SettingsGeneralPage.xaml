@@ -82,11 +82,17 @@
                 <ComboBox
                     Grid.Column="3"
                     VerticalAlignment="Center"
-                    DisplayMemberPath="DisplayMember"
                     ItemsSource="{x:Bind ThemeList}"
                     SelectedItem="{x:Bind Theme, Mode=OneWay}"
                     SelectionChanged="{x:Bind OnThemeSelectionChanged}"
-                    Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                    Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="model:ComboBoxItemModel">
+                            <TextBlock Text="{x:Bind DisplayMember}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </Grid>
 
             <!--  窗口背景材质设置  -->
@@ -143,12 +149,18 @@
                 <ComboBox
                     Grid.Column="3"
                     VerticalAlignment="Center"
-                    DisplayMemberPath="DisplayMember"
                     IsEnabled="{x:Bind AdvancedEffectsEnabled, Mode=OneWay}"
                     ItemsSource="{x:Bind BackdropList}"
                     SelectedItem="{x:Bind Backdrop, Mode=OneWay}"
                     SelectionChanged="{x:Bind OnBackdropSelectionChanged}"
-                    Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                    Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="model:ComboBoxItemModel">
+                            <TextBlock Text="{x:Bind DisplayMember}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </Grid>
 
             <!--  始终显示背景色设置  -->
@@ -261,11 +273,17 @@
                 <ComboBox
                     Grid.Column="3"
                     VerticalAlignment="Center"
-                    DisplayMemberPath="DisplayMember"
                     ItemsSource="{x:Bind LanguageCollection}"
                     SelectedItem="{x:Bind AppLanguage, Mode=OneWay}"
                     SelectionChanged="{x:Bind OnLanguageSelectionChanged}"
-                    Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                    Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="model:ComboBoxItemModel">
+                            <TextBlock Text="{x:Bind DisplayMember}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </Grid>
 
             <!--  窗口置顶设置  -->

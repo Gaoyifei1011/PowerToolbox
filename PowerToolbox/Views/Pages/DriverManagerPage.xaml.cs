@@ -1024,7 +1024,7 @@ namespace PowerToolbox.Views.Pages
                             DriverInfName = pnpDriverInformationItem.OriginalName,
                             DriverOEMInfName = pnpDriverInformationItem.DriverName,
                             DriverManufacturer = pnpDriverInformationItem.ProviderName,
-                            DriverDate = DateTimeOffset.Parse(pnpDriverInformationItem.DriverDate),
+                            DriverDate = DateTimeOffset.TryParse(pnpDriverInformationItem.DriverDate, out DateTimeOffset driverDate) ? driverDate : DateTimeOffset.MinValue,
                             DriverVersion = new(pnpDriverInformationItem.DriverVersion),
                             DriverSize = string.IsNullOrEmpty(driverLocation) ? "0B" : VolumeSizeHelper.ConvertVolumeSizeToString(GetFolderSize(Path.GetDirectoryName(driverLocation))),
                             DriverLocation = driverLocation,

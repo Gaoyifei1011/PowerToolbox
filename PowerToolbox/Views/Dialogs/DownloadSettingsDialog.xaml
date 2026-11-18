@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:PowerToolbox.Models"
     xmlns:rootservice="using:PowerToolbox.Services.Root"
     Style="{StaticResource ContentDialogWithSystemBackdropStyle}"
     mc:Ignorable="d">
@@ -235,11 +236,17 @@
                     <ComboBox
                         Grid.Column="2"
                         VerticalAlignment="Center"
-                        DisplayMemberPath="DisplayMember"
                         ItemsSource="{x:Bind DoEngineModeList}"
                         SelectedItem="{x:Bind DoEngineMode, Mode=OneWay}"
                         SelectionChanged="{x:Bind OnDoEngineModeSelectionChanged}"
-                        Style="{StaticResource ComboBoxWithSystemBackdropStyle}" />
+                        Style="{StaticResource ComboBoxWithSystemBackdropStyle}">
+
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="model:ComboBoxItemModel">
+                                <TextBlock Text="{x:Bind DisplayMember}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </Grid>
 
                 <!--  传递优化设置  -->

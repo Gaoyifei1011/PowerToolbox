@@ -2,9 +2,9 @@
 
 namespace PowerToolbox.Extensions.Hashing
 {
-    public static class BigEndian
+    internal static class BigEndian
     {
-        public static byte[] ToByteArray(uint[] input)
+        internal static byte[] ToByteArray(uint[] input)
         {
             if (input is null)
             {
@@ -16,7 +16,7 @@ namespace PowerToolbox.Extensions.Hashing
             return result;
         }
 
-        public static void Copy(uint[] src, int srcOffset, byte[] dst, int dstOffset, int count)
+        internal static void Copy(uint[] src, int srcOffset, byte[] dst, int dstOffset, int count)
         {
             if (src is null)
             {
@@ -44,7 +44,7 @@ namespace PowerToolbox.Extensions.Hashing
             }
         }
 
-        public static void Copy(byte[] src, int srcOffset, uint[] dst, int dstOffset, int count)
+        internal static void Copy(byte[] src, int srcOffset, uint[] dst, int dstOffset, int count)
         {
             if (src is null)
             {
@@ -72,7 +72,7 @@ namespace PowerToolbox.Extensions.Hashing
             }
         }
 
-        public static void Copy(uint input, byte[] bytes, int offset)
+        internal static void Copy(uint input, byte[] bytes, int offset)
         {
             if (bytes is null)
             {
@@ -90,7 +90,7 @@ namespace PowerToolbox.Extensions.Hashing
             bytes[offset + 3] = (byte)input;
         }
 
-        public static uint ToUInt32(byte[] bytes, int offset)
+        internal static uint ToUInt32(byte[] bytes, int offset)
         {
             if (bytes is null)
             {

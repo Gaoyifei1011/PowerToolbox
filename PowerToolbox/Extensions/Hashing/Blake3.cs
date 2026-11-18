@@ -44,7 +44,7 @@ namespace PowerToolbox.Extensions.Hashing
             get { return HashFinal(); }
         }
 
-        public new int HashSize
+        internal new int HashSize
         {
             get { return HashSizeValue; }
             set { HashSizeValue = value; }

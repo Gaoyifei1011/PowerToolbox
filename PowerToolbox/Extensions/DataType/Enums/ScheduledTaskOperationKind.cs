@@ -3,7 +3,7 @@
     /// <summary>
     /// 计划任务状态类型
     /// </summary>
-    public enum ScheduledTaskOperationKind
+    internal enum ScheduledTaskOperationKind
     {
         Delete,
         Export,
