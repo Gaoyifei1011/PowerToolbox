@@ -15,7 +15,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <CommandBar
@@ -503,48 +502,9 @@
             Severity="{x:Bind ResultSeverity, Mode=OneWay}"
             Style="{StaticResource InfoBarStyle}" />
 
-        <!--  系统评估控制栏  -->
-        <Grid
-            Grid.Row="3"
-            Height="60"
-            Margin="30,0,30,3"
-            Padding="16,0"
-            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="{StaticResource ControlCornerRadius}">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <FontIcon
-                Grid.Column="0"
-                Margin="0,0,12,0"
-                FontSize="16"
-                Glyph="&#xE74C;" />
-
-            <StackPanel
-                Grid.Column="2"
-                Orientation="Horizontal"
-                Spacing="5">
-
-                <Button
-                    Click="{x:Bind OnRunAssessmentClicked}"
-                    Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('RunAssessment')}"
-                    IsEnabled="{x:Bind IsNotRunningAssessment, Mode=OneWay}"
-                    Style="{StaticResource AccentButtonStyle}" />
-
-                <Button Click="{x:Bind OnOpenAssessmentLogFolderClicked}" Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('OpenAssessmentLogFolder')}" />
-                <Button Click="{x:Bind OnLearnSystemAssessmentClicked}" Content="{x:Bind rootservice:ResourceService.WinSATResource.GetString('LearnSystemAssessment')}" />
-            </StackPanel>
-        </Grid>
-
         <!--  小提示  -->
         <Expander
-            Grid.Row="4"
+            Grid.Row="3"
             Margin="30,0,30,3"
             Padding="0"
             HorizontalAlignment="Stretch"
