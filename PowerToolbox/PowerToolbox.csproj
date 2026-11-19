@@ -192,6 +192,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" CopyToOutputDirectory="Always" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" CopyToOutputDirectory="Always" />
+    <Content Include="Microsoft.UI.Xaml.winmd" CopyToOutputDirectory="Always" />
 
     <EmbeddedResource Include="Strings\AdvancedSystemOptions.en-us.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
     <EmbeddedResource Include="Strings\AdvancedSystemOptions.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
@@ -316,6 +317,8 @@
     <EmbeddedResource Include="Strings\WinSAT.zh-hans.restext" WithCulture="false" LogicalName="$(AssemblyName).Strings.%(FileName).resources" />
 
     <None Remove="Assets\PowerToolbox.ico" CopyToOutputDirectory="Never" />
+
+    <None Remove="Microsoft.UI.Xaml.winmd" />
     <None Remove="Styles\BreadcrumbBar.xaml" />
     <None Remove="Styles\ComboBox.xaml" />
     <None Remove="Styles\CommandBar.xaml" />
@@ -471,7 +474,7 @@
 
     <Reference Include="$(PkgMicrosoft_WindowsAppSDK_InteractiveExperiences)\metadata\10.0.18362.0\Microsoft.UI.winmd" Private="false" Visible="false" />
     <Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Text.winmd" Private="false" Visible="false" />
-    <Reference Include="$(PkgMicrosoft_WindowsAppSDK_WinUI)\metadata\Microsoft.UI.Xaml.winmd" Private="false" Visible="false" />
+    <Reference Include="Microsoft.UI.Xaml.winmd" Private="false" Visible="false" />
     <Reference Include="$(Pkgmicrosoft_windows_sdk_net_ref)\winmd\*.winmd" Private="false" Visible="false" />
     <Reference Include="$(WindowsSdkPath)\UnionMetadata\$(TargetPlatformVersion)\Facade\Windows.WinMD" Private="false" Visible="false" />
     <Reference Include="Microsoft.CSharp" />

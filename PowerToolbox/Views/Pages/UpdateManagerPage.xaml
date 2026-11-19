@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
-    xmlns:class="using:PowerToolbox.Extensions.DataType.Class"
+    xmlns:class="using:PowerToolbox.Extensions.DataType.Classes"
     xmlns:converter="using:PowerToolbox.Helpers.Converters"
     xmlns:customcontrol="using:PowerToolbox.Views.CustomControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -56,8 +56,8 @@
                 </RadioButtons.Resources>
 
                 <RadioButtons.ItemTemplate>
-                    <DataTemplate x:DataType="model:RadioButtonItemModel">
-                        <RadioButton Content="{x:Bind SelectorName}" Style="{StaticResource PillRadioButtonStyle}" />
+                    <DataTemplate x:DataType="x:String">
+                        <RadioButton Content="{x:Bind}" Style="{StaticResource PillRadioButtonStyle}" />
                     </DataTemplate>
                 </RadioButtons.ItemTemplate>
             </RadioButtons>
@@ -168,8 +168,8 @@
             </StackPanel>
         </Grid>
 
-        <ScrollViewer Grid.Row="1">
-            <StackPanel Margin="30,3,30,0">
+        <ScrollViewer Grid.Row="1" Margin="0,3,0,0">
+            <StackPanel Margin="30,0,30,0">
                 <!--  可用更新控制栏  -->
                 <Grid
                     Height="60"
@@ -1157,7 +1157,7 @@
                                                 Grid.Row="0"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DeviceProblemNumber')}" />
 
                                             <TextBlock
@@ -1179,7 +1179,7 @@
                                                 Grid.Row="1"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverClass')}" />
 
                                             <TextBlock
@@ -1201,7 +1201,7 @@
                                                 Grid.Row="2"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverHardwareID')}" />
 
                                             <TextBlock
@@ -1223,7 +1223,7 @@
                                                 Grid.Row="3"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverManufacturer')}" />
 
                                             <TextBlock
@@ -1245,7 +1245,7 @@
                                                 Grid.Row="4"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverModel')}" />
 
                                             <TextBlock
@@ -1267,7 +1267,7 @@
                                                 Grid.Row="5"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverProvider')}" />
 
                                             <TextBlock
@@ -1289,7 +1289,7 @@
                                                 Grid.Row="6"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverVerDate')}" />
 
                                             <TextBlock
@@ -2276,7 +2276,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DeviceProblemNumber')}" />
 
@@ -2302,7 +2302,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverClass')}" />
 
@@ -2328,7 +2328,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverHardwareID')}" />
 
@@ -2354,7 +2354,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverManufacturer')}" />
 
@@ -2380,7 +2380,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverModel')}" />
 
@@ -2406,7 +2406,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverProvider')}" />
 
@@ -2432,7 +2432,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverVerDate')}" />
 
@@ -3353,7 +3353,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DeviceProblemNumber')}" />
 
@@ -3379,7 +3379,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverClass')}" />
 
@@ -3405,7 +3405,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverHardwareID')}" />
 
@@ -3431,7 +3431,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverManufacturer')}" />
 
@@ -3457,7 +3457,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverModel')}" />
 
@@ -3483,7 +3483,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverProvider')}" />
 
@@ -3509,7 +3509,7 @@
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
-                                                FontSize="15"
+                                                FontSize="14"
                                                 IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverVerDate')}" />
 

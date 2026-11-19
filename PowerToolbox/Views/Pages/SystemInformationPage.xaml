@@ -92,7 +92,7 @@
             </CommandBar.SecondaryCommands>
         </CommandBar>
 
-        <!--  系统信息状态显示栏  -->
+        <!--  系统信息状态显示  -->
         <Grid Grid.Row="1">
             <Grid
                 Margin="30,0,30,60"

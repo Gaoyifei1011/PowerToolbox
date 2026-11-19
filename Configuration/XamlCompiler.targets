@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<!-- Enable XAML Compiler -->
-	<PropertyGroup>
-		<VCInstallDir>Empty</VCInstallDir>
-		<SDKIdentifier>Windows</SDKIdentifier>
-		<SDKVersion>10.0</SDKVersion>
-		<XamlCompilerTargetsPath>$(PkgMicrosoft_WindowsAppSDK_WinUI)\build\Microsoft.UI.Xaml.Markup.Compiler.interop.targets</XamlCompilerTargetsPath>
-	</PropertyGroup>
-	<Import Project="$(XamlCompilerTargetsPath)" />
-	<Import Condition="'$(OutputType)' == 'Library'" Project="$(PkgMicrosoft_WindowsAppSDK_WinUI)\build\Microsoft.WinUI.NET.Markup.Compiler.targets" />
+  <!-- Enable XAML Compiler -->
+  <PropertyGroup>
+    <VCInstallDir>Empty</VCInstallDir>
+    <SDKIdentifier>Windows</SDKIdentifier>
+    <SDKVersion>10.0</SDKVersion>
+  </PropertyGroup>
+  <!--如果编译出现错误，请自行使用该文件的绝对路径即可-->
+  <Import Project="$(PkgMicrosoft_WindowsAppSDK_WinUI)\build\Microsoft.UI.Xaml.Markup.Compiler.interop.targets" />
 </Project>

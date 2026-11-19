@@ -296,11 +296,21 @@
                     <GridView.ItemContainerStyle>
                         <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
                             <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Margin" Value="0,0,2,2" />
                             <Setter Property="MinHeight" Value="0" />
                             <Setter Property="Padding" Value="0" />
                         </Style>
                     </GridView.ItemContainerStyle>
+
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <LayoutPanel>
+                                <LayoutPanel.Layout>
+                                    <ColumnMajorUniformToLargestGridLayout MaxColumns="9999" />
+                                </LayoutPanel.Layout>
+                            </LayoutPanel>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
 
                     <GridView.ItemContainerTransitions>
                         <TransitionCollection />
@@ -308,32 +318,27 @@
 
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="collection:DictionaryEntry">
-                            <StackPanel
-                                Width="320"
-                                Padding="0,8"
-                                HorizontalAlignment="Left"
-                                Orientation="Horizontal">
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    TextTrimming="CharacterEllipsis"
-                                    TextWrapping="NoWrap">
+                            <TextBlock
+                                MaxWidth="320"
+                                Margin="0,8,20,8"
+                                HorizontalAlignment="Center"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap">
 
-                                    <Hyperlink NavigateUri="{x:Bind (system:Uri)Value}" UnderlineStyle="None">
-                                        <Run Text="{x:Bind system:Convert.ToString(Key)}" />
-                                    </Hyperlink>
+                                <Hyperlink NavigateUri="{x:Bind (system:Uri)Value}" UnderlineStyle="None">
+                                    <Run Text="{x:Bind system:Convert.ToString(Key)}" />
+                                </Hyperlink>
 
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip>
-
-                                            <TextBlock>
-                                                <Run Text="{x:Bind system:Convert.ToString(Key)}" />
-                                                <LineBreak />
-                                                <Run Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ReferenceToolTip')}" />
-                                            </TextBlock>
-                                        </ToolTip>
-                                    </ToolTipService.ToolTip>
-                                </TextBlock>
-                            </StackPanel>
+                                <ToolTipService.ToolTip>
+                                    <ToolTip>
+                                        <TextBlock>
+                                            <Run Text="{x:Bind system:Convert.ToString(Key)}" />
+                                            <LineBreak />
+                                            <Run Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ReferenceToolTip')}" />
+                                        </TextBlock>
+                                    </ToolTip>
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
                         </DataTemplate>
                     </GridView.ItemTemplate>
                 </GridView>
@@ -376,11 +381,21 @@
                         <GridView.ItemContainerStyle>
                             <Style BasedOn="{StaticResource DefaultGridViewItemStyle}" TargetType="GridViewItem">
                                 <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="Margin" Value="0" />
+                                <Setter Property="Margin" Value="0,0,2,2" />
                                 <Setter Property="MinHeight" Value="0" />
                                 <Setter Property="Padding" Value="0" />
                             </Style>
                         </GridView.ItemContainerStyle>
+
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <LayoutPanel>
+                                    <LayoutPanel.Layout>
+                                        <ColumnMajorUniformToLargestGridLayout MaxColumns="9999" />
+                                    </LayoutPanel.Layout>
+                                </LayoutPanel>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
 
                         <GridView.ItemContainerTransitions>
                             <TransitionCollection />
@@ -388,31 +403,25 @@
 
                         <GridView.ItemTemplate>
                             <DataTemplate x:DataType="collection:DictionaryEntry">
-                                <StackPanel
-                                    Width="150"
-                                    Padding="0,8"
+                                <TextBlock
                                     HorizontalAlignment="Left"
-                                    Orientation="Horizontal">
-                                    <TextBlock
-                                        HorizontalAlignment="Left"
-                                        TextTrimming="CharacterEllipsis"
-                                        TextWrapping="NoWrap">
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap">
 
-                                        <Hyperlink NavigateUri="{x:Bind (system:Uri)Value}" UnderlineStyle="None">
-                                            <Run Text="{x:Bind system:Convert.ToString(Key)}" />
-                                        </Hyperlink>
+                                    <Hyperlink NavigateUri="{x:Bind (system:Uri)Value}" UnderlineStyle="None">
+                                        <Run Text="{x:Bind system:Convert.ToString(Key)}" />
+                                    </Hyperlink>
 
-                                        <ToolTipService.ToolTip>
-                                            <ToolTip>
-                                                <TextBlock>
-                                                    <Run Text="{x:Bind system:Convert.ToString(Key)}" />
-                                                    <LineBreak />
-                                                    <Run Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ThanksToolTip')}" />
-                                                </TextBlock>
-                                            </ToolTip>
-                                        </ToolTipService.ToolTip>
-                                    </TextBlock>
-                                </StackPanel>
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip>
+                                            <TextBlock>
+                                                <Run Text="{x:Bind system:Convert.ToString(Key)}" />
+                                                <LineBreak />
+                                                <Run Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('ThanksToolTip')}" />
+                                            </TextBlock>
+                                        </ToolTip>
+                                    </ToolTipService.ToolTip>
+                                </TextBlock>
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
