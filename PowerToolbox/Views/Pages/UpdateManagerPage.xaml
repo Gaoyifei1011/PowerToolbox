@@ -30,6 +30,87 @@
         <class:ExecuteCommand x:Name="LearnMoreCommand" ExecuteRequested="{x:Bind OnLearnMoreExecuteRequested}" />
         <class:ExecuteCommand x:Name="OpenSupportUrlCommand" ExecuteRequested="{x:Bind OnOpenSupportUrlExecuteRequested}" />
         <class:ExecuteCommand x:Name="UninstallWithCmdCommand" ExecuteRequested="{x:Bind OnUninstallWithCmdExecuteRequested}" />
+
+        <Style x:Key="ListViewItemListStyle" TargetType="ListViewItem">
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{ThemeResource ListViewItemForeground}" />
+            <Setter Property="TabNavigation" Value="Local" />
+            <Setter Property="IsHoldingEnabled" Value="True" />
+            <Setter Property="Margin" Value="0,0,0,3" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="MinWidth" Value="{ThemeResource ListViewItemMinWidth}" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="AllowDrop" Value="False" />
+            <Setter Property="UseSystemFocusVisuals" Value="True" />
+            <Setter Property="FocusVisualMargin" Value="1" />
+            <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource ListViewItemFocusVisualPrimaryBrush}" />
+            <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+            <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource ListViewItemFocusVisualSecondaryBrush}" />
+            <Setter Property="FocusVisualSecondaryThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <customcontrol:BorderedListViewItemPresenter
+                            x:Name="Root"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            CheckBoxBorderBrush="{ThemeResource ListViewItemCheckBoxBorderBrush}"
+                            CheckBoxBrush="{ThemeResource ListViewItemCheckBoxBrush}"
+                            CheckBoxCornerRadius="{ThemeResource ListViewItemCheckBoxCornerRadius}"
+                            CheckBoxDisabledBorderBrush="{ThemeResource ListViewItemCheckBoxDisabledBorderBrush}"
+                            CheckBoxDisabledBrush="{ThemeResource ListViewItemCheckBoxDisabledBrush}"
+                            CheckBoxPointerOverBorderBrush="{ThemeResource ListViewItemCheckBoxPointerOverBorderBrush}"
+                            CheckBoxPointerOverBrush="{ThemeResource ListViewItemCheckBoxPointerOverBrush}"
+                            CheckBoxPressedBorderBrush="{ThemeResource ListViewItemCheckBoxPressedBorderBrush}"
+                            CheckBoxPressedBrush="{ThemeResource ListViewItemCheckBoxPressedBrush}"
+                            CheckBoxSelectedBrush="{ThemeResource ListViewItemCheckBoxSelectedBrush}"
+                            CheckBoxSelectedDisabledBrush="{ThemeResource ListViewItemCheckBoxSelectedDisabledBrush}"
+                            CheckBoxSelectedPointerOverBrush="{ThemeResource ListViewItemCheckBoxSelectedPointerOverBrush}"
+                            CheckBoxSelectedPressedBrush="{ThemeResource ListViewItemCheckBoxSelectedPressedBrush}"
+                            CheckBrush="{ThemeResource ListViewItemCheckBrush}"
+                            CheckDisabledBrush="{ThemeResource ListViewItemCheckDisabledBrush}"
+                            CheckMode="{ThemeResource ListViewItemCheckMode}"
+                            CheckPressedBrush="{ThemeResource ListViewItemCheckPressedBrush}"
+                            ContentMargin="{TemplateBinding Padding}"
+                            ContentTransitions="{TemplateBinding ContentTransitions}"
+                            Control.IsTemplateFocusTarget="True"
+                            CornerRadius="{ThemeResource ListViewItemCornerRadius}"
+                            DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                            DragBackground="{ThemeResource ListViewItemDragBackground}"
+                            DragForeground="{ThemeResource ListViewItemDragForeground}"
+                            DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                            FocusBorderBrush="{ThemeResource ListViewItemFocusBorderBrush}"
+                            FocusSecondaryBorderBrush="{ThemeResource ListViewItemFocusSecondaryBorderBrush}"
+                            FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                            FocusVisualPrimaryBrush="{TemplateBinding FocusVisualPrimaryBrush}"
+                            FocusVisualPrimaryThickness="{TemplateBinding FocusVisualPrimaryThickness}"
+                            FocusVisualSecondaryBrush="{TemplateBinding FocusVisualSecondaryBrush}"
+                            FocusVisualSecondaryThickness="{TemplateBinding FocusVisualSecondaryThickness}"
+                            PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackground}"
+                            PointerOverBackground="{ThemeResource ListViewItemBackgroundPointerOver}"
+                            PointerOverForeground="{ThemeResource ListViewItemForegroundPointerOver}"
+                            PressedBackground="{ThemeResource ListViewItemBackgroundPressed}"
+                            ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}"
+                            SelectedBackground="{ThemeResource ListViewItemBackgroundSelected}"
+                            SelectedDisabledBackground="{ThemeResource ListViewItemBackgroundSelectedDisabled}"
+                            SelectedForeground="{ThemeResource ListViewItemForegroundSelected}"
+                            SelectedPointerOverBackground="{ThemeResource ListViewItemBackgroundSelectedPointerOver}"
+                            SelectedPressedBackground="{ThemeResource ListViewItemBackgroundSelectedPressed}"
+                            SelectionCheckMarkVisualEnabled="{ThemeResource ListViewItemSelectionCheckMarkVisualEnabled}"
+                            SelectionIndicatorBrush="{ThemeResource ListViewItemSelectionIndicatorBrush}"
+                            SelectionIndicatorCornerRadius="{ThemeResource ListViewItemSelectionIndicatorCornerRadius}"
+                            SelectionIndicatorDisabledBrush="{ThemeResource ListViewItemSelectionIndicatorDisabledBrush}"
+                            SelectionIndicatorPointerOverBrush="{ThemeResource ListViewItemSelectionIndicatorPointerOverBrush}"
+                            SelectionIndicatorPressedBrush="{ThemeResource ListViewItemSelectionIndicatorPressedBrush}"
+                            SelectionIndicatorVisualEnabled="{ThemeResource ListViewItemSelectionIndicatorVisualEnabled}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Grid>
@@ -567,6 +648,56 @@
 
                                     <StackPanel>
                                         <!--  更新信息  -->
+                                        <ListView ItemsSource="{x:Bind UpdateInfoList}" SelectionMode="None">
+                                            <ListView.ItemContainerStyle>
+                                                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                                    <Setter Property="Background" Value="Transparent" />
+                                                    <Setter Property="Margin" Value="0" />
+                                                    <Setter Property="MinHeight" Value="0" />
+                                                    <Setter Property="Padding" Value="0" />
+                                                </Style>
+                                            </ListView.ItemContainerStyle>
+
+                                            <ListView.ItemContainerTransitions>
+                                                <TransitionCollection />
+                                            </ListView.ItemContainerTransitions>
+
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate x:DataType="model:UpdateInfoModel">
+                                                    <Grid Margin="0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="2*" />
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <FontIcon
+                                                            Grid.Column="0"
+                                                            Margin="0,4,16,3"
+                                                            VerticalAlignment="Top"
+                                                            FontSize="12"
+                                                            Glyph="&#xE915;" />
+
+                                                        <TextBlock
+                                                            Grid.Column="1"
+                                                            Margin="0,0,3,3"
+                                                            HorizontalAlignment="Left"
+                                                            FontSize="14"
+                                                            IsTextSelectionEnabled="True"
+                                                            Text="{x:Bind ClassName}" />
+
+                                                        <TextBlock
+                                                            Grid.Column="2"
+                                                            Margin="0,0,0,3"
+                                                            HorizontalAlignment="Left"
+                                                            IsTextSelectionEnabled="True"
+                                                            Text="{x:Bind Content}"
+                                                            TextWrapping="Wrap" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
@@ -575,17 +706,6 @@
                                             </Grid.ColumnDefinitions>
 
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
@@ -607,296 +727,10 @@
                                                 HorizontalAlignment="Left"
                                                 FontSize="14"
                                                 IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('Description')}" />
-
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind Description}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="1"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('IsBeta')}" />
-
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind IsBeta}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="2"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('IsMandatory')}" />
-
-                                            <TextBlock
-                                                Grid.Row="2"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind IsMandatory}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="3"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="3"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MaxDownloadSize')}" />
-
-                                            <TextBlock
-                                                Grid.Row="3"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind MaxDownloadSize}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="4"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="4"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MinDownloadSize')}" />
-
-                                            <TextBlock
-                                                Grid.Row="4"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind MinDownloadSize}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="5"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="5"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MsrcSeverity')}" />
-
-                                            <TextBlock
-                                                Grid.Row="5"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind MsrcSeverity}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="6"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="6"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('RecommendedCpuSpeed')}" />
-
-                                            <TextBlock
-                                                Grid.Row="6"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind RecommendedCpuSpeed}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="7"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="7"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('RecommendedHardDiskSpace')}" />
-
-                                            <TextBlock
-                                                Grid.Row="7"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind RecommendedHardDiskSpace}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="8"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="8"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('RecommendedMemory')}" />
-
-                                            <TextBlock
-                                                Grid.Row="8"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind RecommendedMemory}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="9"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="9"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ReleaseNotes')}" />
-
-                                            <TextBlock
-                                                Grid.Row="9"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind ReleaseNotes}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="10"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="10"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UpdateType')}" />
-
-                                            <TextBlock
-                                                Grid.Row="10"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind UpdateType}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="11"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="11"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('CVEID')}" />
 
                                             <TextBlock
-                                                Grid.Row="11"
+                                                Grid.Row="0"
                                                 Grid.Column="2"
                                                 Margin="0,0,0,3"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('None')}"
@@ -904,7 +738,7 @@
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert (CveIDList.Count), Mode=OneWay}" />
 
                                             <ListView
-                                                Grid.Row="11"
+                                                Grid.Row="0"
                                                 Grid.Column="2"
                                                 ItemsSource="{x:Bind CveIDList}"
                                                 SelectionMode="None"
@@ -913,7 +747,7 @@
                                                 <ListView.ItemContainerStyle>
                                                     <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
                                                         <Setter Property="Background" Value="Transparent" />
-                                                        <Setter Property="Margin" Value="0" />
+                                                        <Setter Property="Margin" Value="0,0,0,3" />
                                                         <Setter Property="MinHeight" Value="0" />
                                                         <Setter Property="Padding" Value="0" />
                                                     </Style>
@@ -926,7 +760,6 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
                                                         <TextBlock
-                                                            Margin="0,0,0,3"
                                                             HorizontalAlignment="Left"
                                                             IsTextSelectionEnabled="True"
                                                             Text="{x:Bind}"
@@ -937,7 +770,7 @@
                                             </ListView>
 
                                             <FontIcon
-                                                Grid.Row="12"
+                                                Grid.Row="1"
                                                 Grid.Column="0"
                                                 Margin="0,4,16,3"
                                                 VerticalAlignment="Top"
@@ -945,7 +778,7 @@
                                                 Glyph="&#xE915;" />
 
                                             <TextBlock
-                                                Grid.Row="12"
+                                                Grid.Row="1"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
@@ -954,7 +787,7 @@
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('KBArticleID')}" />
 
                                             <TextBlock
-                                                Grid.Row="12"
+                                                Grid.Row="1"
                                                 Grid.Column="2"
                                                 Margin="0,0,0,3"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('None')}"
@@ -962,20 +795,12 @@
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(KBArticleIDList.Count), Mode=OneWay}" />
 
                                             <ListView
-                                                Grid.Row="12"
+                                                Grid.Row="1"
                                                 Grid.Column="2"
+                                                ItemContainerStyle="{StaticResource ListViewItemListStyle}"
                                                 ItemsSource="{x:Bind KBArticleIDList}"
                                                 SelectionMode="None"
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(KBArticleIDList.Count), Mode=OneWay}">
-
-                                                <ListView.ItemContainerStyle>
-                                                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                                                        <Setter Property="Background" Value="Transparent" />
-                                                        <Setter Property="Margin" Value="0" />
-                                                        <Setter Property="MinHeight" Value="0" />
-                                                        <Setter Property="Padding" Value="0,0,0,3" />
-                                                    </Style>
-                                                </ListView.ItemContainerStyle>
 
                                                 <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
@@ -984,7 +809,6 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
                                                         <HyperlinkButton
-                                                            Margin="0,0,0,3"
                                                             Padding="0"
                                                             Command="{StaticResource OpenSupportUrlCommand}"
                                                             CommandParameter="{x:Bind}">
@@ -1004,7 +828,7 @@
                                             </ListView>
 
                                             <FontIcon
-                                                Grid.Row="13"
+                                                Grid.Row="2"
                                                 Grid.Column="0"
                                                 Margin="0,4,16,3"
                                                 VerticalAlignment="Top"
@@ -1012,7 +836,7 @@
                                                 Glyph="&#xE915;" />
 
                                             <TextBlock
-                                                Grid.Row="13"
+                                                Grid.Row="2"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
@@ -1021,7 +845,7 @@
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SupportedLanguage')}" />
 
                                             <TextBlock
-                                                Grid.Row="13"
+                                                Grid.Row="2"
                                                 Grid.Column="2"
                                                 Margin="0,0,0,3"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('None')}"
@@ -1029,7 +853,7 @@
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(SupportedLanguageList.Count), Mode=OneWay}" />
 
                                             <ListView
-                                                Grid.Row="13"
+                                                Grid.Row="2"
                                                 Grid.Column="2"
                                                 ItemsSource="{x:Bind SupportedLanguageList}"
                                                 SelectionMode="None"
@@ -1038,7 +862,7 @@
                                                 <ListView.ItemContainerStyle>
                                                     <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
                                                         <Setter Property="Background" Value="Transparent" />
-                                                        <Setter Property="Margin" Value="0" />
+                                                        <Setter Property="Margin" Value="0,0,0,3" />
                                                         <Setter Property="MinHeight" Value="0" />
                                                         <Setter Property="Padding" Value="0" />
                                                     </Style>
@@ -1051,7 +875,6 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
                                                         <TextBlock
-                                                            Margin="0,0,0,3"
                                                             HorizontalAlignment="Left"
                                                             IsTextSelectionEnabled="True"
                                                             Text="{x:Bind}"
@@ -1062,7 +885,7 @@
                                             </ListView>
 
                                             <FontIcon
-                                                Grid.Row="14"
+                                                Grid.Row="3"
                                                 Grid.Column="0"
                                                 Margin="0,4,16,3"
                                                 VerticalAlignment="Top"
@@ -1070,14 +893,14 @@
                                                 Glyph="&#xE915;" />
 
                                             <TextBlock
-                                                Grid.Row="14"
+                                                Grid.Row="3"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 FontSize="14"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MoreInfo')}" />
 
                                             <TextBlock
-                                                Grid.Row="14"
+                                                Grid.Row="3"
                                                 Grid.Column="2"
                                                 Margin="0,0,0,3"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('None')}"
@@ -1085,20 +908,12 @@
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(MoreInfoList.Count), Mode=OneWay}" />
 
                                             <ListView
-                                                Grid.Row="14"
+                                                Grid.Row="3"
                                                 Grid.Column="2"
+                                                ItemContainerStyle="{StaticResource ListViewItemListStyle}"
                                                 ItemsSource="{x:Bind MoreInfoList}"
                                                 SelectionMode="None"
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(MoreInfoList.Count), Mode=OneWay}">
-
-                                                <ListView.ItemContainerStyle>
-                                                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                                                        <Setter Property="Background" Value="Transparent" />
-                                                        <Setter Property="Margin" Value="0" />
-                                                        <Setter Property="MinHeight" Value="0" />
-                                                        <Setter Property="Padding" Value="0" />
-                                                    </Style>
-                                                </ListView.ItemContainerStyle>
 
                                                 <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
@@ -1107,7 +922,7 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
                                                         <HyperlinkButton
-                                                            Margin="0,0,0,3"
+                                                            Margin="0"
                                                             Padding="0"
                                                             Command="{StaticResource OpenSupportUrlCommand}"
                                                             CommandParameter="{x:Bind}">
@@ -1128,177 +943,55 @@
                                         </Grid>
 
                                         <!--  驱动信息  -->
-                                        <Grid x:Name="DriverInformationGrid" x:Load="{x:Bind x:Object.Equals(UpdateInformation.UpdateType, wuapilib:UpdateType.utDriver)}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="2*" />
-                                            </Grid.ColumnDefinitions>
+                                        <ListView ItemsSource="{x:Bind DriverInfoList}" SelectionMode="None">
+                                            <ListView.ItemContainerStyle>
+                                                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                                    <Setter Property="Background" Value="Transparent" />
+                                                    <Setter Property="Margin" Value="0" />
+                                                    <Setter Property="MinHeight" Value="0" />
+                                                    <Setter Property="Padding" Value="0" />
+                                                </Style>
+                                            </ListView.ItemContainerStyle>
 
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
+                                            <ListView.ItemContainerTransitions>
+                                                <TransitionCollection />
+                                            </ListView.ItemContainerTransitions>
 
-                                            <FontIcon
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate x:DataType="model:UpdateInfoModel">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="2*" />
+                                                        </Grid.ColumnDefinitions>
 
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                FontSize="14"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DeviceProblemNumber')}" />
+                                                        <FontIcon
+                                                            Grid.Column="0"
+                                                            Margin="0,4,16,3"
+                                                            VerticalAlignment="Top"
+                                                            FontSize="12"
+                                                            Glyph="&#xE915;" />
 
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                Text="{x:Bind DeviceProblemNumber}"
-                                                TextWrapping="Wrap" />
+                                                        <TextBlock
+                                                            Grid.Column="1"
+                                                            Margin="0,0,3,3"
+                                                            HorizontalAlignment="Left"
+                                                            FontSize="14"
+                                                            IsTextSelectionEnabled="True"
+                                                            Text="{x:Bind ClassName}" />
 
-                                            <FontIcon
-                                                Grid.Row="1"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                FontSize="14"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverClass')}" />
-
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                Text="{x:Bind DriverClass}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="2"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                FontSize="14"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverHardwareID')}" />
-
-                                            <TextBlock
-                                                Grid.Row="2"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                Text="{x:Bind DriverHardwareID}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="3"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="3"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                FontSize="14"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverManufacturer')}" />
-
-                                            <TextBlock
-                                                Grid.Row="3"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                Text="{x:Bind DriverManufacturer}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="4"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="4"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                FontSize="14"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverModel')}" />
-
-                                            <TextBlock
-                                                Grid.Row="4"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                Text="{x:Bind DriverModel}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="5"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="5"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                FontSize="14"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverProvider')}" />
-
-                                            <TextBlock
-                                                Grid.Row="5"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                Text="{x:Bind DriverProvider}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="6"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="6"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                FontSize="14"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverVerDate')}" />
-
-                                            <TextBlock
-                                                Grid.Row="6"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                Text="{x:Bind DriverVerDate}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
+                                                        <TextBlock
+                                                            Grid.Column="2"
+                                                            Margin="0,0,0,3"
+                                                            HorizontalAlignment="Left"
+                                                            IsTextSelectionEnabled="True"
+                                                            Text="{x:Bind Content}"
+                                                            TextWrapping="Wrap" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
                                     </StackPanel>
                                 </Expander>
                             </DataTemplate>
@@ -1683,25 +1376,64 @@
 
                                     <StackPanel>
                                         <!--  更新信息  -->
+                                        <ListView ItemsSource="{x:Bind UpdateInfoList}" SelectionMode="None">
+                                            <ListView.ItemContainerStyle>
+                                                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                                    <Setter Property="Background" Value="Transparent" />
+                                                    <Setter Property="Margin" Value="0" />
+                                                    <Setter Property="MinHeight" Value="0" />
+                                                    <Setter Property="Padding" Value="0" />
+                                                </Style>
+                                            </ListView.ItemContainerStyle>
+
+                                            <ListView.ItemContainerTransitions>
+                                                <TransitionCollection />
+                                            </ListView.ItemContainerTransitions>
+
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate x:DataType="model:UpdateInfoModel">
+                                                    <Grid Margin="0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="2*" />
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <FontIcon
+                                                            Grid.Column="0"
+                                                            Margin="0,4,16,3"
+                                                            VerticalAlignment="Top"
+                                                            FontSize="12"
+                                                            Glyph="&#xE915;" />
+
+                                                        <TextBlock
+                                                            Grid.Column="1"
+                                                            Margin="0,0,3,3"
+                                                            HorizontalAlignment="Left"
+                                                            FontSize="14"
+                                                            IsTextSelectionEnabled="True"
+                                                            Text="{x:Bind ClassName}" />
+
+                                                        <TextBlock
+                                                            Grid.Column="2"
+                                                            Margin="0,0,0,3"
+                                                            HorizontalAlignment="Left"
+                                                            IsTextSelectionEnabled="True"
+                                                            Text="{x:Bind Content}"
+                                                            TextWrapping="Wrap" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="2*" />
                                             </Grid.ColumnDefinitions>
 
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
@@ -1723,296 +1455,10 @@
                                                 HorizontalAlignment="Left"
                                                 FontSize="14"
                                                 IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('Description')}" />
-
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind Description}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="1"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('IsBeta')}" />
-
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind IsBeta}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="2"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('IsMandatory')}" />
-
-                                            <TextBlock
-                                                Grid.Row="2"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind IsMandatory}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="3"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="3"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MaxDownloadSize')}" />
-
-                                            <TextBlock
-                                                Grid.Row="3"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind MaxDownloadSize}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="4"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="4"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MinDownloadSize')}" />
-
-                                            <TextBlock
-                                                Grid.Row="4"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind MinDownloadSize}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="5"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="5"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MsrcSeverity')}" />
-
-                                            <TextBlock
-                                                Grid.Row="5"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind MsrcSeverity}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="6"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="6"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('RecommendedCpuSpeed')}" />
-
-                                            <TextBlock
-                                                Grid.Row="6"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind RecommendedCpuSpeed}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="7"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="7"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('RecommendedHardDiskSpace')}" />
-
-                                            <TextBlock
-                                                Grid.Row="7"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind RecommendedHardDiskSpace}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="8"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="8"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('RecommendedMemory')}" />
-
-                                            <TextBlock
-                                                Grid.Row="8"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind RecommendedMemory}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="9"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="9"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ReleaseNotes')}" />
-
-                                            <TextBlock
-                                                Grid.Row="9"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind ReleaseNotes}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="10"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="10"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UpdateType')}" />
-
-                                            <TextBlock
-                                                Grid.Row="10"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind UpdateType}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="11"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="11"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('CVEID')}" />
 
                                             <TextBlock
-                                                Grid.Row="11"
+                                                Grid.Row="0"
                                                 Grid.Column="2"
                                                 Margin="0,0,0,3"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('None')}"
@@ -2020,7 +1466,7 @@
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert (CveIDList.Count), Mode=OneWay}" />
 
                                             <ListView
-                                                Grid.Row="11"
+                                                Grid.Row="0"
                                                 Grid.Column="2"
                                                 ItemsSource="{x:Bind CveIDList}"
                                                 SelectionMode="None"
@@ -2029,7 +1475,7 @@
                                                 <ListView.ItemContainerStyle>
                                                     <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
                                                         <Setter Property="Background" Value="Transparent" />
-                                                        <Setter Property="Margin" Value="0" />
+                                                        <Setter Property="Margin" Value="0,0,0,3" />
                                                         <Setter Property="MinHeight" Value="0" />
                                                         <Setter Property="Padding" Value="0" />
                                                     </Style>
@@ -2042,7 +1488,6 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
                                                         <TextBlock
-                                                            Margin="0,0,0,3"
                                                             HorizontalAlignment="Left"
                                                             IsTextSelectionEnabled="True"
                                                             Text="{x:Bind}"
@@ -2053,7 +1498,7 @@
                                             </ListView>
 
                                             <FontIcon
-                                                Grid.Row="12"
+                                                Grid.Row="1"
                                                 Grid.Column="0"
                                                 Margin="0,4,16,3"
                                                 VerticalAlignment="Top"
@@ -2061,7 +1506,7 @@
                                                 Glyph="&#xE915;" />
 
                                             <TextBlock
-                                                Grid.Row="12"
+                                                Grid.Row="1"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
@@ -2070,7 +1515,7 @@
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('KBArticleID')}" />
 
                                             <TextBlock
-                                                Grid.Row="12"
+                                                Grid.Row="1"
                                                 Grid.Column="2"
                                                 Margin="0,0,0,3"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('None')}"
@@ -2078,20 +1523,12 @@
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(KBArticleIDList.Count), Mode=OneWay}" />
 
                                             <ListView
-                                                Grid.Row="12"
+                                                Grid.Row="1"
                                                 Grid.Column="2"
+                                                ItemContainerStyle="{StaticResource ListViewItemListStyle}"
                                                 ItemsSource="{x:Bind KBArticleIDList}"
                                                 SelectionMode="None"
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(KBArticleIDList.Count), Mode=OneWay}">
-
-                                                <ListView.ItemContainerStyle>
-                                                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                                                        <Setter Property="Background" Value="Transparent" />
-                                                        <Setter Property="Margin" Value="0" />
-                                                        <Setter Property="MinHeight" Value="0" />
-                                                        <Setter Property="Padding" Value="0,0,0,3" />
-                                                    </Style>
-                                                </ListView.ItemContainerStyle>
 
                                                 <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
@@ -2100,7 +1537,6 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
                                                         <HyperlinkButton
-                                                            Margin="0,0,0,3"
                                                             Padding="0"
                                                             Command="{StaticResource OpenSupportUrlCommand}"
                                                             CommandParameter="{x:Bind}">
@@ -2120,7 +1556,7 @@
                                             </ListView>
 
                                             <FontIcon
-                                                Grid.Row="13"
+                                                Grid.Row="2"
                                                 Grid.Column="0"
                                                 Margin="0,4,16,3"
                                                 VerticalAlignment="Top"
@@ -2128,7 +1564,7 @@
                                                 Glyph="&#xE915;" />
 
                                             <TextBlock
-                                                Grid.Row="13"
+                                                Grid.Row="2"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
@@ -2137,7 +1573,7 @@
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SupportedLanguage')}" />
 
                                             <TextBlock
-                                                Grid.Row="13"
+                                                Grid.Row="2"
                                                 Grid.Column="2"
                                                 Margin="0,0,0,3"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('None')}"
@@ -2145,7 +1581,7 @@
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(SupportedLanguageList.Count), Mode=OneWay}" />
 
                                             <ListView
-                                                Grid.Row="13"
+                                                Grid.Row="2"
                                                 Grid.Column="2"
                                                 ItemsSource="{x:Bind SupportedLanguageList}"
                                                 SelectionMode="None"
@@ -2154,7 +1590,7 @@
                                                 <ListView.ItemContainerStyle>
                                                     <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
                                                         <Setter Property="Background" Value="Transparent" />
-                                                        <Setter Property="Margin" Value="0" />
+                                                        <Setter Property="Margin" Value="0,0,0,3" />
                                                         <Setter Property="MinHeight" Value="0" />
                                                         <Setter Property="Padding" Value="0" />
                                                     </Style>
@@ -2167,7 +1603,6 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
                                                         <TextBlock
-                                                            Margin="0,0,0,3"
                                                             HorizontalAlignment="Left"
                                                             IsTextSelectionEnabled="True"
                                                             Text="{x:Bind}"
@@ -2178,7 +1613,7 @@
                                             </ListView>
 
                                             <FontIcon
-                                                Grid.Row="14"
+                                                Grid.Row="3"
                                                 Grid.Column="0"
                                                 Margin="0,4,16,3"
                                                 VerticalAlignment="Top"
@@ -2186,16 +1621,14 @@
                                                 Glyph="&#xE915;" />
 
                                             <TextBlock
-                                                Grid.Row="14"
+                                                Grid.Row="3"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
                                                 FontSize="14"
-                                                IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MoreInfo')}" />
 
                                             <TextBlock
-                                                Grid.Row="14"
+                                                Grid.Row="3"
                                                 Grid.Column="2"
                                                 Margin="0,0,0,3"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('None')}"
@@ -2203,20 +1636,12 @@
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(MoreInfoList.Count), Mode=OneWay}" />
 
                                             <ListView
-                                                Grid.Row="14"
+                                                Grid.Row="3"
                                                 Grid.Column="2"
+                                                ItemContainerStyle="{StaticResource ListViewItemListStyle}"
                                                 ItemsSource="{x:Bind MoreInfoList}"
                                                 SelectionMode="None"
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(MoreInfoList.Count), Mode=OneWay}">
-
-                                                <ListView.ItemContainerStyle>
-                                                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                                                        <Setter Property="Background" Value="Transparent" />
-                                                        <Setter Property="Margin" Value="0" />
-                                                        <Setter Property="MinHeight" Value="0" />
-                                                        <Setter Property="Padding" Value="0" />
-                                                    </Style>
-                                                </ListView.ItemContainerStyle>
 
                                                 <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
@@ -2225,7 +1650,7 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
                                                         <HyperlinkButton
-                                                            Margin="0,0,0,3"
+                                                            Margin="0"
                                                             Padding="0"
                                                             Command="{StaticResource OpenSupportUrlCommand}"
                                                             CommandParameter="{x:Bind}">
@@ -2246,205 +1671,55 @@
                                         </Grid>
 
                                         <!--  驱动信息  -->
-                                        <Grid x:Name="DriverInformationGrid" x:Load="{x:Bind x:Object.Equals(UpdateInformation.UpdateType, wuapilib:UpdateType.utDriver)}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
+                                        <ListView ItemsSource="{x:Bind DriverInfoList}" SelectionMode="None">
+                                            <ListView.ItemContainerStyle>
+                                                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                                    <Setter Property="Background" Value="Transparent" />
+                                                    <Setter Property="Margin" Value="0" />
+                                                    <Setter Property="MinHeight" Value="0" />
+                                                    <Setter Property="Padding" Value="0" />
+                                                </Style>
+                                            </ListView.ItemContainerStyle>
 
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
+                                            <ListView.ItemContainerTransitions>
+                                                <TransitionCollection />
+                                            </ListView.ItemContainerTransitions>
 
-                                            <FontIcon
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate x:DataType="model:UpdateInfoModel">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="2*" />
+                                                        </Grid.ColumnDefinitions>
 
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DeviceProblemNumber')}" />
+                                                        <FontIcon
+                                                            Grid.Column="0"
+                                                            Margin="0,4,16,3"
+                                                            VerticalAlignment="Top"
+                                                            FontSize="12"
+                                                            Glyph="&#xE915;" />
 
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DeviceProblemNumber}"
-                                                TextWrapping="Wrap" />
+                                                        <TextBlock
+                                                            Grid.Column="1"
+                                                            Margin="0,0,3,3"
+                                                            HorizontalAlignment="Left"
+                                                            FontSize="14"
+                                                            IsTextSelectionEnabled="True"
+                                                            Text="{x:Bind ClassName}" />
 
-                                            <FontIcon
-                                                Grid.Row="1"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverClass')}" />
-
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DriverClass}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="2"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverHardwareID')}" />
-
-                                            <TextBlock
-                                                Grid.Row="2"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DriverHardwareID}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="3"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="3"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverManufacturer')}" />
-
-                                            <TextBlock
-                                                Grid.Row="3"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DriverManufacturer}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="4"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="4"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverModel')}" />
-
-                                            <TextBlock
-                                                Grid.Row="4"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DriverModel}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="5"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="5"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverProvider')}" />
-
-                                            <TextBlock
-                                                Grid.Row="5"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DriverProvider}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="6"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="6"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverVerDate')}" />
-
-                                            <TextBlock
-                                                Grid.Row="6"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DriverVerDate}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
+                                                        <TextBlock
+                                                            Grid.Column="2"
+                                                            Margin="0,0,0,3"
+                                                            HorizontalAlignment="Left"
+                                                            IsTextSelectionEnabled="True"
+                                                            Text="{x:Bind Content}"
+                                                            TextWrapping="Wrap" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
                                     </StackPanel>
                                 </Expander>
                             </DataTemplate>
@@ -2760,25 +2035,64 @@
 
                                     <StackPanel>
                                         <!--  更新信息  -->
+                                        <ListView ItemsSource="{x:Bind UpdateInfoList}" SelectionMode="None">
+                                            <ListView.ItemContainerStyle>
+                                                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                                    <Setter Property="Background" Value="Transparent" />
+                                                    <Setter Property="Margin" Value="0" />
+                                                    <Setter Property="MinHeight" Value="0" />
+                                                    <Setter Property="Padding" Value="0" />
+                                                </Style>
+                                            </ListView.ItemContainerStyle>
+
+                                            <ListView.ItemContainerTransitions>
+                                                <TransitionCollection />
+                                            </ListView.ItemContainerTransitions>
+
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate x:DataType="model:UpdateInfoModel">
+                                                    <Grid Margin="0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="2*" />
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <FontIcon
+                                                            Grid.Column="0"
+                                                            Margin="0,4,16,3"
+                                                            VerticalAlignment="Top"
+                                                            FontSize="12"
+                                                            Glyph="&#xE915;" />
+
+                                                        <TextBlock
+                                                            Grid.Column="1"
+                                                            Margin="0,0,3,3"
+                                                            HorizontalAlignment="Left"
+                                                            FontSize="14"
+                                                            IsTextSelectionEnabled="True"
+                                                            Text="{x:Bind ClassName}" />
+
+                                                        <TextBlock
+                                                            Grid.Column="2"
+                                                            Margin="0,0,0,3"
+                                                            HorizontalAlignment="Left"
+                                                            IsTextSelectionEnabled="True"
+                                                            Text="{x:Bind Content}"
+                                                            TextWrapping="Wrap" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="2*" />
                                             </Grid.ColumnDefinitions>
 
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
@@ -2800,296 +2114,10 @@
                                                 HorizontalAlignment="Left"
                                                 FontSize="14"
                                                 IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('Description')}" />
-
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind Description}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="1"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('IsBeta')}" />
-
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind IsBeta}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="2"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('IsMandatory')}" />
-
-                                            <TextBlock
-                                                Grid.Row="2"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind IsMandatory}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="3"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="3"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MaxDownloadSize')}" />
-
-                                            <TextBlock
-                                                Grid.Row="3"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind MaxDownloadSize}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="4"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="4"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MinDownloadSize')}" />
-
-                                            <TextBlock
-                                                Grid.Row="4"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind MinDownloadSize}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="5"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="5"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MsrcSeverity')}" />
-
-                                            <TextBlock
-                                                Grid.Row="5"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind MsrcSeverity}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="6"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="6"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('RecommendedCpuSpeed')}" />
-
-                                            <TextBlock
-                                                Grid.Row="6"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind RecommendedCpuSpeed}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="7"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="7"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('RecommendedHardDiskSpace')}" />
-
-                                            <TextBlock
-                                                Grid.Row="7"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind RecommendedHardDiskSpace}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="8"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="8"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('RecommendedMemory')}" />
-
-                                            <TextBlock
-                                                Grid.Row="8"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind RecommendedMemory}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="9"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="9"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ReleaseNotes')}" />
-
-                                            <TextBlock
-                                                Grid.Row="9"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind ReleaseNotes}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="10"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="10"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('UpdateType')}" />
-
-                                            <TextBlock
-                                                Grid.Row="10"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind UpdateType}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="11"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="11"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('CVEID')}" />
 
                                             <TextBlock
-                                                Grid.Row="11"
+                                                Grid.Row="0"
                                                 Grid.Column="2"
                                                 Margin="0,0,0,3"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('None')}"
@@ -3097,7 +2125,7 @@
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert (CveIDList.Count), Mode=OneWay}" />
 
                                             <ListView
-                                                Grid.Row="11"
+                                                Grid.Row="0"
                                                 Grid.Column="2"
                                                 ItemsSource="{x:Bind CveIDList}"
                                                 SelectionMode="None"
@@ -3106,7 +2134,7 @@
                                                 <ListView.ItemContainerStyle>
                                                     <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
                                                         <Setter Property="Background" Value="Transparent" />
-                                                        <Setter Property="Margin" Value="0" />
+                                                        <Setter Property="Margin" Value="0,0,0,3" />
                                                         <Setter Property="MinHeight" Value="0" />
                                                         <Setter Property="Padding" Value="0" />
                                                     </Style>
@@ -3119,7 +2147,6 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
                                                         <TextBlock
-                                                            Margin="0,0,0,3"
                                                             HorizontalAlignment="Left"
                                                             IsTextSelectionEnabled="True"
                                                             Text="{x:Bind}"
@@ -3130,7 +2157,7 @@
                                             </ListView>
 
                                             <FontIcon
-                                                Grid.Row="12"
+                                                Grid.Row="1"
                                                 Grid.Column="0"
                                                 Margin="0,4,16,3"
                                                 VerticalAlignment="Top"
@@ -3138,7 +2165,7 @@
                                                 Glyph="&#xE915;" />
 
                                             <TextBlock
-                                                Grid.Row="12"
+                                                Grid.Row="1"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
@@ -3147,7 +2174,7 @@
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('KBArticleID')}" />
 
                                             <TextBlock
-                                                Grid.Row="12"
+                                                Grid.Row="1"
                                                 Grid.Column="2"
                                                 Margin="0,0,0,3"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('None')}"
@@ -3155,20 +2182,12 @@
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(KBArticleIDList.Count), Mode=OneWay}" />
 
                                             <ListView
-                                                Grid.Row="12"
+                                                Grid.Row="1"
                                                 Grid.Column="2"
+                                                ItemContainerStyle="{StaticResource ListViewItemListStyle}"
                                                 ItemsSource="{x:Bind KBArticleIDList}"
                                                 SelectionMode="None"
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(KBArticleIDList.Count), Mode=OneWay}">
-
-                                                <ListView.ItemContainerStyle>
-                                                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                                                        <Setter Property="Background" Value="Transparent" />
-                                                        <Setter Property="Margin" Value="0" />
-                                                        <Setter Property="MinHeight" Value="0" />
-                                                        <Setter Property="Padding" Value="0,0,0,3" />
-                                                    </Style>
-                                                </ListView.ItemContainerStyle>
 
                                                 <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
@@ -3177,7 +2196,6 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
                                                         <HyperlinkButton
-                                                            Margin="0,0,0,3"
                                                             Padding="0"
                                                             Command="{StaticResource OpenSupportUrlCommand}"
                                                             CommandParameter="{x:Bind}">
@@ -3197,7 +2215,7 @@
                                             </ListView>
 
                                             <FontIcon
-                                                Grid.Row="13"
+                                                Grid.Row="2"
                                                 Grid.Column="0"
                                                 Margin="0,4,16,3"
                                                 VerticalAlignment="Top"
@@ -3205,7 +2223,7 @@
                                                 Glyph="&#xE915;" />
 
                                             <TextBlock
-                                                Grid.Row="13"
+                                                Grid.Row="2"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
                                                 HorizontalAlignment="Left"
@@ -3214,7 +2232,7 @@
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('SupportedLanguage')}" />
 
                                             <TextBlock
-                                                Grid.Row="13"
+                                                Grid.Row="2"
                                                 Grid.Column="2"
                                                 Margin="0,0,0,3"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('None')}"
@@ -3222,7 +2240,7 @@
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(SupportedLanguageList.Count), Mode=OneWay}" />
 
                                             <ListView
-                                                Grid.Row="13"
+                                                Grid.Row="2"
                                                 Grid.Column="2"
                                                 ItemsSource="{x:Bind SupportedLanguageList}"
                                                 SelectionMode="None"
@@ -3231,7 +2249,7 @@
                                                 <ListView.ItemContainerStyle>
                                                     <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
                                                         <Setter Property="Background" Value="Transparent" />
-                                                        <Setter Property="Margin" Value="0" />
+                                                        <Setter Property="Margin" Value="0,0,0,3" />
                                                         <Setter Property="MinHeight" Value="0" />
                                                         <Setter Property="Padding" Value="0" />
                                                     </Style>
@@ -3244,7 +2262,8 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
                                                         <TextBlock
-                                                            Margin="0,0,0,3"
+                                                            HorizontalAlignment="Left"
+                                                            IsTextSelectionEnabled="True"
                                                             Text="{x:Bind}"
                                                             TextTrimming="CharacterEllipsis"
                                                             TextWrapping="Wrap" />
@@ -3253,7 +2272,7 @@
                                             </ListView>
 
                                             <FontIcon
-                                                Grid.Row="14"
+                                                Grid.Row="3"
                                                 Grid.Column="0"
                                                 Margin="0,4,16,3"
                                                 VerticalAlignment="Top"
@@ -3261,39 +2280,27 @@
                                                 Glyph="&#xE915;" />
 
                                             <TextBlock
-                                                Grid.Row="14"
+                                                Grid.Row="3"
                                                 Grid.Column="1"
                                                 Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
                                                 FontSize="14"
-                                                IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('MoreInfo')}" />
 
                                             <TextBlock
-                                                Grid.Row="14"
+                                                Grid.Row="3"
                                                 Grid.Column="2"
                                                 Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
                                                 Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('None')}"
                                                 TextWrapping="Wrap"
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(MoreInfoList.Count), Mode=OneWay}" />
 
                                             <ListView
-                                                Grid.Row="14"
+                                                Grid.Row="3"
                                                 Grid.Column="2"
+                                                ItemContainerStyle="{StaticResource ListViewItemListStyle}"
                                                 ItemsSource="{x:Bind MoreInfoList}"
                                                 SelectionMode="None"
                                                 Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityConvert(MoreInfoList.Count), Mode=OneWay}">
-
-                                                <ListView.ItemContainerStyle>
-                                                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                                                        <Setter Property="Background" Value="Transparent" />
-                                                        <Setter Property="Margin" Value="0" />
-                                                        <Setter Property="MinHeight" Value="0" />
-                                                        <Setter Property="Padding" Value="0" />
-                                                    </Style>
-                                                </ListView.ItemContainerStyle>
 
                                                 <ListView.ItemContainerTransitions>
                                                     <TransitionCollection />
@@ -3302,7 +2309,7 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate x:DataType="x:String">
                                                         <HyperlinkButton
-                                                            Margin="0,0,0,3"
+                                                            Margin="0"
                                                             Padding="0"
                                                             Command="{StaticResource OpenSupportUrlCommand}"
                                                             CommandParameter="{x:Bind}">
@@ -3323,205 +2330,55 @@
                                         </Grid>
 
                                         <!--  驱动信息  -->
-                                        <Grid x:Name="DriverInformationGrid" x:Load="{x:Bind x:Object.Equals(UpdateInformation.UpdateType, wuapilib:UpdateType.utDriver)}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
+                                        <ListView ItemsSource="{x:Bind DriverInfoList}" SelectionMode="None">
+                                            <ListView.ItemContainerStyle>
+                                                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                                    <Setter Property="Background" Value="Transparent" />
+                                                    <Setter Property="Margin" Value="0" />
+                                                    <Setter Property="MinHeight" Value="0" />
+                                                    <Setter Property="Padding" Value="0" />
+                                                </Style>
+                                            </ListView.ItemContainerStyle>
 
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
+                                            <ListView.ItemContainerTransitions>
+                                                <TransitionCollection />
+                                            </ListView.ItemContainerTransitions>
 
-                                            <FontIcon
-                                                Grid.Row="0"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate x:DataType="model:UpdateInfoModel">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="2*" />
+                                                        </Grid.ColumnDefinitions>
 
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DeviceProblemNumber')}" />
+                                                        <FontIcon
+                                                            Grid.Column="0"
+                                                            Margin="0,4,16,3"
+                                                            VerticalAlignment="Top"
+                                                            FontSize="12"
+                                                            Glyph="&#xE915;" />
 
-                                            <TextBlock
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DeviceProblemNumber}"
-                                                TextWrapping="Wrap" />
+                                                        <TextBlock
+                                                            Grid.Column="1"
+                                                            Margin="0,0,3,3"
+                                                            HorizontalAlignment="Left"
+                                                            FontSize="14"
+                                                            IsTextSelectionEnabled="True"
+                                                            Text="{x:Bind ClassName}" />
 
-                                            <FontIcon
-                                                Grid.Row="1"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverClass')}" />
-
-                                            <TextBlock
-                                                Grid.Row="1"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DriverClass}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="2"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="2"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverHardwareID')}" />
-
-                                            <TextBlock
-                                                Grid.Row="2"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DriverHardwareID}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="3"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="3"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverManufacturer')}" />
-
-                                            <TextBlock
-                                                Grid.Row="3"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DriverManufacturer}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="4"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="4"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverModel')}" />
-
-                                            <TextBlock
-                                                Grid.Row="4"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DriverModel}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="5"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="5"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverProvider')}" />
-
-                                            <TextBlock
-                                                Grid.Row="5"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DriverProvider}"
-                                                TextWrapping="Wrap" />
-
-                                            <FontIcon
-                                                Grid.Row="6"
-                                                Grid.Column="0"
-                                                Margin="0,4,16,3"
-                                                VerticalAlignment="Top"
-                                                FontSize="12"
-                                                Glyph="&#xE915;" />
-
-                                            <TextBlock
-                                                Grid.Row="6"
-                                                Grid.Column="1"
-                                                Margin="0,0,3,3"
-                                                HorizontalAlignment="Left"
-                                                FontSize="14"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('DriverVerDate')}" />
-
-                                            <TextBlock
-                                                Grid.Row="6"
-                                                Grid.Column="2"
-                                                Margin="0,0,0,3"
-                                                HorizontalAlignment="Left"
-                                                IsTextSelectionEnabled="True"
-                                                Text="{x:Bind DriverVerDate}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
+                                                        <TextBlock
+                                                            Grid.Column="2"
+                                                            Margin="0,0,0,3"
+                                                            HorizontalAlignment="Left"
+                                                            IsTextSelectionEnabled="True"
+                                                            Text="{x:Bind Content}"
+                                                            TextWrapping="Wrap" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
                                     </StackPanel>
                                 </Expander>
                             </DataTemplate>

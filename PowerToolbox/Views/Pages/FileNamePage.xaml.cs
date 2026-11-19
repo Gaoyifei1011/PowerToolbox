@@ -698,7 +698,7 @@ namespace PowerToolbox.Views.Pages
                     }
 
                     // 查找并替换字符串
-                    if (!string.IsNullOrEmpty(lookUpText) && tempNewFileName.Contains(lookUpText) && !string.IsNullOrEmpty(replaceText))
+                    if (tempNewFileName.Contains(lookUpText) && !string.IsNullOrEmpty(replaceText) && !string.IsNullOrEmpty(lookUpText))
                     {
                         tempNewFileName = tempNewFileName.Replace(lookUpText, replaceText);
                     }

@@ -534,7 +534,7 @@ namespace PowerToolbox.Views.Pages
                                 {
                                     string fileName = Path.GetFileNameWithoutExtension(oldAndNewNameItem.OriginalFileName);
                                     string extensionName = Path.GetExtension(oldAndNewNameItem.OriginalFileName);
-                                    if (extensionName.Contains(searchText) && !string.IsNullOrEmpty(searchText) && !string.IsNullOrEmpty(replaceText))
+                                    if (!string.IsNullOrEmpty(searchText) && !string.IsNullOrEmpty(replaceText) && extensionName.Contains(searchText))
                                     {
                                         extensionName = extensionName.Replace(searchText, replaceText);
                                     }

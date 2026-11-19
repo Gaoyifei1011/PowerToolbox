@@ -104,6 +104,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string UpdatePrepareInstallingString = ResourceService.UpdateManagerResource.GetString("UpdatePrepareInstalling");
         private readonly string UpdatePrepareUninstallingString = ResourceService.UpdateManagerResource.GetString("UpdatePrepareUninstalling");
         private readonly string UpdateSucceedString = ResourceService.UpdateManagerResource.GetString("UpdateSucceed");
+        private readonly string UpdateTypeString = ResourceService.UpdateManagerResource.GetString("UpdateType");
         private readonly string UpdateTypeDriverString = ResourceService.UpdateManagerResource.GetString("UpdateTypeDriver");
         private readonly string UpdateTypeSoftwareString = ResourceService.UpdateManagerResource.GetString("UpdateTypeSoftware");
         private readonly string WindowsInsiderConfigStatusString = ResourceService.UpdateManagerResource.GetString("WindowsInsiderConfigStatus");
@@ -1383,17 +1384,6 @@ namespace PowerToolbox.Views.Pages
                             UpdateModel updateItem = new()
                             {
                                 UpdateInformation = updateInformation,
-                                Description = string.IsNullOrEmpty(updateInformation.Description) ? NotAvailableString : updateInformation.Description,
-                                EulaText = string.IsNullOrEmpty(updateInformation.EulaText) ? NotAvailableString : updateInformation.EulaText,
-                                IsBeta = updateInformation.IsBeta ? YesString : NoString,
-                                IsMandatory = updateInformation.IsMandatory ? YesString : NoString,
-                                MaxDownloadSize = VolumeSizeHelper.ConvertVolumeSizeToString(Convert.ToDouble(updateInformation.Update.MaxDownloadSize)),
-                                MinDownloadSize = VolumeSizeHelper.ConvertVolumeSizeToString(Convert.ToDouble(updateInformation.Update.MinDownloadSize)),
-                                MsrcSeverity = string.IsNullOrEmpty(updateInformation.MsrcSeverity) ? NotAvailableString : updateInformation.MsrcSeverity,
-                                RecommendedCpuSpeed = updateInformation.RecommendedCpuSpeed is 0 ? NotAvailableString : string.Format("{0} MHz", updateInformation.RecommendedCpuSpeed),
-                                RecommendedHardDiskSpace = updateInformation.RecommendedHardDiskSpace is 0 ? NotAvailableString : string.Format("{0} MB", updateInformation.RecommendedHardDiskSpace),
-                                RecommendedMemory = updateInformation.RecommendedMemory is 0 ? NotAvailableString : string.Format("{0} MB", updateInformation.RecommendedMemory),
-                                ReleaseNotes = string.IsNullOrEmpty(updateInformation.ReleaseNotes) ? NotAvailableString : updateInformation.ReleaseNotes,
                                 SupportURL = updateInformation.SupportURL,
                                 Title = string.IsNullOrEmpty(updateInformation.Title) ? NotAvailableString : updateInformation.Title,
                                 UpdateID = updateInformation.UpdateID,
@@ -1402,23 +1392,45 @@ namespace PowerToolbox.Views.Pages
                                 IsUpdateCanceled = false,
                                 IsUpdatePreparing = false,
                                 UpdatePercentage = 0,
-                                WindowsDriverInformation = new(),
-                                DeviceProblemNumber = string.Empty,
-                                DriverClass = string.Empty,
-                                DriverHardwareID = string.Empty,
-                                DriverManufacturer = string.Empty,
-                                DriverModel = string.Empty,
-                                DriverProvider = string.Empty,
-                                DriverVerDate = string.Empty,
+                                WindowsDriverInformation = new()
                             };
+
+                            if (!string.IsNullOrEmpty(updateInformation.Description))
+                            {
+                                updateItem.UpdateInfoList.Add(new() { ClassName = DescriptionString, Content = updateInformation.Description });
+                            }
+                            updateItem.UpdateInfoList.Add(new() { ClassName = IsBetaString, Content = updateInformation.IsBeta ? YesString : NoString });
+                            updateItem.UpdateInfoList.Add(new() { ClassName = IsMandatoryString, Content = updateInformation.IsMandatory ? YesString : NoString });
+                            updateItem.UpdateInfoList.Add(new() { ClassName = MaxDownloadSizeString, Content = VolumeSizeHelper.ConvertVolumeSizeToString(Convert.ToDouble(updateInformation.Update.MaxDownloadSize)) });
+                            updateItem.UpdateInfoList.Add(new() { ClassName = MinDownloadSizeString, Content = VolumeSizeHelper.ConvertVolumeSizeToString(Convert.ToDouble(updateInformation.Update.MinDownloadSize)) });
+                            if (!string.IsNullOrEmpty(updateInformation.MsrcSeverity))
+                            {
+                                updateItem.UpdateInfoList.Add(new() { ClassName = DescriptionString, Content = updateInformation.MsrcSeverity });
+                            }
+                            if (updateInformation.RecommendedCpuSpeed is not 0)
+                            {
+                                updateItem.UpdateInfoList.Add(new() { ClassName = RecommendedCpuSpeedString, Content = string.Format("{0} MHz", updateInformation.RecommendedCpuSpeed) });
+                            }
+                            if (updateInformation.RecommendedHardDiskSpace is not 0)
+                            {
+                                updateItem.UpdateInfoList.Add(new() { ClassName = RecommendedHardDiskSpaceString, Content = string.Format("{0} MB", updateInformation.RecommendedHardDiskSpace) });
+                            }
+                            if (updateInformation.RecommendedMemory is not 0)
+                            {
+                                updateItem.UpdateInfoList.Add(new() { ClassName = RecommendedMemoryString, Content = string.Format("{0} MB", updateInformation.RecommendedMemory) });
+                            }
+                            if (!string.IsNullOrEmpty(updateInformation.ReleaseNotes))
+                            {
+                                updateItem.UpdateInfoList.Add(new() { ClassName = ReleaseNotesString, Content = updateInformation.ReleaseNotes });
+                            }
 
                             if (updateInformation.UpdateType is UpdateType.utSoftware)
                             {
-                                updateItem.UpdateType = UpdateTypeSoftwareString;
+                                updateItem.UpdateInfoList.Add(new() { ClassName = UpdateTypeString, Content = UpdateTypeSoftwareString });
                             }
                             else if (updateInformation.UpdateType is UpdateType.utDriver)
                             {
-                                updateItem.UpdateType = UpdateTypeDriverString;
+                                updateItem.UpdateInfoList.Add(new() { ClassName = UpdateTypeString, Content = UpdateTypeDriverString });
                                 IWindowsDriverUpdate5 windowsDriverUpdate = update as IWindowsDriverUpdate5;
 
                                 if (windowsDriverUpdate is not null)
@@ -1436,18 +1448,29 @@ namespace PowerToolbox.Views.Pages
                                     };
 
                                     updateItem.WindowsDriverInformation = windowsDriverInformation;
-                                    updateItem.DeviceProblemNumber = Convert.ToString(windowsDriverInformation.DeviceProblemNumber);
-                                    updateItem.DriverClass = string.IsNullOrEmpty(windowsDriverInformation.DriverClass) ? NotAvailableString : windowsDriverInformation.DriverClass;
-                                    updateItem.DriverHardwareID = string.IsNullOrEmpty(windowsDriverInformation.DriverHardwareID) ? NotAvailableString : windowsDriverInformation.DriverHardwareID;
-                                    updateItem.DriverManufacturer = string.IsNullOrEmpty(windowsDriverInformation.DriverManufacturer) ? NotAvailableString : windowsDriverInformation.DriverManufacturer;
-                                    updateItem.DriverModel = string.IsNullOrEmpty(windowsDriverInformation.DriverModel) ? NotAvailableString : windowsDriverInformation.DriverModel;
-                                    updateItem.DriverProvider = string.IsNullOrEmpty(windowsDriverInformation.DriverProvider) ? NotAvailableString : windowsDriverInformation.DriverProvider;
-                                    updateItem.DriverVerDate = windowsDriverInformation.DriverVerDate.ToString("yyyy/MM/dd");
+                                    updateItem.DriverInfoList.Add(new() { ClassName = DeviceProblemNumberString, Content = Convert.ToString(windowsDriverInformation.DeviceProblemNumber) });
+                                    if (!string.IsNullOrEmpty(windowsDriverInformation.DriverClass))
+                                    {
+                                        updateItem.DriverInfoList.Add(new() { ClassName = DriverClassString, Content = windowsDriverInformation.DriverClass });
+                                    }
+                                    if (!string.IsNullOrEmpty(windowsDriverInformation.DriverHardwareID))
+                                    {
+                                        updateItem.DriverInfoList.Add(new() { ClassName = DriverHardwareIDString, Content = windowsDriverInformation.DriverHardwareID });
+                                    }
+                                    if (!string.IsNullOrEmpty(windowsDriverInformation.DriverManufacturer))
+                                    {
+                                        updateItem.DriverInfoList.Add(new() { ClassName = DriverManufacturerString, Content = windowsDriverInformation.DriverManufacturer });
+                                    }
+                                    if (!string.IsNullOrEmpty(windowsDriverInformation.DriverModel))
+                                    {
+                                        updateItem.DriverInfoList.Add(new() { ClassName = DriverModelString, Content = windowsDriverInformation.DriverModel });
+                                    }
+                                    if (!string.IsNullOrEmpty(windowsDriverInformation.DriverProvider))
+                                    {
+                                        updateItem.DriverInfoList.Add(new() { ClassName = DriverProviderString, Content = windowsDriverInformation.DriverProvider });
+                                    }
+                                    updateItem.DriverInfoList.Add(new() { ClassName = DriverVerDateString, Content = windowsDriverInformation.DriverVerDate.ToString("yyyy/MM/dd") });
                                 }
-                            }
-                            else
-                            {
-                                updateItem.UpdateType = NotAvailableString;
                             }
 
                             updateItem.CveIDList.AddRange(updateInformation.CveIDList);
@@ -1522,7 +1545,6 @@ namespace PowerToolbox.Views.Pages
                                 UpdateModel update = new()
                                 {
                                     UpdateHistoryInformation = updateHistoryInformation,
-                                    Date = updateHistoryInformation.Date.ToString("yyyy/MM/dd"),
                                     HistoryUpdateResult = GetUpdateResult(updateHistoryInformation.OperationResultCode, updateHistoryInformation.Date, updateHistoryInformation.HResult),
                                     SupportURL = updateHistoryInformation.SupportUrl,
                                     Title = updateHistoryInformation.Title,
@@ -1896,10 +1918,16 @@ namespace PowerToolbox.Views.Pages
             return await Task.Run(() =>
             {
                 StringBuilder copyInformationBuilder = new();
-                copyInformationBuilder.Append(UpdateNameString);
-                copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateInformation.Title) ? NotAvailableString : updateInformation.Title);
-                copyInformationBuilder.Append(DescriptionString);
-                copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateInformation.Description) ? NotAvailableString : updateInformation.Description);
+                if (!string.IsNullOrEmpty(updateInformation.Title))
+                {
+                    copyInformationBuilder.Append(UpdateNameString);
+                    copyInformationBuilder.AppendLine(updateInformation.Title);
+                }
+                if (!string.IsNullOrEmpty(updateInformation.Description))
+                {
+                    copyInformationBuilder.Append(DescriptionString);
+                    copyInformationBuilder.AppendLine(updateInformation.Description);
+                }
                 copyInformationBuilder.Append(IsBetaString);
                 copyInformationBuilder.AppendLine(updateInformation.IsBeta ? YesString : NoString);
                 copyInformationBuilder.Append(IsMandatoryString);
@@ -1908,16 +1936,31 @@ namespace PowerToolbox.Views.Pages
                 copyInformationBuilder.AppendLine(VolumeSizeHelper.ConvertVolumeSizeToString(Convert.ToDouble(updateInformation.Update.MaxDownloadSize)));
                 copyInformationBuilder.Append(MinDownloadSizeString);
                 copyInformationBuilder.AppendLine(VolumeSizeHelper.ConvertVolumeSizeToString(Convert.ToDouble(updateInformation.Update.MinDownloadSize)));
-                copyInformationBuilder.Append(MsrcSeverityString);
-                copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateInformation.MsrcSeverity) ? NotAvailableString : updateInformation.MsrcSeverity);
-                copyInformationBuilder.Append(RecommendedCpuSpeedString);
-                copyInformationBuilder.AppendLine(updateInformation.RecommendedCpuSpeed is 0 ? NotAvailableString : string.Format("{0} MHz", updateInformation.RecommendedCpuSpeed));
-                copyInformationBuilder.Append(RecommendedHardDiskSpaceString);
-                copyInformationBuilder.AppendLine(updateInformation.RecommendedHardDiskSpace is 0 ? NotAvailableString : string.Format("{0} MB", updateInformation.RecommendedHardDiskSpace));
-                copyInformationBuilder.Append(RecommendedMemoryString);
-                copyInformationBuilder.AppendLine(updateInformation.RecommendedMemory is 0 ? NotAvailableString : string.Format("{0} MB", updateInformation.RecommendedMemory));
-                copyInformationBuilder.Append(ReleaseNotesString);
-                copyInformationBuilder.AppendLine(string.IsNullOrEmpty(updateInformation.ReleaseNotes) ? NotAvailableString : updateInformation.ReleaseNotes);
+                if (!string.IsNullOrEmpty(updateInformation.MsrcSeverity))
+                {
+                    copyInformationBuilder.Append(MsrcSeverityString);
+                    copyInformationBuilder.AppendLine(updateInformation.MsrcSeverity);
+                }
+                if (updateInformation.RecommendedCpuSpeed is not 0)
+                {
+                    copyInformationBuilder.Append(RecommendedCpuSpeedString);
+                    copyInformationBuilder.AppendLine(string.Format("{0} MHz", updateInformation.RecommendedCpuSpeed));
+                }
+                if (updateInformation.RecommendedHardDiskSpace is not 0)
+                {
+                    copyInformationBuilder.Append(RecommendedHardDiskSpaceString);
+                    copyInformationBuilder.AppendLine(string.Format("{0} MB", updateInformation.RecommendedHardDiskSpace));
+                }
+                if (updateInformation.RecommendedMemory is not 0)
+                {
+                    copyInformationBuilder.Append(RecommendedMemoryString);
+                    copyInformationBuilder.AppendLine(string.Format("{0} MB", updateInformation.RecommendedMemory));
+                }
+                if (!string.IsNullOrEmpty(updateInformation.ReleaseNotes))
+                {
+                    copyInformationBuilder.Append(ReleaseNotesString);
+                    copyInformationBuilder.AppendLine(updateInformation.ReleaseNotes);
+                }
                 copyInformationBuilder.Append(SupportedUrlString);
                 copyInformationBuilder.AppendLine(updateInformation.SupportURL);
 
@@ -1925,20 +1968,34 @@ namespace PowerToolbox.Views.Pages
                 {
                     copyInformationBuilder.Append(DeviceProblemNumberString);
                     copyInformationBuilder.AppendLine(Convert.ToString(windowsDriverInformation.DeviceProblemNumber));
-                    copyInformationBuilder.Append(DriverClassString);
-                    copyInformationBuilder.AppendLine(string.IsNullOrEmpty(windowsDriverInformation.DriverClass) ? NotAvailableString : windowsDriverInformation.DriverClass);
-                    copyInformationBuilder.Append(DriverHardwareIDString);
-                    copyInformationBuilder.AppendLine(string.IsNullOrEmpty(windowsDriverInformation.DriverHardwareID) ? NotAvailableString : windowsDriverInformation.DriverHardwareID);
-                    copyInformationBuilder.Append(DriverManufacturerString);
-                    copyInformationBuilder.AppendLine(string.IsNullOrEmpty(windowsDriverInformation.DriverManufacturer) ? NotAvailableString : windowsDriverInformation.DriverManufacturer);
-                    copyInformationBuilder.Append(DriverModelString);
-                    copyInformationBuilder.AppendLine(string.IsNullOrEmpty(windowsDriverInformation.DriverModel) ? NotAvailableString : windowsDriverInformation.DriverModel);
-                    copyInformationBuilder.Append(DriverProviderString);
-                    copyInformationBuilder.AppendLine(string.IsNullOrEmpty(windowsDriverInformation.DriverProvider) ? NotAvailableString : windowsDriverInformation.DriverProvider);
+                    if (!string.IsNullOrEmpty(windowsDriverInformation.DriverClass))
+                    {
+                        copyInformationBuilder.Append(DriverClassString);
+                        copyInformationBuilder.AppendLine(windowsDriverInformation.DriverClass);
+                    }
+                    if (!string.IsNullOrEmpty(windowsDriverInformation.DriverHardwareID))
+                    {
+                        copyInformationBuilder.Append(DriverHardwareIDString);
+                        copyInformationBuilder.AppendLine(windowsDriverInformation.DriverHardwareID);
+                    }
+                    if (!string.IsNullOrEmpty(windowsDriverInformation.DriverManufacturer))
+                    {
+                        copyInformationBuilder.Append(DriverManufacturerString);
+                        copyInformationBuilder.AppendLine(windowsDriverInformation.DriverManufacturer);
+                    }
+                    if (!string.IsNullOrEmpty(windowsDriverInformation.DriverModel))
+                    {
+                        copyInformationBuilder.Append(DriverModelString);
+                        copyInformationBuilder.AppendLine(windowsDriverInformation.DriverModel);
+                    }
+                    if (!string.IsNullOrEmpty(windowsDriverInformation.DriverProvider))
+                    {
+                        copyInformationBuilder.Append(DriverProviderString);
+                        copyInformationBuilder.AppendLine(windowsDriverInformation.DriverProvider);
+                    }
                     copyInformationBuilder.Append(DriverVerDateString);
                     copyInformationBuilder.AppendLine(windowsDriverInformation.DriverVerDate.ToString("yyyy/MM/dd"));
                 }
-
                 return Convert.ToString(copyInformationBuilder);
             });
         }
