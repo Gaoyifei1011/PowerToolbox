@@ -1,4 +1,4 @@
-﻿using PowerToolbox.Extensions.DataType.Class;
+﻿using PowerToolbox.Extensions.DataType.Classes;
 using System.Collections.Generic;
 using System.ComponentModel;
 

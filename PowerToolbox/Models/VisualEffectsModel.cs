@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace PowerToolbox.Models
+﻿namespace PowerToolbox.Models
 {
     /// <summary>
     /// 视觉效果数据模型

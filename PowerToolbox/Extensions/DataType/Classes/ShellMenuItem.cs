@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PowerToolbox.Extensions.DataType.Class
+namespace PowerToolbox.Extensions.DataType.Classes
 {
     /// <summary>
     /// 菜单项设置选项

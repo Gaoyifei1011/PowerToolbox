@@ -641,7 +641,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<RadioButtonItemModel> DataEncryptSelectorRadioList { get; } = [];
+        private List<string> DataEncryptSelectorRadioList { get; } = [];
 
         private List<DataEncryptTypeModel> DataEncryptTypeList { get; } = [];
 
@@ -1637,8 +1637,8 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            DataEncryptSelectorRadioList.Add(new() { SelectorName = FileString });
-            DataEncryptSelectorRadioList.Add(new() { SelectorName = ContentString });
+            DataEncryptSelectorRadioList.Add(FileString);
+            DataEncryptSelectorRadioList.Add(ContentString);
             DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.AES, Name = AESString });
             DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.CaesarCipher, Name = CaesarCipherString });
             DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.ChaCha20, Name = ChaCha20String });

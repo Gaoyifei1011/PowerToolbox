@@ -43,7 +43,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<RadioButtonItemModel> DataVerifyEncryptSelectorRadioList { get; } = [];
+        private List<string> DataVerifyEncryptSelectorRadioList { get; } = [];
 
         private ReadOnlyCollection<Type> PageList { get; } = new([typeof(DataVerifyPage), typeof(DataEncryptPage), typeof(DataDecryptPage)]);
 
@@ -145,9 +145,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            DataVerifyEncryptSelectorRadioList.Add(new() { SelectorName = DataVerifyString });
-            DataVerifyEncryptSelectorRadioList.Add(new() { SelectorName = DataEncryptString });
-            DataVerifyEncryptSelectorRadioList.Add(new() { SelectorName = DataDecryptString });
+            DataVerifyEncryptSelectorRadioList.Add(DataVerifyString);
+            DataVerifyEncryptSelectorRadioList.Add(DataEncryptString);
+            DataVerifyEncryptSelectorRadioList.Add(DataDecryptString);
         }
 
         /// <summary>

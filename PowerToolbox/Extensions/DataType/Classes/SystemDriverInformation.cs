@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PowerToolbox.Extensions.DataType.Class
+namespace PowerToolbox.Extensions.DataType.Classes
 {
     /// <summary>
     /// 系统驱动条目信息

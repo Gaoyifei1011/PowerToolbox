@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using PowerToolbox.Extensions.DataType.Class;
+using PowerToolbox.Extensions.DataType.Classes;
 using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.PInvoke.Advapi32;
 using System;

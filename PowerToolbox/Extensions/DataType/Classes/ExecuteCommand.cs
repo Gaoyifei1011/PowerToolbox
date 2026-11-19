@@ -4,7 +4,7 @@ using System.Windows.Input;
 // 抑制 CS0067 警告
 #pragma warning disable CS0067
 
-namespace PowerToolbox.Extensions.DataType.Class
+namespace PowerToolbox.Extensions.DataType.Classes
 {
     internal sealed class ExecuteCommand : ICommand, Microsoft.UI.Xaml.Input.ICommand
     {

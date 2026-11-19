@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
-using PowerToolbox.Extensions.DataType.Class;
+using PowerToolbox.Extensions.DataType.Classes;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;

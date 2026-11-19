@@ -1,6 +1,5 @@
-﻿using PowerToolbox.Extensions.DataType.Class;
+﻿using PowerToolbox.Extensions.DataType.Classes;
 using PowerToolbox.Extensions.DataType.Enums;
-using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
 using System;
@@ -20,9 +19,9 @@ namespace PowerToolbox.Services.Download
 
         internal static SemaphoreSlim DownloadSchedulerSemaphoreSlim { get; private set; } = new(1, 1);
 
-        internal static List<DownloadSchedulerModel> DownloadSchedulerList { get; } = [];
+        internal static List<DownloadScheduler> DownloadSchedulerList { get; } = [];
 
-        internal static event Action<DownloadSchedulerModel> DownloadProgress;
+        internal static event Action<DownloadScheduler> DownloadProgress;
 
         /// <summary>
         /// 下载状态发生改变时触发的事件
@@ -37,7 +36,7 @@ namespace PowerToolbox.Services.Download
                 try
                 {
                     // 下载任务已经存在，更新下载状态
-                    foreach (DownloadSchedulerModel downloadSchedulerItem in DownloadSchedulerList)
+                    foreach (DownloadScheduler downloadSchedulerItem in DownloadSchedulerList)
                     {
                         if (string.Equals(downloadSchedulerItem.DownloadID, downloadProgress.DownloadID))
                         {
@@ -57,7 +56,7 @@ namespace PowerToolbox.Services.Download
                     }
 
                     // 不存在则添加任务
-                    DownloadSchedulerModel downloadScheduler = new()
+                    DownloadScheduler downloadScheduler = new()
                     {
                         DownloadID = downloadProgress.DownloadID,
                         DownloadProgressState = downloadProgress.DownloadProgressState,
@@ -96,7 +95,7 @@ namespace PowerToolbox.Services.Download
 
                 try
                 {
-                    foreach (DownloadSchedulerModel downloadSchedulerItem in DownloadSchedulerList)
+                    foreach (DownloadScheduler downloadSchedulerItem in DownloadSchedulerList)
                     {
                         if (string.Equals(downloadSchedulerItem.DownloadID, downloadProgress.DownloadID))
                         {
@@ -134,7 +133,7 @@ namespace PowerToolbox.Services.Download
 
                 try
                 {
-                    foreach (DownloadSchedulerModel downloadSchedulerItem in DownloadSchedulerList)
+                    foreach (DownloadScheduler downloadSchedulerItem in DownloadSchedulerList)
                     {
                         if (string.Equals(downloadSchedulerItem.DownloadID, downloadProgress.DownloadID))
                         {
@@ -169,7 +168,7 @@ namespace PowerToolbox.Services.Download
 
                 try
                 {
-                    foreach (DownloadSchedulerModel downloadSchedulerItem in DownloadSchedulerList)
+                    foreach (DownloadScheduler downloadSchedulerItem in DownloadSchedulerList)
                     {
                         if (string.Equals(downloadSchedulerItem.DownloadID, downloadProgress.DownloadID))
                         {
@@ -207,7 +206,7 @@ namespace PowerToolbox.Services.Download
 
                 try
                 {
-                    foreach (DownloadSchedulerModel downloadSchedulerItem in DownloadSchedulerList)
+                    foreach (DownloadScheduler downloadSchedulerItem in DownloadSchedulerList)
                     {
                         if (string.Equals(downloadSchedulerItem.DownloadID, downloadProgress.DownloadID))
                         {
@@ -246,7 +245,7 @@ namespace PowerToolbox.Services.Download
 
                 try
                 {
-                    foreach (DownloadSchedulerModel downloadSchedulerItem in DownloadSchedulerList)
+                    foreach (DownloadScheduler downloadSchedulerItem in DownloadSchedulerList)
                     {
                         if (string.Equals(downloadSchedulerItem.DownloadID, downloadProgress.DownloadID))
                         {

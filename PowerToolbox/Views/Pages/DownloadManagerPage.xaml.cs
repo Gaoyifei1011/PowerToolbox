@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.VisualBasic.FileIO;
-using PowerToolbox.Extensions.DataType.Class;
+using PowerToolbox.Extensions.DataType.Classes;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
@@ -333,7 +333,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 下载状态发生改变时触发的事件
         /// </summary>
-        private void OnDownloadProgress(DownloadSchedulerModel downloadScheduler)
+        private void OnDownloadProgress(DownloadScheduler downloadScheduler)
         {
             // 处于等待中（新添加下载任务或者已经恢复下载）
             if (downloadScheduler.DownloadProgressState is DownloadProgressState.Queued)

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using WUApiLib;
 
-namespace PowerToolbox.Extensions.DataType.Class
+namespace PowerToolbox.Extensions.DataType.Classes
 {
     /// <summary>
     /// 更新条目信息

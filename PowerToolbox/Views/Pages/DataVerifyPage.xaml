@@ -46,8 +46,8 @@
                 </RadioButtons.Resources>
 
                 <RadioButtons.ItemTemplate>
-                    <DataTemplate x:DataType="model:RadioButtonItemModel">
-                        <RadioButton Content="{x:Bind SelectorName}" Style="{StaticResource TokenViewRadioButtonStyle}" />
+                    <DataTemplate x:DataType="x:String">
+                        <RadioButton Content="{x:Bind}" Style="{StaticResource TokenViewRadioButtonStyle}" />
                     </DataTemplate>
                 </RadioButtons.ItemTemplate>
             </RadioButtons>

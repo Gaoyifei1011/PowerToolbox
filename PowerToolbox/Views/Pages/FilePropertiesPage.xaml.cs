@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using PowerToolbox.Extensions.DataType.Class;
+using PowerToolbox.Extensions.DataType.Classes;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
@@ -299,7 +299,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 删除当前项
         /// </summary>
-        private void OnDeleteExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        private void OnDeleteExecuteRequested(object sender, Extensions.DataType.Classes.ExecuteRequestedEventArgs args)
         {
             if (args.Parameter is OldAndNewPropertiesModel oldAndNewProperties)
             {
@@ -313,7 +313,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 向下移动
         /// </summary>
-        private void OnMoveDownExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        private void OnMoveDownExecuteRequested(object sender, Extensions.DataType.Classes.ExecuteRequestedEventArgs args)
         {
             if (args.Parameter is OldAndNewPropertiesModel oldAndNewProperties)
             {
@@ -335,7 +335,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 向上移动
         /// </summary>
-        private void OnMoveUpExecuteRequested(object sender, Extensions.DataType.Class.ExecuteRequestedEventArgs args)
+        private void OnMoveUpExecuteRequested(object sender, Extensions.DataType.Classes.ExecuteRequestedEventArgs args)
         {
             if (args.Parameter is OldAndNewPropertiesModel oldAndNewProperties)
             {

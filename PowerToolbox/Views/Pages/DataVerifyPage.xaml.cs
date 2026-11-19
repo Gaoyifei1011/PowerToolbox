@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using PowerToolbox.Extensions.DataType.Class;
+using PowerToolbox.Extensions.DataType.Classes;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Extensions.Hashing;
 using PowerToolbox.Models;
@@ -198,7 +198,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<RadioButtonItemModel> DataVerifySelectorRadioList { get; } = [];
+        private List<string> DataVerifySelectorRadioList { get; } = [];
 
         private List<DataVerifyTypeModel> DataVerifyTypeList { get; } = [];
 
@@ -472,8 +472,8 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            DataVerifySelectorRadioList.Add(new() { SelectorName = FileString });
-            DataVerifySelectorRadioList.Add(new() { SelectorName = ContentString });
+            DataVerifySelectorRadioList.Add(FileString);
+            DataVerifySelectorRadioList.Add(ContentString);
             DataVerifyTypeList.Add(new() { Name = Blake2bString, DataVerifyType = DataVerifyType.Blake2b });
             DataVerifyTypeList.Add(new() { Name = Blake3String, DataVerifyType = DataVerifyType.Blake3 });
             DataVerifyTypeList.Add(new() { Name = CRC32String, DataVerifyType = DataVerifyType.CRC_32 });

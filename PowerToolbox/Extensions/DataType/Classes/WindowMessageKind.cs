@@ -1,4 +1,4 @@
-﻿namespace PowerToolbox.Extensions.DataType.Class
+﻿namespace PowerToolbox.Extensions.DataType.Classes
 {
     /// <summary>
     /// 窗口消息类型

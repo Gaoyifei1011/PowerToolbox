@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace PowerToolbox.Extensions.DataType.Class
+namespace PowerToolbox.Extensions.DataType.Classes
 {
     internal class BindableVector : IList, IBindableVector
     {

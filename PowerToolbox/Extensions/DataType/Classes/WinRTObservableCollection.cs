@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
-namespace PowerToolbox.Extensions.DataType.Class
+namespace PowerToolbox.Extensions.DataType.Classes
 {
     /// <summary>
     /// 扩展 ObservableCollection，以通知 WinUI 3 集合已经发生变化

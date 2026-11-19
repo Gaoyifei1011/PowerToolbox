@@ -50,10 +50,10 @@
                 </RadioButtons.Resources>
 
                 <RadioButtons.ItemTemplate>
-                    <DataTemplate x:DataType="model:RadioButtonItemModel">
+                    <DataTemplate x:DataType="x:String">
                         <RadioButton
                             MinWidth="100"
-                            Content="{x:Bind SelectorName}"
+                            Content="{x:Bind}"
                             Style="{StaticResource TokenViewRadioButtonStyle}" />
                     </DataTemplate>
                 </RadioButtons.ItemTemplate>

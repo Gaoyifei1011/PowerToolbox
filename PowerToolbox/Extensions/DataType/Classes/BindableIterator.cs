@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Interop;
 using System.Collections;
 
-namespace PowerToolbox.Extensions.DataType.Class
+namespace PowerToolbox.Extensions.DataType.Classes
 {
     internal sealed class BindableIterator(IEnumerable enumerable) : IBindableIterator
     {

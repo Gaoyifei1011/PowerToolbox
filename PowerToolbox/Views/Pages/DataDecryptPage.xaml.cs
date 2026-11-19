@@ -643,7 +643,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<RadioButtonItemModel> DataDecryptSelectorRadioList { get; } = [];
+        private List<string> DataDecryptSelectorRadioList { get; } = [];
 
         private List<DataDecryptTypeModel> DataDecryptTypeList { get; } = [];
 
@@ -1668,8 +1668,8 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            DataDecryptSelectorRadioList.Add(new() { SelectorName = FileString });
-            DataDecryptSelectorRadioList.Add(new() { SelectorName = ContentString });
+            DataDecryptSelectorRadioList.Add(FileString);
+            DataDecryptSelectorRadioList.Add(ContentString);
             DataDecryptTypeList.Add(new() { DataDecryptType = DataDecryptType.AES, Name = AESString });
             DataDecryptTypeList.Add(new() { DataDecryptType = DataDecryptType.CaesarCipher, Name = CaesarCipherString });
             DataDecryptTypeList.Add(new() { DataDecryptType = DataDecryptType.ChaCha20, Name = ChaCha20String });

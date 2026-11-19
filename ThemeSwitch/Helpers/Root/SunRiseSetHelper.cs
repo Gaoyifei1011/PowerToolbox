@@ -1,5 +1,5 @@
 ﻿using System;
-using ThemeSwitch.Extensions.DataType.Class;
+using ThemeSwitch.Extensions.DataType.Classes;
 
 namespace ThemeSwitch.Helpers.Root
 {

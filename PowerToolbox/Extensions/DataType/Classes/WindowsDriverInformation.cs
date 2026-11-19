@@ -1,7 +1,7 @@
 ﻿using System;
 using WUApiLib;
 
-namespace PowerToolbox.Extensions.DataType.Class
+namespace PowerToolbox.Extensions.DataType.Classes
 {
     /// <summary>
     /// Windows 驱动条目信息

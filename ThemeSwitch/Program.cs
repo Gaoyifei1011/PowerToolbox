@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using ThemeSwitch.Extensions.DataType.Class;
+using ThemeSwitch.Extensions.DataType.Classes;
 using ThemeSwitch.Extensions.DataType.Enums;
 using ThemeSwitch.Helpers.Root;
 using ThemeSwitch.Services.Controls.Settings;

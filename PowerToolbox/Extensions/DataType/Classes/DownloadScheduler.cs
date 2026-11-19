@@ -1,14 +1,14 @@
 ﻿using PowerToolbox.Extensions.DataType.Enums;
 
-namespace PowerToolbox.Extensions.DataType.Class
+namespace PowerToolbox.Extensions.DataType.Classes
 {
     /// <summary>
-    /// 下载进度
+    /// 下载调度服务数据模型
     /// </summary>
-    internal sealed class DownloadProgress
+    internal sealed class DownloadScheduler
     {
         /// <summary>
-        /// 下载对应的 ID
+        /// 任务下载时创建下载 ID
         /// </summary>
         internal string DownloadID { get; set; }
 
@@ -18,12 +18,12 @@ namespace PowerToolbox.Extensions.DataType.Class
         internal string FileName { get; set; }
 
         /// <summary>
-        /// 下载文件路径
+        /// 文件下载保存的路径
         /// </summary>
         internal string FilePath { get; set; }
 
         /// <summary>
-        /// 下载文件状态
+        /// 文件下载状态
         /// </summary>
         internal DownloadProgressState DownloadProgressState { get; set; }
 

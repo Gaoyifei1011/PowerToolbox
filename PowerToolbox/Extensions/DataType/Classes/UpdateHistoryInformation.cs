@@ -1,7 +1,7 @@
 ﻿using System;
 using WUApiLib;
 
-namespace PowerToolbox.Extensions.DataType.Class
+namespace PowerToolbox.Extensions.DataType.Classes
 {
     /// <summary>
     /// 更新历史记录信息

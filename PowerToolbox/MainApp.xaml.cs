@@ -2,7 +2,7 @@
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using PowerToolbox.Extensions.DataType.Class;
+using PowerToolbox.Extensions.DataType.Classes;
 using PowerToolbox.Services.Download;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Windows;

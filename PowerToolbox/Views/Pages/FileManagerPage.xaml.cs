@@ -84,7 +84,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<RadioButtonItemModel> FileManagerSelectorRadioList { get; } = [];
+        private List<string> FileManagerSelectorRadioList { get; } = [];
 
         private ReadOnlyCollection<Type> PageCollection { get; } = new([typeof(FileNamePage), typeof(ExtensionNamePage), typeof(UpperAndLowerCasePage), typeof(FilePropertiesPage)]);
 
@@ -241,10 +241,10 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            FileManagerSelectorRadioList.Add(new() { SelectorName = FileNameString });
-            FileManagerSelectorRadioList.Add(new() { SelectorName = ExtensionNameString });
-            FileManagerSelectorRadioList.Add(new() { SelectorName = UpperAndLowerCaseString });
-            FileManagerSelectorRadioList.Add(new() { SelectorName = FilePropertiesString });
+            FileManagerSelectorRadioList.Add(FileNameString);
+            FileManagerSelectorRadioList.Add(ExtensionNameString);
+            FileManagerSelectorRadioList.Add(UpperAndLowerCaseString);
+            FileManagerSelectorRadioList.Add(FilePropertiesString);
 
             NameChangeRuleList.Add(NameChangeRule1String);
             NameChangeRuleList.Add(NameChangeRule2String);

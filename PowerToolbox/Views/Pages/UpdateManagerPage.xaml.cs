@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
-using PowerToolbox.Extensions.DataType.Class;
+using PowerToolbox.Extensions.DataType.Classes;
 using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
@@ -362,7 +362,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<RadioButtonItemModel> UpdateManagerSelectorRadioList { get; } = [];
+        private List<string> UpdateManagerSelectorRadioList { get; } = [];
 
         private List<ComboBoxItemModel> UpdateSourceList { get; } = [];
 
@@ -1273,10 +1273,10 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            UpdateManagerSelectorRadioList.Add(new() { SelectorName = AvailableUpdateString });
-            UpdateManagerSelectorRadioList.Add(new() { SelectorName = InstalledUpdateString });
-            UpdateManagerSelectorRadioList.Add(new() { SelectorName = HiddenUpdateString });
-            UpdateManagerSelectorRadioList.Add(new() { SelectorName = UpdateHistoryString });
+            UpdateManagerSelectorRadioList.Add(AvailableUpdateString);
+            UpdateManagerSelectorRadioList.Add(InstalledUpdateString);
+            UpdateManagerSelectorRadioList.Add(HiddenUpdateString);
+            UpdateManagerSelectorRadioList.Add(UpdateHistoryString);
             UpdateSourceList.Add(new() { SelectedValue = "Microsoft Update", DisplayMember = MicrosoftUpdateString });
             UpdateSourceList.Add(new() { SelectedValue = "DCat Flighting Prod", DisplayMember = DCatFlightingProdString });
             UpdateSourceList.Add(new() { SelectedValue = "Windows Store(DCat Prod)", DisplayMember = WindowsStoreString });

@@ -1,5 +1,4 @@
 ﻿using Microsoft.UI.Xaml.Controls;
-using PowerToolbox.Extensions.DataType.Class;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.Windows;
