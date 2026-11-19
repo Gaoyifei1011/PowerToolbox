@@ -40,7 +40,6 @@
             <Setter Property="AllowDrop" Value="False" />
             <Setter Property="UseSystemFocusVisuals" Value="True" />
             <Setter Property="FocusVisualMargin" Value="1" />
-
             <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource ListViewItemFocusVisualPrimaryBrush}" />
             <Setter Property="FocusVisualPrimaryThickness" Value="2" />
             <Setter Property="FocusVisualSecondaryBrush" Value="{ThemeResource ListViewItemFocusVisualSecondaryBrush}" />

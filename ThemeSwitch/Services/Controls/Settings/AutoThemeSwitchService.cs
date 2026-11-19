@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ThemeSwitch.Extensions.DataType.Constant;
 using ThemeSwitch.Services.Root;

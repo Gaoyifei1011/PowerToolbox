@@ -10,7 +10,6 @@ using PowerToolbox.Services.Shell;
 using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;

@@ -6,7 +6,6 @@ using PowerToolbox.Services.Root;
 using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;

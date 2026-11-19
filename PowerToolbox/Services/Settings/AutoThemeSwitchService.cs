@@ -1,7 +1,6 @@
 ﻿using PowerToolbox.Extensions.DataType.Constant;
 using PowerToolbox.Services.Root;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace PowerToolbox.Services.Settings

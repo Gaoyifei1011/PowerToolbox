@@ -15,7 +15,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Windows.Storage;
 
 // 抑制 CA1806，IDE0060 警告
 #pragma warning disable CA1806,IDE0060

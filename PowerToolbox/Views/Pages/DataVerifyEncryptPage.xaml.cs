@@ -1,6 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;

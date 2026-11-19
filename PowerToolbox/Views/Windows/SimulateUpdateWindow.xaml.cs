@@ -8,7 +8,6 @@ using PowerToolbox.WindowsAPI.PInvoke.Advapi32;
 using PowerToolbox.WindowsAPI.PInvoke.PowrProf;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;

@@ -2,7 +2,6 @@
 using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;

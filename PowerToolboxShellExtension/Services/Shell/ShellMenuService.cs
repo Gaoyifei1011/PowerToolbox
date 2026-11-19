@@ -3,7 +3,6 @@ using PowerToolboxShellExtension.Extensions.ShellMenu;
 using PowerToolboxShellExtension.Helpers.Root;
 using PowerToolboxShellExtension.WindowsAPI.PInvoke.Shell32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.InteropServices.Marshalling;
