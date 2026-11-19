@@ -19,7 +19,7 @@
         <!--  系统信息控制栏  -->
         <CommandBar
             Grid.Row="0"
-            Margin="24,7,22,-2"
+            Margin="24,7,22,-3"
             VerticalAlignment="Center"
             HorizontalContentAlignment="Stretch"
             VerticalContentAlignment="Center"

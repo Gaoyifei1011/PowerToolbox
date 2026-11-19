@@ -39,7 +39,7 @@
             <!--  下载管理控制栏  -->
             <CommandBar
                 Grid.Row="0"
-                Margin="24,7,22,-2"
+                Margin="24,8,22,-5"
                 VerticalAlignment="Center"
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Center"
@@ -49,7 +49,7 @@
                 IsDynamicOverflowEnabled="False">
 
                 <CommandBar.Content>
-                    <Grid Margin="0,0,12,0">
+                    <Grid Margin="0,1,12,0">
                         <Grid
                             Grid.Row="0"
                             MinWidth="100"

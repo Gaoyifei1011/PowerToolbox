@@ -64,7 +64,7 @@
 
             <!--  检查更新和更多选项  -->
             <StackPanel
-                Margin="0,12,30,0"
+                Margin="0,15,30,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Canvas.ZIndex="1"

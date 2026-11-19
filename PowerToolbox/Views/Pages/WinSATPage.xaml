@@ -20,7 +20,7 @@
 
         <CommandBar
             Grid.Row="0"
-            Margin="24,7,22,-2"
+            Margin="24,8,22,-5"
             VerticalAlignment="Center"
             HorizontalContentAlignment="Stretch"
             VerticalContentAlignment="Center"
@@ -34,6 +34,7 @@
                     Grid.Row="0"
                     MinWidth="100"
                     MinHeight="32"
+                    Margin="0,1,0,0"
                     HorizontalAlignment="Left">
 
                     <Rectangle

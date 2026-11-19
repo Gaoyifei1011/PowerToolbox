@@ -63,7 +63,7 @@
 
         <Grid.Resources>
             <x:Double x:Key="RadioButtonsColumnSpacing">5</x:Double>
-            <x:Double x:Key="RadioButtonsRowSpacing">5</x:Double>
+            <x:Double x:Key="RadioButtonsRowSpacing">2</x:Double>
             <Thickness x:Key="RadioButtonsTopHeaderMargin">0</Thickness>
         </Grid.Resources>
 
@@ -74,7 +74,8 @@
             ItemsSource="{x:Bind UpperAndLowerCaseRadioList}"
             MaxColumns="4"
             SelectedItem="{x:Bind SelectedItem, Mode=OneWay}"
-            SelectionChanged="{x:Bind OnSelectionChanged}">
+            SelectionChanged="{x:Bind OnSelectionChanged}"
+            Style="{StaticResource ColumnMajorUniformToLargestGridRadioButtonsStyle}">
 
             <RadioButtons.ItemTemplate>
                 <DataTemplate x:DataType="model:UpperAndLowerCaseRadioItemModel">
