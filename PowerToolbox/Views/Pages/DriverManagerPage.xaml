@@ -326,8 +326,8 @@
                     <!--  正在加载中  -->
                     <StackPanel Spacing="20" Visibility="{x:Bind CheckDriverResultKindVisibility(DriverResultKind, enum:DriverResultKind.Loading), Mode=OneWay}">
                         <Image
-                            Width="150"
-                            Height="150"
+                            Width="120"
+                            Height="120"
                             Source="ms-appx:///Assets/Image/Search.png" />
 
                         <Grid ColumnSpacing="10">
@@ -358,8 +358,8 @@
                     <!--  加载失败（包含搜索结果为空）  -->
                     <StackPanel Spacing="20" Visibility="{x:Bind CheckDriverResultKindVisibility(DriverResultKind, enum:DriverResultKind.Failed), Mode=OneWay}">
                         <Image
-                            Width="150"
-                            Height="150"
+                            Width="120"
+                            Height="120"
                             Source="ms-appx:///Assets/Image/Failed.png" />
 
                         <TextBlock
@@ -948,7 +948,19 @@
                             VerticalAlignment="Center"
                             Visibility="{x:Bind converter:ValueConverterHelper.IntToVisibilityReverseConvert(DriverOperationCollection.Count), Mode=OneWay}">
 
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Image
+                                Grid.Row="0"
+                                Width="120"
+                                Height="120"
+                                Source="ms-appx:///Assets/Image/NoTask.png" />
+
                             <TextBlock
+                                Grid.Row="1"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Text="{x:Bind rootservice:ResourceService.DriverManagerResource.GetString('DriverOperationTaskEmpty')}"

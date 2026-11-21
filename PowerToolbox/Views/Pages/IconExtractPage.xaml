@@ -122,8 +122,8 @@
                     Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Welcome), Mode=OneWay}">
 
                     <Image
-                        Width="150"
-                        Height="150"
+                        Width="120"
+                        Height="120"
                         Source="ms-appx:///Assets/Image/IconExtractWelcome.png" />
 
                     <TextBlock
@@ -144,8 +144,8 @@
                     Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Parsing), Mode=OneWay}">
 
                     <Image
-                        Width="150"
-                        Height="150"
+                        Width="120"
+                        Height="120"
                         Source="ms-appx:///Assets/Image/Search.png" />
 
                     <Grid ColumnSpacing="10">
@@ -181,8 +181,8 @@
                     Visibility="{x:Bind CheckIconExtractResultKindVisibility(IconExtractResultKind, enum:IconExtractResultKind.Failed), Mode=OneWay}">
 
                     <Image
-                        Width="150"
-                        Height="150"
+                        Width="120"
+                        Height="120"
                         Source="ms-appx:///Assets/Image/Failed.png" />
 
                     <TextBlock

@@ -225,8 +225,8 @@
                     <!--  正在加载中  -->
                     <StackPanel Spacing="20" Visibility="{x:Bind CheckScheduledTaskResultKindVisibility(ScheduledTaskResultKind, enum:ScheduledTaskResultKind.Loading), Mode=OneWay}">
                         <Image
-                            Width="150"
-                            Height="150"
+                            Width="120"
+                            Height="120"
                             Source="ms-appx:///Assets/Image/Search.png" />
 
                         <Grid ColumnSpacing="10">
@@ -257,8 +257,8 @@
                     <!--  加载失败（包含搜索结果为空）  -->
                     <StackPanel Spacing="20" Visibility="{x:Bind CheckScheduledTaskResultKindVisibility(ScheduledTaskResultKind, enum:ScheduledTaskResultKind.Failed), Mode=OneWay}">
                         <Image
-                            Width="150"
-                            Height="150"
+                            Width="120"
+                            Height="120"
                             Source="ms-appx:///Assets/Image/Failed.png" />
 
                         <TextBlock
