@@ -17,7 +17,7 @@
   <Identity
     Name="055B5CA4.PowerToolbox"
     Publisher="CN=ABAA73FA-E48C-48D6-8060-D6B3A4EA70B6"
-    Version="4.16.807.0" />
+    Version="5.0.1123.0" />
 
   <Properties>
     <Description>ms-resource:PackageDescription</Description>
