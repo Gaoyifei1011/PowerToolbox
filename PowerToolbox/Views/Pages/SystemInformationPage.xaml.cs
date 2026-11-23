@@ -189,6 +189,7 @@ namespace PowerToolbox.Views.Pages
             if (SystemInformationResultKind is not SystemInformationResultKind.Loading)
             {
                 SystemInformationResultKind = SystemInformationResultKind.Loading;
+                UpdateAnimatedVisualState(true);
                 (bool result, SystemInformation gettedSystemInformation, Exception exception) = await GetSystemInformationAsync();
 
                 if (result)
@@ -227,12 +228,14 @@ namespace PowerToolbox.Views.Pages
                     SystemInformationCollection.Add(new() { Item = PageFilePositionString, Content = string.IsNullOrEmpty(systemInformation.PageFilePosition) ? NotAvailableString : systemInformation.PageFilePosition });
                     SystemInformationCollection.Add(new() { Item = PageFileSizeString, Content = string.IsNullOrEmpty(systemInformation.PageFileSize) ? NotAvailableString : systemInformation.PageFileSize });
                     SystemInformationResultKind = SystemInformationResultKind.HasResult;
+                    UpdateAnimatedVisualState(false);
                 }
                 else
                 {
                     systemInformation = null;
                     SystemInformationFailedContent = string.Format(ErrorInformationString, string.Format("0x{0:X8}", exception.HResult), exception.Message);
                     SystemInformationResultKind = SystemInformationResultKind.Failed;
+                    UpdateAnimatedVisualState(false);
                 }
             }
         }
@@ -486,6 +489,24 @@ namespace PowerToolbox.Views.Pages
 
                 return systemInformationBuilder.ToString();
             });
+        }
+
+        /// <summary>
+        /// 更新动画播放器状态
+        /// </summary>
+        private void UpdateAnimatedVisualState(bool isLoading)
+        {
+            if (isLoading && !LoadingVisualPlayer.IsPlaying)
+            {
+                DispatcherQueue.TryEnqueue(async () =>
+                {
+                    await LoadingVisualPlayer.PlayAsync(0, 1, true);
+                });
+            }
+            else if (!isLoading && LoadingVisualPlayer.IsPlaying)
+            {
+                LoadingVisualPlayer.Stop();
+            }
         }
 
         /// <summary>

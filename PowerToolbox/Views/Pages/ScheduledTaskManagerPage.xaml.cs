@@ -487,6 +487,7 @@ namespace PowerToolbox.Views.Pages
             if (ScheduledTaskResultKind is not ScheduledTaskResultKind.Loading)
             {
                 ScheduledTaskResultKind = ScheduledTaskResultKind.Loading;
+                UpdateAnimatedVisualState(true);
                 ScheduledTaskCollection.Clear();
                 ReadOnlyCollection<ScheduledTaskModel> scheduledTaskCollection = await GetScheduledTaskInfoCollectionAsync();
 
@@ -495,6 +496,7 @@ namespace PowerToolbox.Views.Pages
                     ScheduledTaskResultKind = ScheduledTaskResultKind.Failed;
                     ScheduledTaskFailedContent = ScheduledTaskEmptyDescriptionString;
                     SelectedItemsCount = ScheduledTaskManagerListView.SelectedItems.Count;
+                    UpdateAnimatedVisualState(false);
                 }
                 else
                 {
@@ -507,6 +509,7 @@ namespace PowerToolbox.Views.Pages
                     ScheduledTaskResultKind = ScheduledTaskCollection.Count is 0 ? ScheduledTaskResultKind.Failed : ScheduledTaskResultKind.HasResult;
                     ScheduledTaskFailedContent = ScheduledTaskCollection.Count is 0 ? ScheduledTaskEmptyDescriptionString : string.Empty;
                     SelectedItemsCount = ScheduledTaskManagerListView.SelectedItems.Count;
+                    UpdateAnimatedVisualState(false);
                 }
             }
         }
@@ -1004,6 +1007,24 @@ namespace PowerToolbox.Views.Pages
                         Exception = exception
                     });
                 }
+            }
+        }
+
+        /// <summary>
+        /// 更新动画播放器状态
+        /// </summary>
+        private void UpdateAnimatedVisualState(bool isLoading)
+        {
+            if (isLoading && !LoadingVisualPlayer.IsPlaying)
+            {
+                DispatcherQueue.TryEnqueue(async () =>
+                {
+                    await LoadingVisualPlayer.PlayAsync(0, 1, true);
+                });
+            }
+            else if (!isLoading && LoadingVisualPlayer.IsPlaying)
+            {
+                LoadingVisualPlayer.Stop();
             }
         }
 

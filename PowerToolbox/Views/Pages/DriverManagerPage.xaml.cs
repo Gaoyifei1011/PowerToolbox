@@ -389,6 +389,7 @@ namespace PowerToolbox.Views.Pages
             {
                 DriverResultKind oldDriverResultKind = DriverResultKind;
                 DriverResultKind = DriverResultKind.Operating;
+                UpdateAnimatedVisualState(false);
                 Guid driverOperationGuid = Guid.NewGuid();
                 DriverOperationModel driverOperation = new()
                 {
@@ -417,6 +418,7 @@ namespace PowerToolbox.Views.Pages
             {
                 DriverResultKind oldDriverResultKind = DriverResultKind;
                 DriverResultKind = DriverResultKind.Operating;
+                UpdateAnimatedVisualState(false);
                 Guid driverOperationGuid = Guid.NewGuid();
                 DriverOperationModel driverOperation = new()
                 {
@@ -588,6 +590,7 @@ namespace PowerToolbox.Views.Pages
                 DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.HasResult;
                 DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyDescriptionString : string.Empty;
                 SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
+                UpdateAnimatedVisualState(false);
             }
         }
 
@@ -607,6 +610,7 @@ namespace PowerToolbox.Views.Pages
                 DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.HasResult;
                 DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyDescriptionString : string.Empty;
                 SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
+                UpdateAnimatedVisualState(false);
             }
         }
 
@@ -636,6 +640,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     DriverResultKind oldDriverResultKind = DriverResultKind;
                     DriverResultKind = DriverResultKind.Operating;
+                    UpdateAnimatedVisualState(false);
                     List<(string, DriverOperationModel)> driverList = [];
                     foreach (string fileName in openFileDialog.FileNames)
                     {
@@ -678,6 +683,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     DriverResultKind oldDriverResultKind = DriverResultKind;
                     DriverResultKind = DriverResultKind.Operating;
+                    UpdateAnimatedVisualState(false);
                     List<(string, DriverOperationModel)> driverList = [];
                     foreach (string fileName in openFileDialog.FileNames)
                     {
@@ -728,6 +734,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     DriverResultKind oldDriverResultKind = DriverResultKind;
                     DriverResultKind = DriverResultKind.Operating;
+                    UpdateAnimatedVisualState(false);
                     List<(string, string, DriverOperationModel)> driverList = [];
                     foreach (DriverModel driverItem in selectedDriverList)
                     {
@@ -779,6 +786,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     DriverResultKind oldDriverResultKind = DriverResultKind;
                     DriverResultKind = DriverResultKind.Operating;
+                    UpdateAnimatedVisualState(false);
                     List<(string, string, DriverOperationModel)> driverList = [];
                     foreach (DriverModel driverItem in selectedDriverList)
                     {
@@ -870,6 +878,7 @@ namespace PowerToolbox.Views.Pages
             if (DriverResultKind is not DriverResultKind.Loading)
             {
                 DriverResultKind = DriverResultKind.Loading;
+                UpdateAnimatedVisualState(true);
                 DriverList.Clear();
                 DriverCollection.Clear();
                 SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
@@ -879,6 +888,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     DriverResultKind = DriverResultKind.Failed;
                     DriverFailedContent = DriverEmptyDescriptionString;
+                    UpdateAnimatedVisualState(false);
                 }
                 else
                 {
@@ -891,6 +901,7 @@ namespace PowerToolbox.Views.Pages
                     DriverResultKind = DriverCollection.Count is 0 ? DriverResultKind.Failed : DriverResultKind.HasResult;
                     DriverFailedContent = DriverCollection.Count is 0 ? DriverEmptyDescriptionString : string.Empty;
                     SelectedItemsCount = DriverManagerListView.SelectedItems.Count;
+                    UpdateAnimatedVisualState(false);
                 }
             }
         }
@@ -1573,6 +1584,24 @@ namespace PowerToolbox.Views.Pages
                 }
                 return ValueTuple.Create(result, needReboot, win32Exception);
             });
+        }
+
+        /// <summary>
+        /// 更新动画播放器状态
+        /// </summary>
+        private void UpdateAnimatedVisualState(bool isLoading)
+        {
+            if (isLoading && !LoadingVisualPlayer.IsPlaying)
+            {
+                DispatcherQueue.TryEnqueue(async () =>
+                {
+                    await LoadingVisualPlayer.PlayAsync(0, 1, true);
+                });
+            }
+            else if (!isLoading && LoadingVisualPlayer.IsPlaying)
+            {
+                LoadingVisualPlayer.Stop();
+            }
         }
 
         /// <summary>

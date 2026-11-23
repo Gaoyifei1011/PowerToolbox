@@ -258,6 +258,7 @@ namespace PowerToolbox.Views.Pages
             {
                 IsSaved = false;
                 LoopbackResultKind = LoopbackResultKind.Loading;
+                UpdateAnimatedVisualState(true);
                 LoopbackManagerListView.SelectedItems.Clear();
                 for (int index = 0; index < LoopbackCollection.Count; index++)
                 {
@@ -269,6 +270,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
                 LoopbackResultKind = LoopbackCollection.Count is 0 ? LoopbackResultKind.Failed : LoopbackResultKind.HasResult;
+                UpdateAnimatedVisualState(false);
             }
         }
 
@@ -292,6 +294,7 @@ namespace PowerToolbox.Views.Pages
             if (LoopbackResultKind is not LoopbackResultKind.Loading)
             {
                 LoopbackResultKind = LoopbackResultKind.Loading;
+                UpdateAnimatedVisualState(true);
                 IsSaved = false;
                 LoopbackCollection.Clear();
                 SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
@@ -301,6 +304,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     LoopbackResultKind = LoopbackResultKind.Failed;
                     LoopbackFailedContent = LoopbackEmptyDescriptionString;
+                    UpdateAnimatedVisualState(false);
                 }
                 else
                 {
@@ -333,6 +337,7 @@ namespace PowerToolbox.Views.Pages
                     LoopbackResultKind = LoopbackResultKind.HasResult;
                     LoopbackFailedContent = string.Empty;
                     SelectedItemsCount = LoopbackManagerListView.SelectedItems.Count;
+                    UpdateAnimatedVisualState(false);
                 }
             }
         }
@@ -619,6 +624,24 @@ namespace PowerToolbox.Views.Pages
             }
 
             return logoFullPath;
+        }
+
+        /// <summary>
+        /// 更新动画播放器状态
+        /// </summary>
+        private void UpdateAnimatedVisualState(bool isLoading)
+        {
+            if (isLoading && !LoadingVisualPlayer.IsPlaying)
+            {
+                DispatcherQueue.TryEnqueue(async () =>
+                {
+                    await LoadingVisualPlayer.PlayAsync(0, 1, true);
+                });
+            }
+            else if (!isLoading && LoadingVisualPlayer.IsPlaying)
+            {
+                LoadingVisualPlayer.Stop();
+            }
         }
 
         /// <summary>

@@ -239,6 +239,7 @@ namespace PowerToolbox.Views.Pages
             if (!string.IsNullOrEmpty(SearchText) && ContextMenuResultKind is not ContextMenuResultKind.Loading && ContextMenuList.Count > 0)
             {
                 ContextMenuResultKind = ContextMenuResultKind.Loading;
+                UpdateAnimatedVisualState(true);
                 ContextMenuCollection.Clear();
                 foreach (ContextMenuModel contextMenuItem in ContextMenuList)
                 {
@@ -250,6 +251,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.HasResult;
                 ContextMenuFailedContent = ContextMenuCollection.Count is 0 ? MenuEmptyWithConditionDescriptionString : string.Empty;
+                UpdateAnimatedVisualState(false);
             }
         }
 
@@ -262,6 +264,7 @@ namespace PowerToolbox.Views.Pages
             if (string.IsNullOrEmpty(SearchText) && ContextMenuResultKind is not ContextMenuResultKind.Loading && ContextMenuList.Count > 0)
             {
                 ContextMenuResultKind = ContextMenuResultKind.Loading;
+                UpdateAnimatedVisualState(true);
                 ContextMenuCollection.Clear();
                 foreach (ContextMenuModel contextMenuItem in ContextMenuList)
                 {
@@ -269,6 +272,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.HasResult;
                 ContextMenuFailedContent = ContextMenuCollection.Count is 0 ? MenuEmptyWithConditionDescriptionString : string.Empty;
+                UpdateAnimatedVisualState(false);
             }
         }
 
@@ -286,6 +290,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnRestoreDefaultClicked(object sender, RoutedEventArgs args)
         {
             ContextMenuResultKind = ContextMenuResultKind.Loading;
+            UpdateAnimatedVisualState(true);
             SearchText = string.Empty;
             await RestoreDefaultAsync();
             await GetContextMenuAsync(SearchText);
@@ -315,6 +320,7 @@ namespace PowerToolbox.Views.Pages
             if (ContextMenuResultKind is not ContextMenuResultKind.Loading)
             {
                 ContextMenuResultKind = ContextMenuResultKind.Loading;
+                UpdateAnimatedVisualState(true);
                 ContextMenuList.Clear();
                 ContextMenuCollection.Clear();
                 ReadOnlyCollection<ContextMenuModel> contextMenuCollection = await GetContextMenuInfoCollectionAsync();
@@ -323,6 +329,7 @@ namespace PowerToolbox.Views.Pages
                 {
                     ContextMenuResultKind = ContextMenuResultKind.Failed;
                     ContextMenuFailedContent = MenuEmptyDescriptionString;
+                    UpdateAnimatedVisualState(false);
                 }
                 else
                 {
@@ -361,6 +368,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     ContextMenuResultKind = ContextMenuCollection.Count is 0 ? ContextMenuResultKind.Failed : ContextMenuResultKind.HasResult;
                     ContextMenuFailedContent = ContextMenuCollection.Count is 0 ? MenuEmptyWithConditionDescriptionString : string.Empty;
+                    UpdateAnimatedVisualState(false);
                 }
             }
         }
@@ -754,6 +762,24 @@ namespace PowerToolbox.Views.Pages
             }
 
             return packagePath;
+        }
+
+        /// <summary>
+        /// 更新动画播放器状态
+        /// </summary>
+        private void UpdateAnimatedVisualState(bool isLoading)
+        {
+            if (isLoading && !LoadingVisualPlayer.IsPlaying)
+            {
+                DispatcherQueue.TryEnqueue(async () =>
+                {
+                    await LoadingVisualPlayer.PlayAsync(0, 1, true);
+                });
+            }
+            else if (!isLoading && LoadingVisualPlayer.IsPlaying)
+            {
+                LoadingVisualPlayer.Stop();
+            }
         }
 
         /// <summary>

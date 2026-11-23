@@ -461,6 +461,7 @@ namespace PowerToolbox.Views.Pages
                 SelectedFileContainSize = FileContainIconSizeCollection[8];
                 SelectedFileAssociateSize = FileAssociateIconSizeCollection[3];
                 IconCollection.Clear();
+                UpdateAnimatedVisualState(false);
             }
         }
 
@@ -753,6 +754,7 @@ namespace PowerToolbox.Views.Pages
             IsImageEmpty = true;
             IsItemSelected = false;
             GetResults = NoSelectedFileString;
+            UpdateAnimatedVisualState(false);
         }
 
         /// <summary>
@@ -769,6 +771,7 @@ namespace PowerToolbox.Views.Pages
             {
                 IconCollection.Clear();
                 IconExtractResultKind = IconExtractResultKind.Parsing;
+                UpdateAnimatedVisualState(true);
                 filePath = iconFilePath;
                 (int iconTotalNum, ReadOnlyCollection<IconModel> iconCollection) = await GetFileContainIconCollectionAsync(filePath);
 
@@ -790,6 +793,7 @@ namespace PowerToolbox.Views.Pages
                         }
 
                         IconExtractResultKind = IconExtractResultKind.HasResult;
+                        UpdateAnimatedVisualState(false);
                     }
                     catch (Exception e)
                     {
@@ -799,6 +803,7 @@ namespace PowerToolbox.Views.Pages
                         ImageSource = null;
                         IsImageEmpty = true;
                         IconExtractResultKind = IconExtractResultKind.Failed;
+                        UpdateAnimatedVisualState(false);
                     }
                 }
                 else
@@ -808,6 +813,7 @@ namespace PowerToolbox.Views.Pages
                     ImageSource = null;
                     IsImageEmpty = true;
                     IconExtractResultKind = IconExtractResultKind.Failed;
+                    UpdateAnimatedVisualState(false);
                 }
             }
         }
@@ -826,6 +832,7 @@ namespace PowerToolbox.Views.Pages
             {
                 IconCollection.Clear();
                 IconExtractResultKind = IconExtractResultKind.Parsing;
+                UpdateAnimatedVisualState(true);
                 filePath = iconFilePath;
                 (int iconTotalNum, ReadOnlyCollection<IconModel> iconCollection) = GetFileAssociateIconCollection(filePath);
 
@@ -847,6 +854,7 @@ namespace PowerToolbox.Views.Pages
                         }
 
                         IconExtractResultKind = IconExtractResultKind.HasResult;
+                        UpdateAnimatedVisualState(false);
                     }
                     catch (Exception e)
                     {
@@ -856,6 +864,7 @@ namespace PowerToolbox.Views.Pages
                         ImageSource = null;
                         IsImageEmpty = true;
                         IconExtractResultKind = IconExtractResultKind.Failed;
+                        UpdateAnimatedVisualState(false);
                     }
                 }
                 else
@@ -865,6 +874,7 @@ namespace PowerToolbox.Views.Pages
                     ImageSource = null;
                     IsImageEmpty = true;
                     IconExtractResultKind = IconExtractResultKind.Failed;
+                    UpdateAnimatedVisualState(false);
                 }
             }
         }
@@ -1075,6 +1085,24 @@ namespace PowerToolbox.Views.Pages
 
                 return fileList.AsReadOnly();
             });
+        }
+
+        /// <summary>
+        /// 更新动画播放器状态
+        /// </summary>
+        private void UpdateAnimatedVisualState(bool isLoading)
+        {
+            if (isLoading && !LoadingVisualPlayer.IsPlaying)
+            {
+                DispatcherQueue.TryEnqueue(async () =>
+                {
+                    await LoadingVisualPlayer.PlayAsync(0, 1, true);
+                });
+            }
+            else if (!isLoading && LoadingVisualPlayer.IsPlaying)
+            {
+                LoadingVisualPlayer.Stop();
+            }
         }
 
         /// <summary>
