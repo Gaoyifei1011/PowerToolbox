@@ -220,7 +220,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock
                                         Margin="0,0,0,5"
-                                        Text="{x:Bind GetChangeRule(CurrentIndex), Mode=OneWay}"
+                                        Text="{x:Bind GetChangeRule(SelectedPageIndex), Mode=OneWay}"
                                         TextAlignment="Justify"
                                         TextWrapping="Wrap" />
                                 </StackPanel>
@@ -337,36 +337,18 @@
                                 </ListView.ItemTemplate>
                             </ListView>
 
-                            <!--  TODO：未来可以迁移到 PagerControl  -->
-                            <StackPanel
+                            <PipsPager
                                 Grid.Row="9"
                                 Margin="16,0,16,0"
                                 HorizontalAlignment="Right"
+                                NextButtonVisibility="Visible"
+                                NumberOfPages="{x:Bind NameChangeCollection.Count}"
                                 Orientation="Horizontal"
-                                Spacing="5">
-
-                                <Button
-                                    Width="32"
-                                    Height="32"
-                                    Padding="0"
-                                    Click="{x:Bind OnForwardNavigateClicked}"
-                                    CornerRadius="{StaticResource ControlCornerRadius}"
-                                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('ForwardNavigate')}">
-
-                                    <FontIcon FontSize="16" Glyph="&#xE76B;" />
-                                </Button>
-
-                                <Button
-                                    Width="32"
-                                    Height="32"
-                                    Padding="0"
-                                    Click="{x:Bind OnNextNavigateClicked}"
-                                    CornerRadius="{StaticResource ControlCornerRadius}"
-                                    ToolTipService.ToolTip="{x:Bind rootservice:ResourceService.FileManagerResource.GetString('NextNavigate')}">
-
-                                    <FontIcon FontSize="16" Glyph="&#xE76C;" />
-                                </Button>
-                            </StackPanel>
+                                PreviousButtonVisibility="Visible"
+                                SelectedIndexChanged="{x:Bind OnSelecteedIndexChanged}"
+                                SelectedPageIndex="{x:Bind SelectedPageIndex, Mode=OneWay}"
+                                Style="{StaticResource ButtonPanelWithoutScrollPipsPagerStyle}"
+                                WrapMode="Wrap" />
                         </Grid>
                     </ScrollViewer>
                 </Grid>

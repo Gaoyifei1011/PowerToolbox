@@ -70,7 +70,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private int CurrentIndex
+        private int SelectedPageIndex
         {
             get;
 
@@ -79,7 +79,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(field, value))
                 {
                     field = value;
-                    PropertyChanged?.Invoke(this, new(nameof(CurrentIndex)));
+                    PropertyChanged?.Invoke(this, new(nameof(SelectedPageIndex)));
                 }
             }
         }
@@ -205,30 +205,16 @@ namespace PowerToolbox.Views.Pages
         }
 
         /// <summary>
-        /// 向前导航
+        /// 改名示例导航器选中项发生变化后触发的事件
         /// </summary>
-        private void OnForwardNavigateClicked(object sender, RoutedEventArgs args)
+        private void OnSelecteedIndexChanged(PipsPager sender, PipsPagerSelectedIndexChangedEventArgs args)
         {
-            CurrentIndex = CurrentIndex is 0 ? 3 : CurrentIndex - 1;
+            SelectedPageIndex = sender.SelectedPageIndex;
 
             for (int index = 0; index < NameChangeCollection.Count; index++)
             {
-                NameChangeCollection[index].OriginalFileName = NameChangeDict[CurrentIndex][index].OriginalFileName;
-                NameChangeCollection[index].NewFileName = NameChangeDict[CurrentIndex][index].NewFileName;
-            }
-        }
-
-        /// <summary>
-        /// 向后导航
-        /// </summary>
-        private void OnNextNavigateClicked(object sender, RoutedEventArgs args)
-        {
-            CurrentIndex = CurrentIndex is 3 ? 0 : CurrentIndex + 1;
-
-            for (int index = 0; index < NameChangeCollection.Count; index++)
-            {
-                NameChangeCollection[index].OriginalFileName = NameChangeDict[CurrentIndex][index].OriginalFileName;
-                NameChangeCollection[index].NewFileName = NameChangeDict[CurrentIndex][index].NewFileName;
+                NameChangeCollection[index].OriginalFileName = NameChangeDict[SelectedPageIndex][index].OriginalFileName;
+                NameChangeCollection[index].NewFileName = NameChangeDict[SelectedPageIndex][index].NewFileName;
             }
         }
 
@@ -280,12 +266,12 @@ namespace PowerToolbox.Views.Pages
                 new() { OriginalFileName = NameChangeOriginalName4String, NewFileName = NameChangeList4ChangedName4String },
             ]);
 
-            CurrentIndex = 0;
+            SelectedPageIndex = 0;
 
             for (int index = 0; index < NameChangeCollection.Count; index++)
             {
-                NameChangeCollection[index].OriginalFileName = NameChangeDict[CurrentIndex][index].OriginalFileName;
-                NameChangeCollection[index].NewFileName = NameChangeDict[CurrentIndex][index].NewFileName;
+                NameChangeCollection[index].OriginalFileName = NameChangeDict[SelectedPageIndex][index].OriginalFileName;
+                NameChangeCollection[index].NewFileName = NameChangeDict[SelectedPageIndex][index].NewFileName;
             }
         }
 

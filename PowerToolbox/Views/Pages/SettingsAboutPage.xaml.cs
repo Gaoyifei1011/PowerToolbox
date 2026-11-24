@@ -57,11 +57,11 @@ namespace PowerToolbox.Views.Pages
         // 项目感谢者信息
         private ReadOnlyCollection<DictionaryEntry> ThanksCollection { get; } = new(
         [
-            new( "AndromedaMelody", new Uri("https://github.com/AndromedaMelody")),
+            new("AndromedaMelody", new Uri("https://github.com/AndromedaMelody")),
             new("Blinue", new Uri("https://github.com/Blinue")),
-            new ( "cnbluefire", new Uri("https://github.com/cnbluefire")),
-            new ( "MouriNaruto" , new Uri("https://github.com/MouriNaruto")),
-            new ("Osirisoo0O" , new Uri("https://github.com/Osirisoo0O"))
+            new("cnbluefire", new Uri("https://github.com/cnbluefire")),
+            new("MouriNaruto" , new Uri("https://github.com/MouriNaruto")),
+            new("Osirisoo0O" , new Uri("https://github.com/Osirisoo0O"))
         ]);
 
         #endregion 第二部分：属性、列表与事件

@@ -319,6 +319,7 @@
 
     <None Remove="Assets\PowerToolbox.ico" CopyToOutputDirectory="Never" />
 
+    <None Remove="MainApp.xaml" />
     <None Remove="Microsoft.UI.Xaml.winmd" />
     <None Remove="Styles\BreadcrumbBar.xaml" />
     <None Remove="Styles\ComboBox.xaml" />
@@ -334,7 +335,6 @@
     <None Remove="Styles\TabView.xaml" />
     <None Remove="Styles\TimePicker.xaml" />
     <None Remove="Styles\ToggleSwitch.xaml" />
-    <None Remove="MainApp.xaml" />
     <None Remove="Views\Dialogs\AddDownloadTaskDialog.xaml" />
     <None Remove="Views\Dialogs\AppInformationDialog.xaml" />
     <None Remove="Views\Dialogs\ClosingWindowDialog.xaml" />
@@ -409,6 +409,7 @@
     <Page Include="Styles\Expander.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\InfoBar.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\NavigationView.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
+    <Page Include="Styles\PipsPager.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\ProgressRing.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\RadioButtons.xaml" XamlRuntime="$(DefaultXamlRuntime)" />
     <Page Include="Styles\RepeatButton.xaml" XamlRuntime="$(DefaultXamlRuntime)" />

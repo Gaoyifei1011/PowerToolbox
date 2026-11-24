@@ -279,7 +279,7 @@
 
                 <Expander.Header>
                     <TextBlock
-                        Padding="16,0,0,0"
+                        Padding="15,0,0,0"
                         FontSize="15"
                         FontWeight="Medium"
                         Text="{x:Bind rootservice:ResourceService.SettingsAboutResource.GetString('Reference')}" />
