@@ -1,4 +1,4 @@
-﻿namespace PowerToolbox.Extensions.DataType.Classes
+﻿namespace PowerToolbox.Extensions.DataType.Enums
 {
     /// <summary>
     /// 窗口消息类型
