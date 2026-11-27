@@ -183,7 +183,7 @@ namespace PowerToolbox.Views.Pages
             DragOperationDeferral dragOperationDeferral = args.GetDeferral();
             try
             {
-                if (await GetDragDropSelectedFilesAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count > 0 && await GetNeedConvertFileCollectionAsync(fileCollection) is ReadOnlyCollection<OldAndNewNameModel> extensionNameCollection && extensionNameCollection.Count > 0)
+                if (await GetDragDropSelectedFileCollectionAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count > 0 && await GetNeedConvertFileCollectionAsync(fileCollection) is ReadOnlyCollection<OldAndNewNameModel> extensionNameCollection && extensionNameCollection.Count > 0)
                 {
                     AddToExtensionNamePage(extensionNameCollection);
                     IsOperationFailed = false;
@@ -594,7 +594,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取拖拽支持选中的文件
         /// </summary>
-        private async Task<ReadOnlyCollection<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        private async Task<ReadOnlyCollection<string>> GetDragDropSelectedFileCollectionAsync(DataPackageView dataPackageView)
         {
             if (dataPackageView is null)
             {
@@ -617,7 +617,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ExtensionNamePage), nameof(GetDragDropSelectedFilesAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(ExtensionNamePage), nameof(GetDragDropSelectedFileCollectionAsync), 1, e);
                 }
 
                 return fileList.AsReadOnly();

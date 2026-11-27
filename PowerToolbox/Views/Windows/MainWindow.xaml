@@ -111,7 +111,7 @@
                 <DataTemplate x:Key="NavigationViewItemTemplate" x:DataType="model:NavigationViewItemModel">
                     <NavigationViewItem
                         Icon="{x:Bind NavigationIcon}"
-                        MenuItemsSource="{x:Bind NavigationViewItemMenuItemsCollection}"
+                        MenuItemsSource="{x:Bind NavigationViewItemMenuItemCollection}"
                         Style="{StaticResource CardNavigationViewItemStyle}"
                         Visibility="{x:Bind VisibleState}">
 
@@ -200,7 +200,7 @@
                 IsPaneToggleButtonVisible="False"
                 IsSettingsVisible="False"
                 Loaded="{x:Bind OnLoaded}"
-                MenuItemsSource="{x:Bind NavigationViewItemMenuItemsCollection}"
+                MenuItemsSource="{x:Bind NavigationViewItemMenuItemCollection}"
                 OpenPaneLength="220"
                 PaneDisplayMode="Left"
                 SelectedItem="{x:Bind SelectedItem, Mode=OneWay}"

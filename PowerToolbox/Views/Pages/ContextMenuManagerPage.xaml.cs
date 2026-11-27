@@ -542,18 +542,18 @@ namespace PowerToolbox.Views.Pages
                     xmlNamespaceManager.AddNamespace("desktop5", "http://schemas.microsoft.com/appx/manifest/desktop/windows10/5");
                     xmlNamespaceManager.AddNamespace("uap", "http://schemas.microsoft.com/appx/manifest/uap/windows10");
 
-                    XmlNodeList desktop4VerbNodesList = xmlDocument.SelectNodes("//desktop4:FileExplorerContextMenus//desktop4:Verb", xmlNamespaceManager);
-                    XmlNodeList desktop5VerbNodesList = xmlDocument.SelectNodes("//desktop4:FileExplorerContextMenus//desktop5:Verb", xmlNamespaceManager);
+                    XmlNodeList desktop4VerbNodeList = xmlDocument.SelectNodes("//desktop4:FileExplorerContextMenus//desktop4:Verb", xmlNamespaceManager);
+                    XmlNodeList desktop5VerbNodeList = xmlDocument.SelectNodes("//desktop4:FileExplorerContextMenus//desktop5:Verb", xmlNamespaceManager);
 
                     // 获取右键菜单项 CLSID 列表
                     List<Guid> clsidList = [];
-                    if ((desktop4VerbNodesList?.Count ?? 0) + (desktop5VerbNodesList?.Count ?? 0) > 0)
+                    if ((desktop4VerbNodeList?.Count ?? 0) + (desktop5VerbNodeList?.Count ?? 0) > 0)
                     {
-                        if (desktop4VerbNodesList is not null)
+                        if (desktop4VerbNodeList is not null)
                         {
-                            for (int i = 0; i < desktop4VerbNodesList.Count; i++)
+                            for (int i = 0; i < desktop4VerbNodeList.Count; i++)
                             {
-                                string clsid = desktop4VerbNodesList[i]?.Attributes?["Clsid"]?.Value;
+                                string clsid = desktop4VerbNodeList[i]?.Attributes?["Clsid"]?.Value;
                                 if (Guid.TryParse(clsid, out Guid guid))
                                 {
                                     clsidList.Add(guid);
@@ -561,11 +561,11 @@ namespace PowerToolbox.Views.Pages
                             }
                         }
 
-                        if (desktop5VerbNodesList is not null)
+                        if (desktop5VerbNodeList is not null)
                         {
-                            for (int i = 0; i < desktop5VerbNodesList.Count; i++)
+                            for (int i = 0; i < desktop5VerbNodeList.Count; i++)
                             {
-                                string clsid = desktop5VerbNodesList[i]?.Attributes?["Clsid"]?.Value;
+                                string clsid = desktop5VerbNodeList[i]?.Attributes?["Clsid"]?.Value;
                                 if (Guid.TryParse(clsid, out Guid guid))
                                 {
                                     clsidList.Add(guid);
@@ -600,11 +600,11 @@ namespace PowerToolbox.Views.Pages
 
                     // 获取应用的显示名称
                     string displayName = string.Empty;
-                    XmlNodeList appNodesList = xmlDocument.SelectNodes("//uap:VisualElements", xmlNamespaceManager);
+                    XmlNodeList appNodeList = xmlDocument.SelectNodes("//uap:VisualElements", xmlNamespaceManager);
 
-                    if (appNodesList is not null && appNodesList.Count > 0)
+                    if (appNodeList is not null && appNodeList.Count > 0)
                     {
-                        foreach (XmlNode appNode in appNodesList.OfType<XmlNode>().OrderBy(c => string.Equals(c.Attributes?["AppListEntry"]?.Value, "none") ? 1 : 0))
+                        foreach (XmlNode appNode in appNodeList.OfType<XmlNode>().OrderBy(c => string.Equals(c.Attributes?["AppListEntry"]?.Value, "none") ? 1 : 0))
                         {
                             displayName = appNode.Attributes?["DisplayName"]?.Value ?? string.Empty;
                         }

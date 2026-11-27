@@ -46,7 +46,6 @@ namespace PowerToolbox.Views.Pages
         private readonly string MainboardManufacturerString = ResourceService.SystemInformationResource.GetString("MainboardManufacturer");
         private readonly string MainboardProductString = ResourceService.SystemInformationResource.GetString("MainboardProduct");
         private readonly string MainboardVersionString = ResourceService.SystemInformationResource.GetString("MainboardVersion");
-        private readonly string NotAvailableString = ResourceService.SystemInformationResource.GetString("NotAvailable");
         private readonly string OperatingSystemManufacturerString = ResourceService.SystemInformationResource.GetString("OperatingSystemManufacturer");
         private readonly string OperatingSystemNameString = ResourceService.SystemInformationResource.GetString("OperatingSystemName");
         private readonly string OperatingSystemVersionString = ResourceService.SystemInformationResource.GetString("OperatingSystemVersion");
@@ -196,37 +195,150 @@ namespace PowerToolbox.Views.Pages
                 {
                     systemInformation = gettedSystemInformation;
                     SystemInformationCollection.Clear();
-                    SystemInformationCollection.Add(new() { Item = HostNameString, Content = string.IsNullOrEmpty(systemInformation.HostName) ? NotAvailableString : systemInformation.HostName });
-                    SystemInformationCollection.Add(new() { Item = OperatingSystemNameString, Content = string.IsNullOrEmpty(systemInformation.OperatingSystemName) ? NotAvailableString : systemInformation.OperatingSystemName });
-                    SystemInformationCollection.Add(new() { Item = OperatingSystemVersionString, Content = string.IsNullOrEmpty(systemInformation.OperatingSystemVersion) ? NotAvailableString : systemInformation.OperatingSystemVersion });
-                    SystemInformationCollection.Add(new() { Item = OperatingSystemManufacturerString, Content = string.IsNullOrEmpty(systemInformation.OperatingSystemManufacturer) ? NotAvailableString : systemInformation.OperatingSystemManufacturer });
-                    SystemInformationCollection.Add(new() { Item = ProductIDString, Content = string.IsNullOrEmpty(systemInformation.ProductID) ? NotAvailableString : systemInformation.ProductID });
-                    SystemInformationCollection.Add(new() { Item = FirstInstalledDateString, Content = string.IsNullOrEmpty(systemInformation.FirstInstalledDate) ? NotAvailableString : systemInformation.FirstInstalledDate });
-                    SystemInformationCollection.Add(new() { Item = SystemBootTimeString, Content = string.IsNullOrEmpty(systemInformation.SystemBootTime) ? NotAvailableString : systemInformation.SystemBootTime });
-                    SystemInformationCollection.Add(new() { Item = SystemManufacturerString, Content = string.IsNullOrEmpty(systemInformation.SystemManufacturer) ? NotAvailableString : systemInformation.SystemManufacturer });
-                    SystemInformationCollection.Add(new() { Item = SystemModelString, Content = string.IsNullOrEmpty(systemInformation.SystemModel) ? NotAvailableString : systemInformation.SystemModel });
-                    SystemInformationCollection.Add(new() { Item = SystemArchitectureString, Content = string.IsNullOrEmpty(systemInformation.SystemArchitecture) ? NotAvailableString : systemInformation.SystemArchitecture });
-                    SystemInformationCollection.Add(new() { Item = SystemSKUString, Content = string.IsNullOrEmpty(systemInformation.SystemSKU) ? NotAvailableString : systemInformation.SystemSKU });
-                    SystemInformationCollection.Add(new() { Item = ProcessorString, Content = string.IsNullOrEmpty(systemInformation.Processor) ? NotAvailableString : systemInformation.Processor });
-                    SystemInformationCollection.Add(new() { Item = BIOSVersionString, Content = string.IsNullOrEmpty(systemInformation.BIOSVersion) ? NotAvailableString : systemInformation.BIOSVersion });
-                    SystemInformationCollection.Add(new() { Item = SMBIOSVersionString, Content = string.IsNullOrEmpty(systemInformation.SMBIOSVersion) ? NotAvailableString : systemInformation.SMBIOSVersion });
-                    SystemInformationCollection.Add(new() { Item = EmbeddedControllerVersionString, Content = string.IsNullOrEmpty(systemInformation.EmbeddedControllerVersion) ? NotAvailableString : systemInformation.EmbeddedControllerVersion });
-                    SystemInformationCollection.Add(new() { Item = BIOSModeString, Content = string.IsNullOrEmpty(systemInformation.BIOSMode) ? NotAvailableString : systemInformation.BIOSMode });
-                    SystemInformationCollection.Add(new() { Item = MainboardManufacturerString, Content = string.IsNullOrEmpty(systemInformation.MainboardManufacturer) ? NotAvailableString : systemInformation.MainboardManufacturer });
-                    SystemInformationCollection.Add(new() { Item = MainboardProductString, Content = string.IsNullOrEmpty(systemInformation.MainboardProduct) ? NotAvailableString : systemInformation.MainboardProduct });
-                    SystemInformationCollection.Add(new() { Item = MainboardVersionString, Content = string.IsNullOrEmpty(systemInformation.MainboardVersion) ? NotAvailableString : systemInformation.MainboardVersion });
-                    SystemInformationCollection.Add(new() { Item = WindowsDirectoryString, Content = string.IsNullOrEmpty(systemInformation.WindowsDirectory) ? NotAvailableString : systemInformation.WindowsDirectory });
-                    SystemInformationCollection.Add(new() { Item = SystemDirectoryString, Content = string.IsNullOrEmpty(systemInformation.SystemDirectory) ? NotAvailableString : systemInformation.SystemDirectory });
-                    SystemInformationCollection.Add(new() { Item = BootDeviceString, Content = string.IsNullOrEmpty(systemInformation.BootDevice) ? NotAvailableString : systemInformation.BootDevice });
-                    SystemInformationCollection.Add(new() { Item = RegionSettingsString, Content = string.IsNullOrEmpty(systemInformation.RegionSettings) ? NotAvailableString : systemInformation.RegionSettings });
-                    SystemInformationCollection.Add(new() { Item = TimeZoneString, Content = string.IsNullOrEmpty(systemInformation.TimeZone) ? NotAvailableString : systemInformation.TimeZone });
-                    SystemInformationCollection.Add(new() { Item = InstalledPhysicalMemoryString, Content = string.IsNullOrEmpty(systemInformation.InstalledPhysicalMemory) ? NotAvailableString : systemInformation.InstalledPhysicalMemory });
-                    SystemInformationCollection.Add(new() { Item = TotalPhysicalMemoryString, Content = string.IsNullOrEmpty(systemInformation.TotalPhysicalMemory) ? NotAvailableString : systemInformation.TotalPhysicalMemory });
-                    SystemInformationCollection.Add(new() { Item = AvailablePhysicalMemoryString, Content = string.IsNullOrEmpty(systemInformation.AvailablePhysicalMemory) ? NotAvailableString : systemInformation.AvailablePhysicalMemory });
-                    SystemInformationCollection.Add(new() { Item = TotalVirtualMemoryString, Content = string.IsNullOrEmpty(systemInformation.TotalVirtualMemory) ? NotAvailableString : systemInformation.TotalVirtualMemory });
-                    SystemInformationCollection.Add(new() { Item = AvailableVirtualMemoryString, Content = string.IsNullOrEmpty(systemInformation.AvailableVirtualMemory) ? NotAvailableString : systemInformation.AvailableVirtualMemory });
-                    SystemInformationCollection.Add(new() { Item = PageFilePositionString, Content = string.IsNullOrEmpty(systemInformation.PageFilePosition) ? NotAvailableString : systemInformation.PageFilePosition });
-                    SystemInformationCollection.Add(new() { Item = PageFileSizeString, Content = string.IsNullOrEmpty(systemInformation.PageFileSize) ? NotAvailableString : systemInformation.PageFileSize });
+                    if (!string.IsNullOrEmpty(systemInformation.HostName))
+                    {
+                        SystemInformationCollection.Add(new() { Item = HostNameString, Content = systemInformation.HostName });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.OperatingSystemName))
+                    {
+                        SystemInformationCollection.Add(new() { Item = OperatingSystemNameString, Content = systemInformation.OperatingSystemName });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.OperatingSystemVersion))
+                    {
+                        SystemInformationCollection.Add(new() { Item = OperatingSystemVersionString, Content = systemInformation.OperatingSystemVersion });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.OperatingSystemManufacturer))
+                    {
+                        SystemInformationCollection.Add(new() { Item = OperatingSystemManufacturerString, Content = systemInformation.OperatingSystemManufacturer });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.ProductID))
+                    {
+                        SystemInformationCollection.Add(new() { Item = ProductIDString, Content = systemInformation.ProductID });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.FirstInstalledDate))
+                    {
+                        SystemInformationCollection.Add(new() { Item = FirstInstalledDateString, Content = systemInformation.FirstInstalledDate });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.SystemBootTime))
+                    {
+                        SystemInformationCollection.Add(new() { Item = SystemBootTimeString, Content = systemInformation.SystemBootTime });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.SystemManufacturer))
+                    {
+                        SystemInformationCollection.Add(new() { Item = SystemManufacturerString, Content = systemInformation.SystemManufacturer });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.SystemModel))
+                    {
+                        SystemInformationCollection.Add(new() { Item = SystemModelString, Content = systemInformation.SystemModel });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.SystemArchitecture))
+                    {
+                        SystemInformationCollection.Add(new() { Item = SystemArchitectureString, Content = systemInformation.SystemArchitecture });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.SystemSKU))
+                    {
+                        SystemInformationCollection.Add(new() { Item = SystemSKUString, Content = systemInformation.SystemSKU });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.SystemModel))
+                    {
+                        SystemInformationCollection.Add(new() { Item = SystemModelString, Content = systemInformation.SystemModel });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.Processor))
+                    {
+                        SystemInformationCollection.Add(new() { Item = ProcessorString, Content = systemInformation.Processor });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.BIOSVersion))
+                    {
+                        SystemInformationCollection.Add(new() { Item = BIOSVersionString, Content = systemInformation.BIOSVersion });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.SystemArchitecture))
+                    {
+                        SystemInformationCollection.Add(new() { Item = SystemArchitectureString, Content = systemInformation.SystemArchitecture });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.SystemSKU))
+                    {
+                        SystemInformationCollection.Add(new() { Item = SystemSKUString, Content = systemInformation.SystemSKU });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.Processor))
+                    {
+                        SystemInformationCollection.Add(new() { Item = ProcessorString, Content = systemInformation.Processor });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.BIOSVersion))
+                    {
+                        SystemInformationCollection.Add(new() { Item = BIOSVersionString, Content = systemInformation.BIOSVersion });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.SMBIOSVersion))
+                    {
+                        SystemInformationCollection.Add(new() { Item = SMBIOSVersionString, Content = systemInformation.SMBIOSVersion });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.EmbeddedControllerVersion))
+                    {
+                        SystemInformationCollection.Add(new() { Item = EmbeddedControllerVersionString, Content = systemInformation.EmbeddedControllerVersion });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.BIOSMode))
+                    {
+                        SystemInformationCollection.Add(new() { Item = BIOSModeString, Content = systemInformation.BIOSMode });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.MainboardManufacturer))
+                    {
+                        SystemInformationCollection.Add(new() { Item = MainboardManufacturerString, Content = systemInformation.MainboardManufacturer });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.MainboardProduct))
+                    {
+                        SystemInformationCollection.Add(new() { Item = MainboardProductString, Content = systemInformation.MainboardProduct });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.MainboardVersion))
+                    {
+                        SystemInformationCollection.Add(new() { Item = MainboardVersionString, Content = systemInformation.MainboardVersion });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.WindowsDirectory))
+                    {
+                        SystemInformationCollection.Add(new() { Item = WindowsDirectoryString, Content = systemInformation.WindowsDirectory });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.SystemDirectory))
+                    {
+                        SystemInformationCollection.Add(new() { Item = SystemDirectoryString, Content = systemInformation.SystemDirectory });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.BootDevice))
+                    {
+                        SystemInformationCollection.Add(new() { Item = BootDeviceString, Content = systemInformation.BootDevice });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.RegionSettings))
+                    {
+                        SystemInformationCollection.Add(new() { Item = RegionSettingsString, Content = systemInformation.RegionSettings });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.TimeZone))
+                    {
+                        SystemInformationCollection.Add(new() { Item = TimeZoneString, Content = systemInformation.TimeZone });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.InstalledPhysicalMemory))
+                    {
+                        SystemInformationCollection.Add(new() { Item = InstalledPhysicalMemoryString, Content = systemInformation.InstalledPhysicalMemory });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.TotalPhysicalMemory))
+                    {
+                        SystemInformationCollection.Add(new() { Item = TotalPhysicalMemoryString, Content = systemInformation.TotalPhysicalMemory });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.AvailablePhysicalMemory))
+                    {
+                        SystemInformationCollection.Add(new() { Item = AvailablePhysicalMemoryString, Content = systemInformation.AvailablePhysicalMemory });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.TotalVirtualMemory))
+                    {
+                        SystemInformationCollection.Add(new() { Item = TotalVirtualMemoryString, Content = systemInformation.TotalVirtualMemory });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.AvailableVirtualMemory))
+                    {
+                        SystemInformationCollection.Add(new() { Item = AvailableVirtualMemoryString, Content = systemInformation.AvailableVirtualMemory });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.PageFilePosition))
+                    {
+                        SystemInformationCollection.Add(new() { Item = PageFilePositionString, Content = systemInformation.PageFilePosition });
+                    }
+                    if (!string.IsNullOrEmpty(systemInformation.PageFileSize))
+                    {
+                        SystemInformationCollection.Add(new() { Item = PageFileSizeString, Content = systemInformation.PageFileSize });
+                    }
                     SystemInformationResultKind = SystemInformationResultKind.HasResult;
                     UpdateAnimatedVisualState(false);
                 }

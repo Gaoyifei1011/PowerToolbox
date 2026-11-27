@@ -291,7 +291,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     else
                     {
-                        if (await GetDragDropSelectedFilesAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count is 1)
+                        if (await GetDragDropSelectedFileCollectionAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count is 1)
                         {
                             // 文件包含的图标
                             if (Equals(SelectedGetIconType, GetIconTypeList[0]))
@@ -366,7 +366,7 @@ namespace PowerToolbox.Views.Pages
 
             try
             {
-                if (await GetDragDropSelectedFilesAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count is 1)
+                if (await GetDragDropSelectedFileCollectionAsync(args.DataView) is ReadOnlyCollection<string> fileCollection && fileCollection.Count is 1)
                 {
                     filePath = fileCollection[0];
                 }
@@ -602,7 +602,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (!string.IsNullOrEmpty(filePath))
             {
-                ReadOnlyCollection<object> selectedItemsCollection = new(IconExtractGridView.SelectedItems);
+                ReadOnlyCollection<object> selectedItemCollection = new(IconExtractGridView.SelectedItems);
                 if (Equals(SelectedIconFormat, IconFormatCollection[0]) && ((Equals(SelectedGetIconType, GetIconTypeList[0]) && FileContainIconGridView.SelectedItems.Count is 0) || Equals(SelectedGetIconType, GetIconTypeList[1]) && FileAssociateIconGridView.SelectedItems.Count is 0))
                 {
                     await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IcoSizeNotSelected));
@@ -625,14 +625,14 @@ namespace PowerToolbox.Views.Pages
                         // 提取 Ico 图标文件
                         if (Equals(SelectedIconFormat, IconFormatCollection[0]))
                         {
-                            saveFailedCount = await SaveFileContainIcoImageAsync(openFolderDialog.SelectedPath, new(FileContainIconGridView.SelectedItems), selectedItemsCollection);
+                            saveFailedCount = await SaveFileContainIcoImageAsync(openFolderDialog.SelectedPath, new(FileContainIconGridView.SelectedItems), selectedItemCollection);
                         }
                         // 提取 Png 图标文件
                         else if (SelectedIconFormat.Equals(IconFormatCollection[1]))
                         {
                             if (SelectedFileContainSize is not null)
                             {
-                                saveFailedCount = await SaveFileContainPngImageAsync(openFolderDialog.SelectedPath, SelectedFileContainSize.Size, selectedItemsCollection);
+                                saveFailedCount = await SaveFileContainPngImageAsync(openFolderDialog.SelectedPath, SelectedFileContainSize.Size, selectedItemCollection);
                             }
                         }
                     }
@@ -642,21 +642,21 @@ namespace PowerToolbox.Views.Pages
                         // 提取 Ico 图标文件
                         if (Equals(SelectedIconFormat, IconFormatCollection[0]))
                         {
-                            saveFailedCount = SaveFileAssociateIcoImage(openFolderDialog.SelectedPath, new(FileAssociateIconGridView.SelectedItems), selectedItemsCollection);
+                            saveFailedCount = SaveFileAssociateIcoImage(openFolderDialog.SelectedPath, new(FileAssociateIconGridView.SelectedItems), selectedItemCollection);
                         }
                         // 提取 Png 图标文件
                         else if (SelectedIconFormat.Equals(IconFormatCollection[1]))
                         {
                             if (SelectedFileAssociateSize is not null)
                             {
-                                saveFailedCount = SaveFileAssociatePngImage(openFolderDialog.SelectedPath, SelectedFileAssociateSize.Size, selectedItemsCollection);
+                                saveFailedCount = SaveFileAssociatePngImage(openFolderDialog.SelectedPath, SelectedFileAssociateSize.Size, selectedItemCollection);
                             }
                         }
                     }
 
                     openFolderDialog.Dispose();
                     IsSaving = false;
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IconExtract, selectedItemsCollection.Count - saveFailedCount, saveFailedCount));
+                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IconExtract, selectedItemCollection.Count - saveFailedCount, saveFailedCount));
                 }
                 else
                 {
@@ -1057,7 +1057,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取拖拽支持选中的文件
         /// </summary>
-        private async Task<ReadOnlyCollection<string>> GetDragDropSelectedFilesAsync(DataPackageView dataPackageView)
+        private async Task<ReadOnlyCollection<string>> GetDragDropSelectedFileCollectionAsync(DataPackageView dataPackageView)
         {
             if (dataPackageView is null)
             {
@@ -1080,7 +1080,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(GetDragDropSelectedFilesAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(IconExtractPage), nameof(GetDragDropSelectedFileCollectionAsync), 1, e);
                 }
 
                 return fileList.AsReadOnly();

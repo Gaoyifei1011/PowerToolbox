@@ -85,7 +85,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void OnItemClicked(object sender, ItemClickEventArgs args)
         {
-            if (args.ClickedItem is AllToolsItemModel allToolsItem && MainWindow.Current.GetSelectedItem(allToolsItem.NavigationPage, MainWindow.Current.NavigationViewItemMenuItemsCollection) is NavigationViewItemModel navigationViewItem)
+            if (args.ClickedItem is AllToolsItemModel allToolsItem && MainWindow.Current.GetSelectedItem(allToolsItem.NavigationPage, MainWindow.Current.NavigationViewItemMenuItemCollection) is NavigationViewItemModel navigationViewItem)
             {
                 if (Equals(navigationViewItem.NavigationPage, typeof(ShellMenuPage)))
                 {

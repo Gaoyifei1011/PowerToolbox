@@ -2821,7 +2821,7 @@
 
                                 <ToggleSwitch
                                     Grid.Column="1"
-                                    IsOn="{x:Bind IsExcludeDrivers, Mode=OneWay}"
+                                    IsOn="{x:Bind IsExcludeDriver, Mode=OneWay}"
                                     OffContent="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ExcludeDriversOffContent')}"
                                     OnContent="{x:Bind rootservice:ResourceService.UpdateManagerResource.GetString('ExcludeDriversOnContent')}"
                                     Style="{StaticResource ToggleSwitchOnOffContentPositionOppositeStyle}"

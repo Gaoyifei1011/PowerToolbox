@@ -279,7 +279,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private bool IsExcludeDrivers
+        private bool IsExcludeDriver
         {
             get;
 
@@ -288,7 +288,7 @@ namespace PowerToolbox.Views.Pages
                 if (!Equals(field, value))
                 {
                     field = value;
-                    PropertyChanged?.Invoke(this, new(nameof(IsExcludeDrivers)));
+                    PropertyChanged?.Invoke(this, new(nameof(IsExcludeDriver)));
                 }
             }
         }
@@ -401,7 +401,7 @@ namespace PowerToolbox.Views.Pages
             if (!isInitialized)
             {
                 isInitialized = true;
-                IsExcludeDrivers = await GetIsExcludeDriversAsync();
+                IsExcludeDriver = await GetIsExcludeDriverAsync();
 
                 // 获取更新版本信息
                 (string windowsUpdateVersion, string wuapiDllVersion) = await GetUpdateVersionInformationAsync();
@@ -1148,11 +1148,11 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async void OnExcludeDriversToggled(object sender, RoutedEventArgs args)
         {
-            if (sender is ToggleSwitch toggleSwitch && !Equals(IsExcludeDrivers, toggleSwitch.IsOn))
+            if (sender is ToggleSwitch toggleSwitch && !Equals(IsExcludeDriver, toggleSwitch.IsOn))
             {
-                IsExcludeDrivers = toggleSwitch.IsOn;
-                await SetIsExcludeDriversAsync(IsExcludeDrivers);
-                IsExcludeDrivers = await GetIsExcludeDriversAsync();
+                IsExcludeDriver = toggleSwitch.IsOn;
+                await SetIsExcludeDriverAsync(IsExcludeDriver);
+                IsExcludeDriver = await GetIsExcludeDriverAsync();
             }
         }
 
@@ -1594,7 +1594,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取 Windows 更新是否不包括驱动程序
         /// </summary>
-        private async Task<bool> GetIsExcludeDriversAsync()
+        private async Task<bool> GetIsExcludeDriverAsync()
         {
             return await Task.Run(() =>
             {
@@ -1604,7 +1604,7 @@ namespace PowerToolbox.Views.Pages
                 }
                 catch (Exception e)
                 {
-                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(GetIsExcludeDriversAsync), 1, e);
+                    LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(UpdateManagerPage), nameof(GetIsExcludeDriverAsync), 1, e);
                     return false;
                 }
             });
@@ -1613,7 +1613,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 设置 Windows 更新是否不包括驱动程序
         /// </summary>
-        private async Task SetIsExcludeDriversAsync(bool isExcludeDrivers)
+        private async Task SetIsExcludeDriverAsync(bool isExcludeDrivers)
         {
             await Task.Run(() =>
             {

@@ -49,6 +49,6 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 子菜单项
         /// </summary>
-        internal WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemMenuItemsCollection { get; } = [];
+        internal WinRTObservableCollection<NavigationViewItemModel> NavigationViewItemMenuItemCollection { get; } = [];
     }
 }

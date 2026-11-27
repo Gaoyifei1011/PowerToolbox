@@ -582,7 +582,7 @@ namespace PowerToolbox.Views.Pages
             if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is bool tag)
             {
                 IsIncrease = tag;
-                ReadOnlyCollection<DriverModel> sortedDriverCollection = await GetSortedDriversAsync(SelectedDriverSortRuleKind, IsIncrease, DriverList.AsReadOnly());
+                ReadOnlyCollection<DriverModel> sortedDriverCollection = await GetSortedDriverCollectionAsync(SelectedDriverSortRuleKind, IsIncrease, DriverList.AsReadOnly());
                 foreach (DriverModel sortedDriverItem in sortedDriverCollection)
                 {
                     DriverCollection.Add(sortedDriverItem);
@@ -602,7 +602,7 @@ namespace PowerToolbox.Views.Pages
             if (sender is RadioMenuFlyoutItem radioMenuFlyoutItem && radioMenuFlyoutItem.Tag is DriverSortRuleKind driverSortRuleKind)
             {
                 SelectedDriverSortRuleKind = driverSortRuleKind;
-                ReadOnlyCollection<DriverModel> sortedDriverCollection = await GetSortedDriversAsync(SelectedDriverSortRuleKind, IsIncrease, DriverList.AsReadOnly());
+                ReadOnlyCollection<DriverModel> sortedDriverCollection = await GetSortedDriverCollectionAsync(SelectedDriverSortRuleKind, IsIncrease, DriverList.AsReadOnly());
                 foreach (DriverModel sortedDriverItem in sortedDriverCollection)
                 {
                     DriverCollection.Add(sortedDriverItem);
@@ -893,7 +893,7 @@ namespace PowerToolbox.Views.Pages
                 else
                 {
                     DriverList.AddRange(driverCollection);
-                    ReadOnlyCollection<DriverModel> sortedDriverCollection = await GetSortedDriversAsync(driverSortRuleKind, isIncrease, DriverList.AsReadOnly());
+                    ReadOnlyCollection<DriverModel> sortedDriverCollection = await GetSortedDriverCollectionAsync(driverSortRuleKind, isIncrease, DriverList.AsReadOnly());
                     foreach (DriverModel sortedDriverItem in sortedDriverCollection)
                     {
                         DriverCollection.Add(sortedDriverItem);
@@ -1075,7 +1075,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取排序后的驱动
         /// </summary>
-        private async Task<ReadOnlyCollection<DriverModel>> GetSortedDriversAsync(DriverSortRuleKind driverSortRuleKind, bool isIncrease, ReadOnlyCollection<DriverModel> driverCollection)
+        private async Task<ReadOnlyCollection<DriverModel>> GetSortedDriverCollectionAsync(DriverSortRuleKind driverSortRuleKind, bool isIncrease, ReadOnlyCollection<DriverModel> driverCollection)
         {
             if (driverCollection is null || driverCollection.Count is 0)
             {

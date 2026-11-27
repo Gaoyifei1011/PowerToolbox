@@ -745,7 +745,7 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private async Task UpdateHibernationAsync()
         {
-            SYSTEM_POWER_CAPABILITIES systemPowerCapabilities = await GetSystemPowerCapabilitiesAsync();
+            SYSTEM_POWER_CAPABILITIES systemPowerCapabilities = await GetSystemPowerCapabilityAsync();
             IsHibernationEnabled = systemPowerCapabilities.SystemS4;
             IsHibernationOpened = systemPowerCapabilities.HiberFilePresent;
             (int hiberFileType, int hiberFileSizePercent) = await GetHibernateFileInformationAsync();
@@ -893,7 +893,7 @@ namespace PowerToolbox.Views.Pages
         /// <summary>
         /// 获取系统电源功能的信息
         /// </summary>
-        private async Task<SYSTEM_POWER_CAPABILITIES> GetSystemPowerCapabilitiesAsync()
+        private async Task<SYSTEM_POWER_CAPABILITIES> GetSystemPowerCapabilityAsync()
         {
             return await Task.Run(() =>
             {
