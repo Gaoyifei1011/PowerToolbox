@@ -20,6 +20,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows.ApplicationModel.DataTransfer;
@@ -54,6 +55,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string SelectFileString = ResourceService.IconExtractResource.GetString("SelectFile");
         private readonly string SelectFolderString = ResourceService.IconExtractResource.GetString("SelectFolder");
         private readonly string SavingNowString = ResourceService.IconExtractResource.GetString("SavingNow");
+        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private string filePath;
 
         #endregion 第一部分：常量、资源与状态字段
@@ -1094,10 +1096,10 @@ namespace PowerToolbox.Views.Pages
         {
             if (isLoading && !LoadingVisualPlayer.IsPlaying)
             {
-                DispatcherQueue.TryEnqueue(async () =>
+                synchronizationContext.Post(async (_) =>
                 {
                     await LoadingVisualPlayer.PlayAsync(0, 1, true);
-                });
+                }, null);
             }
             else if (!isLoading && LoadingVisualPlayer.IsPlaying)
             {

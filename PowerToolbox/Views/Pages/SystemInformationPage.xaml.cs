@@ -19,6 +19,7 @@ using System.Management;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 // 抑制 CA1822，IDE0060 警告
@@ -66,6 +67,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string TotalVirtualMemoryString = ResourceService.SystemInformationResource.GetString("TotalVirtualMemory");
         private readonly string WindowsDirectoryString = ResourceService.SystemInformationResource.GetString("WindowsDirectory");
         private readonly string UnknownString = ResourceService.SystemInformationResource.GetString("Unknown");
+        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private bool isInitialized;
         private SystemInformation systemInformation;
 
@@ -610,10 +612,10 @@ namespace PowerToolbox.Views.Pages
         {
             if (isLoading && !LoadingVisualPlayer.IsPlaying)
             {
-                DispatcherQueue.TryEnqueue(async () =>
+                synchronizationContext.Post(async (_) =>
                 {
                     await LoadingVisualPlayer.PlayAsync(0, 1, true);
-                });
+                }, null);
             }
             else if (!isLoading && LoadingVisualPlayer.IsPlaying)
             {

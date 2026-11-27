@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Services.Store;
@@ -28,6 +29,7 @@ namespace PowerToolbox.Views.Dialogs
         private readonly string CloseAppString = ResourceService.DialogResource.GetString("CloseApp");
         private readonly string UpdateString = ResourceService.DialogResource.GetString("Update");
         private readonly string UpdateDownloadingString = ResourceService.DialogResource.GetString("UpdateDownloading");
+        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private IAsyncOperationWithProgress<StorePackageUpdateResult, StorePackageUpdateStatus> storePackageUpdateProgress = null;
 
         #endregion 第一部分：常量、资源与状态字段
@@ -203,18 +205,18 @@ namespace PowerToolbox.Views.Dialogs
         {
             if (progress.PackageUpdateState is StorePackageUpdateState.Pending)
             {
-                DispatcherQueue.TryEnqueue(() =>
+                synchronizationContext.Post((_) =>
                 {
                     if (UpdateAppResultKind is not UpdateAppResultKind.Canceling)
                     {
                         UpdateAppResultKind = UpdateAppResultKind.Pending;
                         CloseText = CancelString;
                     }
-                });
+                }, null);
             }
             else if (progress.PackageUpdateState is StorePackageUpdateState.Downloading)
             {
-                DispatcherQueue.TryEnqueue(() =>
+                synchronizationContext.Post((_) =>
                 {
                     string downloadedSize = VolumeSizeHelper.ConvertVolumeSizeToString(progress.PackageDownloadSizeInBytes);
                     string totalSize = VolumeSizeHelper.ConvertVolumeSizeToString(progress.PackageBytesDownloaded);
@@ -224,73 +226,73 @@ namespace PowerToolbox.Views.Dialogs
                         UpdateDownloadString = string.Format(UpdateDownloadingString, downloadedSize, totalSize);
                         CloseText = CancelString;
                     }
-                });
+                }, null);
             }
             else if (progress.PackageUpdateState is StorePackageUpdateState.Deploying)
             {
-                DispatcherQueue.TryEnqueue(() =>
+                synchronizationContext.Post((_) =>
                 {
                     if (UpdateAppResultKind is not UpdateAppResultKind.Canceling)
                     {
                         UpdateAppResultKind = UpdateAppResultKind.Deploying;
                         CloseText = CancelString;
                     }
-                });
+                }, null);
             }
             else if (progress.PackageUpdateState is StorePackageUpdateState.Canceled)
             {
-                DispatcherQueue.TryEnqueue(() =>
+                synchronizationContext.Post((_) =>
                 {
                     if (UpdateAppResultKind is not UpdateAppResultKind.Canceling)
                     {
                         UpdateAppResultKind = UpdateAppResultKind.Canceled;
                         CloseText = CloseString;
                     }
-                });
+                }, null);
             }
             else if (progress.PackageUpdateState is StorePackageUpdateState.OtherError)
             {
-                DispatcherQueue.TryEnqueue(() =>
+                synchronizationContext.Post((_) =>
                 {
                     if (UpdateAppResultKind is not UpdateAppResultKind.Canceling)
                     {
                         UpdateAppResultKind = UpdateAppResultKind.Failed;
                         CloseText = CloseString;
                     }
-                });
+                }, null);
             }
             else if (progress.PackageUpdateState is StorePackageUpdateState.ErrorLowBattery)
             {
-                DispatcherQueue.TryEnqueue(() =>
+                synchronizationContext.Post((_) =>
                 {
                     if (UpdateAppResultKind is not UpdateAppResultKind.Canceling)
                     {
                         UpdateAppResultKind = UpdateAppResultKind.Failed;
                         CloseText = CloseString;
                     }
-                });
+                }, null);
             }
             else if (progress.PackageUpdateState is StorePackageUpdateState.ErrorWiFiRecommended)
             {
-                DispatcherQueue.TryEnqueue(() =>
+                synchronizationContext.Post((_) =>
                 {
                     if (UpdateAppResultKind is not UpdateAppResultKind.Canceling)
                     {
                         UpdateAppResultKind = UpdateAppResultKind.Failed;
                         CloseText = CloseString;
                     }
-                });
+                }, null);
             }
             else if (progress.PackageUpdateState is StorePackageUpdateState.ErrorWiFiRequired)
             {
-                DispatcherQueue.TryEnqueue(() =>
+                synchronizationContext.Post((_) =>
                 {
                     if (UpdateAppResultKind is not UpdateAppResultKind.Canceling)
                     {
                         UpdateAppResultKind = UpdateAppResultKind.Failed;
                         CloseText = CloseString;
                     }
-                });
+                }, null);
             }
         }
 

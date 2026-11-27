@@ -46,6 +46,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string TaskStateQueuedString = ResourceService.ScheduledTaskManagerResource.GetString("TaskStateQueued");
         private readonly string TaskStateReadyString = ResourceService.ScheduledTaskManagerResource.GetString("TaskStateReady");
         private readonly string TaskStateRunningString = ResourceService.ScheduledTaskManagerResource.GetString("TaskStateRunning");
+        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly BitmapImage emptyImage = new();
         private ITaskService taskService;
         private bool isInitialized;
@@ -1017,10 +1018,10 @@ namespace PowerToolbox.Views.Pages
         {
             if (isLoading && !LoadingVisualPlayer.IsPlaying)
             {
-                DispatcherQueue.TryEnqueue(async () =>
+                synchronizationContext.Post(async (_) =>
                 {
                     await LoadingVisualPlayer.PlayAsync(0, 1, true);
-                });
+                }, null);
             }
             else if (!isLoading && LoadingVisualPlayer.IsPlaying)
             {

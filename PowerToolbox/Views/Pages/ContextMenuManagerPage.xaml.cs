@@ -44,6 +44,7 @@ namespace PowerToolbox.Views.Pages
         private readonly string ContextMenuCountInfoString = ResourceService.ContextMenuManagerResource.GetString("ContextMenuCountInfo");
         private readonly string MenuEmptyDescriptionString = ResourceService.ContextMenuManagerResource.GetString("MenuEmptyDescription");
         private readonly string MenuEmptyWithConditionDescriptionString = ResourceService.ContextMenuManagerResource.GetString("MenuEmptyWithConditionDescription");
+        private readonly SynchronizationContext synchronizationContext = SynchronizationContext.Current;
         private readonly BitmapImage emptyImage = new();
         private bool isInitialized;
 
@@ -771,10 +772,10 @@ namespace PowerToolbox.Views.Pages
         {
             if (isLoading && !LoadingVisualPlayer.IsPlaying)
             {
-                DispatcherQueue.TryEnqueue(async () =>
+                synchronizationContext.Post(async (_) =>
                 {
                     await LoadingVisualPlayer.PlayAsync(0, 1, true);
-                });
+                }, null);
             }
             else if (!isLoading && LoadingVisualPlayer.IsPlaying)
             {

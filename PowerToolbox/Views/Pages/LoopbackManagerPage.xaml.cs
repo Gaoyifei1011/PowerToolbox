@@ -633,10 +633,10 @@ namespace PowerToolbox.Views.Pages
         {
             if (isLoading && !LoadingVisualPlayer.IsPlaying)
             {
-                DispatcherQueue.TryEnqueue(async () =>
+                synchronizationContext.Post(async (_) =>
                 {
                     await LoadingVisualPlayer.PlayAsync(0, 1, true);
-                });
+                }, null);
             }
             else if (!isLoading && LoadingVisualPlayer.IsPlaying)
             {
