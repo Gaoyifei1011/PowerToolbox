@@ -66,7 +66,7 @@ namespace PowerToolbox.Views.Pages
 
         private ReadOnlyCollection<Type> PageCollection { get; } = new([typeof(SettingsGeneralPage), typeof(SettingsAdvancedPage), typeof(SettingsAboutPage)]);
 
-        private StringCollection SettingsItemTabCollection { get; } = [];
+        private StringCollection SettingsTabCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -113,7 +113,7 @@ namespace PowerToolbox.Views.Pages
                 SelectedIndex = tabView.SelectedIndex;
             }
 
-            if (SelectedIndex >= 0 && SelectedIndex < SettingsItemTabCollection.Count)
+            if (SelectedIndex >= 0 && SelectedIndex < SettingsTabCollection.Count)
             {
                 int index = SelectedIndex;
                 Type currentPage = GetCurrentPageType();
@@ -149,7 +149,7 @@ namespace PowerToolbox.Views.Pages
             args.Handled = true;
             int index = PageCollection.IndexOf(PageCollection.FirstOrDefault(item => Equals(item, GetCurrentPageType())));
 
-            if (index >= 0 && index < SettingsItemTabCollection.Count)
+            if (index >= 0 && index < SettingsTabCollection.Count)
             {
                 SelectedIndex = index;
             }
@@ -236,9 +236,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            SettingsItemTabCollection.Add(GeneralString);
-            SettingsItemTabCollection.Add(AdvancedString);
-            SettingsItemTabCollection.Add(AboutString);
+            SettingsTabCollection.Add(GeneralString);
+            SettingsTabCollection.Add(AdvancedString);
+            SettingsTabCollection.Add(AboutString);
         }
 
         /// <summary>

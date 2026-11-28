@@ -86,7 +86,7 @@
                 SelectedIndex="{x:Bind SelectedIndex, Mode=OneWay}"
                 SelectionChanged="{x:Bind OnSelectionChanged}"
                 Style="{StaticResource TabViewSelectorBarStyle}"
-                TabItemsSource="{x:Bind SettingsItemTabCollection}"
+                TabItemsSource="{x:Bind SettingsTabCollection}"
                 TabWidthMode="SizeToContent">
 
                 <TabView.Resources>
