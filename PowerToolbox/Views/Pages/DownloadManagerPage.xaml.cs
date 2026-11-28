@@ -15,6 +15,7 @@ using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -150,7 +151,7 @@ namespace PowerToolbox.Views.Pages
                             else
                             {
                                 download.IsOperating = false;
-                                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DeleteFileFailed));
+                                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.DeleteFileFailed));
                             }
                         }
                         else
@@ -173,7 +174,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is string filePath && File.Exists(filePath))
             {
-                if (DataTransferManager.IsSupported())
+                if (DataTransferManager.IsSupported() && !RuntimeHelper.IsElevated)
                 {
                     try
                     {
@@ -188,10 +189,15 @@ namespace PowerToolbox.Views.Pages
                         LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(DownloadManagerPage), nameof(OnShareFileExecuteRequested), 1, e);
                     }
                 }
+                else
+                {
+                    bool copyResult = CopyPasteHelper.CopyFileToClipBoard(new([filePath]));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
+                }
             }
             else
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.FileLost));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.FileLost));
             }
         }
 

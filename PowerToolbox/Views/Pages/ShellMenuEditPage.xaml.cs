@@ -761,7 +761,7 @@ namespace PowerToolbox.Views.Pages
             // 菜单数据已发生更改，通知用户手动刷新
             if (lastUpdateTime < ShellMenuService.GetLastUpdateTime())
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ShellMenuNeedToRefreshData));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.ShellMenuNeedToRefreshData));
                 return false;
             }
 
@@ -769,7 +769,7 @@ namespace PowerToolbox.Views.Pages
             if (string.IsNullOrEmpty(MenuTitleText))
             {
                 MenuTitleTextBox.Focus(FocusState.Programmatic);
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.MenuTitleEmpty));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.MenuTitleEmpty));
                 return false;
             }
 
@@ -780,14 +780,14 @@ namespace PowerToolbox.Views.Pages
                     if (string.IsNullOrEmpty(LightThemeIconPath))
                     {
                         MenuLigthThemeIconBrowserButton.Focus(FocusState.Programmatic);
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.MenuLightThemeIconPathEmpty));
+                        await MainWindow.Current.ShowNotificationAsync(new(OperationKind.MenuLightThemeIconPathEmpty));
                         return false;
                     }
 
                     if (string.IsNullOrEmpty(DarkThemeIconPath))
                     {
                         MenuDarkThemeIconBrowserButton.Focus(FocusState.Programmatic);
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.MenuDarkThemeIconPathEmpty));
+                        await MainWindow.Current.ShowNotificationAsync(new(OperationKind.MenuDarkThemeIconPathEmpty));
                         return false;
                     }
                 }
@@ -796,7 +796,7 @@ namespace PowerToolbox.Views.Pages
                     if (string.IsNullOrEmpty(DefaultIconPath))
                     {
                         MenuDefaultIconBrowserButton.Focus(FocusState.Programmatic);
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.MenuDefaultIconPathEmpty));
+                        await MainWindow.Current.ShowNotificationAsync(new(OperationKind.MenuDefaultIconPathEmpty));
                         return false;
                     }
                 }
@@ -805,14 +805,14 @@ namespace PowerToolbox.Views.Pages
             if (string.IsNullOrEmpty(MenuProgramPathText))
             {
                 MenuProgramBrowserButton.Focus(FocusState.Programmatic);
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.MenuProgramPathEmpty));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.MenuProgramPathEmpty));
                 return false;
             }
 
             if ((Equals(SelectedFileMatchRule, FileMatchRuleList[1]) || Equals(SelectedFileMatchRule, FileMatchRuleList[2]) || Equals(SelectedFileMatchRule, FileMatchRuleList[3])) && string.IsNullOrEmpty(MenuFileMatchFormatText))
             {
                 MenuFileMatchFormatTextBox.Focus(FocusState.Programmatic);
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.MenuMatchRuleEmpty));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.MenuMatchRuleEmpty));
                 return false;
             }
             return true;

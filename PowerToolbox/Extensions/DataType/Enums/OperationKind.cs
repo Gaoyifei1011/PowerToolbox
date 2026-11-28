@@ -14,6 +14,7 @@
         CleanUpdateHistory,
         CheckUpdate,
         ContextMenuUpdate,
+        CopyToClipBoard,
         CustomFileFilterTypeEmpty,
         DeleteDriverAllSuccessfully,
         DeleteDriverFailed,

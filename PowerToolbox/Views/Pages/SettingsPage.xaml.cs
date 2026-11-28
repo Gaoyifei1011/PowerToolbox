@@ -197,7 +197,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnPinToDesktopClicked(object sender, RoutedEventArgs args)
         {
             bool isCreatedSuccessfully = await PinToDesktopAsync();
-            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.Desktop, isCreatedSuccessfully));
+            await MainWindow.Current.ShowNotificationAsync(new(OperationKind.Desktop, isCreatedSuccessfully));
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnPinToStartScreenClicked(object sender, RoutedEventArgs args)
         {
             bool isPinnedSuccessfully = await PinToStartScreenAsync();
-            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.StartScreen, isPinnedSuccessfully));
+            await MainWindow.Current.ShowNotificationAsync(new(OperationKind.StartScreen, isPinnedSuccessfully));
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace PowerToolbox.Views.Pages
         private async void OnPinToTaskbarClicked(object sender, RoutedEventArgs args)
         {
             bool isPinnedSuccessfully = await PinToTaskbarAsync();
-            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.Taskbar, isPinnedSuccessfully));
+            await MainWindow.Current.ShowNotificationAsync(new(OperationKind.Taskbar, isPinnedSuccessfully));
         }
 
         /// <summary>

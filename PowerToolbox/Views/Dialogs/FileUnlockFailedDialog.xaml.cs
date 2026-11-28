@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using PowerToolbox.Extensions.DataType.Classes;
+using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
@@ -67,8 +68,8 @@ namespace PowerToolbox.Views.Dialogs
 
                 if (!string.IsNullOrEmpty(fileUnlockFailedString))
                 {
-                    bool copyResult = CopyPasteHelper.CopyToClipboard(Convert.ToString(fileUnlockFailedString));
-                    await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                    bool copyResult = CopyPasteHelper.CopyTextToClipboard(Convert.ToString(fileUnlockFailedString));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
                 }
             }
         }
@@ -113,7 +114,7 @@ namespace PowerToolbox.Views.Dialogs
 
                 if (!string.IsNullOrEmpty(fileUnlockFailedString))
                 {
-                    copyResult = CopyPasteHelper.CopyToClipboard(Convert.ToString(fileUnlockFailedString));
+                    copyResult = CopyPasteHelper.CopyTextToClipboard(Convert.ToString(fileUnlockFailedString));
                 }
             }
             catch (Exception e)
@@ -125,7 +126,7 @@ namespace PowerToolbox.Views.Dialogs
                 contentDialogButtonClickDeferral.Complete();
             }
 
-            await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+            await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
         }
 
         /// <summary>

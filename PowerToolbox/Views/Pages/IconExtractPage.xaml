@@ -525,7 +525,7 @@
                             <ComboBox
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
-                                ItemsSource="{x:Bind FileContainIconSizeCollection}"
+                                ItemsSource="{x:Bind FileAssociateIconSizeCollection}"
                                 SelectedItem="{x:Bind SelectedFileAssociateSize, Mode=OneWay}"
                                 SelectionChanged="{x:Bind OnFileAssociateSizeSelectionChanged}"
                                 Style="{StaticResource ComboBoxWithSystemBackdropStyle}"

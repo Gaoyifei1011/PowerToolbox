@@ -812,8 +812,8 @@ namespace PowerToolbox.Views.Pages
 
             if (!string.IsNullOrEmpty(EncryptFailedInformation))
             {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(EncryptFailedInformation);
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                bool copyResult = CopyPasteHelper.CopyTextToClipboard(EncryptFailedInformation);
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard,copyResult));
             }
         }
 
@@ -1416,8 +1416,8 @@ namespace PowerToolbox.Views.Pages
         {
             if (!string.IsNullOrEmpty(EncryptPublicKeyText))
             {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(EncryptPublicKeyText);
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                bool copyResult = CopyPasteHelper.CopyTextToClipboard(EncryptPublicKeyText);
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard,copyResult));
             }
         }
 
@@ -1428,8 +1428,8 @@ namespace PowerToolbox.Views.Pages
         {
             if (!string.IsNullOrEmpty(EncryptPrivateKeyText))
             {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(EncryptPrivateKeyText);
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                bool copyResult = CopyPasteHelper.CopyTextToClipboard(EncryptPrivateKeyText);
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard,copyResult));
             }
         }
 

@@ -813,8 +813,8 @@ namespace PowerToolbox.Views.Pages
 
             if (!string.IsNullOrEmpty(DecryptFailedInformation))
             {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(DecryptFailedInformation);
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                bool copyResult = CopyPasteHelper.CopyTextToClipboard(DecryptFailedInformation);
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
             }
         }
 

@@ -689,8 +689,8 @@ namespace PowerToolbox.Views.Pages
             if (checkState)
             {
                 string winFRCommand = await GetWinFRCommandAsync(false);
-                bool copyResult = CopyPasteHelper.CopyToClipboard(winFRCommand);
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                bool copyResult = CopyPasteHelper.CopyTextToClipboard(winFRCommand);
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard,copyResult));
             }
         }
 
@@ -1451,44 +1451,44 @@ namespace PowerToolbox.Views.Pages
 
                 if (isExecute && !IsWinFRInstalled)
                 {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.WinFRNotInstalled));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.WinFRNotInstalled));
                     return false;
                 }
             }
 
             if (SelectedItem is null)
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DriveEmpty));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.DriveEmpty));
                 return false;
             }
 
             if (string.IsNullOrEmpty(SaveFolder))
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectFolderEmpty));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.SelectFolderEmpty));
                 return false;
             }
 
             if (string.Equals(Path.GetPathRoot(SaveFolder), SelectedItem.DriveInfo.RootDirectory.FullName, StringComparison.OrdinalIgnoreCase))
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SameDriveAndSelectFolder));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.SameDriveAndSelectFolder));
                 return false;
             }
 
             if (UseCustomLogFolder && string.IsNullOrEmpty(LogSaveFolder))
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectLogFolderEmpty));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.SelectLogFolderEmpty));
                 return false;
             }
 
             if (Equals(SelectedRecoveryMode, RecoveryModeList[0]) && string.IsNullOrEmpty(RegularRestoreContent))
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.RestoreContentEmpty));
                 return false;
             }
 
             if (Equals(SelectedRecoveryMode, RecoveryModeList[1]) && string.IsNullOrEmpty(ExtensiveRestoreContent))
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.RestoreContentEmpty));
                 return false;
             }
 
@@ -1496,13 +1496,13 @@ namespace PowerToolbox.Views.Pages
             {
                 if (string.IsNullOrEmpty(NTFSRestoreContent))
                 {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.RestoreContentEmpty));
                     return false;
                 }
 
                 if (NTFSUseCustomFileFilterType && string.IsNullOrEmpty(NTFSCustomFileFilterType))
                 {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CustomFileFilterTypeEmpty));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CustomFileFilterTypeEmpty));
                     return false;
                 }
             }
@@ -1511,20 +1511,20 @@ namespace PowerToolbox.Views.Pages
             {
                 if (string.IsNullOrEmpty(SegmentRestoreContent))
                 {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreContentEmpty));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.RestoreContentEmpty));
                     return false;
                 }
 
                 if (SegmentUseCustomFileFilterType && string.IsNullOrEmpty(SegmentCustomFileFilterType))
                 {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CustomFileFilterTypeEmpty));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CustomFileFilterTypeEmpty));
                     return false;
                 }
             }
 
             if (Equals(SelectedRecoveryMode, RecoveryModeList[4]) && SignatureUseRestoreSpecificExtensionGroups && string.IsNullOrEmpty(SignatureRestoreSpecificExtensionGroupsType))
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.RestoreSpecificExtensionGroupsTypeEmpty));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.RestoreSpecificExtensionGroupsTypeEmpty));
                 return false;
             }
 

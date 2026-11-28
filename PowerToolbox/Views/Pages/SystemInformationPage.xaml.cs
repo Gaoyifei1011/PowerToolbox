@@ -148,8 +148,8 @@ namespace PowerToolbox.Views.Pages
                 string copySystemInformationContent = await GetSystemInformationContentAsync(new(SystemInformationCollection));
                 if (!string.IsNullOrEmpty(copySystemInformationContent))
                 {
-                    bool copyResult = CopyPasteHelper.CopyToClipboard(copySystemInformationContent);
-                    await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                    bool copyResult = CopyPasteHelper.CopyTextToClipboard(copySystemInformationContent);
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard,copyResult));
                 }
             }
         }

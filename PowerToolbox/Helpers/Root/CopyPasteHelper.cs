@@ -1,5 +1,7 @@
 ﻿using PowerToolbox.Services.Root;
 using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Windows.Forms;
 
@@ -13,7 +15,7 @@ namespace PowerToolbox.Helpers.Root
         /// <summary>
         /// 复制字符串内容到剪贴板
         /// </summary>
-        internal static bool CopyToClipboard(string content)
+        internal static bool CopyTextToClipboard(string content)
         {
             if (string.IsNullOrEmpty(content))
             {
@@ -27,7 +29,31 @@ namespace PowerToolbox.Helpers.Root
             }
             catch (Exception e)
             {
-                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(CopyPasteHelper), nameof(CopyToClipboard), 1, e);
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(CopyPasteHelper), nameof(CopyTextToClipboard), 1, e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 复制文件到剪贴板
+        /// </summary>
+        internal static bool CopyFileToClipBoard(ReadOnlyCollection<string> fileCollection)
+        {
+            if (fileCollection is null || fileCollection.Count is 0)
+            {
+                return false;
+            }
+
+            try
+            {
+                StringCollection stringCollection = [];
+                stringCollection.AddRange([.. fileCollection]);
+                Clipboard.SetFileDropList(stringCollection);
+                return true;
+            }
+            catch (Exception e)
+            {
+                LogService.WriteLog(TraceEventType.Error, nameof(PowerToolbox), nameof(CopyPasteHelper), nameof(CopyFileToClipBoard), 1, e);
                 return false;
             }
         }

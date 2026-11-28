@@ -406,8 +406,8 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is StringModel stringItem && await GetStringCopyCollectionAsync(new([stringItem])) is string copyString)
             {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(copyString);
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                bool copyResult = CopyPasteHelper.CopyTextToClipboard(copyString);
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
             }
         }
 
@@ -418,8 +418,8 @@ namespace PowerToolbox.Views.Pages
         {
             if (args.Parameter is FilePathModel filePathItem && await GetFilePathCopyCollectionAsync(new([filePathItem])) is string copyFilePath)
             {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(copyFilePath);
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                bool copyResult = CopyPasteHelper.CopyTextToClipboard(copyFilePath);
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
             }
         }
 
@@ -711,9 +711,9 @@ namespace PowerToolbox.Views.Pages
 
             if (selectedStringList.Count > 0 && await GetStringCopyCollectionAsync(selectedStringList.AsReadOnly()) is string copyString)
             {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(copyString);
+                bool copyResult = CopyPasteHelper.CopyTextToClipboard(copyString);
                 IsProcessing = false;
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
             }
             else
             {
@@ -738,9 +738,9 @@ namespace PowerToolbox.Views.Pages
 
             if (selectedFilePathList.Count > 0 && await GetFilePathCopyCollectionAsync(selectedFilePathList.AsReadOnly()) is string copyFilePath)
             {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(copyFilePath);
+                bool copyResult = CopyPasteHelper.CopyTextToClipboard(copyFilePath);
                 IsProcessing = false;
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
             }
             else
             {
@@ -789,9 +789,9 @@ namespace PowerToolbox.Views.Pages
             IsProcessing = true;
             if (await GetStringCopyCollectionAsync(new(StringCollection)) is string copyString)
             {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(copyString);
+                bool copyResult = CopyPasteHelper.CopyTextToClipboard(copyString);
                 IsProcessing = false;
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
             }
             else
             {
@@ -807,9 +807,9 @@ namespace PowerToolbox.Views.Pages
             IsProcessing = true;
             if (await GetFilePathCopyCollectionAsync(new(FilePathCollection)) is string copyFilePath)
             {
-                bool copyResult = CopyPasteHelper.CopyToClipboard(copyFilePath);
+                bool copyResult = CopyPasteHelper.CopyTextToClipboard(copyFilePath);
                 IsProcessing = false;
-                await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
             }
             else
             {

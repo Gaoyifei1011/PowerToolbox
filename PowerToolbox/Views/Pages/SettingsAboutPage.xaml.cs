@@ -113,7 +113,7 @@ namespace PowerToolbox.Views.Pages
                                         operationBarItem.IsCheckingUpdate = false;
                                         synchronizationContext.Post(async (_) =>
                                         {
-                                            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CheckUpdate, Convert.ToInt32(isNewest)));
+                                            await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CheckUpdate, Convert.ToInt32(isNewest)));
                                         }, null);
                                     }
                                     catch (Exception e)
@@ -122,7 +122,7 @@ namespace PowerToolbox.Views.Pages
                                         operationBarItem.IsCheckingUpdate = false;
                                         synchronizationContext.Post(async (_) =>
                                         {
-                                            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CheckUpdate, 2));
+                                            await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CheckUpdate, 2));
                                         }, null);
                                     }
 
@@ -134,7 +134,7 @@ namespace PowerToolbox.Views.Pages
                                 else
                                 {
                                     operationBarItem.IsCheckingUpdate = false;
-                                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CheckUpdate, 2));
+                                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CheckUpdate, 2));
                                 }
                             }
                             break;

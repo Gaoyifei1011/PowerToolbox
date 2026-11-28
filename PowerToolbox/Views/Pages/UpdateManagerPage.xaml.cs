@@ -522,8 +522,8 @@ namespace PowerToolbox.Views.Pages
             {
                 if (await GetUpdateHistoryInformationStringAsync(updateItem.UpdateInformation, updateItem.WindowsDriverInformation) is string updateHistoryString)
                 {
-                    bool copyResult = CopyPasteHelper.CopyToClipboard(updateHistoryString);
-                    await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                    bool copyResult = CopyPasteHelper.CopyTextToClipboard(updateHistoryString);
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard,copyResult));
                 }
             }
         }
@@ -1166,7 +1166,7 @@ namespace PowerToolbox.Views.Pages
             IsCleaning = false;
             synchronizationContext.Send(async (_) =>
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.CleanUpdateHistory, cleanResult));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CleanUpdateHistory, cleanResult));
             }, null);
             // 获取历史更新记录
             ReadOnlyCollection<UpdateModel> updateHistoryCollection = await GetUpdateHistoryCollectionAsync();
@@ -1192,7 +1192,7 @@ namespace PowerToolbox.Views.Pages
                 }
 
                 IsPreviewChannelChangedNeedRebootPrompt = true;
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.InsiderPreviewSettings));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.InsiderPreviewSettings));
             }
         }
 

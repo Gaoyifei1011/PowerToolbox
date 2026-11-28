@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using PowerToolbox.Extensions.DataType.Classes;
+using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Views.NotificationTips;
@@ -98,7 +99,7 @@ namespace PowerToolbox.Views.Dialogs
 
                 if (!string.IsNullOrEmpty(appInformation))
                 {
-                    copyResult = CopyPasteHelper.CopyToClipboard(Convert.ToString(appInformation));
+                    copyResult = CopyPasteHelper.CopyTextToClipboard(Convert.ToString(appInformation));
                 }
             }
             catch (Exception e)
@@ -110,7 +111,7 @@ namespace PowerToolbox.Views.Dialogs
                 contentDialogButtonClickDeferral.Complete();
             }
 
-            await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+            await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
         }
 
         #endregion 第四部分：挂载事件处理

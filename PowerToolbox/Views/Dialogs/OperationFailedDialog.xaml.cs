@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using PowerToolbox.Extensions.DataType.Classes;
+using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
@@ -63,8 +64,8 @@ namespace PowerToolbox.Views.Dialogs
 
                 if (!string.IsNullOrEmpty(operationFailedString))
                 {
-                    bool copyResult = CopyPasteHelper.CopyToClipboard(Convert.ToString(operationFailedString));
-                    await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+                    bool copyResult = CopyPasteHelper.CopyTextToClipboard(Convert.ToString(operationFailedString));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
                 }
             }
         }
@@ -87,7 +88,7 @@ namespace PowerToolbox.Views.Dialogs
 
                 if (!string.IsNullOrEmpty(operationFailedString))
                 {
-                    copyResult = CopyPasteHelper.CopyToClipboard(Convert.ToString(operationFailedString));
+                    copyResult = CopyPasteHelper.CopyTextToClipboard(Convert.ToString(operationFailedString));
                 }
             }
             catch (Exception e)
@@ -99,7 +100,7 @@ namespace PowerToolbox.Views.Dialogs
                 contentDialogButtonClickDeferral.Complete();
             }
 
-            await MainWindow.Current.ShowNotificationAsync(new CopyPasteNotificationTip(copyResult));
+            await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
         }
 
         #endregion 第五部分：挂载事件处理

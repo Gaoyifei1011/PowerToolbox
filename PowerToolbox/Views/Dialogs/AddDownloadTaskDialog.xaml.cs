@@ -241,7 +241,7 @@ namespace PowerToolbox.Views.Dialogs
 
                     if (!result)
                     {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DeleteFileFailed));
+                        await MainWindow.Current.ShowNotificationAsync(new(OperationKind.DeleteFileFailed));
                     }
                 }
                 // 打开本地目录

@@ -588,12 +588,12 @@ namespace PowerToolbox.Views.Pages
         {
             if (IsAutoSwitchSystemTheme && Equals(SystemThemeLightTime, SystemThemeDarkTime))
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ThemeChangeSameTime));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.ThemeChangeSameTime));
                 return;
             }
             else if (IsAutoSwitchAppTheme && Equals(AppThemeLightTime, AppThemeDarkTime))
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ThemeChangeSameTime));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.ThemeChangeSameTime));
                 return;
             }
 
@@ -604,7 +604,7 @@ namespace PowerToolbox.Views.Pages
             }
 
             IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnable && !await GetStartupTaskEnabledAsync();
-            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ThemeSwitchSaveResult));
+            await MainWindow.Current.ShowNotificationAsync(new(OperationKind.ThemeSwitchSaveResult));
         }
 
         /// <summary>
@@ -631,7 +631,7 @@ namespace PowerToolbox.Views.Pages
             SunriseOffset = AutoThemeSwitchService.SunriseOffset;
             SunsetOffset = AutoThemeSwitchService.SunsetOffset;
             IsThemeSwitchNotificationEnabled = AutoThemeSwitchService.AutoThemeSwitchEnable && !await GetStartupTaskEnabledAsync();
-            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ThemeSwitchRestoreResult));
+            await MainWindow.Current.ShowNotificationAsync(new(OperationKind.ThemeSwitchRestoreResult));
         }
 
         /// <summary>
@@ -836,7 +836,7 @@ namespace PowerToolbox.Views.Pages
                     }
                     else
                     {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DevicePositionLoadFailed));
+                        await MainWindow.Current.ShowNotificationAsync(new(OperationKind.DevicePositionLoadFailed));
                     }
                 }
                 else
@@ -1149,7 +1149,7 @@ namespace PowerToolbox.Views.Pages
                     DevicePositionService.StatusOrPositionChanged -= OnStatusOrPositionChanged;
                     synchronizationContext.Post(async (_) =>
                     {
-                        await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.DevicePositionInitializeFailed));
+                        await MainWindow.Current.ShowNotificationAsync(new(OperationKind.DevicePositionInitializeFailed));
                     }, null);
                 }
                 catch (Exception e)

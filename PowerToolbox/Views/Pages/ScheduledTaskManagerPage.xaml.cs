@@ -1044,7 +1044,7 @@ namespace PowerToolbox.Views.Pages
                 ScheduledTaskOperationKind.Run => OperationKind.ScheduledTaskRun,
                 _ => OperationKind.NoOperation
             };
-            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(operationKind, successItems, failedItems));
+            await MainWindow.Current.ShowNotificationAsync(new(operationKind, successItems, failedItems));
         }
 
         /// <summary>

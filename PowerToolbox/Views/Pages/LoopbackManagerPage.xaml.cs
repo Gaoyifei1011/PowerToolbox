@@ -243,7 +243,7 @@ namespace PowerToolbox.Views.Pages
                 bool result = await SaveLoopbackStateAsync(selectedLoopbackList.AsReadOnly());
                 synchronizationContext.Post(async (_) =>
                 {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.LoopbackSetResult, result));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.LoopbackSetResult, result));
                 }, null);
                 await GetLoopbackDataAsync();
             }

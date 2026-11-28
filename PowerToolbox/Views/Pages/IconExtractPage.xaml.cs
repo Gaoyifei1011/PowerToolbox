@@ -607,7 +607,7 @@ namespace PowerToolbox.Views.Pages
                 ReadOnlyCollection<object> selectedItemCollection = new(IconExtractGridView.SelectedItems);
                 if (Equals(SelectedIconFormat, IconFormatCollection[0]) && ((Equals(SelectedGetIconType, GetIconTypeList[0]) && FileContainIconGridView.SelectedItems.Count is 0) || Equals(SelectedGetIconType, GetIconTypeList[1]) && FileAssociateIconGridView.SelectedItems.Count is 0))
                 {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IcoSizeNotSelected));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.IcoSizeNotSelected));
                     return;
                 }
                 OpenFolderDialog openFolderDialog = new((nint)MainWindow.Current.AppWindow.Id.Value)
@@ -658,7 +658,7 @@ namespace PowerToolbox.Views.Pages
 
                     openFolderDialog.Dispose();
                     IsSaving = false;
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IconExtract, selectedItemCollection.Count - saveFailedCount, saveFailedCount));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.IconExtract, selectedItemCollection.Count - saveFailedCount, saveFailedCount));
                 }
                 else
                 {
@@ -676,7 +676,7 @@ namespace PowerToolbox.Views.Pages
             {
                 if (Equals(SelectedIconFormat, IconFormatCollection[0]) && ((Equals(SelectedGetIconType, GetIconTypeList[0]) && FileContainIconGridView.SelectedItems.Count is 0) || Equals(SelectedGetIconType, GetIconTypeList[1]) && FileAssociateIconGridView.SelectedItems.Count is 0))
                 {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IcoSizeNotSelected));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.IcoSizeNotSelected));
                     return;
                 }
                 OpenFolderDialog openFolderDialog = new((nint)MainWindow.Current.AppWindow.Id.Value)
@@ -728,7 +728,7 @@ namespace PowerToolbox.Views.Pages
 
                     openFolderDialog.Dispose();
                     IsSaving = false;
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.IconExtract, IconCollection.Count - saveFailedCount, saveFailedCount));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.IconExtract, IconCollection.Count - saveFailedCount, saveFailedCount));
                 }
                 else
                 {

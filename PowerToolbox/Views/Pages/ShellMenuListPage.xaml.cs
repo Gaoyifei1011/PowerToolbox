@@ -908,7 +908,7 @@ namespace PowerToolbox.Views.Pages
         {
             if (lastUpdateTime < ShellMenuService.GetLastUpdateTime())
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ShellMenuNeedToRefreshData));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.ShellMenuNeedToRefreshData));
                 return false;
             }
             return true;

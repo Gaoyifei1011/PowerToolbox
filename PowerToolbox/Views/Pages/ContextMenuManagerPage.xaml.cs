@@ -201,11 +201,11 @@ namespace PowerToolbox.Views.Pages
                     contextMenuItem.BlockedClsidType = BlockedClsidType.Unknown;
                 }
 
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ContextMenuUpdate, true));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.ContextMenuUpdate, true));
             }
             else
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ContextMenuUpdate, false));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.ContextMenuUpdate, false));
             }
         }
 

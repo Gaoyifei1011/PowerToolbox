@@ -575,7 +575,7 @@ namespace PowerToolbox.Views.Pages
 
                 if (count is 0)
                 {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.ListEmpty));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.ListEmpty));
                 }
                 else
                 {
@@ -588,7 +588,7 @@ namespace PowerToolbox.Views.Pages
             }
             else
             {
-                await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.NoOperation));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.NoOperation));
             }
         }
 
@@ -674,7 +674,7 @@ namespace PowerToolbox.Views.Pages
                 FilePropertyCollection.Clear();
             }
 
-            await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.File, count - OperationFailedList.Count, OperationFailedList.Count));
+            await MainWindow.Current.ShowNotificationAsync(new(OperationKind.File, count - OperationFailedList.Count, OperationFailedList.Count));
         }
 
         /// <summary>

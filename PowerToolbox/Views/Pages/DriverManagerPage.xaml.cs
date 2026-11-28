@@ -726,7 +726,7 @@ namespace PowerToolbox.Views.Pages
 
                 if (selectedDriverList.Count is 0)
                 {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectDriverEmpty));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.SelectDriverEmpty));
                     return;
                 }
 
@@ -778,7 +778,7 @@ namespace PowerToolbox.Views.Pages
 
                 if (selectedDriverList.Count is 0)
                 {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(OperationKind.SelectDriverEmpty));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.SelectDriverEmpty));
                     return;
                 }
 
@@ -1670,7 +1670,7 @@ namespace PowerToolbox.Views.Pages
             {
                 synchronizationContext.Send(async (_) =>
                 {
-                    await MainWindow.Current.ShowNotificationAsync(new OperationResultNotificationTip(operationKind));
+                    await MainWindow.Current.ShowNotificationAsync(new(operationKind));
                 }, null);
             }
 

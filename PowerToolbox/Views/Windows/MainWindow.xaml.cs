@@ -17,6 +17,7 @@ using PowerToolbox.Services.Download;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
 using PowerToolbox.Views.Dialogs;
+using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Pages;
 using PowerToolbox.WindowsAPI.PInvoke.Comctl32;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
@@ -1144,21 +1145,21 @@ namespace PowerToolbox.Views.Windows
         /// <summary>
         /// 使用教学提示显示应用内通知
         /// </summary>
-        internal async Task ShowNotificationAsync(TeachingTip teachingTip, int duration = 2000)
+        internal async Task ShowNotificationAsync(OperationResultNotificationTip operationResultNotifiationTip, int duration = 2000)
         {
-            if (teachingTip is not null && Content is Page page && page.Content is Grid grid)
+            if (operationResultNotifiationTip is not null && operationResultNotifiationTip.IsInitialized && Content is Page page && page.Content is Grid grid)
             {
                 try
                 {
-                    grid.Children.Add(teachingTip);
+                    grid.Children.Add(operationResultNotifiationTip);
 
-                    teachingTip.IsOpen = true;
+                    operationResultNotifiationTip.IsOpen = true;
                     await Task.Delay(duration);
-                    teachingTip.IsOpen = false;
+                    operationResultNotifiationTip.IsOpen = false;
 
                     // 应用内通知关闭动画显示耗费 300 ms
                     await Task.Delay(300);
-                    grid.Children.Remove(teachingTip);
+                    grid.Children.Remove(operationResultNotifiationTip);
                 }
                 catch (Exception e)
                 {
