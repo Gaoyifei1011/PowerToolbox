@@ -4,6 +4,7 @@ using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<string> DataVerifyEncryptSelectorRadioList { get; } = [];
+        private StringCollection DataVerifyEncryptSelectorRadioCollection { get; } = [];
 
         private ReadOnlyCollection<Type> PageList { get; } = new([typeof(DataVerifyPage), typeof(DataEncryptPage), typeof(DataDecryptPage)]);
 
@@ -91,7 +92,7 @@ namespace PowerToolbox.Views.Pages
                 SelectedIndex = radioButtons.SelectedIndex;
             }
 
-            if (SelectedIndex >= 0 && SelectedIndex < DataVerifyEncryptSelectorRadioList.Count)
+            if (SelectedIndex >= 0 && SelectedIndex < DataVerifyEncryptSelectorRadioCollection.Count)
             {
                 int index = SelectedIndex;
                 Type currentPage = GetCurrentPageType();
@@ -127,7 +128,7 @@ namespace PowerToolbox.Views.Pages
             args.Handled = true;
             int index = PageList.IndexOf(PageList.FirstOrDefault(item => Equals(item, GetCurrentPageType())));
 
-            if (index >= 0 && index < DataVerifyEncryptSelectorRadioList.Count)
+            if (index >= 0 && index < DataVerifyEncryptSelectorRadioCollection.Count)
             {
                 SelectedIndex = index;
             }
@@ -144,9 +145,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            DataVerifyEncryptSelectorRadioList.Add(DataVerifyString);
-            DataVerifyEncryptSelectorRadioList.Add(DataEncryptString);
-            DataVerifyEncryptSelectorRadioList.Add(DataDecryptString);
+            DataVerifyEncryptSelectorRadioCollection.Add(DataVerifyString);
+            DataVerifyEncryptSelectorRadioCollection.Add(DataEncryptString);
+            DataVerifyEncryptSelectorRadioCollection.Add(DataDecryptString);
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using PowerToolbox.Extensions.DataType.Enums;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 
 namespace PowerToolbox.Models
@@ -99,7 +100,7 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 子文件列表
         /// </summary>
-        internal List<string> SubFileList { get; } = [];
+        internal StringCollection SubFileCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

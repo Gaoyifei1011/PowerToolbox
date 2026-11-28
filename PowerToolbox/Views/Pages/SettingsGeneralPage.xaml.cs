@@ -9,7 +9,6 @@ using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
 using PowerToolbox.Services.Settings;
-using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using System;
 using System.Collections.Generic;

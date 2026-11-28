@@ -4,6 +4,7 @@ using PowerToolbox.Services.Root;
 using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -821,7 +822,7 @@ namespace PowerToolbox.Services.Download
 
             try
             {
-                List<string> finishedDownloadKeyList = [];
+                StringCollection finishedDownloadKeyCollection = [];
 
                 foreach (KeyValuePair<string, string> aria2DownloadItem in Aria2DownloadDict)
                 {
@@ -843,12 +844,12 @@ namespace PowerToolbox.Services.Download
                         // 任务下载失败或完成时从 Aria2 进程中删除队列任务
                         if (downloadProgressState is DownloadProgressState.Failed || downloadProgressState is DownloadProgressState.Finished)
                         {
-                            finishedDownloadKeyList.Add(aria2DownloadItem.Key);
+                            finishedDownloadKeyCollection.Add(aria2DownloadItem.Key);
                         }
                     }
                 }
 
-                foreach (string finishedDownloadKey in finishedDownloadKeyList)
+                foreach (string finishedDownloadKey in finishedDownloadKeyCollection)
                 {
                     Aria2DownloadDict.Remove(finishedDownloadKey);
                 }

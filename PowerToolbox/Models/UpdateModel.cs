@@ -1,5 +1,6 @@
 ﻿using PowerToolbox.Extensions.DataType.Classes;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 
 namespace PowerToolbox.Models
@@ -57,22 +58,22 @@ namespace PowerToolbox.Models
         /// <summary>
         /// 与更新关联的 CVE ID 集合
         /// </summary>
-        internal List<string> CveIDList { get; } = [];
+        internal StringCollection CveIDCollection { get; } = [];
 
         /// <summary>
         /// 与更新关联的 Microsoft 知识库文章 ID 的集合。
         /// </summary>
-        internal List<string> KBArticleIDList { get; } = [];
+        internal StringCollection KBArticleIDCollection { get; } = [];
 
         /// <summary>
         /// 更新支持的语言列表
         /// </summary>
-        internal List<string> SupportedLanguageList { get; } = [];
+        internal StringCollection SupportedLanguageCollection { get; } = [];
 
         /// <summary>
         /// 有关更新的详细信息的超链接
         /// </summary>
-        internal List<string> MoreInfoList { get; } = [];
+        internal StringCollection MoreInfoCollection { get; } = [];
 
         /// <summary>
         /// 当前更新是否正在更新中

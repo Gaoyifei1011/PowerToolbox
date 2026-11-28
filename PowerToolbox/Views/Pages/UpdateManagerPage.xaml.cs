@@ -9,7 +9,6 @@ using PowerToolbox.Extensions.DataType.Enums;
 using PowerToolbox.Helpers.Root;
 using PowerToolbox.Models;
 using PowerToolbox.Services.Root;
-using PowerToolbox.Views.NotificationTips;
 using PowerToolbox.Views.Windows;
 using PowerToolbox.WindowsAPI.ComTypes;
 using System;
@@ -363,7 +362,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<string> UpdateManagerSelectorRadioList { get; } = [];
+        private System.Collections.Specialized.StringCollection UpdateManagerSelectorRadioCollection { get; } = [];
 
         private List<ComboBoxItemModel> UpdateSourceList { get; } = [];
 
@@ -523,7 +522,7 @@ namespace PowerToolbox.Views.Pages
                 if (await GetUpdateHistoryInformationStringAsync(updateItem.UpdateInformation, updateItem.WindowsDriverInformation) is string updateHistoryString)
                 {
                     bool copyResult = CopyPasteHelper.CopyTextToClipboard(updateHistoryString);
-                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard,copyResult));
+                    await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
                 }
             }
         }
@@ -1274,10 +1273,10 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            UpdateManagerSelectorRadioList.Add(AvailableUpdateString);
-            UpdateManagerSelectorRadioList.Add(InstalledUpdateString);
-            UpdateManagerSelectorRadioList.Add(HiddenUpdateString);
-            UpdateManagerSelectorRadioList.Add(UpdateHistoryString);
+            UpdateManagerSelectorRadioCollection.Add(AvailableUpdateString);
+            UpdateManagerSelectorRadioCollection.Add(InstalledUpdateString);
+            UpdateManagerSelectorRadioCollection.Add(HiddenUpdateString);
+            UpdateManagerSelectorRadioCollection.Add(UpdateHistoryString);
             UpdateSourceList.Add(new() { SelectedValue = "Microsoft Update", DisplayMember = MicrosoftUpdateString });
             UpdateSourceList.Add(new() { SelectedValue = "DCat Flighting Prod", DisplayMember = DCatFlightingProdString });
             UpdateSourceList.Add(new() { SelectedValue = "Windows Store(DCat Prod)", DisplayMember = WindowsStoreString });
@@ -1363,22 +1362,22 @@ namespace PowerToolbox.Views.Pages
 
                             foreach (object cveID in update.CveIDs)
                             {
-                                updateInformation.CveIDList.Add(Convert.ToString(cveID));
+                                updateInformation.CveIDCollection.Add(Convert.ToString(cveID));
                             }
 
                             foreach (object moreInfoUrl in update.MoreInfoUrls)
                             {
-                                updateInformation.KBArticleIDList.Add(Convert.ToString(moreInfoUrl));
+                                updateInformation.KBArticleIDCollection.Add(Convert.ToString(moreInfoUrl));
                             }
 
                             foreach (object moreInfoUrl in update.MoreInfoUrls)
                             {
-                                updateInformation.MoreInfoList.Add(Convert.ToString(moreInfoUrl));
+                                updateInformation.MoreInfoCollection.Add(Convert.ToString(moreInfoUrl));
                             }
 
                             foreach (object language in update.Languages)
                             {
-                                updateInformation.SupportedLanguageList.Add(Convert.ToString(language));
+                                updateInformation.SupportedLanguageCollection.Add(Convert.ToString(language));
                             }
 
                             UpdateModel updateItem = new()
@@ -1473,10 +1472,22 @@ namespace PowerToolbox.Views.Pages
                                 }
                             }
 
-                            updateItem.CveIDList.AddRange(updateInformation.CveIDList);
-                            updateItem.KBArticleIDList.AddRange(updateInformation.KBArticleIDList);
-                            updateItem.SupportedLanguageList.AddRange(updateInformation.SupportedLanguageList);
-                            updateItem.MoreInfoList.AddRange(updateInformation.MoreInfoList);
+                            foreach (string cveID in updateInformation.CveIDCollection)
+                            {
+                                updateItem.CveIDCollection.Add(cveID);
+                            }
+                            foreach (string kbArticleID in updateInformation.KBArticleIDCollection)
+                            {
+                                updateItem.KBArticleIDCollection.Add(kbArticleID);
+                            }
+                            foreach (string supportedLanguage in updateInformation.SupportedLanguageCollection)
+                            {
+                                updateItem.SupportedLanguageCollection.Add(supportedLanguage);
+                            }
+                            foreach (string moreInfo in updateInformation.MoreInfoCollection)
+                            {
+                                updateItem.MoreInfoCollection.Add(moreInfo);
+                            }
 
                             // 隐藏的更新
                             if (updateInformation.Update.IsHidden)

@@ -6,6 +6,7 @@ using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -84,7 +85,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<string> FileManagerSelectorRadioList { get; } = [];
+        private StringCollection FileManagerSelectorRadioCollection { get; } = [];
 
         private ReadOnlyCollection<Type> PageCollection { get; } = new([typeof(FileNamePage), typeof(ExtensionNamePage), typeof(UpperAndLowerCasePage), typeof(FilePropertiesPage)]);
 
@@ -96,7 +97,7 @@ namespace PowerToolbox.Views.Pages
             new(){ OriginalFileName = string.Empty, NewFileName = string.Empty },
         ]);
 
-        private List<string> NameChangeRuleList { get; } = [];
+        private StringCollection NameChangeRuleCollection { get; } = [];
 
         private Dictionary<int, List<OldAndNewNameModel>> NameChangeDict { get; } = [];
 
@@ -145,7 +146,7 @@ namespace PowerToolbox.Views.Pages
                 SelectedIndex = radioButtons.SelectedIndex;
             }
 
-            if (SelectedIndex >= 0 && SelectedIndex < FileManagerSelectorRadioList.Count)
+            if (SelectedIndex >= 0 && SelectedIndex < FileManagerSelectorRadioCollection.Count)
             {
                 int index = SelectedIndex;
                 Type currentPage = GetCurrentPageType();
@@ -185,7 +186,7 @@ namespace PowerToolbox.Views.Pages
             args.Handled = true;
             int index = PageCollection.IndexOf(PageCollection.FirstOrDefault(item => Equals(item, GetCurrentPageType())));
 
-            if (index >= 0 && index < FileManagerSelectorRadioList.Count)
+            if (index >= 0 && index < FileManagerSelectorRadioCollection.Count)
             {
                 SelectedIndex = index;
             }
@@ -227,15 +228,15 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            FileManagerSelectorRadioList.Add(FileNameString);
-            FileManagerSelectorRadioList.Add(ExtensionNameString);
-            FileManagerSelectorRadioList.Add(UpperAndLowerCaseString);
-            FileManagerSelectorRadioList.Add(FilePropertiesString);
+            FileManagerSelectorRadioCollection.Add(FileNameString);
+            FileManagerSelectorRadioCollection.Add(ExtensionNameString);
+            FileManagerSelectorRadioCollection.Add(UpperAndLowerCaseString);
+            FileManagerSelectorRadioCollection.Add(FilePropertiesString);
 
-            NameChangeRuleList.Add(NameChangeRule1String);
-            NameChangeRuleList.Add(NameChangeRule2String);
-            NameChangeRuleList.Add(NameChangeRule3String);
-            NameChangeRuleList.Add(NameChangeRule4String);
+            NameChangeRuleCollection.Add(NameChangeRule1String);
+            NameChangeRuleCollection.Add(NameChangeRule2String);
+            NameChangeRuleCollection.Add(NameChangeRule3String);
+            NameChangeRuleCollection.Add(NameChangeRule4String);
 
             NameChangeDict.Add(0,
             [
@@ -322,7 +323,7 @@ namespace PowerToolbox.Views.Pages
 
         private string GetChangeRule(int index)
         {
-            return string.Format(ChangeRuleString, NameChangeRuleList[index]);
+            return string.Format(ChangeRuleString, NameChangeRuleCollection[index]);
         }
 
         #endregion 第六部分：数据操作与业务逻辑

@@ -12,6 +12,7 @@ using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -641,7 +642,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<string> DataEncryptSelectorRadioList { get; } = [];
+        private StringCollection DataEncryptSelectorRadioCollection { get; } = [];
 
         private List<DataEncryptTypeModel> DataEncryptTypeList { get; } = [];
 
@@ -813,7 +814,7 @@ namespace PowerToolbox.Views.Pages
             if (!string.IsNullOrEmpty(EncryptFailedInformation))
             {
                 bool copyResult = CopyPasteHelper.CopyTextToClipboard(EncryptFailedInformation);
-                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard,copyResult));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
             }
         }
 
@@ -1417,7 +1418,7 @@ namespace PowerToolbox.Views.Pages
             if (!string.IsNullOrEmpty(EncryptPublicKeyText))
             {
                 bool copyResult = CopyPasteHelper.CopyTextToClipboard(EncryptPublicKeyText);
-                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard,copyResult));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
             }
         }
 
@@ -1429,7 +1430,7 @@ namespace PowerToolbox.Views.Pages
             if (!string.IsNullOrEmpty(EncryptPrivateKeyText))
             {
                 bool copyResult = CopyPasteHelper.CopyTextToClipboard(EncryptPrivateKeyText);
-                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard,copyResult));
+                await MainWindow.Current.ShowNotificationAsync(new(OperationKind.CopyToClipBoard, copyResult));
             }
         }
 
@@ -1637,8 +1638,8 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            DataEncryptSelectorRadioList.Add(FileString);
-            DataEncryptSelectorRadioList.Add(ContentString);
+            DataEncryptSelectorRadioCollection.Add(FileString);
+            DataEncryptSelectorRadioCollection.Add(ContentString);
             DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.AES, Name = AESString });
             DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.CaesarCipher, Name = CaesarCipherString });
             DataEncryptTypeList.Add(new() { DataEncryptType = DataEncryptType.ChaCha20, Name = ChaCha20String });

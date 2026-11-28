@@ -12,6 +12,7 @@ using PowerToolbox.WindowsAPI.PInvoke.Shell32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -643,7 +644,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<string> DataDecryptSelectorRadioList { get; } = [];
+        private StringCollection DataDecryptSelectorRadioCollection { get; } = [];
 
         private List<DataDecryptTypeModel> DataDecryptTypeList { get; } = [];
 
@@ -1668,8 +1669,8 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            DataDecryptSelectorRadioList.Add(FileString);
-            DataDecryptSelectorRadioList.Add(ContentString);
+            DataDecryptSelectorRadioCollection.Add(FileString);
+            DataDecryptSelectorRadioCollection.Add(ContentString);
             DataDecryptTypeList.Add(new() { DataDecryptType = DataDecryptType.AES, Name = AESString });
             DataDecryptTypeList.Add(new() { DataDecryptType = DataDecryptType.CaesarCipher, Name = CaesarCipherString });
             DataDecryptTypeList.Add(new() { DataDecryptType = DataDecryptType.ChaCha20, Name = ChaCha20String });

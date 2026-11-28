@@ -13,6 +13,7 @@ using PowerToolbox.WindowsAPI.PInvoke.Kernel32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -65,7 +66,7 @@ namespace PowerToolbox.Views.Pages
 
         private ReadOnlyCollection<Type> PageCollection { get; } = new([typeof(SettingsGeneralPage), typeof(SettingsAdvancedPage), typeof(SettingsAboutPage)]);
 
-        private List<string> SettingsItemTabList { get; } = [];
+        private StringCollection SettingsItemTabCollection { get; } = [];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -112,7 +113,7 @@ namespace PowerToolbox.Views.Pages
                 SelectedIndex = tabView.SelectedIndex;
             }
 
-            if (SelectedIndex >= 0 && SelectedIndex < SettingsItemTabList.Count)
+            if (SelectedIndex >= 0 && SelectedIndex < SettingsItemTabCollection.Count)
             {
                 int index = SelectedIndex;
                 Type currentPage = GetCurrentPageType();
@@ -148,7 +149,7 @@ namespace PowerToolbox.Views.Pages
             args.Handled = true;
             int index = PageCollection.IndexOf(PageCollection.FirstOrDefault(item => Equals(item, GetCurrentPageType())));
 
-            if (index >= 0 && index < SettingsItemTabList.Count)
+            if (index >= 0 && index < SettingsItemTabCollection.Count)
             {
                 SelectedIndex = index;
             }
@@ -235,9 +236,9 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            SettingsItemTabList.Add(GeneralString);
-            SettingsItemTabList.Add(AdvancedString);
-            SettingsItemTabList.Add(AboutString);
+            SettingsItemTabCollection.Add(GeneralString);
+            SettingsItemTabCollection.Add(AdvancedString);
+            SettingsItemTabCollection.Add(AboutString);
         }
 
         /// <summary>

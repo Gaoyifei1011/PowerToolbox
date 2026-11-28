@@ -8,6 +8,7 @@ using PowerToolbox.Services.Root;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -197,7 +198,7 @@ namespace PowerToolbox.Views.Pages
             }
         }
 
-        private List<string> DataVerifySelectorRadioList { get; } = [];
+        private StringCollection DataVerifySelectorRadioCollection { get; } = [];
 
         private List<DataVerifyTypeModel> DataVerifyTypeList { get; } = [];
 
@@ -310,7 +311,7 @@ namespace PowerToolbox.Views.Pages
                 SelectedIndex = radioButtons.SelectedIndex;
             }
 
-            if (SelectedIndex >= 0 && SelectedIndex < DataVerifySelectorRadioList.Count)
+            if (SelectedIndex >= 0 && SelectedIndex < DataVerifySelectorRadioCollection.Count)
             {
                 int index = SelectedIndex;
                 if (index is 0 && ResultSeverity is InfoBarSeverity.Informational)
@@ -471,8 +472,8 @@ namespace PowerToolbox.Views.Pages
         /// </summary>
         private void InitializeData()
         {
-            DataVerifySelectorRadioList.Add(FileString);
-            DataVerifySelectorRadioList.Add(ContentString);
+            DataVerifySelectorRadioCollection.Add(FileString);
+            DataVerifySelectorRadioCollection.Add(ContentString);
             DataVerifyTypeList.Add(new() { Name = Blake2bString, DataVerifyType = DataVerifyType.Blake2b });
             DataVerifyTypeList.Add(new() { Name = Blake3String, DataVerifyType = DataVerifyType.Blake3 });
             DataVerifyTypeList.Add(new() { Name = CRC32String, DataVerifyType = DataVerifyType.CRC_32 });

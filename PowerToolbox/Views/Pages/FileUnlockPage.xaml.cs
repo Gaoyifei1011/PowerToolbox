@@ -317,7 +317,7 @@ namespace PowerToolbox.Views.Pages
                         try
                         {
                             string[] subFileArray = Directory.GetFiles(fileUnlockItem.FileFolderPath, "*", SearchOption.AllDirectories);
-                            fileUnlockItem.SubFileList.AddRange(subFileArray);
+                            fileUnlockItem.SubFileCollection.AddRange(subFileArray);
                         }
                         catch (Exception e)
                         {
@@ -328,13 +328,13 @@ namespace PowerToolbox.Views.Pages
                     else
                     {
                         fileUnlockItem.FileFolderType = FileString;
-                        fileUnlockItem.SubFileList.Add(fileUnlockItem.FileFolderPath);
+                        fileUnlockItem.SubFileCollection.Add(fileUnlockItem.FileFolderPath);
                     }
 
                     fileUnlockItem.FileUnlockState = FileUnlockState.NotStarted;
                     fileUnlockItem.FileUnlockFinishedCount = 0;
                     fileUnlockItem.FileUnlockProgressingPercentage = 0;
-                    fileUnlockItem.FileFolderAmount = Convert.ToString(fileUnlockItem.SubFileList.Count);
+                    fileUnlockItem.FileFolderAmount = Convert.ToString(fileUnlockItem.SubFileCollection.Count);
                 }
             });
 
@@ -374,7 +374,7 @@ namespace PowerToolbox.Views.Pages
                     fileUnlockItem.FileUnlockState = FileUnlockState.Processing;
                     bool unlockSuccessfully = true;
 
-                    foreach (string subFile in fileUnlockItem.SubFileList)
+                    foreach (string subFile in fileUnlockItem.SubFileCollection)
                     {
                         // 查找进程并结束进程
                         if (await GetProcessCollectionAsync(subFile) is ReadOnlyCollection<Process> processCollection && processCollection.Count > 0 && await TerminateProcessAsync(subFile, processCollection) is ReadOnlyCollection<FileUnlockFailedModel> fileUnlockFailedCollection && (fileUnlockFailedCollection is null || fileUnlockFailedCollection.Count is not 0))
@@ -384,7 +384,7 @@ namespace PowerToolbox.Views.Pages
                         }
 
                         fileUnlockItem.FileUnlockFinishedCount++;
-                        fileUnlockItem.FileUnlockProgressingPercentage = fileUnlockItem.SubFileList.Count is 0 ? 0 : Convert.ToInt32((double)fileUnlockItem.FileUnlockFinishedCount * 100 / fileUnlockItem.SubFileList.Count);
+                        fileUnlockItem.FileUnlockProgressingPercentage = fileUnlockItem.SubFileCollection.Count is 0 ? 0 : Convert.ToInt32((double)fileUnlockItem.FileUnlockFinishedCount * 100 / fileUnlockItem.SubFileCollection.Count);
                     }
 
                     fileUnlockItem.FileUnlockState = unlockSuccessfully ? FileUnlockState.Successfully : FileUnlockState.Failed;

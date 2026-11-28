@@ -9,6 +9,7 @@ using PowerToolbox.WindowsAPI.PInvoke.Shlwapi;
 using PowerToolbox.WindowsAPI.PInvoke.User32;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;

@@ -40,7 +40,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Canvas.ZIndex="1"
-                ItemsSource="{x:Bind DataDecryptSelectorRadioList}"
+                ItemsSource="{x:Bind DataDecryptSelectorRadioCollection}"
                 SelectedIndex="{x:Bind SelectedIndex, Mode=OneWay}"
                 SelectionChanged="{x:Bind OnSelectionChanged}"
                 Style="{StaticResource HorizontalRadioButtonsStyle}">
